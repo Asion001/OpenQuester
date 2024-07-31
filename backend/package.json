@@ -2,9 +2,22 @@
   "name": "openquester_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start:dev:build": "tsc -w",
+    "start:dev:run": "wait-on ./dist/index.js && nodemon ./dist/index.js",
+    "start:dev": "npm run clean && concurrently npm:start:dev:*",
+    "clean": "rm -rf dist/*"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
+    "wait-on": "^7.2.0"
+  }
 }
