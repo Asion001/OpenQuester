@@ -47,12 +47,13 @@ import 'package:openapi/openapi.dart';
 
 
 final api = Openapi().getDefaultApi();
+final V1AuthLoginPostRequest v1AuthLoginPostRequest = ; // V1AuthLoginPostRequest | 
 
 try {
-    final response = await api.v1AuthGet();
+    final response = await api.v1AuthLoginPost(v1AuthLoginPostRequest);
     print(response);
 } catch on DioException (e) {
-    print("Exception when calling DefaultApi->v1AuthGet: $e\n");
+    print("Exception when calling DefaultApi->v1AuthLoginPost: $e\n");
 }
 
 ```
@@ -63,14 +64,16 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-[*DefaultApi*](doc/DefaultApi.md) | [**v1AuthGet**](doc/DefaultApi.md#v1authget) | **GET** /v1/auth | Authorization Endpoint
 [*DefaultApi*](doc/DefaultApi.md) | [**v1AuthLoginPost**](doc/DefaultApi.md#v1authloginpost) | **POST** /v1/auth/login | User Login
 [*DefaultApi*](doc/DefaultApi.md) | [**v1AuthRegisterPost**](doc/DefaultApi.md#v1authregisterpost) | **POST** /v1/auth/register | User Registration
 
 
 ## Documentation For Models
 
- - [IUser](doc/IUser.md)
+ - [AuthData](doc/AuthData.md)
+ - [PrivateUser](doc/PrivateUser.md)
+ - [V1AuthLoginPostRequest](doc/V1AuthLoginPostRequest.md)
+ - [V1AuthRegisterPostRequest](doc/V1AuthRegisterPostRequest.md)
 
 
 ## Documentation For Authorization

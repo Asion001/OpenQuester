@@ -9,50 +9,12 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**v1AuthGet**](DefaultApi.md#v1authget) | **GET** /v1/auth | Authorization Endpoint
 [**v1AuthLoginPost**](DefaultApi.md#v1authloginpost) | **POST** /v1/auth/login | User Login
 [**v1AuthRegisterPost**](DefaultApi.md#v1authregisterpost) | **POST** /v1/auth/register | User Registration
 
 
-# **v1AuthGet**
-> String v1AuthGet()
-
-Authorization Endpoint
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-
-final api = Openapi().getDefaultApi();
-
-try {
-    final response = api.v1AuthGet();
-    print(response);
-} catch on DioException (e) {
-    print('Exception when calling DefaultApi->v1AuthGet: $e\n');
-}
-```
-
-### Parameters
-This endpoint does not need any parameter.
-
-### Return type
-
-**String**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **v1AuthLoginPost**
-> IUser v1AuthLoginPost()
+> AuthData v1AuthLoginPost(v1AuthLoginPostRequest)
 
 User Login
 
@@ -61,9 +23,10 @@ User Login
 import 'package:openapi/api.dart';
 
 final api = Openapi().getDefaultApi();
+final V1AuthLoginPostRequest v1AuthLoginPostRequest = ; // V1AuthLoginPostRequest | 
 
 try {
-    final response = api.v1AuthLoginPost();
+    final response = api.v1AuthLoginPost(v1AuthLoginPostRequest);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->v1AuthLoginPost: $e\n');
@@ -71,11 +34,14 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **v1AuthLoginPostRequest** | [**V1AuthLoginPostRequest**](V1AuthLoginPostRequest.md)|  | 
 
 ### Return type
 
-[**IUser**](IUser.md)
+[**AuthData**](AuthData.md)
 
 ### Authorization
 
@@ -83,13 +49,13 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1AuthRegisterPost**
-> IUser v1AuthRegisterPost()
+> AuthData v1AuthRegisterPost(v1AuthRegisterPostRequest)
 
 User Registration
 
@@ -98,9 +64,10 @@ User Registration
 import 'package:openapi/api.dart';
 
 final api = Openapi().getDefaultApi();
+final V1AuthRegisterPostRequest v1AuthRegisterPostRequest = ; // V1AuthRegisterPostRequest | 
 
 try {
-    final response = api.v1AuthRegisterPost();
+    final response = api.v1AuthRegisterPost(v1AuthRegisterPostRequest);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->v1AuthRegisterPost: $e\n');
@@ -108,11 +75,14 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **v1AuthRegisterPostRequest** | [**V1AuthRegisterPostRequest**](V1AuthRegisterPostRequest.md)|  | 
 
 ### Return type
 
-[**IUser**](IUser.md)
+[**AuthData**](AuthData.md)
 
 ### Authorization
 
@@ -120,7 +90,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

@@ -14,12 +14,18 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:openapi/src/date_serializer.dart';
 import 'package:openapi/src/model/date.dart';
 
-import 'package:openapi/src/model/i_user.dart';
+import 'package:openapi/src/model/auth_data.dart';
+import 'package:openapi/src/model/private_user.dart';
+import 'package:openapi/src/model/v1_auth_login_post_request.dart';
+import 'package:openapi/src/model/v1_auth_register_post_request.dart';
 
 part 'serializers.g.dart';
 
 @SerializersFor([
-  IUser,
+  AuthData,
+  PrivateUser,
+  V1AuthLoginPostRequest,
+  V1AuthRegisterPostRequest,
 ])
 Serializers serializers = (_$serializers.toBuilder()
       ..add(const OneOfSerializer())

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:openapi/openapi.dart';
 import 'package:openquester/api.dart';
 
 void main() async {
-  //final user = await api.v1AuthRegisterPost();
-
   runApp(const MyApp());
 }
 
@@ -59,6 +58,31 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String? result;
+
+  @override
+  void initState() {
+    getAuthInfo();
+    super.initState();
+  }
+
+  Future<void> getAuthInfo() async {
+    final V1AuthRegisterPostRequest v1AuthRegisterPostRequest =
+        V1AuthRegisterPostRequest(
+      (user) {
+        user.email = '';
+        user.password = '';
+        user.name = '';
+        return;
+      },
+    );
+
+    final user = await api.v1AuthRegisterPost(
+      v1AuthRegisterPostRequest: v1AuthRegisterPostRequest,
+    );
+    result = user.data?.user.toString();
+    setState(() {});
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -69,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+    getAuthInfo();
   }
 
   @override
@@ -114,6 +139,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            Text(
+              result ?? '',
             ),
           ],
         ),

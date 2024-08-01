@@ -72,8 +72,7 @@
                     "type": "string"
                   }
                 },
-                "oneOf": [{ "required": ["name"] }, { "required": ["email"] }],
-                "required": ["password"]
+                "required": ["email", "password"]
               }
             }
           }
