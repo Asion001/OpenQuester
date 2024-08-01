@@ -1,38 +1,53 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.1.0",
   "info": {
-    "title": "Auth API",
+    "title": "openQuester API",
     "version": "1.0.0"
   },
   "paths": {
-    "/v1/auth": {
-      "get": {
-        "summary": "Authorization Endpoint",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Hello, this is authorization endpoint"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/auth/register": {
       "post": {
         "summary": "User Registration",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["name", "email", "password"]
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
+          "201": {
             "description": "User registered successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IUser"
+                  "$ref": "#/components/schemas/AuthData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid input data"
                 }
               }
             }
@@ -43,13 +58,33 @@
     "/v1/auth/login": {
       "post": {
         "summary": "User Login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "oneOf": [{ "required": ["name"] }, { "required": ["email"] }],
+                "required": ["password"]
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "User logged in successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IUser"
+                  "$ref": "#/components/schemas/AuthData"
                 }
               }
             }
@@ -60,7 +95,7 @@
   },
   "components": {
     "schemas": {
-      "IUser": {
+      "PrivateUser": {
         "type": "object",
         "properties": {
           "name": {
@@ -79,6 +114,14 @@
           "avatar": {
             "type": "string",
             "format": "binary"
+          }
+        }
+      },
+      "AuthData": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/PrivateUser"
           },
           "access_token": {
             "type": "string"
@@ -87,7 +130,7 @@
             "type": "string"
           }
         },
-        "required": ["name", "email"]
+        "required": ["access_token", "refresh_token"]
       }
     }
   }
