@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:openquester/api.dart';
 
-void main() {
+void main() async {
+  //final user = await api.v1AuthRegisterPost();
+
   runApp(const MyApp());
 }
 
