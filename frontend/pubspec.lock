@@ -5,18 +5,18 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "58826e40314219b223f4723dd4205845040161cdc2df3e6a1cdceed5d8165084"
+      sha256: "0b2f2bd91ba804e53a61d757b986f89f1f9eaed5b11e4b2f5a2468d86d6c9fc7"
       url: "https://pub.dev"
     source: hosted
-    version: "63.0.0"
+    version: "67.0.0"
   analyzer:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: analyzer
-      sha256: f85566ec7b3d25cbea60f7dd4f157c5025f2f19233ca4feeed33b616c78a26a3
+      sha256: "37577842a27e4338429a1cbc32679d508836510b056f1eedf0c8d20e39c1383d"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "6.4.1"
   args:
     dependency: transitive
     description:
@@ -173,10 +173,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "1efa911ca7086affd35f463ca2fc1799584fb6aa89883cf0af8e3664d6a02d55"
+      sha256: "99e066ce75c89d6b29903d788a7bb9369cf754f7b24bf70bf4b6d6d6b26853b9"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.6"
   dio:
     dependency: transitive
     description:
@@ -226,10 +226,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_lints
-      sha256: "9e8c3858111da373efc5aa341de011d9bd23e2c5c5e0c62bccf32438e192d7b1"
+      sha256: "3f41d009ba7172d5ff9be5f6e6e6abb4300e263aab8866d2a0842ed2a70f8f0c"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.2"
+    version: "4.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -335,10 +335,10 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: cbf8d4b858bb0134ef3ef87841abdf8d63bfc255c266b7bf6b39daa1085c4290
+      sha256: "976c774dd944a42e83e2467f4cc670daef7eed6295b10b36ae8c85bcbf828235"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "4.0.0"
   logging:
     dependency: transitive
     description:
@@ -398,7 +398,7 @@ packages:
   openapi:
     dependency: "direct main"
     description:
-      path: api
+      path: "../openapi/dart_sdk"
       relative: true
     source: path
     version: "1.0.0"
@@ -406,18 +406,18 @@ packages:
     dependency: "direct dev"
     description:
       name: openapi_generator
-      sha256: "77d150d227677d9099f26b20dd2cf70f84265de952e9eec345bd201540964aaf"
+      sha256: "70614d71f5a500d84b7f061abfdfbe654d666c16b6aab4891672c3f4de39f29d"
       url: "https://pub.dev"
     source: hosted
-    version: "4.13.1"
+    version: "5.0.2"
   openapi_generator_annotations:
     dependency: "direct main"
     description:
       name: openapi_generator_annotations
-      sha256: "46f1fb675029d78e19ce9143e70ce414d738b0f6c45c49c004b4b3afdb405a5c"
+      sha256: "86d924de3037a4a82e8a8d3b60c4120eced3df9e6b52a7d17cdec12ff4299ac5"
       url: "https://pub.dev"
     source: hosted
-    version: "4.13.1"
+    version: "5.0.2"
   openapi_generator_cli:
     dependency: transitive
     description:

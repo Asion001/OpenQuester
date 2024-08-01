@@ -1,12 +1,10 @@
-// Openapi Generator last run: : 2024-08-01T18:23:45.594219
+// Openapi Generator last run: : 2024-08-01T18:53:54.845855
 import 'package:openapi_generator_annotations/openapi_generator_annotations.dart';
 
 @Openapi(
   generatorName: Generator.dio,
   runSourceGenOnOutput: true,
-  outputDirectory: 'api/',
-  inputSpecFile: '../server/schema.json',
-  useNextGen: true,
-  alwaysRun: true,
+  outputDirectory: '../openapi/dart_sdk/',
+  inputSpec: InputSpec(path: '../openapi/schema.json'),
 )
 class ApiConfig {}

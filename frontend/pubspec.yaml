@@ -33,11 +33,11 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
-  openapi_generator_annotations: ^4.11.0
+  cupertino_icons:
+  openapi_generator_annotations:
   openapi:
-    path: "api/"
-    
+    path: "../openapi/dart_sdk/"
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -47,9 +47,10 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
-  openapi_generator: ^4.11.0
+  flutter_lints:
+  openapi_generator:
   build_runner:
+  analyzer:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
