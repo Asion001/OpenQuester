@@ -19,6 +19,7 @@ services:
   # Password: mysecretpassword
   pgadmin:
     image: dpage/pgadmin4
+    container_name: pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: user@example.com
       PGADMIN_DEFAULT_PASSWORD: mysecretpassword
