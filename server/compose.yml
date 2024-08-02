@@ -11,6 +11,8 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  # Url: http://localhost:5050/
+  #
   # Creds to the server above:
   # Host name/adress: postgres (localhost for local services)
   # Username: postgres
