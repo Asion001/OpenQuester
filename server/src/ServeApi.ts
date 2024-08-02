@@ -1,6 +1,7 @@
 import express from "express";
 import { Express } from "express";
 import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
+import { green } from "colorette";
 
 export class ServeApi {
   protected app!: Express;
@@ -11,11 +12,13 @@ export class ServeApi {
       this.app = express();
       this.port = 3000;
 
+      this.app.use(express.json());
+
       this.app.listen(this.port, () => {
-        console.log("App listening on port:", this.port);
+        console.log(green(`App listening on port: ${this.port}`));
       });
       this.attachControllers();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
     }
   }
