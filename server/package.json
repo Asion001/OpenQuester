@@ -1,10 +1,11 @@
 {
   "name": "openquester_api",
-  "version": "1.0.0",
+  "version": "1.1",
   "description": "",
   "scripts": {
     "start:dev:build": "tsc -w",
-    "start:dev:run": "wait-on ./dist/server.js && nodemon ./dist/server.js",
+    "start:dev:run": "wait-on ./dist/server.js && concurrently 'nodemon ./dist/server.js' npm:start:migration",
+    "start:migration": "npx typeorm migration:run -d ./dist/database/DataSource.js",
     "start:dev": "npm run clean && npm run validate:schema && concurrently npm:start:dev:*",
     "validate:schema": "node ./validateSchema.mjs",
     "clean": "rm -rf dist/*"
@@ -21,6 +22,9 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "nodemon": "^3.1.4",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20",
     "typescript": "^5.5.4",
     "wait-on": "^7.2.0"
   }

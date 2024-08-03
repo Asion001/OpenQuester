@@ -1,2 +1,4 @@
 node_modules/
 dist/
+.env.pg
+.env.pg.admin

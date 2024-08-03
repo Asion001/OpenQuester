@@ -1,9 +1,6 @@
 import { Environment } from "./config/Environment ";
 import { ServeApi } from "./ServeApi";
-import dotenv from "dotenv";
 import { green, red, bold } from "colorette";
-
-dotenv.config();
 
 try {
   Environment.load();
