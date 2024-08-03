@@ -1,4 +1,4 @@
-import { IFile } from "./files/IFile";
+import { IFile } from "./file/IFile";
 
 export interface IUser {
   id?: number;
