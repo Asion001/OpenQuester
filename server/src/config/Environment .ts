@@ -19,6 +19,12 @@ export class Environment {
   public static DB_PORT: string;
   public static DB_LOGGER: LoggerOptions;
 
+  // JWT vars
+  public static JWT_SECRET: string;
+  public static JWT_REFRESH_SECRET: string;
+  public static JWT_EXPIRES_IN: string;
+  public static JWT_REFRESH_EXPIRES_IN: string;
+
   public static get ENV(): string {
     return this.type;
   }
@@ -56,16 +62,50 @@ export class Environment {
     this.DB_PORT = this.getEnvVar("DB_PORT", prod ? "" : "5432");
     this.DB_LOGGER = this.getEnvVar("DB_LOGGER", prod ? "" : false);
 
-    const missing = this.validateDB();
-    if (missing.length > 0) {
+    const missingDB = this.validateDB();
+    if (missingDB.length > 0) {
       throw new Error(
-        `Missing required DB variable in .env file: [${missing.join(", ")}] `
+        `Missing required DB variable in .env file: [${missingDB.join(", ")}] `
+      );
+    }
+
+    this.JWT_SECRET = this.getEnvVar("JWT_SECRET");
+    this.JWT_REFRESH_SECRET = this.getEnvVar("JWT_REFRESH_SECRET");
+    this.JWT_EXPIRES_IN = this.getEnvVar("JWT_EXPIRES_IN");
+    this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar("JWT_REFRESH_EXPIRES_IN");
+
+    const missingJWT = this.validateJWT();
+    if (missingJWT.length > 0) {
+      throw new Error(
+        `Missing required JWT variable in .env file: [${missingJWT.join(", ")}]`
       );
     }
   }
 
+  private static validateJWT() {
+    const missing: string[] = [];
+
+    if (!this.JWT_SECRET) {
+      missing.push("JWT_SECRET");
+    }
+
+    if (!this.JWT_REFRESH_SECRET) {
+      missing.push("JWT_REFRESH_SECRET");
+    }
+
+    if (!this.JWT_EXPIRES_IN) {
+      missing.push("JWT_EXPIRES_IN");
+    }
+
+    if (!this.JWT_REFRESH_EXPIRES_IN) {
+      missing.push("JWT_REFRESH_EXPIRES_IN");
+    }
+
+    return missing;
+  }
+
   private static validateDB() {
-    const missing = [];
+    const missing: string[] = [];
 
     if (!this.DB_TYPE) {
       missing.push("DB_TYPE");

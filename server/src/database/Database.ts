@@ -1,11 +1,13 @@
 import { DataSource, EntityTarget, ObjectLiteral } from "typeorm";
 import { AppDataSource } from "./DataSource";
-import { green, red } from "colorette";
+import { green, red, yellow } from "colorette";
 
 export class Database {
   public dataSource: DataSource;
 
   constructor() {
+    console.log(yellow("Connecting to DB..."));
+
     this.dataSource = AppDataSource;
     this.dataSource
       .initialize()
