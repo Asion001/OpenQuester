@@ -14,8 +14,6 @@ jobs:
     outputs:
       client_changes: ${{ steps.check.outputs.client_changes }}
       server_changes: ${{ steps.check.outputs.server_changes }}
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -28,10 +26,10 @@ jobs:
 
       - name: Server changes
         if: steps.server-changed-files.outputs.matched_files != ''
-        run: echo "server_changes=true" >> $GITHUB_ENV
+        run: echo "server_changes=true" >> $GITHUB_OUTPUT
 
       - id: client-changed-files
-        name: Check server files
+        name: Check client files
         uses: knu/changed-files@v1
         with:
           paths: |
@@ -39,4 +37,4 @@ jobs:
 
       - name: Client changes
         if: steps.client-changed-files.outputs.matched_files != ''
-        run: echo "client_changes=true" >> $GITHUB_ENV
+        run: echo "client_changes=true" >> $GITHUB_OUTPUT
