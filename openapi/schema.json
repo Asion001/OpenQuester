@@ -4,6 +4,11 @@
     "title": "openQuester API",
     "version": "1.0.0"
   },
+  "security": [
+    {
+      "JWTAuth": []
+    }
+  ],
   "paths": {
     "/v1/auth/register": {
       "post": {
@@ -47,7 +52,7 @@
               "application/json": {
                 "schema": {
                   "type": "string",
-                  "example": "Invalid input data"
+                  "example": "Provide all required fields: 'email', 'name' and 'password'"
                 }
               }
             }
@@ -87,16 +92,125 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request - Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Provide all required fields: 'email' or 'name' and 'password'"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/refresh": {
+      "post": {
+        "summary": "Refresh tokens",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refresh_token": {
+                    "type": "string"
+                  }
+                },
+                "required": ["refresh_token"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tokens refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    },
+                    "refresh_token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired refresh token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid or expired refresh token"
+                }
+              }
+            }
           }
         }
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "JWTAuth": {
+        "type": "http",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT Authorization header using the Bearer scheme."
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Unauthorized - Invalid or missing token",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Access denied"
+                }
+              }
+            }
+          }
+        }
+      },
+      "TokenExpiredError": {
+        "description": "Unauthorized - Token is expired or invalid",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Token invalid or expired"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "schemas": {
       "PrivateUser": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
           "name": {
             "type": "string",
             "example": "John"
@@ -119,9 +233,6 @@
       "AuthData": {
         "type": "object",
         "properties": {
-          "user": {
-            "$ref": "#/components/schemas/PrivateUser"
-          },
           "access_token": {
             "type": "string"
           },
