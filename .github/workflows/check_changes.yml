@@ -10,7 +10,7 @@ on:
 
 jobs:
   check-changes:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     outputs:
       client_changes: ${{ steps.client_check.outputs.client_changes }}
       server_changes: ${{ steps.server_check.outputs.server_changes }}
@@ -30,7 +30,7 @@ jobs:
         with:
           paths: |
             client/**
-
+            
       - name: Server changes
         id: server_check
         if: steps.server-changed-files.outputs.matched_files != ''

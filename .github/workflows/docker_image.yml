@@ -11,7 +11,7 @@ jobs:
     uses: ./.github/workflows/check_changes.yml
 
   build_server:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     needs: check_changes
     if: needs.check_changes.outputs.server_changes == 'true'
     defaults:
