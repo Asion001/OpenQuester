@@ -1,4 +1,4 @@
-FROM node:22.5-slim
+FROM node:20.12-slim
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -15,7 +15,7 @@ COPY . .
 # Build the TypeScript files
 RUN npm run build
 
-# Expose port 8080
+# Expose port server port
 EXPOSE 3000
 
 # Start the app
