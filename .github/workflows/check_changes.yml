@@ -21,9 +21,9 @@ jobs:
         with:
           filters: |
             server:
-              - 'server/'
+              - 'server/**'
             client:
-              - 'client/'
+              - 'client/**'
 
       - name: Client changes
         if: steps.filter.outputs.server == 'true'
