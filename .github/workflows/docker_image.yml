@@ -1,0 +1,55 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [$default-branch]
+  pull_request:
+    branches: [$default-branch]
+
+jobs:
+  check_changes:
+    uses: ./.github/workflows/check_changes.yml
+
+  build_server:
+    runs-on: ubuntu-latest
+    needs: check_changes
+    if: needs.check_changes.outputs.server_changes == 'true'
+    defaults:
+      run:
+        working-directory: ./server
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    env:
+      default-branch: ${{github.event.repository.default_branch}}
+      img-name: "${{ github.repository }}_server"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Login step only executed for pushes to main
+      - name: Login to GitHub Container Registry
+        if: github.ref == 'refs/heads/${{env.default-branch}}'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build and tag the production Docker image
+      - name: Build the Docker image
+        run: |
+          docker build . --file Dockerfile --tag ghcr.io/${{ env.img-name }}:${{ github.sha }}
+          if [ "${{ github.ref }}" == "refs/heads/${{env.default-branch}}" ]; then
+            docker tag ghcr.io/:${{ github.sha }} ghcr.io/${{ env.img-name }}:latest
+          fi
+
+      # Push the production Docker image
+      - name: Push the Docker image
+        if: github.ref == 'refs/heads/${{env.default-branch}}'
+        run: |
+          docker push ghcr.io/${{ env.img-name }}:${{ github.sha }}
+          docker push ghcr.io/${{ env.img-name }}:latest
