@@ -10,7 +10,7 @@ jobs:
     uses: ./.github/workflows/check_changes.yml
 
   test_server:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     needs: check_changes
     if: needs.check_changes.outputs.server_changes == 'true'
     defaults:
