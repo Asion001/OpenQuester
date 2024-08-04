@@ -15,39 +15,21 @@ jobs:
       client_changes: ${{ steps.check.outputs.client_changes }}
       server_changes: ${{ steps.check.outputs.server_changes }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            server:
+              - 'server/'
+            client:
+              - 'client/'
 
-      - name: Set up Git
-        run: git fetch --depth=2
+      - name: Client changes
+        if: steps.filter.outputs.server == 'true'
+        run: echo "client_changes=true" >> $GITHUB_ENV
 
-      - name: Check for changes in folders
-        id: check
-        run: |
-          # Get the latest commit hashes
-          latest_commit=$(git rev-parse HEAD)
-          previous_commit=$(git rev-parse HEAD~1)
-
-          # Initialize flags for changes
-          client_changes=false
-          server_changes=false
-
-          folders=["server","client"]
-
-          # Loop through the provided folders
-          for folder in $folders; do
-            if git diff --quiet $previous_commit $latest_commit -- "$folder"; then
-              echo "No changes in $folder"
-            else
-              echo "Changes detected in $folder"
-              if [[ "$folder" == *"client"* ]]; then
-                client_changes=true
-              elif [[ "$folder" == *"server"* ]]; then
-                server_changes=true
-              fi
-            fi
-          done
-
-          # Set environment variables
-          echo "client_changes=$client_changes" >> $GITHUB_ENV
-          echo "server_changes=$server_changes" >> $GITHUB_ENV
+      # run only if not 'workflows' files were changed
+      - name: Server changes
+        if: steps.filter.outputs.client != 'true'
+        run: echo "server_changes=true" >> $GITHUB_ENV
