@@ -24,17 +24,17 @@ jobs:
           paths: |
             server/**
 
-      - name: Server changes
-        id: server_check
-        if: steps.server-changed-files.outputs.matched_files != ''
-        run: echo "server_changes=true" >> $GITHUB_OUTPUT
-
       - id: client-changed-files
         name: Check client files
         uses: knu/changed-files@v1
         with:
           paths: |
             client/**
+            
+      - name: Server changes
+        id: server_check
+        if: steps.server-changed-files.outputs.matched_files != ''
+        run: echo "server_changes=true" >> $GITHUB_OUTPUT
 
       - name: Client changes
         id: client_check
