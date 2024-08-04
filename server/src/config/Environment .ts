@@ -1,5 +1,7 @@
-import { LoggerOptions } from "typeorm";
 import dotenv from "dotenv";
+import fs from 'fs';
+import path from 'path';
+import { LoggerOptions } from "typeorm";
 
 const ENV_TYPES = ["local", "prod"];
 
@@ -24,7 +26,17 @@ export class Environment {
   }
 
   public static load(): void {
-    dotenv.config();
+    // Check if any .env file exists and then configure dotenv
+    var isDotEnvExist = fs.existsSync(path.resolve(__dirname, '.env'));
+
+    if (isDotEnvExist) {
+      dotenv.config();
+    } else
+      // Dont send warning on prod environment
+      if (process.env['ENV'] !== 'prod') {
+        console.warn('No .env files found. Environment variables are not loaded.');
+      }
+
     this.loadEnv();
   }
 
@@ -41,8 +53,7 @@ export class Environment {
 
     if (ENV_TYPES.indexOf(String(this.type)) === -1) {
       throw new Error(
-        `Wrong ENV type, only '${ENV_TYPES.join(", ")}' available, got: ${
-          this.type
+        `Wrong ENV type, only '${ENV_TYPES.join(", ")}' available, got: ${this.type
         }`
       );
     }
@@ -53,8 +64,8 @@ export class Environment {
     this.DB_USER = this.getEnvVar("DB_USER", prod ? "" : "root");
     this.DB_PASS = this.getEnvVar("DB_PASS");
     this.DB_HOST = this.getEnvVar("DB_HOST", prod ? "" : "127.0.0.1");
-    this.DB_PORT = this.getEnvVar("DB_PORT", prod ? "" : "5432");
-    this.DB_LOGGER = this.getEnvVar("DB_LOGGER", prod ? "" : false);
+    this.DB_PORT = this.getEnvVar("DB_PORT", "5432");
+    this.DB_LOGGER = this.getEnvVar("DB_LOGGER", false);
 
     const missing = this.validateDB();
     if (missing.length > 0) {
