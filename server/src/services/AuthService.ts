@@ -6,15 +6,21 @@ import { IUser } from "../models/IUser";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+type JWTPayload = {
+  /** User id */
+  id: number;
+  /** Issued at (timestamp) */
+  iat: number;
+  /** Expires at (timestamp) */
+  exp: number;
+};
+
 export class AuthService {
   public static async register(db: Database, data: IUser): Promise<IUser> {
     if (!this.validateRegisterRequest(data)) {
       throw new Error(
         "Provide all required fields: 'email', 'name' and 'password'"
       );
-    }
-    if (!Environment.ENV) {
-      Environment.load();
     }
     const repository = db.getRepository(User);
 
@@ -28,7 +34,6 @@ export class AuthService {
     await repository.save(user);
     const { access_token, refresh_token } = this.generateTokens(user.id);
     return {
-      id: user.id,
       access_token: access_token,
       refresh_token: refresh_token,
     };
@@ -59,10 +64,24 @@ export class AuthService {
     const { access_token, refresh_token } = this.generateTokens(user.id);
 
     return {
-      id: user.id,
       access_token: access_token,
       refresh_token: refresh_token,
     };
+  }
+
+  public static refreshToken(token: string) {
+    try {
+      const decode = jwt.verify(token, Environment.JWT_REFRESH_SECRET);
+      const { access_token, refresh_token } = this.generateTokens(
+        (decode as JWTPayload).id
+      );
+      return {
+        access_token: access_token,
+        refresh_token: refresh_token,
+      };
+    } catch (err: any) {
+      throw new Error("Invalid or expired refresh token");
+    }
   }
 
   private static validateLoginRequest(data: IUser) {

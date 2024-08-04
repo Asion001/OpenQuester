@@ -21,6 +21,7 @@ export class Environment {
 
   // JWT vars
   public static JWT_SECRET: string;
+  public static JWT_SCHEME: string;
   public static JWT_REFRESH_SECRET: string;
   public static JWT_EXPIRES_IN: string;
   public static JWT_REFRESH_EXPIRES_IN: string;
@@ -73,6 +74,7 @@ export class Environment {
     this.JWT_REFRESH_SECRET = this.getEnvVar("JWT_REFRESH_SECRET");
     this.JWT_EXPIRES_IN = this.getEnvVar("JWT_EXPIRES_IN");
     this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar("JWT_REFRESH_EXPIRES_IN");
+    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME");
 
     const missingJWT = this.validateJWT();
     if (missingJWT.length > 0) {
@@ -99,6 +101,10 @@ export class Environment {
 
     if (!this.JWT_REFRESH_EXPIRES_IN) {
       missing.push("JWT_REFRESH_EXPIRES_IN");
+    }
+
+    if (!this.JWT_SCHEME) {
+      missing.push("JWT_SCHEME");
     }
 
     return missing;
