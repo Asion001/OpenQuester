@@ -14,6 +14,7 @@ jobs:
     outputs:
       client_changes: ${{ steps.check.outputs.client_changes }}
       server_changes: ${{ steps.check.outputs.server_changes }}
+    permissions: read-all
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
