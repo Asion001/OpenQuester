@@ -18,20 +18,25 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
+
+      - id: server-changed-files
+        name: Check server files
+        uses: knu/changed-files@v1
         with:
-          filters: |
-            server:
-              - 'server/**'
-            client:
-              - 'client/**'
+          paths: |
+            server/**
+
+      - name: Server changes
+        if: steps.server-changed-files.outputs.matched_files != ''
+        run: echo "server_changes=true" >> $GITHUB_ENV
+
+      - id: client-changed-files
+        name: Check server files
+        uses: knu/changed-files@v1
+        with:
+          paths: |
+            client/**
 
       - name: Client changes
-        if: steps.filter.outputs.server == 'true'
+        if: steps.client-changed-files.outputs.matched_files != ''
         run: echo "client_changes=true" >> $GITHUB_ENV
-
-      # run only if not 'workflows' files were changed
-      - name: Server changes
-        if: steps.filter.outputs.client != 'true'
-        run: echo "server_changes=true" >> $GITHUB_ENV
