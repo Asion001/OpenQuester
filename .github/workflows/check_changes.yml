@@ -12,8 +12,8 @@ jobs:
   check-changes:
     runs-on: ubuntu-latest
     outputs:
-      client_changes: ${{ steps.check.outputs.client_changes }}
-      server_changes: ${{ steps.check.outputs.server_changes }}
+      client_changes: ${{ steps.client_check.outputs.client_changes }}
+      server_changes: ${{ steps.server_check.outputs.server_changes }}
     steps:
       - uses: actions/checkout@v4
 
@@ -25,6 +25,7 @@ jobs:
             server/**
 
       - name: Server changes
+        id: server_check
         if: steps.server-changed-files.outputs.matched_files != ''
         run: echo "server_changes=true" >> $GITHUB_OUTPUT
 
@@ -36,5 +37,6 @@ jobs:
             client/**
 
       - name: Client changes
+        id: client_check
         if: steps.client-changed-files.outputs.matched_files != ''
         run: echo "client_changes=true" >> $GITHUB_OUTPUT
