@@ -4,11 +4,13 @@
   "description": "",
   "scripts": {
     "start:dev:build": "tsc -w",
-    "start:dev:run": "wait-on ./dist/server.js && concurrently 'nodemon ./dist/server.js' npm:start:migration",
+    "start:dev:run": "wait-on ./dist/index.js && concurrently 'nodemon ./dist/index.js' npm:start:migration",
     "start:migration": "npx typeorm migration:run -d ./dist/database/DataSource.js",
     "start:dev": "npm run clean && npm run validate:schema && concurrently npm:start:dev:*",
     "validate:schema": "node ./validateSchema.mjs",
-    "clean": "rm -rf dist/*"
+    "clean": "rm -rf dist/*",
+    "build": "tsup",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -27,5 +29,19 @@
     "typeorm": "^0.3.20",
     "typescript": "^5.5.4",
     "wait-on": "^7.2.0"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.7.6",
+    "tsup": "^8.0.2"
+  },
+  "tsup": {
+    "entry": [
+      "src",
+      "!src/**/__tests__/**",
+      "!src/**/*.test.*"
+    ],
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true
   }
 }
