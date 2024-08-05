@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { LoggerOptions } from "typeorm";
-import { yellow } from "colorette";
+import { Logger } from "../utils/Logger";
 
 const ENV_TYPES = ["local", "prod"];
 
@@ -37,9 +37,7 @@ export class Environment {
     if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
       dotenv.config();
     } else if (process.env["ENV"] !== "prod") {
-      console.warn(
-        yellow("No .env files found. Environment variables are not loaded.")
-      );
+      Logger.warn("No .env files found. Environment variables are not loaded.");
     }
 
     this.loadEnv();
