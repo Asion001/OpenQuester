@@ -4,14 +4,6 @@ import { User } from "./models/User";
 import { File } from "./models/File";
 import { Environment } from "../config/Environment";
 import { CreateUserAndFileTables_1_1_1722683756069 } from "./migrations/CreateUserAndFileTables_1_1";
-import { bold, red } from "colorette";
-
-try {
-  Environment.load();
-} catch (err: any) {
-  console.error(bold(red(err)));
-  process.exit(1);
-}
 
 export const AppDataSource = new DataSource({
   type: "postgres",
