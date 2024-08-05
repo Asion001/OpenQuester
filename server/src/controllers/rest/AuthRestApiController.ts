@@ -4,6 +4,7 @@ import { db } from "../../database/Database";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
+import { Logger } from "../../utils/Logger";
 
 export class AuthRestApiController {
   constructor(app: Express) {
