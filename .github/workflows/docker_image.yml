@@ -36,7 +36,7 @@ jobs:
       # Build and tag the production Docker image
       - name: Build the Docker image
         run: |
-          docker build server/ --file Dockerfile --tag ghcr.io/${{ env.img-name }}:${{ github.sha }}
+          docker build ./server/ --file ./server/Dockerfile --tag ghcr.io/${{ env.img-name }}:${{ github.sha }}
           if [ "${{ github.ref }}" == "refs/heads/${{env.default-branch}}" ]; then
             docker tag ghcr.io/:${{ github.sha }} ghcr.io/${{ env.img-name }}:latest
           fi
