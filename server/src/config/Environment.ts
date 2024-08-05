@@ -1,5 +1,8 @@
-import { LoggerOptions } from "typeorm";
 import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import { LoggerOptions } from "typeorm";
+import { yellow } from "colorette";
 
 const ENV_TYPES = ["local", "prod"];
 
@@ -31,12 +34,19 @@ export class Environment {
   }
 
   public static load(): void {
-    dotenv.config();
+    if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
+      dotenv.config();
+    } else if (process.env["ENV"] !== "prod") {
+      console.warn(
+        yellow("No .env files found. Environment variables are not loaded.")
+      );
+    }
+
     this.loadEnv();
   }
 
   private static getEnvVar(variable: string, defaultValue: any = ""): any {
-    return process.env[variable] || defaultValue;
+    return process.env[variable] ?? defaultValue;
   }
 
   private static loadEnv(): void {
@@ -55,18 +65,20 @@ export class Environment {
     }
     const prod = this.type === "prod";
 
-    this.DB_TYPE = this.getEnvVar("DB_TYPE", prod ? "" : "pg");
-    this.DB_NAME = this.getEnvVar("DB_NAME", prod ? "" : "openQuester");
-    this.DB_USER = this.getEnvVar("DB_USER", prod ? "" : "root");
+    this.DB_TYPE = this.getEnvVar("DB_TYPE", "pg");
+    this.DB_NAME = this.getEnvVar("DB_NAME", prod ? undefined : "openQuester");
+    this.DB_USER = this.getEnvVar("DB_USER", prod ? undefined : "root");
     this.DB_PASS = this.getEnvVar("DB_PASS");
-    this.DB_HOST = this.getEnvVar("DB_HOST", prod ? "" : "127.0.0.1");
-    this.DB_PORT = this.getEnvVar("DB_PORT", prod ? "" : "5432");
-    this.DB_LOGGER = this.getEnvVar("DB_LOGGER", prod ? "" : false);
+    this.DB_HOST = this.getEnvVar("DB_HOST", prod ? undefined : "127.0.0.1");
+    this.DB_PORT = this.getEnvVar("DB_PORT", "5432");
+    this.DB_LOGGER = this.getEnvVar("DB_LOGGER", false);
 
-    const missingDB = this.validateDB();
-    if (missingDB.length > 0) {
+    const missing = this.validateDB();
+    if (missing.length > 0) {
       throw new Error(
-        `Missing required DB variable in .env file: [${missingDB.join(", ")}] `
+        `Missing required DB variables in process environment: [${missing.join(
+          ", "
+        )}] `
       );
     }
 

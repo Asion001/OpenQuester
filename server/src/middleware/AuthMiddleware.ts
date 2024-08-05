@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import express from "express";
-import { Environment } from "../config/Environment ";
+import { Environment } from "../config/Environment";
 
 export const verifyTokenMiddleware = (
   req: express.Request,
