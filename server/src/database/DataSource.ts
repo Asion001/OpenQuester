@@ -5,6 +5,10 @@ import { File } from "./models/File";
 import { Environment } from "../config/Environment";
 import { CreateUserAndFileTables_1_1_1722683756069 } from "./migrations/CreateUserAndFileTables_1_1";
 
+if (!Environment.ENV) {
+  Environment.load();
+}
+
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: Environment.DB_HOST,
