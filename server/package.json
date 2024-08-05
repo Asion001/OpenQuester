@@ -3,35 +3,34 @@
   "version": "1.1",
   "description": "",
   "scripts": {
-    "start:dev:build": "tsc -w",
-    "start:dev:run": "wait-on ./dist/index.js && concurrently 'nodemon ./dist/index.js' npm:start:migration",
-    "start:migration": "npx typeorm migration:run -d ./dist/database/DataSource.js",
+    "start:dev:build": "npm run build",
+    "start:dev:run": "wait-on ./dist/index.js && nodemon ./dist/index.js",
     "start:dev": "npm run clean && npm run validate:schema && concurrently npm:start:dev:*",
+    "start:prod": "nodemon ./dist/index.js",
     "validate:schema": "node ./validateSchema.mjs",
     "clean": "rm -rf dist/*",
     "build": "tsup",
-    "start": "node dist/index.js",
     "test": "vitest run"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@seriousme/openapi-schema-validator": "^2.2.1",
     "@types/express": "^4.17.21",
     "@types/node": "^22.0.0",
     "colorette": "^2.0.20",
-    "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "nodemon": "^3.1.4",
     "pg": "^8.12.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.20",
-    "typescript": "^5.5.4",
-    "wait-on": "^7.2.0"
+    "typescript": "^5.5.4"
   },
   "devDependencies": {
+    "wait-on": "^7.2.0",
+    "@seriousme/openapi-schema-validator": "^2.2.1",
+    "concurrently": "^8.2.2",
     "@swc/core": "^1.7.6",
     "tsup": "^8.0.2",
     "vitest": "^2.0.0"

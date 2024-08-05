@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 import { LoggerOptions } from "typeorm";
+import { yellow } from "colorette";
 
 const ENV_TYPES = ["local", "prod"];
 
@@ -26,22 +27,19 @@ export class Environment {
   }
 
   public static load(): void {
-    // Check if any .env file exists and then configure dotenv
-    var isDotEnvExist = fs.existsSync(path.resolve(__dirname, '.env'));
-
-    if (isDotEnvExist) {
+    if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
       dotenv.config();
-    } else
-      // Dont send warning on prod environment
-      if (process.env['ENV'] !== 'prod') {
-        console.warn('No .env files found. Environment variables are not loaded.');
-      }
+    } else if (process.env["ENV"] !== "prod") {
+      console.warn(
+        yellow("No .env files found. Environment variables are not loaded.")
+      );
+    }
 
     this.loadEnv();
   }
 
   private static getEnvVar(variable: string, defaultValue: any = ""): any {
-    return process.env[variable] || defaultValue;
+    return process.env[variable] ?? defaultValue;
   }
 
   private static loadEnv(): void {
@@ -53,24 +51,27 @@ export class Environment {
 
     if (ENV_TYPES.indexOf(String(this.type)) === -1) {
       throw new Error(
-        `Wrong ENV type, only '${ENV_TYPES.join(", ")}' available, got: ${this.type
+        `Wrong ENV type, only '${ENV_TYPES.join(", ")}' available, got: ${
+          this.type
         }`
       );
     }
     const prod = this.type === "prod";
 
-    this.DB_TYPE = this.getEnvVar("DB_TYPE", prod ? "" : "pg");
-    this.DB_NAME = this.getEnvVar("DB_NAME", prod ? "" : "openQuester");
-    this.DB_USER = this.getEnvVar("DB_USER", prod ? "" : "root");
+    this.DB_TYPE = this.getEnvVar("DB_TYPE", "pg");
+    this.DB_NAME = this.getEnvVar("DB_NAME", prod ? undefined : "openQuester");
+    this.DB_USER = this.getEnvVar("DB_USER", prod ? undefined : "root");
     this.DB_PASS = this.getEnvVar("DB_PASS");
-    this.DB_HOST = this.getEnvVar("DB_HOST", prod ? "" : "127.0.0.1");
+    this.DB_HOST = this.getEnvVar("DB_HOST", prod ? undefined : "127.0.0.1");
     this.DB_PORT = this.getEnvVar("DB_PORT", "5432");
     this.DB_LOGGER = this.getEnvVar("DB_LOGGER", false);
 
     const missing = this.validateDB();
     if (missing.length > 0) {
       throw new Error(
-        `Missing required DB variable in .env file: [${missing.join(", ")}] `
+        `Missing required DB variables in process environment: [${missing.join(
+          ", "
+        )}] `
       );
     }
   }
