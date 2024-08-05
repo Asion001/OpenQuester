@@ -1,0 +1,11 @@
+# Run folders
+node_modules
+dist
+
+# Other files
+Dockerfile
+.gitignore
+.env
+
+# Other
+.git
