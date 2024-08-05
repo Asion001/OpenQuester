@@ -2,13 +2,14 @@ import { DataSource, EntityTarget, ObjectLiteral } from "typeorm";
 import { AppDataSource } from "./DataSource";
 import { Logger } from "../utils/Logger";
 
+
 export class Database {
   public dataSource: DataSource;
 
   constructor() {
     Logger.warn("Connecting to DB...");
 
-    this.dataSource = AppDataSource;
+    this.dataSource = getAppDataSource();
     this.dataSource
       .initialize()
       .then(() => {

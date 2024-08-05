@@ -1,18 +1,13 @@
 name: Test
 
 on:
-  push:
-    branches: [main]
   pull_request:
+  push:
+  release:
 
 jobs:
-  check_changes:
-    uses: ./.github/workflows/check_changes.yml
-
   test_server:
     runs-on: ubuntu-latest
-    needs: check_changes
-    if: needs.check_changes.outputs.server_changes == 'true'
     defaults:
       run:
         working-directory: ./server
