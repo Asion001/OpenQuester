@@ -20,6 +20,7 @@ jobs:
     env:
       default-branch: ${{github.event.repository.default_branch}}
       img-name: "open_quester_server"
+      img-owner: "Asion001"
 
     steps:
       - uses: actions/checkout@v4
@@ -44,7 +45,7 @@ jobs:
       # Push the production Docker image
       - name: Push the Docker image
         run: |
-          docker push ghcr.io/${{ env.img-name }}:${{ github.sha }}
+          docker push ghcr.io/${{ env.img-owner }}/${{ env.img-name }}:${{ github.sha }}
           if [ "${{ github.ref }}" == "refs/heads/${{env.default-branch}}" ]; then
-            docker push ghcr.io/${{ env.img-name }}:latest
+            docker push ghcr.io/${{ env.img-owner }}/${{ env.img-name }}:latest
           fi
