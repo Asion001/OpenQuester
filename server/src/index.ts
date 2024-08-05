@@ -1,4 +1,4 @@
-import { Environment } from "./config/Environment ";
+import { Environment } from "./config/Environment";
 import { ServeApi } from "./ServeApi";
 import { green, red, bold } from "colorette";
 
