@@ -9,7 +9,7 @@ export class Database {
   constructor() {
     Logger.warn("Connecting to DB...");
 
-    this.dataSource = getAppDataSource();
+    this.dataSource = AppDataSource;
     this.dataSource
       .initialize()
       .then(() => {
