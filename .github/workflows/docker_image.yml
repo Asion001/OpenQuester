@@ -19,7 +19,7 @@ jobs:
 
     env:
       default-branch: ${{github.event.repository.default_branch}}
-      img-name: "${{ github.repository }}_server"
+      img-name: "open_quester_server"
 
     steps:
       - uses: actions/checkout@v4
