@@ -2,7 +2,7 @@ import { Express, Request, Response } from "express";
 import { AuthService } from "../../services/AuthService";
 import { db } from "../../database/Database";
 import { QueryFailedError } from "typeorm";
-import { Environment } from "../../config/Environment ";
+import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
 
 export class AuthRestApiController {

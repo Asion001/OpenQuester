@@ -1,4 +1,4 @@
-import { Environment } from "../config/Environment ";
+import { Environment } from "../config/Environment";
 import { Database } from "../database/Database";
 import { File } from "../database/models/File";
 import { User } from "../database/models/User";
