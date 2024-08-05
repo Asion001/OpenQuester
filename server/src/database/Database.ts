@@ -1,5 +1,5 @@
 import { DataSource, EntityTarget, ObjectLiteral } from "typeorm";
-import { AppDataSource } from "./DataSource";
+import { getAppDataSource } from "./DataSource";
 import { green, red, yellow } from "colorette";
 
 export class Database {
@@ -8,7 +8,7 @@ export class Database {
   constructor() {
     console.log(yellow("Connecting to DB..."));
 
-    this.dataSource = AppDataSource;
+    this.dataSource = getAppDataSource();
     this.dataSource
       .initialize()
       .then(() => {
