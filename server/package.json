@@ -6,7 +6,7 @@
     "start:dev:build": "npm run build",
     "start:dev:run": "wait-on ./dist/index.js && nodemon ./dist/index.js",
     "start:dev": "npm run clean && npm run validate:schema && concurrently npm:start:dev:*",
-    "start:prod": "nodemon ./dist/index.js",
+    "start:prod": "node./dist/index.js",
     "validate:schema": "node ./validateSchema.mjs",
     "clean": "rm -rf dist/*",
     "build": "tsup",
