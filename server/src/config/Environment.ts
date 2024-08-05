@@ -36,8 +36,6 @@ export class Environment {
   public static load(): void {
     if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
       dotenv.config();
-    } else if (process.env["ENV"] !== "prod") {
-      Logger.warn("No .env files found. Environment variables are not loaded.");
     }
 
     this.loadEnv();
