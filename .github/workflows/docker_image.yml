@@ -38,12 +38,13 @@ jobs:
         run: |
           docker build . --file Dockerfile --tag ghcr.io/${{ env.img-name }}:${{ github.sha }}
           if [ "${{ github.ref }}" == "refs/heads/${{env.default-branch}}" ]; then
-            docker tag ghcr.io/:${{ github.sha }} ghcr.io/${{ env.img-name }}:latest
+            docker tag ghcr.io/${{ env.img-name }}:${{ github.sha }} ghcr.io/${{ env.img-name }}:latest
           fi
 
       # Push the production Docker image
       - name: Push the Docker image
-        if: github.ref == 'refs/heads/${{env.default-branch}}'
         run: |
           docker push ghcr.io/${{ env.img-name }}:${{ github.sha }}
-          docker push ghcr.io/${{ env.img-name }}:latest
+          if [ "${{ github.ref }}" == "refs/heads/${{env.default-branch}}" ]; then
+            docker push ghcr.io/${{ env.img-name }}:latest
+          fi
