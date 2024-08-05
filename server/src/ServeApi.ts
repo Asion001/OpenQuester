@@ -1,8 +1,9 @@
 import express from "express";
 import { Express } from "express";
 import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
-import { green } from "colorette";
+import { bold, green, red } from "colorette";
 import { Database, db } from "./database/Database";
+import { verifyTokenMiddleware } from "./middleware/AuthMiddleware";
 
 export class ServeApi {
   protected app!: Express;
@@ -16,13 +17,14 @@ export class ServeApi {
       this.port = 3000;
 
       this.app.use(express.json());
+      this.app.use(verifyTokenMiddleware);
 
       this.app.listen(this.port, () => {
         console.log(green(`App listening on port: ${this.port}`));
       });
       this.attachControllers();
     } catch (err: any) {
-      console.error(err);
+      console.error(bold(red(err.message)));
     }
   }
 
