@@ -22,6 +22,13 @@ export class Environment {
   public static DB_PORT: string;
   public static DB_LOGGER: LoggerOptions;
 
+  // JWT vars
+  public static JWT_SECRET: string;
+  public static JWT_SCHEME: string;
+  public static JWT_REFRESH_SECRET: string;
+  public static JWT_EXPIRES_IN: string;
+  public static JWT_REFRESH_EXPIRES_IN: string;
+
   public static get ENV(): string {
     return this.type;
   }
@@ -74,10 +81,49 @@ export class Environment {
         )}] `
       );
     }
+
+    this.JWT_SECRET = this.getEnvVar("JWT_SECRET");
+    this.JWT_REFRESH_SECRET = this.getEnvVar("JWT_REFRESH_SECRET");
+    this.JWT_EXPIRES_IN = this.getEnvVar("JWT_EXPIRES_IN");
+    this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar("JWT_REFRESH_EXPIRES_IN");
+    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME");
+
+    const missingJWT = this.validateJWT();
+    if (missingJWT.length > 0) {
+      throw new Error(
+        `Missing required JWT variable in .env file: [${missingJWT.join(", ")}]`
+      );
+    }
+  }
+
+  private static validateJWT() {
+    const missing: string[] = [];
+
+    if (!this.JWT_SECRET) {
+      missing.push("JWT_SECRET");
+    }
+
+    if (!this.JWT_REFRESH_SECRET) {
+      missing.push("JWT_REFRESH_SECRET");
+    }
+
+    if (!this.JWT_EXPIRES_IN) {
+      missing.push("JWT_EXPIRES_IN");
+    }
+
+    if (!this.JWT_REFRESH_EXPIRES_IN) {
+      missing.push("JWT_REFRESH_EXPIRES_IN");
+    }
+
+    if (!this.JWT_SCHEME) {
+      missing.push("JWT_SCHEME");
+    }
+
+    return missing;
   }
 
   private static validateDB() {
-    const missing = [];
+    const missing: string[] = [];
 
     if (!this.DB_TYPE) {
       missing.push("DB_TYPE");

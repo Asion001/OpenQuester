@@ -3,6 +3,7 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
+  TableUnique,
 } from "typeorm";
 
 /**
@@ -112,6 +113,14 @@ export class CreateUserAndFileTables_1_1_1722683756069
             isNullable: true,
           },
         ],
+      })
+    );
+
+    // Add a unique constraint on the email column
+    await queryRunner.createUniqueConstraint(
+      "user",
+      new TableUnique({
+        columnNames: ["email"],
       })
     );
 

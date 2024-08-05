@@ -1,9 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
-// import { IFile } from "../../models/files/IFile";
+import { IFile } from "../../models/file/IFile";
 
 @Entity()
-// TODO: Add implements IFile
-export class File {
+export class File implements IFile {
   @PrimaryGeneratedColumn()
   id!: number;
 
