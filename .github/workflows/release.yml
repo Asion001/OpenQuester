@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*.*.*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_client:
+    uses: ./.github/workflows/build_client.yml
+
+  prepare_release:
+    runs-on: ubuntu-latest
+    needs: build_client
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download WEB
+        uses: actions/download-artifact@v4
+        with:
+          name: web-app
+          path: web/
+
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: android-app
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          #body_path: misc/release/notes.tmpl
+          files: |
+            *.apk
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: openquester
+          directory: web/
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

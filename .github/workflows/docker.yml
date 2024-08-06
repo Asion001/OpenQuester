@@ -1,16 +1,19 @@
-name: Docker Image CI
+name: Docker
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - "main"
-    tags:
-      - "v*"
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
-
   build_server:
     runs-on: ubuntu-latest
     defaults:
@@ -21,7 +24,6 @@ jobs:
       packages: write
       attestations: write
       id-token: write
-    needs: [test]
     steps:
       - uses: actions/checkout@v4
       - name: Docker meta
