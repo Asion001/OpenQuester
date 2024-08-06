@@ -42,7 +42,10 @@ jobs:
           name: android-app
 
       - name: Set latest tag
-        run: echo "LATEST_TAG=$(git tag --sort=taggerdate | tail -n1)" >> $GITHUB_ENV
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          echo "LATEST_TAG=$LATEST_TAG"
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: Create draft release
         uses: softprops/action-gh-release@v2
