@@ -13,9 +13,9 @@ jobs:
   build_client:
     uses: ./.github/workflows/build_client.yml
 
-  build_server:
+  build_docker:
     needs: [test]
-    uses: ./.github/workflows/build_server.yml
+    uses: ./.github/workflows/docker.yml
 
   publish_release:
     runs-on: ubuntu-latest
