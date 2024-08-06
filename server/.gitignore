@@ -3,3 +3,4 @@ dist/
 .env.pg
 .env.pg.admin
 logs/
+storage/.secret*
