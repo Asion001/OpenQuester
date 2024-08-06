@@ -11,7 +11,7 @@
     "validate:schema": "node ./validateSchema.mjs",
     "clean": "rm -rf dist/*",
     "build": "tsup",
-    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'",
+    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha",
     "test:dev": "nyc npm run test",
     "lint": "eslint ./"
   },
