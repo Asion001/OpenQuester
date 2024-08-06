@@ -42,13 +42,7 @@ export class Environment {
       dotenv.config();
     }
 
-    try {
-      this.loadEnv(logging);
-    } catch (err: any) {
-      Logger.error("Failed to load environment variables, closing...");
-      Logger.error(`Error message: ${err.message}`);
-      process.exit(0);
-    }
+    this.loadEnv(logging);
   }
 
   private static getEnvVar(
