@@ -4,6 +4,7 @@ import path from "path";
 import { LoggerOptions } from "typeorm";
 import { Logger } from "../utils/Logger";
 import { bold } from "colorette";
+import { JWTUtils } from "../utils/JWTUtils";
 
 /**
  * Class of environment layer.
@@ -77,7 +78,7 @@ export class Environment {
       );
     }
 
-    this.JWT_SECRET = this.getEnvVar("JWT_SECRET");
+    this.JWT_SECRET = JWTUtils.getSecret();
     this.JWT_REFRESH_SECRET = this.getEnvVar(
       "JWT_REFRESH_SECRET",
       this.JWT_SECRET
