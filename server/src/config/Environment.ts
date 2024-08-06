@@ -33,12 +33,22 @@ export class Environment {
     return this.type;
   }
 
-  public static load(logging: boolean = true): void {
+  public static load(logging: boolean = true, force: boolean = false): void {
+    if (this.type && !force) {
+      return;
+    }
+
     if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
       dotenv.config();
     }
 
-    this.loadEnv(logging);
+    try {
+      this.loadEnv(logging);
+    } catch (err: any) {
+      Logger.error("Failed to load environment variables, closing...");
+      Logger.error(`Error message: ${err.message}`);
+      process.exit(0);
+    }
   }
 
   private static getEnvVar(

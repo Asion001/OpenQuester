@@ -11,7 +11,8 @@
     "validate:schema": "node ./validateSchema.mjs",
     "clean": "rm -rf dist/*",
     "build": "tsup",
-    "test": "vitest run",
+    "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'",
+    "test:dev": "nyc npm run test",
     "lint": "eslint ./"
   },
   "keywords": [],
@@ -44,10 +45,19 @@
     "concurrently": "^8.2.2",
     "eslint": "^9.8.0",
     "globals": "^15.9.0",
+    "nyc": "^17.0.0",
     "tsup": "^8.0.2",
     "typescript-eslint": "^8.0.1",
-    "vitest": "^2.0.0",
-    "wait-on": "^7.2.0"
+    "wait-on": "^7.2.0",
+    "sinon": "^18.0.0",
+    "ts-mockito": "^2.6.1",
+    "ts-node": "^10.9.2",
+    "mocha": "^10.7.0",
+    "cross-env": "^7.0.3",
+    "chai": "^4.3.10",
+    "@types/sinon": "^17.0.3",
+    "@types/mocha": "^10.0.7",
+    "@types/chai": "^4.3.17"
   },
   "tsup": {
     "entry": [

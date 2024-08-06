@@ -16,7 +16,11 @@ type JWTPayload = {
 };
 
 export class AuthService {
-  public static async register(db: Database, data: IUser): Promise<IUser> {
+  public static async register(
+    db: Database,
+    data: IUser,
+    crypto: typeof bcrypt
+  ): Promise<IUser> {
     if (!this.validateRegisterRequest(data)) {
       throw new Error(
         "Provide all required fields: 'email', 'name' and 'password'"
@@ -27,7 +31,7 @@ export class AuthService {
     const user = new User();
     user.name = data.name;
     user.email = data.email;
-    user.password = await bcrypt.hash(data.password as string, 10);
+    user.password = await crypto.hash(data.password as string, 10);
     user.birthday = data.birthday;
     user.avatar = data.avatar as File;
 
@@ -39,7 +43,11 @@ export class AuthService {
     };
   }
 
-  public static async login(db: Database, data: IUser): Promise<IUser> {
+  public static async login(
+    db: Database,
+    data: IUser,
+    crypto: typeof bcrypt
+  ): Promise<IUser> {
     if (!this.validateLoginRequest(data)) {
       throw new Error(
         "Provide all required fields: 'email' or 'name' and 'password'"
@@ -57,7 +65,7 @@ export class AuthService {
       throw new Error("User with this name or email does not exists");
     }
 
-    if (!(await bcrypt.compare(data.password as string, user.password))) {
+    if (!(await crypto.compare(data.password as string, user.password))) {
       throw new Error("Wrong password, please try again");
     }
 
@@ -92,7 +100,7 @@ export class AuthService {
     return data && data.email && data.name && data.password;
   }
 
-  private static generateTokens(userId: number) {
+  public static generateTokens(userId: number) {
     const access = jwt.sign({ id: userId }, Environment.JWT_SECRET, {
       expiresIn: Environment.JWT_EXPIRES_IN,
     });

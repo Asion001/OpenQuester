@@ -4,3 +4,4 @@ dist/
 .env.pg.admin
 logs/
 storage/.secret*
+.nyc_output/

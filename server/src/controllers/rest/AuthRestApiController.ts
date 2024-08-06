@@ -4,6 +4,7 @@ import { db } from "../../database/Database";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 export class AuthRestApiController {
   constructor(app: Express) {
@@ -13,7 +14,7 @@ export class AuthRestApiController {
           throw new Error("User is already logged in");
         }
 
-        const result = await AuthService.register(db, req.body);
+        const result = await AuthService.register(db, req.body, bcrypt);
         return res.status(201).send(result);
       } catch (err: any) {
         if (
@@ -33,7 +34,7 @@ export class AuthRestApiController {
           throw new Error("User is already logged in");
         }
 
-        const result = await AuthService.login(db, req.body);
+        const result = await AuthService.login(db, req.body, bcrypt);
         return res.send(result);
       } catch (err: any) {
         return res.status(400).send({ error: err.message });

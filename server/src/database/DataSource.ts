@@ -6,14 +6,13 @@ import { Environment } from "../config/Environment";
 import { CreateUserAndFileTables_1_1_1722683756069 } from "./migrations/CreateUserAndFileTables_1_1";
 import { Logger } from "../utils/Logger";
 
-if (!Environment.ENV) {
-  try {
-    Environment.load(false);
-  } catch (err: any) {
-    Logger.error("Failed to load environment variables, closing...");
-    Logger.error(`Error message: ${err.message}`);
-    process.exit(0);
-  }
+try {
+  Environment.load(false);
+} catch (err: any) {
+  Logger.error("Failed to load environment variables, closing...");
+  Logger.error(`Error message: ${err.message}`);
+  // Bravely exit from process since it's migration process created by TypeORM
+  process.exit(0);
 }
 
 export const AppDataSource = new DataSource({
