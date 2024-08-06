@@ -12,6 +12,9 @@ jobs:
 
   build_client:
     uses: ./.github/workflows/build_client.yml
+    permissions:
+      contents: read
+      packages: write
 
   build_docker:
     needs: [test]
