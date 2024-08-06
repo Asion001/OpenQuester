@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { LoggerOptions } from "typeorm";
 import { Logger } from "../utils/Logger";
+import { JWTUtils } from "../utils/JWTUtils";
 
 const ENV_TYPES = ["local", "prod"];
 
@@ -54,7 +55,8 @@ export class Environment {
 
     if (ENV_TYPES.indexOf(String(this.type)) === -1) {
       throw new Error(
-        `Wrong ENV type, only '${ENV_TYPES.join(", ")}' available, got: ${this.type
+        `Wrong ENV type, only '${ENV_TYPES.join(", ")}' available, got: ${
+          this.type
         }`
       );
     }
@@ -77,10 +79,16 @@ export class Environment {
       );
     }
 
-    this.JWT_SECRET = this.getEnvVar("JWT_SECRET");
-    this.JWT_REFRESH_SECRET = this.getEnvVar("JWT_REFRESH_SECRET", this.JWT_SECRET);
+    this.JWT_SECRET = JWTUtils.getSecret();
+    this.JWT_REFRESH_SECRET = this.getEnvVar(
+      "JWT_REFRESH_SECRET",
+      this.JWT_SECRET
+    );
     this.JWT_EXPIRES_IN = this.getEnvVar("JWT_EXPIRES_IN", "30min");
-    this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar("JWT_REFRESH_EXPIRES_IN", "30d");
+    this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar(
+      "JWT_REFRESH_EXPIRES_IN",
+      "30d"
+    );
     this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME", "Barier");
 
     const missingJWT = this.validateJWT();
