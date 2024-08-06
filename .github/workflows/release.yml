@@ -13,6 +13,10 @@ jobs:
   build_client:
     uses: ./.github/workflows/build_client.yml
 
+  build_server:
+    needs: [test]
+    uses: ./.github/workflows/build_server.yml
+
   publish_release:
     runs-on: ubuntu-latest
     needs: [build_client, test]
