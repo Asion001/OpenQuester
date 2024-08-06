@@ -3,9 +3,7 @@ import fs from "fs";
 import path from "path";
 import { LoggerOptions } from "typeorm";
 import { Logger } from "../utils/Logger";
-import { JWTUtils } from "../utils/JWTUtils";
-
-const ENV_TYPES = ["local", "prod"];
+import { bold } from "colorette";
 
 /**
  * Class of environment layer.
@@ -20,7 +18,7 @@ export class Environment {
   public static DB_USER: string;
   public static DB_PASS: string;
   public static DB_HOST: string;
-  public static DB_PORT: string;
+  public static DB_PORT: number;
   public static DB_LOGGER: LoggerOptions;
 
   // JWT vars
@@ -34,40 +32,40 @@ export class Environment {
     return this.type;
   }
 
-  public static load(): void {
+  public static load(logging: boolean = true): void {
     if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
       dotenv.config();
     }
 
-    this.loadEnv();
+    this.loadEnv(logging);
   }
 
-  private static getEnvVar(variable: string, defaultValue: any = ""): any {
+  private static getEnvVar(
+    variable: string,
+    defaultValue: any = undefined
+  ): any {
     return process.env[variable] ?? defaultValue;
   }
 
-  private static loadEnv(): void {
+  private static loadEnv(logging: boolean): void {
     if (!process?.env) {
       throw new Error("Cannot find Node.JS environment");
     }
 
     this.type = this.getEnvVar("ENV", "prod");
 
-    if (ENV_TYPES.indexOf(String(this.type)) === -1) {
-      throw new Error(
-        `Wrong ENV type, only '${ENV_TYPES.join(", ")}' available, got: ${
-          this.type
-        }`
-      );
-    }
     const prod = this.type === "prod";
+
+    if (prod && logging) {
+      Logger.warn(bold("Running in production environment"));
+    }
 
     this.DB_TYPE = this.getEnvVar("DB_TYPE", "pg");
     this.DB_NAME = this.getEnvVar("DB_NAME", prod ? undefined : "openQuester");
     this.DB_USER = this.getEnvVar("DB_USER", prod ? undefined : "root");
     this.DB_PASS = this.getEnvVar("DB_PASS");
     this.DB_HOST = this.getEnvVar("DB_HOST", prod ? undefined : "127.0.0.1");
-    this.DB_PORT = this.getEnvVar("DB_PORT", "5432");
+    this.DB_PORT = this.getEnvVar("DB_PORT", 5432);
     this.DB_LOGGER = this.getEnvVar("DB_LOGGER", false);
 
     const missing = this.validateDB();
@@ -79,17 +77,17 @@ export class Environment {
       );
     }
 
-    this.JWT_SECRET = JWTUtils.getSecret();
+    this.JWT_SECRET = this.getEnvVar("JWT_SECRET");
     this.JWT_REFRESH_SECRET = this.getEnvVar(
       "JWT_REFRESH_SECRET",
       this.JWT_SECRET
     );
-    this.JWT_EXPIRES_IN = this.getEnvVar("JWT_EXPIRES_IN", "30min");
+    this.JWT_EXPIRES_IN = this.getEnvVar("JWT_EXPIRES_IN", "30m");
     this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar(
       "JWT_REFRESH_EXPIRES_IN",
-      "30d"
+      "30 days"
     );
-    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME", "Barier");
+    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME", "Bearer");
 
     const missingJWT = this.validateJWT();
     if (missingJWT.length > 0) {
@@ -100,56 +98,41 @@ export class Environment {
   }
 
   private static validateJWT() {
+    const requiredVars: { [key: string]: any } = {
+      JWT_SECRET: this.JWT_SECRET,
+      JWT_REFRESH_SECRET: this.JWT_REFRESH_SECRET,
+      JWT_EXPIRES_IN: this.JWT_EXPIRES_IN,
+      JWT_REFRESH_EXPIRES_IN: this.JWT_REFRESH_EXPIRES_IN,
+      JWT_SCHEME: this.JWT_SCHEME,
+    };
+
     const missing: string[] = [];
 
-    if (!this.JWT_SECRET) {
-      missing.push("JWT_SECRET");
-    }
-
-    if (!this.JWT_REFRESH_SECRET) {
-      missing.push("JWT_REFRESH_SECRET");
-    }
-
-    if (!this.JWT_EXPIRES_IN) {
-      missing.push("JWT_EXPIRES_IN");
-    }
-
-    if (!this.JWT_REFRESH_EXPIRES_IN) {
-      missing.push("JWT_REFRESH_EXPIRES_IN");
-    }
-
-    if (!this.JWT_SCHEME) {
-      missing.push("JWT_SCHEME");
+    for (const [key, value] of Object.entries(requiredVars)) {
+      if (value === undefined || value === null) {
+        missing.push(key);
+      }
     }
 
     return missing;
   }
 
   private static validateDB() {
+    const requiredVars: { [key: string]: any } = {
+      DB_TYPE: this.DB_TYPE,
+      DB_NAME: this.DB_NAME,
+      DB_USER: this.DB_USER,
+      DB_PASS: this.DB_PASS,
+      DB_HOST: this.DB_HOST,
+      DB_PORT: this.DB_PORT,
+    };
+
     const missing: string[] = [];
 
-    if (!this.DB_TYPE) {
-      missing.push("DB_TYPE");
-    }
-
-    if (!this.DB_NAME) {
-      missing.push("DB_NAME");
-    }
-
-    if (!this.DB_USER) {
-      missing.push("DB_USER");
-    }
-
-    if (!this.DB_PASS) {
-      missing.push("DB_PASS");
-    }
-
-    if (!this.DB_HOST) {
-      missing.push("DB_HOST");
-    }
-
-    if (!this.DB_PORT) {
-      missing.push("DB_PORT");
+    for (const [key, value] of Object.entries(requiredVars)) {
+      if (value === undefined || value === null) {
+        missing.push(key);
+      }
     }
 
     return missing;
