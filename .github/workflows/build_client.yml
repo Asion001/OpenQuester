@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build and sign Android
+    name: Build client app
     # Skip when PR from a fork
     if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
         working-directory: ${{ env.working-directory }}
         run: flutter pub get
 
-      - name: Build
+      - name: Build web and apk
         working-directory: ${{ env.working-directory }}
         run: |
           flutter build web --wasm --no-web-resources-cdn
