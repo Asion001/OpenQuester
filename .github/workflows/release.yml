@@ -13,6 +13,8 @@ jobs:
   prepare_release:
     runs-on: ubuntu-latest
     needs: build_client
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,10 +30,14 @@ jobs:
         with:
           name: android-app
 
+      - name: Set latest tag
+        run: echo "LATEST_TAG=$(git tag --sort=taggerdate | tail -n1)"" >> $GITHUB_ENV
+
       - name: Create draft release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          tag_name: ${{ env.LATEST_TAG }}
           #body_path: misc/release/notes.tmpl
           files: |
             *.apk
