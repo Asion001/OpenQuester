@@ -65,4 +65,5 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: openquester
           directory: web/
+          branch: main
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
