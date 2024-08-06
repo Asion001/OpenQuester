@@ -2,7 +2,7 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 
-const WRITE_PATH = path.resolve("../", process.cwd(), "storage/");
+const WRITE_PATH = path.resolve(process.cwd(), "storage/");
 const FILE_PATH = path.resolve(WRITE_PATH, ".secret.json");
 type jwtSecret = {
   jwt_secret: string;
