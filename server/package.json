@@ -5,16 +5,21 @@
   "scripts": {
     "start:dev:build": "npm run build",
     "start:dev:run": "wait-on ./dist/index.js && nodemon ./dist/index.js",
-    "start:dev": "npm run clean && npm run validate:schema && concurrently npm:start:dev:*",
+    "start:dev": "npm run clean && npm run checks:dev && concurrently npm:start:dev:*",
     "start:prod": "node ./dist/index.js",
+    "checks:dev": "npm run validate:schema && npm run lint",
     "validate:schema": "node ./validateSchema.mjs",
     "clean": "rm -rf dist/*",
     "build": "tsup",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "eslint ./"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "overrides": {
+    "eslint": "^9.8.0"
+  },
   "dependencies": {
     "@seriousme/openapi-schema-validator": "^2.2.1",
     "@types/bcryptjs": "^2.4.6",
@@ -33,12 +38,16 @@
     "typescript": "^5.5.4"
   },
   "devDependencies": {
-    "wait-on": "^7.2.0",
+    "@eslint/js": "^9.8.0",
     "@seriousme/openapi-schema-validator": "^2.2.1",
-    "concurrently": "^8.2.2",
     "@swc/core": "^1.7.6",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.8.0",
+    "globals": "^15.9.0",
     "tsup": "^8.0.2",
-    "vitest": "^2.0.0"
+    "typescript-eslint": "^8.0.1",
+    "vitest": "^2.0.0",
+    "wait-on": "^7.2.0"
   },
   "tsup": {
     "entry": [

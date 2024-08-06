@@ -21,7 +21,7 @@ export const verifyTokenMiddleware = (
   try {
     jwt.verify(token, Environment.JWT_SECRET);
     next();
-  } catch (error) {
+  } catch {
     res.status(401).json({ error: "Token invalid or expired" });
   }
 };
