@@ -34,7 +34,7 @@ export class Logger {
     const prefix = "[DEBUG]: ";
     const log = prefix + String(text);
 
-    console.debug(bold(blue(log)));
+    console.debug(blue(log));
 
     this.writeFile(log);
   }
