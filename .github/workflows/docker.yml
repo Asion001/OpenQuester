@@ -2,8 +2,7 @@ name: Docker
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
+  workflow_call:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
