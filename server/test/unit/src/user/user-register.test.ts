@@ -49,10 +49,6 @@ describe("User auth and jwt tokens", () => {
   });
 
   describe("register", () => {
-    it("Test to fail, check if it fails github action job", async () => {
-      expect(1).to.be.equal(0);
-    });
-
     it("should register a user successfully", async () => {
       const userData = {
         name: "John Doe",
