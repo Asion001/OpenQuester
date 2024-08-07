@@ -1,11 +1,13 @@
 import sinon from "sinon";
 import * as bcrypt from "bcryptjs";
+
 import { mock, instance, when, verify } from "ts-mockito";
-import { expect } from "chai";
-import { Database } from "../../../src/database/Database";
-import { User } from "../../../src/database/models/User";
-import { AuthService } from "../../../src/services/AuthService";
 import { Repository } from "typeorm";
+import { expect } from "chai";
+
+import { Database } from "../../../../src/database/Database";
+import { User } from "../../../../src/database/models/User";
+import { AuthService } from "../../../../src/services/AuthService";
 
 // Create a mock instance of bcrypt
 const bcryptMock = mock<typeof bcrypt>();
@@ -18,7 +20,7 @@ when(bcryptMock.compare("wrongPassword", "correctPassword")).thenResolve(false);
 // Use the mock instance in your tests
 const bcryptInstance = instance(bcryptMock);
 
-describe("AuthService", () => {
+describe("User auth and jwt tokens", () => {
   let db: sinon.SinonStubbedInstance<Database>;
   let userRepository: sinon.SinonStubbedInstance<any>;
   let selectQueryBuilder: sinon.SinonStubbedInstance<any>;

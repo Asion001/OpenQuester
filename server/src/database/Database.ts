@@ -23,12 +23,25 @@ export class Database {
       });
   }
 
-  public get connected() {
-    return this._connected;
+  public getRepository(target: EntityTarget<ObjectLiteral>) {
+    if (!this._connected) {
+      throw new Error("DB is not connected");
+    }
+    return this.dataSource.getRepository(target);
   }
 
-  public getRepository(target: EntityTarget<ObjectLiteral>) {
-    return this.dataSource.getRepository(target);
+  public connect() {
+    this._connected = true;
+    return true;
+  }
+
+  public disconnect() {
+    this._connected = false;
+    return true;
+  }
+
+  public get connected() {
+    return this._connected;
   }
 }
 
