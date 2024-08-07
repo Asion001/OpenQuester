@@ -1,0 +1,10 @@
+# Cloudflare headers configuration
+
+/*
+    X-Robots-Tag: noindex, nofollow
+
+    # Wasm headers configuration
+    Cross-Origin-Embedder-Policy: credentialless
+    Cross-Origin-Opener-Policy: same-origin
+
+
