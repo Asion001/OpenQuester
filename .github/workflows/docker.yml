@@ -1,16 +1,10 @@
-name: Docker Image CI
+name: Docker
 
 on:
-  push:
-    branches:
-      - "main"
-    tags:
-      - "v*"
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
-
   build_server:
     runs-on: ubuntu-latest
     defaults:
@@ -19,9 +13,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      attestations: write
-      id-token: write
-    needs: [test]
     steps:
       - uses: actions/checkout@v4
       - name: Docker meta
@@ -51,3 +42,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
