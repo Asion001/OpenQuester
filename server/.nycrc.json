@@ -3,6 +3,7 @@
     "src/database/migrations/**",
     "src/utils/Logger.ts",
     "test/**",
-    "src/config/**"
+    "src/config/**",
+    "src/database/**"
   ]
 }

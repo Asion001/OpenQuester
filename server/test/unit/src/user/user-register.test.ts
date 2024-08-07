@@ -5,7 +5,6 @@ import { mock, instance, when, verify } from "ts-mockito";
 import { Repository } from "typeorm";
 import { expect } from "chai";
 
-import { Database } from "../../../../src/database/Database";
 import { User } from "../../../../src/database/models/User";
 import { AuthService } from "../../../../src/services/AuthService";
 
@@ -20,14 +19,22 @@ when(bcryptMock.compare("wrongPassword", "correctPassword")).thenResolve(false);
 // Use the mock instance in your tests
 const bcryptInstance = instance(bcryptMock);
 
+const options = {
+  secret: "someSecret",
+  refreshSecret: "someSecret",
+  expiresIn: "1 day",
+  refreshExpiresIn: "1 day",
+};
+
 describe("User auth and jwt tokens", () => {
-  let db: sinon.SinonStubbedInstance<Database>;
   let userRepository: sinon.SinonStubbedInstance<any>;
   let selectQueryBuilder: sinon.SinonStubbedInstance<any>;
+  let db: any;
 
   beforeEach(async () => {
-    db = sinon.createStubInstance(Database);
-
+    db = {
+      getRepository: () => userRepository,
+    };
     selectQueryBuilder = {
       where: sinon.stub().returnsThis(),
       orWhere: sinon.stub().returnsThis(),
@@ -39,11 +46,13 @@ describe("User auth and jwt tokens", () => {
       getOne: sinon.stub().resolves(false),
       createQueryBuilder: () => selectQueryBuilder,
     } as unknown as Repository<User>;
-
-    db.getRepository.returns(userRepository);
   });
 
   describe("register", () => {
+    it("Test to fail, check if it fails github action job", async () => {
+      expect(1).to.be.equal(0);
+    });
+
     it("should register a user successfully", async () => {
       const userData = {
         name: "John Doe",
@@ -117,6 +126,7 @@ describe("User auth and jwt tokens", () => {
         expect(err.message).to.include("Provide all required fields");
       }
     });
+
     it("should throw an error if user does not exist", async () => {
       const userData = {
         email: "nonexistent@example.com",
@@ -153,7 +163,7 @@ describe("User auth and jwt tokens", () => {
 
   it("should generate token correctly", async () => {
     const userId = 1;
-    const result = AuthService.generateTokens(userId);
+    const result = AuthService.generateTokens(userId, options);
 
     expect(result).to.have.property("access_token");
     expect(result).to.have.property("refresh_token");
@@ -165,9 +175,9 @@ describe("User auth and jwt tokens", () => {
 
   it("refresh token correctly", async () => {
     const userId = 1;
-    const token = AuthService.generateTokens(userId).access_token;
+    const token = AuthService.generateTokens(userId, options).refresh_token;
 
-    const result = AuthService.refreshToken(token);
+    const result = AuthService.refreshToken(token, options);
 
     expect(result).to.have.property("access_token");
     expect(result).to.have.property("refresh_token");

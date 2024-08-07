@@ -15,6 +15,13 @@ type JWTPayload = {
   exp: number;
 };
 
+type TokenOptions = {
+  secret: string;
+  refreshSecret: string;
+  expiresIn: string;
+  refreshExpiresIn: string;
+};
+
 export class AuthService {
   public static async register(
     db: Database,
@@ -77,11 +84,15 @@ export class AuthService {
     };
   }
 
-  public static refreshToken(token: string) {
+  public static refreshToken(token: string, options?: TokenOptions) {
     try {
-      const decode = jwt.verify(token, Environment.JWT_REFRESH_SECRET);
+      const decode = jwt.verify(
+        token,
+        options?.refreshSecret ?? Environment.JWT_REFRESH_SECRET
+      );
       const { access_token, refresh_token } = this.generateTokens(
-        (decode as JWTPayload).id
+        (decode as JWTPayload).id,
+        options
       );
       return {
         access_token: access_token,
@@ -100,12 +111,20 @@ export class AuthService {
     return data && data.email && data.name && data.password;
   }
 
-  public static generateTokens(userId: number) {
-    const access = jwt.sign({ id: userId }, Environment.JWT_SECRET, {
-      expiresIn: Environment.JWT_EXPIRES_IN,
+  public static generateTokens(userId: number, options?: TokenOptions) {
+    const tokenOptions: TokenOptions = {
+      secret: options?.secret ?? Environment.JWT_SECRET,
+      refreshSecret: options?.refreshSecret ?? Environment.JWT_REFRESH_SECRET,
+      expiresIn: options?.expiresIn ?? Environment.JWT_EXPIRES_IN,
+      refreshExpiresIn:
+        options?.refreshExpiresIn ?? Environment.JWT_REFRESH_EXPIRES_IN,
+    };
+
+    const access = jwt.sign({ id: userId }, tokenOptions.secret, {
+      expiresIn: tokenOptions.expiresIn,
     });
-    const refresh = jwt.sign({ id: userId }, Environment.JWT_REFRESH_SECRET, {
-      expiresIn: Environment.JWT_REFRESH_EXPIRES_IN,
+    const refresh = jwt.sign({ id: userId }, tokenOptions.refreshSecret, {
+      expiresIn: tokenOptions.refreshExpiresIn,
     });
 
     return { access_token: access, refresh_token: refresh };
