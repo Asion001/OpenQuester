@@ -1,13 +1,16 @@
 import { blue, bold, green, red, yellow } from "colorette";
 import fs from "fs";
 import path from "path";
+import { Environment } from "../config/Environment";
 
 export class Logger {
   public static info(text: any) {
     const prefix = "[INFO]: ";
     const log = prefix + String(text);
 
-    console.info(green(log));
+    if (Environment.ENV !== "test") {
+      console.info(green(log));
+    }
 
     this.writeFile(log);
   }
@@ -16,7 +19,9 @@ export class Logger {
     const prefix = "[WARNING]: ";
     const log = prefix + String(text);
 
-    console.warn(yellow(log));
+    if (Environment.ENV !== "test") {
+      console.warn(yellow(log));
+    }
 
     this.writeFile(log);
   }

@@ -28,14 +28,28 @@ export class Environment {
   public static JWT_REFRESH_SECRET: string;
   public static JWT_EXPIRES_IN: string;
   public static JWT_REFRESH_EXPIRES_IN: string;
+  public static JWT_TOKEN_OPTIONS: {
+    secret: string;
+    refreshSecret: string;
+    expiresIn: string;
+    refreshExpiresIn: string;
+  };
 
   public static get ENV(): string {
     return this.type;
   }
 
-  public static load(logging: boolean = true): void {
+  public static load(logging: boolean = true, force: boolean = false): void {
+    if (this.type && !force) {
+      return;
+    }
+
     if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
       dotenv.config();
+    }
+
+    if (process?.env["ENV"] === "test") {
+      return;
     }
 
     this.loadEnv(logging);
@@ -54,6 +68,10 @@ export class Environment {
     }
 
     this.type = this.getEnvVar("ENV", "prod");
+
+    if (this.type === "test") {
+      Logger.error("Running in `test` environment!!");
+    }
 
     const prod = this.type === "prod";
 
@@ -96,6 +114,13 @@ export class Environment {
         `Missing required JWT variable in .env file: [${missingJWT.join(", ")}]`
       );
     }
+
+    this.JWT_TOKEN_OPTIONS = {
+      secret: this.JWT_SECRET,
+      expiresIn: this.JWT_EXPIRES_IN,
+      refreshSecret: this.JWT_REFRESH_SECRET,
+      refreshExpiresIn: this.JWT_REFRESH_EXPIRES_IN,
+    };
   }
 
   private static validateJWT() {
