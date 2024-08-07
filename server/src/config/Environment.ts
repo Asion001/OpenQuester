@@ -42,6 +42,10 @@ export class Environment {
       dotenv.config();
     }
 
+    if (process?.env["ENV"] === "test") {
+      return;
+    }
+
     this.loadEnv(logging);
   }
 
