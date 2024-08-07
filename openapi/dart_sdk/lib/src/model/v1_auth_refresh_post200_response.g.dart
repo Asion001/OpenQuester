@@ -1,39 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_data.dart';
+part of 'v1_auth_refresh_post200_response.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-class _$AuthData extends AuthData {
+class _$V1AuthRefreshPost200Response extends V1AuthRefreshPost200Response {
   @override
-  final String accessToken;
+  final String? accessToken;
   @override
-  final String refreshToken;
+  final String? refreshToken;
 
-  factory _$AuthData([void Function(AuthDataBuilder)? updates]) =>
-      (new AuthDataBuilder()..update(updates))._build();
+  factory _$V1AuthRefreshPost200Response(
+          [void Function(V1AuthRefreshPost200ResponseBuilder)? updates]) =>
+      (new V1AuthRefreshPost200ResponseBuilder()..update(updates))._build();
 
-  _$AuthData._({required this.accessToken, required this.refreshToken})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        accessToken, r'AuthData', 'accessToken');
-    BuiltValueNullFieldError.checkNotNull(
-        refreshToken, r'AuthData', 'refreshToken');
-  }
+  _$V1AuthRefreshPost200Response._({this.accessToken, this.refreshToken})
+      : super._();
 
   @override
-  AuthData rebuild(void Function(AuthDataBuilder) updates) =>
+  V1AuthRefreshPost200Response rebuild(
+          void Function(V1AuthRefreshPost200ResponseBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  AuthDataBuilder toBuilder() => new AuthDataBuilder()..replace(this);
+  V1AuthRefreshPost200ResponseBuilder toBuilder() =>
+      new V1AuthRefreshPost200ResponseBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AuthData &&
+    return other is V1AuthRefreshPost200Response &&
         accessToken == other.accessToken &&
         refreshToken == other.refreshToken;
   }
@@ -49,15 +47,18 @@ class _$AuthData extends AuthData {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'AuthData')
+    return (newBuiltValueToStringHelper(r'V1AuthRefreshPost200Response')
           ..add('accessToken', accessToken)
           ..add('refreshToken', refreshToken))
         .toString();
   }
 }
 
-class AuthDataBuilder implements Builder<AuthData, AuthDataBuilder> {
-  _$AuthData? _$v;
+class V1AuthRefreshPost200ResponseBuilder
+    implements
+        Builder<V1AuthRefreshPost200Response,
+            V1AuthRefreshPost200ResponseBuilder> {
+  _$V1AuthRefreshPost200Response? _$v;
 
   String? _accessToken;
   String? get accessToken => _$this._accessToken;
@@ -67,11 +68,11 @@ class AuthDataBuilder implements Builder<AuthData, AuthDataBuilder> {
   String? get refreshToken => _$this._refreshToken;
   set refreshToken(String? refreshToken) => _$this._refreshToken = refreshToken;
 
-  AuthDataBuilder() {
-    AuthData._defaults(this);
+  V1AuthRefreshPost200ResponseBuilder() {
+    V1AuthRefreshPost200Response._defaults(this);
   }
 
-  AuthDataBuilder get _$this {
+  V1AuthRefreshPost200ResponseBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _accessToken = $v.accessToken;
@@ -82,26 +83,23 @@ class AuthDataBuilder implements Builder<AuthData, AuthDataBuilder> {
   }
 
   @override
-  void replace(AuthData other) {
+  void replace(V1AuthRefreshPost200Response other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$AuthData;
+    _$v = other as _$V1AuthRefreshPost200Response;
   }
 
   @override
-  void update(void Function(AuthDataBuilder)? updates) {
+  void update(void Function(V1AuthRefreshPost200ResponseBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  AuthData build() => _build();
+  V1AuthRefreshPost200Response build() => _build();
 
-  _$AuthData _build() {
+  _$V1AuthRefreshPost200Response _build() {
     final _$result = _$v ??
-        new _$AuthData._(
-            accessToken: BuiltValueNullFieldError.checkNotNull(
-                accessToken, r'AuthData', 'accessToken'),
-            refreshToken: BuiltValueNullFieldError.checkNotNull(
-                refreshToken, r'AuthData', 'refreshToken'));
+        new _$V1AuthRefreshPost200Response._(
+            accessToken: accessToken, refreshToken: refreshToken);
     replace(_$result);
     return _$result;
   }

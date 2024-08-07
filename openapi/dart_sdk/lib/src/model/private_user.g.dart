@@ -8,6 +8,8 @@ part of 'private_user.dart';
 
 class _$PrivateUser extends PrivateUser {
   @override
+  final num? id;
+  @override
   final String? name;
   @override
   final String? email;
@@ -19,7 +21,7 @@ class _$PrivateUser extends PrivateUser {
   factory _$PrivateUser([void Function(PrivateUserBuilder)? updates]) =>
       (new PrivateUserBuilder()..update(updates))._build();
 
-  _$PrivateUser._({this.name, this.email, this.birthday, this.avatar})
+  _$PrivateUser._({this.id, this.name, this.email, this.birthday, this.avatar})
       : super._();
 
   @override
@@ -33,6 +35,7 @@ class _$PrivateUser extends PrivateUser {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is PrivateUser &&
+        id == other.id &&
         name == other.name &&
         email == other.email &&
         birthday == other.birthday &&
@@ -42,6 +45,7 @@ class _$PrivateUser extends PrivateUser {
   @override
   int get hashCode {
     var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, name.hashCode);
     _$hash = $jc(_$hash, email.hashCode);
     _$hash = $jc(_$hash, birthday.hashCode);
@@ -53,6 +57,7 @@ class _$PrivateUser extends PrivateUser {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'PrivateUser')
+          ..add('id', id)
           ..add('name', name)
           ..add('email', email)
           ..add('birthday', birthday)
@@ -63,6 +68,10 @@ class _$PrivateUser extends PrivateUser {
 
 class PrivateUserBuilder implements Builder<PrivateUser, PrivateUserBuilder> {
   _$PrivateUser? _$v;
+
+  num? _id;
+  num? get id => _$this._id;
+  set id(num? id) => _$this._id = id;
 
   String? _name;
   String? get name => _$this._name;
@@ -87,6 +96,7 @@ class PrivateUserBuilder implements Builder<PrivateUser, PrivateUserBuilder> {
   PrivateUserBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
+      _id = $v.id;
       _name = $v.name;
       _email = $v.email;
       _birthday = $v.birthday;
@@ -113,7 +123,11 @@ class PrivateUserBuilder implements Builder<PrivateUser, PrivateUserBuilder> {
   _$PrivateUser _build() {
     final _$result = _$v ??
         new _$PrivateUser._(
-            name: name, email: email, birthday: birthday, avatar: avatar);
+            id: id,
+            name: name,
+            email: email,
+            birthday: birthday,
+            avatar: avatar);
     replace(_$result);
     return _$result;
   }

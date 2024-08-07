@@ -12,12 +12,16 @@ part 'private_user.g.dart';
 /// PrivateUser
 ///
 /// Properties:
+/// * [id]
 /// * [name]
 /// * [email]
 /// * [birthday]
 /// * [avatar]
 @BuiltValue()
 abstract class PrivateUser implements Built<PrivateUser, PrivateUserBuilder> {
+  @BuiltValueField(wireName: r'id')
+  num? get id;
+
   @BuiltValueField(wireName: r'name')
   String? get name;
 
@@ -53,6 +57,13 @@ class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
     PrivateUser object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
+    if (object.id != null) {
+      yield r'id';
+      yield serializers.serialize(
+        object.id,
+        specifiedType: const FullType(num),
+      );
+    }
     if (object.name != null) {
       yield r'name';
       yield serializers.serialize(
@@ -106,6 +117,13 @@ class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
+        case r'id':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(num),
+          ) as num;
+          result.id = valueDes;
+          break;
         case r'name':
           final valueDes = serializers.deserialize(
             value,
