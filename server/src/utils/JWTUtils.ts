@@ -3,7 +3,19 @@ import fs from "fs";
 import path from "path";
 
 const WRITE_PATH = path.resolve(process.cwd(), "storage/");
-const FILE_PATH = path.resolve(WRITE_PATH, ".secret.json");
+
+type jwtOptions = {
+  length: number;
+  cryptoInstance: typeof crypto;
+  writePath: string;
+};
+
+const defaultOptions: jwtOptions = {
+  length: 512,
+  cryptoInstance: crypto,
+  writePath: WRITE_PATH,
+};
+
 type jwtSecret = {
   jwt_secret: string;
 };
@@ -14,8 +26,12 @@ export class JWTUtils {
    * @param length secret length
    * @returns secret for JWT token
    */
-  public static generateSecret(length = 512): string {
-    const secret = crypto
+  public static generateSecret(options: jwtOptions = defaultOptions): string {
+    const { length, cryptoInstance, writePath } = options;
+
+    const filePath = path.resolve(writePath, ".secret.json");
+
+    const secret = cryptoInstance
       .randomBytes(length)
       .toString("base64")
       .slice(0, length);
@@ -24,18 +40,28 @@ export class JWTUtils {
       jwt_secret: secret,
     };
 
-    if (!fs.existsSync(WRITE_PATH)) {
-      fs.mkdirSync(WRITE_PATH, { recursive: true });
+    if (!fs.existsSync(writePath)) {
+      fs.mkdirSync(writePath, { recursive: true });
     }
-    fs.writeFileSync(FILE_PATH, JSON.stringify(data, null, 2));
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     return secret;
   }
 
-  public static getSecret(): string {
-    if (!fs.existsSync(FILE_PATH)) {
-      return this.generateSecret();
+  public static getSecret(options?: jwtOptions): string {
+    const filePath = path.resolve(
+      options?.writePath ?? WRITE_PATH,
+      ".secret.json"
+    );
+    if (!fs.existsSync(filePath)) {
+      return this.generateSecret(options);
     }
-    const file = fs.readFileSync(FILE_PATH, "utf-8");
+
+    const file = fs.readFileSync(filePath, "utf-8");
+    if (!file.length) {
+      fs.rmSync(filePath);
+      return this.generateSecret(options);
+    }
+
     const data: jwtSecret = JSON.parse(file);
     return data.jwt_secret;
   }

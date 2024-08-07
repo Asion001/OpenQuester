@@ -59,6 +59,10 @@ export class Environment {
 
     this.type = this.getEnvVar("ENV", "prod");
 
+    if (this.type === "test") {
+      Logger.error("Running in `test` environment!!");
+    }
+
     const prod = this.type === "prod";
 
     if (prod && logging) {

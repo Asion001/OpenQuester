@@ -1,7 +1,15 @@
+# Development
 node_modules/
 dist/
+logs/
+
+# Envs
 .env.pg
 .env.pg.admin
-logs/
+
+# Storage
 storage/.secret*
+
+# Test related
+storage/test/
 .nyc_output/

@@ -1,3 +1,8 @@
 {
-  "exclude": ["src/database/migrations/**", "src/utils/Logger.ts", "test/**"]
+  "exclude": [
+    "src/database/migrations/**",
+    "src/utils/Logger.ts",
+    "test/**",
+    "src/config/**"
+  ]
 }
