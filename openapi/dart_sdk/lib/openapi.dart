@@ -14,4 +14,6 @@ export 'package:openapi/src/api/default_api.dart';
 export 'package:openapi/src/model/auth_data.dart';
 export 'package:openapi/src/model/private_user.dart';
 export 'package:openapi/src/model/v1_auth_login_post_request.dart';
+export 'package:openapi/src/model/v1_auth_refresh_post200_response.dart';
+export 'package:openapi/src/model/v1_auth_refresh_post_request.dart';
 export 'package:openapi/src/model/v1_auth_register_post_request.dart';

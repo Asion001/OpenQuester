@@ -10,6 +10,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AuthData.serializer)
       ..add(PrivateUser.serializer)
       ..add(V1AuthLoginPostRequest.serializer)
+      ..add(V1AuthRefreshPost200Response.serializer)
+      ..add(V1AuthRefreshPostRequest.serializer)
       ..add(V1AuthRegisterPostRequest.serializer))
     .build();
 

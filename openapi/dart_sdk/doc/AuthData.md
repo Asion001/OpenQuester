@@ -8,7 +8,6 @@ import 'package:openapi/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**user** | [**PrivateUser**](PrivateUser.md) |  | [optional] 
 **accessToken** | **String** |  | 
 **refreshToken** | **String** |  | 
 

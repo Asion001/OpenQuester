@@ -6,60 +6,74 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'auth_data.g.dart';
+part 'v1_auth_refresh_post200_response.g.dart';
 
-/// AuthData
+/// V1AuthRefreshPost200Response
 ///
 /// Properties:
 /// * [accessToken]
 /// * [refreshToken]
 @BuiltValue()
-abstract class AuthData implements Built<AuthData, AuthDataBuilder> {
+abstract class V1AuthRefreshPost200Response
+    implements
+        Built<V1AuthRefreshPost200Response,
+            V1AuthRefreshPost200ResponseBuilder> {
   @BuiltValueField(wireName: r'access_token')
-  String get accessToken;
+  String? get accessToken;
 
   @BuiltValueField(wireName: r'refresh_token')
-  String get refreshToken;
+  String? get refreshToken;
 
-  AuthData._();
+  V1AuthRefreshPost200Response._();
 
-  factory AuthData([void updates(AuthDataBuilder b)]) = _$AuthData;
+  factory V1AuthRefreshPost200Response(
+          [void updates(V1AuthRefreshPost200ResponseBuilder b)]) =
+      _$V1AuthRefreshPost200Response;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(AuthDataBuilder b) => b;
+  static void _defaults(V1AuthRefreshPost200ResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<AuthData> get serializer => _$AuthDataSerializer();
+  static Serializer<V1AuthRefreshPost200Response> get serializer =>
+      _$V1AuthRefreshPost200ResponseSerializer();
 }
 
-class _$AuthDataSerializer implements PrimitiveSerializer<AuthData> {
+class _$V1AuthRefreshPost200ResponseSerializer
+    implements PrimitiveSerializer<V1AuthRefreshPost200Response> {
   @override
-  final Iterable<Type> types = const [AuthData, _$AuthData];
+  final Iterable<Type> types = const [
+    V1AuthRefreshPost200Response,
+    _$V1AuthRefreshPost200Response
+  ];
 
   @override
-  final String wireName = r'AuthData';
+  final String wireName = r'V1AuthRefreshPost200Response';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    AuthData object, {
+    V1AuthRefreshPost200Response object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    yield r'access_token';
-    yield serializers.serialize(
-      object.accessToken,
-      specifiedType: const FullType(String),
-    );
-    yield r'refresh_token';
-    yield serializers.serialize(
-      object.refreshToken,
-      specifiedType: const FullType(String),
-    );
+    if (object.accessToken != null) {
+      yield r'access_token';
+      yield serializers.serialize(
+        object.accessToken,
+        specifiedType: const FullType(String),
+      );
+    }
+    if (object.refreshToken != null) {
+      yield r'refresh_token';
+      yield serializers.serialize(
+        object.refreshToken,
+        specifiedType: const FullType(String),
+      );
+    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    AuthData object, {
+    V1AuthRefreshPost200Response object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object,
@@ -72,7 +86,7 @@ class _$AuthDataSerializer implements PrimitiveSerializer<AuthData> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required AuthDataBuilder result,
+    required V1AuthRefreshPost200ResponseBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -102,12 +116,12 @@ class _$AuthDataSerializer implements PrimitiveSerializer<AuthData> {
   }
 
   @override
-  AuthData deserialize(
+  V1AuthRefreshPost200Response deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = AuthDataBuilder();
+    final result = V1AuthRefreshPost200ResponseBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(
