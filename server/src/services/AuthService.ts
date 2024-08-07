@@ -3,7 +3,6 @@ import { Database } from "../database/Database";
 import { File } from "../database/models/File";
 import { User } from "../database/models/User";
 import { IUser } from "../models/IUser";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 type JWTPayload = {
@@ -22,11 +21,16 @@ type TokenOptions = {
   refreshExpiresIn: string;
 };
 
+interface Crypto {
+  hash(s: string, salt: string | number): Promise<string>;
+  compare(s: string, hash: string): Promise<boolean>;
+}
+
 export class AuthService {
   public static async register(
     db: Database,
     data: IUser,
-    crypto: typeof bcrypt
+    crypto: Crypto
   ): Promise<IUser> {
     if (!this.validateRegisterRequest(data)) {
       throw new Error(
@@ -53,7 +57,7 @@ export class AuthService {
   public static async login(
     db: Database,
     data: IUser,
-    crypto: typeof bcrypt
+    crypto: Crypto
   ): Promise<IUser> {
     if (!this.validateLoginRequest(data)) {
       throw new Error(
@@ -112,13 +116,7 @@ export class AuthService {
   }
 
   public static generateTokens(userId: number, options?: TokenOptions) {
-    const tokenOptions: TokenOptions = {
-      secret: options?.secret ?? Environment.JWT_SECRET,
-      refreshSecret: options?.refreshSecret ?? Environment.JWT_REFRESH_SECRET,
-      expiresIn: options?.expiresIn ?? Environment.JWT_EXPIRES_IN,
-      refreshExpiresIn:
-        options?.refreshExpiresIn ?? Environment.JWT_REFRESH_EXPIRES_IN,
-    };
+    const tokenOptions: TokenOptions = options ?? Environment.JWT_TOKEN_OPTIONS;
 
     const access = jwt.sign({ id: userId }, tokenOptions.secret, {
       expiresIn: tokenOptions.expiresIn,

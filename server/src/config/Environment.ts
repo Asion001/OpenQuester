@@ -28,6 +28,12 @@ export class Environment {
   public static JWT_REFRESH_SECRET: string;
   public static JWT_EXPIRES_IN: string;
   public static JWT_REFRESH_EXPIRES_IN: string;
+  public static JWT_TOKEN_OPTIONS: {
+    secret: string;
+    refreshSecret: string;
+    expiresIn: string;
+    refreshExpiresIn: string;
+  };
 
   public static get ENV(): string {
     return this.type;
@@ -108,6 +114,13 @@ export class Environment {
         `Missing required JWT variable in .env file: [${missingJWT.join(", ")}]`
       );
     }
+
+    this.JWT_TOKEN_OPTIONS = {
+      secret: this.JWT_SECRET,
+      expiresIn: this.JWT_EXPIRES_IN,
+      refreshSecret: this.JWT_REFRESH_SECRET,
+      refreshExpiresIn: this.JWT_REFRESH_EXPIRES_IN,
+    };
   }
 
   private static validateJWT() {
