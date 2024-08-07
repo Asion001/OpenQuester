@@ -5,6 +5,8 @@ doc/AuthData.md
 doc/DefaultApi.md
 doc/PrivateUser.md
 doc/V1AuthLoginPostRequest.md
+doc/V1AuthRefreshPost200Response.md
+doc/V1AuthRefreshPostRequest.md
 doc/V1AuthRegisterPostRequest.md
 lib/openapi.dart
 lib/src/api.dart
@@ -20,6 +22,10 @@ lib/src/model/auth_data.dart
 lib/src/model/date.dart
 lib/src/model/private_user.dart
 lib/src/model/v1_auth_login_post_request.dart
+lib/src/model/v1_auth_refresh_post200_response.dart
+lib/src/model/v1_auth_refresh_post_request.dart
 lib/src/model/v1_auth_register_post_request.dart
 lib/src/serializers.dart
 pubspec.yaml
+test/v1_auth_refresh_post200_response_test.dart
+test/v1_auth_refresh_post_request_test.dart

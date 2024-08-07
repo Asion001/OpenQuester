@@ -65,6 +65,7 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 [*DefaultApi*](doc/DefaultApi.md) | [**v1AuthLoginPost**](doc/DefaultApi.md#v1authloginpost) | **POST** /v1/auth/login | User Login
+[*DefaultApi*](doc/DefaultApi.md) | [**v1AuthRefreshPost**](doc/DefaultApi.md#v1authrefreshpost) | **POST** /v1/auth/refresh | Refresh tokens
 [*DefaultApi*](doc/DefaultApi.md) | [**v1AuthRegisterPost**](doc/DefaultApi.md#v1authregisterpost) | **POST** /v1/auth/register | User Registration
 
 
@@ -73,12 +74,18 @@ Class | Method | HTTP request | Description
  - [AuthData](doc/AuthData.md)
  - [PrivateUser](doc/PrivateUser.md)
  - [V1AuthLoginPostRequest](doc/V1AuthLoginPostRequest.md)
+ - [V1AuthRefreshPost200Response](doc/V1AuthRefreshPost200Response.md)
+ - [V1AuthRefreshPostRequest](doc/V1AuthRefreshPostRequest.md)
  - [V1AuthRegisterPostRequest](doc/V1AuthRegisterPostRequest.md)
 
 
 ## Documentation For Authorization
 
-Endpoints do not require authorization.
+
+Authentication schemes defined for the API:
+### JWTAuth
+
+- **Type**: HTTP Bearer Token authentication (JWT)
 
 
 ## Author

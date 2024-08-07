@@ -17,6 +17,8 @@ import 'package:openapi/src/model/date.dart';
 import 'package:openapi/src/model/auth_data.dart';
 import 'package:openapi/src/model/private_user.dart';
 import 'package:openapi/src/model/v1_auth_login_post_request.dart';
+import 'package:openapi/src/model/v1_auth_refresh_post200_response.dart';
+import 'package:openapi/src/model/v1_auth_refresh_post_request.dart';
 import 'package:openapi/src/model/v1_auth_register_post_request.dart';
 
 part 'serializers.g.dart';
@@ -25,6 +27,8 @@ part 'serializers.g.dart';
   AuthData,
   PrivateUser,
   V1AuthLoginPostRequest,
+  V1AuthRefreshPost200Response,
+  V1AuthRefreshPostRequest,
   V1AuthRegisterPostRequest,
 ])
 Serializers serializers = (_$serializers.toBuilder()
