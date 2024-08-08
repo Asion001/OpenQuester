@@ -3,12 +3,15 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { User } from "./models/User";
 import { File } from "./models/File";
+import { Group } from "./models/Group";
 import { Environment } from "../config/Environment";
 import { Logger } from "../utils/Logger";
 
 // Migrations imports
 import { CreateUserAndFileTables_1_1_1722683756069 as createUserAndFileTables } from "./migrations/CreateUserAndFileTables_1_1_1722683756069";
 import { UpdateUserModelFields_1_11_1723107959823 as updateUserModelFields } from "./migrations/UpdateUserModelFields_1_11_1723107959823";
+
+import { CreateGroupTable_1_2_1723128633623 as createGroupTable } from "./migrations/CreateGroupTable_1_2_1723128633623";
 
 try {
   Environment.load(false);
@@ -28,8 +31,12 @@ export const AppDataSource = new DataSource({
   database: Environment.DB_NAME,
   synchronize: false,
   logging: Environment.DB_LOGGER,
-  entities: [User, File],
-  migrations: [createUserAndFileTables, updateUserModelFields],
+  entities: [User, File, Group],
+  migrations: [
+    createUserAndFileTables,
+    updateUserModelFields,
+    createGroupTable,
+  ],
   migrationsRun: true,
   subscribers: [],
 });

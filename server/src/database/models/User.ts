@@ -5,9 +5,12 @@ import {
   OneToOne,
   JoinColumn,
   Unique,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 import { IUser } from "../../models/IUser";
 import { File } from "./File";
+import { Group } from "./Group";
 
 @Entity()
 @Unique(["email"])
@@ -39,4 +42,8 @@ export class User implements IUser {
   @OneToOne(() => File, { nullable: true })
   @JoinColumn()
   avatar?: File;
+
+  @ManyToMany(() => Group, (group) => group.name)
+  @JoinTable()
+  groups!: Group[];
 }
