@@ -10,9 +10,117 @@
     }
   ],
   "paths": {
+    "/v1/users/get-by-token": {
+      "post": {
+        "summary": "Get user info by his access token",
+        "responses": {
+          "200": {
+            "description": "Get user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid or expired JWT token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/retrieve/{id}": {
+      "post": {
+        "summary": "Get user info by his id",
+        "responses": {
+          "200": {
+            "description": "Get user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User does not exists or you don't have permissions for this operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/update/{id}": {
+      "post": {
+        "summary": "Update user info",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update user data successfully"
+          },
+          "400": {
+            "description": "You don't have permissions for this operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/delete/{id}": {
+      "post": {
+        "summary": "Delete user by id",
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "400": {
+            "description": "You don't have permissions for this operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/auth/register": {
       "post": {
-        "summary": "User Registration",
+        "summary": "Get user info by his id",
         "requestBody": {
           "required": true,
           "content": {
@@ -216,6 +324,13 @@
             "type": "string",
             "format": "binary"
           },
+          "groups": {
+            "type": "array",
+            "example": [
+              { "id": 1, "name": "users" },
+              { "id": 2, "name": "admins" }
+            ]
+          },
           "created_at": {
             "type": "string",
             "format": "date",
@@ -232,6 +347,37 @@
           }
         }
       },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "email": {
+            "type": "string",
+            "example": "jogn.doe@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "mySuperCoolPassword123"
+          },
+          "newPassword": {
+            "type": "string",
+            "example": "myNewCoolPassword456"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "is_deleted": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": ["password"]
+      },
       "User": {
         "type": "object",
         "properties": {
@@ -242,6 +388,10 @@
           "email": {
             "type": "string",
             "example": "jogn.doe@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "mySuperCoolPassword123"
           },
           "birthday": {
             "type": "string",

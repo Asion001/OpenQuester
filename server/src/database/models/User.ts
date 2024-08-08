@@ -43,7 +43,7 @@ export class User implements IUser {
   @JoinColumn()
   avatar?: File;
 
-  @ManyToMany(() => Group)
+  @ManyToMany(() => Group, (group) => group.users)
   @JoinTable({
     name: "user_groups",
     joinColumn: { name: "user_id", referencedColumnName: "id" },
