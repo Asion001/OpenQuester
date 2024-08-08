@@ -3,11 +3,11 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
+  TableUnique,
 } from "typeorm";
 
 export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    // Create group table
     await queryRunner.createTable(
       new Table({
         name: "group",
@@ -22,67 +22,82 @@ export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
           {
             name: "name",
             type: "varchar",
-            isUnique: true,
+            isNullable: false,
           },
         ],
       })
     );
 
-    // Create table to do ManyToMany relationship
     await queryRunner.createTable(
       new Table({
         name: "user_groups",
         columns: [
           {
-            name: "userId",
+            name: "user_id",
             type: "int",
+            isPrimary: true,
           },
           {
-            name: "groupId",
+            name: "group_id",
             type: "int",
+            isPrimary: true,
           },
         ],
-      }),
-      true
+      })
     );
 
-    // Add foreign keys
+    await queryRunner.createUniqueConstraint(
+      "user_groups",
+      new TableUnique({
+        columnNames: ["user_id", "group_id"],
+      })
+    );
+
     await queryRunner.createForeignKey(
       "user_groups",
       new TableForeignKey({
-        name: "FK_userId",
-        columnNames: ["userId"],
-        referencedColumnNames: ["id"],
+        columnNames: ["user_id"],
         referencedTableName: "user",
-        onDelete: "CASCADE", // Delete user record from user_groups
+        referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
       })
     );
 
     await queryRunner.createForeignKey(
       "user_groups",
       new TableForeignKey({
-        name: "FK_groupId",
-        columnNames: ["groupId"],
-        referencedColumnNames: ["id"],
+        columnNames: ["group_id"],
         referencedTableName: "group",
-        onDelete: "CASCADE", // Delete group record from user_groups
+        referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
       })
     );
 
-    let sql = `INSERT INTO "group" (name) VALUES ('admins');`;
-    sql += `INSERT INTO "group" (name) VALUES ('users');`;
-    await queryRunner.query(sql);
+    await queryRunner.query(
+      `INSERT INTO "group" (name) VALUES ('admins'), ('users');`
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // Drop foreign keys
-    await queryRunner.dropForeignKey("user_groups", "FK_userId");
-    await queryRunner.dropForeignKey("user_groups", "FK_groupId");
+    // Remove foreign keys
+    const table = await queryRunner.getTable("user_groups");
+    const foreignKey1 = table?.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf("user_id") !== -1
+    );
+    const foreignKey2 = table?.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf("group_id") !== -1
+    );
 
-    // Drop `user_groups` table
+    if (foreignKey1) {
+      await queryRunner.dropForeignKey("user_groups", foreignKey1);
+    }
+
+    if (foreignKey2) {
+      await queryRunner.dropForeignKey("user_groups", foreignKey2);
+    }
+
+    // Drop tables
     await queryRunner.dropTable("user_groups");
-
-    // Drop `groups` table
     await queryRunner.dropTable("group");
   }
 }

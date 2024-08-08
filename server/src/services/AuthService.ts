@@ -1,7 +1,9 @@
 import { Environment } from "../config/Environment";
 import { Database } from "../database/Database";
 import { File } from "../database/models/File";
+import { Group } from "../database/models/Group";
 import { User } from "../database/models/User";
+import { EUserGroups } from "../enums/EUserGroups";
 import { IUser } from "../models/IUser";
 import jwt from "jsonwebtoken";
 import { JWTPayload, JWTResponse, TokenOptions } from "../types/jwt/jwt";
@@ -31,6 +33,7 @@ export class AuthService {
     user.password = await crypto.hash(data.password as string, 10);
     user.birthday = data.birthday ? new Date(data.birthday) : undefined;
     user.avatar = data.avatar as File;
+    user.groups = await this.defaultGroups(db);
 
     await repository.save(user);
     const { access_token, refresh_token } = this.generateTokens(user.id);
@@ -72,6 +75,15 @@ export class AuthService {
       access_token: access_token,
       refresh_token: refresh_token,
     };
+  }
+
+  private static async defaultGroups(db: Database) {
+    const repository = db.getRepository(Group);
+    const group = (await repository
+      .createQueryBuilder("group")
+      .where("id=:id", { id: EUserGroups.users })
+      .getOne()) as Group;
+    return [group];
   }
 
   public static refreshToken(token: string, options?: TokenOptions) {

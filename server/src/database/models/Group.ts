@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import { IGroup } from "../../models/IGroup";
+import { User } from "./User";
 
 @Entity()
 export class Group implements IGroup {
@@ -8,4 +9,7 @@ export class Group implements IGroup {
 
   @Column()
   name!: string;
+
+  @ManyToMany(() => User, (user) => user.groups)
+  users!: User[];
 }

@@ -5,6 +5,7 @@ import { Database, db } from "./database/Database";
 import { verifyTokenMiddleware } from "./middleware/AuthMiddleware";
 import { Server } from "http";
 import { Logger } from "./utils/Logger";
+import { UserRestApiController } from "./controllers/rest/UserRestApiController";
 
 export class ServeApi {
   protected app!: Express;
@@ -34,6 +35,7 @@ export class ServeApi {
   }
 
   public attachControllers() {
-    new AuthRestApiController(this.app);
+    new AuthRestApiController(this.db, this.app);
+    new UserRestApiController(this.db, this.app);
   }
 }

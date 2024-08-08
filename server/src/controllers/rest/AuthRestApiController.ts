@@ -1,13 +1,13 @@
 import { Express, Request, Response } from "express";
 import { AuthService } from "../../services/AuthService";
-import { db } from "../../database/Database";
+import { Database } from "../../database/Database";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 export class AuthRestApiController {
-  constructor(app: Express) {
+  constructor(db: Database, app: Express) {
     app.post("/v1/auth/register", async (req: Request, res: Response) => {
       try {
         if (!this.checkToken(req)) {
