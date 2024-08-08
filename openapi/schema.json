@@ -18,19 +18,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "required": ["name", "email", "password"]
+                "$ref": "#/components/schemas/User"
               }
             }
           }
@@ -221,14 +209,61 @@
           },
           "birthday": {
             "type": "string",
-            "format": "date-time",
+            "format": "date",
             "example": "2024-01-01T00:00:00Z"
           },
           "avatar": {
             "type": "string",
             "format": "binary"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "is_deleted": {
+            "type": "boolean",
+            "example": false
           }
         }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John"
+          },
+          "email": {
+            "type": "string",
+            "example": "jogn.doe@gmail.com"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "is_deleted": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": ["name", "email", "password"]
       },
       "AuthData": {
         "type": "object",

@@ -25,7 +25,16 @@ export class User implements IUser {
   password?: string;
 
   @Column({ nullable: true })
-  birthday?: number;
+  birthday?: Date;
+
+  @Column()
+  created_at!: Date;
+
+  @Column()
+  updated_at!: Date;
+
+  @Column()
+  is_deleted!: boolean;
 
   @OneToOne(() => File, { nullable: true })
   @JoinColumn()
