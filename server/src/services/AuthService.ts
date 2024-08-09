@@ -7,11 +7,8 @@ import { EUserGroups } from "../enums/EUserGroups";
 import { IUser } from "../models/IUser";
 import jwt from "jsonwebtoken";
 import { JWTPayload, JWTResponse, TokenOptions } from "../types/jwt/jwt";
-
-interface Crypto {
-  hash(s: string, salt: string | number): Promise<string>;
-  compare(s: string, hash: string): Promise<boolean>;
-}
+import { Crypto } from "../types/Crypto";
+import { ValueUtils } from "../utils/ValueUtils";
 
 export class AuthService {
   public static async register(
@@ -31,9 +28,14 @@ export class AuthService {
     user.name = data.name;
     user.email = data.email;
     user.password = await crypto.hash(data.password as string, 10);
-    user.birthday = data.birthday ? new Date(data.birthday) : undefined;
+    user.birthday = data.birthday
+      ? ValueUtils.getBirthday(data.birthday)
+      : undefined;
     user.avatar = data.avatar as File;
     user.groups = await this.defaultGroups(db);
+
+    user.created_at = new Date();
+    user.updated_at = new Date();
 
     await repository.save(user);
     const { access_token, refresh_token } = this.generateTokens(user.id);

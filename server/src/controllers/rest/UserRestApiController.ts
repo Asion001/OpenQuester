@@ -1,6 +1,8 @@
 import { Express, Request, Response } from "express";
 import { UserService } from "../../services/UserService";
 import { Database } from "../../database/Database";
+import * as bcrypt from "bcryptjs";
+import { QueryFailedError } from "typeorm";
 
 export class UserRestApiController {
   constructor(db: Database, app: Express) {
@@ -27,9 +29,21 @@ export class UserRestApiController {
 
     app.post("/v1/users/update/:id", async (req: Request, res: Response) => {
       try {
-        return res.status(400).send({ message: "Testing update by id" });
+        const result = await UserService.update(db, req, bcrypt);
+        return res.status(200).send(result ? result : "");
       } catch (err: any) {
-        return res.status(400).send({ error: err.message });
+        let s = 400;
+        if (
+          // Catch query error from TypeORM (if user already exists)
+          err instanceof QueryFailedError &&
+          err.message.includes("duplicate key value")
+        ) {
+          err.message = `User with this name or email already exists`;
+        }
+        if (err.message.toLowerCase().includes("not found")) {
+          s = 404;
+        }
+        return res.status(s).send({ error: err.message });
       }
     });
 

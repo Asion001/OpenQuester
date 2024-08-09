@@ -30,6 +30,10 @@ export class Database {
     return this.dataSource.getRepository(target);
   }
 
+  public get ds() {
+    return this.dataSource;
+  }
+
   public connect() {
     this._connected = true;
     return true;

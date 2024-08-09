@@ -13,7 +13,7 @@ import { File } from "./File";
 import { Group } from "./Group";
 
 @Entity()
-@Unique(["email"])
+@Unique(["email", "name"])
 export class User implements IUser {
   @PrimaryGeneratedColumn()
   id!: number;

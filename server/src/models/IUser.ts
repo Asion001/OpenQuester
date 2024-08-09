@@ -7,7 +7,8 @@ export interface IUser extends IBaseModel {
   name?: string;
   email?: string;
   password?: string;
-  birthday?: Date; // Saving as we get (not in UTC)
+  newPassword?: string; // In case of changing password
+  birthday?: Date;
   avatar?: IFile;
   groups?: IGroup[];
   access_token?: string;

@@ -1,17 +1,20 @@
 import "reflect-metadata";
 
-import { DataSource } from "typeorm";
-import { User } from "./models/User";
-import { File } from "./models/File";
-import { Group } from "./models/Group";
 import { Environment } from "../config/Environment";
 import { Logger } from "../utils/Logger";
+
+// Models
+import { User } from "./models/User";
+import { DataSource } from "typeorm";
+import { File } from "./models/File";
+import { Group } from "./models/Group";
+import { UserGroups } from "./models/UsersGroup";
 
 // Migrations imports
 import { CreateUserAndFileTables_1_1_1722683756069 as createUserAndFileTables } from "./migrations/CreateUserAndFileTables_1_1_1722683756069";
 import { UpdateUserModelFields_1_11_1723107959823 as updateUserModelFields } from "./migrations/UpdateUserModelFields_1_11_1723107959823";
-
 import { CreateGroupTable_1_2_1723128633623 as createGroupTable } from "./migrations/CreateGroupTable_1_2_1723128633623";
+import { UpdateUserRequiredFields_1_21_1723204474011 as updateUserRequiredFields } from "./migrations/UpdateUserRequiredFields_1_21_1723204474011";
 
 try {
   Environment.load(false);
@@ -31,11 +34,12 @@ export const AppDataSource = new DataSource({
   database: Environment.DB_NAME,
   synchronize: false,
   logging: Environment.DB_LOGGER,
-  entities: [User, File, Group],
+  entities: [User, File, Group, UserGroups],
   migrations: [
     createUserAndFileTables,
     updateUserModelFields,
     createGroupTable,
+    updateUserRequiredFields,
   ],
   migrationsRun: true,
   subscribers: [],
