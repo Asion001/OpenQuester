@@ -23,6 +23,28 @@ export class UserService {
     return await this.getUserById(db, payload.id);
   }
 
+  public static async all(db: Database, req: express.Request) {
+    const payload = this.getPayload(req);
+
+    const user = await this.getUserById(db, payload.id);
+
+    if (user.groups) {
+      for (const g of user.groups) {
+        if (g.id == EUserGroups.admins) {
+          const repository = db.getRepository(User);
+          const users = await repository.find({
+            relations: ["groups"],
+          });
+          // Don't send user passwords
+          users.map((u) => delete u.password);
+          return users;
+        }
+      }
+    }
+
+    throw new Error("You are not able to do that");
+  }
+
   public static async retrieve(db: Database, req: express.Request) {
     const id = this.validateId(req.params.id);
 
@@ -78,7 +100,40 @@ export class UserService {
   }
 
   public static async delete(db: Database, req: express.Request) {
-    throw new Error(`not implemented ${db} ${req}`);
+    const id = this.validateId(req.params.id);
+    const payload = this.getPayload(req);
+
+    const target = await this.getUserById(db, id);
+    if (!target) {
+      throw new Error(`User with ID '${id}' does not exists.`);
+    }
+
+    if (payload.id == id) {
+      return await this.deleteUser(db, id);
+    }
+
+    const user = await this.getUserById(db, payload.id);
+
+    if (user.groups) {
+      for (const g of user.groups) {
+        if (g.id == EUserGroups.admins) {
+          req.body["byAdmin"] = true; // Set that admin does update
+          return await this.deleteUser(db, id);
+        }
+      }
+    }
+
+    throw new Error("You are not able to do that");
+  }
+
+  private static async deleteUser(db: Database, id: number) {
+    const repository = db.getRepository(User);
+    await repository
+      .createQueryBuilder("user")
+      .delete()
+      .where("id=:id", { id: id })
+      .execute();
+    return;
   }
 
   private static async getUserById(db: Database, id: number) {

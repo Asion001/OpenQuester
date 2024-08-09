@@ -27,7 +27,19 @@ export class UserRestApiController {
       }
     });
 
-    app.post("/v1/users/update/:id", async (req: Request, res: Response) => {
+    app.post("/v1/users/all", async (req: Request, res: Response) => {
+      try {
+        const result = await UserService.all(db, req);
+        if (result) {
+          return res.status(200).send(result);
+        }
+        return res.status(404).send({ message: "User not found" });
+      } catch (err: any) {
+        return res.status(400).send({ error: err.message });
+      }
+    });
+
+    app.patch("/v1/users/update/:id", async (req: Request, res: Response) => {
       try {
         const result = await UserService.update(db, req, bcrypt);
         return res.status(200).send(result ? result : "");
@@ -47,9 +59,10 @@ export class UserRestApiController {
       }
     });
 
-    app.post("/v1/users/delete/:id", async (req: Request, res: Response) => {
+    app.delete("/v1/users/delete/:id", async (req: Request, res: Response) => {
       try {
-        return res.status(400).send({ message: "Testing delete by id" });
+        await UserService.delete(db, req);
+        return res.status(204).send();
       } catch (err: any) {
         return res.status(400).send({ error: err.message });
       }
