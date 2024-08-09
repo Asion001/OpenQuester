@@ -54,7 +54,7 @@ describe("User auth and jwt tokens", () => {
         name: "John Doe",
         email: "john@example.com",
         password: "password123",
-        birthday: new Date("1990-01-01").getTime(),
+        birthday: new Date("1990-01-01"),
         avatar: null,
       };
 
@@ -73,6 +73,43 @@ describe("User auth and jwt tokens", () => {
       expect(result).to.have.property("access_token");
       expect(result).to.have.property("refresh_token");
       verify(bcryptMock.hash("password123", 10)).called();
+
+      // Cover different format of birthday
+      const userData2 = {
+        name: "John Doe2",
+        email: "john2@example.com",
+        password: "password123456",
+        birthday: "1990-01-01 12:00:00",
+        avatar: null,
+      };
+
+      const result2 = await AuthService.register(
+        db as any,
+        userData2 as any,
+        bcryptInstance
+      );
+
+      expect(result2).to.have.property("access_token");
+      expect(result2).to.have.property("refresh_token");
+      verify(bcryptMock.hash("password123456", 10)).called();
+
+      // Cover no birthday
+      const userData3 = {
+        name: "John Doe3",
+        email: "john3@example.com",
+        password: "password123456789",
+        avatar: null,
+      };
+
+      const result3 = await AuthService.register(
+        db as any,
+        userData3 as any,
+        bcryptInstance
+      );
+
+      expect(result3).to.have.property("access_token");
+      expect(result3).to.have.property("refresh_token");
+      verify(bcryptMock.hash("password123456789", 10)).called();
     });
 
     it("should throw an error if registration data is invalid", async () => {

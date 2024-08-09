@@ -103,7 +103,7 @@ export class UserService {
     const repository = db.getRepository(User);
 
     const user = await repository.findOne({
-      where: { id },
+      where: { id: id },
       relations: ["groups"],
     });
 
@@ -114,14 +114,17 @@ export class UserService {
     if (
       // @ts-ignore
       !body.byAdmin &&
-      (!body.password || !crypto.compare(body.password, user.password))
+      (!body.password || !(await crypto.compare(body.password, user.password)))
     ) {
       throw new Error("User password is incorrect or not provided");
     }
 
     // Set new password only if it's not as previous one.
     // crypto.compare() is faster than hashing, so we prefer do this check
-    if (body.newPassword && !crypto.compare(body.newPassword, user.password)) {
+    if (
+      body.newPassword &&
+      !(await crypto.compare(body.newPassword, user.password))
+    ) {
       user.password = await crypto.hash(body.newPassword, 10);
     }
 
@@ -163,7 +166,7 @@ export class UserService {
           }))
         ) {
           throw new Error(
-            `Groups '${g.name}' with ID '${g.id}' does not exists`
+            `Group '${g.name}' with ID '${g.id}' does not exists`
           );
         }
       }
@@ -231,7 +234,7 @@ export class UserService {
     return id;
   }
 
-  private static getPayload(req: express.Request) {
+  public static getPayload(req: express.Request) {
     const token = req.headers.authorization?.split(" ")[1] as string;
 
     return jwt.verify(token, Environment.JWT_SECRET) as JWTPayload;
