@@ -3,6 +3,9 @@ import fs from "fs";
 import path from "path";
 import { Environment } from "../config/Environment";
 
+/**
+ * Logger class used for writing logs and for prettier console output
+ */
 export class Logger {
   public static info(text: any) {
     const prefix = "[INFO]: ";

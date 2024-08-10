@@ -2,6 +2,9 @@ import { DataSource, EntityTarget, ObjectLiteral } from "typeorm";
 import { AppDataSource } from "./DataSource";
 import { Logger } from "../utils/Logger";
 
+/**
+ * Handles Database initialization and management
+ */
 export class Database {
   private dataSource: DataSource;
   private _connected: boolean;
@@ -23,6 +26,9 @@ export class Database {
       });
   }
 
+  /**
+   * Get TypeORM repository for given entity
+   */
   public getRepository(target: EntityTarget<ObjectLiteral>) {
     if (!this._connected) {
       throw new Error("DB is not connected");
@@ -30,6 +36,7 @@ export class Database {
     return this.dataSource.getRepository(target);
   }
 
+  /** DataSource */
   public get ds() {
     return this.dataSource;
   }
@@ -49,4 +56,5 @@ export class Database {
   }
 }
 
+/** Database instance, should be used for all DB actions */
 export const db = new Database(AppDataSource);

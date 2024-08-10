@@ -18,4 +18,17 @@ export class ValueUtils {
     const dateTime = date + " " + "12:00:00";
     return new Date(dateTime);
   }
+
+  /**
+   * Validates that given id is numeric and valid
+   */
+  public static validateId(id: string | number): number {
+    id = Number(id);
+
+    if (id < 1 || isNaN(id)) {
+      throw new Error("Please specify id that greater than 1");
+    }
+
+    return id;
+  }
 }

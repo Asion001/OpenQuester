@@ -6,6 +6,8 @@ import { Logger } from "../utils/Logger";
 import { bold } from "colorette";
 import { JWTUtils } from "../utils/JWTUtils";
 
+const ENV_TYPES = ["local", "prod", "test"];
+
 /**
  * Class of environment layer.
  * All `process.env` variables should be retrieved only trough this class.
@@ -35,26 +37,38 @@ export class Environment {
     refreshExpiresIn: string;
   };
 
+  /** Get environment type */
   public static get ENV(): string {
     return this.type;
   }
 
-  public static load(logging: boolean = true, force: boolean = false): void {
+  /**
+   * Load all environment variables, if not loaded already
+   * @param force Specify if you want to load environment even if it's loaded already
+   */
+  public static load(force: boolean = false): void {
     if (this.type && !force) {
       return;
     }
 
+    // Load variables from file only, if file exists
+    // In other case variables should provided directly in environment e.g. `$ export VAR="value"`
     if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
       dotenv.config();
     }
 
+    // Do not load variables in test environment. It should be mocked for testing
     if (process?.env["ENV"] === "test") {
+      Logger.error("Running in `test` environment!!");
       return;
     }
 
-    this.loadEnv(logging);
+    this.loadEnv();
   }
 
+  /**
+   * Get variable from `process.env` or return default value
+   */
   private static getEnvVar(
     variable: string,
     defaultValue: any = undefined
@@ -62,23 +76,35 @@ export class Environment {
     return process.env[variable] ?? defaultValue;
   }
 
-  private static loadEnv(logging: boolean): void {
+  /**
+   * Environment variables loading logic and validation
+   */
+  private static loadEnv(): void {
     if (!process?.env) {
       throw new Error("Cannot find Node.JS environment");
     }
 
     this.type = this.getEnvVar("ENV", "prod");
 
-    if (this.type === "test") {
-      Logger.error("Running in `test` environment!!");
+    if (!ENV_TYPES.includes(this.type)) {
+      throw new Error(
+        `Wrong ENV type, only [${ENV_TYPES.join(", ")}] allowed, but got '${
+          this.type
+        }'`
+      );
     }
 
     const prod = this.type === "prod";
 
-    if (prod && logging) {
+    if (prod) {
       Logger.warn(bold("Running in production environment"));
     }
 
+    if (this.type === "local") {
+      Logger.info("Running in local environment");
+    }
+
+    // Initialize DB variables, default variables allowed only for development (local type)
     this.DB_TYPE = this.getEnvVar("DB_TYPE", "pg");
     this.DB_NAME = this.getEnvVar("DB_NAME", prod ? undefined : "openQuester");
     this.DB_USER = this.getEnvVar("DB_USER", prod ? undefined : "root");
@@ -96,6 +122,7 @@ export class Environment {
       );
     }
 
+    // Initialize JWT variables
     this.JWT_SECRET = JWTUtils.getSecret();
     this.JWT_REFRESH_SECRET = this.getEnvVar(
       "JWT_REFRESH_SECRET",
