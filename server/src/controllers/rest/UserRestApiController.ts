@@ -4,6 +4,9 @@ import { Database } from "../../database/Database";
 import * as bcrypt from "bcryptjs";
 import { QueryFailedError } from "typeorm";
 
+/**
+ * Handles all endpoints related for User CRUD
+ */
 export class UserRestApiController {
   constructor(db: Database, app: Express) {
     app.post("/v1/users/get-by-token/", async (req: Request, res: Response) => {

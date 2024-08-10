@@ -47,6 +47,9 @@ export class JWTUtils {
     return secret;
   }
 
+  /**
+   * Retrieves JWT secret from file, or create and write it if file is empty or not exists
+   */
   public static getSecret(options?: jwtOptions): string {
     const filePath = path.resolve(
       options?.writePath ?? WRITE_PATH,

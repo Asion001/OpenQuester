@@ -13,16 +13,25 @@ import { Group } from "../database/models/Group";
 import { ValueUtils } from "../utils/ValueUtils";
 
 export class UserService {
+  /**
+   * Allows for user to get info about himself by sending request with his token
+   * in headers.
+   */
   public static async getByToken(
     db: Database,
     req: express.Request
   ): Promise<IUser> {
-    // Token validated by middleware
+    // Token validated by middleware, so no need to validate it
     const payload = this.getPayload(req);
+    const id = ValueUtils.validateId(payload.id);
 
-    return await this.getUserById(db, payload.id);
+    return await this.getUserById(db, id);
   }
 
+  /**
+   * Get list of all available users in DB
+   * TODO: Later could be reworked in `online`, to get only online users
+   */
   public static async all(db: Database, req: express.Request) {
     const payload = this.getPayload(req);
 
@@ -45,8 +54,11 @@ export class UserService {
     throw new Error("You are not able to do that");
   }
 
+  /**
+   * Retrieve one user by params id
+   */
   public static async retrieve(db: Database, req: express.Request) {
-    const id = this.validateId(req.params.id);
+    const id = ValueUtils.validateId(req.params.id);
 
     const payload = this.getPayload(req);
 
@@ -69,6 +81,9 @@ export class UserService {
     throw new Error("You are not able to do that");
   }
 
+  /**
+   * Update user by params id
+   */
   public static async update(
     db: Database,
     req: express.Request,
@@ -78,7 +93,7 @@ export class UserService {
       throw new Error("To update user specify at least one field");
     }
 
-    const id = this.validateId(req.params.id);
+    const id = ValueUtils.validateId(req.params.id);
     const payload = this.getPayload(req);
 
     if (payload.id == id) {
@@ -99,8 +114,11 @@ export class UserService {
     throw new Error("You are not able to do that");
   }
 
+  /**
+   * Delete user by params id
+   */
   public static async delete(db: Database, req: express.Request) {
-    const id = this.validateId(req.params.id);
+    const id = ValueUtils.validateId(req.params.id);
     const payload = this.getPayload(req);
 
     const target = await this.getUserById(db, id);
@@ -126,6 +144,9 @@ export class UserService {
     throw new Error("You are not able to do that");
   }
 
+  /**
+   * User deletion logic
+   */
   private static async deleteUser(db: Database, id: number) {
     const repository = db.getRepository(User);
     await repository
@@ -149,6 +170,9 @@ export class UserService {
     return user;
   }
 
+  /**
+   * User updating logic
+   */
   private static async updateUser(
     db: Database,
     id: number,
@@ -279,16 +303,9 @@ export class UserService {
     return user;
   }
 
-  private static validateId(id: string | number): number {
-    id = Number(id);
-
-    if (id < 1 || isNaN(id)) {
-      throw new Error("Please specify id that greater than 1");
-    }
-
-    return id;
-  }
-
+  /**
+   * Returns token payload
+   */
   public static getPayload(req: express.Request) {
     const token = req.headers.authorization?.split(" ")[1] as string;
 

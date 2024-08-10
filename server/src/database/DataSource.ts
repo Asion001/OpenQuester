@@ -25,6 +25,7 @@ try {
   process.exit(0);
 }
 
+/** TypeORM's data source. Used for all DB operations */
 export const AppDataSource = new DataSource({
   type: "postgres",
   host: Environment.DB_HOST,

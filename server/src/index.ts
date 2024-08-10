@@ -3,7 +3,8 @@ import { ServeApi } from "./ServeApi";
 import { Logger } from "./utils/Logger";
 
 try {
-  Environment.load();
+  // If environment loaded by DB - don't load it again
+  Environment.load(false);
 } catch (err: any) {
   Logger.error(err.message);
   gracefulShutdown("ENV Exception");
