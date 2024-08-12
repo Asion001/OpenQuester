@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:openquester/src/ui/applications/router.gr.dart';
+import 'package:openquester/src/application/router.gr.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {

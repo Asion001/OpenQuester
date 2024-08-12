@@ -39,6 +39,8 @@ dependencies:
   openapi:
     path: "../openapi/dart_sdk/"
   url_strategy: ^0.3.0
+  envied: ^0.5.4+1
+  package_info_plus: ^8.0.2
 
 dev_dependencies:
   flutter_test:
@@ -46,10 +48,11 @@ dev_dependencies:
 
   flutter_lints: ^4.0.0
   openapi_generator: ^5.0.0
-  build_runner: ^2.4.0
+  build_runner: ^2.4.12
   analyzer: ^6.4.0
   auto_route_generator: ^9.0.0
   flutter_launcher_icons: "^0.13.1"
+  envied_generator: ^0.5.4+1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

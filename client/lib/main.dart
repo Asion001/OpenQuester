@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
-import 'src/ui/applications/application.dart';
+import 'src/application/app_init.dart';
+import 'src/application/application.dart';
 
 void main() async {
-  setUrlStrategy(PathUrlStrategy());
-
+  await AppInit.init();
   runApp(const App());
 }

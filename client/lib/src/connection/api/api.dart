@@ -1,5 +1,7 @@
 import 'package:openapi/openapi.dart';
 
+import '../../application/env.dart';
+
 final api = Openapi(
-  basePathOverride: 'http://localhost:3000',
+  basePathOverride: Env.apiUrl.toString(),
 ).getDefaultApi();

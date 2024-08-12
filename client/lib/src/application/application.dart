@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:openquester/src/ui/applications/router.dart';
+import 'package:openquester/src/application/router.dart';
 
 import 'theme.dart';
 
