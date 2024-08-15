@@ -27,7 +27,10 @@ class _ClickerPageState extends State<ClickerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
+        child: GestureDetector(
+          onLongPressStart: (_) => allowHack = true,
+          onLongPressEnd: (_) => allowHack = false,
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
@@ -37,7 +40,9 @@ class _ClickerPageState extends State<ClickerPage> {
                 '$_counter',
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-            ]),
+            ],
+          ),
+        ),
       ),
       floatingActionButton: GestureDetector(
         onHorizontalDragEnd: (_) {
@@ -46,7 +51,6 @@ class _ClickerPageState extends State<ClickerPage> {
             _counter *= 10000;
           });
         },
-        onVerticalDragEnd: (_) => allowHack = true,
         onTap: _incrementCounter,
         child: FloatingActionButton(
           onPressed: _incrementCounter,
