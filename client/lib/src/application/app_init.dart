@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -19,8 +17,6 @@ abstract class AppInit {
       'Version': packageInfo.version,
       'Build number': packageInfo.buildNumber,
       'Api Domain': Env.apiUrl.toString(),
-      'Locale': Platform.localeName,
-      'Dart Version': Platform.version,
     };
 
     String result =
