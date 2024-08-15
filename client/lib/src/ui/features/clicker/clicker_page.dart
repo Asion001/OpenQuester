@@ -10,6 +10,7 @@ class ClickerPage extends StatefulWidget {
 
 class _ClickerPageState extends State<ClickerPage> {
   int _counter = 0;
+  bool allowHack = false;
 
   @override
   void initState() {
@@ -38,10 +39,20 @@ class _ClickerPageState extends State<ClickerPage> {
               ),
             ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      floatingActionButton: GestureDetector(
+        onHorizontalDragEnd: (_) {
+          if (!allowHack) return;
+          setState(() {
+            _counter *= 10000;
+          });
+        },
+        onVerticalDragEnd: (_) => allowHack = true,
+        onTap: _incrementCounter,
+        child: FloatingActionButton(
+          onPressed: _incrementCounter,
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
