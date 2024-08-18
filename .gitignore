@@ -1,3 +1,9 @@
-.history
-.env
+# Vscode files
 .vscode/settings.json
+.history/
+
+# Env files
+.env*
+
+# Sigame files
+*.siq
