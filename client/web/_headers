@@ -7,4 +7,7 @@
     Cross-Origin-Embedder-Policy: credentialless
     Cross-Origin-Opener-Policy: same-origin
 
+    # Cache headers configuration
+    Cache-control: max-age=31536000, public
+
 
