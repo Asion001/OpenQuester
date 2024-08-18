@@ -23,6 +23,16 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
-        }
+        },
+        {
+            "name": "siq_file",
+            "type": "dart",
+            "request": "launch",
+            "program": "./client/packages/siq_file/bin/siq_file.dart",
+            "args": [
+                "parse",
+                "../../../test.siq"
+            ]
+        },
     ]
 }

@@ -185,7 +185,7 @@ Win32Window::MessageHandler(HWND hwnd,
       if (quit_on_close_) {
         PostQuitMessage(0);
       }
-      return 0;
+      return ExitCode.success.code;
 
     case WM_DPICHANGED: {
       auto newRectSize = reinterpret_cast<RECT*>(lparam);
@@ -195,7 +195,7 @@ Win32Window::MessageHandler(HWND hwnd,
       SetWindowPos(hwnd, nullptr, newRectSize->left, newRectSize->top, newWidth,
                    newHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 
-      return 0;
+      return ExitCode.success.code;
     }
     case WM_SIZE: {
       RECT rect = GetClientArea();
@@ -204,18 +204,18 @@ Win32Window::MessageHandler(HWND hwnd,
         MoveWindow(child_content_, rect.left, rect.top, rect.right - rect.left,
                    rect.bottom - rect.top, TRUE);
       }
-      return 0;
+      return ExitCode.success.code;
     }
 
     case WM_ACTIVATE:
       if (child_content_ != nullptr) {
         SetFocus(child_content_);
       }
-      return 0;
+      return ExitCode.success.code;
 
     case WM_DWMCOLORIZATIONCOLORCHANGED:
       UpdateTheme(hwnd);
-      return 0;
+      return ExitCode.success.code;
   }
 
   return DefWindowProc(window_handle_, message, wparam, lparam);
