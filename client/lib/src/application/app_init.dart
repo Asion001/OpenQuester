@@ -3,13 +3,15 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'env.dart';
+import 'logger.dart';
 
 abstract class AppInit {
   static Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
     AppInit.packageInfo = await PackageInfo.fromPlatform();
+    // ignore: prefer_const_constructors
     setUrlStrategy(PathUrlStrategy());
-    print(await getInitInfo());
+    logger.i(await getInitInfo());
   }
 
   static Future<String> getInitInfo() async {
@@ -21,7 +23,6 @@ abstract class AppInit {
 
     String result =
         parameters.entries.map((e) => '${e.key}: ${e.value}').join('\n');
-    result = '\n$result';
     return result;
   }
 

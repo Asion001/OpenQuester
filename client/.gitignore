@@ -44,3 +44,6 @@ app.*.map.json
 
 # Generated environment file
 /lib/src/application/env.g.dart
+
+# FVM Version Cache
+.fvm/
