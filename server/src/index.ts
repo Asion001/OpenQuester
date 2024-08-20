@@ -72,7 +72,7 @@ function shutdownCluster() {
   setTimeout(() => {
     Logger.error("Forcing cluster shutdown");
     process.exit(1);
-  }, 15000);
+  }, 10000);
 }
 
 function gracefulShutdown(server: any) {

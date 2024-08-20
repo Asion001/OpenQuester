@@ -127,6 +127,10 @@ export class Environment {
     };
 
     this.WORKERS_COUNT = Number(this.getEnvVar("WORKERS_COUNT", 2));
+
+    if (isNaN(this.WORKERS_COUNT) || this.WORKERS_COUNT === 0) {
+      this.WORKERS_COUNT = 2;
+    }
   }
 
   private static validateJWT() {
