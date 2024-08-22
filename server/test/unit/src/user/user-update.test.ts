@@ -504,10 +504,10 @@ describe("User update", () => {
       const result = await UserService.update(ctx, req as any);
       expect(result.name).to.be.equal("updatedName");
       expect(result.email).to.be.equal("updatedEmail@gmail.com");
-      expect(result.permissions[0].id).to.be.equal(1);
-      expect(result.permissions[0].name).to.be.equal("admins");
-      expect(result.permissions[1].id).to.be.equal(2);
-      expect(result.permissions[1].name).to.be.equal("users");
+      expect(result.permissions![0].id).to.be.equal(1);
+      expect(result.permissions![0].name).to.be.equal("admins");
+      expect(result.permissions![1].id).to.be.equal(2);
+      expect(result.permissions![1].name).to.be.equal("users");
 
       stubPayload.restore();
       stubFindOne.restore();

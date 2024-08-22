@@ -30,12 +30,15 @@ const USER_SELECT_FIELDS = [
   "created_at",
   "updated_at",
 ];
+
+// Workaround to avoid importing/exporting errors
+type inputData = IUser;
 @Entity()
 @Unique(["email", "name"])
 export class User implements IUser {
   private repository?: Repository<ObjectLiteral>;
 
-  constructor(data: IUser) {
+  constructor(data: inputData) {
     if (!data) {
       return;
     }
