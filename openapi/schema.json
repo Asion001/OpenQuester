@@ -480,59 +480,59 @@
             }
           },
           "required": ["password"]
-        },
-        "RegisterUser": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "example": "John"
-            },
-            "email": {
-              "type": "string",
-              "example": "someuser@gmail.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "mySuperCoolPassword123"
-            },
-            "birthday": {
-              "type": "string",
-              "format": "date",
-              "example": "2024-01-01"
-            },
-            "avatar": {
-              "type": "string",
-              "format": "binary"
-            }
+        }
+      },
+      "RegisterUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe"
           },
-          "required": ["password"]
-        },
-        "LoginUser": {
-          "type": "object",
-          "properties": {
-            "login": {
-              "type": "string",
-              "example": "username || useremail@gmail.com"
-            },
-            "password": {
-              "type": "string",
-              "example": "mySuperCoolPassword123"
-            }
+          "email": {
+            "type": "string",
+            "example": "someuser@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "mySuperCoolPassword123"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "binary"
           }
         },
-        "AuthData": {
-          "type": "object",
-          "properties": {
-            "access_token": {
-              "type": "string"
-            },
-            "refresh_token": {
-              "type": "string"
-            }
+        "required": ["password"]
+      },
+      "LoginUser": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "example": "username || useremail@gmail.com"
           },
-          "required": ["access_token", "refresh_token"]
+          "password": {
+            "type": "string",
+            "example": "mySuperCoolPassword123"
+          }
         }
+      },
+      "AuthData": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        },
+        "required": ["access_token", "refresh_token"]
       }
     }
   }
