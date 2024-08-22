@@ -75,4 +75,3 @@ export class ServeApi {
     new UserRestApiController(this.context);
   }
 }
-export { IApiContext };

@@ -30,10 +30,14 @@ describe("User auth and jwt tokens", () => {
   let userRepository: sinon.SinonStubbedInstance<any>;
   let selectQueryBuilder: sinon.SinonStubbedInstance<any>;
   let db: any;
+  let ctx: any;
 
   beforeEach(async () => {
     db = {
       getRepository: () => userRepository,
+    };
+    ctx = {
+      db: db,
     };
     selectQueryBuilder = {
       where: sinon.stub().returnsThis(),
@@ -65,7 +69,7 @@ describe("User auth and jwt tokens", () => {
       });
 
       const result = await AuthService.register(
-        db as any,
+        ctx,
         userData as any,
         bcryptInstance
       );
@@ -84,7 +88,7 @@ describe("User auth and jwt tokens", () => {
       };
 
       const result2 = await AuthService.register(
-        db as any,
+        ctx,
         userData2 as any,
         bcryptInstance
       );
@@ -102,7 +106,7 @@ describe("User auth and jwt tokens", () => {
       };
 
       const result3 = await AuthService.register(
-        db as any,
+        ctx,
         userData3 as any,
         bcryptInstance
       );
@@ -116,7 +120,7 @@ describe("User auth and jwt tokens", () => {
       const userData = { name: "John Doe", email: "", password: "" };
 
       try {
-        await AuthService.register(db as any, userData as any, bcryptInstance);
+        await AuthService.register(ctx, userData as any, bcryptInstance);
         throw new Error("Expected register method to throw error.");
       } catch (err: any) {
         expect(err.message).to.include("Provide all required fields");
@@ -138,7 +142,7 @@ describe("User auth and jwt tokens", () => {
       sinon.stub(selectQueryBuilder, "getOne").returns(user);
 
       const result = await AuthService.login(
-        db as any,
+        ctx,
         userData as any,
         bcryptInstance
       );
@@ -153,7 +157,7 @@ describe("User auth and jwt tokens", () => {
       const userData = { email: "", password: "" };
 
       try {
-        await AuthService.login(db as any, userData as any, bcryptInstance);
+        await AuthService.login(ctx, userData as any, bcryptInstance);
         throw new Error("Expected method above to throw error.");
       } catch (err: any) {
         expect(err.message).to.include("Provide all required fields");
@@ -168,7 +172,7 @@ describe("User auth and jwt tokens", () => {
       sinon.stub(selectQueryBuilder, "getOne").returns(null);
 
       try {
-        await AuthService.login(db as any, userData as any, bcryptInstance);
+        await AuthService.login(ctx, userData as any, bcryptInstance);
         throw new Error("Expected method above to throw error.");
       } catch (err: any) {
         expect(err.message).to.include("does not exists");
@@ -187,7 +191,7 @@ describe("User auth and jwt tokens", () => {
     sinon.stub(selectQueryBuilder, "getOne").returns(user);
 
     try {
-      await AuthService.login(db as any, userData as any, bcryptInstance);
+      await AuthService.login(ctx, userData as any, bcryptInstance);
       throw new Error("Expected method above to throw error.");
     } catch (err: any) {
       expect(err.message).to.include("Wrong password");

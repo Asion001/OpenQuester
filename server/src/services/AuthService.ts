@@ -3,10 +3,9 @@ import jwt from "jsonwebtoken";
 import { Environment } from "../config/Environment";
 
 import { Database } from "../database/Database";
-import { File } from "../database/models/File";
 import { Group } from "../database/models/Group";
 import { User } from "../database/models/User";
-import { IUser } from "../models/IUser";
+import { IUser } from "../models/user/IUser";
 import { EUserGroups } from "../enums/EUserGroups";
 
 import { JWTPayload, JWTResponse, TokenOptions } from "../types/jwt/jwt";
@@ -15,13 +14,19 @@ import { Crypto } from "../types/Crypto";
 import { ValueUtils } from "../utils/ValueUtils";
 import { IApiContext } from "../models/IApiContext";
 
+interface ILoginUser extends IUser {
+  name?: string;
+  email?: string;
+  password: string;
+}
+
 /**
  * Handles all business logic of user authorization
  */
 export class AuthService {
   public static async register(
     ctx: IApiContext,
-    data: IUser,
+    data: User,
     crypto: Crypto
   ): Promise<JWTResponse> {
     if (!this.validateRegisterRequest(data)) {
@@ -42,7 +47,7 @@ export class AuthService {
       ? ValueUtils.getBirthday(data.birthday)
       : undefined;
 
-    user.avatar = data.avatar as File;
+    user.avatar = data.avatar;
     user.groups = await this.defaultGroups(ctx.db);
 
     user.created_at = new Date();
@@ -60,7 +65,7 @@ export class AuthService {
 
   public static async login(
     ctx: IApiContext,
-    data: IUser,
+    data: ILoginUser,
     crypto: Crypto
   ): Promise<JWTResponse> {
     if (!this.validateLoginRequest(data)) {
@@ -82,7 +87,7 @@ export class AuthService {
     }
 
     // Check user password
-    if (!(await crypto.compare(String(data.password), user.password))) {
+    if (!(await crypto.compare(data.password, user.password))) {
       throw new Error("Wrong password, please try again");
     }
 

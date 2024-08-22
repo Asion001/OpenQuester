@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UserService } from "../../services/UserService";
 import * as bcrypt from "bcryptjs";
 import { QueryFailedError } from "typeorm";
-import { IApiContext } from "../../ServeApi";
+import { IApiContext } from "../../models/IApiContext";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -12,6 +12,7 @@ export class UserRestApiController {
 
   constructor(ctx: IApiContext) {
     const app = ctx.app;
+    ctx.crypto = bcrypt;
     this.path = "/v1/user(/:id)?";
 
     app.get(this.path, async (req: Request, res: Response) => {
@@ -28,7 +29,7 @@ export class UserRestApiController {
 
     app.patch(this.path, async (req: Request, res: Response) => {
       try {
-        const result = await UserService.update(ctx, req, bcrypt);
+        const result = await UserService.update(ctx, req);
         return res.status(200).send(result ? result : "");
       } catch (err: any) {
         let s = 400;

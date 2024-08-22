@@ -7,12 +7,15 @@ import { UserService } from "../../../../src/services/UserService";
 describe("User retrieve by id and JWT token", () => {
   let userRepository: sinon.SinonStubbedInstance<any>;
   let db: any;
+  let ctx: any;
 
   beforeEach(async () => {
     db = {
       getRepository: () => userRepository,
     };
-
+    ctx = {
+      db: db,
+    };
     userRepository = {
       findOne: () => null,
     } as unknown as Repository<User>;
@@ -39,9 +42,10 @@ describe("User retrieve by id and JWT token", () => {
           created_at: new Date(),
           updated_at: new Date(),
           is_banned: false,
+          isAdmin: () => false,
         });
 
-      const result = await UserService.getByToken(db, {} as any);
+      const result = await UserService.getByToken(ctx, {} as any);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
       stubFindOne.restore();
@@ -71,9 +75,10 @@ describe("User retrieve by id and JWT token", () => {
         })
         .returns({
           name: "success",
+          isAdmin: () => false,
         });
 
-      const result = await UserService.retrieve(db, req);
+      const result = await UserService.retrieve(ctx, req);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
       stubFindOne.restore();
@@ -101,10 +106,11 @@ describe("User retrieve by id and JWT token", () => {
         })
         .returns({
           name: "success",
+          isAdmin: () => false,
         });
 
       try {
-        await UserService.retrieve(db, req);
+        await UserService.retrieve(ctx, req);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include(
@@ -138,10 +144,11 @@ describe("User retrieve by id and JWT token", () => {
         .returns({
           name: "fail",
           groups: [],
+          isAdmin: () => false,
         });
 
       try {
-        await UserService.retrieve(db, req);
+        await UserService.retrieve(ctx, req);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).include("not able");
@@ -174,6 +181,7 @@ describe("User retrieve by id and JWT token", () => {
         .returns({
           name: "admin",
           groups: [{ id: 1, name: "admins" }],
+          isAdmin: () => true,
         });
 
       stubFindOne
@@ -183,9 +191,10 @@ describe("User retrieve by id and JWT token", () => {
         })
         .returns({
           name: "success",
+          isAdmin: () => false,
         });
 
-      const result = await UserService.retrieve(db, req);
+      const result = await UserService.retrieve(ctx, req);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
       stubFindOne.restore();

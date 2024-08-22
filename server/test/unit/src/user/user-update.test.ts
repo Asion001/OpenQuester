@@ -19,6 +19,7 @@ const bcryptInstance = instance(bcryptMock);
 describe("User update", () => {
   let repository: sinon.SinonStubbedInstance<any>;
   let db: any;
+  let ctx: any;
 
   beforeEach(async () => {
     db = {
@@ -26,6 +27,10 @@ describe("User update", () => {
       ds: {
         transaction: async () => true,
       },
+    };
+    ctx = {
+      db: db,
+      crypto: bcryptInstance,
     };
 
     // Implement methods of user and groups repositories
@@ -36,7 +41,7 @@ describe("User update", () => {
     } as unknown as Repository<User>;
   });
 
-  describe("User update yourself", () => {
+  describe("User update", () => {
     it("Should throw error with empty data", async () => {
       const dataToUpdate = {};
 
@@ -45,7 +50,7 @@ describe("User update", () => {
       };
 
       try {
-        await UserService.update(db, req as any, bcryptInstance);
+        await UserService.update(ctx, req as any);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("at least one field");
@@ -82,9 +87,11 @@ describe("User update", () => {
           name: "success",
           password: "somePassword",
           updated_at: new Date(),
+          is_deleted: false,
+          isAdmin: () => false,
         });
 
-      const result = await UserService.update(db, req as any, bcryptInstance);
+      const result = await UserService.update(ctx, req as any);
 
       expect(result.name).to.be.equal("updatedName");
       expect(result.email).to.be.equal("updatedEmail@gmail.com");
@@ -126,13 +133,14 @@ describe("User update", () => {
           name: "user",
           password: "somePassword",
           updated_at: new Date(),
+          isAdmin: () => false,
         });
 
       try {
-        await UserService.update(db, req as any, bcryptInstance);
+        await UserService.update(ctx, req as any);
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include(
-          "password is incorrect or not provided"
+          "password is not provided"
         );
       }
 
@@ -148,11 +156,9 @@ describe("User update", () => {
       };
 
       try {
-        await UserService.update(db, req as any, bcryptInstance);
+        await UserService.update(ctx, req as any);
       } catch (err: any) {
-        expect(err.message.toLowerCase()).to.include(
-          "password is incorrect or not provided"
-        );
+        expect(err.message.toLowerCase()).to.include("password is incorrect");
       }
 
       stubPayload.restore();
@@ -186,6 +192,7 @@ describe("User update", () => {
         .returns({
           name: "admin",
           groups: [{ id: 1, name: "admins" }],
+          isAdmin: () => true,
         });
 
       stubFindOne
@@ -198,9 +205,10 @@ describe("User update", () => {
           password: "somePassword",
           updated_at: new Date(),
           groups: [{ id: 2, name: "users" }],
+          isAdmin: () => false,
         });
 
-      const result = await UserService.update(db, req as any, bcryptInstance);
+      const result = await UserService.update(ctx, req as any);
       expect(result.name).to.be.equal("updatedName");
       expect(result.email).to.be.equal("updatedEmail@gmail.com");
       stubPayload.restore();
@@ -234,10 +242,11 @@ describe("User update", () => {
         .returns({
           name: "notAdmin",
           groups: [{ id: 2, name: "users" }],
+          isAdmin: () => false,
         });
 
       try {
-        await UserService.update(db, req as any, bcryptInstance);
+        await UserService.update(ctx, req as any);
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("not able");
       }
@@ -272,6 +281,7 @@ describe("User update", () => {
         .returns({
           name: "admin",
           groups: [{ id: 1, name: "admins" }],
+          isAdmin: () => true,
         });
 
       stubFindOne
@@ -282,7 +292,7 @@ describe("User update", () => {
         .returns(undefined);
 
       try {
-        await UserService.update(db, req as any, bcryptInstance);
+        await UserService.update(ctx, req as any);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("not found");
@@ -325,9 +335,10 @@ describe("User update", () => {
           email: "email@gmail.com",
           password: "somePassword",
           updated_at: new Date(),
+          isAdmin: () => false,
         });
 
-      await UserService.update(db, req as any, bcryptInstance);
+      await UserService.update(ctx, req as any);
       verify(bcryptMock.hash("newPassword", 10)).called();
 
       stubFindOne
@@ -340,6 +351,7 @@ describe("User update", () => {
           email: "email@gmail.com",
           password: "somePassword",
           updated_at: new Date(),
+          isAdmin: () => false,
         });
 
       dataToUpdate = {
@@ -354,7 +366,7 @@ describe("User update", () => {
         params: { id: 1 },
       };
 
-      await UserService.update(db, req as any, bcryptInstance);
+      await UserService.update(ctx, req as any);
       verify(bcryptMock.hash("newPassword", 10)).once();
 
       stubPayload.restore();
@@ -404,10 +416,11 @@ describe("User update", () => {
           email: "email@gmail.com",
           password: "somePassword",
           updated_at: new Date(),
+          isAdmin: () => false,
         });
 
       try {
-        await UserService.update(db, req as any, bcryptInstance);
+        await UserService.update(ctx, req as any);
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include(
           "only admins allowed to change user groups"
@@ -462,6 +475,7 @@ describe("User update", () => {
           email: "email@gmail.com",
           password: "somePassword",
           updated_at: new Date(),
+          isAdmin: () => false,
         });
 
       stubFindOne
@@ -474,9 +488,10 @@ describe("User update", () => {
           email: "admin@gmail.com",
           updated_at: new Date(),
           groups: [{ id: 1, name: "admins" }],
+          isAdmin: () => true,
         });
 
-      const result = await UserService.update(db, req as any, bcryptInstance);
+      const result = await UserService.update(ctx, req as any);
       expect(result.name).to.be.equal("updatedName");
       expect(result.email).to.be.equal("updatedEmail@gmail.com");
       expect(result.groups[0].id).to.be.equal(1);
@@ -528,6 +543,7 @@ describe("User update", () => {
           email: "email@gmail.com",
           password: "somePassword",
           updated_at: new Date(),
+          isAdmin: () => false,
         });
 
       stubFindOne
@@ -540,12 +556,13 @@ describe("User update", () => {
           email: "admin@gmail.com",
           updated_at: new Date(),
           groups: [{ id: 1, name: "admins" }],
+          isAdmin: () => true,
         });
 
       sinon.stub(repository, "exists").returns(false);
 
       try {
-        await UserService.update(db, req as any, bcryptInstance);
+        await UserService.update(ctx, req as any);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("3"); // group id
