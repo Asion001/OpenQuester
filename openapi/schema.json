@@ -464,75 +464,75 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "John"
-            "example": "John Doe"
-          "password": {
-            "type": "string",
-            "example": "mySuperCoolPassword123"
+            "example": "John Doe",
+            "password": {
+              "type": "string",
+              "example": "mySuperCoolPassword123"
+            },
+            "birthday": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            },
+            "avatar": {
+              "type": "string",
+              "format": "binary"
+            }
           },
-          "birthday": {
-            "type": "string",
-            "format": "date",
-            "example": "2024-01-01"
+          "required": ["password"]
+        },
+        "RegisterUser": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "example": "John"
+            },
+            "email": {
+              "type": "string",
+              "example": "someuser@gmail.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "mySuperCoolPassword123"
+            },
+            "birthday": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            },
+            "avatar": {
+              "type": "string",
+              "format": "binary"
+            }
           },
-          "avatar": {
-            "type": "string",
-            "format": "binary"
+          "required": ["password"]
+        },
+        "LoginUser": {
+          "type": "object",
+          "properties": {
+            "login": {
+              "type": "string",
+              "example": "username || useremail@gmail.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "mySuperCoolPassword123"
+            }
           }
         },
-        "required": ["password"]
-      },
-      "RegisterUser": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "John"
+        "AuthData": {
+          "type": "object",
+          "properties": {
+            "access_token": {
+              "type": "string"
+            },
+            "refresh_token": {
+              "type": "string"
+            }
           },
-          "email": {
-            "type": "string",
-            "example": "someuser@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "mySuperCoolPassword123"
-          },
-          "birthday": {
-            "type": "string",
-            "format": "date",
-            "example": "2024-01-01"
-          },
-          "avatar": {
-            "type": "string",
-            "format": "binary"
-          }
-        },
-        "required": ["password"]
-      },
-      "LoginUser": {
-        "type": "object",
-        "properties": {
-          "login": {
-            "type": "string",
-            "example": "username || useremail@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "mySuperCoolPassword123"
-          }
+          "required": ["access_token", "refresh_token"]
         }
-      },
-      "AuthData": {
-        "type": "object",
-        "properties": {
-          "access_token": {
-            "type": "string"
-          },
-          "refresh_token": {
-            "type": "string"
-          }
-        },
-        "required": ["access_token", "refresh_token"]
       }
     }
   }
