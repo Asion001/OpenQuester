@@ -96,7 +96,7 @@ export class UserService {
     const repository = ctx.db.getRepository(User);
 
     const user = (await repository.findOne({
-      where: { id: id },
+      where: { id },
     })) as User;
 
     if (!user) {
@@ -128,7 +128,7 @@ export class UserService {
     const repository = db.getRepository(User);
 
     const user = (await repository.findOne({
-      where: { id: id },
+      where: { id },
       relations: ["permissions"],
     })) as User;
 
@@ -165,7 +165,7 @@ export class UserService {
     const repository = db.getRepository(User);
 
     const user = (await repository.findOne({
-      where: { id: id },
+      where: { id },
       relations: ["permissions"],
     })) as User;
 

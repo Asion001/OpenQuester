@@ -24,8 +24,8 @@ export class AuthService {
 
     const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
     return {
-      access_token: access_token,
-      refresh_token: refresh_token,
+      access_token,
+      refresh_token,
     };
   }
 
@@ -47,8 +47,8 @@ export class AuthService {
     const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
 
     return {
-      access_token: access_token,
-      refresh_token: refresh_token,
+      access_token,
+      refresh_token,
     };
   }
 }

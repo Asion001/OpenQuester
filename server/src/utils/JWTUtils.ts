@@ -4,7 +4,7 @@ import path from "path";
 import express from "express";
 import * as jwt from "jsonwebtoken";
 import { Environment } from "../config/Environment";
-import { JWTPayload, TokenOptions } from "../types/jwt/jwt";
+import { JWTPayload, JWTResponse, TokenOptions } from "../types/jwt/jwt";
 
 const WRITE_PATH = path.resolve(process.cwd(), "storage/");
 
@@ -85,23 +85,26 @@ export class JWTUtils {
   /**
    * Generate tokens based on userId as payload, and on given / environment secrets
    */
-  public static generateTokens(userId: number, options?: TokenOptions) {
+  public static generateTokens(
+    userId: number,
+    options?: TokenOptions
+  ): JWTResponse {
     const tokenOptions: TokenOptions = options ?? Environment.JWT_TOKEN_OPTIONS;
 
-    const access = jwt.sign({ id: userId }, tokenOptions.secret, {
+    const access_token = jwt.sign({ id: userId }, tokenOptions.secret, {
       expiresIn: tokenOptions.expiresIn,
     });
-    const refresh = jwt.sign({ id: userId }, tokenOptions.refreshSecret, {
+    const refresh_token = jwt.sign({ id: userId }, tokenOptions.refreshSecret, {
       expiresIn: tokenOptions.refreshExpiresIn,
     });
 
-    return { access_token: access, refresh_token: refresh };
+    return { access_token, refresh_token };
   }
 
   /**
    * Refreshes user tokens by checking given refresh_token
    */
-  public static refresh(token: string, options?: TokenOptions) {
+  public static refresh(token: string, options?: TokenOptions): JWTResponse {
     try {
       const decode = jwt.verify(
         token,
@@ -112,8 +115,8 @@ export class JWTUtils {
         options
       );
       return {
-        access_token: access_token,
-        refresh_token: refresh_token,
+        access_token,
+        refresh_token,
       };
     } catch {
       throw new Error("Invalid or expired refresh token");

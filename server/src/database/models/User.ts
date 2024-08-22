@@ -99,7 +99,7 @@ export class User implements IUser {
 
   public static async get(db: Database, id: number) {
     return db.getRepository(User).findOne({
-      where: { id: id },
+      where: { id },
       select: USER_SELECT_FIELDS,
       relations: ["permissions"],
     }) as Promise<User>;
