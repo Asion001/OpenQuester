@@ -183,6 +183,18 @@ export class UserService {
           `Permission '${p.name}' with ID '${p.id}' does not exists`
         );
       }
+      const perExists = await permRepository.exists({
+        where: {
+          id: p.id,
+          name: p.name,
+        },
+      });
+
+      if (perExists) continue;
+
+      throw new Error(
+        `Permission '${p.name}' with ID '${p.id}' does not exists`
+      );
     }
 
     const newPermIds = body.permissions.map((p: IPermission) => p.id);
