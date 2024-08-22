@@ -380,7 +380,7 @@
           "birthday": {
             "type": "string",
             "format": "date",
-            "example": "2024-01-01T00:00:00Z"
+            "example": "2024-01-01"
           },
           "avatar": {
             "type": "string",
@@ -395,12 +395,12 @@
           },
           "created_at": {
             "type": "string",
-            "format": "date",
+            "format": "date-time",
             "example": "2024-01-01T00:00:00Z"
           },
           "updated_at": {
             "type": "string",
-            "format": "date",
+            "format": "date-time",
             "example": "2024-01-01T00:00:00Z"
           },
           "is_deleted": {
@@ -431,7 +431,7 @@
           "birthday": {
             "type": "string",
             "format": "date",
-            "example": "2024-01-01T00:00:00Z"
+            "example": "2024-01-01"
           },
           "is_deleted": {
             "type": "boolean",
