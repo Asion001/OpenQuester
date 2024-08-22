@@ -16,7 +16,7 @@
           {
             "name": "id",
             "in": "path",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -62,7 +62,7 @@
           {
             "name": "id",
             "in": "path",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -118,13 +118,12 @@
           {
             "name": "id",
             "in": "path",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
           }
         ],
-
         "responses": {
           "204": {
             "description": "User deleted successfully"
@@ -469,9 +468,23 @@
           },
           "permissions": {
             "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "name": {
+                  "type": "string",
+                  "example": "admin"
+                }
+              },
+              "required": ["id", "name"]
+            },
             "example": [
-              { "id": 1, "name": "users" },
-              { "id": 2, "name": "admins" }
+              { "id": 1, "name": "admin" },
+              { "id": 2, "name": "user" }
             ]
           },
           "created_at": {
@@ -495,11 +508,11 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "John Doe",
-            "password": {
-              "type": "string",
-              "example": "mySuperCoolPassword123"
-            }
+            "example": "John Doe"
+          },
+          "password": {
+            "type": "string",
+            "example": "mySuperCoolPassword123"
           },
           "birthday": {
             "type": "string",

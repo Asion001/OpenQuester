@@ -12,7 +12,7 @@ import {
 import { IUser } from "../../interfaces/user/IUser";
 import { File } from "./File";
 import { Permission } from "./Permission";
-import { UserPermissions } from "../../enums/EUserPermissions";
+import { EUserPermissions } from "../../enums/EUserPermissions";
 import { Database } from "../Database";
 import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
 import { Crypto } from "../../interfaces/Crypto";
@@ -82,7 +82,7 @@ export class User implements IUser {
     }
 
     for (const p of this.permissions) {
-      if (p.id == UserPermissions.admin) {
+      if (p.id == EUserPermissions.admin) {
         return true;
       }
     }
