@@ -10,9 +10,10 @@ export default [
   {
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
     },
   },
   {
-    ignores: ["**/dist", "**/build", "**/node_modules"],
+    ignores: ["**/dist", "**/build", "**/node_modules", "**/test"],
   },
 ];

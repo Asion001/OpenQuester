@@ -1,9 +1,12 @@
-import { blue, bold, green, red, yellow } from "colorette";
+import { blue, blueBright, bold, green, red, yellow } from "colorette";
 import fs from "fs";
 import path from "path";
 import { Environment } from "../config/Environment";
 import cluster from "cluster";
 
+/**
+ * Logger class used for writing logs and for prettier console output
+ */
 export class Logger {
   public static info(text: any, logWorker: boolean = false) {
     if (cluster.isPrimary || logWorker) {
@@ -45,6 +48,16 @@ export class Logger {
     const log = prefix + String(text);
 
     console.debug(blue(log));
+
+    this.writeFile(log);
+  }
+
+  public static logMigrationComplete(version: string) {
+    const prefix = "[Migration]";
+
+    const log = `${prefix} Migration complete for version ${version}`;
+
+    console.log(blueBright(log));
 
     this.writeFile(log);
   }

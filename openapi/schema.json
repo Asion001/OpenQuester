@@ -10,6 +10,243 @@
     }
   ],
   "paths": {
+    "/v1/user/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Get user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid or expired JWT token"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "You don't have permissions for this operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "400": {
+            "description": "You don't have permissions for this operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Get user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid or expired JWT token"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update user info.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid or expired JWT token"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user.",
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "400": {
+            "description": "Invalid or expired JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid or expired JWT token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/": {
+      "get": {
+        "summary": "Get all users info",
+        "responses": {
+          "200": {
+            "description": "Get all users data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrivateUser"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "You have no access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Users not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Users not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/auth/register": {
       "post": {
         "summary": "User Registration",
@@ -18,19 +255,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "required": ["name", "email", "password"]
+                "$ref": "#/components/schemas/RegisterUser"
               }
             }
           }
@@ -52,7 +277,7 @@
               "application/json": {
                 "schema": {
                   "type": "string",
-                  "example": "Provide all required fields: 'email', 'name' and 'password'"
+                  "example": "[\"name\", \"password\"] is required"
                 }
               }
             }
@@ -68,16 +293,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "password": {
-                    "type": "string"
-                  }
-                },
-                "required": ["email", "password"]
+                "$ref": "#/components/schemas/LoginUser"
               }
             }
           }
@@ -99,7 +315,7 @@
               "application/json": {
                 "schema": {
                   "type": "string",
-                  "example": "Provide all required fields: 'email' or 'name' and 'password'"
+                  "example": "[\"password\"] is required"
                 }
               }
             }
@@ -132,15 +348,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "access_token": {
-                      "type": "string"
-                    },
-                    "refresh_token": {
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/AuthData"
                 }
               }
             }
@@ -221,12 +429,96 @@
           },
           "birthday": {
             "type": "string",
-            "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
+            "format": "date",
+            "example": "2024-01-01"
           },
           "avatar": {
             "type": "string",
             "format": "binary"
+          },
+          "permissions": {
+            "type": "array",
+            "example": [
+              { "id": 1, "name": "users" },
+              { "id": 2, "name": "admins" }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "is_deleted": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
+      "UpdateUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "password": {
+              "type": "string",
+              "example": "mySuperCoolPassword123"
+            },
+            "birthday": {
+              "type": "string",
+              "format": "date",
+              "example": "2024-01-01"
+            },
+            "avatar": {
+              "type": "string",
+              "format": "binary"
+            }
+          },
+          "required": ["password"]
+        }
+      },
+      "RegisterUser": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "someuser@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "mySuperCoolPassword123"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-01-01"
+          },
+          "avatar": {
+            "type": "string",
+            "format": "binary"
+          }
+        },
+        "required": ["password"]
+      },
+      "LoginUser": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "example": "username || useremail@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "mySuperCoolPassword123"
           }
         }
       },

@@ -1,20 +1,33 @@
-import { Express, Request, Response } from "express";
-import { AuthService } from "../../services/AuthService";
-import { db } from "../../database/Database";
-import { QueryFailedError } from "typeorm";
-import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { Request, Response, Router } from "express";
+import { AuthService } from "../../services/AuthService";
+import { QueryFailedError } from "typeorm";
+import { Environment } from "../../config/Environment";
+import { IApiContext } from "../../interfaces/IApiContext";
+import { RegisterUser } from "../../managers/user/RegisterUser";
+import { LoginUser } from "../../managers/user/LoginUser";
+import { JWTUtils } from "../../utils/JWTUtils";
 
+/**
+ * Handles all endpoints related to user authorization
+ */
 export class AuthRestApiController {
-  constructor(app: Express) {
-    app.post("/v1/auth/register", async (req: Request, res: Response) => {
+  constructor(ctx: IApiContext) {
+    const app = ctx.app;
+    const router = Router();
+    app.use("/v1/auth", router);
+
+    router.post(`/register`, async (req: Request, res: Response) => {
       try {
-        if (!this.checkToken(req)) {
+        if (!this.validateTokenForAuth(req)) {
           throw new Error("User is already logged in");
         }
 
-        const result = await AuthService.register(db, req.body, bcrypt);
+        const data = new RegisterUser(req.body);
+        data.validate();
+
+        const result = await AuthService.register(ctx, req.body, bcrypt);
         return res.status(201).send(result);
       } catch (err: any) {
         if (
@@ -28,27 +41,30 @@ export class AuthRestApiController {
       }
     });
 
-    app.post("/v1/auth/login", async (req: Request, res: Response) => {
+    router.post(`/login`, async (req: Request, res: Response) => {
       try {
-        if (!this.checkToken(req)) {
+        if (!this.validateTokenForAuth(req)) {
           throw new Error("User is already logged in");
         }
 
-        const result = await AuthService.login(db, req.body, bcrypt);
+        const data = new LoginUser(req.body);
+        data.validate();
+
+        const result = await AuthService.login(ctx, req.body, bcrypt);
         return res.send(result);
       } catch (err: any) {
         return res.status(400).send({ error: err.message });
       }
     });
 
-    app.post("/v1/auth/refresh", async (req: Request, res: Response) => {
+    router.post(`/refresh`, async (req: Request, res: Response) => {
       try {
         const refresh = req.body.refresh_token;
         if (!refresh) {
           throw new Error("Please provide refresh_token");
         }
 
-        const result = AuthService.refreshToken(refresh);
+        const result = JWTUtils.refresh(refresh);
         res.status(200).send(result);
       } catch (err: any) {
         res.status(400).send({ error: err.message });
@@ -56,20 +72,26 @@ export class AuthRestApiController {
     });
   }
 
-  private checkToken(req: Request) {
-    if (req.header("Authorization")) {
-      const header = req.header("Authorization");
-      const scheme = header?.split(" ")[0];
-      const token = header?.split(" ")[1];
-      if (!token || scheme !== Environment.JWT_SCHEME) {
-        // If token invalid - we can proceed register / login
-        return true;
-      }
+  /**
+   * This method returns true, if token is invalid. This means if user token is invalid,
+   * user should be able to login / register.
+   *
+   * If user token is valid - he's already logged in and no need to continue execution
+   */
+  private validateTokenForAuth(req: Request): boolean {
+    const header = req.header("Authorization");
+
+    if (!header) return true;
+
+    const scheme = header?.split(" ")[0];
+    const token = header?.split(" ")[1];
+
+    if (token && scheme == Environment.JWT_SCHEME) {
       try {
         jwt.verify(token, Environment.JWT_SECRET);
         return false;
       } catch {
-        //
+        // Token invalid - continue
       }
     }
 
