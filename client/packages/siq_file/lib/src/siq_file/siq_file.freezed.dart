@@ -21,6 +21,7 @@ SiqFile _$SiqFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SiqFile {
   SiqFileMetadata get metadata => throw _privateConstructorUsedError;
+  List<SiqFileRound> get rounds => throw _privateConstructorUsedError;
 
   /// Serializes this SiqFile to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ abstract class $SiqFileCopyWith<$Res> {
   factory $SiqFileCopyWith(SiqFile value, $Res Function(SiqFile) then) =
       _$SiqFileCopyWithImpl<$Res, SiqFile>;
   @useResult
-  $Res call({SiqFileMetadata metadata});
+  $Res call({SiqFileMetadata metadata, List<SiqFileRound> rounds});
 
   $SiqFileMetadataCopyWith<$Res> get metadata;
 }
@@ -57,12 +58,17 @@ class _$SiqFileCopyWithImpl<$Res, $Val extends SiqFile>
   @override
   $Res call({
     Object? metadata = null,
+    Object? rounds = null,
   }) {
     return _then(_value.copyWith(
       metadata: null == metadata
           ? _value.metadata
           : metadata // ignore: cast_nullable_to_non_nullable
               as SiqFileMetadata,
+      rounds: null == rounds
+          ? _value.rounds
+          : rounds // ignore: cast_nullable_to_non_nullable
+              as List<SiqFileRound>,
     ) as $Val);
   }
 
@@ -84,7 +90,7 @@ abstract class _$$SiqFileImplCopyWith<$Res> implements $SiqFileCopyWith<$Res> {
       __$$SiqFileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({SiqFileMetadata metadata});
+  $Res call({SiqFileMetadata metadata, List<SiqFileRound> rounds});
 
   @override
   $SiqFileMetadataCopyWith<$Res> get metadata;
@@ -104,12 +110,17 @@ class __$$SiqFileImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? metadata = null,
+    Object? rounds = null,
   }) {
     return _then(_$SiqFileImpl(
       metadata: null == metadata
           ? _value.metadata
           : metadata // ignore: cast_nullable_to_non_nullable
               as SiqFileMetadata,
+      rounds: null == rounds
+          ? _value._rounds
+          : rounds // ignore: cast_nullable_to_non_nullable
+              as List<SiqFileRound>,
     ));
   }
 }
@@ -117,17 +128,27 @@ class __$$SiqFileImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$SiqFileImpl implements _SiqFile {
-  _$SiqFileImpl({required this.metadata});
+  _$SiqFileImpl(
+      {required this.metadata, final List<SiqFileRound> rounds = const []})
+      : _rounds = rounds;
 
   factory _$SiqFileImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileImplFromJson(json);
 
   @override
   final SiqFileMetadata metadata;
+  final List<SiqFileRound> _rounds;
+  @override
+  @JsonKey()
+  List<SiqFileRound> get rounds {
+    if (_rounds is EqualUnmodifiableListView) return _rounds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_rounds);
+  }
 
   @override
   String toString() {
-    return 'SiqFile(metadata: $metadata)';
+    return 'SiqFile(metadata: $metadata, rounds: $rounds)';
   }
 
   @override
@@ -136,12 +157,14 @@ class _$SiqFileImpl implements _SiqFile {
         (other.runtimeType == runtimeType &&
             other is _$SiqFileImpl &&
             (identical(other.metadata, metadata) ||
-                other.metadata == metadata));
+                other.metadata == metadata) &&
+            const DeepCollectionEquality().equals(other._rounds, _rounds));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, metadata);
+  int get hashCode => Object.hash(
+      runtimeType, metadata, const DeepCollectionEquality().hash(_rounds));
 
   /// Create a copy of SiqFile
   /// with the given fields replaced by the non-null parameter values.
@@ -160,12 +183,16 @@ class _$SiqFileImpl implements _SiqFile {
 }
 
 abstract class _SiqFile implements SiqFile {
-  factory _SiqFile({required final SiqFileMetadata metadata}) = _$SiqFileImpl;
+  factory _SiqFile(
+      {required final SiqFileMetadata metadata,
+      final List<SiqFileRound> rounds}) = _$SiqFileImpl;
 
   factory _SiqFile.fromJson(Map<String, dynamic> json) = _$SiqFileImpl.fromJson;
 
   @override
   SiqFileMetadata get metadata;
+  @override
+  List<SiqFileRound> get rounds;
 
   /// Create a copy of SiqFile
   /// with the given fields replaced by the non-null parameter values.
