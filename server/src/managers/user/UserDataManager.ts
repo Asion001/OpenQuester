@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { IUserData } from "../../interfaces/user/UserData";
 
-export class UserDTO {
+export class UserDataManager {
   protected userData?: IUserData;
   protected schema: Joi.ObjectSchema<any>;
   protected required?: string[];

@@ -1,8 +1,8 @@
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
 import { IUpdateUser } from "../../interfaces/user/IUpdateUser";
-import { UserDTO } from "./UserDTO";
+import { UserDataManager } from "./UserDataManager";
 
-export class LoginUser extends UserDTO {
+export class LoginUser extends UserDataManager {
   constructor(data: ILoginUser) {
     super();
     this.userData = {

@@ -1,18 +1,17 @@
 import { IUpdateUser } from "../../interfaces/user/IUpdateUser";
 import { IUserData } from "../../interfaces/user/UserData";
-import { UserDTO } from "./UserDTO";
+import { UserDataManager } from "./UserDataManager";
 
-export class RegisterUser extends UserDTO {
+export class UpdateUser extends UserDataManager {
   constructor(data: IUserData) {
     super();
     this.userData = {
       name: data.name,
-      email: data.email,
       password: data.password,
       birthday: data.birthday,
       avatar: data.avatar,
     } as IUpdateUser;
-    this.required = ["name", "email", "password"];
+    this.required = ["password"];
   }
 
   public get data() {

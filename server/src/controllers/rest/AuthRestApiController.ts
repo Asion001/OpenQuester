@@ -5,8 +5,8 @@ import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { IApiContext } from "../../interfaces/IApiContext";
-import { RegisterUser } from "../../dto/user/RegisterUser";
-import { LoginUser } from "../../dto/user/LoginUser";
+import { RegisterUser } from "../../managers/user/RegisterUser";
+import { LoginUser } from "../../managers/user/LoginUser";
 import { JWTUtils } from "../../utils/JWTUtils";
 
 /**

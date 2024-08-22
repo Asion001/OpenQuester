@@ -3,7 +3,7 @@ import { UserService } from "../../services/UserService";
 import * as bcrypt from "bcryptjs";
 import { QueryFailedError } from "typeorm";
 import { IApiContext } from "../../interfaces/IApiContext";
-import { UpdateUser } from "../../dto/user/UpdateUser";
+import { UpdateUser } from "../../managers/user/UpdateUser";
 
 /**
  * Handles all endpoints related for User CRUD
