@@ -1,20 +1,20 @@
 import { User } from "../database/models/User";
 
 import { JWTResponse } from "../types/jwt/jwt";
-import { Crypto } from "../types/Crypto";
+import { Crypto } from "../interfaces/Crypto";
 
-import { IApiContext } from "../interfaces/IApiContext";
 import { JWTUtils } from "../utils/JWTUtils";
 import { CryptoUtils } from "../utils/CryptoUtils";
 import { ILoginUser } from "../interfaces/user/ILoginUser";
 import { IRegisterUser } from "../interfaces/user/IRegisterUser";
+import { ApiContext } from "./context/ApiContext";
 
 /**
  * Handles all business logic of user authorization
  */
 export class AuthService {
   public static async register(
-    ctx: IApiContext,
+    ctx: ApiContext,
     data: IRegisterUser,
     crypto: Crypto
   ): Promise<JWTResponse> {
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   public static async login(
-    ctx: IApiContext,
+    ctx: ApiContext,
     data: ILoginUser,
     crypto: Crypto
   ): Promise<JWTResponse> {

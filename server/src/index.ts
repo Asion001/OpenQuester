@@ -2,7 +2,7 @@ import cluster from "cluster";
 import { Environment } from "./config/Environment";
 import { ServeApi } from "./ServeApi";
 import { Logger } from "./utils/Logger";
-import { WorkerMessage } from "./types/WorkerMessage";
+import { WorkerMessage } from "./enums/WorkerMessage";
 
 if (cluster.isPrimary) {
   // Setup primary cluster

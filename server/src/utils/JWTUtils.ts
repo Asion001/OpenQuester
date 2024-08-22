@@ -4,7 +4,12 @@ import path from "path";
 import express from "express";
 import * as jwt from "jsonwebtoken";
 import { Environment } from "../config/Environment";
-import { JWTPayload, JWTResponse, TokenOptions } from "../types/jwt/jwt";
+import {
+  JWTPayload,
+  JWTResponse,
+  jwtSecret,
+  TokenOptions,
+} from "../types/jwt/jwt";
 
 const WRITE_PATH = path.resolve(process.cwd(), "storage/");
 
@@ -18,10 +23,6 @@ const defaultOptions: jwtOptions = {
   length: 512,
   cryptoInstance: crypto,
   writePath: WRITE_PATH,
-};
-
-type jwtSecret = {
-  jwt_secret: string;
 };
 
 export class JWTUtils {

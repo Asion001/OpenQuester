@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
 import { UserService } from "../../services/UserService";
-import * as bcrypt from "bcryptjs";
 import { QueryFailedError } from "typeorm";
 import { IApiContext } from "../../interfaces/IApiContext";
 import { UpdateUser } from "../../managers/user/UpdateUser";
@@ -13,7 +12,6 @@ export class UserRestApiController {
     const app = ctx.app;
     const router = Router();
     app.use("/v1/user", router);
-    ctx.crypto = bcrypt;
 
     router.get("(/:id)?", async (req: Request, res: Response) => {
       try {

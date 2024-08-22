@@ -18,3 +18,7 @@ export type TokenOptions = {
   expiresIn: string;
   refreshExpiresIn: string;
 };
+
+export type jwtSecret = {
+  jwt_secret: string;
+};

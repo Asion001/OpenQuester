@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { Crypto } from "../types/Crypto";
+import { Crypto } from "../interfaces/Crypto";
 
 export class CryptoUtils {
   public static async hash(

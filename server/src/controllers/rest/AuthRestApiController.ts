@@ -1,19 +1,18 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import { Request, Response, Router } from "express";
 import { AuthService } from "../../services/AuthService";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
-import { IApiContext } from "../../interfaces/IApiContext";
 import { RegisterUser } from "../../managers/user/RegisterUser";
 import { LoginUser } from "../../managers/user/LoginUser";
 import { JWTUtils } from "../../utils/JWTUtils";
+import { ApiContext } from "../../services/context/ApiContext";
 
 /**
  * Handles all endpoints related to user authorization
  */
 export class AuthRestApiController {
-  constructor(ctx: IApiContext) {
+  constructor(ctx: ApiContext) {
     const app = ctx.app;
     const router = Router();
     app.use("/v1/auth", router);
@@ -27,7 +26,7 @@ export class AuthRestApiController {
         const data = new RegisterUser(req.body);
         data.validate();
 
-        const result = await AuthService.register(ctx, req.body, bcrypt);
+        const result = await AuthService.register(ctx, req.body, ctx.crypto);
         return res.status(201).send(result);
       } catch (err: any) {
         if (
@@ -50,7 +49,7 @@ export class AuthRestApiController {
         const data = new LoginUser(req.body);
         data.validate();
 
-        const result = await AuthService.login(ctx, req.body, bcrypt);
+        const result = await AuthService.login(ctx, req.body, ctx.crypto);
         return res.send(result);
       } catch (err: any) {
         return res.status(400).send({ error: err.message });

@@ -12,15 +12,15 @@ import {
 import { IUser } from "../../interfaces/user/IUser";
 import { File } from "./File";
 import { Permission } from "./Permission";
-import { EUserPermissions } from "../../enums/EUserPermissions";
+import { UserPermissions } from "../../enums/EUserPermissions";
 import { Database } from "../Database";
 import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
-import { Crypto } from "../../types/Crypto";
+import { Crypto } from "../../interfaces/Crypto";
 import { ValueUtils } from "../../utils/ValueUtils";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
 import { CryptoUtils } from "../../utils/CryptoUtils";
 
-const USER_SELECT_FIELDS: (keyof IUser)[] = [
+const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
   "name",
   "email",
@@ -82,7 +82,7 @@ export class User implements IUser {
     }
 
     for (const p of this.permissions) {
-      if (p.id == EUserPermissions.admin) {
+      if (p.id == UserPermissions.admin) {
         return true;
       }
     }

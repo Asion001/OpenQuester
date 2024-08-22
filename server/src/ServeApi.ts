@@ -1,4 +1,5 @@
 import express from "express";
+import bcrypt from "bcryptjs";
 import { Express } from "express";
 import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
 import { Database, db } from "./database/Database";
@@ -6,7 +7,8 @@ import { verifyTokenMiddleware } from "./middleware/AuthMiddleware";
 import { Server } from "http";
 import { Logger } from "./utils/Logger";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
-import { IApiContext } from "./interfaces/IApiContext";
+import { ApiContext } from "./services/context/ApiContext";
+import { FileContext } from "./services/context/FileContext";
 
 /**
  * Servers all api endpoints in one place.
@@ -21,7 +23,7 @@ export class ServeApi {
   /** Database instance */
   protected db!: Database;
 
-  protected context!: IApiContext;
+  protected context!: ApiContext;
 
   constructor() {
     try {
@@ -39,10 +41,12 @@ export class ServeApi {
         Logger.info(`App listening on port: ${this.port}`);
       });
 
-      this.context = {
+      this.context = new ApiContext({
         db: this.db,
         app: this.app,
-      };
+        crypto: bcrypt,
+        fileContext: new FileContext("", "", ""), // TODO: Fill up
+      });
 
       // Attach API controllers
       this.attachControllers();

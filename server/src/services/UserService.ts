@@ -4,9 +4,9 @@ import { UserPermissions } from "../database/models/UserPermission";
 import { IPermission } from "../interfaces/IPermission";
 import { Permission } from "../database/models/Permission";
 import { ValueUtils } from "../utils/ValueUtils";
-import { IApiContext } from "../interfaces/IApiContext";
 import { IUpdateUser } from "../interfaces/user/IUpdateUser";
 import { JWTUtils } from "../utils/JWTUtils";
+import { ApiContext } from "./context/ApiContext";
 
 export class UserService {
   /**
@@ -14,7 +14,7 @@ export class UserService {
    * in headers.
    */
   public static async getByToken(
-    ctx: IApiContext,
+    ctx: ApiContext,
     req: express.Request
   ): Promise<User> {
     // Token validated by middleware, so no need to validate it
@@ -27,7 +27,7 @@ export class UserService {
   /**
    * Get list of all available users in DB
    */
-  public static async list(ctx: IApiContext, req: express.Request) {
+  public static async list(ctx: ApiContext, req: express.Request) {
     const payload = JWTUtils.getPayload(req);
 
     const requestUser = await User.get(ctx.db, payload.id);
@@ -42,7 +42,7 @@ export class UserService {
   /**
    * Retrieve one user
    */
-  public static async get(ctx: IApiContext, req: express.Request) {
+  public static async get(ctx: ApiContext, req: express.Request) {
     if (!req.params.id) {
       return this.getByToken(ctx, req);
     }
@@ -65,7 +65,7 @@ export class UserService {
   /**
    * Update user by params id
    */
-  public static async update(ctx: IApiContext, req: express.Request) {
+  public static async update(ctx: ApiContext, req: express.Request) {
     const payload = JWTUtils.getPayload(req);
     const id = ValueUtils.validateId(req.params.id ?? payload.id);
 
@@ -79,7 +79,7 @@ export class UserService {
   /**
    * Delete user by params id
    */
-  public static async delete(ctx: IApiContext, req: express.Request) {
+  public static async delete(ctx: ApiContext, req: express.Request) {
     const payload = JWTUtils.getPayload(req);
     const id = ValueUtils.validateId(req.params.id ?? payload.id);
 
@@ -93,7 +93,7 @@ export class UserService {
   /**
    * User deletion logic
    */
-  private static async performDelete(ctx: IApiContext, id: number) {
+  private static async performDelete(ctx: ApiContext, id: number) {
     const repository = ctx.db.getRepository(User);
 
     const user = (await repository.findOne({
@@ -112,7 +112,7 @@ export class UserService {
    * User updating logic
    */
   private static async performUpdate(
-    ctx: IApiContext,
+    ctx: ApiContext,
     id: number,
     body: IUpdateUser
   ) {
@@ -149,7 +149,7 @@ export class UserService {
   }
 
   public static async updatePermissions(
-    ctx: IApiContext,
+    ctx: ApiContext,
     id: number,
     body: any // Should be typed with permissions list
   ) {
