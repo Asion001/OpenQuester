@@ -13,17 +13,6 @@
     "/v1/user/{id}": {
       "get": {
         "summary": "Get user info by params id / his auth token",
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "number",
-                "example": 1
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Get user data successfully",
