@@ -17,6 +17,7 @@ class SiqFileMetadata with _$SiqFileMetadata {
     @Default([]) List<String> authors,
     String? language,
     String? restriction,
+    String? comment,
   }) = _SiqFileMetadata;
 
   factory SiqFileMetadata.fromJson(Map<String, dynamic> json) =>

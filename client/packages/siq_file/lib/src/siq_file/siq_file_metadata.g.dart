@@ -25,6 +25,7 @@ _$SiqFileMetadataImpl _$$SiqFileMetadataImplFromJson(
           const [],
       language: json['language'] as String?,
       restriction: json['restriction'] as String?,
+      comment: json['comment'] as String?,
     );
 
 Map<String, dynamic> _$$SiqFileMetadataImplToJson(
@@ -47,5 +48,6 @@ Map<String, dynamic> _$$SiqFileMetadataImplToJson(
   val['authors'] = instance.authors;
   writeNotNull('language', instance.language);
   writeNotNull('restriction', instance.restriction);
+  writeNotNull('comment', instance.comment);
   return val;
 }

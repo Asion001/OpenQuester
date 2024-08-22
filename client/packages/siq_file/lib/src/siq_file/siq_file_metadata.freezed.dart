@@ -29,6 +29,7 @@ mixin _$SiqFileMetadata {
   List<String> get authors => throw _privateConstructorUsedError;
   String? get language => throw _privateConstructorUsedError;
   String? get restriction => throw _privateConstructorUsedError;
+  String? get comment => throw _privateConstructorUsedError;
 
   /// Serializes this SiqFileMetadata to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -55,7 +56,8 @@ abstract class $SiqFileMetadataCopyWith<$Res> {
       List<String> tags,
       List<String> authors,
       String? language,
-      String? restriction});
+      String? restriction,
+      String? comment});
 
   $FileObjectCopyWith<$Res>? get logo;
 }
@@ -84,6 +86,7 @@ class _$SiqFileMetadataCopyWithImpl<$Res, $Val extends SiqFileMetadata>
     Object? authors = null,
     Object? language = freezed,
     Object? restriction = freezed,
+    Object? comment = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -122,6 +125,10 @@ class _$SiqFileMetadataCopyWithImpl<$Res, $Val extends SiqFileMetadata>
           ? _value.restriction
           : restriction // ignore: cast_nullable_to_non_nullable
               as String?,
+      comment: freezed == comment
+          ? _value.comment
+          : comment // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -157,7 +164,8 @@ abstract class _$$SiqFileMetadataImplCopyWith<$Res>
       List<String> tags,
       List<String> authors,
       String? language,
-      String? restriction});
+      String? restriction,
+      String? comment});
 
   @override
   $FileObjectCopyWith<$Res>? get logo;
@@ -185,6 +193,7 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
     Object? authors = null,
     Object? language = freezed,
     Object? restriction = freezed,
+    Object? comment = freezed,
   }) {
     return _then(_$SiqFileMetadataImpl(
       id: null == id
@@ -223,6 +232,10 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
           ? _value.restriction
           : restriction // ignore: cast_nullable_to_non_nullable
               as String?,
+      comment: freezed == comment
+          ? _value.comment
+          : comment // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -239,7 +252,8 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
       final List<String> tags = const [],
       final List<String> authors = const [],
       this.language,
-      this.restriction})
+      this.restriction,
+      this.comment})
       : _tags = tags,
         _authors = authors;
 
@@ -278,10 +292,12 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
   final String? language;
   @override
   final String? restriction;
+  @override
+  final String? comment;
 
   @override
   String toString() {
-    return 'SiqFileMetadata(id: $id, title: $title, date: $date, publisher: $publisher, logo: $logo, tags: $tags, authors: $authors, language: $language, restriction: $restriction)';
+    return 'SiqFileMetadata(id: $id, title: $title, date: $date, publisher: $publisher, logo: $logo, tags: $tags, authors: $authors, language: $language, restriction: $restriction, comment: $comment)';
   }
 
   @override
@@ -300,7 +316,8 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
             (identical(other.language, language) ||
                 other.language == language) &&
             (identical(other.restriction, restriction) ||
-                other.restriction == restriction));
+                other.restriction == restriction) &&
+            (identical(other.comment, comment) || other.comment == comment));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -315,7 +332,8 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
       const DeepCollectionEquality().hash(_tags),
       const DeepCollectionEquality().hash(_authors),
       language,
-      restriction);
+      restriction,
+      comment);
 
   /// Create a copy of SiqFileMetadata
   /// with the given fields replaced by the non-null parameter values.
@@ -344,7 +362,8 @@ abstract class _SiqFileMetadata implements SiqFileMetadata {
       final List<String> tags,
       final List<String> authors,
       final String? language,
-      final String? restriction}) = _$SiqFileMetadataImpl;
+      final String? restriction,
+      final String? comment}) = _$SiqFileMetadataImpl;
 
   factory _SiqFileMetadata.fromJson(Map<String, dynamic> json) =
       _$SiqFileMetadataImpl.fromJson;
@@ -367,6 +386,8 @@ abstract class _SiqFileMetadata implements SiqFileMetadata {
   String? get language;
   @override
   String? get restriction;
+  @override
+  String? get comment;
 
   /// Create a copy of SiqFileMetadata
   /// with the given fields replaced by the non-null parameter values.

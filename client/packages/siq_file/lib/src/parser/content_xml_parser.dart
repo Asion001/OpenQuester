@@ -32,7 +32,7 @@ class ContentXmlParser {
 
   SiqFileTheme _parseTheme(XmlElement theme) {
     final name = theme.getAttribute('name') ?? '-';
-    final comment = theme.getElement('info')?.getElement('comments')?.innerText;
+    final comment = _getComment(theme);
     final questions =
         theme.getElement('questions')?.children.map(_parseQuestion).toList() ??
             [];
@@ -41,6 +41,12 @@ class ContentXmlParser {
       comment: comment,
       questions: questions,
     );
+  }
+
+  String? _getComment(XmlElement element) {
+    final comment =
+        element.getElement('info')?.getElement('comments')?.innerText;
+    return comment;
   }
 
   SiqFileQuestion _parseQuestion(XmlNode question) {
@@ -111,8 +117,13 @@ class ContentXmlParser {
     final infoElement = package.getElement('info')?.getElement('authors');
     final authors =
         infoElement?.children.map((e) => e.innerText.trim()).toSet() ?? {};
+    final comment = _getComment(package);
 
-    json.addAll({'tags': tags.toList(), 'authors': authors.toList()});
+    json.addAll({
+      'tags': tags.toList(),
+      'authors': authors.toList(),
+      'comment': comment,
+    });
 
     // Convert objects
     _convertObjects(json);
