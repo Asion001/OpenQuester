@@ -12,7 +12,7 @@
   "paths": {
     "/v1/user/{id}": {
       "get": {
-        "summary": "Get user info by params id / his auth token",
+        "summary": "Get user info by params id / his auth token. User id in params is optional, in case of empty id user does request on himself.",
         "responses": {
           "200": {
             "description": "Get user data successfully",
@@ -49,7 +49,7 @@
         }
       },
       "patch": {
-        "summary": "Update user info",
+        "summary": "Update user info. User id in params is optional, in case of empty id user does request on himself.",
         "requestBody": {
           "required": true,
           "content": {
@@ -96,7 +96,7 @@
         }
       },
       "delete": {
-        "summary": "Delete user",
+        "summary": "Delete user. User id in params is optional, in case of empty id user does request on himself.",
         "responses": {
           "204": {
             "description": "User deleted successfully"
