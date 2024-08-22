@@ -6,6 +6,7 @@ import { verifyTokenMiddleware } from "./middleware/AuthMiddleware";
 import { Server } from "http";
 import { Logger } from "./utils/Logger";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
+import { IApiContext } from "./models/IApiContext";
 
 /**
  * Servers all api endpoints in one place.
@@ -19,6 +20,8 @@ export class ServeApi {
   protected port!: number;
   /** Database instance */
   protected db!: Database;
+
+  protected context!: IApiContext;
 
   constructor() {
     try {
@@ -35,6 +38,11 @@ export class ServeApi {
       this._server = this.app.listen(this.port, () => {
         Logger.info(`App listening on port: ${this.port}`);
       });
+
+      this.context = {
+        db: this.db,
+        app: this.app,
+      };
 
       // Attach API controllers
       this.attachControllers();
@@ -63,7 +71,8 @@ export class ServeApi {
    * generating and using of entities based on server endpoints.
    */
   public attachControllers() {
-    new AuthRestApiController(this.db, this.app);
-    new UserRestApiController(this.db, this.app);
+    new AuthRestApiController(this.context);
+    new UserRestApiController(this.context);
   }
 }
+export { IApiContext };

@@ -13,13 +13,14 @@ import { JWTPayload, JWTResponse, TokenOptions } from "../types/jwt/jwt";
 import { Crypto } from "../types/Crypto";
 
 import { ValueUtils } from "../utils/ValueUtils";
+import { IApiContext } from "../models/IApiContext";
 
 /**
  * Handles all business logic of user authorization
  */
 export class AuthService {
   public static async register(
-    db: Database,
+    ctx: IApiContext,
     data: IUser,
     crypto: Crypto
   ): Promise<JWTResponse> {
@@ -28,7 +29,7 @@ export class AuthService {
         "Provide all required fields: 'email', 'name' and 'password'"
       );
     }
-    const repository = db.getRepository(User);
+    const repository = ctx.db.getRepository(User);
 
     const user = new User();
 
@@ -42,7 +43,7 @@ export class AuthService {
       : undefined;
 
     user.avatar = data.avatar as File;
-    user.groups = await this.defaultGroups(db);
+    user.groups = await this.defaultGroups(ctx.db);
 
     user.created_at = new Date();
     user.updated_at = new Date();
@@ -58,7 +59,7 @@ export class AuthService {
   }
 
   public static async login(
-    db: Database,
+    ctx: IApiContext,
     data: IUser,
     crypto: Crypto
   ): Promise<JWTResponse> {
@@ -68,7 +69,7 @@ export class AuthService {
       );
     }
 
-    const repository = db.getRepository(User);
+    const repository = ctx.db.getRepository(User);
 
     const user = await repository
       .createQueryBuilder("user")

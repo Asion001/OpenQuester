@@ -1,8 +1,8 @@
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
 import { UserService } from "../../services/UserService";
-import { Database } from "../../database/Database";
 import * as bcrypt from "bcryptjs";
 import { QueryFailedError } from "typeorm";
+import { IApiContext } from "../../ServeApi";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -10,12 +10,13 @@ import { QueryFailedError } from "typeorm";
 export class UserRestApiController {
   private path: string;
 
-  constructor(db: Database, app: Express) {
+  constructor(ctx: IApiContext) {
+    const app = ctx.app;
     this.path = "/v1/user(/:id)?";
 
     app.get(this.path, async (req: Request, res: Response) => {
       try {
-        const result = await UserService.retrieve(db, req);
+        const result = await UserService.retrieve(ctx, req);
         if (result) {
           return res.status(200).send(result);
         }
@@ -27,7 +28,7 @@ export class UserRestApiController {
 
     app.patch(this.path, async (req: Request, res: Response) => {
       try {
-        const result = await UserService.update(db, req, bcrypt);
+        const result = await UserService.update(ctx, req, bcrypt);
         return res.status(200).send(result ? result : "");
       } catch (err: any) {
         let s = 400;
@@ -47,7 +48,7 @@ export class UserRestApiController {
 
     app.delete(this.path, async (req: Request, res: Response) => {
       try {
-        await UserService.delete(db, req);
+        await UserService.delete(ctx, req);
         return res.status(204).send();
       } catch (err: any) {
         return res.status(400).send({ error: err.message });
@@ -56,7 +57,7 @@ export class UserRestApiController {
 
     app.get(`/v1/users`, async (req: Request, res: Response) => {
       try {
-        const result = await UserService.all(db, req);
+        const result = await UserService.all(ctx, req);
         if (result) {
           return res.status(200).send(result);
         }

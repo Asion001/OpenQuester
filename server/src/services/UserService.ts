@@ -11,6 +11,7 @@ import { UserGroups } from "../database/models/UsersGroup";
 import { IGroup } from "../models/IGroup";
 import { Group } from "../database/models/Group";
 import { ValueUtils } from "../utils/ValueUtils";
+import { IApiContext } from "../models/IApiContext";
 
 export class UserService {
   /**
@@ -18,29 +19,29 @@ export class UserService {
    * in headers.
    */
   public static async getByToken(
-    db: Database,
+    ctx: IApiContext,
     req: express.Request
   ): Promise<IUser> {
     // Token validated by middleware, so no need to validate it
     const payload = this.getPayload(req);
     const id = ValueUtils.validateId(payload.id);
 
-    return await this.getUserById(db, id);
+    return await this.getUserById(ctx.db, id);
   }
 
   /**
    * Get list of all available users in DB
    * TODO: Later could be reworked in `online`, to get only online users
    */
-  public static async all(db: Database, req: express.Request) {
+  public static async all(ctx: IApiContext, req: express.Request) {
     const payload = this.getPayload(req);
 
-    const user = await this.getUserById(db, payload.id);
+    const user = await this.getUserById(ctx.db, payload.id);
 
     if (user.groups) {
       for (const g of user.groups) {
         if (g.id == EUserGroups.admins) {
-          const repository = db.getRepository(User);
+          const repository = ctx.db.getRepository(User);
           const users = await repository.find({
             relations: ["groups"],
           });
@@ -57,9 +58,9 @@ export class UserService {
   /**
    * Retrieve one user
    */
-  public static async retrieve(db: Database, req: express.Request) {
+  public static async retrieve(ctx: IApiContext, req: express.Request) {
     if (!req.params.id) {
-      return this.getByToken(db, req);
+      return this.getByToken(ctx, req);
     }
 
     const id = ValueUtils.validateId(req.params.id);
@@ -68,16 +69,16 @@ export class UserService {
 
     // User asking for his own data
     if (payload.id == id) {
-      return await this.getUserById(db, id);
+      return await this.getUserById(ctx.db, id);
     }
 
     // User asking for another user data, check his permission
-    const user = await this.getUserById(db, payload.id);
+    const user = await this.getUserById(ctx.db, payload.id);
 
     if (user.groups) {
       for (const g of user.groups) {
         if (g.id == EUserGroups.admins) {
-          return await this.getUserById(db, id);
+          return await this.getUserById(ctx.db, id);
         }
       }
     }

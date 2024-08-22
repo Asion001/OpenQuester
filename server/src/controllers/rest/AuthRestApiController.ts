@@ -1,23 +1,25 @@
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
 import { AuthService } from "../../services/AuthService";
-import { Database } from "../../database/Database";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { IApiContext } from "../../models/IApiContext";
 
 /**
  * Handles all endpoints related to user authorization
  */
 export class AuthRestApiController {
-  constructor(db: Database, app: Express) {
+  constructor(ctx: IApiContext) {
+    const app = ctx.app;
+
     app.post("/v1/auth/register", async (req: Request, res: Response) => {
       try {
         if (!this.validateTokenForAuth(req)) {
           throw new Error("User is already logged in");
         }
 
-        const result = await AuthService.register(db, req.body, bcrypt);
+        const result = await AuthService.register(ctx, req.body, bcrypt);
         return res.status(201).send(result);
       } catch (err: any) {
         if (
@@ -37,7 +39,7 @@ export class AuthRestApiController {
           throw new Error("User is already logged in");
         }
 
-        const result = await AuthService.login(db, req.body, bcrypt);
+        const result = await AuthService.login(ctx, req.body, bcrypt);
         return res.send(result);
       } catch (err: any) {
         return res.status(400).send({ error: err.message });
