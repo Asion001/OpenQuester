@@ -2,6 +2,7 @@ import cluster from "cluster";
 import { Environment } from "./config/Environment";
 import { ServeApi } from "./ServeApi";
 import { Logger } from "./utils/Logger";
+import { WorkerMessage } from "./types/WorkerMessage";
 
 if (cluster.isPrimary) {
   // Setup primary cluster
@@ -13,12 +14,12 @@ if (cluster.isPrimary) {
     process.exit(1);
   }
 
-  const numCPUs = Environment.WORKERS_COUNT;
+  const workersCount = Environment.WORKERS_COUNT;
 
   Logger.info(`Master process ${process.pid} is running`);
-  Logger.info(`Forking for ${numCPUs} CPUs`);
+  Logger.info(`Forking for ${workersCount} CPUs`);
 
-  for (let c = 0; c < numCPUs; c++) {
+  for (let c = 0; c < workersCount; c++) {
     // Fork instances
     cluster.fork();
   }
@@ -40,20 +41,21 @@ if (cluster.isPrimary) {
     Logger.info(`Worker ${process.pid} started`, true);
   }
 
-  process.on("message", (msg) => {
-    if (msg === "shutdown") {
-      gracefulShutdown(api.server);
+  process.on("message", (msg: WorkerMessage) => {
+    switch (msg) {
+      case WorkerMessage.SHUTDOWN:
+        gracefulShutdown(api.server);
     }
   });
 }
 
-// Function to gracefully shut down all workers
+// Gracefully shut down all workers
 function shutdownCluster() {
   Logger.warn("Shutting down all workers...");
 
   // Send a message to all workers to shut down
   for (const id in cluster.workers) {
-    cluster.workers[id]?.send("shutdown");
+    cluster.workers[id]?.send(WorkerMessage.SHUTDOWN);
   }
 
   // Wait for workers to exit
@@ -68,7 +70,6 @@ function shutdownCluster() {
     }
   });
 
-  // Force exit if not all workers shut down in a timely manner
   setTimeout(() => {
     Logger.error("Forcing cluster shutdown");
     process.exit(1);
