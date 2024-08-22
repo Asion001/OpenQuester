@@ -28,6 +28,7 @@ const USER_SELECT_FIELDS: (keyof IUser)[] = [
   "avatar",
   "created_at",
   "updated_at",
+  "is_deleted",
 ];
 
 @Entity()
@@ -169,7 +170,7 @@ export class User implements IUser {
 
   public async delete(db: Database, repository?: Repository<User>) {
     this.repository = this.repository ?? repository ?? db.getRepository(User);
-    this.is_deleted = true;
+    this.is_deleted = false;
     this.update(db);
     return;
   }

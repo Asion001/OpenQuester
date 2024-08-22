@@ -98,7 +98,7 @@ export class UserService {
 
     const user = (await repository.findOne({
       where: { id },
-      select: ["is_deleted"], // TODO: Implement this everywhere and check it works / fix tests
+      select: ["is_deleted"],
     })) as User;
 
     if (!user || user.is_deleted) {
