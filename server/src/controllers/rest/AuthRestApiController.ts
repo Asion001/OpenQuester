@@ -1,10 +1,13 @@
-import { Request, Response } from "express";
+import { Request, Response, Router } from "express";
 import { AuthService } from "../../services/AuthService";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { IApiContext } from "../../models/IApiContext";
+import { IApiContext } from "../../interfaces/IApiContext";
+import { RegisterUser } from "../../dto/user/RegisterUser";
+import { LoginUser } from "../../dto/user/LoginUser";
+import { JWTUtils } from "../../utils/JWTUtils";
 
 /**
  * Handles all endpoints related to user authorization
@@ -12,12 +15,17 @@ import { IApiContext } from "../../models/IApiContext";
 export class AuthRestApiController {
   constructor(ctx: IApiContext) {
     const app = ctx.app;
+    const router = Router();
+    app.use("/v1/auth", router);
 
-    app.post("/v1/auth/register", async (req: Request, res: Response) => {
+    router.post(`/register`, async (req: Request, res: Response) => {
       try {
         if (!this.validateTokenForAuth(req)) {
           throw new Error("User is already logged in");
         }
+
+        const data = new RegisterUser(req.body);
+        data.validate();
 
         const result = await AuthService.register(ctx, req.body, bcrypt);
         return res.status(201).send(result);
@@ -33,11 +41,14 @@ export class AuthRestApiController {
       }
     });
 
-    app.post("/v1/auth/login", async (req: Request, res: Response) => {
+    router.post(`/login`, async (req: Request, res: Response) => {
       try {
         if (!this.validateTokenForAuth(req)) {
           throw new Error("User is already logged in");
         }
+
+        const data = new LoginUser(req.body);
+        data.validate();
 
         const result = await AuthService.login(ctx, req.body, bcrypt);
         return res.send(result);
@@ -46,14 +57,14 @@ export class AuthRestApiController {
       }
     });
 
-    app.post("/v1/auth/refresh", async (req: Request, res: Response) => {
+    router.post(`/refresh`, async (req: Request, res: Response) => {
       try {
         const refresh = req.body.refresh_token;
         if (!refresh) {
           throw new Error("Please provide refresh_token");
         }
 
-        const result = AuthService.refreshToken(refresh);
+        const result = JWTUtils.refresh(refresh);
         res.status(200).send(result);
       } catch (err: any) {
         res.status(400).send({ error: err.message });
@@ -62,8 +73,8 @@ export class AuthRestApiController {
   }
 
   /**
-   * This method returns true, if token is invalid. It used only at user login / register
-   * this means if user token is invalid, he should be able to login / register.
+   * This method returns true, if token is invalid. This means if user token is invalid,
+   * user should be able to login / register.
    *
    * If user token is valid - he's already logged in and no need to continue execution
    */

@@ -7,11 +7,13 @@ import {
 } from "typeorm";
 import { Logger } from "../../utils/Logger";
 
-export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
+export class CreatePermissionTable_1_2_1723128633623
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "group",
+        name: "permission",
         columns: [
           {
             name: "id",
@@ -31,7 +33,7 @@ export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
 
     await queryRunner.createTable(
       new Table({
-        name: "user_groups",
+        name: "user_permissions",
         columns: [
           {
             name: "user_id",
@@ -39,7 +41,7 @@ export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "group_id",
+            name: "permission_id",
             type: "int",
             isPrimary: true,
           },
@@ -48,14 +50,14 @@ export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
     );
 
     await queryRunner.createUniqueConstraint(
-      "user_groups",
+      "user_permissions",
       new TableUnique({
-        columnNames: ["user_id", "group_id"],
+        columnNames: ["user_id", "permission_id"],
       })
     );
 
     await queryRunner.createForeignKey(
-      "user_groups",
+      "user_permissions",
       new TableForeignKey({
         columnNames: ["user_id"],
         referencedTableName: "user",
@@ -65,17 +67,17 @@ export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      "user_groups",
+      "user_permissions",
       new TableForeignKey({
-        columnNames: ["group_id"],
-        referencedTableName: "group",
+        columnNames: ["permission_id"],
+        referencedTableName: "permission",
         referencedColumnNames: ["id"],
         onDelete: "CASCADE",
       })
     );
 
     await queryRunner.query(
-      `INSERT INTO "group" (name) VALUES ('admins'), ('users');`
+      `INSERT INTO "permission" (name) VALUES ('admin'), ('user');`
     );
 
     Logger.logMigrationComplete("1_2");
@@ -83,24 +85,24 @@ export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Remove foreign keys
-    const table = await queryRunner.getTable("user_groups");
+    const table = await queryRunner.getTable("user_permissions");
     const foreignKey1 = table?.foreignKeys.find(
       (fk) => fk.columnNames.indexOf("user_id") !== -1
     );
     const foreignKey2 = table?.foreignKeys.find(
-      (fk) => fk.columnNames.indexOf("group_id") !== -1
+      (fk) => fk.columnNames.indexOf("permission_id") !== -1
     );
 
     if (foreignKey1) {
-      await queryRunner.dropForeignKey("user_groups", foreignKey1);
+      await queryRunner.dropForeignKey("user_permissions", foreignKey1);
     }
 
     if (foreignKey2) {
-      await queryRunner.dropForeignKey("user_groups", foreignKey2);
+      await queryRunner.dropForeignKey("user_permissions", foreignKey2);
     }
 
     // Drop tables
-    await queryRunner.dropTable("user_groups");
-    await queryRunner.dropTable("group");
+    await queryRunner.dropTable("user_permissions");
+    await queryRunner.dropTable("permission");
   }
 }

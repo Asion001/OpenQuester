@@ -33,7 +33,7 @@ describe("User retrieve by id and JWT token", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           email: "someEmail",
@@ -71,14 +71,14 @@ describe("User retrieve by id and JWT token", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "success",
           isAdmin: () => false,
         });
 
-      const result = await UserService.retrieve(ctx, req);
+      const result = await UserService.get(ctx, req);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
       stubFindOne.restore();
@@ -102,7 +102,7 @@ describe("User retrieve by id and JWT token", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "success",
@@ -110,7 +110,7 @@ describe("User retrieve by id and JWT token", () => {
         });
 
       try {
-        await UserService.retrieve(ctx, req);
+        await UserService.get(ctx, req);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include(
@@ -139,7 +139,7 @@ describe("User retrieve by id and JWT token", () => {
       stubFindOne
         .withArgs({
           where: { id: 2 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "fail",
@@ -148,7 +148,7 @@ describe("User retrieve by id and JWT token", () => {
         });
 
       try {
-        await UserService.retrieve(ctx, req);
+        await UserService.get(ctx, req);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).include("not able");
@@ -176,7 +176,7 @@ describe("User retrieve by id and JWT token", () => {
       stubFindOne
         .withArgs({
           where: { id: 2 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "admin",
@@ -187,14 +187,14 @@ describe("User retrieve by id and JWT token", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "success",
           isAdmin: () => false,
         });
 
-      const result = await UserService.retrieve(ctx, req);
+      const result = await UserService.get(ctx, req);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
       stubFindOne.restore();

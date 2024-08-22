@@ -1,6 +1,10 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
+import express from "express";
+import * as jwt from "jsonwebtoken";
+import { Environment } from "../config/Environment";
+import { JWTPayload, TokenOptions } from "../types/jwt/jwt";
 
 const WRITE_PATH = path.resolve(process.cwd(), "storage/");
 
@@ -67,5 +71,52 @@ export class JWTUtils {
 
     const data: jwtSecret = JSON.parse(file);
     return data.jwt_secret;
+  }
+
+  /**
+   * Returns token payload
+   */
+  public static getPayload(req: express.Request) {
+    const token = req.headers.authorization?.split(" ")[1] as string;
+
+    return jwt.verify(token, Environment.JWT_SECRET) as JWTPayload;
+  }
+
+  /**
+   * Generate tokens based on userId as payload, and on given / environment secrets
+   */
+  public static generateTokens(userId: number, options?: TokenOptions) {
+    const tokenOptions: TokenOptions = options ?? Environment.JWT_TOKEN_OPTIONS;
+
+    const access = jwt.sign({ id: userId }, tokenOptions.secret, {
+      expiresIn: tokenOptions.expiresIn,
+    });
+    const refresh = jwt.sign({ id: userId }, tokenOptions.refreshSecret, {
+      expiresIn: tokenOptions.refreshExpiresIn,
+    });
+
+    return { access_token: access, refresh_token: refresh };
+  }
+
+  /**
+   * Refreshes user tokens by checking given refresh_token
+   */
+  public static refresh(token: string, options?: TokenOptions) {
+    try {
+      const decode = jwt.verify(
+        token,
+        options?.refreshSecret ?? Environment.JWT_REFRESH_SECRET
+      );
+      const { access_token, refresh_token } = JWTUtils.generateTokens(
+        (decode as JWTPayload).id,
+        options
+      );
+      return {
+        access_token: access_token,
+        refresh_token: refresh_token,
+      };
+    } catch {
+      throw new Error("Invalid or expired refresh token");
+    }
   }
 }

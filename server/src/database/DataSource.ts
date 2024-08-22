@@ -7,13 +7,13 @@ import { Logger } from "../utils/Logger";
 import { User } from "./models/User";
 import { DataSource } from "typeorm";
 import { File } from "./models/File";
-import { Group } from "./models/Group";
-import { UserGroups } from "./models/UsersGroup";
+import { Permission } from "./models/Permission";
+import { UserPermissions } from "./models/UserPermission";
 
 // Migrations imports
 import { CreateUserAndFileTables_1_1_1722683756069 as createUserAndFileTables } from "./migrations/CreateUserAndFileTables_1_1_1722683756069";
 import { UpdateUserModelFields_1_11_1723107959823 as updateUserModelFields } from "./migrations/UpdateUserModelFields_1_11_1723107959823";
-import { CreateGroupTable_1_2_1723128633623 as createGroupTable } from "./migrations/CreateGroupTable_1_2_1723128633623";
+import { CreatePermissionTable_1_2_1723128633623 as createPermissionTable } from "./migrations/CreatePermissionTable_1_2_1723128633623";
 import { UpdateUserRequiredFields_1_21_1723204474011 as updateUserRequiredFields } from "./migrations/UpdateUserRequiredFields_1_21_1723204474011";
 
 try {
@@ -35,11 +35,11 @@ export const AppDataSource = new DataSource({
   database: Environment.DB_NAME,
   synchronize: false,
   logging: Environment.DB_LOGGER,
-  entities: [User, File, Group, UserGroups],
+  entities: [User, File, Permission, UserPermissions],
   migrations: [
     createUserAndFileTables,
     updateUserModelFields,
-    createGroupTable,
+    createPermissionTable,
     updateUserRequiredFields,
   ],
   migrationsRun: true,

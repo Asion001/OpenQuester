@@ -6,7 +6,7 @@ import { verifyTokenMiddleware } from "./middleware/AuthMiddleware";
 import { Server } from "http";
 import { Logger } from "./utils/Logger";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
-import { IApiContext } from "./models/IApiContext";
+import { IApiContext } from "./interfaces/IApiContext";
 
 /**
  * Servers all api endpoints in one place.

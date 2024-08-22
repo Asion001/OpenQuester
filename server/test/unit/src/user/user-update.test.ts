@@ -81,7 +81,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "success",
@@ -127,7 +127,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "user",
@@ -187,7 +187,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 2 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "admin",
@@ -198,7 +198,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "user",
@@ -237,7 +237,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 2 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "notAdmin",
@@ -276,7 +276,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "admin",
@@ -287,7 +287,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 777 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns(undefined);
 
@@ -328,7 +328,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "user",
@@ -344,7 +344,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "user",
@@ -409,7 +409,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "user",
@@ -468,7 +468,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "user",
@@ -481,7 +481,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 2 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "admin",
@@ -536,7 +536,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 1 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "user",
@@ -549,7 +549,7 @@ describe("User update", () => {
       stubFindOne
         .withArgs({
           where: { id: 2 },
-          relations: ["groups"],
+          relations: ["permissions"],
         })
         .returns({
           name: "admin",

@@ -1,10 +1,10 @@
 import { Entity, PrimaryColumn } from "typeorm";
 
-@Entity("user_groups")
-export class UserGroups {
+@Entity("user_permissions")
+export class UserPermissions {
   @PrimaryColumn()
   user_id!: number;
 
   @PrimaryColumn()
-  group_id!: number;
+  permission_id!: number;
 }

@@ -7,15 +7,24 @@ import {
   Unique,
   ManyToMany,
   JoinTable,
+  ObjectLiteral,
+  Repository,
 } from "typeorm";
-import { IUser } from "../../models/user/IUser";
+import { IUser } from "../../interfaces/user/IUser";
 import { File } from "./File";
-import { Group } from "./Group";
-import { EUserGroups } from "../../enums/EUserGroups";
+import { Permission } from "./Permission";
+import { EUserPermissions } from "../../enums/EUserPermissions";
+import { Database } from "../Database";
+import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
+import { Crypto } from "../../types/Crypto";
+import { ValueUtils } from "../../utils/ValueUtils";
+import { ILoginUser } from "../../interfaces/user/ILoginUser";
 
 @Entity()
 @Unique(["email", "name"])
 export class User implements IUser {
+  private repository?: Repository<ObjectLiteral>;
+
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -44,24 +53,130 @@ export class User implements IUser {
   @JoinColumn()
   avatar?: File;
 
-  @ManyToMany(() => Group, (group) => group.users)
+  @ManyToMany(() => Permission, (permission) => permission.users)
   @JoinTable({
-    name: "user_groups",
+    name: "user_permissions",
     joinColumn: { name: "user_id", referencedColumnName: "id" },
-    inverseJoinColumn: { name: "group_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "permission_id", referencedColumnName: "id" },
   })
-  groups!: Group[];
+  permissions!: Permission[];
 
   public isAdmin() {
-    if (!this.groups) {
+    if (!this.permissions) {
       return false;
     }
 
-    for (const g of this.groups) {
-      if (g.id == EUserGroups.admins) {
+    for (const p of this.permissions) {
+      if (p.id == EUserPermissions.admin) {
         return true;
       }
     }
     return false;
+  }
+
+  public async export() {
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      birthday: this.birthday,
+      avatar: this.avatar,
+      created_at: this.created_at,
+      updated_at: this.updated_at,
+      permissions: this.permissions,
+    };
+  }
+
+  public static async get(db: Database, id: number) {
+    const repository = db.getRepository(User);
+    const user = (await repository.findOne({
+      where: { id: id },
+      relations: ["permissions"],
+    })) as User;
+
+    if (user) {
+      // Don't send back user password
+      delete user.password;
+    }
+
+    return user;
+  }
+
+  public static async list(db: Database) {
+    const repository = db.getRepository(User);
+    const users = await repository.find({
+      relations: ["permissions"],
+    });
+    // Don't send user passwords
+    users.map((u) => delete u.password);
+    return users;
+  }
+
+  public static async create(
+    db: Database,
+    data: IRegisterUser,
+    crypto: Crypto
+  ) {
+    const repository = db.getRepository(User);
+    const user = new User();
+
+    // Set all data to new user instance
+    user.name = data.name;
+    user.email = data.email;
+    user.password = await crypto.hash(data.password as string, 10);
+
+    user.birthday = data.birthday
+      ? ValueUtils.getBirthday(data.birthday)
+      : undefined;
+    user.avatar = data.avatar;
+
+    user.permissions = await Permission.default(db);
+    user.created_at = new Date();
+    user.updated_at = new Date();
+
+    // Save new user
+    await repository.save(user);
+    return user;
+  }
+
+  /**
+   * Returns user with specified login data
+   */
+  public static async login(db: Database, data: ILoginUser) {
+    const repository = db.getRepository(User);
+
+    const user = await repository
+      .createQueryBuilder("user")
+      .where("user.email = :email", { email: data.login })
+      .orWhere("user.name = :name", { name: data.login })
+      .getOne();
+
+    return user;
+  }
+
+  public async delete(db: Database) {
+    if (!this.repository) {
+      this.repository = db.getRepository(User);
+    }
+    this.is_deleted = true;
+    await this.save(db);
+    return;
+  }
+
+  public async save(db: Database) {
+    if (!this.repository) {
+      this.repository = db.getRepository(User);
+    }
+    return this.repository.update(
+      { id: this.id },
+      {
+        name: this.name,
+        email: this.email,
+        birthday: this.birthday,
+        avatar: this.avatar,
+        password: this.password,
+        is_deleted: this.is_deleted,
+      }
+    );
   }
 }

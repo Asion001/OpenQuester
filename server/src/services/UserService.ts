@@ -1,22 +1,13 @@
 import express from "express";
-import * as jwt from "jsonwebtoken";
-import { Environment } from "../config/Environment";
-import { Database } from "../database/Database";
 import { User } from "../database/models/User";
-import { IUser } from "../models/user/IUser";
-import { JWTPayload } from "../types/jwt/jwt";
-import { UserGroups } from "../database/models/UsersGroup";
-import { IGroup } from "../models/IGroup";
-import { Group } from "../database/models/Group";
+import { IUser } from "../interfaces/user/IUser";
+import { UserPermissions } from "../database/models/UserPermission";
+import { IPermission } from "../interfaces/IPermission";
+import { Permission } from "../database/models/Permission";
 import { ValueUtils } from "../utils/ValueUtils";
-import { IApiContext } from "../models/IApiContext";
-import { IUpdateUser } from "../models/user/IUpdateUser";
-import { ObjectLiteral, Repository } from "typeorm";
-
-interface IUserUpdateContext extends IApiContext {
-  /** `This can be used only when ADMIN does user update` */
-  adminBypass?: boolean;
-}
+import { IApiContext } from "../interfaces/IApiContext";
+import { IUpdateUser } from "../interfaces/user/IUpdateUser";
+import { JWTUtils } from "../utils/JWTUtils";
 
 export class UserService {
   /**
@@ -28,29 +19,22 @@ export class UserService {
     req: express.Request
   ): Promise<IUser> {
     // Token validated by middleware, so no need to validate it
-    const payload = this.getPayload(req);
+    const payload = JWTUtils.getPayload(req);
     const id = ValueUtils.validateId(payload.id);
 
-    return await this.getById(ctx.db, id);
+    return await User.get(ctx.db, id);
   }
 
   /**
    * Get list of all available users in DB
-   * TODO: Later could be reworked in / added `online`, to get only online users
    */
-  public static async all(ctx: IApiContext, req: express.Request) {
-    const payload = this.getPayload(req);
+  public static async list(ctx: IApiContext, req: express.Request) {
+    const payload = JWTUtils.getPayload(req);
 
-    const user = await this.getById(ctx.db, payload.id);
+    const requestUser = await User.get(ctx.db, payload.id);
 
-    if (user.isAdmin()) {
-      const repository = ctx.db.getRepository(User);
-      const users = await repository.find({
-        relations: ["groups"],
-      });
-      // Don't send user passwords
-      users.map((u) => delete u.password);
-      return users;
+    if (requestUser.isAdmin()) {
+      return await User.list(ctx.db);
     }
 
     throw new Error("You are not able to do that");
@@ -59,19 +43,18 @@ export class UserService {
   /**
    * Retrieve one user
    */
-  public static async retrieve(ctx: IApiContext, req: express.Request) {
+  public static async get(ctx: IApiContext, req: express.Request) {
     if (!req.params.id) {
       return this.getByToken(ctx, req);
     }
 
     const id = ValueUtils.validateId(req.params.id);
+    const payload = JWTUtils.getPayload(req);
 
-    const payload = this.getPayload(req);
+    const requestUser = await User.get(ctx.db, payload.id);
 
-    const user = await this.getById(ctx.db, payload.id);
-
-    if (payload.id == id || user.isAdmin()) {
-      return await this.getById(ctx.db, id);
+    if (payload.id == id || requestUser.isAdmin()) {
+      return await User.get(ctx.db, id);
     }
 
     throw new Error("You are not able to do that");
@@ -80,25 +63,12 @@ export class UserService {
   /**
    * Update user by params id
    */
-  public static async update(ctx: IUserUpdateContext, req: express.Request) {
-    if (Object.keys(req.body).length < 1) {
-      throw new Error("To update user specify at least one field");
-    }
-
-    const payload = this.getPayload(req);
-    const id = ValueUtils.validateId(
-      req.params.id ? req.params.id : payload.id
-    );
+  public static async update(ctx: IApiContext, req: express.Request) {
+    const payload = JWTUtils.getPayload(req);
+    const id = ValueUtils.validateId(req.params.id ?? payload.id);
 
     if (payload.id == id) {
-      return await this.updateUser(ctx, id, req.body);
-    }
-
-    const user = await this.getById(ctx.db, payload.id);
-
-    if (user.isAdmin()) {
-      ctx.adminBypass = true;
-      return await this.updateUser(ctx, id, req.body);
+      return await this.performUpdate(ctx, id, req.body);
     }
 
     throw new Error("You are not able to do that");
@@ -107,21 +77,12 @@ export class UserService {
   /**
    * Delete user by params id
    */
-  public static async delete(ctx: IUserUpdateContext, req: express.Request) {
-    const payload = this.getPayload(req);
-    const id = ValueUtils.validateId(
-      req.params.id ? req.params.id : payload.id
-    );
+  public static async delete(ctx: IApiContext, req: express.Request) {
+    const payload = JWTUtils.getPayload(req);
+    const id = ValueUtils.validateId(req.params.id ?? payload.id);
 
-    const target = await this.getById(ctx.db, id);
-    if (!target) {
-      throw new Error(`User with ID '${id}' does not exists.`);
-    }
-
-    const user = await this.getById(ctx.db, payload.id);
-
-    if (payload.id == id || user.isAdmin()) {
-      return await this.deleteUser(ctx.db, id);
+    if (payload.id == id) {
+      return await this.performDelete(ctx, id);
     }
 
     throw new Error("You are not able to do that");
@@ -130,35 +91,29 @@ export class UserService {
   /**
    * User deletion logic
    */
-  private static async deleteUser(db: Database, id: number) {
-    const repository = db.getRepository(User);
+  private static async performDelete(ctx: IApiContext, id: number) {
+    const repository = ctx.db.getRepository(User);
+
     const user = (await repository.findOne({
       where: { id: id },
     })) as User;
 
-    user.is_deleted = true;
-    await this.save(repository, user);
-    return;
-  }
-
-  private static async getById(db: Database, id: number) {
-    const repository = db.getRepository(User);
-    const user = (await repository.findOne({
-      where: { id: id },
-      relations: ["groups"],
-    })) as User;
-    if (user) {
-      // Don't send back user password
-      delete user.password;
+    if (!user) {
+      throw new Error(`User does not exists.`);
     }
-    return user;
+
+    if (user.is_deleted) {
+      throw new Error("User already deleted");
+    }
+
+    return await user.delete(ctx.db);
   }
 
   /**
    * User updating logic
    */
-  private static async updateUser(
-    ctx: IUserUpdateContext,
+  private static async performUpdate(
+    ctx: IApiContext,
     id: number,
     body: IUpdateUser
   ) {
@@ -166,151 +121,124 @@ export class UserService {
     const crypto = ctx.crypto;
 
     if (!crypto) {
-      throw new Error("Crypto instance should be provided");
+      throw new Error("Crypto instance should be provided in context");
     }
 
     const repository = db.getRepository(User);
 
     const user = (await repository.findOne({
       where: { id: id },
-      relations: ["groups"],
+      relations: ["permissions"],
     })) as User;
 
     if (!user) {
       throw new Error("User not found");
     }
 
-    if (user.isAdmin() && !ctx.adminBypass) {
-      ctx.adminBypass = true;
-    }
-
-    if (!body.password && !ctx.adminBypass) {
-      throw new Error("User password is not provided");
-    }
-
     if (
-      !ctx.adminBypass &&
-      !(await crypto.compare(body.password!, user.password!))
+      !body.password ||
+      !(await crypto.compare(body.password, user.password!))
     ) {
-      throw new Error("User password is incorrect");
+      throw new Error("Password is incorrect");
     }
 
-    // Set new password only if it's not as previous one.
-    // crypto.compare() is faster than hashing, so we prefer do this check
-    if (
-      body.newPassword &&
-      !(await crypto.compare(body.newPassword, user.password!))
-    ) {
-      user.password = await crypto.hash(body.newPassword, 10);
-    }
-
+    user.name = body.name ?? user.name;
+    user.avatar = body.avatar ?? user.avatar;
+    user.updated_at = new Date();
     if (body.birthday) {
       user.birthday = ValueUtils.getBirthday(body.birthday);
     }
 
-    user.name = body.name ?? user.name;
-    user.email = body.email ?? user.email;
-    user.avatar = body.avatar ?? user.avatar;
-
-    if (body.groups && body.groups.length > 0) {
-      if (!ctx.adminBypass) {
-        throw new Error("Only admins allowed to change user groups");
-      }
-      const groupRepository = db.getRepository(Group);
-      // Check if specified groups exists
-      for (const g of body.groups) {
-        if (
-          !(await groupRepository.exists({
-            where: {
-              id: g.id,
-              name: g.name,
-            },
-          }))
-        ) {
-          throw new Error(
-            `Group '${g.name}' with ID '${g.id}' does not exists`
-          );
-        }
-      }
-
-      const newGroupIds = body.groups.map((g) => g.id);
-      const userGroupIds = user.groups
-        ? user.groups.map((g: IGroup) => g.id)
-        : [];
-
-      const groupsToRemove = userGroupIds.filter(
-        (id: number) => !newGroupIds.includes(id)
-      );
-
-      const groupsToAdd = newGroupIds.filter(
-        (id) => !userGroupIds.includes(id)
-      );
-
-      await db.ds.transaction(async (transactionalEntityManager) => {
-        // Make user saving as part of transaction
-        await this.save(repository, user);
-
-        // Remove old group associations
-        if (groupsToRemove.length > 0) {
-          await transactionalEntityManager
-            .createQueryBuilder()
-            .delete()
-            .from(UserGroups)
-            .where("user_id = :userId AND group_id IN (:...groupIds)", {
-              userId: user.id,
-              groupIds: groupsToRemove,
-            })
-            .execute();
-        }
-
-        // Add new group associations
-        if (groupsToAdd.length > 0) {
-          const userGroupsToAdd = groupsToAdd.map((groupId) => ({
-            user_id: user.id,
-            group_id: groupId,
-          }));
-
-          await transactionalEntityManager
-            .createQueryBuilder()
-            .insert()
-            .into(UserGroups)
-            .values(userGroupsToAdd)
-            .orIgnore()
-            .execute();
-        }
-      });
-      // Assign provided groups for return value
-      user.groups = body.groups;
-    } else {
-      await this.save(repository, user);
-    }
+    await user.save(db);
     // Do not return back user password
     delete user.password;
 
-    user.updated_at = new Date();
-    return user;
+    return await user.export();
   }
 
-  private static async save(repository: Repository<ObjectLiteral>, user: User) {
-    return repository.update(
-      { id: user.id },
-      {
-        name: user.name,
-        email: user.email,
-        birthday: user.birthday,
-        avatar: user.avatar,
-        password: user.password,
-        is_deleted: user.is_deleted,
+  public static async updatePermissions(
+    ctx: IApiContext,
+    id: number,
+    body: any // Should be typed with permissions list
+  ) {
+    // TODO: Implement (finish) in future
+    // This is only logic, permissions validation should be done before
+    const db = ctx.db;
+    const repository = db.getRepository(User);
+
+    const user = (await repository.findOne({
+      where: { id: id },
+      relations: ["permissions"],
+    })) as User;
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const permRepository = db.getRepository(Permission);
+    // Check if specified permissions exists
+    for (const p of body.permissions) {
+      if (
+        !(await permRepository.exists({
+          where: {
+            id: p.id,
+            name: p.name,
+          },
+        }))
+      ) {
+        throw new Error(
+          `Permission '${p.name}' with ID '${p.id}' does not exists`
+        );
       }
+    }
+
+    const newPermIds = body.permissions.map((p: IPermission) => p.id);
+    const userPermIds = user.permissions
+      ? user.permissions.map((p: IPermission) => p.id)
+      : [];
+
+    const permsToRemove = userPermIds.filter(
+      (id: number) => !newPermIds.includes(id)
     );
-  }
 
-  /**
-   * Returns token payload
-   */
-  public static getPayload(req: express.Request) {
-    const token = req.headers.authorization?.split(" ")[1] as string;
+    const permsToAdd = newPermIds.filter(
+      (id: number) => !userPermIds.includes(id)
+    );
 
-    return jwt.verify(token, Environment.JWT_SECRET) as JWTPayload;
+    await db.ds.transaction(async (transactionalEntityManager) => {
+      // Remove old group associations
+      if (permsToRemove.length > 0) {
+        await transactionalEntityManager
+          .createQueryBuilder()
+          .delete()
+          .from(UserPermissions)
+          .where("user_id = :userId AND group_id IN (:...permIds)", {
+            userId: user.id,
+            permIds: permsToRemove,
+          })
+          .execute();
+      }
+
+      // Add new group associations
+      if (permsToAdd.length > 0) {
+        const userPermsToAdd = permsToAdd.map((permId: any) => ({
+          user_id: user.id,
+          permission_id: permId,
+        }));
+
+        await transactionalEntityManager
+          .createQueryBuilder()
+          .insert()
+          .into(UserPermissions)
+          .values(userPermsToAdd)
+          .orIgnore()
+          .execute();
+      }
+      // Assign provided groups for return value
+      user.permissions = body.groups;
+      user.save(db);
+    });
+
+    return user;
   }
 }
