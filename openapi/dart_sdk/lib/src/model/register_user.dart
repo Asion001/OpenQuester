@@ -3,37 +3,32 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:openapi/src/model/private_user_permissions_inner.dart';
 import 'dart:typed_data';
-import 'package:built_collection/built_collection.dart';
 import 'package:openapi/src/model/date.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'private_user.g.dart';
+part 'register_user.g.dart';
 
-/// PrivateUser
+/// RegisterUser
 ///
 /// Properties:
-/// * [id]
 /// * [name]
 /// * [email]
+/// * [password]
 /// * [birthday]
 /// * [avatar]
-/// * [permissions]
-/// * [createdAt]
-/// * [updatedAt]
-/// * [isDeleted]
 @BuiltValue()
-abstract class PrivateUser implements Built<PrivateUser, PrivateUserBuilder> {
-  @BuiltValueField(wireName: r'id')
-  num? get id;
-
+abstract class RegisterUser
+    implements Built<RegisterUser, RegisterUserBuilder> {
   @BuiltValueField(wireName: r'name')
   String? get name;
 
   @BuiltValueField(wireName: r'email')
   String? get email;
+
+  @BuiltValueField(wireName: r'password')
+  String get password;
 
   @BuiltValueField(wireName: r'birthday')
   Date? get birthday;
@@ -41,48 +36,29 @@ abstract class PrivateUser implements Built<PrivateUser, PrivateUserBuilder> {
   @BuiltValueField(wireName: r'avatar')
   Uint8List? get avatar;
 
-  @BuiltValueField(wireName: r'permissions')
-  BuiltList<PrivateUserPermissionsInner>? get permissions;
+  RegisterUser._();
 
-  @BuiltValueField(wireName: r'created_at')
-  DateTime? get createdAt;
-
-  @BuiltValueField(wireName: r'updated_at')
-  DateTime? get updatedAt;
-
-  @BuiltValueField(wireName: r'is_deleted')
-  bool? get isDeleted;
-
-  PrivateUser._();
-
-  factory PrivateUser([void updates(PrivateUserBuilder b)]) = _$PrivateUser;
+  factory RegisterUser([void updates(RegisterUserBuilder b)]) = _$RegisterUser;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(PrivateUserBuilder b) => b;
+  static void _defaults(RegisterUserBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<PrivateUser> get serializer => _$PrivateUserSerializer();
+  static Serializer<RegisterUser> get serializer => _$RegisterUserSerializer();
 }
 
-class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
+class _$RegisterUserSerializer implements PrimitiveSerializer<RegisterUser> {
   @override
-  final Iterable<Type> types = const [PrivateUser, _$PrivateUser];
+  final Iterable<Type> types = const [RegisterUser, _$RegisterUser];
 
   @override
-  final String wireName = r'PrivateUser';
+  final String wireName = r'RegisterUser';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    PrivateUser object, {
+    RegisterUser object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.id != null) {
-      yield r'id';
-      yield serializers.serialize(
-        object.id,
-        specifiedType: const FullType(num),
-      );
-    }
     if (object.name != null) {
       yield r'name';
       yield serializers.serialize(
@@ -97,6 +73,11 @@ class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
         specifiedType: const FullType(String),
       );
     }
+    yield r'password';
+    yield serializers.serialize(
+      object.password,
+      specifiedType: const FullType(String),
+    );
     if (object.birthday != null) {
       yield r'birthday';
       yield serializers.serialize(
@@ -111,41 +92,12 @@ class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
         specifiedType: const FullType(Uint8List),
       );
     }
-    if (object.permissions != null) {
-      yield r'permissions';
-      yield serializers.serialize(
-        object.permissions,
-        specifiedType:
-            const FullType(BuiltList, [FullType(PrivateUserPermissionsInner)]),
-      );
-    }
-    if (object.createdAt != null) {
-      yield r'created_at';
-      yield serializers.serialize(
-        object.createdAt,
-        specifiedType: const FullType(DateTime),
-      );
-    }
-    if (object.updatedAt != null) {
-      yield r'updated_at';
-      yield serializers.serialize(
-        object.updatedAt,
-        specifiedType: const FullType(DateTime),
-      );
-    }
-    if (object.isDeleted != null) {
-      yield r'is_deleted';
-      yield serializers.serialize(
-        object.isDeleted,
-        specifiedType: const FullType(bool),
-      );
-    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    PrivateUser object, {
+    RegisterUser object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object,
@@ -158,20 +110,13 @@ class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required PrivateUserBuilder result,
+    required RegisterUserBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'id':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(num),
-          ) as num;
-          result.id = valueDes;
-          break;
         case r'name':
           final valueDes = serializers.deserialize(
             value,
@@ -185,6 +130,13 @@ class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
             specifiedType: const FullType(String),
           ) as String;
           result.email = valueDes;
+          break;
+        case r'password':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
+          result.password = valueDes;
           break;
         case r'birthday':
           final valueDes = serializers.deserialize(
@@ -200,35 +152,6 @@ class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
           ) as Uint8List;
           result.avatar = valueDes;
           break;
-        case r'permissions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(PrivateUserPermissionsInner)]),
-          ) as BuiltList<PrivateUserPermissionsInner>;
-          result.permissions.replace(valueDes);
-          break;
-        case r'created_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(DateTime),
-          ) as DateTime;
-          result.createdAt = valueDes;
-          break;
-        case r'updated_at':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(DateTime),
-          ) as DateTime;
-          result.updatedAt = valueDes;
-          break;
-        case r'is_deleted':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(bool),
-          ) as bool;
-          result.isDeleted = valueDes;
-          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -238,12 +161,12 @@ class _$PrivateUserSerializer implements PrimitiveSerializer<PrivateUser> {
   }
 
   @override
-  PrivateUser deserialize(
+  RegisterUser deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = PrivateUserBuilder();
+    final result = RegisterUserBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

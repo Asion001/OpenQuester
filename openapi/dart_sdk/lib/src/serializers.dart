@@ -15,23 +15,29 @@ import 'package:openapi/src/date_serializer.dart';
 import 'package:openapi/src/model/date.dart';
 
 import 'package:openapi/src/model/auth_data.dart';
+import 'package:openapi/src/model/login_user.dart';
 import 'package:openapi/src/model/private_user.dart';
-import 'package:openapi/src/model/v1_auth_login_post_request.dart';
-import 'package:openapi/src/model/v1_auth_refresh_post200_response.dart';
+import 'package:openapi/src/model/private_user_permissions_inner.dart';
+import 'package:openapi/src/model/register_user.dart';
+import 'package:openapi/src/model/update_user.dart';
 import 'package:openapi/src/model/v1_auth_refresh_post_request.dart';
-import 'package:openapi/src/model/v1_auth_register_post_request.dart';
 
 part 'serializers.g.dart';
 
 @SerializersFor([
   AuthData,
+  LoginUser,
   PrivateUser,
-  V1AuthLoginPostRequest,
-  V1AuthRefreshPost200Response,
+  PrivateUserPermissionsInner,
+  RegisterUser,
+  UpdateUser,
   V1AuthRefreshPostRequest,
-  V1AuthRegisterPostRequest,
 ])
 Serializers serializers = (_$serializers.toBuilder()
+      ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(PrivateUser)]),
+        () => ListBuilder<PrivateUser>(),
+      )
       ..add(const OneOfSerializer())
       ..add(const AnyOfSerializer())
       ..add(const DateSerializer())
