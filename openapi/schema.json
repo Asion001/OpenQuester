@@ -465,7 +465,7 @@
           "name": {
             "type": "string",
             "example": "John"
-          },
+            "example": "John Doe"
           "password": {
             "type": "string",
             "example": "mySuperCoolPassword123"
