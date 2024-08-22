@@ -170,13 +170,25 @@
     },
     "/v1/auth/register": {
       "post": {
-        "summary": "Get user info by his id",
+        "summary": "User Registration",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["name", "email", "password"]
               }
             }
           }
@@ -427,43 +439,6 @@
           }
         },
         "required": ["password"]
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "John"
-          },
-          "email": {
-            "type": "string",
-            "example": "jogn.doe@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "mySuperCoolPassword123"
-          },
-          "birthday": {
-            "type": "string",
-            "format": "date",
-            "example": "2024-01-01T00:00:00Z"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date",
-            "example": "2024-01-01T00:00:00Z"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date",
-            "example": "2024-01-01T00:00:00Z"
-          },
-          "is_deleted": {
-            "type": "boolean",
-            "example": false
-          }
-        },
-        "required": ["name", "email", "password"]
       },
       "AuthData": {
         "type": "object",
