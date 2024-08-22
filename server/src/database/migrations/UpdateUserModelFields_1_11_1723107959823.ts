@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
+import { Logger } from "../../utils/Logger";
 
 export class UpdateUserModelFields_1_11_1723107959823
   implements MigrationInterface
@@ -41,6 +42,7 @@ export class UpdateUserModelFields_1_11_1723107959823
         isNullable: true,
       })
     );
+    Logger.logMigrationComplete("1_11");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

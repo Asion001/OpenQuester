@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
+import { Logger } from "../../utils/Logger";
 
 export class UpdateUserRequiredFields_1_21_1723204474011
   implements MigrationInterface
@@ -8,6 +9,7 @@ export class UpdateUserRequiredFields_1_21_1723204474011
       ALTER TABLE "user"
       ADD CONSTRAINT "UQ_user_name" UNIQUE ("name");
     `);
+    Logger.logMigrationComplete("1_21");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

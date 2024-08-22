@@ -5,6 +5,7 @@ import {
   TableForeignKey,
   TableUnique,
 } from "typeorm";
+import { Logger } from "../../utils/Logger";
 
 export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -76,6 +77,8 @@ export class CreateGroupTable_1_2_1723128633623 implements MigrationInterface {
     await queryRunner.query(
       `INSERT INTO "group" (name) VALUES ('admins'), ('users');`
     );
+
+    Logger.logMigrationComplete("1_2");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

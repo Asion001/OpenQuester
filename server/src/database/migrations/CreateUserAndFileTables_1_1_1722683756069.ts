@@ -5,6 +5,7 @@ import {
   TableForeignKey,
   TableUnique,
 } from "typeorm";
+import { Logger } from "../../utils/Logger";
 
 export class CreateUserAndFileTables_1_1_1722683756069
   implements MigrationInterface
@@ -94,6 +95,7 @@ export class CreateUserAndFileTables_1_1_1722683756069
         onDelete: "SET NULL",
       })
     );
+    Logger.logMigrationComplete("1_1");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
