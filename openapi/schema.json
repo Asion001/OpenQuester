@@ -10,9 +10,20 @@
     }
   ],
   "paths": {
-    "/v1/users/get-by-token": {
-      "post": {
-        "summary": "Get user info by his access token",
+    "/v1/user/{id}": {
+      "get": {
+        "summary": "Get user info by params id / his auth token",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "number",
+                "example": 1
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Get user data successfully",
@@ -34,40 +45,21 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/v1/users/retrieve/{id}": {
-      "post": {
-        "summary": "Get user info by his id",
-        "responses": {
-          "200": {
-            "description": "Get user data successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PrivateUser"
-                }
-              }
-            }
           },
-          "400": {
-            "description": "User does not exists or you don't have permissions for this operation",
+          "404": {
+            "description": "User not found",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "string",
-                  "example": "You are not able to do that"
+                  "example": "User not found"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/v1/users/update/{id}": {
-      "post": {
+      },
+      "patch": {
         "summary": "Update user info",
         "requestBody": {
           "required": true,
@@ -81,7 +73,14 @@
         },
         "responses": {
           "200": {
-            "description": "Update user data successfully"
+            "description": "Update user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
           },
           "400": {
             "description": "You don't have permissions for this operation",
@@ -93,13 +92,22 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "/v1/users/delete/{id}": {
-      "post": {
-        "summary": "Delete user by id",
+      },
+      "delete": {
+        "summary": "Delete user",
         "responses": {
           "204": {
             "description": "User deleted successfully"
@@ -111,6 +119,59 @@
                 "schema": {
                   "type": "string",
                   "example": "You are not able to do that"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/": {
+      "get": {
+        "summary": "Get all users info",
+        "responses": {
+          "200": {
+            "description": "Get all users data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrivateUser"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "You have no access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Users not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Users not found"
                 }
               }
             }

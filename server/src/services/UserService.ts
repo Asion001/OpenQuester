@@ -55,9 +55,13 @@ export class UserService {
   }
 
   /**
-   * Retrieve one user by params id
+   * Retrieve one user
    */
   public static async retrieve(db: Database, req: express.Request) {
+    if (!req.params.id) {
+      return this.getByToken(db, req);
+    }
+
     const id = ValueUtils.validateId(req.params.id);
 
     const payload = this.getPayload(req);
@@ -93,8 +97,10 @@ export class UserService {
       throw new Error("To update user specify at least one field");
     }
 
-    const id = ValueUtils.validateId(req.params.id);
     const payload = this.getPayload(req);
+    const id = ValueUtils.validateId(
+      req.params.id ? req.params.id : payload.id
+    );
 
     if (payload.id == id) {
       return await this.updateUser(db, id, req.body, crypto);
@@ -118,8 +124,10 @@ export class UserService {
    * Delete user by params id
    */
   public static async delete(db: Database, req: express.Request) {
-    const id = ValueUtils.validateId(req.params.id);
     const payload = this.getPayload(req);
+    const id = ValueUtils.validateId(
+      req.params.id ? req.params.id : payload.id
+    );
 
     const target = await this.getUserById(db, id);
     if (!target) {
