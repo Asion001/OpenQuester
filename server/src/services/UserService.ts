@@ -7,7 +7,6 @@ import { ValueUtils } from "../utils/ValueUtils";
 import { IApiContext } from "../interfaces/IApiContext";
 import { IUpdateUser } from "../interfaces/user/IUpdateUser";
 import { JWTUtils } from "../utils/JWTUtils";
-import { CryptoUtils } from "../utils/CryptoUtils";
 
 export class UserService {
   /**
@@ -51,9 +50,12 @@ export class UserService {
     const id = ValueUtils.validateId(req.params.id);
     const payload = JWTUtils.getPayload(req);
 
-    const requestUser = await User.get(ctx.db, payload.id);
+    if (payload.id == id) {
+      return User.get(ctx.db, id);
+    }
 
-    if (payload.id == id || requestUser.isAdmin()) {
+    const requestUser = await User.get(ctx.db, payload.id);
+    if (requestUser.isAdmin()) {
       return User.get(ctx.db, id);
     }
 
@@ -96,6 +98,7 @@ export class UserService {
 
     const user = (await repository.findOne({
       where: { id },
+      select: ["is_deleted"], // TODO: Implement this everywhere and check it works / fix tests
     })) as User;
 
     if (!user || user.is_deleted) {
@@ -129,10 +132,6 @@ export class UserService {
 
     if (!user) {
       throw new Error("User not found");
-    }
-
-    if (!(await CryptoUtils.compare(body.password!, user.password!, crypto))) {
-      throw new Error("Password is incorrect");
     }
 
     user.name = body.name ?? user.name;

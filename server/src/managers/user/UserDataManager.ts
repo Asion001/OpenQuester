@@ -29,7 +29,7 @@ export class UserDataManager {
    * By default it's called in `validate()`
    */
   public validateFields() {
-    if (!this.required) {
+    if (!this.required?.length) {
       return;
     }
 

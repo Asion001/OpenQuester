@@ -11,6 +11,6 @@ export class UpdateUser extends UserDataManager {
       birthday: data.birthday,
       avatar: data.avatar,
     } as IUpdateUser;
-    this.required = ["password"];
+    this.required = [];
   }
 }

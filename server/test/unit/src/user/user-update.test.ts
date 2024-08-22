@@ -44,7 +44,8 @@ describe("User update", () => {
   });
 
   describe("User update", () => {
-    it("Should throw error with empty data", async () => {
+    // TODO: Currently we have no required fields
+    it.skip("Should throw error with empty data", async () => {
       const dataToUpdate = {};
 
       const req = {
@@ -109,7 +110,8 @@ describe("User update", () => {
       stubFindOne.restore();
     });
 
-    it("Should throw error with empty or bad password", async () => {
+    // TODO: For now no need password to update user
+    it.skip("Should throw error with empty or bad password", async () => {
       let dataToUpdate: any;
       let req: any;
 

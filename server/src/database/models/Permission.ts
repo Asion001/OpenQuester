@@ -23,6 +23,6 @@ export class Permission implements IPermission {
       .getRepository(Permission)
       .createQueryBuilder("permission")
       .where("id=:id", { id: EUserPermissions.user })
-      .getOne() as Promise<Permission[]>;
+      .getOne();
   }
 }

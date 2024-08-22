@@ -7,7 +7,6 @@ import {
   Unique,
   ManyToMany,
   JoinTable,
-  ObjectLiteral,
   Repository,
 } from "typeorm";
 import { IUser } from "../../interfaces/user/IUser";
@@ -21,7 +20,7 @@ import { ValueUtils } from "../../utils/ValueUtils";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
 import { CryptoUtils } from "../../utils/CryptoUtils";
 
-const USER_SELECT_FIELDS = [
+const USER_SELECT_FIELDS: (keyof IUser)[] = [
   "id",
   "name",
   "email",
@@ -34,7 +33,7 @@ const USER_SELECT_FIELDS = [
 @Entity()
 @Unique(["email", "name"])
 export class User implements IUser {
-  private repository?: Repository<ObjectLiteral>;
+  private repository?: Repository<User>;
 
   constructor() {
     //
@@ -145,7 +144,7 @@ export class User implements IUser {
         ? ValueUtils.getBirthday(data.birthday)
         : undefined,
       avatar: data.avatar,
-      permissions: (await Permission.default(db)) ?? [],
+      permissions: ((await Permission.default(db)) ?? []) as Permission[],
       created_at: new Date(),
       updated_at: new Date(),
       is_deleted: false,
@@ -168,14 +167,14 @@ export class User implements IUser {
       .getOne();
   }
 
-  public async delete(db: Database, repository?: Repository<ObjectLiteral>) {
+  public async delete(db: Database, repository?: Repository<User>) {
     this.repository = this.repository ?? repository ?? db.getRepository(User);
     this.is_deleted = true;
     this.update(db);
     return;
   }
 
-  public async update(db: Database, repository?: Repository<ObjectLiteral>) {
+  public async update(db: Database, repository?: Repository<User>) {
     this.repository = this.repository ?? repository ?? db.getRepository(User);
 
     return this.repository.update(

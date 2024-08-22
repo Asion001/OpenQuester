@@ -38,7 +38,7 @@ export class AuthService {
       throw new Error("User with this name or email does not exists");
     }
 
-    if (!(await CryptoUtils.compare(data.password!, user.password, crypto))) {
+    if (!(await CryptoUtils.compare(data.password!, user.password!, crypto))) {
       throw new Error("Wrong password, please try again");
     }
 

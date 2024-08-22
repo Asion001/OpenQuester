@@ -1,4 +1,4 @@
-import { DataSource, EntityTarget, ObjectLiteral } from "typeorm";
+import { DataSource, EntityTarget, ObjectLiteral, Repository } from "typeorm";
 import { AppDataSource } from "./DataSource";
 import { Logger } from "../utils/Logger";
 
@@ -8,6 +8,9 @@ import { Logger } from "../utils/Logger";
 export class Database {
   private dataSource: DataSource;
   private _connected: boolean;
+
+  /** Repositories caching */
+  private repositories: Map<EntityTarget<any>, Repository<any>> = new Map();
 
   constructor(dataSource: DataSource) {
     this._connected = false;
@@ -29,11 +32,21 @@ export class Database {
   /**
    * Get TypeORM repository for given entity
    */
-  public getRepository(target: EntityTarget<ObjectLiteral>) {
+  public getRepository<T extends ObjectLiteral>(
+    target: EntityTarget<T>
+  ): Repository<T> {
     if (!this._connected) {
       throw new Error("DB is not connected");
     }
-    return this.dataSource.getRepository(target);
+
+    let repository = this.repositories.get(target) as Repository<T> | undefined;
+
+    if (!repository) {
+      repository = this.dataSource.getRepository(target);
+      this.repositories.set(target, repository);
+    }
+
+    return repository;
   }
 
   /** DataSource */
