@@ -21,6 +21,15 @@ import { ValueUtils } from "../../utils/ValueUtils";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
 import { CryptoUtils } from "../../utils/CryptoUtils";
 
+const USER_SELECT_FIELDS = [
+  "id",
+  "name",
+  "email",
+  "birthday",
+  "avatar",
+  "created_at",
+  "updated_at",
+];
 @Entity()
 @Unique(["email", "name"])
 export class User implements IUser {
@@ -89,28 +98,18 @@ export class User implements IUser {
   }
 
   public static async get(db: Database, id: number) {
-    const repository = db.getRepository(User);
-    const user = (await repository.findOne({
+    return db.getRepository(User).findOne({
       where: { id: id },
+      select: USER_SELECT_FIELDS,
       relations: ["permissions"],
-    })) as User;
-
-    if (user) {
-      // Don't send back user password
-      delete user.password;
-    }
-
-    return user;
+    }) as Promise<User>;
   }
 
   public static async list(db: Database) {
-    const repository = db.getRepository(User);
-    const users = await repository.find({
+    return db.getRepository(User).find({
+      select: USER_SELECT_FIELDS,
       relations: ["permissions"],
-    });
-    // Don't send users passwords
-    users.map((u) => delete u.password);
-    return users;
+    }) as Promise<User[]>;
   }
 
   public static async create(
@@ -131,7 +130,7 @@ export class User implements IUser {
       : undefined;
     user.avatar = data.avatar;
 
-    user.permissions = await Permission.default(db);
+    user.permissions = (await Permission.default(db)) ?? [];
     user.created_at = new Date();
     user.updated_at = new Date();
 
@@ -144,30 +143,24 @@ export class User implements IUser {
    * Returns user with specified login data
    */
   public static async login(db: Database, data: ILoginUser) {
-    const repository = db.getRepository(User);
-
-    const user = await repository
+    return db
+      .getRepository(User)
       .createQueryBuilder("user")
       .where("user.email = :email", { email: data.login })
       .orWhere("user.name = :name", { name: data.login })
       .getOne();
-
-    return user;
   }
 
-  public async delete(db: Database) {
-    if (!this.repository) {
-      this.repository = db.getRepository(User);
-    }
+  public async delete(db: Database, repository?: Repository<ObjectLiteral>) {
+    this.repository = this.repository ?? repository ?? db.getRepository(User);
     this.is_deleted = true;
-    await this.save(db);
+    this.save(db);
     return;
   }
 
-  public async save(db: Database) {
-    if (!this.repository) {
-      this.repository = db.getRepository(User);
-    }
+  public async save(db: Database, repository?: Repository<ObjectLiteral>) {
+    this.repository = this.repository ?? repository ?? db.getRepository(User);
+
     return this.repository.update(
       { id: this.id },
       {

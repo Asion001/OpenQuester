@@ -23,7 +23,7 @@ export class UserService {
     const payload = JWTUtils.getPayload(req);
     const id = ValueUtils.validateId(payload.id);
 
-    return await User.get(ctx.db, id);
+    return User.get(ctx.db, id);
   }
 
   /**
@@ -35,7 +35,7 @@ export class UserService {
     const requestUser = await User.get(ctx.db, payload.id);
 
     if (requestUser.isAdmin()) {
-      return await User.list(ctx.db);
+      return User.list(ctx.db);
     }
 
     throw new Error("You are not able to do that");
@@ -55,7 +55,7 @@ export class UserService {
     const requestUser = await User.get(ctx.db, payload.id);
 
     if (payload.id == id || requestUser.isAdmin()) {
-      return await User.get(ctx.db, id);
+      return User.get(ctx.db, id);
     }
 
     throw new Error("You are not able to do that");
@@ -69,7 +69,7 @@ export class UserService {
     const id = ValueUtils.validateId(req.params.id ?? payload.id);
 
     if (payload.id == id) {
-      return await this.performUpdate(ctx, id, req.body);
+      return this.performUpdate(ctx, id, req.body);
     }
 
     throw new Error("You are not able to do that");
@@ -83,7 +83,7 @@ export class UserService {
     const id = ValueUtils.validateId(req.params.id ?? payload.id);
 
     if (payload.id == id) {
-      return await this.performDelete(ctx, id);
+      return this.performDelete(ctx, id);
     }
 
     throw new Error("You are not able to do that");
@@ -107,7 +107,7 @@ export class UserService {
       throw new Error("User already deleted");
     }
 
-    return await user.delete(ctx.db);
+    return user.delete(ctx.db, repository);
   }
 
   /**
@@ -136,10 +136,7 @@ export class UserService {
       throw new Error("User not found");
     }
 
-    if (
-      !body.password ||
-      !(await CryptoUtils.compare(body.password, user.password!, crypto))
-    ) {
+    if (!(await CryptoUtils.compare(body.password!, user.password!, crypto))) {
       throw new Error("Password is incorrect");
     }
 
@@ -150,11 +147,11 @@ export class UserService {
       user.birthday = ValueUtils.getBirthday(body.birthday);
     }
 
-    await user.save(db);
+    user.save(db, repository);
     // Do not return back user password
     delete user.password;
 
-    return await user.export();
+    return user.export();
   }
 
   public static async updatePermissions(
@@ -237,7 +234,7 @@ export class UserService {
       }
       // Assign provided groups for return value
       user.permissions = body.groups;
-      user.save(db);
+      user.save(db, repository);
     });
 
     return user;

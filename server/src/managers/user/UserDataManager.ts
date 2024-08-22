@@ -24,25 +24,19 @@ export class UserDataManager {
   }
 
   /**
-   * Used in `validate()`, so no need to call this method before
+   * Validates if manager instance have all required fields.
+   *
+   * By default it's called in `validate()`
    */
   public validateFields() {
-    if (
-      !this.userData ||
-      !ValueUtils.isObject(this.userData) ||
-      ValueUtils.isEmpty(this.userData)
-    ) {
-      throw new Error("No user data provided.");
-    }
-
     if (!this.required) {
       return;
     }
 
     const r: string[] = [];
-    for (const entry of Object.entries(this.userData)) {
+    for (const entry of Object.entries(this.userData!)) {
       if (this.required.includes(entry[0])) {
-        const value = this.userData[entry[0] as keyof IUserData];
+        const value = this.userData![entry[0] as keyof IUserData];
         if (ValueUtils.isBad(value)) {
           r.push(entry[0]);
         }
@@ -53,7 +47,18 @@ export class UserDataManager {
     }
   }
 
+  /**
+   * Validates manager user data using validation schema
+   */
   public validate() {
+    if (
+      !this.userData ||
+      !ValueUtils.isObject(this.userData) ||
+      ValueUtils.isEmpty(this.userData)
+    ) {
+      throw new Error("No user data provided.");
+    }
+
     this.validateFields();
 
     if (!this.schema) {
@@ -72,5 +77,9 @@ export class UserDataManager {
     }
 
     return value;
+  }
+
+  public get data() {
+    return this.userData;
   }
 }

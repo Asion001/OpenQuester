@@ -14,8 +14,4 @@ export class RegisterUser extends UserDataManager {
     } as IUpdateUser;
     this.required = ["name", "email", "password"];
   }
-
-  public get data() {
-    return this.userData;
-  }
 }

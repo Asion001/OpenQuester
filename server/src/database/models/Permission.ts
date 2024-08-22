@@ -19,11 +19,10 @@ export class Permission implements IPermission {
    * Return default permissions for user
    */
   public static async default(db: Database) {
-    const repository = db.getRepository(Permission);
-    const permission = (await repository
+    return db
+      .getRepository(Permission)
       .createQueryBuilder("permission")
       .where("id=:id", { id: EUserPermissions.user })
-      .getOne()) as Permission;
-    return [permission];
+      .getOne() as Promise<Permission[]>;
   }
 }
