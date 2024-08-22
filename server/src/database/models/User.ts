@@ -35,6 +35,21 @@ const USER_SELECT_FIELDS = [
 export class User implements IUser {
   private repository?: Repository<ObjectLiteral>;
 
+  constructor(data: IUser) {
+    if (!data) {
+      return;
+    }
+    this.name = data.name;
+    this.email = data.email;
+    this.password = data.password;
+    this.birthday = data.birthday;
+    this.avatar = data.avatar;
+    this.created_at = data.created_at;
+    this.updated_at = data.updated_at;
+    this.is_deleted = data.is_deleted;
+    this.permissions = data.permissions ?? this.permissions ?? [];
+  }
+
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -50,6 +65,10 @@ export class User implements IUser {
   @Column({ nullable: true })
   birthday?: Date;
 
+  @OneToOne(() => File, { nullable: true })
+  @JoinColumn()
+  avatar?: File;
+
   @Column()
   created_at!: Date;
 
@@ -58,10 +77,6 @@ export class User implements IUser {
 
   @Column()
   is_deleted!: boolean;
-
-  @OneToOne(() => File, { nullable: true })
-  @JoinColumn()
-  avatar?: File;
 
   @ManyToMany(() => Permission, (permission) => permission.users)
   @JoinTable({
@@ -118,21 +133,20 @@ export class User implements IUser {
     crypto: Crypto
   ) {
     const repository = db.getRepository(User);
-    const user = new User();
-
     // Set all data to new user instance
-    user.name = data.name;
-    user.email = data.email;
-    user.password = await CryptoUtils.hash(data.password as string, 10, crypto);
-
-    user.birthday = data.birthday
-      ? ValueUtils.getBirthday(data.birthday)
-      : undefined;
-    user.avatar = data.avatar;
-
-    user.permissions = (await Permission.default(db)) ?? [];
-    user.created_at = new Date();
-    user.updated_at = new Date();
+    const user = new User({
+      name: data.name,
+      email: data.email,
+      password: await CryptoUtils.hash(data.password as string, 10, crypto),
+      birthday: data.birthday
+        ? ValueUtils.getBirthday(data.birthday)
+        : undefined,
+      avatar: data.avatar,
+      permissions: (await Permission.default(db)) ?? [],
+      created_at: new Date(),
+      updated_at: new Date(),
+      is_deleted: false,
+    });
 
     // Save new user
     await repository.save(user);
@@ -154,11 +168,11 @@ export class User implements IUser {
   public async delete(db: Database, repository?: Repository<ObjectLiteral>) {
     this.repository = this.repository ?? repository ?? db.getRepository(User);
     this.is_deleted = true;
-    this.save(db);
+    this.update(db);
     return;
   }
 
-  public async save(db: Database, repository?: Repository<ObjectLiteral>) {
+  public async update(db: Database, repository?: Repository<ObjectLiteral>) {
     this.repository = this.repository ?? repository ?? db.getRepository(User);
 
     return this.repository.update(

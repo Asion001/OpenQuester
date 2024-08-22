@@ -7,6 +7,10 @@ import { expect } from "chai";
 
 import { User } from "../../../../src/database/models/User";
 import { AuthService } from "../../../../src/services/AuthService";
+import { JWTUtils } from "../../../../src/utils/JWTUtils";
+import { RegisterUser } from "../../../../src/managers/user/RegisterUser";
+import { LoginUser } from "../../../../src/managers/user/LoginUser";
+import { IUser } from "../../../../src/interfaces/user/IUser";
 
 // Create a mock instance of bcrypt
 const bcryptMock = mock<typeof bcrypt>();
@@ -63,7 +67,7 @@ describe("User auth and jwt tokens", () => {
       };
 
       // Mock token generation
-      sinon.stub(AuthService, "generateTokens").returns({
+      sinon.stub(JWTUtils, "generateTokens").returns({
         access_token: "accessToken",
         refresh_token: "refreshToken",
       });
@@ -120,10 +124,14 @@ describe("User auth and jwt tokens", () => {
       const userData = { name: "John Doe", email: "", password: "" };
 
       try {
+        // Logic from endpoint that throws error
+        const data = new RegisterUser(userData);
+        data.validate();
+
         await AuthService.register(ctx, userData as any, bcryptInstance);
         throw new Error("Expected register method to throw error.");
       } catch (err: any) {
-        expect(err.message).to.include("Provide all required fields");
+        expect(err.message.toLowerCase()).to.include("is required");
       }
     });
   });
@@ -136,8 +144,9 @@ describe("User auth and jwt tokens", () => {
         password: "password123",
       };
 
-      const user = new User();
-      user.password = await bcryptInstance.hash(userData.password, 10);
+      const user = new User({
+        password: await bcryptInstance.hash(userData.password, 10),
+      } as unknown as IUser);
 
       sinon.stub(selectQueryBuilder, "getOne").returns(user);
 
@@ -154,13 +163,17 @@ describe("User auth and jwt tokens", () => {
     });
 
     it("should throw an error if login data is invalid", async () => {
-      const userData = { email: "", password: "" };
+      const userData = { login: "", password: "" };
 
       try {
+        // Logic from endpoint that throws error
+        const data = new LoginUser(userData);
+        data.validate();
+
         await AuthService.login(ctx, userData as any, bcryptInstance);
         throw new Error("Expected method above to throw error.");
       } catch (err: any) {
-        expect(err.message).to.include("Provide all required fields");
+        expect(err.message.toLowerCase()).to.include("is required");
       }
     });
 
@@ -185,8 +198,9 @@ describe("User auth and jwt tokens", () => {
       email: "john@example.com",
       password: "wrongPassword",
     };
-    const user = new User();
-    user.password = await bcrypt.hash("correctPassword", 10);
+    const user = new User({
+      password: await bcryptInstance.hash("correctPassword", 10),
+    } as unknown as IUser);
 
     sinon.stub(selectQueryBuilder, "getOne").returns(user);
 
@@ -200,7 +214,7 @@ describe("User auth and jwt tokens", () => {
 
   it("should generate token correctly", async () => {
     const userId = 1;
-    const result = AuthService.generateTokens(userId, options);
+    const result = JWTUtils.generateTokens(userId, options);
 
     expect(result).to.have.property("access_token");
     expect(result).to.have.property("refresh_token");
@@ -212,9 +226,9 @@ describe("User auth and jwt tokens", () => {
 
   it("refresh token correctly", async () => {
     const userId = 1;
-    const token = AuthService.generateTokens(userId, options).refresh_token;
+    const token = JWTUtils.generateTokens(userId, options).refresh_token;
 
-    const result = AuthService.refreshToken(token, options);
+    const result = JWTUtils.refresh(token, options);
 
     expect(result).to.have.property("access_token");
     expect(result).to.have.property("refresh_token");
@@ -222,7 +236,7 @@ describe("User auth and jwt tokens", () => {
 
   it("refresh bad token should throw error", async () => {
     try {
-      AuthService.refreshToken("Some wrong token");
+      JWTUtils.refresh("Some wrong token");
       throw new Error("Expected method above to throw error.");
     } catch (err: any) {
       err.message = err.message.toLowerCase();

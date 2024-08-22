@@ -1,9 +1,9 @@
 import Joi from "joi";
-import { IUserData } from "../../interfaces/user/UserData";
+import { IInputUserData } from "../../interfaces/user/IInputUserData";
 import { ValueUtils } from "../../utils/ValueUtils";
 
 export class UserDataManager {
-  protected userData?: IUserData;
+  protected userData?: IInputUserData;
   protected schema: Joi.ObjectSchema<any>;
   protected required?: string[];
 
@@ -36,8 +36,8 @@ export class UserDataManager {
     const r: string[] = [];
     for (const entry of Object.entries(this.userData!)) {
       if (this.required.includes(entry[0])) {
-        const value = this.userData![entry[0] as keyof IUserData];
-        if (ValueUtils.isBad(value)) {
+        const value = this.userData![entry[0] as keyof IInputUserData];
+        if (ValueUtils.isBad(value) || ValueUtils.isEmpty(value)) {
           r.push(entry[0]);
         }
       }

@@ -1,14 +1,14 @@
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
-import { IUpdateUser } from "../../interfaces/user/IUpdateUser";
+import { IInputUserData } from "../../interfaces/user/IInputUserData";
 import { UserDataManager } from "./UserDataManager";
 
 export class LoginUser extends UserDataManager {
-  constructor(data: ILoginUser) {
+  constructor(data: IInputUserData) {
     super();
     this.userData = {
       login: data.login,
       password: data.password,
-    } as IUpdateUser;
+    } as ILoginUser;
     this.required = ["login", "password"];
   }
 }

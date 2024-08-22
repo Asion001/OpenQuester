@@ -1,9 +1,9 @@
 import { IUpdateUser } from "../../interfaces/user/IUpdateUser";
-import { IUserData } from "../../interfaces/user/UserData";
+import { IInputUserData } from "../../interfaces/user/IInputUserData";
 import { UserDataManager } from "./UserDataManager";
 
 export class UpdateUser extends UserDataManager {
-  constructor(data: IUserData) {
+  constructor(data: IInputUserData) {
     super();
     this.userData = {
       name: data.name,

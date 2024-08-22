@@ -1,9 +1,9 @@
-import { IUpdateUser } from "../../interfaces/user/IUpdateUser";
-import { IUserData } from "../../interfaces/user/UserData";
+import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
+import { IInputUserData } from "../../interfaces/user/IInputUserData";
 import { UserDataManager } from "./UserDataManager";
 
 export class RegisterUser extends UserDataManager {
-  constructor(data: IUserData) {
+  constructor(data: IInputUserData) {
     super();
     this.userData = {
       name: data.name,
@@ -11,7 +11,7 @@ export class RegisterUser extends UserDataManager {
       password: data.password,
       birthday: data.birthday,
       avatar: data.avatar,
-    } as IUpdateUser;
+    } as IRegisterUser;
     this.required = ["name", "email", "password"];
   }
 }

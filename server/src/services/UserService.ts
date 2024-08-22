@@ -18,7 +18,7 @@ export class UserService {
   public static async getByToken(
     ctx: IApiContext,
     req: express.Request
-  ): Promise<IUser> {
+  ): Promise<User> {
     // Token validated by middleware, so no need to validate it
     const payload = JWTUtils.getPayload(req);
     const id = ValueUtils.validateId(payload.id);
@@ -147,7 +147,7 @@ export class UserService {
       user.birthday = ValueUtils.getBirthday(body.birthday);
     }
 
-    user.save(db, repository);
+    user.update(db, repository);
     // Do not return back user password
     delete user.password;
 
@@ -234,7 +234,7 @@ export class UserService {
       }
       // Assign provided groups for return value
       user.permissions = body.groups;
-      user.save(db, repository);
+      user.update(db, repository);
     });
 
     return user;

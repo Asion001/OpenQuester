@@ -3,6 +3,7 @@ import { Repository } from "typeorm";
 import { User } from "../../../../src/database/models/User";
 import { expect } from "chai";
 import { UserService } from "../../../../src/services/UserService";
+import { JWTUtils } from "../../../../src/utils/JWTUtils";
 
 describe("User retrieve by id and JWT token", () => {
   let userRepository: sinon.SinonStubbedInstance<any>;
@@ -23,32 +24,27 @@ describe("User retrieve by id and JWT token", () => {
 
   describe("Retrieve user by token", () => {
     it("Should retrieve user by token", async () => {
-      const stubPayload = sinon.stub(UserService, "getPayload");
+      const stubPayload = sinon.stub(JWTUtils, "getPayload");
       stubPayload.returns({
         iat: 1111,
         exp: 2222,
         id: 1,
       });
-      const stubFindOne = sinon.stub(userRepository, "findOne");
-      stubFindOne
-        .withArgs({
-          where: { id: 1 },
-          relations: ["permissions"],
-        })
-        .returns({
-          email: "someEmail",
-          name: "success",
-          password: "somePassword",
-          created_at: new Date(),
-          updated_at: new Date(),
-          is_banned: false,
-          isAdmin: () => false,
-        });
+      const stubUser = sinon.stub(User, "get");
+      stubUser.resolves({
+        email: "someEmail",
+        name: "success",
+        password: "somePassword",
+        created_at: new Date(),
+        updated_at: new Date(),
+        is_deleted: false,
+        isAdmin: () => false,
+      } as unknown as User);
 
       const result = await UserService.getByToken(ctx, {} as any);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
-      stubFindOne.restore();
+      stubUser.restore();
     });
   });
 
@@ -61,27 +57,22 @@ describe("User retrieve by id and JWT token", () => {
           id: 1,
         },
       };
-      const stubPayload = sinon.stub(UserService, "getPayload");
+      const stubPayload = sinon.stub(JWTUtils, "getPayload");
       stubPayload.returns({
         iat: 1111,
         exp: 2222,
         id: 1,
       });
-      const stubFindOne = sinon.stub(userRepository, "findOne");
-      stubFindOne
-        .withArgs({
-          where: { id: 1 },
-          relations: ["permissions"],
-        })
-        .returns({
-          name: "success",
-          isAdmin: () => false,
-        });
+      const stubUser = sinon.stub(User, "get");
+      stubUser.resolves({
+        name: "success",
+        isAdmin: () => false,
+      } as unknown as User);
 
       const result = await UserService.get(ctx, req);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
-      stubFindOne.restore();
+      stubUser.restore();
     });
 
     it("Should throw error on bad id", async () => {
@@ -92,22 +83,17 @@ describe("User retrieve by id and JWT token", () => {
           id: "bad id",
         },
       };
-      const stubPayload = sinon.stub(UserService, "getPayload");
+      const stubPayload = sinon.stub(JWTUtils, "getPayload");
       stubPayload.returns({
         iat: 1111,
         exp: 2222,
         id: 1,
       });
-      const stubFindOne = sinon.stub(userRepository, "findOne");
-      stubFindOne
-        .withArgs({
-          where: { id: 1 },
-          relations: ["permissions"],
-        })
-        .returns({
-          name: "success",
-          isAdmin: () => false,
-        });
+      const stubUser = sinon.stub(User, "get");
+      stubUser.resolves({
+        name: "success",
+        isAdmin: () => false,
+      } as unknown as User);
 
       try {
         await UserService.get(ctx, req);
@@ -118,7 +104,7 @@ describe("User retrieve by id and JWT token", () => {
         );
       }
       stubPayload.restore();
-      stubFindOne.restore();
+      stubUser.restore();
     });
 
     it("Should throw error if asking for another user", async () => {
@@ -129,23 +115,17 @@ describe("User retrieve by id and JWT token", () => {
           id: 1,
         },
       };
-      const stubPayload = sinon.stub(UserService, "getPayload");
+      const stubPayload = sinon.stub(JWTUtils, "getPayload");
       stubPayload.returns({
         iat: 1111,
         exp: 2222,
         id: 2,
       });
-      const stubFindOne = sinon.stub(userRepository, "findOne");
-      stubFindOne
-        .withArgs({
-          where: { id: 2 },
-          relations: ["permissions"],
-        })
-        .returns({
-          name: "fail",
-          groups: [],
-          isAdmin: () => false,
-        });
+      const stubUser = sinon.stub(User, "get");
+      stubUser.resolves({
+        name: "fail",
+        isAdmin: () => false,
+      } as unknown as User);
 
       try {
         await UserService.get(ctx, req);
@@ -154,7 +134,7 @@ describe("User retrieve by id and JWT token", () => {
         expect(err.message.toLowerCase()).include("not able");
       }
       stubPayload.restore();
-      stubFindOne.restore();
+      stubUser.restore();
     });
 
     it("Should retrieve user if admin asking for another user", async () => {
@@ -165,39 +145,28 @@ describe("User retrieve by id and JWT token", () => {
           id: 1,
         },
       };
-      const stubPayload = sinon.stub(UserService, "getPayload");
+      const stubPayload = sinon.stub(JWTUtils, "getPayload");
       stubPayload.returns({
         iat: 1111,
         exp: 2222,
         id: 2,
       });
-      const stubFindOne = sinon.stub(userRepository, "findOne");
+      const stubUser = sinon.stub(User, "get");
+      stubUser.withArgs(ctx.db, 2).resolves({
+        name: "admin",
+        isAdmin: () => true,
+        permissions: [{ id: 1, name: "admin" }],
+      } as unknown as User);
 
-      stubFindOne
-        .withArgs({
-          where: { id: 2 },
-          relations: ["permissions"],
-        })
-        .returns({
-          name: "admin",
-          groups: [{ id: 1, name: "admins" }],
-          isAdmin: () => true,
-        });
-
-      stubFindOne
-        .withArgs({
-          where: { id: 1 },
-          relations: ["permissions"],
-        })
-        .returns({
-          name: "success",
-          isAdmin: () => false,
-        });
+      stubUser.withArgs(ctx.db, 1).resolves({
+        name: "success",
+        isAdmin: () => false,
+      } as unknown as User);
 
       const result = await UserService.get(ctx, req);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
-      stubFindOne.restore();
+      stubUser.restore();
     });
   });
 });
