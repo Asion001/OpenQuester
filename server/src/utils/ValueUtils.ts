@@ -31,4 +31,28 @@ export class ValueUtils {
 
     return id;
   }
+
+  public static isBad(value: any) {
+    return value === undefined || value === null;
+  }
+
+  public static isObject(value: any) {
+    return !!value && typeof value === "object" && !this.isBad(value);
+  }
+
+  public static isArray(arr: any) {
+    return Array.isArray(arr);
+  }
+
+  public static isString(value: any) {
+    return typeof value === "string" || value instanceof String;
+  }
+
+  public static isEmpty(value: any) {
+    return (
+      (this.isString(value) && value === "") ||
+      (this.isArray(value) && value.length === 0) ||
+      (this.isObject(value) && Object.keys(value).length === 0)
+    );
+  }
 }

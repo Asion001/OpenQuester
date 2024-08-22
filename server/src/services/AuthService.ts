@@ -5,6 +5,7 @@ import { Crypto } from "../types/Crypto";
 
 import { IApiContext } from "../interfaces/IApiContext";
 import { JWTUtils } from "../utils/JWTUtils";
+import { CryptoUtils } from "../utils/CryptoUtils";
 
 interface ILoginData {
   login: string;
@@ -39,7 +40,7 @@ export class AuthService {
       throw new Error("User with this name or email does not exists");
     }
 
-    if (!(await crypto.compare(data.password!, user.password))) {
+    if (!(await CryptoUtils.compare(data.password!, user.password, crypto))) {
       throw new Error("Wrong password, please try again");
     }
 

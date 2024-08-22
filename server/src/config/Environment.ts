@@ -5,6 +5,7 @@ import { LoggerOptions } from "typeorm";
 import { Logger } from "../utils/Logger";
 import { bold } from "colorette";
 import { JWTUtils } from "../utils/JWTUtils";
+import { ValueUtils } from "../utils/ValueUtils";
 
 const ENV_TYPES = ["local", "prod", "test"];
 
@@ -171,7 +172,7 @@ export class Environment {
     const missing: string[] = [];
 
     for (const [key, value] of Object.entries(requiredVars)) {
-      if (value === undefined || value === null) {
+      if (ValueUtils.isBad(value)) {
         missing.push(key);
       }
     }
@@ -192,7 +193,7 @@ export class Environment {
     const missing: string[] = [];
 
     for (const [key, value] of Object.entries(requiredVars)) {
-      if (value === undefined || value === null) {
+      if (ValueUtils.isBad(value)) {
         missing.push(key);
       }
     }

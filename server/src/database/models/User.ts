@@ -19,6 +19,7 @@ import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
 import { Crypto } from "../../types/Crypto";
 import { ValueUtils } from "../../utils/ValueUtils";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
+import { CryptoUtils } from "../../utils/CryptoUtils";
 
 @Entity()
 @Unique(["email", "name"])
@@ -62,7 +63,7 @@ export class User implements IUser {
   permissions!: Permission[];
 
   public isAdmin() {
-    if (!this.permissions) {
+    if (!this.permissions?.length) {
       return false;
     }
 
@@ -107,7 +108,7 @@ export class User implements IUser {
     const users = await repository.find({
       relations: ["permissions"],
     });
-    // Don't send user passwords
+    // Don't send users passwords
     users.map((u) => delete u.password);
     return users;
   }
@@ -123,7 +124,7 @@ export class User implements IUser {
     // Set all data to new user instance
     user.name = data.name;
     user.email = data.email;
-    user.password = await crypto.hash(data.password as string, 10);
+    user.password = await CryptoUtils.hash(data.password as string, 10, crypto);
 
     user.birthday = data.birthday
       ? ValueUtils.getBirthday(data.birthday)

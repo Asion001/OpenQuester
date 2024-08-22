@@ -8,6 +8,7 @@ import { ValueUtils } from "../utils/ValueUtils";
 import { IApiContext } from "../interfaces/IApiContext";
 import { IUpdateUser } from "../interfaces/user/IUpdateUser";
 import { JWTUtils } from "../utils/JWTUtils";
+import { CryptoUtils } from "../utils/CryptoUtils";
 
 export class UserService {
   /**
@@ -137,7 +138,7 @@ export class UserService {
 
     if (
       !body.password ||
-      !(await crypto.compare(body.password, user.password!))
+      !(await CryptoUtils.compare(body.password, user.password!, crypto))
     ) {
       throw new Error("Password is incorrect");
     }

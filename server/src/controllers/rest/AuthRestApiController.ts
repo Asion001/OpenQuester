@@ -1,9 +1,9 @@
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import { Request, Response, Router } from "express";
 import { AuthService } from "../../services/AuthService";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
 import { IApiContext } from "../../interfaces/IApiContext";
 import { RegisterUser } from "../../managers/user/RegisterUser";
 import { LoginUser } from "../../managers/user/LoginUser";

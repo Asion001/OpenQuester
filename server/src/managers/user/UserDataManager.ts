@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { IUserData } from "../../interfaces/user/UserData";
+import { ValueUtils } from "../../utils/ValueUtils";
 
 export class UserDataManager {
   protected userData?: IUserData;
@@ -26,7 +27,11 @@ export class UserDataManager {
    * Used in `validate()`, so no need to call this method before
    */
   public validateFields() {
-    if (!this.userData) {
+    if (
+      !this.userData ||
+      !ValueUtils.isObject(this.userData) ||
+      ValueUtils.isEmpty(this.userData)
+    ) {
       throw new Error("No user data provided.");
     }
 
@@ -38,7 +43,7 @@ export class UserDataManager {
     for (const entry of Object.entries(this.userData)) {
       if (this.required.includes(entry[0])) {
         const value = this.userData[entry[0] as keyof IUserData];
-        if (value === undefined || value === null) {
+        if (ValueUtils.isBad(value)) {
           r.push(entry[0]);
         }
       }
@@ -49,15 +54,11 @@ export class UserDataManager {
   }
 
   public validate() {
-    if (!this.userData) {
-      throw new Error("No user data provided.");
-    }
+    this.validateFields();
 
     if (!this.schema) {
       throw new Error("No validation schema.");
     }
-
-    this.validateFields();
 
     const { value, error } = this.schema.validate(this.userData, {
       allowUnknown: false,
