@@ -1,6 +1,5 @@
 import express from "express";
 import { User } from "../database/models/User";
-import { IUser } from "../interfaces/user/IUser";
 import { UserPermissions } from "../database/models/UserPermission";
 import { IPermission } from "../interfaces/IPermission";
 import { Permission } from "../database/models/Permission";
@@ -99,12 +98,8 @@ export class UserService {
       where: { id },
     })) as User;
 
-    if (!user) {
-      throw new Error(`User does not exists.`);
-    }
-
-    if (user.is_deleted) {
-      throw new Error("User already deleted");
+    if (!user || user.is_deleted) {
+      throw new Error("User not found.");
     }
 
     return user.delete(ctx.db, repository);

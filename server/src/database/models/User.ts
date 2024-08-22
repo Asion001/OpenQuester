@@ -109,7 +109,7 @@ export class User implements IUser {
       created_at: this.created_at,
       updated_at: this.updated_at,
       permissions: this.permissions,
-    };
+    } as IUser;
   }
 
   public static async get(db: Database, id: number) {
