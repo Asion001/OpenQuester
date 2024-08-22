@@ -13,7 +13,7 @@ export class AuthRestApiController {
   constructor(db: Database, app: Express) {
     app.post("/v1/auth/register", async (req: Request, res: Response) => {
       try {
-        if (!this.checkToken(req)) {
+        if (!this.validateTokenForAuth(req)) {
           throw new Error("User is already logged in");
         }
 
@@ -33,7 +33,7 @@ export class AuthRestApiController {
 
     app.post("/v1/auth/login", async (req: Request, res: Response) => {
       try {
-        if (!this.checkToken(req)) {
+        if (!this.validateTokenForAuth(req)) {
           throw new Error("User is already logged in");
         }
 
@@ -65,7 +65,7 @@ export class AuthRestApiController {
    *
    * If user token is valid - he's already logged in and no need to continue execution
    */
-  private checkToken(req: Request) {
+  private validateTokenForAuth(req: Request): boolean {
     if (!req.header("Authorization")) {
       return true;
     }
