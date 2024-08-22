@@ -1,16 +1,22 @@
+import jwt from "jsonwebtoken";
+
 import { Environment } from "../config/Environment";
+
 import { Database } from "../database/Database";
 import { File } from "../database/models/File";
+import { Group } from "../database/models/Group";
 import { User } from "../database/models/User";
 import { IUser } from "../models/IUser";
-import jwt from "jsonwebtoken";
+import { EUserGroups } from "../enums/EUserGroups";
+
 import { JWTPayload, JWTResponse, TokenOptions } from "../types/jwt/jwt";
+import { Crypto } from "../types/Crypto";
 
-interface Crypto {
-  hash(s: string, salt: string | number): Promise<string>;
-  compare(s: string, hash: string): Promise<boolean>;
-}
+import { ValueUtils } from "../utils/ValueUtils";
 
+/**
+ * Handles all business logic of user authorization
+ */
 export class AuthService {
   public static async register(
     db: Database,
@@ -26,13 +32,24 @@ export class AuthService {
 
     const user = new User();
 
+    // Set all data to new user instance
     user.name = data.name;
     user.email = data.email;
     user.password = await crypto.hash(data.password as string, 10);
-    user.birthday = data.birthday ? new Date(data.birthday) : undefined;
-    user.avatar = data.avatar as File;
 
+    user.birthday = data.birthday
+      ? ValueUtils.getBirthday(data.birthday)
+      : undefined;
+
+    user.avatar = data.avatar as File;
+    user.groups = await this.defaultGroups(db);
+
+    user.created_at = new Date();
+    user.updated_at = new Date();
+
+    // Save new user
     await repository.save(user);
+
     const { access_token, refresh_token } = this.generateTokens(user.id);
     return {
       access_token: access_token,
@@ -52,6 +69,7 @@ export class AuthService {
     }
 
     const repository = db.getRepository(User);
+
     const user = await repository
       .createQueryBuilder("user")
       .where("user.name = :name", { name: data.name })
@@ -62,7 +80,8 @@ export class AuthService {
       throw new Error("User with this name or email does not exists");
     }
 
-    if (!(await crypto.compare(data.password as string, user.password))) {
+    // Check user password
+    if (!(await crypto.compare(String(data.password), user.password))) {
       throw new Error("Wrong password, please try again");
     }
 
@@ -74,6 +93,21 @@ export class AuthService {
     };
   }
 
+  /**
+   * Return default groups on user registration
+   */
+  private static async defaultGroups(db: Database) {
+    const repository = db.getRepository(Group);
+    const group = (await repository
+      .createQueryBuilder("group")
+      .where("id=:id", { id: EUserGroups.users })
+      .getOne()) as Group;
+    return [group];
+  }
+
+  /**
+   * Refreshes user tokens by checking given refresh_token
+   */
   public static refreshToken(token: string, options?: TokenOptions) {
     try {
       const decode = jwt.verify(
@@ -93,14 +127,19 @@ export class AuthService {
     }
   }
 
+  /** Validates data required for login */
   private static validateLoginRequest(data: IUser) {
     return data && (data.email || data.name) && data.password;
   }
 
+  /** Validates data required for register */
   private static validateRegisterRequest(data: IUser) {
     return data && data.email && data.name && data.password;
   }
 
+  /**
+   * Generate tokens based on userId as payload, and on given / environment secrets
+   */
   public static generateTokens(userId: number, options?: TokenOptions) {
     const tokenOptions: TokenOptions = options ?? Environment.JWT_TOKEN_OPTIONS;
 

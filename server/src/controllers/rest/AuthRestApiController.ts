@@ -1,13 +1,16 @@
 import { Express, Request, Response } from "express";
 import { AuthService } from "../../services/AuthService";
-import { db } from "../../database/Database";
+import { Database } from "../../database/Database";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
+/**
+ * Handles all endpoints related to user authorization
+ */
 export class AuthRestApiController {
-  constructor(app: Express) {
+  constructor(db: Database, app: Express) {
     app.post("/v1/auth/register", async (req: Request, res: Response) => {
       try {
         if (!this.checkToken(req)) {
@@ -56,21 +59,30 @@ export class AuthRestApiController {
     });
   }
 
+  /**
+   * This method returns true, if token is invalid. It used only at user login / register
+   * what means that if user token is invalid, he should be able to login / register.
+   *
+   * If user token is valid - he's already logged in and no need to continue execution
+   */
   private checkToken(req: Request) {
-    if (req.header("Authorization")) {
-      const header = req.header("Authorization");
-      const scheme = header?.split(" ")[0];
-      const token = header?.split(" ")[1];
-      if (!token || scheme !== Environment.JWT_SCHEME) {
-        // If token invalid - we can proceed register / login
-        return true;
-      }
-      try {
-        jwt.verify(token, Environment.JWT_SECRET);
-        return false;
-      } catch {
-        //
-      }
+    if (!req.header("Authorization")) {
+      return true;
+    }
+
+    const header = req.header("Authorization");
+    const scheme = header?.split(" ")[0];
+    const token = header?.split(" ")[1];
+
+    if (!token || scheme !== Environment.JWT_SCHEME) {
+      return true;
+    }
+
+    try {
+      jwt.verify(token, Environment.JWT_SECRET);
+      return false;
+    } catch {
+      // Token invalid - continue
     }
 
     return true;

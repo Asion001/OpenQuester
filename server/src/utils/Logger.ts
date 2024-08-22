@@ -4,6 +4,9 @@ import path from "path";
 import { Environment } from "../config/Environment";
 import cluster from "cluster";
 
+/**
+ * Logger class used for writing logs and for prettier console output
+ */
 export class Logger {
   public static info(text: any, logWorker: boolean = false) {
     if (cluster.isPrimary || logWorker) {
