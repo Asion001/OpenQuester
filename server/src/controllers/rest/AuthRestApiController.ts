@@ -79,23 +79,20 @@ export class AuthRestApiController {
    * If user token is valid - he's already logged in and no need to continue execution
    */
   private validateTokenForAuth(req: Request): boolean {
-    if (!req.header("Authorization")) {
-      return true;
-    }
-
     const header = req.header("Authorization");
+
+    if (!header) return true;
+
     const scheme = header?.split(" ")[0];
     const token = header?.split(" ")[1];
 
-    if (!token || scheme !== Environment.JWT_SCHEME) {
-      return true;
-    }
-
-    try {
-      jwt.verify(token, Environment.JWT_SECRET);
-      return false;
-    } catch {
-      // Token invalid - continue
+    if (token && scheme == Environment.JWT_SCHEME) {
+      try {
+        jwt.verify(token, Environment.JWT_SECRET);
+        return false;
+      } catch {
+        // Token invalid - continue
+      }
     }
 
     return true;
