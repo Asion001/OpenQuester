@@ -144,7 +144,8 @@ describe("User auth and jwt tokens", () => {
         password: "password123",
       };
 
-      const user = new User({
+      const user = new User();
+      user.import({
         password: await bcryptInstance.hash(userData.password, 10),
       } as unknown as IUser);
 
@@ -198,7 +199,8 @@ describe("User auth and jwt tokens", () => {
       email: "john@example.com",
       password: "wrongPassword",
     };
-    const user = new User({
+    const user = new User();
+    user.import({
       password: await bcryptInstance.hash("correctPassword", 10),
     } as unknown as IUser);
 

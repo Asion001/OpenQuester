@@ -31,26 +31,13 @@ const USER_SELECT_FIELDS = [
   "updated_at",
 ];
 
-// Workaround to avoid importing/exporting errors
-type inputData = IUser;
 @Entity()
 @Unique(["email", "name"])
 export class User implements IUser {
   private repository?: Repository<ObjectLiteral>;
 
-  constructor(data: inputData) {
-    if (!data) {
-      return;
-    }
-    this.name = data.name;
-    this.email = data.email;
-    this.password = data.password;
-    this.birthday = data.birthday;
-    this.avatar = data.avatar;
-    this.created_at = data.created_at;
-    this.updated_at = data.updated_at;
-    this.is_deleted = data.is_deleted;
-    this.permissions = data.permissions ?? this.permissions ?? [];
+  constructor() {
+    //
   }
 
   @PrimaryGeneratedColumn()
@@ -102,6 +89,18 @@ export class User implements IUser {
     return false;
   }
 
+  public async import(data: IUser) {
+    this.name = data.name;
+    this.email = data.email;
+    this.password = data.password;
+    this.birthday = data.birthday;
+    this.avatar = data.avatar;
+    this.created_at = data.created_at;
+    this.updated_at = data.updated_at;
+    this.is_deleted = data.is_deleted;
+    this.permissions = data.permissions ?? this.permissions ?? [];
+  }
+
   public async export() {
     return {
       id: this.id,
@@ -137,7 +136,8 @@ export class User implements IUser {
   ) {
     const repository = db.getRepository(User);
     // Set all data to new user instance
-    const user = new User({
+    const user = new User();
+    await user.import({
       name: data.name,
       email: data.email,
       password: await CryptoUtils.hash(data.password as string, 10, crypto),
