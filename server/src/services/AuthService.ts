@@ -6,18 +6,16 @@ import { Crypto } from "../types/Crypto";
 import { IApiContext } from "../interfaces/IApiContext";
 import { JWTUtils } from "../utils/JWTUtils";
 import { CryptoUtils } from "../utils/CryptoUtils";
+import { ILoginUser } from "../interfaces/user/ILoginUser";
+import { IRegisterUser } from "../interfaces/user/IRegisterUser";
 
-interface ILoginData {
-  login: string;
-  password: string;
-}
 /**
  * Handles all business logic of user authorization
  */
 export class AuthService {
   public static async register(
     ctx: IApiContext,
-    data: User,
+    data: IRegisterUser,
     crypto: Crypto
   ): Promise<JWTResponse> {
     const user = await User.create(ctx.db, data, crypto);
@@ -31,7 +29,7 @@ export class AuthService {
 
   public static async login(
     ctx: IApiContext,
-    data: ILoginData,
+    data: ILoginUser,
     crypto: Crypto
   ): Promise<JWTResponse> {
     const user = await User.login(ctx.db, data);
