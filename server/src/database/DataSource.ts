@@ -1,10 +1,14 @@
 import "reflect-metadata";
+
 import { DataSource } from "typeorm";
 import { User } from "./models/User";
 import { File } from "./models/File";
 import { Environment } from "../config/Environment";
-import { CreateUserAndFileTables_1_1_1722683756069 } from "./migrations/CreateUserAndFileTables_1_1";
 import { Logger } from "../utils/Logger";
+
+// Migrations imports
+import { CreateUserAndFileTables_1_1_1722683756069 as createUserAndFileTables } from "./migrations/CreateUserAndFileTables_1_1_1722683756069";
+import { UpdateUserModelFields_1_11_1723107959823 as updateUserModelFields } from "./migrations/UpdateUserModelFields_1_11_1723107959823";
 
 try {
   Environment.load(false);
@@ -25,7 +29,7 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: Environment.DB_LOGGER,
   entities: [User, File],
-  migrations: [CreateUserAndFileTables_1_1_1722683756069],
+  migrations: [createUserAndFileTables, updateUserModelFields],
   migrationsRun: true,
   subscribers: [],
 });

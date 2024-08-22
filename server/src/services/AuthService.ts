@@ -4,22 +4,7 @@ import { File } from "../database/models/File";
 import { User } from "../database/models/User";
 import { IUser } from "../models/IUser";
 import jwt from "jsonwebtoken";
-
-type JWTPayload = {
-  /** User id */
-  id: number;
-  /** Issued at (timestamp) */
-  iat: number;
-  /** Expires at (timestamp) */
-  exp: number;
-};
-
-type TokenOptions = {
-  secret: string;
-  refreshSecret: string;
-  expiresIn: string;
-  refreshExpiresIn: string;
-};
+import { JWTPayload, JWTResponse, TokenOptions } from "../types/jwt/jwt";
 
 interface Crypto {
   hash(s: string, salt: string | number): Promise<string>;
@@ -31,7 +16,7 @@ export class AuthService {
     db: Database,
     data: IUser,
     crypto: Crypto
-  ): Promise<IUser> {
+  ): Promise<JWTResponse> {
     if (!this.validateRegisterRequest(data)) {
       throw new Error(
         "Provide all required fields: 'email', 'name' and 'password'"
@@ -40,10 +25,11 @@ export class AuthService {
     const repository = db.getRepository(User);
 
     const user = new User();
+
     user.name = data.name;
     user.email = data.email;
     user.password = await crypto.hash(data.password as string, 10);
-    user.birthday = data.birthday;
+    user.birthday = data.birthday ? new Date(data.birthday) : undefined;
     user.avatar = data.avatar as File;
 
     await repository.save(user);
@@ -58,7 +44,7 @@ export class AuthService {
     db: Database,
     data: IUser,
     crypto: Crypto
-  ): Promise<IUser> {
+  ): Promise<JWTResponse> {
     if (!this.validateLoginRequest(data)) {
       throw new Error(
         "Provide all required fields: 'email' or 'name' and 'password'"

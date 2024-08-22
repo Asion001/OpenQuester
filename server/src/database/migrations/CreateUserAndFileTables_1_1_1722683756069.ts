@@ -6,46 +6,6 @@ import {
   TableUnique,
 } from "typeorm";
 
-/**
-@Entity()
-export class User implements IUser {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column()
-  name?: string;
-
-  @Column()
-  email?: string;
-
-  @Column()
-  password?: string;
-
-  @Column({ nullable: true })
-  birthday?: number;
-
-  @OneToOne(() => File, { nullable: true })
-  @JoinColumn()
-  avatar?: File;
-}
-
-
-@Entity()
-export class File implements IFile {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column()
-  path!: string;
-
-  @Column()
-  filename!: string;
-
-  @Column()
-  type!: string;
-}
-*/
-
 export class CreateUserAndFileTables_1_1_1722683756069
   implements MigrationInterface
 {
