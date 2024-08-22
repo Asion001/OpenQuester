@@ -61,7 +61,7 @@ export class AuthRestApiController {
 
   /**
    * This method returns true, if token is invalid. It used only at user login / register
-   * what means that if user token is invalid, he should be able to login / register.
+   * this means if user token is invalid, he should be able to login / register.
    *
    * If user token is valid - he's already logged in and no need to continue execution
    */
