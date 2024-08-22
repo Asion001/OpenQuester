@@ -35,6 +35,10 @@ export class Environment {
     refreshExpiresIn: string;
   };
 
+  // Workers
+  public static WORKERS_COUNT: number;
+
+  /** Get environment type */
   public static get ENV(): string {
     return this.type;
   }
@@ -121,6 +125,12 @@ export class Environment {
       refreshSecret: this.JWT_REFRESH_SECRET,
       refreshExpiresIn: this.JWT_REFRESH_EXPIRES_IN,
     };
+
+    this.WORKERS_COUNT = Number(this.getEnvVar("WORKERS_COUNT", 2));
+
+    if (isNaN(this.WORKERS_COUNT) || this.WORKERS_COUNT === 0) {
+      this.WORKERS_COUNT = 2;
+    }
   }
 
   private static validateJWT() {

@@ -19,4 +19,7 @@ DB_LOGGER=
 JWT_SCHEME=
 JWT_EXPIRES_IN=
 JWT_REFRESH_EXPIRES_IN=
+
+# Workers (recommended amount not higher than your CPU cores amount)
+WORKERS_COUNT=
 ```

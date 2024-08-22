@@ -2,28 +2,33 @@ import { blue, bold, green, red, yellow } from "colorette";
 import fs from "fs";
 import path from "path";
 import { Environment } from "../config/Environment";
+import cluster from "cluster";
 
 export class Logger {
-  public static info(text: any) {
-    const prefix = "[INFO]: ";
-    const log = prefix + String(text);
+  public static info(text: any, logWorker: boolean = false) {
+    if (cluster.isPrimary || logWorker) {
+      const prefix = "[INFO]: ";
+      const log = prefix + String(text);
 
-    if (Environment.ENV !== "test") {
-      console.info(green(log));
+      if (Environment.ENV !== "test") {
+        console.info(green(log));
+      }
+
+      this.writeFile(log);
     }
-
-    this.writeFile(log);
   }
 
-  public static warn(text: any) {
-    const prefix = "[WARNING]: ";
-    const log = prefix + String(text);
+  public static warn(text: any, logWorker: boolean = false) {
+    if (cluster.isPrimary || logWorker) {
+      const prefix = "[WARNING]: ";
+      const log = prefix + String(text);
 
-    if (Environment.ENV !== "test") {
-      console.warn(yellow(log));
+      if (Environment.ENV !== "test") {
+        console.warn(yellow(log));
+      }
+
+      this.writeFile(log);
     }
-
-    this.writeFile(log);
   }
 
   public static error(text: any) {

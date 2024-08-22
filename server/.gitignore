@@ -13,3 +13,4 @@ storage/.secret*
 # Test related
 storage/test/
 .nyc_output/
+test/performance/
