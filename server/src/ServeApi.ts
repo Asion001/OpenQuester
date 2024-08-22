@@ -38,6 +38,9 @@ export class ServeApi {
 
       // Attach API controllers
       this.attachControllers();
+      Logger.info(
+        `Api is served, server version: ${process.env.npm_package_version}`
+      );
     } catch (err: any) {
       Logger.error(err.message);
     }
