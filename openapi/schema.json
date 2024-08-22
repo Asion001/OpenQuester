@@ -12,7 +12,6 @@
   "paths": {
     "/v1/user/{id}": {
       "get": {
-        "summary": "Get user info by params id / his auth token. User id in params is optional, in case of empty id user does request on himself.",
         "responses": {
           "200": {
             "description": "Get user data successfully",
@@ -49,7 +48,6 @@
         }
       },
       "patch": {
-        "summary": "Update user info. User id in params is optional, in case of empty id user does request on himself.",
         "requestBody": {
           "required": true,
           "content": {
@@ -96,7 +94,121 @@
         }
       },
       "delete": {
-        "summary": "Delete user. User id in params is optional, in case of empty id user does request on himself.",
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "400": {
+            "description": "You don't have permissions for this operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Get user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid or expired JWT token"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update user info.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrivateUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "You don't have permissions for this operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "You are not able to do that"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user.",
         "responses": {
           "204": {
             "description": "User deleted successfully"
