@@ -1,5 +1,5 @@
 ```bash
 # Default credentials for pgadmin instance
-PGADMIN_DEFAULT_EMAIL=user@example.com
-PGADMIN_DEFAULT_PASSWORD=mysecretpassword
+PGADMIN_DEFAULT_EMAIL=
+PGADMIN_DEFAULT_PASSWORD=
 ```

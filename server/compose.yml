@@ -1,4 +1,4 @@
-# Development database setup
+# * Docker compose setup for development
 
 services:
   postgres:
@@ -19,6 +19,20 @@ services:
       - 5050:80
     volumes:
       - pgadmin:/var/lib/pgadmin
+
+  # Url: http://localhost:9000/ and console on http://localhost:9001/
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ROOTNAME
+      MINIO_ROOT_PASSWORD: CHANGEME123
+    volumes:
+      - ./minio/data:/data
+    command: server /data --console-address ":9001"
 
 volumes:
   pgdata:

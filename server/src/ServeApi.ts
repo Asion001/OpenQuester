@@ -8,7 +8,7 @@ import { Server } from "http";
 import { Logger } from "./utils/Logger";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
 import { ApiContext } from "./services/context/ApiContext";
-import { FileContext } from "./services/context/FileContext";
+import { FileRestApiController } from "./controllers/rest/FileRestApiController";
 
 /**
  * Servers all api endpoints in one place.
@@ -45,7 +45,6 @@ export class ServeApi {
         db: this.db,
         app: this.app,
         crypto: bcrypt,
-        fileContext: new FileContext("", "", ""), // TODO: Fill up
       });
 
       // Attach API controllers
@@ -54,7 +53,8 @@ export class ServeApi {
         `Api is served, server version: ${process.env.npm_package_version}`
       );
     } catch (err: any) {
-      Logger.error(err.message);
+      Logger.error(`Serve API error: ${err.message}`);
+      throw new Error(err.message);
     }
   }
 
@@ -77,5 +77,6 @@ export class ServeApi {
   public attachControllers() {
     new AuthRestApiController(this.context);
     new UserRestApiController(this.context);
+    new FileRestApiController(this.context);
   }
 }

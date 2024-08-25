@@ -32,19 +32,25 @@ if (cluster.isPrimary) {
   });
 } else {
   // Not main cluster - do work
-  const api = new ServeApi();
+  let api: ServeApi | undefined;
+  try {
+    const api = new ServeApi();
 
-  if (!api.server) {
-    Logger.error(`API server error: ${api.server}`);
-    gracefulShutdown(api.server);
-  } else {
-    Logger.info(`Worker ${process.pid} started`, true);
+    if (!api.server) {
+      Logger.error(`API server error: ${api.server}`);
+      gracefulShutdown(api.server);
+    } else {
+      Logger.info(`Worker ${process.pid} started`, true);
+    }
+  } catch (err: any) {
+    Logger.error(`Worker caught an exception: ${err.message}`);
+    gracefulShutdown(api?.server);
   }
 
   process.on("message", (msg: WorkerMessage) => {
     switch (msg) {
       case WorkerMessage.SHUTDOWN:
-        gracefulShutdown(api.server);
+        gracefulShutdown(api?.server);
     }
   });
 }

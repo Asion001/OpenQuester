@@ -1,9 +1,8 @@
 ```bash
-# Environment type ("local" | "prod" | "test")
-# The most noticeable difference in types is that in `"test"` mode you will not see the `"INFO"` and `"WARNING"` logs in console. It is done like that because logs are messed up in async tests
+## Environment type ("local" | "prod" | "test")
 ENV=
 
-# DB variables
+## DB variables
 DB_TYPE=
 DB_NAME=
 DB_USER=
@@ -12,14 +11,28 @@ DB_HOST=
 DB_PORT=
 
 # "all" or boolean or "query" | "schema" | "error" | "warn" | "info" | "log" | "migration"
-# More about DB logging: [Click me](https://typeorm.io/logging#logging)
+# More about DB logging: https://typeorm.io/logging#logging
 DB_LOGGER=
 
-# JWT
+## JWT
 JWT_SCHEME=
 JWT_EXPIRES_IN=
 JWT_REFRESH_EXPIRES_IN=
 
-# Workers (recommended amount not higher than your CPU cores amount)
+## Workers
 WORKERS_COUNT=
+
+## Storage
+# e.g. "s3"
+STORAGE_TYPE=
+# e.g. "minio"
+STORAGE_NAME=
+
+# S3
+S3_HOST=
+S3_USE_SSL=
+S3_PORT=
+S3_BUCKET=
+S3_ACCESS_KEY=
+S3_SECRET_KEY=
 ```

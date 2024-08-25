@@ -8,6 +8,7 @@ import { JWTUtils } from "../utils/JWTUtils";
 import { ValueUtils } from "../utils/ValueUtils";
 
 const ENV_TYPES = ["local", "prod", "test"];
+type envVar = "string" | "number" | "boolean";
 
 /**
  * Class of environment layer.
@@ -72,12 +73,40 @@ export class Environment {
 
   /**
    * Get variable from `process.env` or return default value
+   *
+   * Performs type checking
    */
-  private static getEnvVar(
+  public static getEnvVar(
     variable: string,
-    defaultValue: any = undefined
+    type: envVar | envVar[],
+    defaultValue: unknown = undefined
   ): any {
-    return process.env[variable] ?? defaultValue;
+    let success = false;
+    let value = process.env[variable] ?? defaultValue;
+    value = value === "undefined" ? undefined : value;
+
+    if (ValueUtils.isArray(type)) {
+      type.forEach((type) => {
+        if (ValueUtils.checkPrimitiveType(value, type)) success = true;
+      });
+    } else {
+      if (ValueUtils.checkPrimitiveType(value, type)) success = true;
+    }
+
+    if (success) {
+      switch (type) {
+        case "boolean":
+          return ValueUtils.parseBoolean(value);
+        case "number":
+          return Number(value);
+        case "string":
+          return String(value);
+      }
+    } else {
+      throw new Error(
+        `Variable ${variable} is wrong type, ${type} expected but got variable ${value} of type ${typeof variable}`
+      );
+    }
   }
 
   /**
@@ -88,7 +117,7 @@ export class Environment {
       throw new Error("Cannot find Node.JS environment");
     }
 
-    this.type = this.getEnvVar("ENV", "prod");
+    this.type = this.getEnvVar("ENV", "string", "prod");
 
     if (!ENV_TYPES.includes(this.type)) {
       throw new Error(
@@ -108,43 +137,37 @@ export class Environment {
       Logger.info("Running in local environment");
     }
 
-    // Initialize DB variables, default variables allowed only for development (local type)
-    this.DB_TYPE = this.getEnvVar("DB_TYPE", "pg");
-    this.DB_NAME = this.getEnvVar("DB_NAME", prod ? undefined : "openQuester");
-    this.DB_USER = this.getEnvVar("DB_USER", prod ? undefined : "root");
-    this.DB_PASS = this.getEnvVar("DB_PASS");
-    this.DB_HOST = this.getEnvVar("DB_HOST", prod ? undefined : "127.0.0.1");
-    this.DB_PORT = this.getEnvVar("DB_PORT", 5432);
-    this.DB_LOGGER = this.getEnvVar("DB_LOGGER", false);
+    this.loadDB(this.type);
+    this.loadJWT();
+    this.loadWorkers();
+  }
 
-    const missing = this.validateDB();
-    if (missing.length > 0) {
-      throw new Error(
-        `Missing required DB variables in process environment: [${missing.join(
-          ", "
-        )}] `
-      );
+  private static loadWorkers() {
+    this.WORKERS_COUNT = Number(this.getEnvVar("WORKERS_COUNT", "number", 2));
+
+    if (isNaN(this.WORKERS_COUNT) || this.WORKERS_COUNT === 0) {
+      this.WORKERS_COUNT = 2;
     }
+  }
 
-    // Initialize JWT variables
+  private static loadJWT() {
     this.JWT_SECRET = JWTUtils.getSecret();
     this.JWT_REFRESH_SECRET = this.getEnvVar(
       "JWT_REFRESH_SECRET",
+      ["string", "number"],
       this.JWT_SECRET
     );
-    this.JWT_EXPIRES_IN = this.getEnvVar("JWT_EXPIRES_IN", "30m");
+    this.JWT_EXPIRES_IN = this.getEnvVar(
+      "JWT_EXPIRES_IN",
+      ["string", "number"],
+      "30m"
+    );
     this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar(
       "JWT_REFRESH_EXPIRES_IN",
+      ["string", "number"],
       "30 days"
     );
-    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME", "Bearer");
-
-    const missingJWT = this.validateJWT();
-    if (missingJWT.length > 0) {
-      throw new Error(
-        `Missing required JWT variable in .env file: [${missingJWT.join(", ")}]`
-      );
-    }
+    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME", "string", "Bearer");
 
     this.JWT_TOKEN_OPTIONS = {
       secret: this.JWT_SECRET,
@@ -152,52 +175,28 @@ export class Environment {
       refreshSecret: this.JWT_REFRESH_SECRET,
       refreshExpiresIn: this.JWT_REFRESH_EXPIRES_IN,
     };
-
-    this.WORKERS_COUNT = Number(this.getEnvVar("WORKERS_COUNT", 2));
-
-    if (isNaN(this.WORKERS_COUNT) || this.WORKERS_COUNT === 0) {
-      this.WORKERS_COUNT = 2;
-    }
   }
 
-  private static validateJWT() {
-    const requiredVars: { [key: string]: any } = {
-      JWT_SECRET: this.JWT_SECRET,
-      JWT_REFRESH_SECRET: this.JWT_REFRESH_SECRET,
-      JWT_EXPIRES_IN: this.JWT_EXPIRES_IN,
-      JWT_REFRESH_EXPIRES_IN: this.JWT_REFRESH_EXPIRES_IN,
-      JWT_SCHEME: this.JWT_SCHEME,
-    };
-
-    const missing: string[] = [];
-
-    for (const [key, value] of Object.entries(requiredVars)) {
-      if (ValueUtils.isBad(value)) {
-        missing.push(key);
-      }
-    }
-
-    return missing;
-  }
-
-  private static validateDB() {
-    const requiredVars: { [key: string]: any } = {
-      DB_TYPE: this.DB_TYPE,
-      DB_NAME: this.DB_NAME,
-      DB_USER: this.DB_USER,
-      DB_PASS: this.DB_PASS,
-      DB_HOST: this.DB_HOST,
-      DB_PORT: this.DB_PORT,
-    };
-
-    const missing: string[] = [];
-
-    for (const [key, value] of Object.entries(requiredVars)) {
-      if (ValueUtils.isBad(value)) {
-        missing.push(key);
-      }
-    }
-
-    return missing;
+  private static loadDB(env: string) {
+    const prod = env === "prod";
+    this.DB_TYPE = this.getEnvVar("DB_TYPE", "string", "pg");
+    this.DB_NAME = this.getEnvVar(
+      "DB_NAME",
+      "string",
+      prod ? undefined : "openQuester"
+    );
+    this.DB_USER = this.getEnvVar(
+      "DB_USER",
+      "string",
+      prod ? undefined : "root"
+    );
+    this.DB_PASS = this.getEnvVar("DB_PASS", "string");
+    this.DB_HOST = this.getEnvVar(
+      "DB_HOST",
+      "string",
+      prod ? undefined : "127.0.0.1"
+    );
+    this.DB_PORT = this.getEnvVar("DB_PORT", "number", 5432);
+    this.DB_LOGGER = this.getEnvVar("DB_LOGGER", ["boolean", "string"], false);
   }
 }

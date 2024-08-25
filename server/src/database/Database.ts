@@ -12,6 +12,7 @@ export class Database {
   /** Repositories caching */
   private repositories: Map<EntityTarget<any>, Repository<any>> = new Map();
 
+  // TODO: Make DB driver injectable and create separate Driver instances
   constructor(dataSource: DataSource) {
     this._connected = false;
     Logger.warn("Connecting to DB...");
