@@ -3,6 +3,7 @@ import { Environment } from "./config/Environment";
 import { ServeApi } from "./ServeApi";
 import { Logger } from "./utils/Logger";
 import { WorkerMessage } from "./enums/WorkerMessage";
+import { Server } from "http";
 
 if (cluster.isPrimary) {
   // Setup primary cluster
@@ -36,11 +37,11 @@ if (cluster.isPrimary) {
   try {
     const api = new ServeApi();
 
-    if (!api.server) {
-      Logger.error(`API server error: ${api.server}`);
-      gracefulShutdown(api.server);
+    if (!api || !api.server) {
+      Logger.error(`API server error: ${api?.server}`);
+      gracefulShutdown(api?.server);
     } else {
-      Logger.info(`Worker ${process.pid} started`, true);
+      Logger.info(`Worker ${cluster.worker?.process.pid} started`, true);
     }
   } catch (err: any) {
     Logger.error(`Worker caught an exception: ${err.message}`);
@@ -82,12 +83,11 @@ function shutdownCluster() {
   }, 10000);
 }
 
-function gracefulShutdown(server: any) {
-  server?.close(() => {
-    process.exit(0);
-  });
-
+function gracefulShutdown(server: Server | undefined) {
   setTimeout(() => {
     process.exit(1);
   }, 5000);
+  server?.close();
+  Logger.warn("Worker server closed", true);
+  process.exit(0);
 }

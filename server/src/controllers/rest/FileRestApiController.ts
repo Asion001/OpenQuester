@@ -3,12 +3,11 @@ import { ApiContext } from "../../services/context/ApiContext";
 import { IStorage } from "../../interfaces/file/IStorage";
 import { StorageServiceFactory } from "../../services/storage/StorageService";
 import { StorageContextBuilder } from "../../services/context/storage/StorageContextBuilder";
-import { S3Context } from "../../services/context/storage/S3Context";
 import { fileContext } from "../../types/file/fileContext";
-import { Logger } from "../../utils/Logger";
 import { storageType } from "../../types/storage/storageType";
 import { storage } from "../../types/storage/storage";
 import { Environment } from "../../config/Environment";
+import { IS3Context } from "../../interfaces/file/IS3Context";
 
 export class FileRestApiController {
   private _storageService!: IStorage;
@@ -34,7 +33,6 @@ export class FileRestApiController {
         );
         res.send({ url });
       } catch (err: any) {
-        Logger.error(err.message);
         res.status(400).send({ error: err.message });
       }
     });
@@ -48,7 +46,6 @@ export class FileRestApiController {
         );
         res.send({ url });
       } catch (err: any) {
-        Logger.error(err.message);
         res.status(400).send({ error: err.message });
       }
     });
@@ -63,7 +60,8 @@ export class FileRestApiController {
 
     switch (storageType) {
       case "s3":
-        this._fileContext = StorageContextBuilder.buildS3Context() as S3Context;
+        this._fileContext =
+          StorageContextBuilder.buildS3Context() as IS3Context;
     }
 
     this._storageService = StorageServiceFactory.createStorageService(

@@ -35,7 +35,7 @@ export class ValueUtils {
   public static checkPrimitiveType(
     value: unknown,
     expectedType: "string" | "number" | "boolean" | "array" | "object"
-  ) {
+  ): boolean {
     let success = false;
 
     if (this.isBad(value)) {
@@ -49,7 +49,14 @@ export class ValueUtils {
         if (this.isNumeric(value)) success = true;
         break;
       case "boolean":
-        if (String(value) === "true" || String(value) === "1") success = true;
+        if (
+          this.isBoolean(value) ||
+          String(value) === "true" ||
+          String(value) === "1" ||
+          String(value) === "false" ||
+          String(value) === "0"
+        )
+          success = true;
         break;
       case "array":
         if (this.isArray(value) && !this.isEmpty(value)) success = true;

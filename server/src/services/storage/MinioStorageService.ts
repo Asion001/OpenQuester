@@ -1,11 +1,11 @@
 import { IStorage } from "../../interfaces/file/IStorage";
 import * as Minio from "minio";
-import { S3Context } from "../context/storage/S3Context";
+import { IS3Context } from "../../interfaces/file/IS3Context";
 
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
 
-  constructor(context: S3Context) {
+  constructor(context: IS3Context) {
     this._client = new Minio.Client({
       endPoint: context.host,
       port: context.port,

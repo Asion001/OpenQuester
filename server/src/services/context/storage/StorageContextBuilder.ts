@@ -1,10 +1,9 @@
 import { Environment } from "../../../config/Environment";
-import { Logger } from "../../../utils/Logger";
+import { IS3Context } from "../../../interfaces/file/IS3Context";
 import { ValueUtils } from "../../../utils/ValueUtils";
-import { S3Context } from "./S3Context";
 
 export class StorageContextBuilder {
-  public static buildS3Context(): S3Context | undefined {
+  public static buildS3Context(): IS3Context | undefined {
     try {
       return {
         host: Environment.getEnvVar("S3_HOST", "string"),
@@ -22,7 +21,6 @@ export class StorageContextBuilder {
       } else {
         text = `Something went wrong during S3 context initialization`;
       }
-      Logger.error(text);
       throw new Error(text);
     }
   }

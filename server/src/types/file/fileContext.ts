@@ -1,4 +1,4 @@
-import { S3Context } from "../../services/context/storage/S3Context";
+import { IS3Context } from "../../interfaces/file/IS3Context";
 
 // Later, if needed, add other context types as union
-export type fileContext = S3Context;
+export type fileContext = IS3Context;
