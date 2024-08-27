@@ -7,7 +7,7 @@ export class FileRestApiController {
         // TODO: Implement
         res.send(req.body);
       } catch (err: any) {
-        //
+        return res.status(400).send({ error: err.message });
       }
     });
   }
