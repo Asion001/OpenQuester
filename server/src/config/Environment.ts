@@ -1,15 +1,15 @@
 import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
+import { bold } from "colorette";
 import { type LoggerOptions } from "typeorm";
 
 import { Logger } from "../utils/Logger";
-import { bold } from "colorette";
 import { JWTUtils } from "../utils/JWTUtils";
 import { ValueUtils } from "../utils/ValueUtils";
+import { envVar } from "../types/env/env";
 
 const ENV_TYPES = ["local", "prod", "test"];
-type envVar = "string" | "number" | "boolean";
 
 /**
  * Class of environment layer.

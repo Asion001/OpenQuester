@@ -47,12 +47,9 @@ export class FileRestApiController {
       }
     });
 
-    // TODO: Implement delete permission validation (on refactoring)
     router.delete("/", async (req: Request, res: Response) => {
       try {
         const bucket = req.body.bucket;
-        // TODO: Review. Probably no need to await until file deletes because we cannot know -
-        // - if this it deletes successfully (or even existed) without making additional requests.
         this._storageService.delete(
           req.body.filename,
           bucket ?? this._fileContext.bucket
