@@ -1,6 +1,9 @@
-import { IStorage } from "../../interfaces/file/IStorage";
 import * as Minio from "minio";
+
+import { IStorage } from "../../interfaces/file/IStorage";
 import { IS3Context } from "../../interfaces/file/IS3Context";
+import { OQContentStructure } from "../../interfaces/file/structures/OQContentStructure";
+import { ContentStructureService } from "../ContentStructureService";
 
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
@@ -20,6 +23,7 @@ export class MinioStorageService implements IStorage {
     bucket: string,
     expiresIn: number = 60 * 30 // Default: 30 min
   ) {
+    // TODO: Implement cache in future
     return this._client.presignedGetObject(bucket, filename, expiresIn);
   }
 
@@ -31,12 +35,21 @@ export class MinioStorageService implements IStorage {
     return this._client.presignedPutObject(bucket, filename, expiresIn);
   }
 
-  public async delete(
-    filename: string,
+  public async delete(filename: string, bucket: string) {
+    return this._client.removeObject(bucket, filename);
+  }
+
+  public async uploadPackage(
+    content: object,
     bucket: string,
     expiresIn: number = 60 * 5 // Default: 5 min
   ) {
-    // TODO: Review / check
-    return this._client.presignedUrl("delete", bucket, filename, expiresIn);
+    const updatedContent = await ContentStructureService.addLinksForFiles(
+      content as OQContentStructure,
+      this,
+      bucket,
+      expiresIn
+    );
+    return updatedContent;
   }
 }

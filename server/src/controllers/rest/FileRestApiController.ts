@@ -1,28 +1,25 @@
-import { Request, Response, Router } from "express";
-import { ApiContext } from "../../services/context/ApiContext";
+import { type Request, type Response, Router, type Express } from "express";
+
 import { IStorage } from "../../interfaces/file/IStorage";
-import { StorageServiceFactory } from "../../services/storage/StorageService";
-import { StorageContextBuilder } from "../../services/context/storage/StorageContextBuilder";
+import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 import { fileContext } from "../../types/file/fileContext";
 import { storageType } from "../../types/storage/storageType";
 import { storage } from "../../types/storage/storage";
-import { Environment } from "../../config/Environment";
-import { IS3Context } from "../../interfaces/file/IS3Context";
 
 export class FileRestApiController {
   private _storageService!: IStorage;
   private _fileContext!: fileContext;
 
-  constructor(
-    ctx: ApiContext,
-    storageType?: storageType,
-    storageName?: storage
-  ) {
-    const app = ctx.app;
+  constructor(app: Express, storageType?: storageType, storageName?: storage) {
     const router = Router();
     app.use("/v1/file", router);
 
-    this._init(storageType, storageName);
+    this._fileContext = StorageServiceFactory.createFileContext(storageType);
+
+    this._storageService = StorageServiceFactory.createStorageService(
+      storageName as storage,
+      this._fileContext
+    );
 
     router.get("/", async (req: Request, res: Response) => {
       try {
@@ -49,24 +46,21 @@ export class FileRestApiController {
         res.status(400).send({ error: err.message });
       }
     });
-  }
 
-  /** File context and storage service init */
-  private _init(storageType?: storageType, storageName?: storage) {
-    storageType =
-      storageType ?? Environment.getEnvVar("STORAGE_TYPE", "string", "s3");
-    storageName =
-      storageName ?? Environment.getEnvVar("STORAGE_NAME", "string", "minio");
-
-    switch (storageType) {
-      case "s3":
-        this._fileContext =
-          StorageContextBuilder.buildS3Context() as IS3Context;
-    }
-
-    this._storageService = StorageServiceFactory.createStorageService(
-      storageName as storage,
-      this._fileContext
-    );
+    // TODO: Implement delete permission validation (on refactoring)
+    router.delete("/", async (req: Request, res: Response) => {
+      try {
+        const bucket = req.body.bucket;
+        // TODO: Review. Probably no need to await until file deletes because we cannot know -
+        // - if this it deletes successfully (or even existed) without making additional requests.
+        this._storageService.delete(
+          req.body.filename,
+          bucket ?? this._fileContext.bucket
+        );
+        res.status(204).send({ message: "Delete request sent" });
+      } catch (err: any) {
+        res.status(400).send({ error: err.message });
+      }
+    });
   }
 }

@@ -1,8 +1,9 @@
-import { blue, blueBright, bold, green, red, yellow } from "colorette";
 import fs from "fs";
 import path from "path";
-import { Environment } from "../config/Environment";
 import cluster from "cluster";
+
+import { Environment } from "../config/Environment";
+import { blue, blueBright, bold, green, red, yellow } from "colorette";
 
 /**
  * Logger class used for writing logs and for prettier console output

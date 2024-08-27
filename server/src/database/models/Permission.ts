@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
+
 import { IPermission } from "../../interfaces/IPermission";
 import { User } from "./User";
 import { Database } from "../Database";

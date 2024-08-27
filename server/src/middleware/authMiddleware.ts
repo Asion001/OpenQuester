@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
-import express from "express";
+import { type Request, type Response, type NextFunction } from "express";
+
 import { Environment } from "../config/Environment";
 
 export const verifyTokenMiddleware = (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   if (req.url.includes("v1/auth")) {
     return next();

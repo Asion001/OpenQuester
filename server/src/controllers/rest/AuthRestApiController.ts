@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import { Request, Response, Router } from "express";
+import { type Request, type Response, Router } from "express";
+
 import { AuthService } from "../../services/AuthService";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";

@@ -1,4 +1,5 @@
-import { Request, Response, Router } from "express";
+import { type Request, type Response, Router } from "express";
+
 import { UserService } from "../../services/UserService";
 import { QueryFailedError } from "typeorm";
 import { IApiContext } from "../../interfaces/IApiContext";

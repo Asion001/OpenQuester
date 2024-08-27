@@ -121,6 +121,19 @@ export class ValueUtils {
     );
   }
 
+  public static parseJSON(value: unknown) {
+    if (this.isBad(value)) {
+      return value;
+    }
+    if (this.isObject(value) && !this.isEmpty(value)) {
+      return value;
+    }
+    if (this.isString(value)) {
+      return JSON.parse(JSON.stringify(value, null, 2));
+    }
+    return {};
+  }
+
   public static isValidObject(obj: object) {
     if (this.isBad(obj) || this.isEmpty(obj)) {
       return false;

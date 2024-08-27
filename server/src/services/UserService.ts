@@ -1,4 +1,5 @@
-import express from "express";
+import { type Request } from "express";
+
 import { User } from "../database/models/User";
 import { UserPermissions } from "../database/models/UserPermission";
 import { IPermission } from "../interfaces/IPermission";
@@ -6,17 +7,14 @@ import { Permission } from "../database/models/Permission";
 import { ValueUtils } from "../utils/ValueUtils";
 import { IUpdateUser } from "../interfaces/user/IUpdateUser";
 import { JWTUtils } from "../utils/JWTUtils";
-import { ApiContext } from "./context/ApiContext";
+import { type ApiContext } from "./context/ApiContext";
 
 export class UserService {
   /**
    * Allows for user to get info about himself by sending request with his token
    * in headers.
    */
-  public static async getByToken(
-    ctx: ApiContext,
-    req: express.Request
-  ): Promise<User> {
+  public static async getByToken(ctx: ApiContext, req: Request): Promise<User> {
     // Token validated by middleware, so no need to validate it
     const payload = JWTUtils.getPayload(req);
     const id = ValueUtils.validateId(payload.id);
@@ -27,7 +25,7 @@ export class UserService {
   /**
    * Get list of all available users in DB
    */
-  public static async list(ctx: ApiContext, req: express.Request) {
+  public static async list(ctx: ApiContext, req: Request) {
     const payload = JWTUtils.getPayload(req);
 
     const requestUser = await User.get(ctx.db, payload.id);
@@ -42,7 +40,7 @@ export class UserService {
   /**
    * Retrieve one user
    */
-  public static async get(ctx: ApiContext, req: express.Request) {
+  public static async get(ctx: ApiContext, req: Request) {
     if (!req.params.id) {
       return this.getByToken(ctx, req);
     }
@@ -65,7 +63,7 @@ export class UserService {
   /**
    * Update user by params id
    */
-  public static async update(ctx: ApiContext, req: express.Request) {
+  public static async update(ctx: ApiContext, req: Request) {
     const payload = JWTUtils.getPayload(req);
     const id = ValueUtils.validateId(req.params.id ?? payload.id);
 
@@ -79,7 +77,7 @@ export class UserService {
   /**
    * Delete user by params id
    */
-  public static async delete(ctx: ApiContext, req: express.Request) {
+  public static async delete(ctx: ApiContext, req: Request) {
     const payload = JWTUtils.getPayload(req);
     const id = ValueUtils.validateId(req.params.id ?? payload.id);
 

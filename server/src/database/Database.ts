@@ -23,6 +23,7 @@ export class Database {
       .then(() => {
         this._connected = true;
         Logger.info("Connection to DB established");
+        Logger.info(`API version: ${process.env.npm_package_version}`);
       })
       .catch((err) => {
         Logger.error(`DB is not connected: ${err}`);

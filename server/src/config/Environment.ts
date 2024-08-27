@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
-import { LoggerOptions } from "typeorm";
+import { type LoggerOptions } from "typeorm";
+
 import { Logger } from "../utils/Logger";
 import { bold } from "colorette";
 import { JWTUtils } from "../utils/JWTUtils";
