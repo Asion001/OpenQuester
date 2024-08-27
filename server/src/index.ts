@@ -22,14 +22,16 @@ if (cluster.isPrimary) {
 
   for (let c = 0; c < workersCount; c++) {
     // Fork instances
-    cluster.fork();
+    try {
+      cluster.fork();
+    } catch (err: any) {
+      Logger.error(`Error during workers initialization: ${err.message} `);
+      shutdownCluster();
+    }
   }
 
-  process.on("SIGINT", shutdownCluster);
-  process.on("SIGTERM", shutdownCluster);
-  process.on("uncaughtException", (err) => {
-    Logger.error(`Uncaught Exception: ${err}`);
-    shutdownCluster();
+  ["SIGINT", "SIGTERM", "uncaughtException"].forEach((signal) => {
+    process.on(signal, shutdownCluster);
   });
 } else {
   // Not main cluster - do work
