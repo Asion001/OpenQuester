@@ -23,7 +23,7 @@ export class PackageRestApiController {
     );
 
     router.post(
-      "/upload/",
+      "/upload",
       verifyContentJSON,
       async (req: Request, res: Response) => {
         try {

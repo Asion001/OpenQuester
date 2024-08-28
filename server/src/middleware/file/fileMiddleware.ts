@@ -10,29 +10,15 @@ export const verifyContentJSON = (
 ) => {
   const content = req.body?.content;
 
+  if (!ValueUtils.isObject(content)) {
+    return res.status(400).send({
+      error: "Wrong 'content' argument type, it should be a valid JSON object!",
+    });
+  }
+
   if (ValueUtils.isEmpty(content)) {
-    return res
-      .status(400)
-      .send({ error: "Wrong 'content' argument format or content is empty!" });
+    return res.status(400).send({ error: "Content is empty!" });
   }
 
-  if (ValueUtils.isObject(content)) {
-    return next();
-  }
-
-  return res.status(400).send({
-    error: "Wrong 'content' argument type, it should be a valid JSON object!",
-  });
-  // TODO: String parsing to object, remove if redundant (need to be discussed)
-  // if (ValueUtils.isString(content)) {
-  //   try {
-  //     // Overwrite content with valid object
-  //     (req as OQRequestWithContent).content = JSON.parse(content as string);
-  //     return next();
-  //   } catch (err: any) {
-  //     return res
-  //       .status(400)
-  //       .send(`Error during content parsing: ${err.message}`);
-  //   }
-  // }
+  return next();
 };
