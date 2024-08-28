@@ -121,6 +121,15 @@ export class ValueUtils {
     );
   }
 
+  /** Removes file extension from it filename */
+  public static getRawFilename(filename: string): string {
+    const lastDotIndex = filename.lastIndexOf(".");
+    if (lastDotIndex === -1) {
+      return filename;
+    }
+    return filename.substring(0, lastDotIndex);
+  }
+
   public static parseJSON(value: unknown) {
     if (this.isBad(value)) {
       return value;

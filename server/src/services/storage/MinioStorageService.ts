@@ -4,6 +4,8 @@ import { IStorage } from "../../interfaces/file/IStorage";
 import { IS3Context } from "../../interfaces/file/IS3Context";
 import { OQContentStructure } from "../../interfaces/file/structures/OQContentStructure";
 import { ContentStructureService } from "../ContentStructureService";
+import { SHA256Characters } from "../../constants/sha256";
+import { ValueUtils } from "../../utils/ValueUtils";
 
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
@@ -24,7 +26,8 @@ export class MinioStorageService implements IStorage {
     expiresIn: number = 60 * 30 // Default: 30 min
   ) {
     // TODO: Implement cache in future
-    return this._client.presignedGetObject(bucket, filename, expiresIn);
+    const filePath = this._parseFilePath(filename);
+    return this._client.presignedGetObject(bucket, filePath, expiresIn);
   }
 
   public async upload(
@@ -32,11 +35,13 @@ export class MinioStorageService implements IStorage {
     bucket: string,
     expiresIn: number = 60 * 5 // Default: 5 min
   ) {
-    return this._client.presignedPutObject(bucket, filename, expiresIn);
+    const filePath = this._parseFilePath(filename);
+    return this._client.presignedPutObject(bucket, filePath, expiresIn);
   }
 
   public async delete(filename: string, bucket: string) {
-    return this._client.removeObject(bucket, filename);
+    const filePath = this._parseFilePath(filename);
+    return this._client.removeObject(bucket, filePath);
   }
 
   public async uploadPackage(
@@ -51,5 +56,17 @@ export class MinioStorageService implements IStorage {
       expiresIn
     );
     return updatedContent;
+  }
+
+  private _parseFilePath(filename: string) {
+    filename = ValueUtils.getRawFilename(filename.toLowerCase());
+    if (
+      filename.length < 2 ||
+      !SHA256Characters.includes(filename[0]) ||
+      !SHA256Characters.includes(filename[1])
+    ) {
+      return `other/${filename}`;
+    }
+    return `${filename[0]}/${filename.substring(0, 2)}/${filename}`;
   }
 }
