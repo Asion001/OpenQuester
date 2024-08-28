@@ -37,7 +37,7 @@ if (cluster.isPrimary) {
   // Not main cluster - do work
   let api: ServeApi | undefined;
   try {
-    const api = new ServeApi();
+    api = new ServeApi();
 
     if (!api || !api.server) {
       Logger.error(`API server error: ${api?.server}`);
