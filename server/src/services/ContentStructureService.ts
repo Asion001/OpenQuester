@@ -63,7 +63,7 @@ export class ContentStructureService {
       }
     }
 
-    // // Wait for all uploads to complete
+    // Wait for all uploads to complete
     await Promise.all(promises);
     cache.clear();
 
