@@ -8,11 +8,16 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AuthData.serializer)
+      ..add(LoginUser.serializer)
       ..add(PrivateUser.serializer)
-      ..add(V1AuthLoginPostRequest.serializer)
-      ..add(V1AuthRefreshPost200Response.serializer)
+      ..add(PrivateUserPermissionsInner.serializer)
+      ..add(RegisterUser.serializer)
+      ..add(UpdateUser.serializer)
       ..add(V1AuthRefreshPostRequest.serializer)
-      ..add(V1AuthRegisterPostRequest.serializer))
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(PrivateUserPermissionsInner)]),
+          () => new ListBuilder<PrivateUserPermissionsInner>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

@@ -8,7 +8,11 @@
             "name": "client",
             "cwd": "client",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--web-renderer",
+                "html"
+            ]
         },
         {
             "name": "client (profile mode)",

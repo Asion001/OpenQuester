@@ -47,10 +47,10 @@ import 'package:openapi/openapi.dart';
 
 
 final api = Openapi().getDefaultApi();
-final V1AuthLoginPostRequest v1AuthLoginPostRequest = ; // V1AuthLoginPostRequest | 
+final LoginUser loginUser = ; // LoginUser | 
 
 try {
-    final response = await api.v1AuthLoginPost(v1AuthLoginPostRequest);
+    final response = await api.v1AuthLoginPost(loginUser);
     print(response);
 } catch on DioException (e) {
     print("Exception when calling DefaultApi->v1AuthLoginPost: $e\n");
@@ -67,16 +67,24 @@ Class | Method | HTTP request | Description
 [*DefaultApi*](doc/DefaultApi.md) | [**v1AuthLoginPost**](doc/DefaultApi.md#v1authloginpost) | **POST** /v1/auth/login | User Login
 [*DefaultApi*](doc/DefaultApi.md) | [**v1AuthRefreshPost**](doc/DefaultApi.md#v1authrefreshpost) | **POST** /v1/auth/refresh | Refresh tokens
 [*DefaultApi*](doc/DefaultApi.md) | [**v1AuthRegisterPost**](doc/DefaultApi.md#v1authregisterpost) | **POST** /v1/auth/register | User Registration
+[*DefaultApi*](doc/DefaultApi.md) | [**v1UserDelete**](doc/DefaultApi.md#v1userdelete) | **DELETE** /v1/user/ | Delete user.
+[*DefaultApi*](doc/DefaultApi.md) | [**v1UserGet**](doc/DefaultApi.md#v1userget) | **GET** /v1/user/ | 
+[*DefaultApi*](doc/DefaultApi.md) | [**v1UserIdDelete**](doc/DefaultApi.md#v1useriddelete) | **DELETE** /v1/user/{id} | 
+[*DefaultApi*](doc/DefaultApi.md) | [**v1UserIdGet**](doc/DefaultApi.md#v1useridget) | **GET** /v1/user/{id} | 
+[*DefaultApi*](doc/DefaultApi.md) | [**v1UserIdPatch**](doc/DefaultApi.md#v1useridpatch) | **PATCH** /v1/user/{id} | 
+[*DefaultApi*](doc/DefaultApi.md) | [**v1UserPatch**](doc/DefaultApi.md#v1userpatch) | **PATCH** /v1/user/ | Update user info.
+[*DefaultApi*](doc/DefaultApi.md) | [**v1UsersGet**](doc/DefaultApi.md#v1usersget) | **GET** /v1/users/ | Get all users info
 
 
 ## Documentation For Models
 
  - [AuthData](doc/AuthData.md)
+ - [LoginUser](doc/LoginUser.md)
  - [PrivateUser](doc/PrivateUser.md)
- - [V1AuthLoginPostRequest](doc/V1AuthLoginPostRequest.md)
- - [V1AuthRefreshPost200Response](doc/V1AuthRefreshPost200Response.md)
+ - [PrivateUserPermissionsInner](doc/PrivateUserPermissionsInner.md)
+ - [RegisterUser](doc/RegisterUser.md)
+ - [UpdateUser](doc/UpdateUser.md)
  - [V1AuthRefreshPostRequest](doc/V1AuthRefreshPostRequest.md)
- - [V1AuthRegisterPostRequest](doc/V1AuthRegisterPostRequest.md)
 
 
 ## Documentation For Authorization
