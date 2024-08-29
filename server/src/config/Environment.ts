@@ -146,7 +146,7 @@ export class Environment {
   private static loadWorkers() {
     this.WORKERS_COUNT = Number(this.getEnvVar("WORKERS_COUNT", "number", 2));
 
-    if (isNaN(this.WORKERS_COUNT) || this.WORKERS_COUNT === 0) {
+    if (this.WORKERS_COUNT < 1) {
       this.WORKERS_COUNT = 2;
     }
   }
