@@ -22,3 +22,23 @@ export const verifyContentJSON = (
 
   return next();
 };
+
+export const validateFilename = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const filename = req.body.filename;
+
+  if (ValueUtils.isBad(filename)) {
+    return res.status(400).send({ error: '"filename" field is required' });
+  }
+
+  if (!ValueUtils.isString(filename) || ValueUtils.isEmpty(filename)) {
+    return res
+      .status(400)
+      .send({ error: '"filename" should be a valid string' });
+  }
+
+  return next();
+};

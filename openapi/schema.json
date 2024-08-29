@@ -166,7 +166,8 @@
                   "type": "object",
                   "properties": {
                     "content": {
-                      "type": "object"
+                      "type": "object",
+                      "example": { "filename hash": "file upload link" }
                     }
                   }
                 }

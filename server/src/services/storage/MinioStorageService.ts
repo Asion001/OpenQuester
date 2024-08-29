@@ -10,52 +10,55 @@ import { ValueUtils } from "../../utils/ValueUtils";
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
 
-  constructor(context: IS3Context) {
+  constructor(private _context: IS3Context) {
     this._client = new Minio.Client({
-      endPoint: context.host,
-      port: context.port,
-      useSSL: context.useSSL,
-      accessKey: context.accessKey,
-      secretKey: context.secretKey,
+      endPoint: this._context.host,
+      port: this._context.port,
+      useSSL: this._context.useSSL,
+      accessKey: this._context.accessKey,
+      secretKey: this._context.secretKey,
     });
   }
 
   public async get(
     filename: string,
-    bucket: string,
     expiresIn: number = 60 * 30 // Default: 30 min
   ) {
     // TODO: Implement cache in future
     const filePath = this._parseFilePath(filename);
-    return this._client.presignedGetObject(bucket, filePath, expiresIn);
+    return this._client.presignedGetObject(
+      this._context.bucket,
+      filePath,
+      expiresIn
+    );
   }
 
   public async upload(
     filename: string,
-    bucket: string,
     expiresIn: number = 60 * 5 // Default: 5 min
   ) {
     const filePath = this._parseFilePath(filename);
-    return this._client.presignedPutObject(bucket, filePath, expiresIn);
+    return this._client.presignedPutObject(
+      this._context.bucket,
+      filePath,
+      expiresIn
+    );
   }
 
-  public async delete(filename: string, bucket: string) {
+  public async delete(filename: string) {
     const filePath = this._parseFilePath(filename);
-    return this._client.removeObject(bucket, filePath);
+    return this._client.removeObject(this._context.bucket, filePath);
   }
 
   public async uploadPackage(
     content: object,
-    bucket: string,
     expiresIn: number = 60 * 5 // Default: 5 min
   ) {
-    const updatedContent = await ContentStructureService.addLinksForFiles(
+    return ContentStructureService.getUploadLinksForFiles(
       content as OQContentStructure,
       this,
-      bucket,
       expiresIn
     );
-    return updatedContent;
   }
 
   private _parseFilePath(filename: string) {

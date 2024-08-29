@@ -5,6 +5,7 @@ import { StorageServiceFactory } from "../../services/storage/StorageServiceFact
 import { fileContext } from "../../types/file/fileContext";
 import { storageType } from "../../types/storage/storageType";
 import { storage } from "../../types/storage/storage";
+import { validateFilename } from "../../middleware/file/fileMiddleware";
 
 export class FileRestApiController {
   private _storageService!: IStorage;
@@ -15,49 +16,41 @@ export class FileRestApiController {
     app.use("/v1/file", router);
 
     this._fileContext = StorageServiceFactory.createFileContext(storageType);
-
     this._storageService = StorageServiceFactory.createStorageService(
       storageName as storage,
       this._fileContext
     );
 
-    router.get("/", async (req: Request, res: Response) => {
+    router.get("/", validateFilename, async (req: Request, res: Response) => {
       try {
-        const bucket = req.body.bucket;
-        const url = await this._storageService.get(
-          req.body.filename,
-          bucket ?? this._fileContext.bucket
-        );
+        const url = await this._storageService.get(req.body.filename);
         res.send({ url });
       } catch (err: any) {
         res.status(400).send({ error: err.message });
       }
     });
 
-    router.post("/", async (req: Request, res: Response) => {
+    router.post("/", validateFilename, async (req: Request, res: Response) => {
       try {
-        const bucket = req.body.bucket;
-        const url = await this._storageService.upload(
-          req.body.filename,
-          bucket ?? this._fileContext.bucket
-        );
+        const url = await this._storageService.upload(req.body.filename);
         res.send({ url });
       } catch (err: any) {
         res.status(400).send({ error: err.message });
       }
     });
 
-    router.delete("/", async (req: Request, res: Response) => {
-      try {
-        const bucket = req.body.bucket;
-        this._storageService.delete(
-          req.body.filename,
-          bucket ?? this._fileContext.bucket
-        );
-        res.status(204).send({ message: "Delete request sent" });
-      } catch (err: any) {
-        res.status(400).send({ error: err.message });
+    router.delete(
+      "/",
+      validateFilename,
+      async (req: Request, res: Response) => {
+        try {
+          // No need to await, delete does not return any info
+          this._storageService.delete(req.body.filename);
+          res.status(204).send({ message: "Delete request sent" });
+        } catch (err: any) {
+          res.status(400).send({ error: err.message });
+        }
       }
-    });
+    );
   }
 }

@@ -27,15 +27,10 @@ export class PackageRestApiController {
       verifyContentJSON,
       async (req: Request, res: Response) => {
         try {
-          const bucket = req.body.bucket;
-          const _content = req.body.content;
-
           const data = await this._storageService.uploadPackage(
-            _content,
-            bucket ?? this._fileContext.bucket
+            req.body.content
           );
-
-          return res.status(200).send({ content: data });
+          return res.status(200).send(data);
         } catch (err: any) {
           return res.status(400).send({ error: err.message });
         }

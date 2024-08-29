@@ -10,21 +10,26 @@ export class ContentStructureService {
   /**
    * Parse content.json file and update all "file" entries with download link
    */
-  public static async addLinksForFiles(
+  public static async getUploadLinksForFiles(
     content: OQContentStructure,
     storage: IStorage,
-    bucket: string,
     expiresIn: number
-  ): Promise<OQContentStructure> {
-    // Validation
-    if (!content?.rounds) return content;
+  ): Promise<{ [key: string]: string }> {
+    if (!content?.rounds) {
+      return { error: 'Content does not contain "rounds"!' };
+    }
+
     const roundsContent = ValueUtils.parseJSON(content.rounds);
-    if (!ValueUtils.isArray(roundsContent)) return content;
+
+    if (!ValueUtils.isArray(roundsContent)) {
+      return { error: '"rounds" is empty!' };
+    }
 
     // Variables define
     const stack = roundsContent.slice();
     const promises: Promise<string>[] = [];
     const cache: Map<string, Promise<string>> = new Map();
+    const fileLinks: { [key: string]: string } = {};
 
     // Iterate trough every object in content and find all "file" entries
     while (stack.length) {
@@ -41,15 +46,12 @@ export class ContentStructureService {
           } else {
             // Create promise for file upload link
             promise = storage
-              .upload(
-                (current[key] as OQFileContentStructure).path,
-                bucket,
-                expiresIn
-              )
+              .upload((current[key] as OQFileContentStructure).path, expiresIn)
               .then(
                 (link: string) =>
-                  // Assign link to file object
-                  ((current[key] as OQFileContentStructure).link = link)
+                  // Assign link to file name
+                  (fileLinks[(current[key] as OQFileContentStructure).path] =
+                    link)
               );
 
             cache.set(current[key].path, promise);
@@ -67,9 +69,6 @@ export class ContentStructureService {
     await Promise.all(promises);
     cache.clear();
 
-    // Update the original content object with the modified rounds content
-    content.rounds = roundsContent;
-
-    return content;
+    return fileLinks;
   }
 }
