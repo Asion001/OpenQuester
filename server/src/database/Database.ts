@@ -12,6 +12,7 @@ export class Database {
   /** Repositories caching */
   private repositories: Map<EntityTarget<any>, Repository<any>> = new Map();
 
+  // TODO: Make DB driver injectable and create separate Driver instances
   constructor(dataSource: DataSource) {
     this._connected = false;
     Logger.warn("Connecting to DB...");
@@ -22,6 +23,7 @@ export class Database {
       .then(() => {
         this._connected = true;
         Logger.info("Connection to DB established");
+        Logger.info(`API version: ${process.env.npm_package_version}`);
       })
       .catch((err) => {
         Logger.error(`DB is not connected: ${err}`);

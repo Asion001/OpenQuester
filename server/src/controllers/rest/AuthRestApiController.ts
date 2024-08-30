@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import { Request, Response, Router } from "express";
+import { type Request, type Response, Router } from "express";
+
 import { AuthService } from "../../services/AuthService";
 import { QueryFailedError } from "typeorm";
 import { Environment } from "../../config/Environment";
@@ -76,6 +77,7 @@ export class AuthRestApiController {
    * user should be able to login / register.
    *
    * If user token is valid - he's already logged in and no need to continue execution
+   * TODO: Move to route middleware
    */
   private validateTokenForAuth(req: Request): boolean {
     const header = req.header("Authorization");

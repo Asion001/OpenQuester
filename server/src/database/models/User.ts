@@ -9,6 +9,7 @@ import {
   JoinTable,
   Repository,
 } from "typeorm";
+
 import { IUser } from "../../interfaces/user/IUser";
 import { File } from "./File";
 import { Permission } from "./Permission";

@@ -1,14 +1,15 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import { Express } from "express";
+import { type Express } from "express";
+import { type Server } from "http";
 import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
 import { Database, db } from "./database/Database";
-import { verifyTokenMiddleware } from "./middleware/AuthMiddleware";
-import { Server } from "http";
+import { verifyTokenMiddleware } from "./middleware/authMiddleware";
 import { Logger } from "./utils/Logger";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
 import { ApiContext } from "./services/context/ApiContext";
-import { FileContext } from "./services/context/FileContext";
+import { FileRestApiController } from "./controllers/rest/FileRestApiController";
+import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
 
 /**
  * Servers all api endpoints in one place.
@@ -45,16 +46,13 @@ export class ServeApi {
         db: this.db,
         app: this.app,
         crypto: bcrypt,
-        fileContext: new FileContext("", "", ""), // TODO: Fill up
       });
 
       // Attach API controllers
       this.attachControllers();
-      Logger.info(
-        `Api is served, server version: ${process.env.npm_package_version}`
-      );
     } catch (err: any) {
-      Logger.error(err.message);
+      Logger.error(`Serve API error: ${err.message}`);
+      throw new Error(err.message);
     }
   }
 
@@ -77,5 +75,7 @@ export class ServeApi {
   public attachControllers() {
     new AuthRestApiController(this.context);
     new UserRestApiController(this.context);
+    new FileRestApiController(this.context.app);
+    new PackageRestApiController(this.context.app);
   }
 }

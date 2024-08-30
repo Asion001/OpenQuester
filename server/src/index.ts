@@ -1,4 +1,5 @@
 import cluster from "cluster";
+import { type Server } from "http";
 import { Environment } from "./config/Environment";
 import { ServeApi } from "./ServeApi";
 import { Logger } from "./utils/Logger";
@@ -21,30 +22,38 @@ if (cluster.isPrimary) {
 
   for (let c = 0; c < workersCount; c++) {
     // Fork instances
-    cluster.fork();
+    try {
+      cluster.fork();
+    } catch (err: any) {
+      Logger.error(`Error during workers initialization: ${err.message} `);
+      shutdownCluster();
+    }
   }
 
-  process.on("SIGINT", shutdownCluster);
-  process.on("SIGTERM", shutdownCluster);
-  process.on("uncaughtException", (err) => {
-    Logger.error(`Uncaught Exception: ${err}`);
-    shutdownCluster();
+  ["SIGINT", "SIGTERM", "uncaughtException"].forEach((signal) => {
+    process.on(signal, shutdownCluster);
   });
 } else {
   // Not main cluster - do work
-  const api = new ServeApi();
+  let api: ServeApi | undefined;
+  try {
+    api = new ServeApi();
 
-  if (!api.server) {
-    Logger.error(`API server error: ${api.server}`);
-    gracefulShutdown(api.server);
-  } else {
-    Logger.info(`Worker ${process.pid} started`, true);
+    if (!api || !api.server) {
+      Logger.error(`API server error: ${api?.server}`);
+      gracefulShutdown(api?.server);
+    } else {
+      Logger.info(`Worker ${cluster.worker?.process.pid} started`, true);
+    }
+  } catch (err: any) {
+    Logger.error(`Worker caught an exception: ${err.message}`);
+    gracefulShutdown(api?.server);
   }
 
   process.on("message", (msg: WorkerMessage) => {
     switch (msg) {
       case WorkerMessage.SHUTDOWN:
-        gracefulShutdown(api.server);
+        gracefulShutdown(api?.server);
     }
   });
 }
@@ -76,12 +85,11 @@ function shutdownCluster() {
   }, 10000);
 }
 
-function gracefulShutdown(server: any) {
-  server?.close(() => {
-    process.exit(0);
-  });
-
+function gracefulShutdown(server: Server | undefined) {
   setTimeout(() => {
     process.exit(1);
   }, 5000);
+  server?.close();
+  Logger.warn("Worker server closed", true);
+  process.exit(0);
 }

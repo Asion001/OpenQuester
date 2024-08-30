@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+
 import { Crypto } from "../interfaces/Crypto";
 
 export class CryptoUtils {

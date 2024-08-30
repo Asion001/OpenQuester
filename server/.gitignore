@@ -14,3 +14,7 @@ storage/.secret*
 storage/test/
 .nyc_output/
 test/performance/
+
+# Minio
+minio/
+

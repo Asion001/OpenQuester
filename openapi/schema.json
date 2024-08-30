@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "openQuester API",
-    "version": "1.0.0"
+    "version": "0.2.9"
   },
   "security": [
     {
@@ -10,6 +10,184 @@
     }
   ],
   "paths": {
+    "/v1/file": {
+      "get": {
+        "requestBody": {
+          "required": true,
+          "description": "filename which you want to get",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "somefilename.jpg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Get link that allows you to see the file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad filename",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bad filename"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "requestBody": {
+          "required": true,
+          "description": "filename which you want to put in bucket",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "somefilename.jpg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Get link that allows you to put the file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad filename",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bad filename"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "requestBody": {
+          "required": true,
+          "description": "filename which you want to delete",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "example": "somefilename.jpg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Delete request send successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Delete request sent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad filename",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bad filename"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/package/upload": {
+      "post": {
+        "requestBody": {
+          "description": "content.json file data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "object"
+                  }
+                },
+                "required": ["content"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Content returned with updated \"file\" fields with links",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "object",
+                      "example": { "filename hash": "file upload link" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content is empty!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Content is empty!"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/user/{id}": {
       "get": {
         "parameters": [
