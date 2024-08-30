@@ -1,6 +1,6 @@
 # OpenQuester (Work In Progress)
 
-**OpenQuester** is a cooperative trivia game inspired by [SIGame](https://github.com/VladimirKhil/SI)
+**OpenQuester** is a cooperative quiz game inspired by [SIGame](https://github.com/VladimirKhil/SI)
 
 ## Technology Stack
 
