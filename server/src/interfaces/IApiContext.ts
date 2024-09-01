@@ -1,10 +1,12 @@
 import { type Express } from "express";
 
-import { Database } from "../database/Database";
 import { Crypto } from "./Crypto";
+import { type Database } from "../database/Database";
+import { type Environment } from "../config/Environment";
 
 export interface IApiContext {
   db: Database;
   app: Express;
-  crypto: Crypto;
+  env: Environment;
+  crypto?: Crypto;
 }

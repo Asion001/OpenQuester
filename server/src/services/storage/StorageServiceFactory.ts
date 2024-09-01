@@ -16,7 +16,8 @@ export class StorageServiceFactory {
     fileContext: fileContext
   ): IStorage {
     storageName =
-      storageName ?? Environment.getEnvVar("STORAGE_NAME", "string", "minio");
+      storageName ??
+      Environment.instance.getEnvVar("STORAGE_NAME", "string", "minio");
 
     const storage = this._storageMap.get(storageName);
     if (storage) {
@@ -41,7 +42,8 @@ export class StorageServiceFactory {
   /** File context and storage service init */
   public static createFileContext(storageType?: storageType) {
     storageType =
-      storageType ?? Environment.getEnvVar("STORAGE_TYPE", "string", "s3");
+      storageType ??
+      Environment.instance.getEnvVar("STORAGE_TYPE", "string", "s3");
 
     switch (storageType) {
       case "s3":

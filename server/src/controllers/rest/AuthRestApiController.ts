@@ -81,15 +81,16 @@ export class AuthRestApiController {
    */
   private validateTokenForAuth(req: Request): boolean {
     const header = req.header("Authorization");
+    const env = Environment.instance;
 
     if (!header) return true;
 
     const scheme = header?.split(" ")[0];
     const token = header?.split(" ")[1];
 
-    if (token && scheme == Environment.JWT_SCHEME) {
+    if (token && scheme == env.JWT_SCHEME) {
       try {
-        jwt.verify(token, Environment.JWT_SECRET);
+        jwt.verify(token, env.JWT_SECRET);
         return false;
       } catch {
         // Token invalid - continue

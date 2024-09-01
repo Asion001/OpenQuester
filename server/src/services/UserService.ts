@@ -207,7 +207,7 @@ export class UserService {
       (id: number) => !userPermIds.includes(id)
     );
 
-    await db.ds.transaction(async (transactionalEntityManager) => {
+    await db.dataSource.transaction(async (transactionalEntityManager) => {
       // Remove old group associations
       if (permsToRemove.length > 0) {
         await transactionalEntityManager

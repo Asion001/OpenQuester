@@ -2,14 +2,14 @@ import { type Request, type Response, Router } from "express";
 
 import { UserService } from "../../services/UserService";
 import { QueryFailedError } from "typeorm";
-import { IApiContext } from "../../interfaces/IApiContext";
 import { UpdateUser } from "../../managers/user/UpdateUser";
+import { ApiContext } from "../../services/context/ApiContext";
 
 /**
  * Handles all endpoints related for User CRUD
  */
 export class UserRestApiController {
-  constructor(ctx: IApiContext) {
+  constructor(ctx: ApiContext) {
     const app = ctx.app;
     const router = Router();
     app.use("/v1/user", router);

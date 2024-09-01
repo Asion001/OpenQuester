@@ -16,24 +16,26 @@ const ENV_TYPES = ["local", "prod", "test"];
  * All `process.env` variables should be retrieved only trough this class.
  */
 export class Environment {
-  private static type: string;
+  private _type!: string;
+  /** Used for singleton implementation */
+  private static _instance: Environment | undefined = undefined;
 
   // DB vars
-  public static DB_TYPE: string;
-  public static DB_NAME: string;
-  public static DB_USER: string;
-  public static DB_PASS: string;
-  public static DB_HOST: string;
-  public static DB_PORT: number;
-  public static DB_LOGGER: LoggerOptions;
+  public DB_TYPE!: string;
+  public DB_NAME!: string;
+  public DB_USER!: string;
+  public DB_PASS!: string;
+  public DB_HOST!: string;
+  public DB_PORT!: number;
+  public DB_LOGGER!: LoggerOptions;
 
   // JWT vars
-  public static JWT_SECRET: string;
-  public static JWT_SCHEME: string;
-  public static JWT_REFRESH_SECRET: string;
-  public static JWT_EXPIRES_IN: string;
-  public static JWT_REFRESH_EXPIRES_IN: string;
-  public static JWT_TOKEN_OPTIONS: {
+  public JWT_SECRET!: string;
+  public JWT_SCHEME!: string;
+  public JWT_REFRESH_SECRET!: string;
+  public JWT_EXPIRES_IN!: string;
+  public JWT_REFRESH_EXPIRES_IN!: string;
+  public JWT_TOKEN_OPTIONS!: {
     secret: string;
     refreshSecret: string;
     expiresIn: string;
@@ -41,19 +43,31 @@ export class Environment {
   };
 
   // Workers
-  public static WORKERS_COUNT: number;
+  public WORKERS_COUNT!: number;
+
+  private constructor() {
+    //
+  }
+
+  public static get instance() {
+    if (!this._instance) {
+      this._instance = new Environment();
+    }
+
+    return this._instance;
+  }
 
   /** Get environment type */
-  public static get ENV(): string {
-    return this.type;
+  public get ENV(): string {
+    return this._type;
   }
 
   /**
    * Load all environment variables, if not loaded already
    * @param force Specify if you want to load environment even if it's loaded already
    */
-  public static load(force: boolean = false): void {
-    if (this.type && !force) {
+  public load(force: boolean = false): void {
+    if (this._type && !force) {
       return;
     }
 
@@ -77,7 +91,7 @@ export class Environment {
    *
    * Performs type checking
    */
-  public static getEnvVar(
+  public getEnvVar(
     variable: string,
     type: envVar | envVar[],
     defaultValue: unknown = undefined
@@ -87,8 +101,11 @@ export class Environment {
     value = value === "undefined" ? undefined : value;
 
     if (ValueUtils.isArray(type)) {
-      type.forEach((type) => {
-        if (ValueUtils.checkPrimitiveType(value, type)) success = true;
+      type.forEach((t) => {
+        if (ValueUtils.checkPrimitiveType(value, t)) {
+          success = true;
+          type = t;
+        }
       });
     } else {
       if (ValueUtils.checkPrimitiveType(value, type)) success = true;
@@ -113,37 +130,37 @@ export class Environment {
   /**
    * Environment variables loading logic and validation
    */
-  private static loadEnv(): void {
+  private loadEnv(): void {
     if (!process?.env) {
       throw new Error("Cannot find Node.JS environment");
     }
 
-    this.type = this.getEnvVar("ENV", "string", "prod");
+    this._type = this.getEnvVar("ENV", "string", "prod");
 
-    if (!ENV_TYPES.includes(this.type)) {
+    if (!ENV_TYPES.includes(this._type)) {
       throw new Error(
         `Wrong ENV type, only [${ENV_TYPES.join(", ")}] allowed, but got '${
-          this.type
+          this._type
         }'`
       );
     }
 
-    const prod = this.type === "prod";
+    const prod = this._type === "prod";
 
     if (prod) {
       Logger.warn(bold("Running in production environment"));
     }
 
-    if (this.type === "local") {
+    if (this._type === "local") {
       Logger.info("Running in local environment");
     }
 
-    this.loadDB(this.type);
+    this.loadDB(this._type);
     this.loadJWT();
     this.loadWorkers();
   }
 
-  private static loadWorkers() {
+  private loadWorkers() {
     this.WORKERS_COUNT = Number(this.getEnvVar("WORKERS_COUNT", "number", 2));
 
     if (this.WORKERS_COUNT < 1) {
@@ -151,7 +168,7 @@ export class Environment {
     }
   }
 
-  private static loadJWT() {
+  private loadJWT() {
     this.JWT_SECRET = JWTUtils.getSecret();
     this.JWT_REFRESH_SECRET = this.getEnvVar(
       "JWT_REFRESH_SECRET",
@@ -178,7 +195,7 @@ export class Environment {
     };
   }
 
-  private static loadDB(env: string) {
+  private loadDB(env: string) {
     const prod = env === "prod";
     this.DB_TYPE = this.getEnvVar("DB_TYPE", "string", "pg");
     this.DB_NAME = this.getEnvVar(

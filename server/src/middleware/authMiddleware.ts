@@ -11,16 +11,17 @@ export const verifyTokenMiddleware = (
   if (req.url.includes("v1/auth")) {
     return next();
   }
+  const env = Environment.instance;
   const header = req.header("Authorization");
 
   const scheme = header?.split(" ")[0];
   const token = header?.split(" ")[1];
 
-  if (!token || scheme !== Environment.JWT_SCHEME)
+  if (!token || scheme !== env.JWT_SCHEME)
     return res.status(401).json({ error: "Access denied" });
 
   try {
-    jwt.verify(token, Environment.JWT_SECRET);
+    jwt.verify(token, env.JWT_SECRET);
     next();
   } catch {
     res.status(401).json({ error: "Token invalid or expired" });

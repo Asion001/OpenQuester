@@ -14,7 +14,7 @@ export class Logger {
       const prefix = "[INFO]: ";
       const log = prefix + String(text);
 
-      if (Environment.ENV !== "test") {
+      if (Environment.instance.ENV !== "test") {
         console.info(green(log));
       }
 
@@ -27,7 +27,7 @@ export class Logger {
       const prefix = "[WARNING]: ";
       const log = prefix + String(text);
 
-      if (Environment.ENV !== "test") {
+      if (Environment.instance.ENV !== "test") {
         console.warn(yellow(log));
       }
 

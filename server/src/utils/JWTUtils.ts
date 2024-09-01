@@ -80,8 +80,9 @@ export class JWTUtils {
    */
   public static getPayload(req: Request) {
     const token = req.headers.authorization?.split(" ")[1] as string;
+    const env = Environment.instance;
 
-    return jwt.verify(token, Environment.JWT_SECRET) as JWTPayload;
+    return jwt.verify(token, env.JWT_SECRET) as JWTPayload;
   }
 
   /**
@@ -91,7 +92,8 @@ export class JWTUtils {
     userId: number,
     options?: TokenOptions
   ): JWTResponse {
-    const tokenOptions: TokenOptions = options ?? Environment.JWT_TOKEN_OPTIONS;
+    const env = Environment.instance;
+    const tokenOptions: TokenOptions = options ?? env.JWT_TOKEN_OPTIONS;
 
     const access_token = jwt.sign({ id: userId }, tokenOptions.secret, {
       expiresIn: tokenOptions.expiresIn,
@@ -108,9 +110,10 @@ export class JWTUtils {
    */
   public static refresh(token: string, options?: TokenOptions): JWTResponse {
     try {
+      const env = Environment.instance;
       const decode = jwt.verify(
         token,
-        options?.refreshSecret ?? Environment.JWT_REFRESH_SECRET
+        options?.refreshSecret ?? env.JWT_REFRESH_SECRET
       );
       const { access_token, refresh_token } = JWTUtils.generateTokens(
         (decode as JWTPayload).id,
