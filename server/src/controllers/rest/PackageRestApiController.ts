@@ -13,25 +13,25 @@ export class PackageRestApiController {
   constructor(ctx: ApiContext, storageService: IStorage) {
     const router = Router();
     const app = ctx.app;
+    this._storageService = storageService;
 
     app.use("/v1/package", router);
-    this._storageService = storageService;
 
     router.post(
       "/upload",
       verifyContentJSONMiddleware,
       throttleByUserMiddleware,
-      async (req: Request, res: Response) => {
-        try {
-          const data = await this._storageService.uploadPackage(
-            req.body.content
-          );
-          return res.status(HttpStatus.OK).send(data);
-        } catch (err: unknown) {
-          const { message, code } = ErrorController.resolveError(err);
-          return res.status(code).send({ error: message });
-        }
-      }
+      this.uploadPackage
     );
   }
+
+  private uploadPackage = async (req: Request, res: Response) => {
+    try {
+      const data = await this._storageService.uploadPackage(req.body.content);
+      return res.status(HttpStatus.OK).send(data);
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveError(err);
+      return res.status(code).send({ error: message });
+    }
+  };
 }

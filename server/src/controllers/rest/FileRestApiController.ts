@@ -13,44 +13,45 @@ export class FileRestApiController {
   constructor(ctx: ApiContext, storageService: IStorage) {
     const app = ctx.app;
     const router = Router();
-    app.use("/v1/file", router);
     this._storageService = storageService;
 
-    router.get("/", validateFilename, async (req: Request, res: Response) => {
-      try {
-        const url = await this._storageService.get(req.body.filename);
-        res.send({ url });
-      } catch (err: unknown) {
-        const { message, code } = ErrorController.resolveError(err);
-        res.status(code).send({ error: message });
-      }
-    });
+    app.use("/v1/file", router);
 
-    router.post("/", validateFilename, async (req: Request, res: Response) => {
-      try {
-        const url = await this._storageService.upload(req.body.filename);
-        res.send({ url });
-      } catch (err: unknown) {
-        const { message, code } = ErrorController.resolveError(err);
-        res.status(code).send({ error: message });
-      }
-    });
-
-    router.delete(
-      "/",
-      validateFilename,
-      async (req: Request, res: Response) => {
-        try {
-          // No need to await, delete does not return any info
-          this._storageService.delete(req.body.filename);
-          res
-            .status(HttpStatus.NO_CONTENT)
-            .send({ message: ClientResponse.DELETE_REQUEST_SENT });
-        } catch (err: unknown) {
-          const { message, code } = ErrorController.resolveError(err);
-          res.status(code).send({ error: message });
-        }
-      }
-    );
+    router.get("/", validateFilename, this.getFile);
+    router.post("/", validateFilename, this.uploadFile);
+    router.delete("/", validateFilename, this.deleteFile);
   }
+
+  private getFile = async (req: Request, res: Response) => {
+    try {
+      const url = await this._storageService.get(req.body.filename);
+      res.send({ url });
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveError(err);
+      res.status(code).send({ error: message });
+    }
+  };
+
+  private uploadFile = async (req: Request, res: Response) => {
+    try {
+      const url = await this._storageService.upload(req.body.filename);
+      res.send({ url });
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveError(err);
+      res.status(code).send({ error: message });
+    }
+  };
+
+  private deleteFile = async (req: Request, res: Response) => {
+    try {
+      // No need to await, delete does not return any info
+      this._storageService.delete(req.body.filename);
+      res
+        .status(HttpStatus.NO_CONTENT)
+        .send({ message: ClientResponse.DELETE_REQUEST_SENT });
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveError(err);
+      res.status(code).send({ error: message });
+    }
+  };
 }
