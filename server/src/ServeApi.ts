@@ -1,5 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import cors from "cors";
+
 import { type Express } from "express";
 import { type Server } from "http";
 import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
@@ -34,6 +36,7 @@ export class ServeApi {
       this.port = 3000;
 
       // Middlewares
+      this.app.use(cors());
       this.app.use(express.json());
       this.app.use(verifyTokenMiddleware);
 
