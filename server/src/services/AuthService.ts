@@ -8,6 +8,7 @@ import { JWTUtils } from "../utils/JWTUtils";
 import { CryptoUtils } from "../utils/CryptoUtils";
 import { IRegisterUser } from "../interfaces/user/IRegisterUser";
 import { type Database } from "../database/Database";
+import { ApiResponse } from "../enums/ApiResponse";
 
 /**
  * Handles all business logic of user authorization
@@ -35,11 +36,11 @@ export class AuthService {
     const user = await User.login(db, data);
 
     if (!user) {
-      throw new Error("User with this name or email does not exists");
+      throw new Error(ApiResponse.USER_NOT_FOUND);
     }
 
     if (!(await CryptoUtils.compare(data.password!, user.password!, crypto))) {
-      throw new Error("Wrong password, please try again");
+      throw new Error(ApiResponse.WRONG_PASSWORD);
     }
 
     const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);

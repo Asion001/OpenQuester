@@ -1,5 +1,6 @@
 import { DataSource, EntityTarget, ObjectLiteral, Repository } from "typeorm";
 import { Logger } from "../utils/Logger";
+import { ServerResponse } from "../enums/ServerResponse";
 
 /**
  * Handles Database initialization and management
@@ -11,7 +12,7 @@ export class Database {
 
   private constructor(private _dataSource: DataSource) {
     if (!this._dataSource) {
-      throw new Error("Data source is invalid");
+      throw new Error(ServerResponse.INVALID_DATA_SOURCE);
     }
   }
 
@@ -43,7 +44,7 @@ export class Database {
       Logger.info("Connection to DB established");
       Logger.info(`API version: ${process.env.npm_package_version}`);
     } catch (err: any) {
-      throw new Error(`DB is not connected -> ${err.message}`);
+      throw new Error(`${ServerResponse.DB_NOT_CONNECTED} -> ${err.message}`);
     }
   }
 
@@ -59,7 +60,7 @@ export class Database {
     target: EntityTarget<T>
   ): Repository<T> {
     if (!this._connected) {
-      throw new Error("DB is not connected");
+      throw new Error(ServerResponse.DB_NOT_CONNECTED);
     }
 
     let repository = this.repositories.get(target) as Repository<T> | undefined;
@@ -74,7 +75,7 @@ export class Database {
 
   public get dataSource(): DataSource {
     if (!this._connected) {
-      throw new Error("DB is not connected");
+      throw new Error(ServerResponse.DB_NOT_CONNECTED);
     }
     return this._dataSource;
   }

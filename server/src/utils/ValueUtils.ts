@@ -1,3 +1,5 @@
+import { ApiResponse } from "../enums/ApiResponse";
+
 export class ValueUtils {
   /**
    * Return specified date, but with 12:00:00 time
@@ -26,7 +28,7 @@ export class ValueUtils {
     id = Number(id);
 
     if (id < 1 || isNaN(id)) {
-      throw new Error("Please specify id that greater than 1");
+      throw new Error(ApiResponse.BAD_USER_ID);
     }
 
     return id;

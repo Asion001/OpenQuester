@@ -8,6 +8,7 @@ import { Logger } from "../utils/Logger";
 import { JWTUtils } from "../utils/JWTUtils";
 import { ValueUtils } from "../utils/ValueUtils";
 import { envVar } from "../types/env/env";
+import { ServerResponse } from "../enums/ServerResponse";
 
 const ENV_TYPES = ["local", "prod", "test"];
 
@@ -122,7 +123,10 @@ export class Environment {
       }
     } else {
       throw new Error(
-        `Variable ${variable} is wrong type, ${type} expected but got variable ${value} of type ${typeof variable}`
+        ServerResponse.ENV_VAR_WRONG_TYPE.replace("%var", variable)
+          .replace("%expectedType", String(type))
+          .replace("%value", String(value))
+          .replace("%type", typeof variable)
       );
     }
   }
@@ -132,16 +136,17 @@ export class Environment {
    */
   private loadEnv(): void {
     if (!process?.env) {
-      throw new Error("Cannot find Node.JS environment");
+      throw new Error(ServerResponse.NO_ENV);
     }
 
     this._type = this.getEnvVar("ENV", "string", "prod");
 
     if (!ENV_TYPES.includes(this._type)) {
       throw new Error(
-        `Wrong ENV type, only [${ENV_TYPES.join(", ")}] allowed, but got '${
-          this._type
-        }'`
+        ServerResponse.INVALID_ENV_TYPE.replace(
+          "%types",
+          ENV_TYPES.join(", ")
+        ).replace("%type", this._type)
       );
     }
 

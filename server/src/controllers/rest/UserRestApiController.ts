@@ -5,6 +5,7 @@ import { QueryFailedError } from "typeorm";
 import { UpdateUser } from "../../managers/user/UpdateUser";
 import { ApiContext } from "../../services/context/ApiContext";
 import { JWTUtils } from "../../utils/JWTUtils";
+import { ApiResponse } from "../../enums/ApiResponse";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -32,7 +33,7 @@ export class UserRestApiController {
           return res.status(200).send(result);
         }
 
-        return res.status(404).send({ message: "User not found" });
+        return res.status(404).send({ message: ApiResponse.USER_NOT_FOUND });
       } catch (err: any) {
         return res.status(400).send({ error: err.message });
       }
@@ -64,7 +65,7 @@ export class UserRestApiController {
           err instanceof QueryFailedError &&
           err.message.includes("duplicate key value")
         ) {
-          err.message = `User with this name or email already exists`;
+          err.message = ApiResponse.USER_ALREADY_EXISTS;
         }
 
         if (err.message.toLowerCase().includes("not found")) {
@@ -101,7 +102,7 @@ export class UserRestApiController {
           return res.status(200).send(result);
         }
 
-        return res.status(404).send({ message: "Users not found" });
+        return res.status(404).send({ message: ApiResponse.USER_NOT_FOUND });
       } catch (err: any) {
         return res.status(400).send({ error: err.message });
       }

@@ -8,6 +8,8 @@ import { type ApiContext } from "./context/ApiContext";
 import { type Database } from "../database/Database";
 import { Crypto } from "../interfaces/Crypto";
 import { JWTPayload } from "../types/jwt/jwt";
+import { ApiResponse } from "../enums/ApiResponse";
+import { ServerResponse } from "../enums/ServerResponse";
 
 export class UserService {
   /**
@@ -34,7 +36,7 @@ export class UserService {
       return User.list(db);
     }
 
-    throw new Error("You are not able to do that");
+    throw new Error(ApiResponse.ACCESS_DENIED);
   }
 
   /**
@@ -60,7 +62,7 @@ export class UserService {
       return User.get(db, id);
     }
 
-    throw new Error("You are not able to do that");
+    throw new Error(ApiResponse.ACCESS_DENIED);
   }
 
   /**
@@ -79,7 +81,7 @@ export class UserService {
       return this.performUpdate(db, crypto, id, updateData);
     }
 
-    throw new Error("You are not able to do that");
+    throw new Error(ApiResponse.ACCESS_DENIED);
   }
 
   /**
@@ -96,7 +98,7 @@ export class UserService {
       return this.performDelete(db, id);
     }
 
-    throw new Error("You are not able to do that");
+    throw new Error(ApiResponse.ACCESS_DENIED);
   }
 
   /**
@@ -111,7 +113,7 @@ export class UserService {
     })) as User;
 
     if (!user || user.is_deleted) {
-      throw new Error("User not found.");
+      throw new Error(ApiResponse.USER_NOT_FOUND);
     }
 
     return user.delete(db, repository);
@@ -127,7 +129,7 @@ export class UserService {
     body: IUpdateUser
   ) {
     if (!crypto) {
-      throw new Error("Crypto instance should be provided in context");
+      throw new Error(ServerResponse.NO_CRYPTO);
     }
 
     const repository = db.getRepository(User);
@@ -138,7 +140,7 @@ export class UserService {
     })) as User;
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error(ApiResponse.USER_NOT_FOUND);
     }
 
     user.name = body.name ?? user.name;
@@ -171,7 +173,7 @@ export class UserService {
     })) as User;
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error(ApiResponse.USER_NOT_FOUND);
     }
 
     const permRepository = db.getRepository(Permission);
@@ -186,21 +188,12 @@ export class UserService {
         }))
       ) {
         throw new Error(
-          `Permission '${p.name}' with ID '${p.id}' does not exists`
+          ApiResponse.USER_PERMISSION_NOT_EXISTS.replace(
+            "%name",
+            p.name
+          ).replace("%id", p.id)
         );
       }
-      const perExists = await permRepository.exists({
-        where: {
-          id: p.id,
-          name: p.name,
-        },
-      });
-
-      if (perExists) continue;
-
-      throw new Error(
-        `Permission '${p.name}' with ID '${p.id}' does not exists`
-      );
     }
 
     const newPermIds = body.permissions.map((p: IPermission) => p.id);

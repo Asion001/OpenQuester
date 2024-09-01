@@ -2,7 +2,8 @@ import { type Request, type Response, Router } from "express";
 
 import { IStorage } from "../../interfaces/file/IStorage";
 import { validateFilename } from "../../middleware/file/fileMiddleware";
-import { type ApiContext } from "../../services/context/ApiContext";
+import { ApiContext } from "../../services/context/ApiContext";
+import { ApiResponse } from "../../enums/ApiResponse";
 
 export class FileRestApiController {
   private _storageService!: IStorage;
@@ -38,7 +39,7 @@ export class FileRestApiController {
         try {
           // No need to await, delete does not return any info
           this._storageService.delete(req.body.filename);
-          res.status(204).send({ message: "Delete request sent" });
+          res.status(204).send({ message: ApiResponse.DELETE_REQUEST_SENT });
         } catch (err: any) {
           res.status(400).send({ error: err.message });
         }

@@ -8,6 +8,7 @@ import { RegisterUser } from "../../managers/user/RegisterUser";
 import { LoginUser } from "../../managers/user/LoginUser";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ApiContext } from "../../services/context/ApiContext";
+import { ApiResponse } from "../../enums/ApiResponse";
 
 /**
  * Handles all endpoints related to user authorization
@@ -21,7 +22,7 @@ export class AuthRestApiController {
     router.post(`/register`, async (req: Request, res: Response) => {
       try {
         if (!this.validateTokenForAuth(req)) {
-          throw new Error("User is already logged in");
+          throw new Error(ApiResponse.ALREADY_LOGGED_IN);
         }
 
         const data = new RegisterUser(req.body);
@@ -35,7 +36,7 @@ export class AuthRestApiController {
           err instanceof QueryFailedError &&
           err.message.includes("duplicate key value")
         ) {
-          err.message = `User with this name or email already exists`;
+          err.message = ApiResponse.USER_ALREADY_EXISTS;
         }
         return res.status(400).send({ error: err.message });
       }
@@ -44,7 +45,7 @@ export class AuthRestApiController {
     router.post(`/login`, async (req: Request, res: Response) => {
       try {
         if (!this.validateTokenForAuth(req)) {
-          throw new Error("User is already logged in");
+          throw new Error(ApiResponse.ALREADY_LOGGED_IN);
         }
 
         const data = new LoginUser(req.body);
@@ -61,7 +62,7 @@ export class AuthRestApiController {
       try {
         const refresh = req.body.refresh_token;
         if (!refresh) {
-          throw new Error("Please provide refresh_token");
+          throw new Error(ApiResponse.NO_REFRESH);
         }
 
         const result = JWTUtils.refresh(refresh);

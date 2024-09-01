@@ -10,6 +10,7 @@ import {
   jwtSecret,
   TokenOptions,
 } from "../types/jwt/jwt";
+import { ApiResponse } from "../enums/ApiResponse";
 
 const WRITE_PATH = path.resolve(process.cwd(), "storage/");
 
@@ -123,7 +124,7 @@ export class JWTUtils {
         refresh_token,
       };
     } catch {
-      throw new Error("Invalid or expired refresh token");
+      throw new Error(ApiResponse.INVALID_REFRESH);
     }
   }
 }

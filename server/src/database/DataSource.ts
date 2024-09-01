@@ -1,7 +1,8 @@
 import "reflect-metadata";
 
-import { Environment } from "../config/Environment";
 import { Logger } from "../utils/Logger";
+import { Environment } from "../config/Environment";
+import { ServerResponse } from "../enums/ServerResponse";
 
 // Models
 import { User } from "./models/User";
@@ -22,7 +23,7 @@ const env = Environment.instance;
 try {
   env.load(false);
 } catch (err: any) {
-  Logger.error("Failed to load environment variables, closing...");
+  Logger.error(ServerResponse.FAILED_TO_LOAD_ENV);
   Logger.error(`Error message: ${err.message}`);
   // Bravely exit from process since it's migration process created by TypeORM
   process.exit(0);
