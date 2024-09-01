@@ -8,6 +8,10 @@ import { ClientResponse } from "../../enums/ClientResponse";
 import { validateParamsIDMiddleware } from "../../middleware/request/userRequestMiddleware";
 import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
+import {
+  requireAdmin,
+  requireAdminIfIdProvided,
+} from "../../middleware/role/roleMiddleware";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -19,10 +23,25 @@ export class UserRestApiController {
 
     app.use("/v1/user", router);
 
-    app.get(`/v1/users`, this.listUsers);
-    router.get("(/:id)?", validateParamsIDMiddleware, this.getUser);
-    router.patch("(/:id)?", this.updateUser);
-    router.delete("(/:id)?", this.deleteUser);
+    app.get(`/v1/users`, requireAdmin(this.ctx.db), this.listUsers);
+    router.get(
+      "(/:id)?",
+      validateParamsIDMiddleware,
+      requireAdminIfIdProvided(this.ctx.db),
+      this.getUser
+    );
+    router.patch(
+      "(/:id)?",
+      validateParamsIDMiddleware,
+      requireAdminIfIdProvided(this.ctx.db),
+      this.updateUser
+    );
+    router.delete(
+      "(/:id)?",
+      validateParamsIDMiddleware,
+      requireAdminIfIdProvided(this.ctx.db),
+      this.deleteUser
+    );
   }
 
   private getUser = async (req: Request, res: Response) => {
