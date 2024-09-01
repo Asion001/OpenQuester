@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
       routes: const [
         ClickerRoute(),
         ProfileRoute(),
+        TestScreenRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         return BottomNavigationBar(
@@ -32,6 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Profile',
               icon: Icon(Icons.person_outlined),
               activeIcon: Icon(Icons.person),
+            ),
+            BottomNavigationBarItem(
+              label: 'Test',
+              icon: Icon(Icons.bug_report_outlined),
+              activeIcon: Icon(Icons.bug_report),
             ),
           ],
         );

@@ -9,6 +9,10 @@ doc/PrivateUserPermissionsInner.md
 doc/RegisterUser.md
 doc/UpdateUser.md
 doc/V1AuthRefreshPostRequest.md
+doc/V1FileDelete204Response.md
+doc/V1FileGet200Response.md
+doc/V1PackageUploadPost200Response.md
+doc/V1PackageUploadPostRequest.md
 lib/openapi.dart
 lib/src/api.dart
 lib/src/api/default_api.dart
@@ -27,5 +31,13 @@ lib/src/model/private_user_permissions_inner.dart
 lib/src/model/register_user.dart
 lib/src/model/update_user.dart
 lib/src/model/v1_auth_refresh_post_request.dart
+lib/src/model/v1_file_delete204_response.dart
+lib/src/model/v1_file_get200_response.dart
+lib/src/model/v1_package_upload_post200_response.dart
+lib/src/model/v1_package_upload_post_request.dart
 lib/src/serializers.dart
 pubspec.yaml
+test/v1_file_delete204_response_test.dart
+test/v1_file_get200_response_test.dart
+test/v1_package_upload_post200_response_test.dart
+test/v1_package_upload_post_request_test.dart

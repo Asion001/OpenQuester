@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/img_opening.dart';
-import 'widgets/url_generator.dart';
+import 'items/file_opening.dart';
+import 'items/img_opening.dart';
+import 'items/url_generator.dart';
 
 @RoutePage(name: 'TestScreenRoute')
 class TestScreen extends StatelessWidget {
@@ -11,24 +12,31 @@ class TestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.all(24),
-        padding: const EdgeInsets.all(24),
-        child: ListView(
-          children: [
-            const ImgTest(),
-             const UrlGeneratorTest(),
-          ].map(_itemCover).toList(),
-        ),
+      body: ListView(
+        padding: const EdgeInsets.all(45),
+        children: [
+          ('Image test', const ImgTest()),
+          ('Url test', const UrlGeneratorTest()),
+          ('Pack upload test', const FileOpening()),
+        ].map(_itemCover).toList(),
       ),
     );
   }
 
-  Widget _itemCover(Widget e) {
+  Widget _itemCover((String, Widget) e) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: e,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(e.$1),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: e.$2,
+          ),
+        ],
       ),
     );
   }

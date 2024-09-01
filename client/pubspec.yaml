@@ -33,11 +33,12 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
+
   cupertino_icons: ^1.0.0
   openapi_generator_annotations: ^5.0.0
   auto_route: ^9.0.0
   openapi:
-    path: "../openapi/dart_sdk/"
+    path: ../openapi/dart_sdk/
   url_strategy: ^0.3.0
   envied: ^0.5.4+1
   package_info_plus: ^8.0.2
@@ -45,6 +46,16 @@ dependencies:
   flutter_native_splash: ^2.4.1
   s3_storage: ^1.0.4
   dio: ^5.6.0
+  open_file: ^3.5.3
+  file_picker: ^8.1.2
+  siq_file:
+    path: ./packages/siq_file/
+  injectable: ^2.4.4
+  get_it: ^7.7.0
+  watch_it: ^1.4.2
+  shared_preferences: ^2.3.2
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +68,9 @@ dev_dependencies:
   auto_route_generator: ^9.0.0
   flutter_launcher_icons: "^0.13.1"
   envied_generator: ^0.5.4+1
+  injectable_generator: ^2.6.2
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -12,6 +12,10 @@ Method | HTTP request | Description
 [**v1AuthLoginPost**](DefaultApi.md#v1authloginpost) | **POST** /v1/auth/login | User Login
 [**v1AuthRefreshPost**](DefaultApi.md#v1authrefreshpost) | **POST** /v1/auth/refresh | Refresh tokens
 [**v1AuthRegisterPost**](DefaultApi.md#v1authregisterpost) | **POST** /v1/auth/register | User Registration
+[**v1FileDelete**](DefaultApi.md#v1filedelete) | **DELETE** /v1/file | 
+[**v1FileGet**](DefaultApi.md#v1fileget) | **GET** /v1/file | 
+[**v1FilePost**](DefaultApi.md#v1filepost) | **POST** /v1/file | 
+[**v1PackageUploadPost**](DefaultApi.md#v1packageuploadpost) | **POST** /v1/package/upload | 
 [**v1UserDelete**](DefaultApi.md#v1userdelete) | **DELETE** /v1/user/ | Delete user.
 [**v1UserGet**](DefaultApi.md#v1userget) | **GET** /v1/user/ | 
 [**v1UserIdDelete**](DefaultApi.md#v1useriddelete) | **DELETE** /v1/user/{id} | 
@@ -132,6 +136,170 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**AuthData**](AuthData.md)
+
+### Authorization
+
+[JWTAuth](../README.md#JWTAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **v1FileDelete**
+> V1FileDelete204Response v1FileDelete(body)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api = Openapi().getDefaultApi();
+final String body = body_example; // String | filename which you want to delete
+
+try {
+    final response = api.v1FileDelete(body);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling DefaultApi->v1FileDelete: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | **String**| filename which you want to delete | 
+
+### Return type
+
+[**V1FileDelete204Response**](V1FileDelete204Response.md)
+
+### Authorization
+
+[JWTAuth](../README.md#JWTAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **v1FileGet**
+> V1FileGet200Response v1FileGet(body)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api = Openapi().getDefaultApi();
+final String body = body_example; // String | filename which you want to get
+
+try {
+    final response = api.v1FileGet(body);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling DefaultApi->v1FileGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | **String**| filename which you want to get | 
+
+### Return type
+
+[**V1FileGet200Response**](V1FileGet200Response.md)
+
+### Authorization
+
+[JWTAuth](../README.md#JWTAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **v1FilePost**
+> V1FileGet200Response v1FilePost(body)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api = Openapi().getDefaultApi();
+final String body = body_example; // String | filename which you want to put in bucket
+
+try {
+    final response = api.v1FilePost(body);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling DefaultApi->v1FilePost: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | **String**| filename which you want to put in bucket | 
+
+### Return type
+
+[**V1FileGet200Response**](V1FileGet200Response.md)
+
+### Authorization
+
+[JWTAuth](../README.md#JWTAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **v1PackageUploadPost**
+> V1PackageUploadPost200Response v1PackageUploadPost(v1PackageUploadPostRequest)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+
+final api = Openapi().getDefaultApi();
+final V1PackageUploadPostRequest v1PackageUploadPostRequest = ; // V1PackageUploadPostRequest | content.json file data
+
+try {
+    final response = api.v1PackageUploadPost(v1PackageUploadPostRequest);
+    print(response);
+} catch on DioException (e) {
+    print('Exception when calling DefaultApi->v1PackageUploadPost: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **v1PackageUploadPostRequest** | [**V1PackageUploadPostRequest**](V1PackageUploadPostRequest.md)| content.json file data | [optional] 
+
+### Return type
+
+[**V1PackageUploadPost200Response**](V1PackageUploadPost200Response.md)
 
 ### Authorization
 

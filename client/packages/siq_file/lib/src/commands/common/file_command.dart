@@ -29,8 +29,13 @@ abstract class FileCommand extends Command<int> {
 
     final target = argResults!.rest[0];
     final targetFile = File(target);
-    final siqArchive = SiqArchiveParser(targetFile);
+    final targetStream = FileStream(
+      stream: targetFile.openRead(),
+      fileLength: await targetFile.length(),
+    );
+    final siqArchive = SiqArchiveParser(targetStream);
     final siqFile = await siqArchive.parse();
+
     return siqFile;
   }
 }
