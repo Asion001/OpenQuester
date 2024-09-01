@@ -1,4 +1,6 @@
 import * as Minio from "minio";
+import http from "http";
+import https from "https";
 
 import { IStorage } from "../../interfaces/file/IStorage";
 import { IS3Context } from "../../interfaces/file/IS3Context";
@@ -11,12 +13,25 @@ export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
 
   constructor(private _context: IS3Context) {
+    const agentOptions: http.AgentOptions = {
+      keepAlive: true,
+      maxSockets: 50,
+      keepAliveMsecs: 1000,
+      noDelay: true,
+    };
+
+    const agent = this._context.useSSL
+      ? new https.Agent(agentOptions)
+      : new http.Agent(agentOptions);
+
     this._client = new Minio.Client({
       endPoint: this._context.host,
       port: this._context.port,
       useSSL: this._context.useSSL,
       accessKey: this._context.accessKey,
       secretKey: this._context.secretKey,
+      partSize: 5 * 1024 * 1024,
+      transportAgent: agent,
     });
   }
 

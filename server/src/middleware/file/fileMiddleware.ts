@@ -3,7 +3,7 @@ import { type Request, type Response, type NextFunction } from "express";
 import { ValueUtils } from "../../utils/ValueUtils";
 
 /** Ensures that content is valid JSON object */
-export const verifyContentJSON = (
+export const verifyContentJSONMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction

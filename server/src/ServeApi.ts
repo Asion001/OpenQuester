@@ -3,12 +3,13 @@ import cors from "cors";
 
 import { type Express } from "express";
 import { type Server } from "http";
-import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
-import { Database } from "./database/Database";
-import { verifyTokenMiddleware } from "./middleware/authMiddleware";
+import { type Database } from "./database/Database";
+import { type ApiContext } from "./services/context/ApiContext";
+
 import { Logger } from "./utils/Logger";
+import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
+import { verifyTokenMiddleware } from "./middleware/authMiddleware";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
-import { ApiContext } from "./services/context/ApiContext";
 import { FileRestApiController } from "./controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
 import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";

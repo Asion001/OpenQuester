@@ -44,9 +44,32 @@ export class Logger {
     this.writeFile(log);
   }
 
-  public static debug(text: any) {
+  public static debug(obj: unknown) {
     const prefix = "[DEBUG]: ";
-    const log = prefix + String(text);
+    let text = "";
+
+    // Parse object to show it fully
+    if (typeof obj === "object") {
+      const seen = new Set();
+      text = JSON.stringify(
+        obj,
+        (key, value) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) {
+              // Replace circular references with a placeholder
+              return `[Circular]`;
+            }
+            seen.add(value);
+          }
+          return value;
+        },
+        2 // Space indentation
+      );
+    } else {
+      text = String(text);
+    }
+
+    const log = prefix + text;
 
     console.debug(blue(log));
 

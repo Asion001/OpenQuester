@@ -1,8 +1,9 @@
 import { type Request, type Response, Router } from "express";
 
 import { IStorage } from "../../interfaces/file/IStorage";
-import { verifyContentJSON } from "../../middleware/file/fileMiddleware";
+import { verifyContentJSONMiddleware } from "../../middleware/file/fileMiddleware";
 import { type ApiContext } from "../../services/context/ApiContext";
+import { throttleByUserMiddleware } from "../../middleware/throttleMiddleware";
 
 export class PackageRestApiController {
   private _storageService!: IStorage;
@@ -16,7 +17,8 @@ export class PackageRestApiController {
 
     router.post(
       "/upload",
-      verifyContentJSON,
+      verifyContentJSONMiddleware,
+      throttleByUserMiddleware,
       async (req: Request, res: Response) => {
         try {
           const data = await this._storageService.uploadPackage(
