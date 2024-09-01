@@ -27,7 +27,7 @@ export class AuthRestApiController {
         const data = new RegisterUser(req.body);
         data.validate();
 
-        const result = await AuthService.register(ctx, req.body, ctx.crypto);
+        const result = await AuthService.register(ctx.db, req.body, ctx.crypto);
         return res.status(201).send(result);
       } catch (err: any) {
         if (
@@ -50,7 +50,7 @@ export class AuthRestApiController {
         const data = new LoginUser(req.body);
         data.validate();
 
-        const result = await AuthService.login(ctx, req.body, ctx.crypto);
+        const result = await AuthService.login(ctx.db, req.body, ctx.crypto);
         return res.send(result);
       } catch (err: any) {
         return res.status(400).send({ error: err.message });

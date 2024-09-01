@@ -41,7 +41,7 @@ describe("User retrieve by id and JWT token", () => {
         isAdmin: () => false,
       } as unknown as User);
 
-      const result = await UserService.getByToken(ctx, {} as any);
+      const result = await UserService.getByTokenPayload(ctx, {} as any);
       expect(result.name).to.be.equal("success");
       stubPayload.restore();
       stubUser.restore();

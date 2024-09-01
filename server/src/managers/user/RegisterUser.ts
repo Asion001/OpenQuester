@@ -5,13 +5,13 @@ import { UserDataManager } from "./UserDataManager";
 export class RegisterUser extends UserDataManager {
   constructor(data: IInputUserData) {
     super();
-    this.userData = {
+    this._userData = {
       name: data.name,
       email: data.email,
       password: data.password,
       birthday: data.birthday,
       avatar: data.avatar,
     } as IRegisterUser;
-    this.required = ["name", "email", "password"];
+    this._required = ["name", "email", "password"];
   }
 }

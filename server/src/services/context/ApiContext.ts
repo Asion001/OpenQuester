@@ -21,4 +21,8 @@ export class ApiContext {
   public get env() {
     return this._ctx.env;
   }
+
+  public get fileContext() {
+    return this._ctx.fileContext;
+  }
 }

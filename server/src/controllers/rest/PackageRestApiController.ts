@@ -1,26 +1,18 @@
-import { type Request, type Response, Router, type Express } from "express";
+import { type Request, type Response, Router } from "express";
 
 import { IStorage } from "../../interfaces/file/IStorage";
-import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
-import { fileContext } from "../../types/file/fileContext";
-import { storageType } from "../../types/storage/storageType";
-import { storage } from "../../types/storage/storage";
 import { verifyContentJSON } from "../../middleware/file/fileMiddleware";
+import { type ApiContext } from "../../services/context/ApiContext";
 
 export class PackageRestApiController {
   private _storageService!: IStorage;
-  private _fileContext!: fileContext;
 
-  constructor(app: Express, storageType?: storageType, storageName?: storage) {
+  constructor(ctx: ApiContext, storageService: IStorage) {
     const router = Router();
+    const app = ctx.app;
+
     app.use("/v1/package", router);
-
-    this._fileContext = StorageServiceFactory.createFileContext(storageType);
-
-    this._storageService = StorageServiceFactory.createStorageService(
-      storageName as storage,
-      this._fileContext
-    );
+    this._storageService = storageService;
 
     router.post(
       "/upload",

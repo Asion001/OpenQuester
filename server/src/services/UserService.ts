@@ -1,37 +1,37 @@
-import { type Request } from "express";
-
 import { User } from "../database/models/User";
 import { UserPermissions } from "../database/models/UserPermission";
 import { IPermission } from "../interfaces/IPermission";
 import { Permission } from "../database/models/Permission";
 import { ValueUtils } from "../utils/ValueUtils";
 import { IUpdateUser } from "../interfaces/user/IUpdateUser";
-import { JWTUtils } from "../utils/JWTUtils";
 import { type ApiContext } from "./context/ApiContext";
+import { type Database } from "../database/Database";
+import { Crypto } from "../interfaces/Crypto";
+import { JWTPayload } from "../types/jwt/jwt";
 
 export class UserService {
   /**
    * Allows for user to get info about himself by sending request with his token
    * in headers.
    */
-  public static async getByToken(ctx: ApiContext, req: Request): Promise<User> {
+  public static async getByTokenPayload(
+    db: Database,
+    tokenPayload: JWTPayload
+  ): Promise<User> {
     // Token validated by middleware, so no need to validate it
-    const payload = JWTUtils.getPayload(req);
-    const id = ValueUtils.validateId(payload.id);
+    const id = ValueUtils.validateId(tokenPayload.id);
 
-    return User.get(ctx.db, id);
+    return User.get(db, id);
   }
 
   /**
    * Get list of all available users in DB
    */
-  public static async list(ctx: ApiContext, req: Request) {
-    const payload = JWTUtils.getPayload(req);
-
-    const requestUser = await User.get(ctx.db, payload.id);
+  public static async list(db: Database, tokenPayload: JWTPayload) {
+    const requestUser = await User.get(db, tokenPayload.id);
 
     if (requestUser.isAdmin()) {
-      return User.list(ctx.db);
+      return User.list(db);
     }
 
     throw new Error("You are not able to do that");
@@ -40,21 +40,24 @@ export class UserService {
   /**
    * Retrieve one user
    */
-  public static async get(ctx: ApiContext, req: Request) {
-    if (!req.params.id) {
-      return this.getByToken(ctx, req);
+  public static async get(
+    db: Database,
+    userId: number,
+    tokenPayload: JWTPayload
+  ) {
+    if (!userId) {
+      return this.getByTokenPayload(db, tokenPayload);
     }
 
-    const id = ValueUtils.validateId(req.params.id);
-    const payload = JWTUtils.getPayload(req);
+    const id = ValueUtils.validateId(userId);
 
-    if (payload.id == id) {
-      return User.get(ctx.db, id);
+    if (tokenPayload.id == id) {
+      return User.get(db, id);
     }
 
-    const requestUser = await User.get(ctx.db, payload.id);
+    const requestUser = await User.get(db, tokenPayload.id);
     if (requestUser.isAdmin()) {
-      return User.get(ctx.db, id);
+      return User.get(db, id);
     }
 
     throw new Error("You are not able to do that");
@@ -63,12 +66,17 @@ export class UserService {
   /**
    * Update user by params id
    */
-  public static async update(ctx: ApiContext, req: Request) {
-    const payload = JWTUtils.getPayload(req);
-    const id = ValueUtils.validateId(req.params.id ?? payload.id);
+  public static async update(
+    db: Database,
+    crypto: Crypto,
+    tokenPayload: JWTPayload,
+    updateData: IUpdateUser,
+    userId?: number
+  ) {
+    const id = ValueUtils.validateId(userId ?? tokenPayload.id);
 
-    if (payload.id == id) {
-      return this.performUpdate(ctx, id, req.body);
+    if (tokenPayload.id == id) {
+      return this.performUpdate(db, crypto, id, updateData);
     }
 
     throw new Error("You are not able to do that");
@@ -77,12 +85,15 @@ export class UserService {
   /**
    * Delete user by params id
    */
-  public static async delete(ctx: ApiContext, req: Request) {
-    const payload = JWTUtils.getPayload(req);
-    const id = ValueUtils.validateId(req.params.id ?? payload.id);
+  public static async delete(
+    db: Database,
+    userId: number,
+    tokenPayload: JWTPayload
+  ) {
+    const id = ValueUtils.validateId(userId ?? tokenPayload.id);
 
-    if (payload.id == id) {
-      return this.performDelete(ctx, id);
+    if (tokenPayload.id == id) {
+      return this.performDelete(db, id);
     }
 
     throw new Error("You are not able to do that");
@@ -91,8 +102,8 @@ export class UserService {
   /**
    * User deletion logic
    */
-  private static async performDelete(ctx: ApiContext, id: number) {
-    const repository = ctx.db.getRepository(User);
+  private static async performDelete(db: Database, id: number) {
+    const repository = db.getRepository(User);
 
     const user = (await repository.findOne({
       where: { id },
@@ -103,20 +114,18 @@ export class UserService {
       throw new Error("User not found.");
     }
 
-    return user.delete(ctx.db, repository);
+    return user.delete(db, repository);
   }
 
   /**
    * User updating logic
    */
   private static async performUpdate(
-    ctx: ApiContext,
+    db: Database,
+    crypto: Crypto,
     id: number,
     body: IUpdateUser
   ) {
-    const db = ctx.db;
-    const crypto = ctx.crypto;
-
     if (!crypto) {
       throw new Error("Crypto instance should be provided in context");
     }

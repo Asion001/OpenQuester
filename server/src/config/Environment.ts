@@ -155,7 +155,7 @@ export class Environment {
       Logger.info("Running in local environment");
     }
 
-    this.loadDB(this._type);
+    this.loadDB();
     this.loadJWT();
     this.loadWorkers();
   }
@@ -195,8 +195,8 @@ export class Environment {
     };
   }
 
-  private loadDB(env: string) {
-    const prod = env === "prod";
+  private loadDB() {
+    const prod = this._type === "prod";
     this.DB_TYPE = this.getEnvVar("DB_TYPE", "string", "pg");
     this.DB_NAME = this.getEnvVar(
       "DB_NAME",

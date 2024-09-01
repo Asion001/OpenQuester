@@ -4,6 +4,7 @@ import { UserService } from "../../services/UserService";
 import { QueryFailedError } from "typeorm";
 import { UpdateUser } from "../../managers/user/UpdateUser";
 import { ApiContext } from "../../services/context/ApiContext";
+import { JWTUtils } from "../../utils/JWTUtils";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -14,12 +15,23 @@ export class UserRestApiController {
     const router = Router();
     app.use("/v1/user", router);
 
+    // TODO: Validate id with middleware
     router.get("(/:id)?", async (req: Request, res: Response) => {
       try {
-        const result = await UserService.get(ctx, req);
+        const tokenPayload = JWTUtils.getTokenPayload(
+          req.headers.authorization
+        );
+
+        const result = await UserService.get(
+          ctx.db,
+          Number(req.params.id),
+          tokenPayload
+        );
+
         if (result) {
           return res.status(200).send(result);
         }
+
         return res.status(404).send({ message: "User not found" });
       } catch (err: any) {
         return res.status(400).send({ error: err.message });
@@ -32,7 +44,18 @@ export class UserRestApiController {
         // Override body to leave only validated data
         req.body = data.validate();
 
-        const result = await UserService.update(ctx, req);
+        const tokenPayload = JWTUtils.getTokenPayload(
+          req.headers.authorization
+        );
+
+        const result = await UserService.update(
+          ctx.db,
+          ctx.crypto,
+          tokenPayload,
+          req.body,
+          Number(req.params.id)
+        );
+
         return res.status(200).send(result);
       } catch (err: any) {
         let code = 400;
@@ -54,7 +77,12 @@ export class UserRestApiController {
 
     router.delete("(/:id)?", async (req: Request, res: Response) => {
       try {
-        await UserService.delete(ctx, req);
+        const tokenPayload = JWTUtils.getTokenPayload(
+          req.headers.authorization
+        );
+
+        await UserService.delete(ctx.db, Number(req.params.id), tokenPayload);
+
         return res.status(204).send();
       } catch (err: any) {
         return res.status(400).send({ error: err.message });
@@ -63,10 +91,16 @@ export class UserRestApiController {
 
     app.get(`/v1/users`, async (req: Request, res: Response) => {
       try {
-        const result = await UserService.list(ctx, req);
+        const tokenPayload = JWTUtils.getTokenPayload(
+          req.headers.authorization
+        );
+
+        const result = await UserService.list(ctx.db, tokenPayload);
+
         if (result) {
           return res.status(200).send(result);
         }
+
         return res.status(404).send({ message: "Users not found" });
       } catch (err: any) {
         return res.status(400).send({ error: err.message });

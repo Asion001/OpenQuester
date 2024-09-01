@@ -1,7 +1,6 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
-import { type Request } from "express";
 import * as jwt from "jsonwebtoken";
 
 import { Environment } from "../config/Environment";
@@ -78,8 +77,8 @@ export class JWTUtils {
   /**
    * Returns token payload
    */
-  public static getPayload(req: Request) {
-    const token = req.headers.authorization?.split(" ")[1] as string;
+  public static getTokenPayload(authorizationHeader: string | undefined) {
+    const token = authorizationHeader?.split(" ")[1] as string;
     const env = Environment.instance;
 
     return jwt.verify(token, env.JWT_SECRET) as JWTPayload;

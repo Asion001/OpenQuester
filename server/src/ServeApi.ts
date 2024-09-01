@@ -11,6 +11,7 @@ import { UserRestApiController } from "./controllers/rest/UserRestApiController"
 import { ApiContext } from "./services/context/ApiContext";
 import { FileRestApiController } from "./controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
+import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";
 
 /**
  * Servers all api endpoints in one place.
@@ -72,7 +73,21 @@ export class ServeApi {
   private _attachControllers() {
     new AuthRestApiController(this._context);
     new UserRestApiController(this._context);
-    new FileRestApiController(this._context.app);
-    new PackageRestApiController(this._context.app);
+    new FileRestApiController(
+      this._context,
+      // TODO: Move it to ServerServices later, when implemented
+      StorageServiceFactory.createStorageService(
+        "minio",
+        this._context.fileContext
+      )
+    );
+    new PackageRestApiController(
+      this._context,
+      // TODO: Move it to ServerServices later, when implemented
+      StorageServiceFactory.createStorageService(
+        "minio",
+        this._context.fileContext
+      )
+    );
   }
 }

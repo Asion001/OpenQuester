@@ -8,6 +8,7 @@ import { WorkerMessage } from "./enums/WorkerMessage";
 import { Database } from "./database/Database";
 import { AppDataSource } from "./database/DataSource";
 import { ApiContext } from "./services/context/ApiContext";
+import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";
 
 const main = async () => {
   Logger.info(`Initializing API Context`);
@@ -17,6 +18,7 @@ const main = async () => {
     db: Database.getInstance(AppDataSource),
     app: express(),
     env: Environment.instance,
+    fileContext: StorageServiceFactory.createFileContext("s3"),
   });
 
   if (cluster.isPrimary) {

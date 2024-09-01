@@ -4,12 +4,12 @@ import { IInputUserData } from "../../interfaces/user/IInputUserData";
 import { ValueUtils } from "../../utils/ValueUtils";
 
 export class UserDataManager {
-  protected userData?: IInputUserData;
-  protected schema: Joi.ObjectSchema<any>;
-  protected required?: string[];
+  protected _userData?: IInputUserData;
+  protected _schema: Joi.ObjectSchema<any>;
+  protected _required?: string[];
 
   constructor() {
-    this.schema = Joi.object({
+    this._schema = Joi.object({
       id: Joi.number(),
       login: Joi.alternatives().try(
         Joi.string().min(3).max(30),
@@ -21,7 +21,7 @@ export class UserDataManager {
       birthday: Joi.alternatives().try(Joi.date(), Joi.string()),
       permissions: Joi.array(),
     });
-    this.required = [];
+    this._required = [];
   }
 
   /**
@@ -30,14 +30,14 @@ export class UserDataManager {
    * By default it's called in `validate()`
    */
   public validateFields() {
-    if (!this.required?.length) {
+    if (!this._required?.length) {
       return;
     }
 
     const r: string[] = [];
-    for (const entry of Object.entries(this.userData!)) {
-      if (this.required.includes(entry[0])) {
-        const value = this.userData![entry[0] as keyof IInputUserData];
+    for (const entry of Object.entries(this._userData!)) {
+      if (this._required.includes(entry[0])) {
+        const value = this._userData![entry[0] as keyof IInputUserData];
         if (ValueUtils.isBad(value) || ValueUtils.isEmpty(value)) {
           r.push(entry[0]);
         }
@@ -53,20 +53,20 @@ export class UserDataManager {
    */
   public validate() {
     if (
-      !this.userData ||
-      !ValueUtils.isObject(this.userData) ||
-      ValueUtils.isEmpty(this.userData)
+      !this._userData ||
+      !ValueUtils.isObject(this._userData) ||
+      ValueUtils.isEmpty(this._userData)
     ) {
       throw new Error("No user data provided.");
     }
 
     this.validateFields();
 
-    if (!this.schema) {
+    if (!this._schema) {
       throw new Error("No validation schema.");
     }
 
-    const { value, error } = this.schema.validate(this.userData, {
+    const { value, error } = this._schema.validate(this._userData, {
       allowUnknown: false,
       stripUnknown: true,
     });
@@ -81,6 +81,6 @@ export class UserDataManager {
   }
 
   public get data() {
-    return this.userData;
+    return this._userData;
   }
 }
