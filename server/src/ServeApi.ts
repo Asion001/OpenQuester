@@ -13,6 +13,7 @@ import { UserRestApiController } from "./controllers/rest/UserRestApiController"
 import { FileRestApiController } from "./controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
 import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";
+import { ServerError } from "./error/ServerError";
 
 /**
  * Servers all api endpoints in one place.
@@ -51,7 +52,7 @@ export class ServeApi {
       // Attach API controllers
       this._attachControllers();
     } catch (err: any) {
-      throw new Error(`Serve API error -> ${err.message}`);
+      throw new ServerError(`Serve API error -> ${err.message}`);
     }
   }
 

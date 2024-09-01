@@ -9,6 +9,7 @@ import { Database } from "./database/Database";
 import { AppDataSource } from "./database/DataSource";
 import { ApiContext } from "./services/context/ApiContext";
 import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";
+import { ErrorController } from "./error/ErrorController";
 
 const main = async () => {
   Logger.info(`Initializing API Context`);
@@ -108,8 +109,9 @@ function gracefulShutdown(server: Server | undefined) {
 
 try {
   main();
-} catch (err: any) {
-  Logger.error(`Top-level App Error: ${err.message}`);
+} catch (err: unknown) {
+  const { message, code } = ErrorController.resolveError(err);
+  Logger.error(`Top-level App Error (${code}): ${message}`);
   shutdownCluster();
   process?.exit(1);
 }

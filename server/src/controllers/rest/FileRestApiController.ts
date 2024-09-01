@@ -3,7 +3,9 @@ import { type Request, type Response, Router } from "express";
 import { IStorage } from "../../interfaces/file/IStorage";
 import { validateFilename } from "../../middleware/file/fileMiddleware";
 import { ApiContext } from "../../services/context/ApiContext";
-import { ApiResponse } from "../../enums/ApiResponse";
+import { ClientResponse } from "../../enums/ClientResponse";
+import { ErrorController } from "../../error/ErrorController";
+import { HttpStatus } from "../../enums/HttpStatus";
 
 export class FileRestApiController {
   private _storageService!: IStorage;
@@ -18,8 +20,9 @@ export class FileRestApiController {
       try {
         const url = await this._storageService.get(req.body.filename);
         res.send({ url });
-      } catch (err: any) {
-        res.status(400).send({ error: err.message });
+      } catch (err: unknown) {
+        const { message, code } = ErrorController.resolveError(err);
+        res.status(code).send({ error: message });
       }
     });
 
@@ -27,8 +30,9 @@ export class FileRestApiController {
       try {
         const url = await this._storageService.upload(req.body.filename);
         res.send({ url });
-      } catch (err: any) {
-        res.status(400).send({ error: err.message });
+      } catch (err: unknown) {
+        const { message, code } = ErrorController.resolveError(err);
+        res.status(code).send({ error: message });
       }
     });
 
@@ -39,9 +43,12 @@ export class FileRestApiController {
         try {
           // No need to await, delete does not return any info
           this._storageService.delete(req.body.filename);
-          res.status(204).send({ message: ApiResponse.DELETE_REQUEST_SENT });
-        } catch (err: any) {
-          res.status(400).send({ error: err.message });
+          res
+            .status(HttpStatus.NO_CONTENT)
+            .send({ message: ClientResponse.DELETE_REQUEST_SENT });
+        } catch (err: unknown) {
+          const { message, code } = ErrorController.resolveError(err);
+          res.status(code).send({ error: message });
         }
       }
     );

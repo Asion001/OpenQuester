@@ -8,8 +8,10 @@ import { type ApiContext } from "./context/ApiContext";
 import { type Database } from "../database/Database";
 import { Crypto } from "../interfaces/Crypto";
 import { JWTPayload } from "../types/jwt/jwt";
-import { ApiResponse } from "../enums/ApiResponse";
+import { ClientResponse } from "../enums/ClientResponse";
 import { ServerResponse } from "../enums/ServerResponse";
+import { ClientError } from "../error/ClientError";
+import { ServerError } from "../error/ServerError";
 
 export class UserService {
   /**
@@ -36,7 +38,7 @@ export class UserService {
       return User.list(db);
     }
 
-    throw new Error(ApiResponse.ACCESS_DENIED);
+    throw new ClientError(ClientResponse.ACCESS_DENIED);
   }
 
   /**
@@ -51,18 +53,16 @@ export class UserService {
       return this.getByTokenPayload(db, tokenPayload);
     }
 
-    const id = ValueUtils.validateId(userId);
-
-    if (tokenPayload.id == id) {
-      return User.get(db, id);
+    if (tokenPayload.id == userId) {
+      return User.get(db, userId);
     }
 
     const requestUser = await User.get(db, tokenPayload.id);
     if (requestUser.isAdmin()) {
-      return User.get(db, id);
+      return User.get(db, userId);
     }
 
-    throw new Error(ApiResponse.ACCESS_DENIED);
+    throw new ClientError(ClientResponse.ACCESS_DENIED);
   }
 
   /**
@@ -81,7 +81,7 @@ export class UserService {
       return this.performUpdate(db, crypto, id, updateData);
     }
 
-    throw new Error(ApiResponse.ACCESS_DENIED);
+    throw new ClientError(ClientResponse.ACCESS_DENIED);
   }
 
   /**
@@ -98,7 +98,7 @@ export class UserService {
       return this.performDelete(db, id);
     }
 
-    throw new Error(ApiResponse.ACCESS_DENIED);
+    throw new ClientError(ClientResponse.ACCESS_DENIED);
   }
 
   /**
@@ -113,7 +113,7 @@ export class UserService {
     })) as User;
 
     if (!user || user.is_deleted) {
-      throw new Error(ApiResponse.USER_NOT_FOUND);
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     return user.delete(db, repository);
@@ -129,7 +129,7 @@ export class UserService {
     body: IUpdateUser
   ) {
     if (!crypto) {
-      throw new Error(ServerResponse.NO_CRYPTO);
+      throw new ServerError(ServerResponse.NO_CRYPTO);
     }
 
     const repository = db.getRepository(User);
@@ -140,7 +140,7 @@ export class UserService {
     })) as User;
 
     if (!user) {
-      throw new Error(ApiResponse.USER_NOT_FOUND);
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     user.name = body.name ?? user.name;
@@ -173,7 +173,7 @@ export class UserService {
     })) as User;
 
     if (!user) {
-      throw new Error(ApiResponse.USER_NOT_FOUND);
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     const permRepository = db.getRepository(Permission);
@@ -187,8 +187,8 @@ export class UserService {
           },
         }))
       ) {
-        throw new Error(
-          ApiResponse.USER_PERMISSION_NOT_EXISTS.replace(
+        throw new ClientError(
+          ClientResponse.USER_PERMISSION_NOT_EXISTS.replace(
             "%name",
             p.name
           ).replace("%id", p.id)

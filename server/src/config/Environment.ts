@@ -9,6 +9,7 @@ import { JWTUtils } from "../utils/JWTUtils";
 import { ValueUtils } from "../utils/ValueUtils";
 import { envVar } from "../types/env/env";
 import { ServerResponse } from "../enums/ServerResponse";
+import { ServerError } from "../error/ServerError";
 
 const ENV_TYPES = ["local", "prod", "test"];
 
@@ -122,7 +123,7 @@ export class Environment {
           return String(value);
       }
     } else {
-      throw new Error(
+      throw new ServerError(
         ServerResponse.ENV_VAR_WRONG_TYPE.replace("%var", variable)
           .replace("%expectedType", String(type))
           .replace("%value", String(value))
@@ -136,13 +137,13 @@ export class Environment {
    */
   private loadEnv(): void {
     if (!process?.env) {
-      throw new Error(ServerResponse.NO_ENV);
+      throw new ServerError(ServerResponse.NO_ENV);
     }
 
     this._type = this.getEnvVar("ENV", "string", "prod");
 
     if (!ENV_TYPES.includes(this._type)) {
-      throw new Error(
+      throw new ServerError(
         ServerResponse.INVALID_ENV_TYPE.replace(
           "%types",
           ENV_TYPES.join(", ")

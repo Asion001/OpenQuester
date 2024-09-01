@@ -1,4 +1,5 @@
-import { ApiResponse } from "../enums/ApiResponse";
+import { ClientResponse } from "../enums/ClientResponse";
+import { ClientError } from "../error/ClientError";
 
 export class ValueUtils {
   /**
@@ -28,7 +29,7 @@ export class ValueUtils {
     id = Number(id);
 
     if (id < 1 || isNaN(id)) {
-      throw new Error(ApiResponse.BAD_USER_ID);
+      throw new ClientError(ClientResponse.BAD_USER_ID);
     }
 
     return id;

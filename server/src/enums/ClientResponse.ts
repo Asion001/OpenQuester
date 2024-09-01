@@ -1,7 +1,7 @@
 /**
  * Represents API responses to the client (Responses with 4xx code)
  */
-export enum ApiResponse {
+export enum ClientResponse {
   // User
   USER_NOT_FOUND = "User not found",
   ALREADY_LOGGED_IN = "User is already logged in",

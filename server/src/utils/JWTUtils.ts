@@ -10,7 +10,8 @@ import {
   jwtSecret,
   TokenOptions,
 } from "../types/jwt/jwt";
-import { ApiResponse } from "../enums/ApiResponse";
+import { ClientResponse } from "../enums/ClientResponse";
+import { ClientError } from "../error/ClientError";
 
 const WRITE_PATH = path.resolve(process.cwd(), "storage/");
 
@@ -124,7 +125,7 @@ export class JWTUtils {
         refresh_token,
       };
     } catch {
-      throw new Error(ApiResponse.INVALID_REFRESH);
+      throw new ClientError(ClientResponse.INVALID_REFRESH);
     }
   }
 }

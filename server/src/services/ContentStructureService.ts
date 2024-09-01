@@ -1,4 +1,4 @@
-import { ApiResponse } from "../enums/ApiResponse";
+import { ClientResponse } from "../enums/ClientResponse";
 import { IStorage } from "../interfaces/file/IStorage";
 import { OQContentStructure } from "../interfaces/file/structures/OQContentStructure";
 import { OQFileStructure } from "../interfaces/file/structures/OQFileStructure";
@@ -19,7 +19,7 @@ export class ContentStructureService {
     expiresIn: number
   ): Promise<{ [key: string]: string }> {
     if (!content?.rounds) {
-      return { error: ApiResponse.NO_CONTENT_ROUNDS };
+      return { error: ClientResponse.NO_CONTENT_ROUNDS };
     }
 
     /** Nested objects stack */

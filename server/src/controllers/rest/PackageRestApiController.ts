@@ -4,6 +4,8 @@ import { IStorage } from "../../interfaces/file/IStorage";
 import { verifyContentJSONMiddleware } from "../../middleware/file/fileMiddleware";
 import { type ApiContext } from "../../services/context/ApiContext";
 import { throttleByUserMiddleware } from "../../middleware/throttleMiddleware";
+import { HttpStatus } from "../../enums/HttpStatus";
+import { ErrorController } from "../../error/ErrorController";
 
 export class PackageRestApiController {
   private _storageService!: IStorage;
@@ -24,9 +26,10 @@ export class PackageRestApiController {
           const data = await this._storageService.uploadPackage(
             req.body.content
           );
-          return res.status(200).send(data);
-        } catch (err: any) {
-          return res.status(400).send({ error: err.message });
+          return res.status(HttpStatus.OK).send(data);
+        } catch (err: unknown) {
+          const { message, code } = ErrorController.resolveError(err);
+          return res.status(code).send({ error: message });
         }
       }
     );

@@ -2,8 +2,10 @@ import Joi from "joi";
 
 import { IInputUserData } from "../../interfaces/user/IInputUserData";
 import { ValueUtils } from "../../utils/ValueUtils";
-import { ApiResponse } from "../../enums/ApiResponse";
+import { ClientResponse } from "../../enums/ClientResponse";
 import { ServerResponse } from "../../enums/ServerResponse";
+import { ClientError } from "../../error/ClientError";
+import { ServerError } from "../../error/ServerError";
 
 export class UserDataManager {
   protected _userData?: IInputUserData;
@@ -46,8 +48,8 @@ export class UserDataManager {
       }
     }
     if (r.length > 0) {
-      throw new Error(
-        `${ApiResponse.FIELDS_REQUIRED.replace("%s", `[${[...r]}]`)}`
+      throw new ClientError(
+        `${ClientResponse.FIELDS_REQUIRED.replace("%s", `[${[...r]}]`)}`
       );
     }
   }
@@ -61,13 +63,13 @@ export class UserDataManager {
       !ValueUtils.isObject(this._userData) ||
       ValueUtils.isEmpty(this._userData)
     ) {
-      throw new Error(ApiResponse.NO_USER_DATA);
+      throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
     this.validateFields();
 
     if (!this._schema) {
-      throw new Error(ServerResponse.NO_SCHEMA);
+      throw new ServerError(ServerResponse.NO_SCHEMA);
     }
 
     const { value, error } = this._schema.validate(this._userData, {
@@ -78,7 +80,9 @@ export class UserDataManager {
     // TODO: Validate avatar field when implemented
 
     if (error) {
-      throw new Error(`${ApiResponse.VALIDATION_ERROR}: ${error.message}`);
+      throw new ClientError(
+        `${ClientResponse.VALIDATION_ERROR}: ${error.message}`
+      );
     }
 
     return value;
