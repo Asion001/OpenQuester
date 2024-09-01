@@ -53,7 +53,7 @@ export class Logger {
       const seen = new Set();
       text = JSON.stringify(
         obj,
-        (key, value) => {
+        (_, value) => {
           if (typeof value === "object" && value !== null) {
             if (seen.has(value)) {
               // Replace circular references with a placeholder
@@ -86,7 +86,7 @@ export class Logger {
     this.writeFile(log);
   }
 
-  private static writeFile(text: any) {
+  private static async writeFile(text: any) {
     const logPath = path.resolve(process.cwd(), `logs/logs.log`);
 
     if (!fs.existsSync(logPath)) {
@@ -94,6 +94,13 @@ export class Logger {
       fs.writeFileSync(logPath, "");
     }
 
-    fs.appendFileSync(logPath, text + "\n");
+    fs.appendFile(logPath, text + "\n", (err) => {
+      if (err) {
+        const prefix = "[ERROR]: ";
+        const log = prefix + String(err?.message);
+
+        console.error(bold(red(log)));
+      }
+    });
   }
 }
