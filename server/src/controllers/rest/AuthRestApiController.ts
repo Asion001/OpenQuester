@@ -54,7 +54,7 @@ export class AuthRestApiController {
         this.ctx.crypto
       );
       return res.status(HttpStatus.OK).send(result);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const { message, code } = ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }

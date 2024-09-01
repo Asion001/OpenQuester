@@ -57,8 +57,10 @@ const main = async () => {
       } else {
         Logger.info(`Worker ${cluster.worker?.process.pid} started`, true);
       }
-    } catch (err: any) {
-      Logger.error(`Worker caught an exception: ${err.message}`);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        Logger.error(`Worker caught an exception: ${err.message}`);
+      }
       gracefulShutdown(api?.server);
     }
 

@@ -1,4 +1,4 @@
-import { IApiContext } from "../../interfaces/IApiContext";
+import { IApiContext } from "../../interfaces/context/IApiContext";
 import bcrypt from "bcryptjs";
 
 export class ApiContext {

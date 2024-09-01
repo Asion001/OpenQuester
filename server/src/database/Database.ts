@@ -9,7 +9,7 @@ import { ServerError } from "../error/ServerError";
 export class Database {
   private static _instanceMap: Map<DataSource, Database> = new Map();
   private _connected: boolean = false;
-  private repositories: Map<EntityTarget<any>, Repository<any>> = new Map();
+  private _repositories: Map<EntityTarget<any>, Repository<any>> = new Map();
 
   private constructor(private _dataSource: DataSource) {
     if (!this._dataSource) {
@@ -44,10 +44,12 @@ export class Database {
       this._connected = true;
       Logger.info("Connection to DB established");
       Logger.info(`API version: ${process.env.npm_package_version}`);
-    } catch (err: any) {
-      throw new ServerError(
-        `${ServerResponse.DB_NOT_CONNECTED} -> ${err.message}`
-      );
+    } catch (err: unknown) {
+      let message = "unknown error";
+      if (err instanceof Error) {
+        message = err.message;
+      }
+      throw new ServerError(`${ServerResponse.DB_NOT_CONNECTED} -> ${message}`);
     }
   }
 
@@ -66,11 +68,13 @@ export class Database {
       throw new ServerError(ServerResponse.DB_NOT_CONNECTED);
     }
 
-    let repository = this.repositories.get(target) as Repository<T> | undefined;
+    let repository = this._repositories.get(target) as
+      | Repository<T>
+      | undefined;
 
     if (!repository) {
       repository = this._dataSource.getRepository(target);
-      this.repositories.set(target, repository);
+      this._repositories.set(target, repository);
     }
 
     return repository;

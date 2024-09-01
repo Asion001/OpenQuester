@@ -51,8 +51,12 @@ export class ServeApi {
 
       // Attach API controllers
       this._attachControllers();
-    } catch (err: any) {
-      throw new ServerError(`Serve API error -> ${err.message}`);
+    } catch (err: unknown) {
+      let message = "unknown error";
+      if (err instanceof Error) {
+        message = err.message;
+      }
+      throw new ServerError(`Serve API error -> ${message}`);
     }
   }
 
@@ -73,23 +77,14 @@ export class ServeApi {
    * generating and using of entities based on server endpoints.
    */
   private _attachControllers() {
+    const storageService = StorageServiceFactory.createStorageService(
+      "minio",
+      this._context.fileContext
+    );
+
     new AuthRestApiController(this._context);
     new UserRestApiController(this._context);
-    new FileRestApiController(
-      this._context,
-      // TODO: Move it to ServerServices later, when implemented
-      StorageServiceFactory.createStorageService(
-        "minio",
-        this._context.fileContext
-      )
-    );
-    new PackageRestApiController(
-      this._context,
-      // TODO: Move it to ServerServices later, when implemented
-      StorageServiceFactory.createStorageService(
-        "minio",
-        this._context.fileContext
-      )
-    );
+    new FileRestApiController(this._context, storageService);
+    new PackageRestApiController(this._context, storageService);
   }
 }

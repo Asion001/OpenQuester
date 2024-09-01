@@ -9,7 +9,7 @@ import { blue, blueBright, bold, green, red, yellow } from "colorette";
  * Logger class used for writing logs and for prettier console output
  */
 export class Logger {
-  public static info(text: any, logWorker: boolean = false) {
+  public static info(text: unknown, logWorker: boolean = false) {
     if (cluster.isPrimary || logWorker) {
       const prefix = "[INFO]: ";
       const log = prefix + String(text);
@@ -22,7 +22,7 @@ export class Logger {
     }
   }
 
-  public static warn(text: any, logWorker: boolean = false) {
+  public static warn(text: unknown, logWorker: boolean = false) {
     if (cluster.isPrimary || logWorker) {
       const prefix = "[WARNING]: ";
       const log = prefix + String(text);
@@ -35,7 +35,7 @@ export class Logger {
     }
   }
 
-  public static error(text: any) {
+  public static error(text: unknown) {
     const prefix = "[ERROR]: ";
     const log = prefix + String(text);
 
@@ -86,7 +86,7 @@ export class Logger {
     this.writeFile(log);
   }
 
-  private static async writeFile(text: any) {
+  private static async writeFile(text: unknown) {
     const logPath = path.resolve(process.cwd(), `logs/logs.log`);
 
     if (!fs.existsSync(logPath)) {

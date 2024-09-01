@@ -61,7 +61,7 @@ export class UserRestApiController {
       return res
         .status(HttpStatus.NOT_FOUND)
         .send({ message: ClientResponse.USER_NOT_FOUND });
-    } catch (err: any) {
+    } catch (err: unknown) {
       const { message, code } = ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }
@@ -101,7 +101,7 @@ export class UserRestApiController {
       );
 
       return res.status(HttpStatus.NO_CONTENT).send();
-    } catch (err: any) {
+    } catch (err: unknown) {
       const { message, code } = ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }
@@ -120,7 +120,7 @@ export class UserRestApiController {
       return res
         .status(HttpStatus.NOT_FOUND)
         .send({ message: ClientResponse.USER_NOT_FOUND });
-    } catch (err: any) {
+    } catch (err: unknown) {
       const { message, code } = ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }

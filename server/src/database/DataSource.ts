@@ -22,9 +22,13 @@ const env = Environment.instance;
 
 try {
   env.load(false);
-} catch (err: any) {
+} catch (err: unknown) {
+  let message = "unknown error";
+  if (err instanceof Error) {
+    message = err.message;
+  }
   Logger.error(ServerResponse.FAILED_TO_LOAD_ENV);
-  Logger.error(`Error message: ${err.message}`);
+  Logger.error(`Error message: ${message}`);
   // Bravely exit from process since it's migration process created by TypeORM
   process.exit(0);
 }
