@@ -50,7 +50,7 @@ class LoginController extends ChangeNotifier {
     return LoginController(authData: authData);
   }
 
-  Future<bool> loginUser() async {
+  Future<(bool, String?)> loginUser() async {
     try {
       loading = true;
       final loginUser = LoginUser(
@@ -70,12 +70,12 @@ class LoginController extends ChangeNotifier {
           .put(authDataStorageKey, jsonEncode(authData!.toJson()));
 
       notifyListeners();
-      return authData != null;
+      return (authData != null, 'AuthData == null');
     } catch (e) {
       logger.e(e);
+      loading = false;
+      return (false, e.toString());
     }
-    loading = false;
-    return false;
   }
 
   void logOut() {

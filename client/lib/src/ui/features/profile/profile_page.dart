@@ -18,8 +18,9 @@ class ProfilePage extends WatchingWidget {
 
     return Scaffold(
       body: Center(
-        child:
-            auth == null ? _loginField(login, password) : _authorizedProfile(),
+        child: auth == null
+            ? _loginField(login, password, context)
+            : _authorizedProfile(),
       ),
     );
   }
@@ -37,63 +38,76 @@ class ProfilePage extends WatchingWidget {
     );
   }
 
-  Widget _loginField(String? login, String? password) {
+  Widget _loginField(String? login, String? password, BuildContext context) {
     final loading = watchPropertyValue((LoginController m) => m.loading);
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 300),
-      child: Form(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              initialValue: login,
-              onChanged: (v) => getIt.get<LoginController>().login = v,
-              decoration: const InputDecoration(label: Text('Login')),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter login';
-                }
-                return null;
-              },
-            ),
-            VisibilityBuilder(
-              builder: (_, showPassword, button) => TextFormField(
-                initialValue: password,
-                onChanged: (p) => getIt.get<LoginController>().password = p,
-                obscureText: showPassword,
-                decoration: InputDecoration(
-                  suffix: button,
-                  label: const Text('Password'),
-                ),
+      child: AutofillGroup(
+        child: Form(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                initialValue: login,
+                onChanged: (v) => getIt.get<LoginController>().login = v,
+                decoration: const InputDecoration(label: Text('Login')),
+                autofillHints: const [
+                  AutofillHints.username,
+                  AutofillHints.email
+                ],
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter password';
+                    return 'Please enter login';
                   }
                   return null;
                 },
               ),
-            ),
-            const SizedBox(height: 24),
-            OutlinedButton(
-              onPressed: loading
-                  ? null
-                  : () async {
-                      await getIt.get<LoginController>().loginUser();
-                    },
-              child: loading
-                  ? Container(
-                      width: 24,
-                      height: 24,
-                      padding: const EdgeInsets.all(2.0),
-                      child: const CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
-                  : const Text('Login'),
-            ),
-          ],
+              VisibilityBuilder(
+                builder: (_, showPassword, button) => TextFormField(
+                  initialValue: password,
+                  onChanged: (p) => getIt.get<LoginController>().password = p,
+                  obscureText: !showPassword,
+                  autofillHints: const [AutofillHints.password],
+                  decoration: InputDecoration(
+                    suffix: button,
+                    label: const Text('Password'),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter password';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 24),
+              OutlinedButton(
+                onPressed: loading
+                    ? null
+                    : () async {
+                        final result =
+                            await getIt.get<LoginController>().loginUser();
+                        if (!result.$1) {
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result.$2 ?? '-')));
+                        }
+                      },
+                child: loading
+                    ? Container(
+                        width: 24,
+                        height: 24,
+                        padding: const EdgeInsets.all(2.0),
+                        child: const CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text('Login'),
+              ),
+            ],
+          ),
         ),
       ),
     );
