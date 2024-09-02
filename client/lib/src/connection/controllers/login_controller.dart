@@ -69,7 +69,7 @@ class LoginController extends ChangeNotifier {
           .get<Storage>()
           .put(authDataStorageKey, jsonEncode(authData!.toJson()));
 
-      notifyListeners();
+      loading = true;
       return (authData != null, 'AuthData == null');
     } catch (e) {
       logger.e(e);
