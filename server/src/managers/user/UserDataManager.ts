@@ -58,11 +58,7 @@ export class UserDataManager {
    * Validates manager user data using validation schema
    */
   public validate() {
-    if (
-      !this._userData ||
-      !ValueUtils.isObject(this._userData) ||
-      ValueUtils.isEmpty(this._userData)
-    ) {
+    if (!this._userData || !ValueUtils.isValidObject(this._userData)) {
       throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
