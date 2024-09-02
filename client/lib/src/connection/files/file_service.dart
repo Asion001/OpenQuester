@@ -1,7 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 
 export 'package:file_picker/file_picker.dart';
-export 'package:open_file/open_file.dart';
 
 abstract class FileService {
   static Future<FilePickerResult?> pickFile() async {

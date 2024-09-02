@@ -46,7 +46,6 @@ dependencies:
   flutter_native_splash: ^2.4.1
   s3_storage: ^1.0.4
   dio: ^5.6.0
-  open_file: ^3.5.3
   file_picker: ^8.1.2
   siq_file:
     path: ./packages/siq_file/
