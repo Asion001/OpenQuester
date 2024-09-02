@@ -87,8 +87,11 @@ export class Environment {
     value = value === "undefined" ? undefined : value;
 
     if (ValueUtils.isArray(type)) {
-      type.forEach((type) => {
-        if (ValueUtils.checkPrimitiveType(value, type)) success = true;
+      type.forEach((t) => {
+        if (ValueUtils.checkPrimitiveType(value, t)) {
+          success = true;
+          type = t;
+        }
       });
     } else {
       if (ValueUtils.checkPrimitiveType(value, type)) success = true;
