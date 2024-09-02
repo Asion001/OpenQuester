@@ -1,25 +1,23 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
-import 'package:mason_logger/mason_logger.dart';
-import 'package:universal_io/io.dart';
 
 import '../siq_file/siq_file.dart';
 import 'content_xml_parser.dart';
 
 class SiqArchiveParser {
-  SiqArchiveParser(this._file, {Logger? logger});
+  SiqArchiveParser(this._file);
 
-  final File _file;
-
+  final FileStream _file;
   SiqFile? _siqFile;
   SiqFile get file => _siqFile!;
 
   Future<SiqFile> parse() async {
-    if (!_file.existsSync()) {
-      throw Exception('File does not exist');
-    }
-    final targetStream = InputFileStream(_file.path);
+    final targetStream = await InputFileStream.asRamFile(
+      _file.stream.map(Uint8List.fromList),
+      _file.fileLength,
+    );
     final archive = ZipDecoder().decodeBuffer(targetStream);
 
     for (var file in archive.files) {
@@ -45,4 +43,13 @@ class SiqArchiveParser {
     final contentXml = ContentXmlParser(contentFile);
     _siqFile = contentXml.siqFile;
   }
+}
+
+class FileStream {
+  const FileStream({
+    required this.fileLength,
+    required this.stream,
+  });
+  final int fileLength;
+  final Stream<List<int>> stream;
 }

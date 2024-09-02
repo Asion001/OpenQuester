@@ -17,5 +17,6 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get homeTabs => [
         AutoRoute(page: ClickerRoute.page),
         AutoRoute(page: ProfileRoute.page),
+        AutoRoute(page: TestScreenRoute.page),
       ];
 }

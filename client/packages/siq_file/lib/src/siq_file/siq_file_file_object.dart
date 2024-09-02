@@ -15,4 +15,3 @@ class SiqFileFileObject with _$SiqFileFileObject {
   factory SiqFileFileObject.fromJson(Map<String, dynamic> json) =>
       _$SiqFileFileObjectFromJson(json);
 }
-

@@ -8,9 +8,7 @@ import '../converters/time_converter.dart';
 import '../siq_file/file_object.dart';
 import '../siq_file/siq_file.dart';
 import '../siq_file/siq_file_file_object.dart';
-import '../siq_file/siq_file_metadata.dart';
 import '../siq_file/siq_file_question.dart';
-import '../siq_file/siq_file_round.dart';
 
 class ContentXmlParser {
   ContentXmlParser(String rawFile) {

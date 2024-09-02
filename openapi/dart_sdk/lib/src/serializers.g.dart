@@ -14,6 +14,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(RegisterUser.serializer)
       ..add(UpdateUser.serializer)
       ..add(V1AuthRefreshPostRequest.serializer)
+      ..add(V1FileDelete204Response.serializer)
+      ..add(V1FileGet200Response.serializer)
+      ..add(V1PackageUploadPost200Response.serializer)
+      ..add(V1PackageUploadPostRequest.serializer)
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(PrivateUserPermissionsInner)]),

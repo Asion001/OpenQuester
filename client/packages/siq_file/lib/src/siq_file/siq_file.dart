@@ -3,6 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'siq_file_metadata.dart';
 import 'siq_file_round.dart';
 
+export 'siq_file_metadata.dart';
+export 'siq_file_round.dart';
+
 part 'siq_file.freezed.dart';
 part 'siq_file.g.dart';
 

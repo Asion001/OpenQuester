@@ -39,6 +39,7 @@ class _UrlGeneratorTestState extends State<UrlGeneratorTest> {
         _form(_endpointController, 'Endpoint'),
         _form(_accessKeyController, 'Access key'),
         _form(_secretKeyController, 'Secret key'),
+        const SizedBox(height: 24),
         _methodPicker(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
