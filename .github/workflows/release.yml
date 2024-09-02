@@ -23,7 +23,7 @@ jobs:
 
   publish_release:
     runs-on: ubuntu-latest
-    needs: [build_client, tests]
+    needs: [build_client, build_docker, tests]
     permissions:
       contents: write
       deployments: write
