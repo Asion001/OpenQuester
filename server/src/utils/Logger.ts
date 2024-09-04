@@ -66,7 +66,7 @@ export class Logger {
         2 // Space indentation
       );
     } else {
-      text = String(text);
+      text = String(obj);
     }
 
     const log = prefix + text;

@@ -13,7 +13,7 @@ export class ContentStructureService {
   /**
    * Parse content.json file and update all "file" entries with download link
    */
-  public static async getUploadLinksForFiles(
+  public async getUploadLinksForFiles(
     content: OQContentStructure,
     storage: IStorage,
     expiresIn: number
@@ -77,7 +77,7 @@ export class ContentStructureService {
   }
 
   /** Check if current object of stack has correct and non-empty file field */
-  private static _hasFile(obj: any): obj is OQFileStructure {
+  private _hasFile(obj: any): obj is OQFileStructure {
     return (
       obj && typeof obj.file === "object" && typeof obj.file.path === "string"
     );

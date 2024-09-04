@@ -21,6 +21,9 @@ export enum ServerResponse {
   INVALID_DATA_SOURCE = "Data source is invalid",
   DB_NOT_CONNECTED = "DB is not connected",
 
+  // Services
+  SERVICE_NOT_FOUND = "Service not found",
+
   // Environment
   FAILED_TO_LOAD_ENV = "Failed to load environment variables, closing...",
   NO_ENV = "Cannot find Node.JS environment",

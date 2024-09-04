@@ -98,7 +98,7 @@ describe("User update", () => {
           export: () => dataToUpdate,
         });
 
-      const result = await UserService.update(
+      const result = await new UserService().update(
         ctx.db,
         ctx.crypto,
         payload,
@@ -249,7 +249,13 @@ describe("User update", () => {
         });
 
       try {
-        await UserService.update(ctx.db, ctx.crypto, payload, dataToUpdate, 1);
+        await new UserService().update(
+          ctx.db,
+          ctx.crypto,
+          payload,
+          dataToUpdate,
+          1
+        );
       } catch (err: any) {
         expect(err.message).to.be.equal(ClientResponse.ACCESS_DENIED);
       }

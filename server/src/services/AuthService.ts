@@ -15,7 +15,7 @@ import { ClientError } from "../error/ClientError";
  * Handles all business logic of user authorization
  */
 export class AuthService {
-  public static async register(
+  public async register(
     db: Database,
     data: IRegisterUser,
     crypto: Crypto
@@ -29,7 +29,7 @@ export class AuthService {
     };
   }
 
-  public static async login(
+  public async login(
     db: Database,
     data: ILoginUser,
     crypto: Crypto

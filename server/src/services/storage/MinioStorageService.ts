@@ -8,21 +8,33 @@ import { OQContentStructure } from "../../interfaces/file/structures/OQContentSt
 import { ContentStructureService } from "../ContentStructureService";
 import { SHA256Characters } from "../../constants/sha256";
 import { ValueUtils } from "../../utils/ValueUtils";
+import { ApiContext } from "../context/ApiContext";
+import { StorageServiceFactory } from "./StorageServiceFactory";
 
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
+  private _context: IS3Context;
+  private _contentStructureService: ContentStructureService;
+  private _agentOptions: http.AgentOptions;
+  private _agent: http.Agent;
 
-  constructor(private _context: IS3Context) {
-    const agentOptions: http.AgentOptions = {
+  constructor(ctx: ApiContext) {
+    const storageFactory = ctx.serverServices.get(StorageServiceFactory);
+    this._context = storageFactory.createFileContext("s3");
+    this._contentStructureService = ctx.serverServices.get(
+      ContentStructureService
+    );
+
+    this._agentOptions = {
       keepAlive: true,
       maxSockets: 50,
       keepAliveMsecs: 1000,
       noDelay: true,
     };
 
-    const agent = this._context.useSSL
-      ? new https.Agent(agentOptions)
-      : new http.Agent(agentOptions);
+    this._agent = this._context.useSSL
+      ? new https.Agent(this._agentOptions)
+      : new http.Agent(this._agentOptions);
 
     this._client = new Minio.Client({
       endPoint: this._context.host,
@@ -31,7 +43,7 @@ export class MinioStorageService implements IStorage {
       accessKey: this._context.accessKey,
       secretKey: this._context.secretKey,
       partSize: 5 * 1024 * 1024,
-      transportAgent: agent,
+      transportAgent: this._agent,
     });
   }
 
@@ -69,7 +81,7 @@ export class MinioStorageService implements IStorage {
     content: object,
     expiresIn: number = 60 * 5 // Default: 5 min
   ) {
-    return ContentStructureService.getUploadLinksForFiles(
+    return this._contentStructureService.getUploadLinksForFiles(
       content as OQContentStructure,
       this,
       expiresIn

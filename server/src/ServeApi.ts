@@ -8,12 +8,16 @@ import { type ApiContext } from "./services/context/ApiContext";
 
 import { Logger } from "./utils/Logger";
 import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
-import { verifyTokenMiddleware } from "./middleware/authMiddleware";
+import { verifyToken } from "./middleware/authMiddleware";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
 import { FileRestApiController } from "./controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
 import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";
 import { ServerError } from "./error/ServerError";
+import { ServerServices } from "./services/ServerServices";
+import { UserService } from "./services/UserService";
+import { ContentStructureService } from "./services/ContentStructureService";
+import { AuthService } from "./services/AuthService";
 
 /**
  * Servers all api endpoints in one place.
@@ -27,11 +31,14 @@ export class ServeApi {
   protected _port!: number;
   /** Database instance */
   protected _db!: Database;
+  /** Server services locator */
+  protected _serverServices!: ServerServices;
 
   constructor(protected _context: ApiContext) {
     this._db = this._context.db;
     this._app = this._context.app;
     this._port = 3000;
+    this._serverServices = this._context.serverServices;
   }
 
   public async init() {
@@ -42,12 +49,15 @@ export class ServeApi {
       // Middlewares
       this._app.use(cors());
       this._app.use(express.json());
-      this._app.use(verifyTokenMiddleware);
+      this._app.use(verifyToken);
 
       // Initialize server listening
       this._server = this._app.listen(this._port, () => {
         Logger.info(`App listening on port: ${this._port}`);
       });
+
+      // Register server services
+      this._registerServices();
 
       // Attach API controllers
       this._attachControllers();
@@ -77,14 +87,22 @@ export class ServeApi {
    * generating and using of entities based on server endpoints.
    */
   private _attachControllers() {
-    const storageService = StorageServiceFactory.createStorageService(
-      "minio",
-      this._context.fileContext
-    );
-
     new AuthRestApiController(this._context);
     new UserRestApiController(this._context);
-    new FileRestApiController(this._context, storageService);
-    new PackageRestApiController(this._context, storageService);
+    new FileRestApiController(this._context);
+    new PackageRestApiController(this._context);
+  }
+
+  /**
+   * Register all services in ServerServices instance, which is service locator.
+   *
+   * This allows us to use always only one instance of each service and place
+   * them together in one place.
+   */
+  private _registerServices() {
+    this._serverServices.register(UserService);
+    this._serverServices.register(ContentStructureService);
+    this._serverServices.register(AuthService);
+    this._serverServices.register(StorageServiceFactory);
   }
 }

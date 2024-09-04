@@ -5,33 +5,46 @@ import { RegisterUser } from "../../managers/user/RegisterUser";
 import { LoginUser } from "../../managers/user/LoginUser";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ApiContext } from "../../services/context/ApiContext";
-import { ClientResponse } from "../../enums/ClientResponse";
-import { validateTokenForAuth } from "../../middleware/authMiddleware";
+import {
+  validateRefresh,
+  validateTokenForAuth,
+} from "../../middleware/authMiddleware";
 import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
-import { ClientError } from "../../error/ClientError";
+import { validateWithSchema } from "../../middleware/schemaMiddleware";
 
 /**
  * Handles all endpoints related to user authorization
  */
 export class AuthRestApiController {
+  private _authService: AuthService;
+
   constructor(private ctx: ApiContext) {
     const app = this.ctx.app;
     const router = Router();
 
+    this._authService = ctx.serverServices.get(AuthService);
+
     app.use("/v1/auth", router);
 
-    router.post(`/register`, validateTokenForAuth, this.register);
-    router.post(`/login`, validateTokenForAuth, this.login);
-    router.post(`/refresh`, this.refresh);
+    router.post(
+      `/register`,
+      validateTokenForAuth,
+      validateWithSchema(RegisterUser),
+      this.register
+    );
+    router.post(
+      `/login`,
+      validateTokenForAuth,
+      validateWithSchema(LoginUser),
+      this.login
+    );
+    router.post(`/refresh`, validateRefresh, this.refresh);
   }
 
   private register = async (req: Request, res: Response) => {
     try {
-      const data = new RegisterUser(req.body);
-      data.validate();
-
-      const result = await AuthService.register(
+      const result = await this._authService.register(
         this.ctx.db,
         req.body,
         this.ctx.crypto
@@ -45,10 +58,7 @@ export class AuthRestApiController {
 
   private login = async (req: Request, res: Response) => {
     try {
-      const data = new LoginUser(req.body);
-      data.validate();
-
-      const result = await AuthService.login(
+      const result = await this._authService.login(
         this.ctx.db,
         req.body,
         this.ctx.crypto
@@ -62,12 +72,7 @@ export class AuthRestApiController {
 
   private refresh = async (req: Request, res: Response) => {
     try {
-      const refresh = req.body.refresh_token;
-      if (!refresh) {
-        throw new ClientError(ClientResponse.NO_REFRESH);
-      }
-
-      const result = JWTUtils.refresh(refresh);
+      const result = JWTUtils.refresh(req.body.refresh_token);
       res.status(HttpStatus.OK).send(result);
     } catch (err: any) {
       const { message, code } = ErrorController.resolveError(err);

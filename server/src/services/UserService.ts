@@ -18,7 +18,7 @@ export class UserService {
    * Allows for user to get info about himself by sending request with his token
    * in headers.
    */
-  public static async getByTokenPayload(
+  public async getByTokenPayload(
     db: Database,
     tokenPayload: JWTPayload
   ): Promise<User> {
@@ -31,7 +31,7 @@ export class UserService {
   /**
    * Get list of all available users in DB
    */
-  public static async list(db: Database, tokenPayload: JWTPayload) {
+  public async list(db: Database, tokenPayload: JWTPayload) {
     const requestUser = await User.get(db, tokenPayload.id);
 
     if (requestUser.isAdmin()) {
@@ -44,11 +44,7 @@ export class UserService {
   /**
    * Retrieve one user
    */
-  public static async get(
-    db: Database,
-    userId: number,
-    tokenPayload: JWTPayload
-  ) {
+  public async get(db: Database, userId: number, tokenPayload: JWTPayload) {
     if (!userId) {
       return this.getByTokenPayload(db, tokenPayload);
     }
@@ -68,7 +64,7 @@ export class UserService {
   /**
    * Update user by params id
    */
-  public static async update(
+  public async update(
     db: Database,
     crypto: Crypto,
     tokenPayload: JWTPayload,
@@ -87,11 +83,7 @@ export class UserService {
   /**
    * Delete user by params id
    */
-  public static async delete(
-    db: Database,
-    userId: number,
-    tokenPayload: JWTPayload
-  ) {
+  public async delete(db: Database, userId: number, tokenPayload: JWTPayload) {
     const id = ValueUtils.validateId(userId ?? tokenPayload.id);
 
     if (tokenPayload.id == id) {
@@ -104,7 +96,7 @@ export class UserService {
   /**
    * User deletion logic
    */
-  private static async performDelete(db: Database, id: number) {
+  private async performDelete(db: Database, id: number) {
     const repository = db.getRepository(User);
 
     const user = (await repository.findOne({
@@ -122,7 +114,7 @@ export class UserService {
   /**
    * User updating logic
    */
-  private static async performUpdate(
+  private async performUpdate(
     db: Database,
     crypto: Crypto,
     id: number,
@@ -157,7 +149,7 @@ export class UserService {
     return user.export();
   }
 
-  public static async updatePermissions(
+  public async updatePermissions(
     ctx: ApiContext,
     id: number,
     body: any // Should be typed with permissions list

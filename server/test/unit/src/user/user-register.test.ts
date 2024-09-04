@@ -73,7 +73,7 @@ describe("User auth and jwt tokens", () => {
         refresh_token: "refreshToken",
       });
 
-      const result = await AuthService.register(
+      const result = await new AuthService().register(
         ctx.db,
         userData as any,
         bcryptInstance
@@ -92,7 +92,7 @@ describe("User auth and jwt tokens", () => {
         avatar: null,
       };
 
-      const result2 = await AuthService.register(
+      const result2 = await new AuthService().register(
         ctx.db,
         userData2 as any,
         bcryptInstance
@@ -110,7 +110,7 @@ describe("User auth and jwt tokens", () => {
         avatar: null,
       };
 
-      const result3 = await AuthService.register(
+      const result3 = await new AuthService().register(
         ctx.db,
         userData3 as any,
         bcryptInstance
@@ -130,7 +130,11 @@ describe("User auth and jwt tokens", () => {
         const data = new RegisterUser(userData);
         data.validate();
 
-        await AuthService.register(ctx.db, userData as any, bcryptInstance);
+        await new AuthService().register(
+          ctx.db,
+          userData as any,
+          bcryptInstance
+        );
         throw new Error("Expected register method to throw error.");
       } catch (err: any) {
         expect(err.message).to.be.equal(
@@ -154,7 +158,7 @@ describe("User auth and jwt tokens", () => {
 
       sinon.stub(selectQueryBuilder, "getOne").returns(user);
 
-      const result = await AuthService.login(
+      const result = await new AuthService().login(
         ctx.db,
         userData as any,
         bcryptInstance
@@ -174,7 +178,7 @@ describe("User auth and jwt tokens", () => {
         const data = new LoginUser(userData);
         data.validate();
 
-        await AuthService.login(ctx, userData as any, bcryptInstance);
+        await new AuthService().login(ctx, userData as any, bcryptInstance);
         throw new Error("Expected method above to throw error.");
       } catch (err: any) {
         expect(err.message).to.be.equal(ClientResponse.NO_USER_DATA);
@@ -189,7 +193,7 @@ describe("User auth and jwt tokens", () => {
       sinon.stub(selectQueryBuilder, "getOne").returns(null);
 
       try {
-        await AuthService.login(ctx.db, userData as any, bcryptInstance);
+        await new AuthService().login(ctx.db, userData as any, bcryptInstance);
         throw new Error("Expected method above to throw error.");
       } catch (err: any) {
         expect(err.message).to.be.equal(ClientResponse.USER_NOT_FOUND);
@@ -210,7 +214,7 @@ describe("User auth and jwt tokens", () => {
     sinon.stub(selectQueryBuilder, "getOne").returns(user);
 
     try {
-      await AuthService.login(ctx.db, userData as any, bcryptInstance);
+      await new AuthService().login(ctx.db, userData as any, bcryptInstance);
       throw new Error("Expected method above to throw error.");
     } catch (err: any) {
       expect(err.message).to.be.equal(ClientResponse.WRONG_PASSWORD);

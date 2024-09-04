@@ -48,7 +48,7 @@ describe("User retrieve by id and JWT token", () => {
         isAdmin: () => false,
       } as unknown as User);
 
-      const result = await UserService.getByTokenPayload(ctx.db, payload);
+      const result = await new UserService().getByTokenPayload(ctx.db, payload);
       expect(result.name).to.be.equal("success");
     });
   });
@@ -67,7 +67,7 @@ describe("User retrieve by id and JWT token", () => {
         isAdmin: () => false,
       } as unknown as User);
 
-      const result = await UserService.get(ctx.db, 1, payload);
+      const result = await new UserService().get(ctx.db, 1, payload);
 
       expect(result.name).to.be.equal("success");
     });
@@ -87,7 +87,7 @@ describe("User retrieve by id and JWT token", () => {
 
       try {
         ValueUtils.validateId(Number("bad id"));
-        await UserService.get(ctx.db, Number("bad id"), payload);
+        await new UserService().get(ctx.db, Number("bad id"), payload);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message).to.be.equal(ClientResponse.BAD_USER_ID);
@@ -107,7 +107,7 @@ describe("User retrieve by id and JWT token", () => {
       } as unknown as User);
 
       try {
-        await UserService.get(ctx.db, 1, payload);
+        await new UserService().get(ctx.db, 1, payload);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message).to.be.equal(ClientResponse.ACCESS_DENIED);
@@ -132,7 +132,7 @@ describe("User retrieve by id and JWT token", () => {
         isAdmin: () => false,
       } as unknown as User);
 
-      const result = await UserService.get(ctx.db, 1, payload);
+      const result = await new UserService().get(ctx.db, 1, payload);
       expect(result.name).to.be.equal("success");
     });
   });

@@ -12,14 +12,19 @@ import {
   requireAdmin,
   requireAdminIfIdProvided,
 } from "../../middleware/role/roleMiddleware";
+import { validateWithSchema } from "../../middleware/schemaMiddleware";
 
 /**
  * Handles all endpoints related for User CRUD
  */
 export class UserRestApiController {
+  private _userService: UserService;
+
   constructor(private ctx: ApiContext) {
     const app = this.ctx.app;
     const router = Router();
+
+    this._userService = this.ctx.serverServices.get(UserService);
 
     app.use("/v1/user", router);
 
@@ -34,6 +39,7 @@ export class UserRestApiController {
       "(/:id)?",
       validateParamsIDMiddleware,
       requireAdminIfIdProvided(this.ctx.db),
+      validateWithSchema(UpdateUser),
       this.updateUser
     );
     router.delete(
@@ -48,7 +54,7 @@ export class UserRestApiController {
     try {
       const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
 
-      const result = await UserService.get(
+      const result = await this._userService.get(
         this.ctx.db,
         Number(req.params.id),
         tokenPayload
@@ -69,13 +75,9 @@ export class UserRestApiController {
 
   private updateUser = async (req: Request, res: Response) => {
     try {
-      const data = new UpdateUser(req.body);
-      // Override body to leave only validated data
-      req.body = data.validate();
-
       const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
 
-      const result = await UserService.update(
+      const result = await this._userService.update(
         this.ctx.db,
         this.ctx.crypto,
         tokenPayload,
@@ -94,7 +96,7 @@ export class UserRestApiController {
     try {
       const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
 
-      await UserService.delete(
+      await this._userService.delete(
         this.ctx.db,
         Number(req.params.id),
         tokenPayload
@@ -111,7 +113,7 @@ export class UserRestApiController {
     try {
       const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
 
-      const result = await UserService.list(this.ctx.db, tokenPayload);
+      const result = await this._userService.list(this.ctx.db, tokenPayload);
 
       if (result) {
         return res.status(HttpStatus.OK).send(result);

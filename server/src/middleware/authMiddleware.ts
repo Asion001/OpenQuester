@@ -5,7 +5,7 @@ import { Environment } from "../config/Environment";
 import { ClientResponse } from "../enums/ClientResponse";
 import { HttpStatus } from "../enums/HttpStatus";
 
-export const verifyTokenMiddleware = (
+export const verifyToken = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -62,5 +62,19 @@ export const validateTokenForAuth = (
     }
   }
 
+  next();
+};
+
+/**
+ * Validates that refresh token is present in request body
+ */
+export const validateRefresh = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.body.refresh_token) {
+    return res.status(HttpStatus.BAD_REQUEST).send(ClientResponse.NO_REFRESH);
+  }
   next();
 };

@@ -6,8 +6,9 @@ import { ClientResponse } from "../../enums/ClientResponse";
 import { ServerResponse } from "../../enums/ServerResponse";
 import { ClientError } from "../../error/ClientError";
 import { ServerError } from "../../error/ServerError";
+import { ISchema } from "../../interfaces/ISchema";
 
-export class UserDataManager {
+export class UserDataManager implements ISchema {
   protected _userData?: IInputUserData;
   protected _schema: Joi.ObjectSchema<any>;
   protected _required?: string[];

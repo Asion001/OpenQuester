@@ -8,8 +8,8 @@ import { WorkerMessage } from "./enums/WorkerMessage";
 import { Database } from "./database/Database";
 import { AppDataSource } from "./database/DataSource";
 import { ApiContext } from "./services/context/ApiContext";
-import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";
 import { ErrorController } from "./error/ErrorController";
+import { ServerServices } from "./services/ServerServices";
 
 const main = async () => {
   Logger.info(`Initializing API Context`);
@@ -19,59 +19,65 @@ const main = async () => {
     db: Database.getInstance(AppDataSource),
     app: express(),
     env: Environment.instance,
-    fileContext: StorageServiceFactory.createFileContext("s3"),
+    serverServices: new ServerServices(),
   });
 
   if (cluster.isPrimary) {
-    // Setup primary cluster
-    Logger.info(`Starting master process: ${process.pid}`);
-
-    context.env.load(false);
-
-    const workersCount = context.env.WORKERS_COUNT;
-
-    Logger.info(`Master process ${process.pid} is running`);
-    Logger.info(`Forking for ${workersCount} workers`);
-
-    for (let c = 0; c < workersCount; c++) {
-      // Fork instances
-      cluster.fork();
-    }
-
-    ["SIGINT", "SIGTERM", "uncaughtException"].forEach((signal) => {
-      process.on(signal, shutdownCluster);
-    });
+    await initPrimaryCluster(context);
   } else {
-    // Not main cluster - do work
-    let api: ServeApi | undefined;
-    try {
-      // All worker should serve api with same context
-      api = new ServeApi(context);
-      if (api) {
-        await api.init();
-      }
-
-      if (!api || !api.server) {
-        Logger.error(`API server error: ${api?.server}`);
-        gracefulShutdown(api?.server);
-      } else {
-        Logger.info(`Worker ${cluster.worker?.process.pid} started`, true);
-      }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        Logger.error(`Worker caught an exception: ${err.message}`);
-      }
-      gracefulShutdown(api?.server);
-    }
-
-    process.on("message", (msg: WorkerMessage) => {
-      switch (msg) {
-        case WorkerMessage.SHUTDOWN:
-          gracefulShutdown(api?.server);
-      }
-    });
+    await initWorker(context);
   }
 };
+
+async function initPrimaryCluster(ctx: ApiContext) {
+  Logger.info(`Starting master process: ${process.pid}`);
+
+  ctx.env.load(false);
+
+  const workersCount = ctx.env.WORKERS_COUNT;
+
+  Logger.info(`Master process ${process.pid} is running`);
+  Logger.info(`Forking for ${workersCount} workers`);
+
+  for (let c = 0; c < workersCount; c++) {
+    // Fork instances
+    cluster.fork();
+  }
+
+  ["SIGINT", "SIGTERM", "uncaughtException"].forEach((signal) => {
+    process.on(signal, shutdownCluster);
+  });
+}
+
+async function initWorker(ctx: ApiContext) {
+  let api: ServeApi | undefined;
+  try {
+    // All worker should serve api with same context
+    api = new ServeApi(ctx);
+    if (api) {
+      await api.init();
+    }
+
+    if (!api || !api.server) {
+      Logger.error(`API server error: ${api?.server}`);
+      gracefulShutdown(api?.server);
+    } else {
+      Logger.info(`Worker ${cluster.worker?.process.pid} started`, true);
+    }
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      Logger.error(`Worker caught an exception: ${err.message}`);
+    }
+    gracefulShutdown(api?.server);
+  }
+
+  process.on("message", (msg: WorkerMessage) => {
+    switch (msg) {
+      case WorkerMessage.SHUTDOWN:
+        gracefulShutdown(api?.server);
+    }
+  });
+}
 
 // Gracefully shut down all workers
 function shutdownCluster() {

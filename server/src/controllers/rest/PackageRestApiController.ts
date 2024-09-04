@@ -6,14 +6,18 @@ import { type ApiContext } from "../../services/context/ApiContext";
 import { throttleByUserMiddleware } from "../../middleware/throttleMiddleware";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { ErrorController } from "../../error/ErrorController";
+import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 
 export class PackageRestApiController {
   private _storageService!: IStorage;
 
-  constructor(ctx: ApiContext, storageService: IStorage) {
+  constructor(ctx: ApiContext) {
     const router = Router();
     const app = ctx.app;
-    this._storageService = storageService;
+
+    // Init storage service
+    const storageFactory = ctx.serverServices.get(StorageServiceFactory);
+    this._storageService = storageFactory.createStorageService(ctx, "minio");
 
     app.use("/v1/package", router);
 
