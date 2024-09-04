@@ -31,7 +31,7 @@ export class ContentStructureService {
     /** Map used for caching */
     const cache: Map<string, Promise<string>> = new Map();
     /** Promises array that collects promises with file upload */
-    const promises: Promise<void>[] = [];
+    const promises: Promise<string>[] = [];
 
     // Iterate through each object in the content to find "file" entries
     while (stack.length > 0) {
@@ -56,7 +56,7 @@ export class ContentStructureService {
           }
 
           // Push the upload promise to the array
-          promises.push(uploadPromise.then(() => {}));
+          promises.push(uploadPromise);
         }
       } else {
         // Push nested objects into the stack for further processing

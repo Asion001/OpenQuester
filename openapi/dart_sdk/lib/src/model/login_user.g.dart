@@ -8,14 +8,17 @@ part of 'login_user.dart';
 
 class _$LoginUser extends LoginUser {
   @override
-  final String? login;
+  final String login;
   @override
-  final String? password;
+  final String password;
 
   factory _$LoginUser([void Function(LoginUserBuilder)? updates]) =>
       (new LoginUserBuilder()..update(updates))._build();
 
-  _$LoginUser._({this.login, this.password}) : super._();
+  _$LoginUser._({required this.login, required this.password}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(login, r'LoginUser', 'login');
+    BuiltValueNullFieldError.checkNotNull(password, r'LoginUser', 'password');
+  }
 
   @override
   LoginUser rebuild(void Function(LoginUserBuilder) updates) =>
@@ -90,7 +93,12 @@ class LoginUserBuilder implements Builder<LoginUser, LoginUserBuilder> {
   LoginUser build() => _build();
 
   _$LoginUser _build() {
-    final _$result = _$v ?? new _$LoginUser._(login: login, password: password);
+    final _$result = _$v ??
+        new _$LoginUser._(
+            login: BuiltValueNullFieldError.checkNotNull(
+                login, r'LoginUser', 'login'),
+            password: BuiltValueNullFieldError.checkNotNull(
+                password, r'LoginUser', 'password'));
     replace(_$result);
     return _$result;
   }

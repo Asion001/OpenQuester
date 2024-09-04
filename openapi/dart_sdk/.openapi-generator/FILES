@@ -37,7 +37,3 @@ lib/src/model/v1_package_upload_post200_response.dart
 lib/src/model/v1_package_upload_post_request.dart
 lib/src/serializers.dart
 pubspec.yaml
-test/v1_file_delete204_response_test.dart
-test/v1_file_get200_response_test.dart
-test/v1_package_upload_post200_response_test.dart
-test/v1_package_upload_post_request_test.dart

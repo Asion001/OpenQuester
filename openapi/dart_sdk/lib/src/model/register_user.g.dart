@@ -8,9 +8,9 @@ part of 'register_user.dart';
 
 class _$RegisterUser extends RegisterUser {
   @override
-  final String? name;
+  final String name;
   @override
-  final String? email;
+  final String email;
   @override
   final String password;
   @override
@@ -22,12 +22,14 @@ class _$RegisterUser extends RegisterUser {
       (new RegisterUserBuilder()..update(updates))._build();
 
   _$RegisterUser._(
-      {this.name,
-      this.email,
+      {required this.name,
+      required this.email,
       required this.password,
       this.birthday,
       this.avatar})
       : super._() {
+    BuiltValueNullFieldError.checkNotNull(name, r'RegisterUser', 'name');
+    BuiltValueNullFieldError.checkNotNull(email, r'RegisterUser', 'email');
     BuiltValueNullFieldError.checkNotNull(
         password, r'RegisterUser', 'password');
   }
@@ -132,8 +134,10 @@ class RegisterUserBuilder
   _$RegisterUser _build() {
     final _$result = _$v ??
         new _$RegisterUser._(
-            name: name,
-            email: email,
+            name: BuiltValueNullFieldError.checkNotNull(
+                name, r'RegisterUser', 'name'),
+            email: BuiltValueNullFieldError.checkNotNull(
+                email, r'RegisterUser', 'email'),
             password: BuiltValueNullFieldError.checkNotNull(
                 password, r'RegisterUser', 'password'),
             birthday: birthday,
