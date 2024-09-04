@@ -1,98 +1,103 @@
-import { type Request } from "express";
-
 import { User } from "../database/models/User";
 import { UserPermissions } from "../database/models/UserPermission";
 import { IPermission } from "../interfaces/IPermission";
 import { Permission } from "../database/models/Permission";
 import { ValueUtils } from "../utils/ValueUtils";
 import { IUpdateUser } from "../interfaces/user/IUpdateUser";
-import { JWTUtils } from "../utils/JWTUtils";
 import { type ApiContext } from "./context/ApiContext";
+import { type Database } from "../database/Database";
+import { Crypto } from "../interfaces/Crypto";
+import { JWTPayload } from "../types/jwt/jwt";
+import { ClientResponse } from "../enums/ClientResponse";
+import { ServerResponse } from "../enums/ServerResponse";
+import { ClientError } from "../error/ClientError";
+import { ServerError } from "../error/ServerError";
 
 export class UserService {
   /**
    * Allows for user to get info about himself by sending request with his token
    * in headers.
    */
-  public static async getByToken(ctx: ApiContext, req: Request): Promise<User> {
+  public async getByTokenPayload(
+    db: Database,
+    tokenPayload: JWTPayload
+  ): Promise<User> {
     // Token validated by middleware, so no need to validate it
-    const payload = JWTUtils.getPayload(req);
-    const id = ValueUtils.validateId(payload.id);
+    const id = ValueUtils.validateId(tokenPayload.id);
 
-    return User.get(ctx.db, id);
+    return User.get(db, id);
   }
 
   /**
    * Get list of all available users in DB
    */
-  public static async list(ctx: ApiContext, req: Request) {
-    const payload = JWTUtils.getPayload(req);
-
-    const requestUser = await User.get(ctx.db, payload.id);
+  public async list(db: Database, tokenPayload: JWTPayload) {
+    const requestUser = await User.get(db, tokenPayload.id);
 
     if (requestUser.isAdmin()) {
-      return User.list(ctx.db);
+      return User.list(db);
     }
 
-    throw new Error("You are not able to do that");
+    throw new ClientError(ClientResponse.ACCESS_DENIED);
   }
 
   /**
    * Retrieve one user
    */
-  public static async get(ctx: ApiContext, req: Request) {
-    if (!req.params.id) {
-      return this.getByToken(ctx, req);
+  public async get(db: Database, userId: number, tokenPayload: JWTPayload) {
+    if (!userId) {
+      return this.getByTokenPayload(db, tokenPayload);
     }
 
-    const id = ValueUtils.validateId(req.params.id);
-    const payload = JWTUtils.getPayload(req);
-
-    if (payload.id == id) {
-      return User.get(ctx.db, id);
+    if (tokenPayload.id == userId) {
+      return User.get(db, userId);
     }
 
-    const requestUser = await User.get(ctx.db, payload.id);
+    const requestUser = await User.get(db, tokenPayload.id);
     if (requestUser.isAdmin()) {
-      return User.get(ctx.db, id);
+      return User.get(db, userId);
     }
 
-    throw new Error("You are not able to do that");
+    throw new ClientError(ClientResponse.ACCESS_DENIED);
   }
 
   /**
    * Update user by params id
    */
-  public static async update(ctx: ApiContext, req: Request) {
-    const payload = JWTUtils.getPayload(req);
-    const id = ValueUtils.validateId(req.params.id ?? payload.id);
+  public async update(
+    db: Database,
+    crypto: Crypto,
+    tokenPayload: JWTPayload,
+    updateData: IUpdateUser,
+    userId?: number
+  ) {
+    const id = ValueUtils.validateId(userId ?? tokenPayload.id);
 
-    if (payload.id == id) {
-      return this.performUpdate(ctx, id, req.body);
+    if (tokenPayload.id == id) {
+      return this.performUpdate(db, crypto, id, updateData);
     }
 
-    throw new Error("You are not able to do that");
+    throw new ClientError(ClientResponse.ACCESS_DENIED);
   }
 
   /**
    * Delete user by params id
    */
-  public static async delete(ctx: ApiContext, req: Request) {
-    const payload = JWTUtils.getPayload(req);
-    const id = ValueUtils.validateId(req.params.id ?? payload.id);
+  public async delete(db: Database, userId: number, tokenPayload: JWTPayload) {
+    const id = ValueUtils.validateId(userId ?? tokenPayload.id);
 
-    if (payload.id == id) {
-      return this.performDelete(ctx, id);
+    if (tokenPayload.id == id) {
+      return this.performDelete(db, id);
     }
 
-    throw new Error("You are not able to do that");
+    throw new ClientError(ClientResponse.ACCESS_DENIED);
   }
 
   /**
    * User deletion logic
    */
-  private static async performDelete(ctx: ApiContext, id: number) {
-    const repository = ctx.db.getRepository(User);
+  private async performDelete(db: Database, id: number) {
+    const repository = db.getRepository(User);
 
     const user = (await repository.findOne({
       where: { id },
@@ -100,25 +105,23 @@ export class UserService {
     })) as User;
 
     if (!user || user.is_deleted) {
-      throw new Error("User not found.");
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
-    return user.delete(ctx.db, repository);
+    return user.delete(db, repository);
   }
 
   /**
    * User updating logic
    */
-  private static async performUpdate(
-    ctx: ApiContext,
+  private async performUpdate(
+    db: Database,
+    crypto: Crypto,
     id: number,
     body: IUpdateUser
   ) {
-    const db = ctx.db;
-    const crypto = ctx.crypto;
-
     if (!crypto) {
-      throw new Error("Crypto instance should be provided in context");
+      throw new ServerError(ServerResponse.NO_CRYPTO);
     }
 
     const repository = db.getRepository(User);
@@ -129,7 +132,7 @@ export class UserService {
     })) as User;
 
     if (!user) {
-      throw new Error("User not found");
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     user.name = body.name ?? user.name;
@@ -146,7 +149,7 @@ export class UserService {
     return user.export();
   }
 
-  public static async updatePermissions(
+  public async updatePermissions(
     ctx: ApiContext,
     id: number,
     body: any // Should be typed with permissions list
@@ -162,7 +165,7 @@ export class UserService {
     })) as User;
 
     if (!user) {
-      throw new Error("User not found");
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     const permRepository = db.getRepository(Permission);
@@ -176,22 +179,13 @@ export class UserService {
           },
         }))
       ) {
-        throw new Error(
-          `Permission '${p.name}' with ID '${p.id}' does not exists`
+        throw new ClientError(
+          ClientResponse.USER_PERMISSION_NOT_EXISTS.replace(
+            "%name",
+            p.name
+          ).replace("%id", p.id)
         );
       }
-      const perExists = await permRepository.exists({
-        where: {
-          id: p.id,
-          name: p.name,
-        },
-      });
-
-      if (perExists) continue;
-
-      throw new Error(
-        `Permission '${p.name}' with ID '${p.id}' does not exists`
-      );
     }
 
     const newPermIds = body.permissions.map((p: IPermission) => p.id);
@@ -207,7 +201,7 @@ export class UserService {
       (id: number) => !userPermIds.includes(id)
     );
 
-    await db.ds.transaction(async (transactionalEntityManager) => {
+    await db.dataSource.transaction(async (transactionalEntityManager) => {
       // Remove old group associations
       if (permsToRemove.length > 0) {
         await transactionalEntityManager

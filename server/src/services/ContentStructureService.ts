@@ -1,7 +1,10 @@
+import { ClientResponse } from "../enums/ClientResponse";
 import { IStorage } from "../interfaces/file/IStorage";
 import { OQContentStructure } from "../interfaces/file/structures/OQContentStructure";
-import { OQFileContentStructure } from "../interfaces/file/structures/OQFileContentStructure";
-import { ValueUtils } from "../utils/ValueUtils";
+import { OQFileStructure } from "../interfaces/file/structures/OQFileStructure";
+import { OQQuestionsStructure } from "../interfaces/file/structures/OQQuestionsStructure";
+import { OQRoundStructure } from "../interfaces/file/structures/OQRoundStructure";
+import { OQThemeStructure } from "../interfaces/file/structures/OQThemeStructure";
 
 /**
  * Class that manages all actions related to content.json file and it's structure
@@ -10,65 +13,73 @@ export class ContentStructureService {
   /**
    * Parse content.json file and update all "file" entries with download link
    */
-  public static async getUploadLinksForFiles(
+  public async getUploadLinksForFiles(
     content: OQContentStructure,
     storage: IStorage,
     expiresIn: number
   ): Promise<{ [key: string]: string }> {
     if (!content?.rounds) {
-      return { error: 'Content does not contain "rounds"!' };
+      return { error: ClientResponse.NO_CONTENT_ROUNDS };
     }
 
-    const roundsContent = ValueUtils.parseJSON(content.rounds);
-
-    if (!ValueUtils.isArray(roundsContent)) {
-      return { error: '"rounds" is empty!' };
-    }
-
-    // Variables define
-    const stack = roundsContent.slice();
-    const promises: Promise<string>[] = [];
-    const cache: Map<string, Promise<string>> = new Map();
+    /** Nested objects stack */
+    const stack: Array<
+      OQRoundStructure | OQThemeStructure | OQQuestionsStructure
+    > = [...content.rounds];
+    /** Output object that contains upload links for each file in stack */
     const fileLinks: { [key: string]: string } = {};
+    /** Map used for caching */
+    const cache: Map<string, Promise<string>> = new Map();
+    /** Promises array that collects promises with file upload */
+    const promises: Promise<string>[] = [];
 
-    // Iterate trough every object in content and find all "file" entries
-    while (stack.length) {
-      // Pop current object from stack
-      const current = stack.pop();
+    // Iterate through each object in the content to find "file" entries
+    while (stack.length > 0) {
+      const current = stack.shift();
 
-      for (const key in current) {
-        if (key === "file" && current[key]?.path) {
-          let promise: Promise<string>;
+      if (this._hasFile(current)) {
+        const filePath = current.file.path;
 
-          // Get promise from cache
-          if (cache.get(current[key].path)) {
-            promise = cache.get(current[key].path) as Promise<string>;
+        if (filePath) {
+          let uploadPromise: Promise<string>;
+
+          // Check if the path is already cached
+          if (cache.has(filePath)) {
+            uploadPromise = cache.get(filePath)!;
           } else {
-            // Create promise for file upload link
-            promise = storage
-              .upload((current[key] as OQFileContentStructure).path, expiresIn)
-              .then(
-                (link: string) =>
-                  // Assign link to file name
-                  (fileLinks[(current[key] as OQFileContentStructure).path] =
-                    link)
-              );
-
-            cache.set(current[key].path, promise);
+            // Create and cache the upload promise
+            uploadPromise = storage.upload(filePath, expiresIn).then((link) => {
+              fileLinks[filePath] = link;
+              return link;
+            });
+            cache.set(filePath, uploadPromise);
           }
-          // Push created promise to array
-          promises.push(promise);
-        } else if (typeof current[key] === "object" && current[key] !== null) {
-          // It current[key] is object, push it to stack to iterate trough it
-          stack.push(current[key]);
+
+          // Push the upload promise to the array
+          promises.push(uploadPromise);
+        }
+      } else {
+        // Push nested objects into the stack for further processing
+        for (const key in current) {
+          const value = current[key as keyof typeof current];
+          if (typeof value === "object" && value !== null) {
+            stack.push(value);
+          }
         }
       }
     }
 
-    // Wait for all uploads to complete
+    // Wait for all upload promises to complete
     await Promise.all(promises);
-    cache.clear();
 
+    cache.clear();
     return fileLinks;
+  }
+
+  /** Check if current object of stack has correct and non-empty file field */
+  private _hasFile(obj: any): obj is OQFileStructure {
+    return (
+      obj && typeof obj.file === "object" && typeof obj.file.path === "string"
+    );
   }
 }

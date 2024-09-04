@@ -1,76 +1,130 @@
 import { type Request, type Response, Router } from "express";
 
 import { UserService } from "../../services/UserService";
-import { QueryFailedError } from "typeorm";
-import { IApiContext } from "../../interfaces/IApiContext";
 import { UpdateUser } from "../../managers/user/UpdateUser";
+import { ApiContext } from "../../services/context/ApiContext";
+import { JWTUtils } from "../../utils/JWTUtils";
+import { ClientResponse } from "../../enums/ClientResponse";
+import { validateParamsIDMiddleware } from "../../middleware/request/userRequestMiddleware";
+import { ErrorController } from "../../error/ErrorController";
+import { HttpStatus } from "../../enums/HttpStatus";
+import {
+  requireAdmin,
+  requireAdminIfIdProvided,
+} from "../../middleware/role/roleMiddleware";
+import { validateWithSchema } from "../../middleware/schemaMiddleware";
 
 /**
  * Handles all endpoints related for User CRUD
  */
 export class UserRestApiController {
-  constructor(ctx: IApiContext) {
-    const app = ctx.app;
+  private _userService: UserService;
+
+  constructor(private ctx: ApiContext) {
+    const app = this.ctx.app;
     const router = Router();
+
+    this._userService = this.ctx.serverServices.get(UserService);
+
     app.use("/v1/user", router);
 
-    router.get("(/:id)?", async (req: Request, res: Response) => {
-      try {
-        const result = await UserService.get(ctx, req);
-        if (result) {
-          return res.status(200).send(result);
-        }
-        return res.status(404).send({ message: "User not found" });
-      } catch (err: any) {
-        return res.status(400).send({ error: err.message });
-      }
-    });
-
-    router.patch("(/:id)?", async (req: Request, res: Response) => {
-      try {
-        const data = new UpdateUser(req.body);
-        // Override body to leave only validated data
-        req.body = data.validate();
-
-        const result = await UserService.update(ctx, req);
-        return res.status(200).send(result);
-      } catch (err: any) {
-        let code = 400;
-        if (
-          // Catch query error from TypeORM (if user already exists)
-          err instanceof QueryFailedError &&
-          err.message.includes("duplicate key value")
-        ) {
-          err.message = `User with this name or email already exists`;
-        }
-
-        if (err.message.toLowerCase().includes("not found")) {
-          code = 404;
-        }
-
-        return res.status(code).send({ error: err.message });
-      }
-    });
-
-    router.delete("(/:id)?", async (req: Request, res: Response) => {
-      try {
-        await UserService.delete(ctx, req);
-        return res.status(204).send();
-      } catch (err: any) {
-        return res.status(400).send({ error: err.message });
-      }
-    });
-
-    app.get(`/v1/users`, async (req: Request, res: Response) => {
-      try {
-        const result = await UserService.list(ctx, req);
-        if (result) {
-          return res.status(200).send(result);
-        }
-        return res.status(404).send({ message: "Users not found" });
-      } catch (err: any) {
-        return res.status(400).send({ error: err.message });
-      }
-    });
+    app.get(`/v1/users`, requireAdmin(this.ctx.db), this.listUsers);
+    router.get(
+      "(/:id)?",
+      validateParamsIDMiddleware,
+      requireAdminIfIdProvided(this.ctx.db),
+      this.getUser
+    );
+    router.patch(
+      "(/:id)?",
+      validateParamsIDMiddleware,
+      requireAdminIfIdProvided(this.ctx.db),
+      validateWithSchema(UpdateUser),
+      this.updateUser
+    );
+    router.delete(
+      "(/:id)?",
+      validateParamsIDMiddleware,
+      requireAdminIfIdProvided(this.ctx.db),
+      this.deleteUser
+    );
   }
+
+  private getUser = async (req: Request, res: Response) => {
+    try {
+      const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
+
+      const result = await this._userService.get(
+        this.ctx.db,
+        Number(req.params.id),
+        tokenPayload
+      );
+
+      if (result) {
+        return res.status(HttpStatus.OK).send(result);
+      }
+
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .send({ message: ClientResponse.USER_NOT_FOUND });
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveError(err);
+      return res.status(code).send({ error: message });
+    }
+  };
+
+  private updateUser = async (req: Request, res: Response) => {
+    try {
+      const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
+
+      const result = await this._userService.update(
+        this.ctx.db,
+        this.ctx.crypto,
+        tokenPayload,
+        req.body,
+        Number(req.params.id)
+      );
+
+      return res.status(HttpStatus.OK).send(result);
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveQueryError(err);
+      return res.status(code).send({ error: message });
+    }
+  };
+
+  private deleteUser = async (req: Request, res: Response) => {
+    try {
+      const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
+
+      await this._userService.delete(
+        this.ctx.db,
+        Number(req.params.id),
+        tokenPayload
+      );
+
+      return res.status(HttpStatus.NO_CONTENT).send();
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveError(err);
+      return res.status(code).send({ error: message });
+    }
+  };
+
+  private listUsers = async (req: Request, res: Response) => {
+    try {
+      const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
+
+      const result = await this._userService.list(this.ctx.db, tokenPayload);
+
+      if (result) {
+        return res.status(HttpStatus.OK).send(result);
+      }
+
+      return res
+        .status(HttpStatus.NOT_FOUND)
+        .send({ message: ClientResponse.USER_NOT_FOUND });
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveError(err);
+      return res.status(code).send({ error: message });
+    }
+  };
 }

@@ -1,75 +1,101 @@
 import { DataSource, EntityTarget, ObjectLiteral, Repository } from "typeorm";
-import { AppDataSource } from "./DataSource";
 import { Logger } from "../utils/Logger";
+import { ServerResponse } from "../enums/ServerResponse";
+import { ServerError } from "../error/ServerError";
 
 /**
  * Handles Database initialization and management
  */
 export class Database {
-  private dataSource: DataSource;
-  private _connected: boolean;
+  private static _instanceMap: Map<DataSource, Database> = new Map();
+  private _connected: boolean = false;
+  private _repositories: Map<EntityTarget<any>, Repository<any>> = new Map();
 
-  /** Repositories caching */
-  private repositories: Map<EntityTarget<any>, Repository<any>> = new Map();
-
-  // TODO: Make DB driver injectable and create separate Driver instances
-  constructor(dataSource: DataSource) {
-    this._connected = false;
-    Logger.warn("Connecting to DB...");
-
-    this.dataSource = dataSource;
-    this.dataSource
-      .initialize()
-      .then(() => {
-        this._connected = true;
-        Logger.info("Connection to DB established");
-        Logger.info(`API version: ${process.env.npm_package_version}`);
-      })
-      .catch((err) => {
-        Logger.error(`DB is not connected: ${err}`);
-        throw new Error(`DB is not connected: ${err}`);
-      });
+  private constructor(private _dataSource: DataSource) {
+    if (!this._dataSource) {
+      throw new ServerError(ServerResponse.INVALID_DATA_SOURCE);
+    }
   }
 
   /**
-   * Get TypeORM repository for given entity
+   * Get or create instance from specified data source
+   */
+  public static getInstance(dataSource: DataSource): Database {
+    const db = Database._instanceMap.get(dataSource);
+
+    if (!db) {
+      const freshDatabase = new Database(dataSource);
+
+      Database._instanceMap.set(dataSource, freshDatabase);
+      return freshDatabase;
+    }
+
+    return db;
+  }
+
+  /**
+   * Build connection to the database
+   */
+  public async build() {
+    Logger.warn("Connecting to DB...");
+
+    try {
+      await this._dataSource.initialize();
+      this._connected = true;
+      Logger.info("Connection to DB established");
+      Logger.info(`API version: ${process.env.npm_package_version}`);
+    } catch (err: unknown) {
+      let message = "unknown error";
+      if (err instanceof Error) {
+        message = err.message;
+      }
+      throw new ServerError(`${ServerResponse.DB_NOT_CONNECTED} -> ${message}`);
+    }
+  }
+
+  public waitForConnection() {
+    //
+  }
+
+  /**
+   * Get TypeORM repository for the given entity.
+   * Caches the repository to avoid multiple creations.
    */
   public getRepository<T extends ObjectLiteral>(
     target: EntityTarget<T>
   ): Repository<T> {
     if (!this._connected) {
-      throw new Error("DB is not connected");
+      throw new ServerError(ServerResponse.DB_NOT_CONNECTED);
     }
 
-    let repository = this.repositories.get(target) as Repository<T> | undefined;
+    let repository = this._repositories.get(target) as
+      | Repository<T>
+      | undefined;
 
     if (!repository) {
-      repository = this.dataSource.getRepository(target);
-      this.repositories.set(target, repository);
+      repository = this._dataSource.getRepository(target);
+      this._repositories.set(target, repository);
     }
 
     return repository;
   }
 
-  /** DataSource */
-  public get ds() {
-    return this.dataSource;
+  public get dataSource(): DataSource {
+    if (!this._connected) {
+      throw new ServerError(ServerResponse.DB_NOT_CONNECTED);
+    }
+    return this._dataSource;
   }
 
-  public connect() {
+  public connect(): void {
     this._connected = true;
-    return true;
   }
 
-  public disconnect() {
+  public disconnect(): void {
     this._connected = false;
-    return true;
   }
 
-  public get connected() {
+  public get connected(): boolean {
     return this._connected;
   }
 }
-
-/** Database instance, should be used for all DB actions */
-export const db = new Database(AppDataSource);

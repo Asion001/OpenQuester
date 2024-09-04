@@ -1,101 +1,82 @@
-import jwt from "jsonwebtoken";
 import { type Request, type Response, Router } from "express";
 
 import { AuthService } from "../../services/AuthService";
-import { QueryFailedError } from "typeorm";
-import { Environment } from "../../config/Environment";
 import { RegisterUser } from "../../managers/user/RegisterUser";
 import { LoginUser } from "../../managers/user/LoginUser";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ApiContext } from "../../services/context/ApiContext";
+import {
+  validateRefresh,
+  validateTokenForAuth,
+} from "../../middleware/authMiddleware";
+import { ErrorController } from "../../error/ErrorController";
+import { HttpStatus } from "../../enums/HttpStatus";
+import { validateWithSchema } from "../../middleware/schemaMiddleware";
 
 /**
  * Handles all endpoints related to user authorization
  */
 export class AuthRestApiController {
-  constructor(ctx: ApiContext) {
-    const app = ctx.app;
+  private _authService: AuthService;
+
+  constructor(private ctx: ApiContext) {
+    const app = this.ctx.app;
     const router = Router();
+
+    this._authService = ctx.serverServices.get(AuthService);
+
     app.use("/v1/auth", router);
 
-    router.post(`/register`, async (req: Request, res: Response) => {
-      try {
-        if (!this.validateTokenForAuth(req)) {
-          throw new Error("User is already logged in");
-        }
-
-        const data = new RegisterUser(req.body);
-        data.validate();
-
-        const result = await AuthService.register(ctx, req.body, ctx.crypto);
-        return res.status(201).send(result);
-      } catch (err: any) {
-        if (
-          // Catch query error from TypeORM (if user already exists)
-          err instanceof QueryFailedError &&
-          err.message.includes("duplicate key value")
-        ) {
-          err.message = `User with this name or email already exists`;
-        }
-        return res.status(400).send({ error: err.message });
-      }
-    });
-
-    router.post(`/login`, async (req: Request, res: Response) => {
-      try {
-        if (!this.validateTokenForAuth(req)) {
-          throw new Error("User is already logged in");
-        }
-
-        const data = new LoginUser(req.body);
-        data.validate();
-
-        const result = await AuthService.login(ctx, req.body, ctx.crypto);
-        return res.send(result);
-      } catch (err: any) {
-        return res.status(400).send({ error: err.message });
-      }
-    });
-
-    router.post(`/refresh`, async (req: Request, res: Response) => {
-      try {
-        const refresh = req.body.refresh_token;
-        if (!refresh) {
-          throw new Error("Please provide refresh_token");
-        }
-
-        const result = JWTUtils.refresh(refresh);
-        res.status(200).send(result);
-      } catch (err: any) {
-        res.status(400).send({ error: err.message });
-      }
-    });
+    router.post(
+      `/register`,
+      validateTokenForAuth,
+      validateWithSchema(RegisterUser),
+      this.register
+    );
+    router.post(
+      `/login`,
+      validateTokenForAuth,
+      validateWithSchema(LoginUser),
+      this.login
+    );
+    router.post(`/refresh`, validateRefresh, this.refresh);
   }
 
-  /**
-   * This method returns true, if token is invalid. This means if user token is invalid,
-   * user should be able to login / register.
-   *
-   * If user token is valid - he's already logged in and no need to continue execution
-   * TODO: Move to route middleware
-   */
-  private validateTokenForAuth(req: Request): boolean {
-    const header = req.header("Authorization");
-
-    if (!header) return true;
-
-    const scheme = header?.split(" ")[0];
-    const token = header?.split(" ")[1];
-
-    if (token && scheme == Environment.JWT_SCHEME) {
-      try {
-        jwt.verify(token, Environment.JWT_SECRET);
-        return false;
-      } catch {
-        // Token invalid - continue
-      }
+  private register = async (req: Request, res: Response) => {
+    try {
+      const result = await this._authService.register(
+        this.ctx.db,
+        req.body,
+        this.ctx.crypto
+      );
+      return res.status(HttpStatus.CREATED).send(result);
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveQueryError(err);
+      return res.status(code).send({ error: message });
     }
+  };
 
-    return true;
-  }
+  private login = async (req: Request, res: Response) => {
+    try {
+      const result = await this._authService.login(
+        this.ctx.db,
+        req.body,
+        this.ctx.crypto
+      );
+      return res.status(HttpStatus.OK).send(result);
+    } catch (err: unknown) {
+      const { message, code } = ErrorController.resolveError(err);
+      return res.status(code).send({ error: message });
+    }
+  };
+
+  private refresh = async (req: Request, res: Response) => {
+    try {
+      const result = JWTUtils.refresh(req.body.refresh_token);
+      res.status(HttpStatus.OK).send(result);
+    } catch (err: any) {
+      const { message, code } = ErrorController.resolveError(err);
+      res.status(code).send({ error: message });
+    }
+  };
 }

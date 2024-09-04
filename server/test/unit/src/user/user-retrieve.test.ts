@@ -3,10 +3,13 @@ import { Repository } from "typeorm";
 import { User } from "../../../../src/database/models/User";
 import { expect } from "chai";
 import { UserService } from "../../../../src/services/UserService";
-import { JWTUtils } from "../../../../src/utils/JWTUtils";
+import { ClientResponse } from "../../../../src/enums/ClientResponse";
+import { ValueUtils } from "../../../../src/utils/ValueUtils";
+import { Database } from "../../../../src/database/Database";
 
 describe("User retrieve by id and JWT token", () => {
   let userRepository: sinon.SinonStubbedInstance<any>;
+  let stubUser: sinon.SinonStub<[db: Database, id: number], Promise<User>>;
   let db: any;
   let ctx: any;
 
@@ -20,17 +23,21 @@ describe("User retrieve by id and JWT token", () => {
     userRepository = {
       findOne: () => null,
     } as unknown as Repository<User>;
+    stubUser = sinon.stub(User, "get");
+  });
+
+  afterEach(async () => {
+    stubUser.restore();
   });
 
   describe("Retrieve user by token", () => {
     it("Should retrieve user by token", async () => {
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
+      const payload = {
         iat: 1111,
         exp: 2222,
         id: 1,
-      });
-      const stubUser = sinon.stub(User, "get");
+      };
+
       stubUser.resolves({
         email: "someEmail",
         name: "success",
@@ -41,117 +48,79 @@ describe("User retrieve by id and JWT token", () => {
         isAdmin: () => false,
       } as unknown as User);
 
-      const result = await UserService.getByToken(ctx, {} as any);
+      const result = await new UserService().getByTokenPayload(ctx.db, payload);
       expect(result.name).to.be.equal("success");
-      stubPayload.restore();
-      stubUser.restore();
     });
   });
 
   describe("Retrieve user by id", () => {
     it("Should retrieve user by id if he asks for his own info", async () => {
-      let req: any;
       // Retrieve info about ourselves
-      req = {
-        params: {
-          id: 1,
-        },
-      };
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
+      const payload = {
         iat: 1111,
         exp: 2222,
         id: 1,
-      });
-      const stubUser = sinon.stub(User, "get");
+      };
+
       stubUser.resolves({
         name: "success",
         isAdmin: () => false,
       } as unknown as User);
 
-      const result = await UserService.get(ctx, req);
+      const result = await new UserService().get(ctx.db, 1, payload);
+
       expect(result.name).to.be.equal("success");
-      stubPayload.restore();
-      stubUser.restore();
     });
 
     it("Should throw error on bad id", async () => {
-      let req: any;
       // Retrieve info about ourselves
-      req = {
-        params: {
-          id: "bad id",
-        },
-      };
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
+      const payload = {
         iat: 1111,
         exp: 2222,
         id: 1,
-      });
-      const stubUser = sinon.stub(User, "get");
+      };
+
       stubUser.resolves({
         name: "success",
         isAdmin: () => false,
       } as unknown as User);
 
       try {
-        await UserService.get(ctx, req);
+        ValueUtils.validateId(Number("bad id"));
+        await new UserService().get(ctx.db, Number("bad id"), payload);
         throw new Error("Line above should throw error");
       } catch (err: any) {
-        expect(err.message.toLowerCase()).to.include(
-          "specify id that greater than 1"
-        );
+        expect(err.message).to.be.equal(ClientResponse.BAD_USER_ID);
       }
-      stubPayload.restore();
-      stubUser.restore();
     });
 
     it("Should throw error if asking for another user", async () => {
-      let req: any;
-      // Retrieve info about ourselves
-      req = {
-        params: {
-          id: 1,
-        },
-      };
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
+      const payload = {
         iat: 1111,
         exp: 2222,
         id: 2,
-      });
-      const stubUser = sinon.stub(User, "get");
+      };
+
       stubUser.resolves({
         name: "fail",
         isAdmin: () => false,
       } as unknown as User);
 
       try {
-        await UserService.get(ctx, req);
+        await new UserService().get(ctx.db, 1, payload);
         throw new Error("Line above should throw error");
       } catch (err: any) {
-        expect(err.message.toLowerCase()).include("not able");
+        expect(err.message).to.be.equal(ClientResponse.ACCESS_DENIED);
       }
-      stubPayload.restore();
-      stubUser.restore();
     });
 
     it("Should retrieve user if admin asking for another user", async () => {
-      let req: any;
-      // Retrieve info about ourselves
-      req = {
-        params: {
-          id: 1,
-        },
-      };
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
+      const payload = {
         iat: 1111,
         exp: 2222,
         id: 2,
-      });
-      const stubUser = sinon.stub(User, "get");
+      };
+
       stubUser.withArgs(ctx.db, 2).resolves({
         name: "admin",
         isAdmin: () => true,
@@ -163,10 +132,8 @@ describe("User retrieve by id and JWT token", () => {
         isAdmin: () => false,
       } as unknown as User);
 
-      const result = await UserService.get(ctx, req);
+      const result = await new UserService().get(ctx.db, 1, payload);
       expect(result.name).to.be.equal("success");
-      stubPayload.restore();
-      stubUser.restore();
     });
   });
 });

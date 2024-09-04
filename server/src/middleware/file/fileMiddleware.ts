@@ -1,9 +1,11 @@
 import { type Request, type Response, type NextFunction } from "express";
 
 import { ValueUtils } from "../../utils/ValueUtils";
+import { HttpStatus } from "../../enums/HttpStatus";
+import { ClientResponse } from "../../enums/ClientResponse";
 
 /** Ensures that content is valid JSON object */
-export const verifyContentJSON = (
+export const verifyContentJSONMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -11,13 +13,15 @@ export const verifyContentJSON = (
   const content = req.body?.content;
 
   if (!ValueUtils.isObject(content)) {
-    return res.status(400).send({
-      error: "Wrong 'content' argument type, it should be a valid JSON object!",
+    return res.status(HttpStatus.BAD_REQUEST).send({
+      error: ClientResponse.WRONG_CONTENT,
     });
   }
 
   if (ValueUtils.isEmpty(content)) {
-    return res.status(400).send({ error: "Content is empty!" });
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send({ error: ClientResponse.EMPTY_CONTENT });
   }
 
   return next();
@@ -31,13 +35,15 @@ export const validateFilename = (
   const filename = req.body.filename;
 
   if (ValueUtils.isBad(filename)) {
-    return res.status(400).send({ error: '"filename" field is required' });
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send({ error: ClientResponse.FILENAME_REQUIRED });
   }
 
   if (!ValueUtils.isString(filename) || ValueUtils.isEmpty(filename)) {
     return res
-      .status(400)
-      .send({ error: '"filename" should be a valid string' });
+      .status(HttpStatus.BAD_REQUEST)
+      .send({ error: ClientResponse.FILENAME_INVALID });
   }
 
   return next();

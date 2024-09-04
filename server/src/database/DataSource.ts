@@ -1,7 +1,8 @@
 import "reflect-metadata";
 
-import { Environment } from "../config/Environment";
 import { Logger } from "../utils/Logger";
+import { Environment } from "../config/Environment";
+import { ServerResponse } from "../enums/ServerResponse";
 
 // Models
 import { User } from "./models/User";
@@ -16,11 +17,18 @@ import { UpdateUserModelFields_1_11_1723107959823 as updateUserModelFields } fro
 import { CreatePermissionTable_1_2_1723128633623 as createPermissionTable } from "./migrations/CreatePermissionTable_1_2_1723128633623";
 import { UpdateUserRequiredFields_1_21_1723204474011 as updateUserRequiredFields } from "./migrations/UpdateUserRequiredFields_1_21_1723204474011";
 
+// Init env
+const env = Environment.instance;
+
 try {
-  Environment.load(false);
-} catch (err: any) {
-  Logger.error("Failed to load environment variables, closing...");
-  Logger.error(`Error message: ${err.message}`);
+  env.load(false);
+} catch (err: unknown) {
+  let message = "unknown error";
+  if (err instanceof Error) {
+    message = err.message;
+  }
+  Logger.error(ServerResponse.FAILED_TO_LOAD_ENV);
+  Logger.error(`Error message: ${message}`);
   // Bravely exit from process since it's migration process created by TypeORM
   process.exit(0);
 }
@@ -28,13 +36,13 @@ try {
 /** TypeORM's data source. Used for all DB operations */
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: Environment.DB_HOST,
-  port: Number(Environment.DB_PORT),
-  username: Environment.DB_USER,
-  password: Environment.DB_PASS,
-  database: Environment.DB_NAME,
+  host: env.DB_HOST,
+  port: Number(env.DB_PORT),
+  username: env.DB_USER,
+  password: env.DB_PASS,
+  database: env.DB_NAME,
   synchronize: false,
-  logging: Environment.DB_LOGGER,
+  logging: env.DB_LOGGER,
   entities: [User, File, Permission, UserPermissions],
   migrations: [
     createUserAndFileTables,

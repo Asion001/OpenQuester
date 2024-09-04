@@ -5,10 +5,10 @@ import { UserDataManager } from "./UserDataManager";
 export class LoginUser extends UserDataManager {
   constructor(data: IInputUserData) {
     super();
-    this.userData = {
+    this._userData = {
       login: data.login,
       password: data.password,
     } as ILoginUser;
-    this.required = ["login", "password"];
+    this._required = ["login", "password"];
   }
 }

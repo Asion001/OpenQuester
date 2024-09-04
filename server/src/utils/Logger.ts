@@ -9,12 +9,12 @@ import { blue, blueBright, bold, green, red, yellow } from "colorette";
  * Logger class used for writing logs and for prettier console output
  */
 export class Logger {
-  public static info(text: any, logWorker: boolean = false) {
+  public static info(text: unknown, logWorker: boolean = false) {
     if (cluster.isPrimary || logWorker) {
       const prefix = "[INFO]: ";
       const log = prefix + String(text);
 
-      if (Environment.ENV !== "test") {
+      if (Environment.instance.ENV !== "test") {
         console.info(green(log));
       }
 
@@ -22,12 +22,12 @@ export class Logger {
     }
   }
 
-  public static warn(text: any, logWorker: boolean = false) {
+  public static warn(text: unknown, logWorker: boolean = false) {
     if (cluster.isPrimary || logWorker) {
       const prefix = "[WARNING]: ";
       const log = prefix + String(text);
 
-      if (Environment.ENV !== "test") {
+      if (Environment.instance.ENV !== "test") {
         console.warn(yellow(log));
       }
 
@@ -35,7 +35,7 @@ export class Logger {
     }
   }
 
-  public static error(text: any) {
+  public static error(text: unknown) {
     const prefix = "[ERROR]: ";
     const log = prefix + String(text);
 
@@ -44,9 +44,32 @@ export class Logger {
     this.writeFile(log);
   }
 
-  public static debug(text: any) {
+  public static debug(obj: unknown) {
     const prefix = "[DEBUG]: ";
-    const log = prefix + String(text);
+    let text = "";
+
+    // Parse object to show it fully
+    if (typeof obj === "object") {
+      const seen = new Set();
+      text = JSON.stringify(
+        obj,
+        (_, value) => {
+          if (typeof value === "object" && value !== null) {
+            if (seen.has(value)) {
+              // Replace circular references with a placeholder
+              return `[Circular]`;
+            }
+            seen.add(value);
+          }
+          return value;
+        },
+        2 // Space indentation
+      );
+    } else {
+      text = String(obj);
+    }
+
+    const log = prefix + text;
 
     console.debug(blue(log));
 
@@ -63,7 +86,7 @@ export class Logger {
     this.writeFile(log);
   }
 
-  private static writeFile(text: any) {
+  private static async writeFile(text: unknown) {
     const logPath = path.resolve(process.cwd(), `logs/logs.log`);
 
     if (!fs.existsSync(logPath)) {
@@ -71,6 +94,13 @@ export class Logger {
       fs.writeFileSync(logPath, "");
     }
 
-    fs.appendFileSync(logPath, text + "\n");
+    fs.appendFile(logPath, text + "\n", (err) => {
+      if (err) {
+        const prefix = "[ERROR]: ";
+        const log = prefix + String(err?.message);
+
+        console.error(bold(red(log)));
+      }
+    });
   }
 }

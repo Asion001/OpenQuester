@@ -16,10 +16,10 @@ part 'login_user.g.dart';
 @BuiltValue()
 abstract class LoginUser implements Built<LoginUser, LoginUserBuilder> {
   @BuiltValueField(wireName: r'login')
-  String? get login;
+  String get login;
 
   @BuiltValueField(wireName: r'password')
-  String? get password;
+  String get password;
 
   LoginUser._();
 
@@ -44,20 +44,16 @@ class _$LoginUserSerializer implements PrimitiveSerializer<LoginUser> {
     LoginUser object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.login != null) {
-      yield r'login';
-      yield serializers.serialize(
-        object.login,
-        specifiedType: const FullType(String),
-      );
-    }
-    if (object.password != null) {
-      yield r'password';
-      yield serializers.serialize(
-        object.password,
-        specifiedType: const FullType(String),
-      );
-    }
+    yield r'login';
+    yield serializers.serialize(
+      object.login,
+      specifiedType: const FullType(String),
+    );
+    yield r'password';
+    yield serializers.serialize(
+      object.password,
+      specifiedType: const FullType(String),
+    );
   }
 
   @override

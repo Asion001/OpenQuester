@@ -1,43 +1,62 @@
+import express from "express";
 import cluster from "cluster";
 import { type Server } from "http";
 import { Environment } from "./config/Environment";
 import { ServeApi } from "./ServeApi";
 import { Logger } from "./utils/Logger";
 import { WorkerMessage } from "./enums/WorkerMessage";
+import { Database } from "./database/Database";
+import { AppDataSource } from "./database/DataSource";
+import { ApiContext } from "./services/context/ApiContext";
+import { ErrorController } from "./error/ErrorController";
+import { ServerServices } from "./services/ServerServices";
 
-if (cluster.isPrimary) {
-  // Setup primary cluster
-  Logger.info(`Starting master process: ${process.pid}`);
-  try {
-    Environment.load(false);
-  } catch (err: any) {
-    Logger.error(err.message);
-    process.exit(1);
+const main = async () => {
+  Logger.info(`Initializing API Context`);
+
+  // Initialize api context
+  const context = new ApiContext({
+    db: Database.getInstance(AppDataSource),
+    app: express(),
+    env: Environment.instance,
+    serverServices: new ServerServices(),
+  });
+
+  if (cluster.isPrimary) {
+    await initPrimaryCluster(context);
+  } else {
+    await initWorker(context);
   }
+};
 
-  const workersCount = Environment.WORKERS_COUNT;
+async function initPrimaryCluster(ctx: ApiContext) {
+  Logger.info(`Starting master process: ${process.pid}`);
+
+  ctx.env.load(false);
+
+  const workersCount = ctx.env.WORKERS_COUNT;
 
   Logger.info(`Master process ${process.pid} is running`);
-  Logger.info(`Forking for ${workersCount} CPUs`);
+  Logger.info(`Forking for ${workersCount} workers`);
 
   for (let c = 0; c < workersCount; c++) {
     // Fork instances
-    try {
-      cluster.fork();
-    } catch (err: any) {
-      Logger.error(`Error during workers initialization: ${err.message} `);
-      shutdownCluster();
-    }
+    cluster.fork();
   }
 
   ["SIGINT", "SIGTERM", "uncaughtException"].forEach((signal) => {
     process.on(signal, shutdownCluster);
   });
-} else {
-  // Not main cluster - do work
+}
+
+async function initWorker(ctx: ApiContext) {
   let api: ServeApi | undefined;
   try {
-    api = new ServeApi();
+    // All worker should serve api with same context
+    api = new ServeApi(ctx);
+    if (api) {
+      await api.init();
+    }
 
     if (!api || !api.server) {
       Logger.error(`API server error: ${api?.server}`);
@@ -45,8 +64,10 @@ if (cluster.isPrimary) {
     } else {
       Logger.info(`Worker ${cluster.worker?.process.pid} started`, true);
     }
-  } catch (err: any) {
-    Logger.error(`Worker caught an exception: ${err.message}`);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      Logger.error(`Worker caught an exception: ${err.message}`);
+    }
     gracefulShutdown(api?.server);
   }
 
@@ -92,4 +113,13 @@ function gracefulShutdown(server: Server | undefined) {
   server?.close();
   Logger.warn("Worker server closed", true);
   process.exit(0);
+}
+
+try {
+  main();
+} catch (err: unknown) {
+  const { message, code } = ErrorController.resolveError(err);
+  Logger.error(`Top-level App Error (${code}): ${message}`);
+  shutdownCluster();
+  process?.exit(1);
 }

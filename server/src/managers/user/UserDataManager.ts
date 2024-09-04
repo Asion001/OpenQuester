@@ -2,14 +2,19 @@ import Joi from "joi";
 
 import { IInputUserData } from "../../interfaces/user/IInputUserData";
 import { ValueUtils } from "../../utils/ValueUtils";
+import { ClientResponse } from "../../enums/ClientResponse";
+import { ServerResponse } from "../../enums/ServerResponse";
+import { ClientError } from "../../error/ClientError";
+import { ServerError } from "../../error/ServerError";
+import { ISchema } from "../../interfaces/ISchema";
 
-export class UserDataManager {
-  protected userData?: IInputUserData;
-  protected schema: Joi.ObjectSchema<any>;
-  protected required?: string[];
+export class UserDataManager implements ISchema {
+  protected _userData?: IInputUserData;
+  protected _schema: Joi.ObjectSchema<any>;
+  protected _required?: string[];
 
   constructor() {
-    this.schema = Joi.object({
+    this._schema = Joi.object({
       id: Joi.number(),
       login: Joi.alternatives().try(
         Joi.string().min(3).max(30),
@@ -21,7 +26,7 @@ export class UserDataManager {
       birthday: Joi.alternatives().try(Joi.date(), Joi.string()),
       permissions: Joi.array(),
     });
-    this.required = [];
+    this._required = [];
   }
 
   /**
@@ -30,21 +35,23 @@ export class UserDataManager {
    * By default it's called in `validate()`
    */
   public validateFields() {
-    if (!this.required?.length) {
+    if (!this._required?.length) {
       return;
     }
 
     const r: string[] = [];
-    for (const entry of Object.entries(this.userData!)) {
-      if (this.required.includes(entry[0])) {
-        const value = this.userData![entry[0] as keyof IInputUserData];
+    for (const entry of Object.entries(this._userData!)) {
+      if (this._required.includes(entry[0])) {
+        const value = this._userData![entry[0] as keyof IInputUserData];
         if (ValueUtils.isBad(value) || ValueUtils.isEmpty(value)) {
           r.push(entry[0]);
         }
       }
     }
     if (r.length > 0) {
-      throw new Error(`[${[...r]}] field(s) is required`);
+      throw new ClientError(
+        `${ClientResponse.FIELDS_REQUIRED.replace("%s", `[${[...r]}]`)}`
+      );
     }
   }
 
@@ -52,21 +59,17 @@ export class UserDataManager {
    * Validates manager user data using validation schema
    */
   public validate() {
-    if (
-      !this.userData ||
-      !ValueUtils.isObject(this.userData) ||
-      ValueUtils.isEmpty(this.userData)
-    ) {
-      throw new Error("No user data provided.");
+    if (!this._userData || !ValueUtils.isValidObject(this._userData)) {
+      throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
     this.validateFields();
 
-    if (!this.schema) {
-      throw new Error("No validation schema.");
+    if (!this._schema) {
+      throw new ServerError(ServerResponse.NO_SCHEMA);
     }
 
-    const { value, error } = this.schema.validate(this.userData, {
+    const { value, error } = this._schema.validate(this._userData, {
       allowUnknown: false,
       stripUnknown: true,
     });
@@ -74,13 +77,15 @@ export class UserDataManager {
     // TODO: Validate avatar field when implemented
 
     if (error) {
-      throw new Error(`Validation error: ${error.message}`);
+      throw new ClientError(
+        `${ClientResponse.VALIDATION_ERROR}: ${error.message}`
+      );
     }
 
     return value;
   }
 
   public get data() {
-    return this.userData;
+    return this._userData;
   }
 }

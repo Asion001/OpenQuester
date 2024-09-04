@@ -729,7 +729,7 @@
             "format": "binary"
           }
         },
-        "required": ["password"]
+        "required": ["name", "email", "password"]
       },
       "LoginUser": {
         "type": "object",
@@ -742,7 +742,8 @@
             "type": "string",
             "example": "mySuperCoolPassword123"
           }
-        }
+        },
+        "required": ["login", "password"]
       },
       "AuthData": {
         "type": "object",

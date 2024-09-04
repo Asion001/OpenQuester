@@ -1,3 +1,6 @@
+import { ClientResponse } from "../enums/ClientResponse";
+import { ClientError } from "../error/ClientError";
+
 export class ValueUtils {
   /**
    * Return specified date, but with 12:00:00 time
@@ -26,7 +29,7 @@ export class ValueUtils {
     id = Number(id);
 
     if (id < 1 || isNaN(id)) {
-      throw new Error("Please specify id that greater than 1");
+      throw new ClientError(ClientResponse.BAD_USER_ID);
     }
 
     return id;
@@ -143,15 +146,19 @@ export class ValueUtils {
     return {};
   }
 
-  public static isValidObject(obj: object) {
-    if (this.isBad(obj) || this.isEmpty(obj)) {
+  /**
+   * Validates that provided entity is non-empty object with at least one non-empty field
+   */
+  public static isValidObject(entity: unknown) {
+    if (!this.isObject(entity) || this.isBad(entity) || this.isEmpty(entity)) {
       return false;
     }
-    for (const val of Object.values(obj)) {
-      if (this.isBad(val) || this.isEmpty(val)) {
-        return false;
+    for (const val of Object.values(entity)) {
+      // If at least one field is not empty -> it's valid object
+      if (!this.isBad(val) && !this.isEmpty(val)) {
+        return true;
       }
     }
-    return true;
+    return false;
   }
 }

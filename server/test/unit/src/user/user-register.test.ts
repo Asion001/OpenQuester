@@ -11,6 +11,7 @@ import { JWTUtils } from "../../../../src/utils/JWTUtils";
 import { RegisterUser } from "../../../../src/managers/user/RegisterUser";
 import { LoginUser } from "../../../../src/managers/user/LoginUser";
 import { IUser } from "../../../../src/interfaces/user/IUser";
+import { ClientResponse } from "../../../../src/enums/ClientResponse";
 
 // Create a mock instance of bcrypt
 const bcryptMock = mock<typeof bcrypt>();
@@ -72,8 +73,8 @@ describe("User auth and jwt tokens", () => {
         refresh_token: "refreshToken",
       });
 
-      const result = await AuthService.register(
-        ctx,
+      const result = await new AuthService().register(
+        ctx.db,
         userData as any,
         bcryptInstance
       );
@@ -91,8 +92,8 @@ describe("User auth and jwt tokens", () => {
         avatar: null,
       };
 
-      const result2 = await AuthService.register(
-        ctx,
+      const result2 = await new AuthService().register(
+        ctx.db,
         userData2 as any,
         bcryptInstance
       );
@@ -109,8 +110,8 @@ describe("User auth and jwt tokens", () => {
         avatar: null,
       };
 
-      const result3 = await AuthService.register(
-        ctx,
+      const result3 = await new AuthService().register(
+        ctx.db,
         userData3 as any,
         bcryptInstance
       );
@@ -122,16 +123,23 @@ describe("User auth and jwt tokens", () => {
 
     it("should throw an error if registration data is invalid", async () => {
       const userData = { name: "John Doe", email: "", password: "" };
+      const required = ["email", "password"];
 
       try {
         // Logic from endpoint that throws error
         const data = new RegisterUser(userData);
         data.validate();
 
-        await AuthService.register(ctx, userData as any, bcryptInstance);
+        await new AuthService().register(
+          ctx.db,
+          userData as any,
+          bcryptInstance
+        );
         throw new Error("Expected register method to throw error.");
       } catch (err: any) {
-        expect(err.message.toLowerCase()).to.include("is required");
+        expect(err.message).to.be.equal(
+          ClientResponse.FIELDS_REQUIRED.replace("%s", `[${[...required]}]`)
+        );
       }
     });
   });
@@ -139,8 +147,7 @@ describe("User auth and jwt tokens", () => {
   describe("login", () => {
     it("should log in a user successfully", async () => {
       const userData = {
-        name: "John Doe",
-        email: "john@example.com",
+        login: "John Doe",
         password: "password123",
       };
 
@@ -151,8 +158,8 @@ describe("User auth and jwt tokens", () => {
 
       sinon.stub(selectQueryBuilder, "getOne").returns(user);
 
-      const result = await AuthService.login(
-        ctx,
+      const result = await new AuthService().login(
+        ctx.db,
         userData as any,
         bcryptInstance
       );
@@ -171,10 +178,10 @@ describe("User auth and jwt tokens", () => {
         const data = new LoginUser(userData);
         data.validate();
 
-        await AuthService.login(ctx, userData as any, bcryptInstance);
+        await new AuthService().login(ctx, userData as any, bcryptInstance);
         throw new Error("Expected method above to throw error.");
       } catch (err: any) {
-        expect(err.message.toLowerCase()).to.include("is required");
+        expect(err.message).to.be.equal(ClientResponse.NO_USER_DATA);
       }
     });
 
@@ -186,10 +193,10 @@ describe("User auth and jwt tokens", () => {
       sinon.stub(selectQueryBuilder, "getOne").returns(null);
 
       try {
-        await AuthService.login(ctx, userData as any, bcryptInstance);
+        await new AuthService().login(ctx.db, userData as any, bcryptInstance);
         throw new Error("Expected method above to throw error.");
       } catch (err: any) {
-        expect(err.message).to.include("does not exists");
+        expect(err.message).to.be.equal(ClientResponse.USER_NOT_FOUND);
       }
     });
   });
@@ -207,10 +214,10 @@ describe("User auth and jwt tokens", () => {
     sinon.stub(selectQueryBuilder, "getOne").returns(user);
 
     try {
-      await AuthService.login(ctx, userData as any, bcryptInstance);
+      await new AuthService().login(ctx.db, userData as any, bcryptInstance);
       throw new Error("Expected method above to throw error.");
     } catch (err: any) {
-      expect(err.message).to.include("Wrong password");
+      expect(err.message).to.be.equal(ClientResponse.WRONG_PASSWORD);
     }
   });
 
@@ -241,8 +248,7 @@ describe("User auth and jwt tokens", () => {
       JWTUtils.refresh("Some wrong token");
       throw new Error("Expected method above to throw error.");
     } catch (err: any) {
-      err.message = err.message.toLowerCase();
-      expect(err.message).to.include("invalid");
+      expect(err.message).to.be.equal(ClientResponse.INVALID_REFRESH);
     }
   });
 });

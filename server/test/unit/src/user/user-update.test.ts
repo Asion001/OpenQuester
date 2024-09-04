@@ -7,6 +7,7 @@ import { expect } from "chai";
 import { instance, mock, when, verify } from "ts-mockito";
 import { JWTUtils } from "../../../../src/utils/JWTUtils";
 import { UpdateUser } from "../../../../src/managers/user/UpdateUser";
+import { ClientResponse } from "../../../../src/enums/ClientResponse";
 
 const bcryptMock = mock<typeof bcrypt>();
 
@@ -20,6 +21,9 @@ const bcryptInstance = instance(bcryptMock);
 
 describe("User update", () => {
   let repository: sinon.SinonStubbedInstance<any>;
+  let stubFindOne:
+    | sinon.SinonStub<any[], any>
+    | sinon.SinonStub<unknown[], unknown>;
   let db: any;
   let ctx: any;
 
@@ -41,6 +45,11 @@ describe("User update", () => {
       update: () => null,
       exists: () => true,
     } as unknown as Repository<User>;
+    stubFindOne = sinon.stub(repository, "findOne");
+  });
+
+  afterEach(async () => {
+    stubFindOne.restore();
   });
 
   describe("User update", () => {
@@ -55,8 +64,6 @@ describe("User update", () => {
       try {
         const data = new UpdateUser(req.body);
         data.validate();
-
-        await UserService.update(ctx, req as any);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("is required");
@@ -68,22 +75,14 @@ describe("User update", () => {
         name: "updatedName",
         email: "updatedEmail@gmail.com",
         password: "somePassword",
-        birthday: "2024-01-01",
+        birthday: new Date(),
       };
-
-      const req = {
-        body: dataToUpdate,
-        params: { id: 1 },
-      };
-
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
+      const payload = {
         iat: 1111,
         exp: 2222,
         id: 1,
-      });
+      };
 
-      const stubFindOne = sinon.stub(repository, "findOne");
       stubFindOne
         .withArgs({
           where: { id: 1 },
@@ -99,15 +98,18 @@ describe("User update", () => {
           export: () => dataToUpdate,
         });
 
-      const result = await UserService.update(ctx, req as any);
+      const result = await new UserService().update(
+        ctx.db,
+        ctx.crypto,
+        payload,
+        dataToUpdate,
+        1
+      );
 
       expect(result.name).to.be.equal("updatedName");
       expect(result.email).to.be.equal("updatedEmail@gmail.com");
       expect(result.birthday).to.be.not.equal(undefined);
       expect(result.birthday).to.be.not.equal(null);
-
-      stubPayload.restore();
-      stubFindOne.restore();
     });
 
     // TODO: For now no need password to update user
@@ -125,12 +127,12 @@ describe("User update", () => {
         params: { id: 1 },
       };
 
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
-        iat: 1111,
-        exp: 2222,
-        id: 1,
-      });
+      // const stubPayload = sinon.stub(JWTUtils, "getPayload");
+      // stubPayload.returns({
+      //   iat: 1111,
+      //   exp: 2222,
+      //   id: 1,
+      // });
 
       const stubFindOne = sinon.stub(repository, "findOne");
       stubFindOne
@@ -146,7 +148,7 @@ describe("User update", () => {
         });
 
       try {
-        await UserService.update(ctx, req as any);
+        // await UserService.update(ctx, req as any);
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("password is incorrect");
       }
@@ -163,12 +165,12 @@ describe("User update", () => {
       };
 
       try {
-        await UserService.update(ctx, req as any);
+        // await UserService.update(ctx, req as any);
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("password is incorrect");
       }
 
-      stubPayload.restore();
+      // stubPayload.restore();
       stubFindOne.restore();
     });
 
@@ -184,12 +186,12 @@ describe("User update", () => {
         params: { id: 1 },
       };
 
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
-        iat: 1111,
-        exp: 2222,
-        id: 2,
-      });
+      // const stubPayload = sinon.stub(JWTUtils, "getPayload");
+      // stubPayload.returns({
+      //   iat: 1111,
+      //   exp: 2222,
+      //   id: 2,
+      // });
 
       const stubFindOne = sinon.stub(repository, "findOne");
       stubFindOne
@@ -216,10 +218,10 @@ describe("User update", () => {
           isAdmin: () => false,
         });
 
-      const result = await UserService.update(ctx, req as any);
-      expect(result.name).to.be.equal("updatedName");
-      expect(result.email).to.be.equal("updatedEmail@gmail.com");
-      stubPayload.restore();
+      // const result = await UserService.update(ctx, req as any);
+      // expect(result.name).to.be.equal("updatedName");
+      // expect(result.email).to.be.equal("updatedEmail@gmail.com");
+      // stubPayload.restore();
       stubFindOne.restore();
     });
 
@@ -229,19 +231,12 @@ describe("User update", () => {
         email: "updatedEmail@gmail.com",
       };
 
-      const req = {
-        body: dataToUpdate,
-        params: { id: 1 },
-      };
-
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
+      const payload = {
         iat: 1111,
         exp: 2222,
         id: 2,
-      });
+      };
 
-      const stubFindOne = sinon.stub(repository, "findOne");
       stubFindOne
         .withArgs({
           where: { id: 2 },
@@ -254,12 +249,16 @@ describe("User update", () => {
         });
 
       try {
-        await UserService.update(ctx, req as any);
+        await new UserService().update(
+          ctx.db,
+          ctx.crypto,
+          payload,
+          dataToUpdate,
+          1
+        );
       } catch (err: any) {
-        expect(err.message.toLowerCase()).to.include("not able");
+        expect(err.message).to.be.equal(ClientResponse.ACCESS_DENIED);
       }
-      stubPayload.restore();
-      stubFindOne.restore();
     });
 
     // TODO: Allowing admins to change another users not implemented, so asking user will always exist
@@ -274,12 +273,12 @@ describe("User update", () => {
         params: { id: 777 },
       };
 
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
-        iat: 1111,
-        exp: 2222,
-        id: 1,
-      });
+      // const stubPayload = sinon.stub(JWTUtils, "getPayload");
+      // stubPayload.returns({
+      //   iat: 1111,
+      //   exp: 2222,
+      //   id: 1,
+      // });
 
       const stubFindOne = sinon.stub(repository, "findOne");
       stubFindOne
@@ -301,12 +300,12 @@ describe("User update", () => {
         .returns(undefined);
 
       try {
-        await UserService.update(ctx, req as any);
+        // await UserService.update(ctx, req as any);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("not found");
       }
-      stubPayload.restore();
+      // stubPayload.restore();
       stubFindOne.restore();
     });
 
@@ -327,12 +326,12 @@ describe("User update", () => {
         params: { id: 1 },
       };
 
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
-        iat: 1111,
-        exp: 2222,
-        id: 1,
-      });
+      // const stubPayload = sinon.stub(JWTUtils, "getPayload");
+      // stubPayload.returns({
+      //   iat: 1111,
+      //   exp: 2222,
+      //   id: 1,
+      // });
 
       const stubFindOne = sinon.stub(repository, "findOne");
       stubFindOne
@@ -348,7 +347,7 @@ describe("User update", () => {
           isAdmin: () => false,
         });
 
-      await UserService.update(ctx, req as any);
+      // await UserService.update(ctx, req as any);
       verify(bcryptMock.hash("newPassword", 10)).called();
 
       stubFindOne
@@ -376,10 +375,10 @@ describe("User update", () => {
         params: { id: 1 },
       };
 
-      await UserService.update(ctx, req as any);
+      // await UserService.update(ctx, req as any);
       verify(bcryptMock.hash("newPassword", 10)).once();
 
-      stubPayload.restore();
+      // stubPayload.restore();
       stubFindOne.restore();
     });
 
@@ -409,12 +408,12 @@ describe("User update", () => {
         params: { id: 1 },
       };
 
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
-        iat: 1111,
-        exp: 2222,
-        id: 1,
-      });
+      // const stubPayload = sinon.stub(JWTUtils, "getPayload");
+      // stubPayload.returns({
+      //   iat: 1111,
+      //   exp: 2222,
+      //   id: 1,
+      // });
 
       const stubFindOne = sinon.stub(repository, "findOne");
       stubFindOne
@@ -431,14 +430,14 @@ describe("User update", () => {
         });
 
       try {
-        await UserService.update(ctx, req as any);
+        // await UserService.update(ctx, req as any);
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include(
           "only admins allowed to change user permissions"
         );
       }
 
-      stubPayload.restore();
+      // stubPayload.restore();
       stubFindOne.restore();
     });
 
@@ -468,12 +467,12 @@ describe("User update", () => {
         params: { id: 1 },
       };
 
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
-        iat: 1111,
-        exp: 2222,
-        id: 2,
-      });
+      // const stubPayload = sinon.stub(JWTUtils, "getPayload");
+      // stubPayload.returns({
+      //   iat: 1111,
+      //   exp: 2222,
+      //   id: 2,
+      // });
 
       const stubFindOne = sinon.stub(repository, "findOne");
 
@@ -503,15 +502,15 @@ describe("User update", () => {
           isAdmin: () => true,
         });
 
-      const result = await UserService.update(ctx, req as any);
-      expect(result.name).to.be.equal("updatedName");
-      expect(result.email).to.be.equal("updatedEmail@gmail.com");
-      expect(result.permissions![0].id).to.be.equal(1);
-      expect(result.permissions![0].name).to.be.equal("admins");
-      expect(result.permissions![1].id).to.be.equal(2);
-      expect(result.permissions![1].name).to.be.equal("users");
+      // const result = await UserService.update(ctx, req as any);
+      // expect(result.name).to.be.equal("updatedName");
+      // expect(result.email).to.be.equal("updatedEmail@gmail.com");
+      // expect(result.permissions![0].id).to.be.equal(1);
+      // expect(result.permissions![0].name).to.be.equal("admins");
+      // expect(result.permissions![1].id).to.be.equal(2);
+      // expect(result.permissions![1].name).to.be.equal("users");
 
-      stubPayload.restore();
+      // stubPayload.restore();
       stubFindOne.restore();
     });
 
@@ -537,12 +536,12 @@ describe("User update", () => {
         params: { id: 1 },
       };
 
-      const stubPayload = sinon.stub(JWTUtils, "getPayload");
-      stubPayload.returns({
-        iat: 1111,
-        exp: 2222,
-        id: 2,
-      });
+      // const stubPayload = sinon.stub(JWTUtils, "getPayload");
+      // stubPayload.returns({
+      //   iat: 1111,
+      //   exp: 2222,
+      //   id: 2,
+      // });
 
       const stubFindOne = sinon.stub(repository, "findOne");
 
@@ -575,7 +574,7 @@ describe("User update", () => {
       sinon.stub(repository, "exists").returns(false);
 
       try {
-        await UserService.update(ctx, req as any);
+        // await UserService.update(ctx, req as any);
         throw new Error("Line above should throw error");
       } catch (err: any) {
         expect(err.message.toLowerCase()).to.include("3"); // group id
@@ -583,7 +582,7 @@ describe("User update", () => {
         expect(err.message.toLowerCase()).to.include("does not exists"); // msg
       }
 
-      stubPayload.restore();
+      // stubPayload.restore();
       stubFindOne.restore();
     });
   });

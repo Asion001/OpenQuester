@@ -1,61 +1,72 @@
 import express from "express";
-import bcrypt from "bcryptjs";
 import cors from "cors";
 
 import { type Express } from "express";
 import { type Server } from "http";
-import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
-import { Database, db } from "./database/Database";
-import { verifyTokenMiddleware } from "./middleware/authMiddleware";
+import { type Database } from "./database/Database";
+import { type ApiContext } from "./services/context/ApiContext";
+
 import { Logger } from "./utils/Logger";
+import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
+import { verifyToken } from "./middleware/authMiddleware";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
-import { ApiContext } from "./services/context/ApiContext";
 import { FileRestApiController } from "./controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
+import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";
+import { ServerError } from "./error/ServerError";
+import { ServerServices } from "./services/ServerServices";
+import { UserService } from "./services/UserService";
+import { ContentStructureService } from "./services/ContentStructureService";
+import { AuthService } from "./services/AuthService";
 
 /**
  * Servers all api endpoints in one place.
  */
 export class ServeApi {
   /** Express app */
-  protected app!: Express;
+  protected _app!: Express;
   /** Express server */
   protected _server!: Server;
   /** Application listening port */
-  protected port!: number;
+  protected _port!: number;
   /** Database instance */
-  protected db!: Database;
+  protected _db!: Database;
+  /** Server services locator */
+  protected _serverServices!: ServerServices;
 
-  protected context!: ApiContext;
+  constructor(protected _context: ApiContext) {
+    this._db = this._context.db;
+    this._app = this._context.app;
+    this._port = 3000;
+    this._serverServices = this._context.serverServices;
+  }
 
-  constructor() {
+  public async init() {
     try {
-      // Initialize reusable variables
-      this.db = db;
-      this.app = express();
-      this.port = 3000;
+      // Build database connection
+      await this._db.build();
 
       // Middlewares
-      this.app.use(cors());
-      this.app.use(express.json());
-      this.app.use(verifyTokenMiddleware);
+      this._app.use(cors());
+      this._app.use(express.json());
+      this._app.use(verifyToken);
 
       // Initialize server listening
-      this._server = this.app.listen(this.port, () => {
-        Logger.info(`App listening on port: ${this.port}`);
+      this._server = this._app.listen(this._port, () => {
+        Logger.info(`App listening on port: ${this._port}`);
       });
 
-      this.context = new ApiContext({
-        db: this.db,
-        app: this.app,
-        crypto: bcrypt,
-      });
+      // Register server services
+      this._registerServices();
 
       // Attach API controllers
-      this.attachControllers();
-    } catch (err: any) {
-      Logger.error(`Serve API error: ${err.message}`);
-      throw new Error(err.message);
+      this._attachControllers();
+    } catch (err: unknown) {
+      let message = "unknown error";
+      if (err instanceof Error) {
+        message = err.message;
+      }
+      throw new ServerError(`Serve API error -> ${message}`);
     }
   }
 
@@ -75,10 +86,23 @@ export class ServeApi {
    * in `openapi/scheme.json`. This scheme used mostly in client-side for
    * generating and using of entities based on server endpoints.
    */
-  public attachControllers() {
-    new AuthRestApiController(this.context);
-    new UserRestApiController(this.context);
-    new FileRestApiController(this.context.app);
-    new PackageRestApiController(this.context.app);
+  private _attachControllers() {
+    new AuthRestApiController(this._context);
+    new UserRestApiController(this._context);
+    new FileRestApiController(this._context);
+    new PackageRestApiController(this._context);
+  }
+
+  /**
+   * Register all services in ServerServices instance, which is service locator.
+   *
+   * This allows us to use always only one instance of each service and place
+   * them together in one place.
+   */
+  private _registerServices() {
+    this._serverServices.register(UserService);
+    this._serverServices.register(ContentStructureService);
+    this._serverServices.register(AuthService);
+    this._serverServices.register(StorageServiceFactory);
   }
 }
