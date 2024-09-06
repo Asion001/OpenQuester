@@ -3,7 +3,7 @@
 **OpenQuester** is a cooperative quiz game inspired by [SIGame](https://github.com/VladimirKhil/SI)
 
 ## How to download?
-On the **[Latests Release page](https://github.com/Asion001/OpenQuester/releases/latest)** find **OpenQuester** installation file for your platform and download it.
+On the **[Release page](https://github.com/Asion001/OpenQuester/releases/latest)** find **OpenQuester** installation file for your platform and download it.
 
 Or you can find download links on our website: **Work in Progress**
 
