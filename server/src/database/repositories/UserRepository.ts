@@ -11,6 +11,7 @@ import { ClientError } from "../../error/ClientError";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { ISelectOptions } from "../../interfaces/ISelectOptions";
 import { UserOrId } from "../../types/user/user";
+import { PermissionRepository } from "./PermissionRepository";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -25,9 +26,11 @@ const USER_SELECT_FIELDS: (keyof User)[] = [
 
 export class UserRepository {
   private static _instance: UserRepository;
+  private _db: Database;
   private _repository: Repository<User>;
 
   private constructor(db: Database) {
+    this._db = db;
     this._repository = db.getRepository(User);
   }
 
@@ -54,9 +57,10 @@ export class UserRepository {
     }) as Promise<User[]>;
   }
 
-  public async create(db: Database, data: IRegisterUser, crypto?: Crypto) {
+  public async create(data: IRegisterUser, crypto?: Crypto) {
     // Set all data to new user instance
     const user = new User();
+    const permissionRepository = PermissionRepository.getRepository(this._db);
     await user.import({
       name: data.name,
       email: data.email,
@@ -65,7 +69,8 @@ export class UserRepository {
         ? ValueUtils.getBirthday(data.birthday)
         : undefined,
       avatar: data.avatar,
-      permissions: ((await Permission.default(db)) ?? []) as Permission[],
+      permissions: ((await permissionRepository.default()) ??
+        []) as Permission[],
       created_at: new Date(),
       updated_at: new Date(),
       is_deleted: false,

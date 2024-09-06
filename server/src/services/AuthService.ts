@@ -17,10 +17,10 @@ export class AuthService {
   public async register(
     db: Database,
     data: IRegisterUser,
-    crypto: Crypto
+    crypto?: Crypto
   ): Promise<JWTResponse> {
     const repository = UserRepository.getRepository(db);
-    const user = await repository.create(db, data, crypto);
+    const user = await repository.create(data, crypto);
 
     const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
     return {
@@ -32,7 +32,7 @@ export class AuthService {
   public async login(
     db: Database,
     data: ILoginUser,
-    crypto: Crypto
+    crypto?: Crypto
   ): Promise<JWTResponse> {
     const repository = UserRepository.getRepository(db);
     const user = await repository.login(data);
