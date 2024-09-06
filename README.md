@@ -2,6 +2,11 @@
 
 **OpenQuester** is a cooperative quiz game inspired by [SIGame](https://github.com/VladimirKhil/SI)
 
+## How to download?
+On the **[Latests Release page](https://github.com/Asion001/OpenQuester/releases/latest)** find **OpenQuester** installation file for your platform and download it.
+
+Or you can find download links on our website: **Work in Progress**
+
 ## Technology Stack
 
 - **Frontend**: **[Dart](https://dart.dev/)**, **[Flutter](https://flutter.dev/)**
@@ -17,7 +22,7 @@ Have any questions or suggestions? Create a [Discussion](https://github.com/Asio
 
 We welcome contributions from the community! If you'd like to contribute to **OpenQuester**, please fork the repository, create a new branch, and submit a pull request.
 
-Before submitting a pull request, ensure that your changes pass the existing tests and adhere to the project's code style.
+Before submitting a pull request, ensure that your changes pass the existing tests and follow the project's code style.
 
 ## License
 
