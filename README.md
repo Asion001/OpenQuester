@@ -22,7 +22,7 @@ Have any questions or suggestions? Create a [Discussion](https://github.com/Asio
 
 We welcome contributions from the community! If you'd like to contribute to **OpenQuester**, please fork the repository, create a new branch, and submit a pull request.
 
-Before submitting a pull request, ensure that your changes pass the existing tests and adhere to the project's code style.
+Before submitting a pull request, ensure that your changes pass the existing tests and follow  the project's code style.
 
 ## License
 
