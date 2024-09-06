@@ -5,9 +5,9 @@ import { UserService } from "../../../../src/services/UserService";
 import * as bcrypt from "bcryptjs";
 import { expect } from "chai";
 import { instance, mock, when, verify } from "ts-mockito";
-import { JWTUtils } from "../../../../src/utils/JWTUtils";
 import { UpdateUser } from "../../../../src/managers/user/UpdateUser";
 import { ClientResponse } from "../../../../src/enums/ClientResponse";
+import { UserRepository } from "../../../../src/database/repositories/UserRepository";
 
 const bcryptMock = mock<typeof bcrypt>();
 
@@ -20,6 +20,7 @@ when(bcryptMock.compare("newPassword", "somePassword")).thenResolve(false);
 const bcryptInstance = instance(bcryptMock);
 
 describe("User update", () => {
+  let userRepo: UserRepository;
   let repository: sinon.SinonStubbedInstance<any>;
   let stubFindOne:
     | sinon.SinonStub<any[], any>
@@ -45,7 +46,8 @@ describe("User update", () => {
       update: () => null,
       exists: () => true,
     } as unknown as Repository<User>;
-    stubFindOne = sinon.stub(repository, "findOne");
+    userRepo = UserRepository.getRepository(db);
+    stubFindOne = sinon.stub(userRepo, "get");
   });
 
   afterEach(async () => {
@@ -84,8 +86,7 @@ describe("User update", () => {
       };
 
       stubFindOne
-        .withArgs({
-          where: { id: 1 },
+        .withArgs(1, {
           relations: ["permissions"],
         })
         .returns({

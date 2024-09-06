@@ -12,6 +12,7 @@ import { ClientResponse } from "../enums/ClientResponse";
 import { ServerResponse } from "../enums/ServerResponse";
 import { ClientError } from "../error/ClientError";
 import { ServerError } from "../error/ServerError";
+import { UserRepository } from "../database/repositories/UserRepository";
 
 export class UserService {
   /**
@@ -24,18 +25,20 @@ export class UserService {
   ): Promise<User> {
     // Token validated by middleware, so no need to validate it
     const id = ValueUtils.validateId(tokenPayload.id);
+    const repository = UserRepository.getRepository(db);
 
-    return User.get(db, id);
+    return repository.get(id);
   }
 
   /**
    * Get list of all available users in DB
    */
   public async list(db: Database, tokenPayload: JWTPayload) {
-    const requestUser = await User.get(db, tokenPayload.id);
+    const repository = UserRepository.getRepository(db);
+    const requestUser = await repository.get(tokenPayload.id);
 
     if (requestUser.isAdmin()) {
-      return User.list(db);
+      return repository.list();
     }
 
     throw new ClientError(ClientResponse.ACCESS_DENIED);
@@ -45,17 +48,19 @@ export class UserService {
    * Retrieve one user
    */
   public async get(db: Database, userId: number, tokenPayload: JWTPayload) {
+    const repository = UserRepository.getRepository(db);
+
     if (!userId) {
       return this.getByTokenPayload(db, tokenPayload);
     }
 
     if (tokenPayload.id == userId) {
-      return User.get(db, userId);
+      return repository.get(userId);
     }
 
-    const requestUser = await User.get(db, tokenPayload.id);
+    const requestUser = await repository.get(tokenPayload.id);
     if (requestUser.isAdmin()) {
-      return User.get(db, userId);
+      return repository.get(userId);
     }
 
     throw new ClientError(ClientResponse.ACCESS_DENIED);
@@ -97,18 +102,18 @@ export class UserService {
    * User deletion logic
    */
   private async performDelete(db: Database, id: number) {
-    const repository = db.getRepository(User);
+    const repository = UserRepository.getRepository(db);
 
-    const user = (await repository.findOne({
-      where: { id },
+    const user = await repository.get(id, {
       select: ["is_deleted"],
-    })) as User;
+      relations: ["permissions"],
+    });
 
     if (!user || user.is_deleted) {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
-    return user.delete(db, repository);
+    return repository.delete(user);
   }
 
   /**
@@ -124,12 +129,11 @@ export class UserService {
       throw new ServerError(ServerResponse.NO_CRYPTO);
     }
 
-    const repository = db.getRepository(User);
+    const repository = UserRepository.getRepository(db);
 
-    const user = (await repository.findOne({
-      where: { id },
+    const user = await repository.get(id, {
       relations: ["permissions"],
-    })) as User;
+    });
 
     if (!user) {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
@@ -142,7 +146,7 @@ export class UserService {
       user.birthday = ValueUtils.getBirthday(body.birthday);
     }
 
-    user.update(db, repository);
+    repository.update(user);
     // Do not return back user password
     delete user.password;
 
@@ -157,12 +161,9 @@ export class UserService {
     // TODO: Implement (finish) in future
     // This is only logic, permissions validation should be done before
     const db = ctx.db;
-    const repository = db.getRepository(User);
+    const repository = UserRepository.getRepository(db);
 
-    const user = (await repository.findOne({
-      where: { id },
-      relations: ["permissions"],
-    })) as User;
+    const user = await repository.get(id, { relations: ["permissions"] });
 
     if (!user) {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
@@ -232,7 +233,7 @@ export class UserService {
       }
       // Assign provided groups for return value
       user.permissions = body.groups;
-      user.update(db, repository);
+      repository.update(user);
     });
 
     return user;

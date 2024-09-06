@@ -1,5 +1,3 @@
-import { User } from "../database/models/User";
-
 import { JWTResponse } from "../types/jwt/jwt";
 import { Crypto } from "../interfaces/Crypto";
 import { ILoginUser } from "../interfaces/user/ILoginUser";
@@ -10,6 +8,7 @@ import { IRegisterUser } from "../interfaces/user/IRegisterUser";
 import { type Database } from "../database/Database";
 import { ClientResponse } from "../enums/ClientResponse";
 import { ClientError } from "../error/ClientError";
+import { UserRepository } from "../database/repositories/UserRepository";
 
 /**
  * Handles all business logic of user authorization
@@ -20,7 +19,8 @@ export class AuthService {
     data: IRegisterUser,
     crypto: Crypto
   ): Promise<JWTResponse> {
-    const user = await User.create(db, data, crypto);
+    const repository = UserRepository.getRepository(db);
+    const user = await repository.create(db, data, crypto);
 
     const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
     return {
@@ -34,7 +34,8 @@ export class AuthService {
     data: ILoginUser,
     crypto: Crypto
   ): Promise<JWTResponse> {
-    const user = await User.login(db, data);
+    const repository = UserRepository.getRepository(db);
+    const user = await repository.login(data);
 
     if (!user) {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);

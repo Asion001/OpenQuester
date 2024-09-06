@@ -7,36 +7,16 @@ import {
   Unique,
   ManyToMany,
   JoinTable,
-  Repository,
 } from "typeorm";
 
 import { IUser } from "../../interfaces/user/IUser";
 import { File } from "./File";
 import { Permission } from "./Permission";
 import { EUserPermissions } from "../../enums/EUserPermissions";
-import { Database } from "../Database";
-import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
-import { Crypto } from "../../interfaces/Crypto";
-import { ValueUtils } from "../../utils/ValueUtils";
-import { ILoginUser } from "../../interfaces/user/ILoginUser";
-import { CryptoUtils } from "../../utils/CryptoUtils";
-
-const USER_SELECT_FIELDS: (keyof User)[] = [
-  "id",
-  "name",
-  "email",
-  "birthday",
-  "avatar",
-  "created_at",
-  "updated_at",
-  "is_deleted",
-];
 
 @Entity()
 @Unique(["email", "name"])
 export class User implements IUser {
-  private repository?: Repository<User>;
-
   constructor() {
     //
   }
@@ -113,82 +93,5 @@ export class User implements IUser {
       updated_at: this.updated_at,
       permissions: this.permissions,
     } as IUser;
-  }
-
-  public static async get(db: Database, id: number) {
-    return db.getRepository(User).findOne({
-      where: { id },
-      select: USER_SELECT_FIELDS,
-      relations: ["permissions"],
-    }) as Promise<User>;
-  }
-
-  public static async list(db: Database) {
-    return db.getRepository(User).find({
-      select: USER_SELECT_FIELDS,
-      relations: ["permissions"],
-    }) as Promise<User[]>;
-  }
-
-  public static async create(
-    db: Database,
-    data: IRegisterUser,
-    crypto: Crypto
-  ) {
-    const repository = db.getRepository(User);
-    // Set all data to new user instance
-    const user = new User();
-    await user.import({
-      name: data.name,
-      email: data.email,
-      password: await CryptoUtils.hash(data.password as string, 10, crypto),
-      birthday: data.birthday
-        ? ValueUtils.getBirthday(data.birthday)
-        : undefined,
-      avatar: data.avatar,
-      permissions: ((await Permission.default(db)) ?? []) as Permission[],
-      created_at: new Date(),
-      updated_at: new Date(),
-      is_deleted: false,
-    });
-
-    // Save new user
-    await repository.save(user);
-    return user;
-  }
-
-  /**
-   * Returns user with specified login data
-   */
-  public static async login(db: Database, data: ILoginUser) {
-    return db
-      .getRepository(User)
-      .createQueryBuilder("user")
-      .where("user.email = :email", { email: data.login })
-      .orWhere("user.name = :name", { name: data.login })
-      .getOne();
-  }
-
-  public async delete(db: Database, repository?: Repository<User>) {
-    this.repository = this.repository ?? repository ?? db.getRepository(User);
-    this.is_deleted = false;
-    this.update(db);
-    return;
-  }
-
-  public async update(db: Database, repository?: Repository<User>) {
-    this.repository = this.repository ?? repository ?? db.getRepository(User);
-
-    return this.repository.update(
-      { id: this.id },
-      {
-        name: this.name,
-        email: this.email,
-        birthday: this.birthday,
-        avatar: this.avatar,
-        password: this.password,
-        is_deleted: this.is_deleted,
-      }
-    );
   }
 }
