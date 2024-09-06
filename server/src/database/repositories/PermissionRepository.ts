@@ -1,5 +1,5 @@
-import { Repository } from "typeorm";
-import { Database } from "../Database";
+import { type Repository } from "typeorm";
+import { type Database } from "../Database";
 import { Permission } from "../models/Permission";
 import { EUserPermissions } from "../../enums/EUserPermissions";
 

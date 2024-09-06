@@ -1,11 +1,11 @@
-import { Repository } from "typeorm";
+import { type Repository } from "typeorm";
 import { User } from "../models/User";
-import { Database } from "../Database";
+import { type Database } from "../Database";
 import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
 import { Crypto } from "../../interfaces/Crypto";
 import { CryptoUtils } from "../../utils/CryptoUtils";
 import { ValueUtils } from "../../utils/ValueUtils";
-import { Permission } from "../models/Permission";
+import { type Permission } from "../models/Permission";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
 import { ClientError } from "../../error/ClientError";
 import { ClientResponse } from "../../enums/ClientResponse";
