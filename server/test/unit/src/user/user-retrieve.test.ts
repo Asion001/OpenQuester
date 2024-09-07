@@ -5,11 +5,16 @@ import { expect } from "chai";
 import { UserService } from "../../../../src/services/UserService";
 import { ClientResponse } from "../../../../src/enums/ClientResponse";
 import { ValueUtils } from "../../../../src/utils/ValueUtils";
-import { Database } from "../../../../src/database/Database";
+import { UserRepository } from "../../../../src/database/repositories/UserRepository";
+import { ISelectOptions } from "../../../../src/interfaces/ISelectOptions";
 
 describe("User retrieve by id and JWT token", () => {
   let userRepository: sinon.SinonStubbedInstance<any>;
-  let stubUser: sinon.SinonStub<[db: Database, id: number], Promise<User>>;
+  let repository: UserRepository;
+  let stubUser: sinon.SinonStub<
+    [id: number, selectOptions?: ISelectOptions<User> | undefined],
+    Promise<User>
+  >;
   let db: any;
   let ctx: any;
 
@@ -23,7 +28,8 @@ describe("User retrieve by id and JWT token", () => {
     userRepository = {
       findOne: () => null,
     } as unknown as Repository<User>;
-    stubUser = sinon.stub(User, "get");
+    repository = UserRepository.getRepository(ctx.db);
+    stubUser = sinon.stub(repository, "get");
   });
 
   afterEach(async () => {
@@ -121,13 +127,13 @@ describe("User retrieve by id and JWT token", () => {
         id: 2,
       };
 
-      stubUser.withArgs(ctx.db, 2).resolves({
+      stubUser.withArgs(2).resolves({
         name: "admin",
         isAdmin: () => true,
         permissions: [{ id: 1, name: "admin" }],
       } as unknown as User);
 
-      stubUser.withArgs(ctx.db, 1).resolves({
+      stubUser.withArgs(1).resolves({
         name: "success",
         isAdmin: () => false,
       } as unknown as User);
