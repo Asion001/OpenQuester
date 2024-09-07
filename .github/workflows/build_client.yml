@@ -4,14 +4,36 @@ on:
   workflow_dispatch:
   workflow_call:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  pre_job:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.found_paths.outputs.client == 'true' || steps.should_force.outputs.should_force == 'true' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - id: found_paths
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            client:
+              - 'client/**'
+      - name: Check if we should force jobs to run
+        id: should_force
+        run: echo "should_force=${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' }}" >> "$GITHUB_OUTPUT"
+
   build:
     name: Build client app
     # Skip when PR from a fork
     if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./client
+    defaults:
+      run:
+        working-directory: ./client
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -19,37 +41,29 @@ jobs:
           distribution: "zulu"
           java-version: "17"
           cache: "gradle"
-
       - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
-          channel: "stable"
-          flutter-version-file: ${{ env.working-directory }}/pubspec.yaml
+          channel: stable
+          flutter-version-file: ./client/pubspec.yaml
           cache: true
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - name: Build web
+        run: flutter build web --wasm --no-web-resources-cdn
 
-      - name: Get Packages
-        working-directory: ${{ env.working-directory }}
-        run: flutter pub get
-
-      - name: Generate files
-        working-directory: ${{ env.working-directory }}
-        run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Build web and apk
-        working-directory: ${{ env.working-directory }}
+      - name: Build android
         run: |
-          flutter build web --wasm --no-web-resources-cdn
           flutter build apk --release
           flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64,android-x64
-
       - name: Publish Web Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: web-app
-          path: ${{ env.working-directory }}/build/web/
-
+          path: ./build/web/
       - name: Publish Android Artifacts
         uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_call'
         with:
           name: android-app
-          path: ${{ env.working-directory }}/build/app/outputs/flutter-apk/*.apk
+          path: ./build/app/outputs/flutter-apk/*.apk
