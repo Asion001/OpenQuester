@@ -71,6 +71,9 @@ jobs:
         run: flutter pub get
       - name: Generate files
         run: dart run build_runner build --delete-conflicting-outputs
+      # Ignore editing of api_config file
+      # fixes dart format error
+      - run: git restore lib/src/connection/api/api_config.dart
       - name: Run dart analyze
         run: dart analyze --fatal-infos
       - name: Run dart format
