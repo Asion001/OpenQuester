@@ -69,6 +69,8 @@ jobs:
           cache: true
       - name: Get packages
         run: flutter pub get
+      - name: Generate files
+        run: dart run build_runner build --delete-conflicting-outputs
       - name: Run dart analyze
         run: dart analyze --fatal-infos
       - name: Run dart format
