@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pre-job:
+  pre_job:
     runs-on: ubuntu-latest
     outputs:
       should_run: ${{ steps.found_paths.outputs.client == 'true' || steps.should_force.outputs.should_force == 'true' }}
