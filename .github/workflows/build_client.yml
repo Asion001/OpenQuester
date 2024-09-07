@@ -3,6 +3,7 @@ name: Build Client
 on:
   workflow_dispatch:
   workflow_call:
+  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -65,6 +66,7 @@ jobs:
           path: ./build/web/
       - name: Publish Android Artifacts
         uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_call'
         with:
           name: android-app
           path: ./build/app/outputs/flutter-apk/*.apk
