@@ -48,13 +48,11 @@ jobs:
           channel: stable
           flutter-version-file: ./client/pubspec.yaml
           cache: true
-      - name: Get Packages
-        run: flutter pub get
-      - name: Generate files
-        run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
       - name: Build web
-        run: |
-          flutter build web --wasm --no-web-resources-cdn
+        run: flutter build web --wasm --no-web-resources-cdn
+
       - name: Build android
         run: |
           flutter build apk --release

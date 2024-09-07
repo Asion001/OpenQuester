@@ -39,7 +39,5 @@ jobs:
           node-version-file: "./server/.node-version"
           cache: "npm"
           cache-dependency-path: ./server/package-lock.json
-      - name: Install Dependencies
-        run: npm ci
-      - name: Run Build
-        run: npm run build
+      - run: npm ci
+      - run: npm run build

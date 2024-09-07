@@ -45,12 +45,9 @@ jobs:
           node-version-file: ./server/.node-version
           cache: "npm"
           cache-dependency-path: ./server/package-lock.json
-      - name: Install Dependencies
-        run: npm ci
-      - name: Run linter
-        run: npm run lint
-      - name: Run Test
-        run: npm run test
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test
 
   test_client:
     runs-on: ubuntu-latest
@@ -67,16 +64,11 @@ jobs:
           channel: stable
           flutter-version-file: ./client/pubspec.yaml
           cache: true
-      - name: Get packages
-        run: flutter pub get
-      - name: Generate files
-        run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter pub get
+      - run: dart run build_runner build --delete-conflicting-outputs
       # Ignore editing of api_config file
       # fixes dart format error
       - run: git restore lib/src/connection/api/api_config.dart
-      - name: Run dart analyze
-        run: dart analyze --fatal-infos
-      - name: Run dart format
-        run: dart format lib --set-exit-if-changed
-      - name: Run dart test
-        run: dart test
+      - run: dart analyze --fatal-infos
+      - run: dart format lib --set-exit-if-changed
+      - run: dart test
