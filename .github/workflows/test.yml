@@ -79,4 +79,4 @@ jobs:
       - name: Run dart format
         run: dart format lib --set-exit-if-changed
       - name: Run dart test
-        run: dart test client/test/
+        run: dart test
