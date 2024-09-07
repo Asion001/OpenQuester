@@ -3,7 +3,6 @@ name: Build Client
 on:
   workflow_dispatch:
   workflow_call:
-  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
