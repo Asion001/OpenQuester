@@ -42,7 +42,7 @@ jobs:
       - name: Use the latest stable Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: "./server/.node-version"
+          node-version-file: ./server/.node-version
           cache: "npm"
           cache-dependency-path: ./server/package-lock.json
       - name: Install Dependencies
@@ -65,7 +65,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version-file: ./pubspec.yaml
+          flutter-version-file: ./client/pubspec.yaml
           cache: true
       - name: Get packages
         run: flutter pub get
