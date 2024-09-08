@@ -7,6 +7,7 @@ import {
   Unique,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from "typeorm";
 
 import { IUser } from "../../interfaces/user/IUser";
