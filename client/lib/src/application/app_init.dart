@@ -7,7 +7,7 @@ import 'env.dart';
 import 'logger.dart';
 
 abstract class AppInit {
-  static Future<void> hinit() async {
+  static Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
     configureDependencies();
     AppInit.packageInfo = await PackageInfo.fromPlatform();
