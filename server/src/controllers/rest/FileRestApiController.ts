@@ -32,7 +32,7 @@ export class FileRestApiController {
       const url = await this._storageService.get(req.body.filename);
       res.send({ url });
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(err);
       res.status(code).send({ error: message });
     }
   };
@@ -42,7 +42,7 @@ export class FileRestApiController {
       const url = await this._storageService.upload(req.body.filename);
       res.send({ url });
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(err);
       res.status(code).send({ error: message });
     }
   };
@@ -55,7 +55,7 @@ export class FileRestApiController {
         .status(HttpStatus.NO_CONTENT)
         .send({ message: ClientResponse.DELETE_REQUEST_SENT });
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(err);
       res.status(code).send({ error: message });
     }
   };

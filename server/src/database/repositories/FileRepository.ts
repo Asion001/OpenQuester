@@ -1,6 +1,6 @@
-import { type Repository } from "typeorm";
-import { type Database } from "../Database";
+import { Repository } from "typeorm";
 import { File } from "../models/File";
+import { Database } from "../Database";
 
 export class FileRepository {
   private static _instance: FileRepository;
@@ -16,5 +16,26 @@ export class FileRepository {
     }
 
     return this._instance;
+  }
+
+  public async writeFile(filename: string, path: string) {
+    const fileExists = await this._repository.exists({
+      where: {
+        filename,
+        path,
+      },
+    });
+    if (fileExists) {
+      return;
+    }
+
+    const file = new File();
+    file.import({
+      path,
+      filename,
+      created_at: new Date(),
+    });
+
+    this._repository.save(file);
   }
 }
