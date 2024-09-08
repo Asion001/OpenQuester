@@ -6,14 +6,8 @@ import { ClientError } from "./ClientError";
 import { OQError } from "./OQError";
 import { ServerError } from "./ServerError";
 import { ClientResponse } from "../enums/ClientResponse";
-import { ErrorRepository } from "../database/repositories/ErrorRepository";
-import { Database } from "../database/Database";
-import { AppDataSource } from "../database/DataSource";
 
 export class ErrorController {
-  private static _errorRepository: ErrorRepository;
-  private static _db: Database;
-
   /**
    * Resolves error and returns it message and code
    */
@@ -32,8 +26,6 @@ export class ErrorController {
     }
 
     if (error instanceof ServerError) {
-      // Write server errors to DB
-      this.writeErrorToDB(error.message);
       Logger.error(`Internal server error: ${error.message}`);
       return {
         message: ServerResponse.INTERNAL_SERVER_ERROR,
@@ -55,16 +47,7 @@ export class ErrorController {
     };
   }
 
-  public static async writeErrorToDB(message: string) {
-    await this._connectDB();
-    if (!this._errorRepository) {
-      this._errorRepository = ErrorRepository.getRepository(this._db);
-    }
-
-    this._errorRepository.writeError(message);
-  }
-
-  public static async resolveQueryError(error: unknown) {
+  public static async resolveUserQueryError(error: unknown) {
     let err = error;
     if (
       // Catch query error from TypeORM (if user already exists)
@@ -78,14 +61,5 @@ export class ErrorController {
     }
     const { message, code } = await ErrorController.resolveError(err);
     return { message, code };
-  }
-
-  private static async _connectDB() {
-    if (this._db && this._db.dataSource.isInitialized) {
-      return;
-    }
-
-    this._db = Database.getInstance(AppDataSource);
-    await this._db.build();
   }
 }

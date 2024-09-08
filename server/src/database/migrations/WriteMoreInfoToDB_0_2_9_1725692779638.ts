@@ -48,31 +48,6 @@ export class WriteMoreInfoToDB_0_2_9_1725692779638
       })
     );
 
-    await queryRunner.createTable(
-      new Table({
-        name: "error",
-        columns: [
-          {
-            name: "id",
-            type: "int",
-            isPrimary: true,
-            isGenerated: true,
-            generationStrategy: "increment",
-          },
-          {
-            name: "message",
-            type: "varchar",
-            isNullable: false,
-          },
-          {
-            name: "created_at",
-            type: "timestamp",
-            default: "CURRENT_TIMESTAMP",
-          },
-        ],
-      })
-    );
-
     // Drop file "type" column if exists
     const table = await queryRunner.getTable("file");
     if (table?.findColumnByName("type")) {
@@ -112,6 +87,5 @@ export class WriteMoreInfoToDB_0_2_9_1725692779638
       await queryRunner.dropForeignKey("package", foreignKey);
     }
     await queryRunner.dropTable("package");
-    await queryRunner.dropTable("error");
   }
 }

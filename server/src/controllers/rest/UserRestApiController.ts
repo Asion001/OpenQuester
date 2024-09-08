@@ -87,7 +87,9 @@ export class UserRestApiController {
 
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveQueryError(err);
+      const { message, code } = await ErrorController.resolveUserQueryError(
+        err
+      );
       return res.status(code).send({ error: message });
     }
   };

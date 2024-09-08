@@ -51,7 +51,9 @@ export class AuthRestApiController {
       );
       return res.status(HttpStatus.CREATED).send(result);
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveQueryError(err);
+      const { message, code } = await ErrorController.resolveUserQueryError(
+        err
+      );
       return res.status(code).send({ error: message });
     }
   };
@@ -74,7 +76,7 @@ export class AuthRestApiController {
     try {
       const result = JWTUtils.refresh(req.body.refresh_token);
       res.status(HttpStatus.OK).send(result);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(err);
       res.status(code).send({ error: message });
     }

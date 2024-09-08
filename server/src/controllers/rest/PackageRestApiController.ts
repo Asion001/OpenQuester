@@ -8,9 +8,9 @@ import { HttpStatus } from "../../enums/HttpStatus";
 import { ErrorController } from "../../error/ErrorController";
 import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 import { Database } from "../../database/Database";
-import { User } from "../../database/models/User";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ClientResponse } from "../../enums/ClientResponse";
+import { UserRepository } from "../../database/repositories/UserRepository";
 
 export class PackageRestApiController {
   private _storageService!: IStorage;
@@ -37,10 +37,9 @@ export class PackageRestApiController {
 
   private uploadPackage = async (req: Request, res: Response) => {
     try {
-      // TODO: Implement with UserRepository when merged
-      const userRepository = this._db.getRepository(User);
+      const userRepository = UserRepository.getRepository(this._db);
       const payload = JWTUtils.getTokenPayload(req.headers?.authorization);
-      const user = await userRepository.findOne({ where: { id: payload.id } });
+      const user = await userRepository.get(payload.id);
 
       if (!user || !user.id) {
         return res
