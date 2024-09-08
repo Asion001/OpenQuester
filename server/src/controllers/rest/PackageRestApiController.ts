@@ -9,6 +9,7 @@ import { ErrorController } from "../../error/ErrorController";
 import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 
 export class PackageRestApiController {
+  // TODO: Write packages to DB
   private _storageService!: IStorage;
 
   constructor(ctx: ApiContext) {
