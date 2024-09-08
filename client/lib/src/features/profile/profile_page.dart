@@ -4,7 +4,7 @@ import 'package:openquester/src/application/get_it.dart';
 import 'package:openquester/src/connection/controllers/login_controller.dart';
 import 'package:watch_it/watch_it.dart';
 
-import '../../fields/password_fields.dart';
+import '../../ui/fields/password_fields.dart';
 
 @RoutePage()
 class ProfilePage extends WatchingWidget {

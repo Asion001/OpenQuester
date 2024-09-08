@@ -9,13 +9,13 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:openquester/src/ui/features/clicker/clicker_page.dart'
+import 'package:openquester/src/features/clicker/clicker_page.dart'
     deferred as _i1;
-import 'package:openquester/src/ui/features/home/home_screen.dart'
+import 'package:openquester/src/features/home/home_screen.dart'
     deferred as _i2;
-import 'package:openquester/src/ui/features/profile/profile_page.dart'
+import 'package:openquester/src/features/profile/profile_page.dart'
     deferred as _i3;
-import 'package:openquester/src/ui/features/test/test_screen.dart'
+import 'package:openquester/src/features/test/test_screen.dart'
     deferred as _i4;
 
 /// generated route for

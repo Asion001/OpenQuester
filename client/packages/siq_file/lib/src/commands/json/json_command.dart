@@ -4,8 +4,8 @@ import 'package:mason_logger/mason_logger.dart';
 
 import '../common/file_command.dart';
 
-class ContentToJsonCommand extends FileCommand {
-  ContentToJsonCommand({Logger? logger}) : _logger = logger ?? Logger() {
+class JsonCommand extends FileCommand {
+  JsonCommand({Logger? logger}) : _logger = logger ?? Logger() {
     argParser.addOption(
       'xml-file',
       help: 'Unziped content.xml file path',
