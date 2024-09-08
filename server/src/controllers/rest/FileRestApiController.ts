@@ -9,7 +9,6 @@ import { HttpStatus } from "../../enums/HttpStatus";
 import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 
 export class FileRestApiController {
-  // TODO: Write files to DB
   private _storageService!: IStorage;
 
   constructor(ctx: ApiContext) {
