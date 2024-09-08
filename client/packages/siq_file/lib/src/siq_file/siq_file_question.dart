@@ -7,7 +7,7 @@ part 'siq_file_question.g.dart';
 
 @freezed
 class SiqFileQuestion with _$SiqFileQuestion {
-  factory SiqFileQuestion({
+  const factory SiqFileQuestion({
     required int price,
     @Default(QuestionType.regular) QuestionType type,
 
@@ -29,6 +29,12 @@ class SiqFileQuestion with _$SiqFileQuestion {
 
   factory SiqFileQuestion.fromJson(Map<String, dynamic> json) =>
       _$SiqFileQuestionFromJson(json);
+
+  const SiqFileQuestion._();
+
+  List<SiqFileFileObject?> get files => [answerFile, questionFile].toList();
+  SiqFileQuestion withFiles(List<SiqFileFileObject?> files) =>
+      copyWith(answerFile: files[0], questionFile: files[1]);
 }
 
 enum QuestionType {

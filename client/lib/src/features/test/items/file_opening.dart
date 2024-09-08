@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:siq_file/siq_file.dart';
 
-import '../../../../connection/files/file_service.dart';
+import '../../../connection/files/file_service.dart';
 
 class FileOpening extends StatefulWidget {
   const FileOpening({super.key});
@@ -55,7 +55,7 @@ class _FileOpeningState extends State<FileOpening> {
       fileLength: file.size,
       stream: file.readStream!,
     );
-    siqFile = await SiqArchiveParser(fileStream).parse();
+    siqFile = await SiqArchiveParser(fileStream).parse(hashFiles: true);
     setState(() {});
 
     final parseTime = now.difference(DateTime.now());

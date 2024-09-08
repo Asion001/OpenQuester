@@ -126,8 +126,9 @@ class __$$FileObjectImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$FileObjectImpl implements _FileObject {
-  _$FileObjectImpl({required this.path, required this.type, this.sha256});
+class _$FileObjectImpl extends _FileObject {
+  const _$FileObjectImpl({required this.path, required this.type, this.sha256})
+      : super._();
 
   factory _$FileObjectImpl.fromJson(Map<String, dynamic> json) =>
       _$$FileObjectImplFromJson(json);
@@ -174,11 +175,12 @@ class _$FileObjectImpl implements _FileObject {
   }
 }
 
-abstract class _FileObject implements FileObject {
-  factory _FileObject(
+abstract class _FileObject extends FileObject {
+  const factory _FileObject(
       {required final String path,
       required final FileType type,
       final String? sha256}) = _$FileObjectImpl;
+  const _FileObject._() : super._();
 
   factory _FileObject.fromJson(Map<String, dynamic> json) =
       _$FileObjectImpl.fromJson;

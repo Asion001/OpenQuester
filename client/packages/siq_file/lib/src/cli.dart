@@ -19,8 +19,10 @@ class SiqFileCommandRunner extends CompletionCommandRunner<int> {
         help: 'Noisy logging, including all shell commands executed.',
         abbr: 'V',
       );
+
     addCommand(ParseCommand(logger: _logger));
-    addCommand(ContentToJsonCommand(logger: _logger));
+    addCommand(JsonCommand(logger: _logger));
+    addCommand(HashCommand(logger: _logger));
   }
 
   final Logger _logger;

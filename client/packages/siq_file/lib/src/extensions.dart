@@ -4,3 +4,7 @@ extension MapExtension on Map {
     this[to] = value;
   }
 }
+
+extension ListExtension<T> on List<T> {
+  List<T> get modifiable => [...this];
+}

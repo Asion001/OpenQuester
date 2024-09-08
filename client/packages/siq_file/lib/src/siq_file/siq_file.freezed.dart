@@ -127,10 +127,11 @@ class __$$SiqFileImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SiqFileImpl implements _SiqFile {
-  _$SiqFileImpl(
+class _$SiqFileImpl extends _SiqFile {
+  const _$SiqFileImpl(
       {required this.metadata, final List<SiqFileRound> rounds = const []})
-      : _rounds = rounds;
+      : _rounds = rounds,
+        super._();
 
   factory _$SiqFileImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileImplFromJson(json);
@@ -182,10 +183,11 @@ class _$SiqFileImpl implements _SiqFile {
   }
 }
 
-abstract class _SiqFile implements SiqFile {
-  factory _SiqFile(
+abstract class _SiqFile extends SiqFile {
+  const factory _SiqFile(
       {required final SiqFileMetadata metadata,
       final List<SiqFileRound> rounds}) = _$SiqFileImpl;
+  const _SiqFile._() : super._();
 
   factory _SiqFile.fromJson(Map<String, dynamic> json) = _$SiqFileImpl.fromJson;
 

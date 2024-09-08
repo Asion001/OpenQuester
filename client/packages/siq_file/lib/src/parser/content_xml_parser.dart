@@ -88,12 +88,13 @@ class ContentXmlParser {
   }
 
   SiqFileFileObject? parseFile(XmlElement? item) {
-    FileType? itemType = _getFileType(item);
+    final itemType = _getFileType(item);
 
     final file = itemType == null
         ? null
         : SiqFileFileObject(
             file: FileObject(path: item!.innerText, type: itemType));
+
     return file;
   }
 
