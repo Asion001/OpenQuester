@@ -11,6 +11,6 @@ export interface IStorage {
     content: OQContentStructure,
     author: User,
     expiresIn?: number
-  ): Promise<object>;
+  ): Promise<{ [key: string]: string }>;
   delete(filename: string): Promise<void>;
 }

@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "openQuester API",
+    "title": "OpenQuester API",
     "version": "0.2.9"
   },
   "security": [
@@ -33,7 +33,8 @@
                   "type": "object",
                   "properties": {
                     "url": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "http://localhost:9000/filename/bucket-upload-link"
                     }
                   }
                 }
@@ -45,8 +46,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Bad filename"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad filename"
+                    }
+                  }
                 }
               }
             }
@@ -87,8 +93,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Bad filename"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad filename"
+                    }
+                  }
                 }
               }
             }
@@ -117,8 +128,13 @@
                   "type": "object",
                   "properties": {
                     "message": {
-                      "type": "string",
-                      "example": "Delete request sent"
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Delete request sent"
+                        }
+                      }
                     }
                   }
                 }
@@ -130,8 +146,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Bad filename"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad filename"
+                    }
+                  }
                 }
               }
             }
@@ -167,7 +188,7 @@
                   "properties": {
                     "content": {
                       "type": "object",
-                      "example": { "filename hash": "file upload link" }
+                      "example": { "filename": "file upload link" }
                     }
                   }
                 }
@@ -179,8 +200,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Content is empty!"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Content is empty!"
+                    }
+                  }
                 }
               }
             }
@@ -206,7 +232,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrivateUser"
+                  "$ref": "#/components/schemas/ResponsePrivateUser"
                 }
               }
             }
@@ -216,8 +242,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Invalid or expired JWT token"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid or expired JWT token"
+                    }
+                  }
                 }
               }
             }
@@ -227,8 +258,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "User not found"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
                 }
               }
             }
@@ -251,7 +287,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUser"
+                "$ref": "#/components/schemas/InputUpdateUser"
               }
             }
           }
@@ -262,7 +298,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrivateUser"
+                  "$ref": "#/components/schemas/ResponsePrivateUser"
                 }
               }
             }
@@ -272,8 +308,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "You are not able to do that"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "You are not able to do that"
+                    }
+                  }
                 }
               }
             }
@@ -283,8 +324,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "User not found"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
                 }
               }
             }
@@ -311,8 +357,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "You are not able to do that"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "You are not able to do that"
+                    }
+                  }
                 }
               }
             }
@@ -322,8 +373,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "User not found"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
                 }
               }
             }
@@ -339,7 +395,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrivateUser"
+                  "$ref": "#/components/schemas/ResponsePrivateUser"
                 }
               }
             }
@@ -349,8 +405,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Invalid or expired JWT token"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid or expired JWT token"
+                    }
+                  }
                 }
               }
             }
@@ -364,7 +425,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUser"
+                "$ref": "#/components/schemas/InputUpdateUser"
               }
             }
           }
@@ -375,7 +436,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrivateUser"
+                  "$ref": "#/components/schemas/ResponsePrivateUser"
                 }
               }
             }
@@ -385,8 +446,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Invalid or expired JWT token"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid or expired JWT token"
+                    }
+                  }
                 }
               }
             }
@@ -404,8 +470,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Invalid or expired JWT token"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid or expired JWT token"
+                    }
+                  }
                 }
               }
             }
@@ -424,7 +495,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PrivateUser"
+                    "$ref": "#/components/schemas/ResponsePrivateUser"
                   }
                 }
               }
@@ -435,8 +506,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "You are not able to do that"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "You are not able to do that"
+                    }
+                  }
                 }
               }
             }
@@ -446,8 +522,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Users not found"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
                 }
               }
             }
@@ -463,7 +544,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegisterUser"
+                "$ref": "#/components/schemas/InputRegisterUser"
               }
             }
           }
@@ -474,7 +555,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthData"
+                  "$ref": "#/components/schemas/ResponseAuthData"
                 }
               }
             }
@@ -484,8 +565,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "[\"name\", \"password\"] is required"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "[\"name\", \"password\"] is required"
+                    }
+                  }
                 }
               }
             }
@@ -501,7 +587,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginUser"
+                "$ref": "#/components/schemas/InputLoginUser"
               }
             }
           }
@@ -512,7 +598,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthData"
+                  "$ref": "#/components/schemas/ResponseAuthData"
                 }
               }
             }
@@ -522,8 +608,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "[\"password\"] is required"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "[\"password\"] is required"
+                    }
+                  }
                 }
               }
             }
@@ -556,7 +647,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthData"
+                  "$ref": "#/components/schemas/ResponseAuthData"
                 }
               }
             }
@@ -566,8 +657,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "example": "Invalid or expired refresh token"
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid or expired refresh token"
+                    }
+                  }
                 }
               }
             }
@@ -620,7 +716,7 @@
       }
     },
     "schemas": {
-      "PrivateUser": {
+      "ResponsePrivateUser": {
         "type": "object",
         "properties": {
           "id": {
@@ -681,7 +777,7 @@
           }
         }
       },
-      "UpdateUser": {
+      "InputUpdateUser": {
         "type": "object",
         "properties": {
           "name": {
@@ -701,10 +797,9 @@
             "type": "string",
             "format": "binary"
           }
-        },
-        "required": ["password"]
+        }
       },
-      "RegisterUser": {
+      "InputRegisterUser": {
         "type": "object",
         "properties": {
           "name": {
@@ -731,12 +826,12 @@
         },
         "required": ["name", "email", "password"]
       },
-      "LoginUser": {
+      "InputLoginUser": {
         "type": "object",
         "properties": {
           "login": {
             "type": "string",
-            "example": "username || useremail@gmail.com"
+            "example": "useremail@gmail.com"
           },
           "password": {
             "type": "string",
@@ -745,7 +840,7 @@
         },
         "required": ["login", "password"]
       },
-      "AuthData": {
+      "ResponseAuthData": {
         "type": "object",
         "properties": {
           "access_token": {

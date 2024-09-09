@@ -47,10 +47,10 @@ import 'package:openapi/openapi.dart';
 
 
 final api = Openapi().getDefaultApi();
-final LoginUser loginUser = ; // LoginUser | 
+final InputLoginUser inputLoginUser = ; // InputLoginUser | 
 
 try {
-    final response = await api.v1AuthLoginPost(loginUser);
+    final response = await api.v1AuthLoginPost(inputLoginUser);
     print(response);
 } catch on DioException (e) {
     print("Exception when calling DefaultApi->v1AuthLoginPost: $e\n");
@@ -82,17 +82,27 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
- - [AuthData](doc/AuthData.md)
- - [LoginUser](doc/LoginUser.md)
- - [PrivateUser](doc/PrivateUser.md)
- - [PrivateUserPermissionsInner](doc/PrivateUserPermissionsInner.md)
- - [RegisterUser](doc/RegisterUser.md)
- - [UpdateUser](doc/UpdateUser.md)
+ - [InputLoginUser](doc/InputLoginUser.md)
+ - [InputRegisterUser](doc/InputRegisterUser.md)
+ - [InputUpdateUser](doc/InputUpdateUser.md)
+ - [ResponseAuthData](doc/ResponseAuthData.md)
+ - [ResponsePrivateUser](doc/ResponsePrivateUser.md)
+ - [ResponsePrivateUserPermissionsInner](doc/ResponsePrivateUserPermissionsInner.md)
+ - [V1AuthLoginPost400Response](doc/V1AuthLoginPost400Response.md)
+ - [V1AuthRefreshPost400Response](doc/V1AuthRefreshPost400Response.md)
  - [V1AuthRefreshPostRequest](doc/V1AuthRefreshPostRequest.md)
+ - [V1AuthRegisterPost400Response](doc/V1AuthRegisterPost400Response.md)
  - [V1FileDelete204Response](doc/V1FileDelete204Response.md)
+ - [V1FileDelete204ResponseMessage](doc/V1FileDelete204ResponseMessage.md)
  - [V1FileGet200Response](doc/V1FileGet200Response.md)
+ - [V1FileGet400Response](doc/V1FileGet400Response.md)
+ - [V1FilePost200Response](doc/V1FilePost200Response.md)
  - [V1PackageUploadPost200Response](doc/V1PackageUploadPost200Response.md)
+ - [V1PackageUploadPost400Response](doc/V1PackageUploadPost400Response.md)
  - [V1PackageUploadPostRequest](doc/V1PackageUploadPostRequest.md)
+ - [V1UserIdDelete400Response](doc/V1UserIdDelete400Response.md)
+ - [V1UserIdGet400Response](doc/V1UserIdGet400Response.md)
+ - [V1UserIdGet404Response](doc/V1UserIdGet404Response.md)
 
 
 ## Documentation For Authorization

@@ -10,7 +10,7 @@ import { ValueUtils } from "../utils/ValueUtils";
 import { ClientResponse } from "../enums/ClientResponse";
 
 // Define rate limit configuration
-const RATE_LIMIT = 5;
+const RATE_LIMIT = 10;
 const RATE_LIMIT_DURATION = 60 * 1000;
 
 // Storage for tracking requests

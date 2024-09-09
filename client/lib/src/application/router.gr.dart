@@ -11,12 +11,10 @@
 import 'package:auto_route/auto_route.dart' as _i5;
 import 'package:openquester/src/features/clicker/clicker_page.dart'
     deferred as _i1;
-import 'package:openquester/src/features/home/home_screen.dart'
-    deferred as _i2;
+import 'package:openquester/src/features/home/home_screen.dart' deferred as _i2;
 import 'package:openquester/src/features/profile/profile_page.dart'
     deferred as _i3;
-import 'package:openquester/src/features/test/test_screen.dart'
-    deferred as _i4;
+import 'package:openquester/src/features/test/test_screen.dart' deferred as _i4;
 
 /// generated route for
 /// [_i1.ClickerPage]

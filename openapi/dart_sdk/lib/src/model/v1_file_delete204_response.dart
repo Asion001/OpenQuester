@@ -3,6 +3,7 @@
 //
 
 // ignore_for_file: unused_element
+import 'package:openapi/src/model/v1_file_delete204_response_message.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -16,7 +17,7 @@ part 'v1_file_delete204_response.g.dart';
 abstract class V1FileDelete204Response
     implements Built<V1FileDelete204Response, V1FileDelete204ResponseBuilder> {
   @BuiltValueField(wireName: r'message')
-  String? get message;
+  V1FileDelete204ResponseMessage? get message;
 
   V1FileDelete204Response._();
 
@@ -52,7 +53,7 @@ class _$V1FileDelete204ResponseSerializer
       yield r'message';
       yield serializers.serialize(
         object.message,
-        specifiedType: const FullType(String),
+        specifiedType: const FullType(V1FileDelete204ResponseMessage),
       );
     }
   }
@@ -83,9 +84,9 @@ class _$V1FileDelete204ResponseSerializer
         case r'message':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(String),
-          ) as String;
-          result.message = valueDes;
+            specifiedType: const FullType(V1FileDelete204ResponseMessage),
+          ) as V1FileDelete204ResponseMessage;
+          result.message.replace(valueDes);
           break;
         default:
           unhandled.add(key);

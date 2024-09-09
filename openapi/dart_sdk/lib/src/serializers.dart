@@ -14,37 +14,57 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:openapi/src/date_serializer.dart';
 import 'package:openapi/src/model/date.dart';
 
-import 'package:openapi/src/model/auth_data.dart';
-import 'package:openapi/src/model/login_user.dart';
-import 'package:openapi/src/model/private_user.dart';
-import 'package:openapi/src/model/private_user_permissions_inner.dart';
-import 'package:openapi/src/model/register_user.dart';
-import 'package:openapi/src/model/update_user.dart';
+import 'package:openapi/src/model/input_login_user.dart';
+import 'package:openapi/src/model/input_register_user.dart';
+import 'package:openapi/src/model/input_update_user.dart';
+import 'package:openapi/src/model/response_auth_data.dart';
+import 'package:openapi/src/model/response_private_user.dart';
+import 'package:openapi/src/model/response_private_user_permissions_inner.dart';
+import 'package:openapi/src/model/v1_auth_login_post400_response.dart';
+import 'package:openapi/src/model/v1_auth_refresh_post400_response.dart';
 import 'package:openapi/src/model/v1_auth_refresh_post_request.dart';
+import 'package:openapi/src/model/v1_auth_register_post400_response.dart';
 import 'package:openapi/src/model/v1_file_delete204_response.dart';
+import 'package:openapi/src/model/v1_file_delete204_response_message.dart';
 import 'package:openapi/src/model/v1_file_get200_response.dart';
+import 'package:openapi/src/model/v1_file_get400_response.dart';
+import 'package:openapi/src/model/v1_file_post200_response.dart';
 import 'package:openapi/src/model/v1_package_upload_post200_response.dart';
+import 'package:openapi/src/model/v1_package_upload_post400_response.dart';
 import 'package:openapi/src/model/v1_package_upload_post_request.dart';
+import 'package:openapi/src/model/v1_user_id_delete400_response.dart';
+import 'package:openapi/src/model/v1_user_id_get400_response.dart';
+import 'package:openapi/src/model/v1_user_id_get404_response.dart';
 
 part 'serializers.g.dart';
 
 @SerializersFor([
-  AuthData,
-  LoginUser,
-  PrivateUser,
-  PrivateUserPermissionsInner,
-  RegisterUser,
-  UpdateUser,
+  InputLoginUser,
+  InputRegisterUser,
+  InputUpdateUser,
+  ResponseAuthData,
+  ResponsePrivateUser,
+  ResponsePrivateUserPermissionsInner,
+  V1AuthLoginPost400Response,
+  V1AuthRefreshPost400Response,
   V1AuthRefreshPostRequest,
+  V1AuthRegisterPost400Response,
   V1FileDelete204Response,
+  V1FileDelete204ResponseMessage,
   V1FileGet200Response,
+  V1FileGet400Response,
+  V1FilePost200Response,
   V1PackageUploadPost200Response,
+  V1PackageUploadPost400Response,
   V1PackageUploadPostRequest,
+  V1UserIdDelete400Response,
+  V1UserIdGet400Response,
+  V1UserIdGet404Response,
 ])
 Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
-        const FullType(BuiltList, [FullType(PrivateUser)]),
-        () => ListBuilder<PrivateUser>(),
+        const FullType(BuiltList, [FullType(ResponsePrivateUser)]),
+        () => ListBuilder<ResponsePrivateUser>(),
       )
       ..add(const OneOfSerializer())
       ..add(const AnyOfSerializer())

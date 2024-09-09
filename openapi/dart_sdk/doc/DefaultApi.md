@@ -26,7 +26,7 @@ Method | HTTP request | Description
 
 
 # **v1AuthLoginPost**
-> AuthData v1AuthLoginPost(loginUser)
+> ResponseAuthData v1AuthLoginPost(inputLoginUser)
 
 User Login
 
@@ -35,10 +35,10 @@ User Login
 import 'package:openapi/api.dart';
 
 final api = Openapi().getDefaultApi();
-final LoginUser loginUser = ; // LoginUser | 
+final InputLoginUser inputLoginUser = ; // InputLoginUser | 
 
 try {
-    final response = api.v1AuthLoginPost(loginUser);
+    final response = api.v1AuthLoginPost(inputLoginUser);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->v1AuthLoginPost: $e\n');
@@ -49,11 +49,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **loginUser** | [**LoginUser**](LoginUser.md)|  | 
+ **inputLoginUser** | [**InputLoginUser**](InputLoginUser.md)|  | 
 
 ### Return type
 
-[**AuthData**](AuthData.md)
+[**ResponseAuthData**](ResponseAuthData.md)
 
 ### Authorization
 
@@ -67,7 +67,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1AuthRefreshPost**
-> AuthData v1AuthRefreshPost(v1AuthRefreshPostRequest)
+> ResponseAuthData v1AuthRefreshPost(v1AuthRefreshPostRequest)
 
 Refresh tokens
 
@@ -94,7 +94,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**AuthData**](AuthData.md)
+[**ResponseAuthData**](ResponseAuthData.md)
 
 ### Authorization
 
@@ -108,7 +108,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1AuthRegisterPost**
-> AuthData v1AuthRegisterPost(registerUser)
+> ResponseAuthData v1AuthRegisterPost(inputRegisterUser)
 
 User Registration
 
@@ -117,10 +117,10 @@ User Registration
 import 'package:openapi/api.dart';
 
 final api = Openapi().getDefaultApi();
-final RegisterUser registerUser = ; // RegisterUser | 
+final InputRegisterUser inputRegisterUser = ; // InputRegisterUser | 
 
 try {
-    final response = api.v1AuthRegisterPost(registerUser);
+    final response = api.v1AuthRegisterPost(inputRegisterUser);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->v1AuthRegisterPost: $e\n');
@@ -131,11 +131,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **registerUser** | [**RegisterUser**](RegisterUser.md)|  | 
+ **inputRegisterUser** | [**InputRegisterUser**](InputRegisterUser.md)|  | 
 
 ### Return type
 
-[**AuthData**](AuthData.md)
+[**ResponseAuthData**](ResponseAuthData.md)
 
 ### Authorization
 
@@ -231,7 +231,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1FilePost**
-> V1FileGet200Response v1FilePost(body)
+> V1FilePost200Response v1FilePost(body)
 
 
 
@@ -258,7 +258,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**V1FileGet200Response**](V1FileGet200Response.md)
+[**V1FilePost200Response**](V1FilePost200Response.md)
 
 ### Authorization
 
@@ -349,7 +349,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1UserGet**
-> PrivateUser v1UserGet()
+> ResponsePrivateUser v1UserGet()
 
 
 
@@ -372,7 +372,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**PrivateUser**](PrivateUser.md)
+[**ResponsePrivateUser**](ResponsePrivateUser.md)
 
 ### Authorization
 
@@ -426,7 +426,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1UserIdGet**
-> PrivateUser v1UserIdGet(id)
+> ResponsePrivateUser v1UserIdGet(id)
 
 
 
@@ -453,7 +453,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PrivateUser**](PrivateUser.md)
+[**ResponsePrivateUser**](ResponsePrivateUser.md)
 
 ### Authorization
 
@@ -467,7 +467,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1UserIdPatch**
-> PrivateUser v1UserIdPatch(id, updateUser)
+> ResponsePrivateUser v1UserIdPatch(id, inputUpdateUser)
 
 
 
@@ -477,10 +477,10 @@ import 'package:openapi/api.dart';
 
 final api = Openapi().getDefaultApi();
 final String id = id_example; // String | 
-final UpdateUser updateUser = ; // UpdateUser | 
+final InputUpdateUser inputUpdateUser = ; // InputUpdateUser | 
 
 try {
-    final response = api.v1UserIdPatch(id, updateUser);
+    final response = api.v1UserIdPatch(id, inputUpdateUser);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->v1UserIdPatch: $e\n');
@@ -492,11 +492,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String**|  | 
- **updateUser** | [**UpdateUser**](UpdateUser.md)|  | 
+ **inputUpdateUser** | [**InputUpdateUser**](InputUpdateUser.md)|  | 
 
 ### Return type
 
-[**PrivateUser**](PrivateUser.md)
+[**ResponsePrivateUser**](ResponsePrivateUser.md)
 
 ### Authorization
 
@@ -510,7 +510,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1UserPatch**
-> PrivateUser v1UserPatch(updateUser)
+> ResponsePrivateUser v1UserPatch(inputUpdateUser)
 
 Update user info.
 
@@ -519,10 +519,10 @@ Update user info.
 import 'package:openapi/api.dart';
 
 final api = Openapi().getDefaultApi();
-final UpdateUser updateUser = ; // UpdateUser | 
+final InputUpdateUser inputUpdateUser = ; // InputUpdateUser | 
 
 try {
-    final response = api.v1UserPatch(updateUser);
+    final response = api.v1UserPatch(inputUpdateUser);
     print(response);
 } catch on DioException (e) {
     print('Exception when calling DefaultApi->v1UserPatch: $e\n');
@@ -533,11 +533,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **updateUser** | [**UpdateUser**](UpdateUser.md)|  | 
+ **inputUpdateUser** | [**InputUpdateUser**](InputUpdateUser.md)|  | 
 
 ### Return type
 
-[**PrivateUser**](PrivateUser.md)
+[**ResponsePrivateUser**](ResponsePrivateUser.md)
 
 ### Authorization
 
@@ -551,7 +551,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1UsersGet**
-> BuiltList<PrivateUser> v1UsersGet()
+> BuiltList<ResponsePrivateUser> v1UsersGet()
 
 Get all users info
 
@@ -574,7 +574,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**BuiltList&lt;PrivateUser&gt;**](PrivateUser.md)
+[**BuiltList&lt;ResponsePrivateUser&gt;**](ResponsePrivateUser.md)
 
 ### Authorization
 
