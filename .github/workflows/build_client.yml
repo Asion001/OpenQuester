@@ -57,10 +57,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: web-app
-          path: ./build/web/
+          path: ./client/build/web/
       - name: Publish Android Artifacts
         uses: actions/upload-artifact@v4
-        if: github.event_name == 'workflow_call'
         with:
           name: android-app
-          path: ./build/app/outputs/flutter-apk/*.apk
+          path: ./client/build/app/outputs/flutter-apk/*.apk
