@@ -1,4 +1,5 @@
 import { ClientResponse } from "../enums/ClientResponse";
+import { ClientError } from "../error/ClientError";
 import { IStorage } from "../interfaces/file/IStorage";
 import { OQContentStructure } from "../interfaces/file/structures/OQContentStructure";
 import { OQFileStructure } from "../interfaces/file/structures/OQFileStructure";
@@ -19,7 +20,7 @@ export class ContentStructureService {
     expiresIn?: number
   ): Promise<{ [key: string]: string }> {
     if (!content?.rounds) {
-      return { error: ClientResponse.NO_CONTENT_ROUNDS };
+      throw new ClientError(ClientResponse.NO_CONTENT_ROUNDS);
     }
 
     /** Nested objects stack */

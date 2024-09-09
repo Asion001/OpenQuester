@@ -1,20 +1,21 @@
 import { type NextFunction, type Request, type Response } from "express";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { Database } from "../../database/Database";
-import { User } from "../../database/models/User";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { ClientResponse } from "../../enums/ClientResponse";
+import { UserRepository } from "../../database/repositories/UserRepository";
 
 export function requireAdmin(db: Database) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const userRepository = UserRepository.getRepository(db);
       const payload = JWTUtils.getTokenPayload(req?.headers?.authorization);
-      const user = await User.get(db, payload.id);
+      const user = await userRepository.get(payload.id);
 
       if ((!user || !user.isAdmin()) && user.id !== Number(req.params.id)) {
         return res
           .status(HttpStatus.BAD_REQUEST)
-          .send(ClientResponse.ACCESS_DENIED);
+          .send({ error: ClientResponse.ACCESS_DENIED });
       }
 
       next();
