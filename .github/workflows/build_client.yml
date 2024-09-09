@@ -4,10 +4,6 @@ on:
   workflow_dispatch:
   workflow_call:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   pre_job:
     runs-on: ubuntu-latest
