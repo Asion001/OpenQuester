@@ -3,57 +3,58 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:openapi/src/model/v1_file_delete204_response_message.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'v1_file_delete204_response.g.dart';
+part 'v1_file_delete204_response_message.g.dart';
 
-/// V1FileDelete204Response
+/// V1FileDelete204ResponseMessage
 ///
 /// Properties:
 /// * [message]
 @BuiltValue()
-abstract class V1FileDelete204Response
-    implements Built<V1FileDelete204Response, V1FileDelete204ResponseBuilder> {
+abstract class V1FileDelete204ResponseMessage
+    implements
+        Built<V1FileDelete204ResponseMessage,
+            V1FileDelete204ResponseMessageBuilder> {
   @BuiltValueField(wireName: r'message')
-  V1FileDelete204ResponseMessage? get message;
+  String? get message;
 
-  V1FileDelete204Response._();
+  V1FileDelete204ResponseMessage._();
 
-  factory V1FileDelete204Response(
-          [void updates(V1FileDelete204ResponseBuilder b)]) =
-      _$V1FileDelete204Response;
+  factory V1FileDelete204ResponseMessage(
+          [void updates(V1FileDelete204ResponseMessageBuilder b)]) =
+      _$V1FileDelete204ResponseMessage;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(V1FileDelete204ResponseBuilder b) => b;
+  static void _defaults(V1FileDelete204ResponseMessageBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<V1FileDelete204Response> get serializer =>
-      _$V1FileDelete204ResponseSerializer();
+  static Serializer<V1FileDelete204ResponseMessage> get serializer =>
+      _$V1FileDelete204ResponseMessageSerializer();
 }
 
-class _$V1FileDelete204ResponseSerializer
-    implements PrimitiveSerializer<V1FileDelete204Response> {
+class _$V1FileDelete204ResponseMessageSerializer
+    implements PrimitiveSerializer<V1FileDelete204ResponseMessage> {
   @override
   final Iterable<Type> types = const [
-    V1FileDelete204Response,
-    _$V1FileDelete204Response
+    V1FileDelete204ResponseMessage,
+    _$V1FileDelete204ResponseMessage
   ];
 
   @override
-  final String wireName = r'V1FileDelete204Response';
+  final String wireName = r'V1FileDelete204ResponseMessage';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    V1FileDelete204Response object, {
+    V1FileDelete204ResponseMessage object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     if (object.message != null) {
       yield r'message';
       yield serializers.serialize(
         object.message,
-        specifiedType: const FullType(V1FileDelete204ResponseMessage),
+        specifiedType: const FullType(String),
       );
     }
   }
@@ -61,7 +62,7 @@ class _$V1FileDelete204ResponseSerializer
   @override
   Object serialize(
     Serializers serializers,
-    V1FileDelete204Response object, {
+    V1FileDelete204ResponseMessage object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object,
@@ -74,7 +75,7 @@ class _$V1FileDelete204ResponseSerializer
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required V1FileDelete204ResponseBuilder result,
+    required V1FileDelete204ResponseMessageBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -84,9 +85,9 @@ class _$V1FileDelete204ResponseSerializer
         case r'message':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(V1FileDelete204ResponseMessage),
-          ) as V1FileDelete204ResponseMessage;
-          result.message.replace(valueDes);
+            specifiedType: const FullType(String),
+          ) as String;
+          result.message = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -97,12 +98,12 @@ class _$V1FileDelete204ResponseSerializer
   }
 
   @override
-  V1FileDelete204Response deserialize(
+  V1FileDelete204ResponseMessage deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = V1FileDelete204ResponseBuilder();
+    final result = V1FileDelete204ResponseMessageBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

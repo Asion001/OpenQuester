@@ -9,14 +9,15 @@ import 'package:dio/dio.dart';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:openapi/src/api_util.dart';
-import 'package:openapi/src/model/auth_data.dart';
-import 'package:openapi/src/model/login_user.dart';
-import 'package:openapi/src/model/private_user.dart';
-import 'package:openapi/src/model/register_user.dart';
-import 'package:openapi/src/model/update_user.dart';
+import 'package:openapi/src/model/input_login_user.dart';
+import 'package:openapi/src/model/input_register_user.dart';
+import 'package:openapi/src/model/input_update_user.dart';
+import 'package:openapi/src/model/response_auth_data.dart';
+import 'package:openapi/src/model/response_private_user.dart';
 import 'package:openapi/src/model/v1_auth_refresh_post_request.dart';
 import 'package:openapi/src/model/v1_file_delete204_response.dart';
 import 'package:openapi/src/model/v1_file_get200_response.dart';
+import 'package:openapi/src/model/v1_file_post200_response.dart';
 import 'package:openapi/src/model/v1_package_upload_post200_response.dart';
 import 'package:openapi/src/model/v1_package_upload_post_request.dart';
 
@@ -31,7 +32,7 @@ class DefaultApi {
   ///
   ///
   /// Parameters:
-  /// * [loginUser]
+  /// * [inputLoginUser]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -39,10 +40,10 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [AuthData] as data
+  /// Returns a [Future] containing a [Response] with a [ResponseAuthData] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AuthData>> v1AuthLoginPost({
-    required LoginUser loginUser,
+  Future<Response<ResponseAuthData>> v1AuthLoginPost({
+    required InputLoginUser inputLoginUser,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -73,8 +74,8 @@ class DefaultApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(LoginUser);
-      _bodyData = _serializers.serialize(loginUser, specifiedType: _type);
+      const _type = FullType(InputLoginUser);
+      _bodyData = _serializers.serialize(inputLoginUser, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _options.compose(
@@ -96,7 +97,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    AuthData? _responseData;
+    ResponseAuthData? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -104,8 +105,8 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(AuthData),
-            ) as AuthData;
+              specifiedType: const FullType(ResponseAuthData),
+            ) as ResponseAuthData;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -116,7 +117,7 @@ class DefaultApi {
       );
     }
 
-    return Response<AuthData>(
+    return Response<ResponseAuthData>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -140,9 +141,9 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [AuthData] as data
+  /// Returns a [Future] containing a [Response] with a [ResponseAuthData] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AuthData>> v1AuthRefreshPost({
+  Future<Response<ResponseAuthData>> v1AuthRefreshPost({
     required V1AuthRefreshPostRequest v1AuthRefreshPostRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -198,7 +199,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    AuthData? _responseData;
+    ResponseAuthData? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -206,8 +207,8 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(AuthData),
-            ) as AuthData;
+              specifiedType: const FullType(ResponseAuthData),
+            ) as ResponseAuthData;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -218,7 +219,7 @@ class DefaultApi {
       );
     }
 
-    return Response<AuthData>(
+    return Response<ResponseAuthData>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -234,7 +235,7 @@ class DefaultApi {
   ///
   ///
   /// Parameters:
-  /// * [registerUser]
+  /// * [inputRegisterUser]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -242,10 +243,10 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [AuthData] as data
+  /// Returns a [Future] containing a [Response] with a [ResponseAuthData] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<AuthData>> v1AuthRegisterPost({
-    required RegisterUser registerUser,
+  Future<Response<ResponseAuthData>> v1AuthRegisterPost({
+    required InputRegisterUser inputRegisterUser,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -276,8 +277,9 @@ class DefaultApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(RegisterUser);
-      _bodyData = _serializers.serialize(registerUser, specifiedType: _type);
+      const _type = FullType(InputRegisterUser);
+      _bodyData =
+          _serializers.serialize(inputRegisterUser, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _options.compose(
@@ -299,7 +301,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    AuthData? _responseData;
+    ResponseAuthData? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -307,8 +309,8 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(AuthData),
-            ) as AuthData;
+              specifiedType: const FullType(ResponseAuthData),
+            ) as ResponseAuthData;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -319,7 +321,7 @@ class DefaultApi {
       );
     }
 
-    return Response<AuthData>(
+    return Response<ResponseAuthData>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -543,9 +545,9 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [V1FileGet200Response] as data
+  /// Returns a [Future] containing a [Response] with a [V1FilePost200Response] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<V1FileGet200Response>> v1FilePost({
+  Future<Response<V1FilePost200Response>> v1FilePost({
     required String body,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -599,7 +601,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    V1FileGet200Response? _responseData;
+    V1FilePost200Response? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -607,8 +609,8 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(V1FileGet200Response),
-            ) as V1FileGet200Response;
+              specifiedType: const FullType(V1FilePost200Response),
+            ) as V1FilePost200Response;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -619,7 +621,7 @@ class DefaultApi {
       );
     }
 
-    return Response<V1FileGet200Response>(
+    return Response<V1FilePost200Response>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -797,9 +799,9 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [PrivateUser] as data
+  /// Returns a [Future] containing a [Response] with a [ResponsePrivateUser] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PrivateUser>> v1UserGet({
+  Future<Response<ResponsePrivateUser>> v1UserGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -834,7 +836,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    PrivateUser? _responseData;
+    ResponsePrivateUser? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -842,8 +844,8 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(PrivateUser),
-            ) as PrivateUser;
+              specifiedType: const FullType(ResponsePrivateUser),
+            ) as ResponsePrivateUser;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -854,7 +856,7 @@ class DefaultApi {
       );
     }
 
-    return Response<PrivateUser>(
+    return Response<ResponsePrivateUser>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -934,9 +936,9 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [PrivateUser] as data
+  /// Returns a [Future] containing a [Response] with a [ResponsePrivateUser] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PrivateUser>> v1UserIdGet({
+  Future<Response<ResponsePrivateUser>> v1UserIdGet({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -975,7 +977,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    PrivateUser? _responseData;
+    ResponsePrivateUser? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -983,8 +985,8 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(PrivateUser),
-            ) as PrivateUser;
+              specifiedType: const FullType(ResponsePrivateUser),
+            ) as ResponsePrivateUser;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -995,7 +997,7 @@ class DefaultApi {
       );
     }
 
-    return Response<PrivateUser>(
+    return Response<ResponsePrivateUser>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -1012,7 +1014,7 @@ class DefaultApi {
   ///
   /// Parameters:
   /// * [id]
-  /// * [updateUser]
+  /// * [inputUpdateUser]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1020,11 +1022,11 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [PrivateUser] as data
+  /// Returns a [Future] containing a [Response] with a [ResponsePrivateUser] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PrivateUser>> v1UserIdPatch({
+  Future<Response<ResponsePrivateUser>> v1UserIdPatch({
     required String id,
-    required UpdateUser updateUser,
+    required InputUpdateUser inputUpdateUser,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1058,8 +1060,8 @@ class DefaultApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(UpdateUser);
-      _bodyData = _serializers.serialize(updateUser, specifiedType: _type);
+      const _type = FullType(InputUpdateUser);
+      _bodyData = _serializers.serialize(inputUpdateUser, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _options.compose(
@@ -1081,7 +1083,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    PrivateUser? _responseData;
+    ResponsePrivateUser? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -1089,8 +1091,8 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(PrivateUser),
-            ) as PrivateUser;
+              specifiedType: const FullType(ResponsePrivateUser),
+            ) as ResponsePrivateUser;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1101,7 +1103,7 @@ class DefaultApi {
       );
     }
 
-    return Response<PrivateUser>(
+    return Response<ResponsePrivateUser>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -1117,7 +1119,7 @@ class DefaultApi {
   ///
   ///
   /// Parameters:
-  /// * [updateUser]
+  /// * [inputUpdateUser]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1125,10 +1127,10 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [PrivateUser] as data
+  /// Returns a [Future] containing a [Response] with a [ResponsePrivateUser] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PrivateUser>> v1UserPatch({
-    required UpdateUser updateUser,
+  Future<Response<ResponsePrivateUser>> v1UserPatch({
+    required InputUpdateUser inputUpdateUser,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1159,8 +1161,8 @@ class DefaultApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(UpdateUser);
-      _bodyData = _serializers.serialize(updateUser, specifiedType: _type);
+      const _type = FullType(InputUpdateUser);
+      _bodyData = _serializers.serialize(inputUpdateUser, specifiedType: _type);
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _options.compose(
@@ -1182,7 +1184,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    PrivateUser? _responseData;
+    ResponsePrivateUser? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -1190,8 +1192,8 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(PrivateUser),
-            ) as PrivateUser;
+              specifiedType: const FullType(ResponsePrivateUser),
+            ) as ResponsePrivateUser;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1202,7 +1204,7 @@ class DefaultApi {
       );
     }
 
-    return Response<PrivateUser>(
+    return Response<ResponsePrivateUser>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -1225,9 +1227,9 @@ class DefaultApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [BuiltList<PrivateUser>] as data
+  /// Returns a [Future] containing a [Response] with a [BuiltList<ResponsePrivateUser>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<BuiltList<PrivateUser>>> v1UsersGet({
+  Future<Response<BuiltList<ResponsePrivateUser>>> v1UsersGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1262,7 +1264,7 @@ class DefaultApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<PrivateUser>? _responseData;
+    BuiltList<ResponsePrivateUser>? _responseData;
 
     try {
       final rawResponse = _response.data;
@@ -1270,8 +1272,9 @@ class DefaultApi {
           ? null
           : _serializers.deserialize(
               rawResponse,
-              specifiedType: const FullType(BuiltList, [FullType(PrivateUser)]),
-            ) as BuiltList<PrivateUser>;
+              specifiedType:
+                  const FullType(BuiltList, [FullType(ResponsePrivateUser)]),
+            ) as BuiltList<ResponsePrivateUser>;
     } catch (error, stackTrace) {
       throw DioException(
         requestOptions: _response.requestOptions,
@@ -1282,7 +1285,7 @@ class DefaultApi {
       );
     }
 
-    return Response<BuiltList<PrivateUser>>(
+    return Response<BuiltList<ResponsePrivateUser>>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,

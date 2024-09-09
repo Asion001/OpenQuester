@@ -3,57 +3,57 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:openapi/src/model/v1_file_delete204_response_message.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'v1_file_delete204_response.g.dart';
+part 'v1_auth_login_post400_response.g.dart';
 
-/// V1FileDelete204Response
+/// V1AuthLoginPost400Response
 ///
 /// Properties:
-/// * [message]
+/// * [error]
 @BuiltValue()
-abstract class V1FileDelete204Response
-    implements Built<V1FileDelete204Response, V1FileDelete204ResponseBuilder> {
-  @BuiltValueField(wireName: r'message')
-  V1FileDelete204ResponseMessage? get message;
+abstract class V1AuthLoginPost400Response
+    implements
+        Built<V1AuthLoginPost400Response, V1AuthLoginPost400ResponseBuilder> {
+  @BuiltValueField(wireName: r'error')
+  String? get error;
 
-  V1FileDelete204Response._();
+  V1AuthLoginPost400Response._();
 
-  factory V1FileDelete204Response(
-          [void updates(V1FileDelete204ResponseBuilder b)]) =
-      _$V1FileDelete204Response;
+  factory V1AuthLoginPost400Response(
+          [void updates(V1AuthLoginPost400ResponseBuilder b)]) =
+      _$V1AuthLoginPost400Response;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(V1FileDelete204ResponseBuilder b) => b;
+  static void _defaults(V1AuthLoginPost400ResponseBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<V1FileDelete204Response> get serializer =>
-      _$V1FileDelete204ResponseSerializer();
+  static Serializer<V1AuthLoginPost400Response> get serializer =>
+      _$V1AuthLoginPost400ResponseSerializer();
 }
 
-class _$V1FileDelete204ResponseSerializer
-    implements PrimitiveSerializer<V1FileDelete204Response> {
+class _$V1AuthLoginPost400ResponseSerializer
+    implements PrimitiveSerializer<V1AuthLoginPost400Response> {
   @override
   final Iterable<Type> types = const [
-    V1FileDelete204Response,
-    _$V1FileDelete204Response
+    V1AuthLoginPost400Response,
+    _$V1AuthLoginPost400Response
   ];
 
   @override
-  final String wireName = r'V1FileDelete204Response';
+  final String wireName = r'V1AuthLoginPost400Response';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    V1FileDelete204Response object, {
+    V1AuthLoginPost400Response object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.message != null) {
-      yield r'message';
+    if (object.error != null) {
+      yield r'error';
       yield serializers.serialize(
-        object.message,
-        specifiedType: const FullType(V1FileDelete204ResponseMessage),
+        object.error,
+        specifiedType: const FullType(String),
       );
     }
   }
@@ -61,7 +61,7 @@ class _$V1FileDelete204ResponseSerializer
   @override
   Object serialize(
     Serializers serializers,
-    V1FileDelete204Response object, {
+    V1AuthLoginPost400Response object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object,
@@ -74,19 +74,19 @@ class _$V1FileDelete204ResponseSerializer
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required V1FileDelete204ResponseBuilder result,
+    required V1AuthLoginPost400ResponseBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'message':
+        case r'error':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(V1FileDelete204ResponseMessage),
-          ) as V1FileDelete204ResponseMessage;
-          result.message.replace(valueDes);
+            specifiedType: const FullType(String),
+          ) as String;
+          result.error = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -97,12 +97,12 @@ class _$V1FileDelete204ResponseSerializer
   }
 
   @override
-  V1FileDelete204Response deserialize(
+  V1AuthLoginPost400Response deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = V1FileDelete204ResponseBuilder();
+    final result = V1AuthLoginPost400ResponseBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

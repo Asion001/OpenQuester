@@ -3,65 +3,67 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:openapi/src/model/v1_file_delete204_response_message.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'v1_file_delete204_response.g.dart';
+part 'input_login_user.g.dart';
 
-/// V1FileDelete204Response
+/// InputLoginUser
 ///
 /// Properties:
-/// * [message]
+/// * [login]
+/// * [password]
 @BuiltValue()
-abstract class V1FileDelete204Response
-    implements Built<V1FileDelete204Response, V1FileDelete204ResponseBuilder> {
-  @BuiltValueField(wireName: r'message')
-  V1FileDelete204ResponseMessage? get message;
+abstract class InputLoginUser
+    implements Built<InputLoginUser, InputLoginUserBuilder> {
+  @BuiltValueField(wireName: r'login')
+  String get login;
 
-  V1FileDelete204Response._();
+  @BuiltValueField(wireName: r'password')
+  String get password;
 
-  factory V1FileDelete204Response(
-          [void updates(V1FileDelete204ResponseBuilder b)]) =
-      _$V1FileDelete204Response;
+  InputLoginUser._();
+
+  factory InputLoginUser([void updates(InputLoginUserBuilder b)]) =
+      _$InputLoginUser;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(V1FileDelete204ResponseBuilder b) => b;
+  static void _defaults(InputLoginUserBuilder b) => b;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<V1FileDelete204Response> get serializer =>
-      _$V1FileDelete204ResponseSerializer();
+  static Serializer<InputLoginUser> get serializer =>
+      _$InputLoginUserSerializer();
 }
 
-class _$V1FileDelete204ResponseSerializer
-    implements PrimitiveSerializer<V1FileDelete204Response> {
+class _$InputLoginUserSerializer
+    implements PrimitiveSerializer<InputLoginUser> {
   @override
-  final Iterable<Type> types = const [
-    V1FileDelete204Response,
-    _$V1FileDelete204Response
-  ];
+  final Iterable<Type> types = const [InputLoginUser, _$InputLoginUser];
 
   @override
-  final String wireName = r'V1FileDelete204Response';
+  final String wireName = r'InputLoginUser';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    V1FileDelete204Response object, {
+    InputLoginUser object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.message != null) {
-      yield r'message';
-      yield serializers.serialize(
-        object.message,
-        specifiedType: const FullType(V1FileDelete204ResponseMessage),
-      );
-    }
+    yield r'login';
+    yield serializers.serialize(
+      object.login,
+      specifiedType: const FullType(String),
+    );
+    yield r'password';
+    yield serializers.serialize(
+      object.password,
+      specifiedType: const FullType(String),
+    );
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    V1FileDelete204Response object, {
+    InputLoginUser object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object,
@@ -74,19 +76,26 @@ class _$V1FileDelete204ResponseSerializer
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required V1FileDelete204ResponseBuilder result,
+    required InputLoginUserBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'message':
+        case r'login':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(V1FileDelete204ResponseMessage),
-          ) as V1FileDelete204ResponseMessage;
-          result.message.replace(valueDes);
+            specifiedType: const FullType(String),
+          ) as String;
+          result.login = valueDes;
+          break;
+        case r'password':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(String),
+          ) as String;
+          result.password = valueDes;
           break;
         default:
           unhandled.add(key);
@@ -97,12 +106,12 @@ class _$V1FileDelete204ResponseSerializer
   }
 
   @override
-  V1FileDelete204Response deserialize(
+  InputLoginUser deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = V1FileDelete204ResponseBuilder();
+    final result = InputLoginUserBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(

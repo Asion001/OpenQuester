@@ -53,14 +53,16 @@ class LoginController extends ChangeNotifier {
   Future<(bool, String?)> loginUser() async {
     try {
       loading = true;
-      final loginUser = LoginUser(
+      final inputLoginUser = InputLoginUser(
         (b) {
           b.login = login;
           b.password = password;
         },
       );
-      final result =
-          await getIt.get<Api>().api.v1AuthLoginPost(loginUser: loginUser);
+      final result = await getIt
+          .get<Api>()
+          .api
+          .v1AuthLoginPost(inputLoginUser: inputLoginUser);
       authData = auth_model.AuthData(
         accessToken: result.data!.accessToken,
         refreshToken: result.data!.refreshToken,
