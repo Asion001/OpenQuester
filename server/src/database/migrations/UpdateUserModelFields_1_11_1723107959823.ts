@@ -4,6 +4,8 @@ import { Logger } from "../../utils/Logger";
 export class UpdateUserModelFields_1_11_1723107959823
   implements MigrationInterface
 {
+  name = "UpdateUserModelFields_1_11_1723107959823";
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
       "user",

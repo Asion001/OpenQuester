@@ -20,6 +20,7 @@ export enum ServerResponse {
   // Database
   INVALID_DATA_SOURCE = "Data source is invalid",
   DB_NOT_CONNECTED = "DB is not connected",
+  NOT_INITIALIZED = "Data source is not initialized, timeout reached",
 
   // Services
   SERVICE_NOT_FOUND = "Service not found",

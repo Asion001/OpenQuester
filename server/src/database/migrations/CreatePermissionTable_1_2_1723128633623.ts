@@ -10,6 +10,8 @@ import { Logger } from "../../utils/Logger";
 export class CreatePermissionTable_1_2_1723128633623
   implements MigrationInterface
 {
+  name = "CreatePermissionTable_1_2_1723128633623";
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({

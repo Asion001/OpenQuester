@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import { IPermission } from "../../interfaces/IPermission";
 import { User } from "./User";
 
-@Entity()
+@Entity("permission")
 export class Permission implements IPermission {
   @PrimaryGeneratedColumn()
   id!: number;
