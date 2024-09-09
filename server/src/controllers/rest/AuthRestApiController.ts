@@ -8,10 +8,10 @@ import { ApiContext } from "../../services/context/ApiContext";
 import {
   validateRefresh,
   validateTokenForAuth,
-} from "../../middleware/authMiddleware";
+} from "../../middleware/AuthMiddleware";
 import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
-import { validateWithSchema } from "../../middleware/schemaMiddleware";
+import { validateWithSchema } from "../../middleware/SchemaMiddleware";
 
 /**
  * Handles all endpoints related to user authorization

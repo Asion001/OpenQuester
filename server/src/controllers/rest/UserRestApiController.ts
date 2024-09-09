@@ -5,14 +5,14 @@ import { UpdateUser } from "../../managers/user/UpdateUser";
 import { ApiContext } from "../../services/context/ApiContext";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ClientResponse } from "../../enums/ClientResponse";
-import { validateParamsIDMiddleware } from "../../middleware/request/userRequestMiddleware";
+import { validateParamsIDMiddleware } from "../../middleware/request/UserRequestMiddleware";
 import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
 import {
   requireAdmin,
   requireAdminIfIdProvided,
-} from "../../middleware/role/roleMiddleware";
-import { validateWithSchema } from "../../middleware/schemaMiddleware";
+} from "../../middleware/role/RoleMiddleware";
+import { validateWithSchema } from "../../middleware/SchemaMiddleware";
 
 /**
  * Handles all endpoints related for User CRUD

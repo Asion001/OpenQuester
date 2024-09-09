@@ -1,7 +1,7 @@
 import { type Request, type Response, Router } from "express";
 
 import { IStorage } from "../../interfaces/file/IStorage";
-import { validateFilename } from "../../middleware/file/fileMiddleware";
+import { validateFilename } from "../../middleware/file/FileMiddleware";
 import { ApiContext } from "../../services/context/ApiContext";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { ErrorController } from "../../error/ErrorController";

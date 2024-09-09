@@ -1,9 +1,9 @@
 import { type Request, type Response, Router } from "express";
 
 import { IStorage } from "../../interfaces/file/IStorage";
-import { verifyContentJSONMiddleware } from "../../middleware/file/fileMiddleware";
+import { verifyContentJSONMiddleware } from "../../middleware/file/FileMiddleware";
 import { type ApiContext } from "../../services/context/ApiContext";
-import { throttleByUserMiddleware } from "../../middleware/throttleMiddleware";
+import { throttleByUserMiddleware } from "../../middleware/ThrottleMiddleware";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { ErrorController } from "../../error/ErrorController";
 import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
