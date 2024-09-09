@@ -15,6 +15,9 @@ export class Database {
     if (!this._dataSource) {
       throw new ServerError(ServerResponse.INVALID_DATA_SOURCE);
     }
+    if (!this._dataSource.isInitialized) {
+      this._dataSource.initialize();
+    }
   }
 
   /**
@@ -40,7 +43,10 @@ export class Database {
     Logger.warn("Connecting to DB...");
 
     try {
-      await this._dataSource.initialize();
+      // Force only one DataSource init at the time, so only one migrations runner will be executed
+      if (!this._dataSource.isInitialized) {
+        await this.waitForInitialization();
+      }
       this._connected = true;
       Logger.info("Connection to DB established");
       Logger.info(`API version: ${process.env.npm_package_version}`);
@@ -53,8 +59,27 @@ export class Database {
     }
   }
 
-  public waitForConnection() {
-    //
+  public async waitForInitialization() {
+    if (this._dataSource.isInitialized) {
+      return true;
+    }
+
+    return new Promise<void>((resolve) => {
+      // Initialization timeout
+      const timeout = setTimeout(() => {
+        if (!this._dataSource.isInitialized) {
+          throw new ServerError(ServerResponse.NOT_INITIALIZED);
+        }
+      }, 30000);
+
+      const interval = setInterval(() => {
+        if (this._dataSource.isInitialized) {
+          clearInterval(interval);
+          clearTimeout(timeout);
+          resolve();
+        }
+      }, 100);
+    });
   }
 
   /**

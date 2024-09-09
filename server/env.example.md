@@ -10,6 +10,10 @@ DB_PASS=
 DB_HOST=
 DB_PORT=
 
+# Logs
+# info | debug
+LOG_LEVEL=
+
 # "all" or boolean or "query" | "schema" | "error" | "warn" | "info" | "log" | "migration"
 # More about DB logging: https://typeorm.io/logging#logging
 DB_LOGGER=

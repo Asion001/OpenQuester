@@ -10,6 +10,8 @@ import { Logger } from "../../utils/Logger";
 export class CreateUserAndFileTables_1_1_1722683756069
   implements MigrationInterface
 {
+  name = "CreateUserAndFileTables_1_1_1722683756069";
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     /** Create File table */
     await queryRunner.createTable(

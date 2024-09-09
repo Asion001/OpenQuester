@@ -44,6 +44,9 @@ export class Environment {
     refreshExpiresIn: string;
   };
 
+  // Logs
+  public LOG_LEVEL!: "info" | "debug";
+
   // Workers
   public WORKERS_COUNT!: number;
 
@@ -164,6 +167,8 @@ export class Environment {
     this.loadDB();
     this.loadJWT();
     this.loadWorkers();
+
+    this.LOG_LEVEL = this.getEnvVar("LOG_LEVEL", "string", "info");
   }
 
   private loadWorkers() {

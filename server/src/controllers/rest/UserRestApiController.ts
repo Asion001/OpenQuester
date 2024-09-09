@@ -5,14 +5,14 @@ import { UpdateUser } from "../../managers/user/UpdateUser";
 import { ApiContext } from "../../services/context/ApiContext";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ClientResponse } from "../../enums/ClientResponse";
-import { validateParamsIDMiddleware } from "../../middleware/request/userRequestMiddleware";
+import { validateParamsIDMiddleware } from "../../middleware/request/UserRequestMiddleware";
 import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
 import {
   requireAdmin,
   requireAdminIfIdProvided,
-} from "../../middleware/role/roleMiddleware";
-import { validateWithSchema } from "../../middleware/schemaMiddleware";
+} from "../../middleware/role/RoleMiddleware";
+import { validateWithSchema } from "../../middleware/SchemaMiddleware";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -68,7 +68,7 @@ export class UserRestApiController {
         .status(HttpStatus.NOT_FOUND)
         .send({ message: ClientResponse.USER_NOT_FOUND });
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }
   };
@@ -87,7 +87,9 @@ export class UserRestApiController {
 
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveQueryError(err);
+      const { message, code } = await ErrorController.resolveUserQueryError(
+        err
+      );
       return res.status(code).send({ error: message });
     }
   };
@@ -104,7 +106,7 @@ export class UserRestApiController {
 
       return res.status(HttpStatus.NO_CONTENT).send();
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }
   };
@@ -123,7 +125,7 @@ export class UserRestApiController {
         .status(HttpStatus.NOT_FOUND)
         .send({ message: ClientResponse.USER_NOT_FOUND });
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }
   };

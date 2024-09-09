@@ -8,7 +8,7 @@ import { type ApiContext } from "./services/context/ApiContext";
 
 import { Logger } from "./utils/Logger";
 import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
-import { verifyToken } from "./middleware/authMiddleware";
+import { verifyToken } from "./middleware/AuthMiddleware";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
 import { FileRestApiController } from "./controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
@@ -18,6 +18,7 @@ import { ServerServices } from "./services/ServerServices";
 import { UserService } from "./services/UserService";
 import { ContentStructureService } from "./services/ContentStructureService";
 import { AuthService } from "./services/AuthService";
+import { debugLogMiddleware } from "./middleware/log/DebugLogMiddleware";
 
 /**
  * Servers all api endpoints in one place.
@@ -50,6 +51,9 @@ export class ServeApi {
       this._app.use(cors());
       this._app.use(express.json());
       this._app.use(verifyToken);
+      if (this._context.env.LOG_LEVEL === "debug") {
+        this._app.use(debugLogMiddleware);
+      }
 
       // Initialize server listening
       this._server = this._app.listen(this._port, () => {

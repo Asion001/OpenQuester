@@ -25,6 +25,8 @@ export enum ClientResponse {
   NO_CONTENT_ROUNDS = 'Content does not contain "rounds"!',
   WRONG_CONTENT = "Wrong 'content' argument type, it should be a valid JSON object!",
   EMPTY_CONTENT = "Content is empty!",
+  CANNOT_SAVE_CONTENT = "Cannot save content to the Database, probably it is incorrect or empty",
+  PACKAGE_AUTHOR_NOT_FOUND = "User that upload package not found, upload aborted",
 
   // File
   FILENAME_REQUIRED = '"filename" field is required',
