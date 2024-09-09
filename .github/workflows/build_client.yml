@@ -4,10 +4,6 @@ on:
   workflow_dispatch:
   workflow_call:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   pre_job:
     runs-on: ubuntu-latest
@@ -24,12 +20,13 @@ jobs:
               - 'client/**'
       - name: Check if we should force jobs to run
         id: should_force
-        run: echo "should_force=${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' }}" >> "$GITHUB_OUTPUT"
+        run: echo "should_force=${{ github.event_name == 'workflow_dispatch' || github.workflow == 'Release' }}" >> "$GITHUB_OUTPUT"
 
   build:
     name: Build client app
+    needs: pre_job
     # Skip when PR from a fork
-    if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' }}
+    if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' && needs.pre_job.outputs.should_run == 'true'}}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -60,10 +57,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: web-app
-          path: ./build/web/
+          path: ./client/build/web/
       - name: Publish Android Artifacts
         uses: actions/upload-artifact@v4
-        if: github.event_name == 'workflow_call'
         with:
           name: android-app
-          path: ./build/app/outputs/flutter-apk/*.apk
+          path: ./client/build/app/outputs/flutter-apk/*.apk

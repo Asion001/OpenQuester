@@ -5,10 +5,6 @@ on:
   workflow_call:
   pull_request:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   pre_job:
     runs-on: ubuntu-latest
@@ -28,7 +24,7 @@ jobs:
               - 'client/**'
       - name: Check if we should force jobs to run
         id: should_force
-        run: echo "should_force=${{ github.event_name == 'workflow_dispatch' }}" >> "$GITHUB_OUTPUT"
+        run: echo "should_force=${{ github.event_name == 'workflow_dispatch' || github.workflow == 'Release'}}" >> "$GITHUB_OUTPUT"
 
   test_server:
     runs-on: ubuntu-latest
