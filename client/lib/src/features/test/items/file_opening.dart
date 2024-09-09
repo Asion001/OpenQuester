@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:siq_file/siq_file.dart';
 
-import '../../../../connection/files/file_service.dart';
+import '../../../connection/files/file_service.dart';
 
 class FileOpening extends StatefulWidget {
   const FileOpening({super.key});
@@ -29,8 +32,15 @@ class _FileOpeningState extends State<FileOpening> {
                   onPressed: _openFile,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.upload_file),
-                  onPressed: () {},
+                  icon: const Icon(Icons.copy),
+                  onPressed: siqFile == null
+                      ? null
+                      : () async => await Clipboard.setData(
+                          ClipboardData(text: jsonEncode(siqFile?.toJson()))),
+                ),
+                const IconButton(
+                  icon: Icon(Icons.upload_file),
+                  onPressed: null,
                 ),
               ],
             )
@@ -45,7 +55,7 @@ class _FileOpeningState extends State<FileOpening> {
 
     final result = await FileService.pickFile();
 
-    final pickedTime = now.difference(DateTime.now());
+    final pickedTime = DateTime.now().difference(now);
     now = DateTime.now();
 
     final file = result?.files.first;
@@ -55,10 +65,10 @@ class _FileOpeningState extends State<FileOpening> {
       fileLength: file.size,
       stream: file.readStream!,
     );
-    siqFile = await SiqArchiveParser(fileStream).parse();
+    siqFile = await SiqArchiveParser(fileStream).parse(hashFiles: true);
     setState(() {});
 
-    final parseTime = now.difference(DateTime.now());
+    final parseTime = DateTime.now().difference(now);
 
     final debugText = '''
     parseTime: $parseTime;

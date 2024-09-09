@@ -34,7 +34,7 @@
             "request": "launch",
             "program": "./client/packages/siq_file/bin/siq_file.dart",
             "args": [
-                "parse",
+                "hash",
                 "../../../test.siq"
             ]
         },

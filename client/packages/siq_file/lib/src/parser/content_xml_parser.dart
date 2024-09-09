@@ -56,14 +56,14 @@ class ContentXmlParser {
         QuestionType.regular;
 
     final questionParam = params?.children
-        .firstWhere((p0) => p0.getAttribute('name') == 'question');
+        .firstWhereOrNull((p0) => p0.getAttribute('name') == 'question');
     final questionItem = questionParam?.getElement('item');
     final questionItemType = _getFileType(questionItem);
     final text = questionItemType != null ? null : questionItem?.innerText;
     final questionFile = parseFile(questionItem);
 
     final answerParam = params?.children
-        .firstWhere((p0) => p0.getAttribute('name') == 'answer');
+        .firstWhereOrNull((p0) => p0.getAttribute('name') == 'answer');
     final answerItem = answerParam?.getElement('item');
     final answerFile = parseFile(answerItem);
     final answerItemType = _getFileType(answerItem);
@@ -88,12 +88,13 @@ class ContentXmlParser {
   }
 
   SiqFileFileObject? parseFile(XmlElement? item) {
-    FileType? itemType = _getFileType(item);
+    final itemType = _getFileType(item);
 
     final file = itemType == null
         ? null
         : SiqFileFileObject(
             file: FileObject(path: item!.innerText, type: itemType));
+
     return file;
   }
 

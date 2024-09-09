@@ -242,8 +242,8 @@ class __$$SiqFileQuestionImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SiqFileQuestionImpl implements _SiqFileQuestion {
-  _$SiqFileQuestionImpl(
+class _$SiqFileQuestionImpl extends _SiqFileQuestion {
+  const _$SiqFileQuestionImpl(
       {required this.price,
       this.type = QuestionType.regular,
       this.text,
@@ -251,7 +251,8 @@ class _$SiqFileQuestionImpl implements _SiqFileQuestion {
       this.playersHint,
       this.questionFile,
       this.answerText,
-      this.answerFile});
+      this.answerFile})
+      : super._();
 
   factory _$SiqFileQuestionImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileQuestionImplFromJson(json);
@@ -330,8 +331,8 @@ class _$SiqFileQuestionImpl implements _SiqFileQuestion {
   }
 }
 
-abstract class _SiqFileQuestion implements SiqFileQuestion {
-  factory _SiqFileQuestion(
+abstract class _SiqFileQuestion extends SiqFileQuestion {
+  const factory _SiqFileQuestion(
       {required final int price,
       final QuestionType type,
       final String? text,
@@ -340,6 +341,7 @@ abstract class _SiqFileQuestion implements SiqFileQuestion {
       final SiqFileFileObject? questionFile,
       final String? answerText,
       final SiqFileFileObject? answerFile}) = _$SiqFileQuestionImpl;
+  const _SiqFileQuestion._() : super._();
 
   factory _SiqFileQuestion.fromJson(Map<String, dynamic> json) =
       _$SiqFileQuestionImpl.fromJson;
