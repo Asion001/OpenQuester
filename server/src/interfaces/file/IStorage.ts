@@ -4,6 +4,9 @@ export interface IStorage {
   /** @returns presigned url */
   upload(filename: string, expiresIn?: number): Promise<string>;
   /** @returns object with filename as key and link to upload as value */
-  uploadPackage(content: object, expiresIn?: number): Promise<object>;
+  uploadPackage(
+    content: object,
+    expiresIn?: number
+  ): Promise<{ [key: string]: string }>;
   delete(filename: string): Promise<void>;
 }
