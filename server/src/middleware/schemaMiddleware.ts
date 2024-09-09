@@ -17,7 +17,7 @@ export function validateWithSchema<T extends ISchema>(
       req.body = validator.validate();
       next();
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }
   };

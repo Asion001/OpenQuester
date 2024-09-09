@@ -7,14 +7,16 @@ import {
   Unique,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from "typeorm";
 
 import { IUser } from "../../interfaces/user/IUser";
 import { File } from "./File";
 import { Permission } from "./Permission";
 import { EUserPermissions } from "../../enums/EUserPermissions";
+import { Package } from "./Package";
 
-@Entity()
+@Entity("user")
 @Unique(["email", "name"])
 export class User implements IUser {
   constructor() {
@@ -48,6 +50,9 @@ export class User implements IUser {
 
   @Column()
   is_deleted!: boolean;
+
+  @OneToMany(() => Package, (packageEntity) => packageEntity.author)
+  packages!: Package[];
 
   @ManyToMany(() => Permission, (permission) => permission.users)
   @JoinTable({

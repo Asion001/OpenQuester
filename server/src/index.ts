@@ -65,10 +65,15 @@ async function initWorker(ctx: ApiContext) {
       Logger.info(`Worker ${cluster.worker?.process.pid} started`, true);
     }
   } catch (err: unknown) {
-    if (err instanceof Error) {
-      Logger.error(`Worker caught an exception: ${err.message}`);
-    }
-    gracefulShutdown(api?.server);
+    ErrorController.resolveError(err)
+      .then((error) => {
+        Logger.error(
+          `Worker caught an exception ${error.code}: ${error.message}`
+        );
+      })
+      .finally(() => {
+        gracefulShutdown(api?.server);
+      });
   }
 
   process.on("message", (msg: WorkerMessage) => {
@@ -118,8 +123,12 @@ function gracefulShutdown(server: Server | undefined) {
 try {
   main();
 } catch (err: unknown) {
-  const { message, code } = ErrorController.resolveError(err);
-  Logger.error(`Top-level App Error (${code}): ${message}`);
-  shutdownCluster();
-  process?.exit(1);
+  ErrorController.resolveError(err)
+    .then((error) => {
+      Logger.error(`Top-level App Error (${error.code}): ${error.message}`);
+    })
+    .finally(() => {
+      shutdownCluster();
+      process?.exit(1);
+    });
 }

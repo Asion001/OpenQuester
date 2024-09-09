@@ -5,7 +5,7 @@ import { ErrorController } from "../../error/ErrorController";
 /**
  * Validate id from parameters if it's provided
  */
-export const validateParamsIDMiddleware = (
+export const validateParamsIDMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -14,7 +14,7 @@ export const validateParamsIDMiddleware = (
     try {
       ValueUtils.validateId(req.params.id);
     } catch (err: unknown) {
-      const { message, code } = ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(err);
       return res.status(code).send({ error: message });
     }
   }

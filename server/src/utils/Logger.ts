@@ -3,7 +3,7 @@ import path from "path";
 import cluster from "cluster";
 
 import { Environment } from "../config/Environment";
-import { blue, blueBright, bold, green, red, yellow } from "colorette";
+import { blueBright, bold, cyanBright, green, red, yellow } from "colorette";
 
 /**
  * Logger class used for writing logs and for prettier console output
@@ -71,7 +71,7 @@ export class Logger {
 
     const log = prefix + text;
 
-    console.debug(blue(log));
+    console.debug(cyanBright(log));
 
     this.writeFile(log);
   }

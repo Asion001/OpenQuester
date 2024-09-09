@@ -16,7 +16,7 @@ export class ContentStructureService {
   public async getUploadLinksForFiles(
     content: OQContentStructure,
     storage: IStorage,
-    expiresIn: number
+    expiresIn?: number
   ): Promise<{ [key: string]: string }> {
     if (!content?.rounds) {
       return { error: ClientResponse.NO_CONTENT_ROUNDS };

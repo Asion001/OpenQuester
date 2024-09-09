@@ -17,4 +17,25 @@ export class FileRepository {
 
     return this._instance;
   }
+
+  public async writeFile(filename: string, path: string) {
+    const fileExists = await this._repository.exists({
+      where: {
+        filename,
+        path,
+      },
+    });
+    if (fileExists) {
+      return;
+    }
+
+    const file = new File();
+    file.import({
+      path,
+      filename,
+      created_at: new Date(),
+    });
+
+    this._repository.save(file);
+  }
 }
