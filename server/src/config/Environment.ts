@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { bold } from "colorette";
-import { type LoggerOptions } from "typeorm";
+import { LogLevel, type LoggerOptions } from "typeorm";
 
 import { Logger } from "../utils/Logger";
 import { JWTUtils } from "../utils/JWTUtils";
@@ -45,7 +45,7 @@ export class Environment {
   };
 
   // Logs
-  public LOG_LEVEL!: "info" | "debug";
+  public LOG_LEVEL!: LogLevel;
 
   // Workers
   public WORKERS_COUNT!: number;

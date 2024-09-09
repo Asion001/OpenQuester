@@ -1,5 +1,5 @@
 export interface OQFileContentStructure {
-  path: string;
+  sha256: string;
   type: string;
   link?: string;
 }

@@ -39,21 +39,21 @@ export class ContentStructureService {
       const current = stack.shift();
 
       if (this._hasFile(current)) {
-        const filePath = current.file.path;
+        const filename = current.file.sha256;
 
-        if (filePath) {
+        if (filename) {
           let uploadPromise: Promise<string>;
 
           // Check if the path is already cached
-          if (cache.has(filePath)) {
-            uploadPromise = cache.get(filePath)!;
+          if (cache.has(filename)) {
+            uploadPromise = cache.get(filename)!;
           } else {
             // Create and cache the upload promise
-            uploadPromise = storage.upload(filePath, expiresIn).then((link) => {
-              fileLinks[filePath] = link;
+            uploadPromise = storage.upload(filename, expiresIn).then((link) => {
+              fileLinks[filename] = link;
               return link;
             });
-            cache.set(filePath, uploadPromise);
+            cache.set(filename, uploadPromise);
           }
 
           // Push the upload promise to the array
@@ -80,7 +80,7 @@ export class ContentStructureService {
   /** Check if current object of stack has correct and non-empty file field */
   private _hasFile(obj: any): obj is OQFileStructure {
     return (
-      obj && typeof obj.file === "object" && typeof obj.file.path === "string"
+      obj && typeof obj.file === "object" && typeof obj.file.sha256 === "string"
     );
   }
 }
