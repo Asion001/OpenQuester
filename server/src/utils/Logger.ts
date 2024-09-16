@@ -10,7 +10,7 @@ import { LogLevel } from "../types/log/log";
  * Logger class used for writing logs and for prettier console output
  */
 export class Logger {
-  public static checkAccess(logLevel: string, requiredLogLevel: LogLevel) {
+  public static checkAccess(logLevel: LogLevel, requiredLogLevel: LogLevel) {
     const levels = ["info", "debug", "verbose"];
     const logIndex = levels.indexOf(logLevel);
     const requiredLogIndex = levels.indexOf(requiredLogLevel);

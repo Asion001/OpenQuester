@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { bold } from "colorette";
-import { LogLevel, type LoggerOptions } from "typeorm";
+import { type LoggerOptions } from "typeorm";
 
 import { Logger } from "../utils/Logger";
 import { JWTUtils } from "../utils/JWTUtils";
@@ -10,6 +10,7 @@ import { ValueUtils } from "../utils/ValueUtils";
 import { envVar } from "../types/env/env";
 import { ServerResponse } from "../enums/ServerResponse";
 import { ServerError } from "../error/ServerError";
+import { LogLevel } from "../types/log/log";
 
 const ENV_TYPES = ["local", "prod", "test"];
 
