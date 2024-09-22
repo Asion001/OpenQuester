@@ -11,7 +11,7 @@ DB_HOST=
 DB_PORT=
 
 # Logs
-# info | debug
+# info | debug | verbose
 LOG_LEVEL=
 
 # "all" or boolean or "query" | "schema" | "error" | "warn" | "info" | "log" | "migration"

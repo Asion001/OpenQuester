@@ -4,11 +4,24 @@ import cluster from "cluster";
 
 import { Environment } from "../config/Environment";
 import { blueBright, bold, cyanBright, green, red, yellow } from "colorette";
+import { LogLevel } from "../types/log/log";
 
 /**
  * Logger class used for writing logs and for prettier console output
  */
 export class Logger {
+  public static checkAccess(logLevel: LogLevel, requiredLogLevel: LogLevel) {
+    const levels = ["info", "debug", "verbose"];
+    const logIndex = levels.indexOf(logLevel);
+    const requiredLogIndex = levels.indexOf(requiredLogLevel);
+
+    if (logIndex === -1 || logIndex < requiredLogIndex) {
+      return false;
+    }
+
+    return true;
+  }
+
   public static info(text: unknown, logWorker: boolean = false) {
     if (cluster.isPrimary || logWorker) {
       const prefix = "[INFO]: ";

@@ -1,8 +1,9 @@
 import { type Request, type Response, type NextFunction } from "express";
 import { Logger } from "../../utils/Logger";
 import { ValueUtils } from "../../utils/ValueUtils";
+import { Environment } from "../../config/Environment";
 
-export const debugLogMiddleware = async (
+export const logMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -17,7 +18,7 @@ export const debugLogMiddleware = async (
     if (!isSent) {
       // Log the request path and arguments
       try {
-        debugLog(req, body);
+        log(req, body);
       } catch {
         // Avoid all unexpected errors, for example with JSON.stringify
       }
@@ -29,17 +30,33 @@ export const debugLogMiddleware = async (
   next();
 };
 
-function debugLog(req: Request, responseBody: any) {
-  Logger.debug(`-------------------------`);
-  Logger.debug(`Request path: ${JSON.stringify(req.originalUrl)}`);
+function log(req: Request, responseBody: any) {
+  const level = Environment.instance.LOG_LEVEL;
 
-  if (!ValueUtils.isEmpty(req.query)) {
-    Logger.debug(`Query parameters: ${JSON.stringify(req.query)}`);
-  }
-  if (!ValueUtils.isEmpty(req.body)) {
-    Logger.debug(`Request body: ${JSON.stringify(req.body)}`);
-  }
+  ///////////////// Debug logs /////////////////
+  if (Logger.checkAccess(level, "debug")) {
+    // Log request path
+    Logger.debug(`Request path: ${JSON.stringify(req.originalUrl)}`);
 
-  Logger.debug(`Response body: ${JSON.stringify(responseBody)}`);
-  Logger.debug(`-------------------------`);
+    ///////////////// Verbose logs /////////////////
+    if (Logger.checkAccess(level, "verbose")) {
+      // Log query params
+      Logger.debug(`Query parameters: ${JSON.stringify(req.query)}`);
+
+      // Log headers
+      if (!ValueUtils.isEmpty(req.headers)) {
+        Logger.debug(`Request headers: ${JSON.stringify(req.headers)}`);
+      }
+
+      // Log request body
+      if (!ValueUtils.isEmpty(req.body)) {
+        Logger.debug(`Request body: ${JSON.stringify(req.body)}`);
+      }
+
+      // Log response body
+      Logger.debug(`Response body: ${JSON.stringify(responseBody)}`);
+    }
+
+    console.log("\n");
+  }
 }

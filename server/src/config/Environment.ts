@@ -10,6 +10,7 @@ import { ValueUtils } from "../utils/ValueUtils";
 import { envVar } from "../types/env/env";
 import { ServerResponse } from "../enums/ServerResponse";
 import { ServerError } from "../error/ServerError";
+import { LogLevel } from "../types/log/log";
 
 const ENV_TYPES = ["local", "prod", "test"];
 
@@ -45,7 +46,7 @@ export class Environment {
   };
 
   // Logs
-  public LOG_LEVEL!: "info" | "debug";
+  public LOG_LEVEL!: LogLevel;
 
   // Workers
   public WORKERS_COUNT!: number;
