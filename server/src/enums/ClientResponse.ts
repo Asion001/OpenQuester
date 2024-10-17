@@ -15,6 +15,7 @@ export enum ClientResponse {
   INVALID_TOKEN = "Token invalid or expired",
   ACCESS_DENIED = "Access denied",
   TOO_MANY_REQUESTS = "Too many requests, please try again later",
+  NO_PERMISSION = "You don't have permission to perform this action",
 
   // Validation
   VALIDATION_ERROR = "Validation error",

@@ -312,7 +312,7 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "You are not able to do that"
+                      "example": "You don't have permission to perform this action"
                     }
                   }
                 }
@@ -361,7 +361,7 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "You are not able to do that"
+                      "example": "You don't have permission to perform this action"
                     }
                   }
                 }
@@ -510,7 +510,7 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "You are not able to do that"
+                      "example": "You don't have permission to perform this action"
                     }
                   }
                 }

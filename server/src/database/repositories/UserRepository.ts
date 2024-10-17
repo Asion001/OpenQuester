@@ -5,13 +5,11 @@ import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
 import { Crypto } from "../../interfaces/Crypto";
 import { CryptoUtils } from "../../utils/CryptoUtils";
 import { ValueUtils } from "../../utils/ValueUtils";
-import { type Permission } from "../models/Permission";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
 import { ClientError } from "../../error/ClientError";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { ISelectOptions } from "../../interfaces/ISelectOptions";
 import { UserOrId } from "../../types/user/user";
-import { PermissionRepository } from "./PermissionRepository";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -60,7 +58,6 @@ export class UserRepository {
   public async create(data: IRegisterUser, crypto?: Crypto) {
     // Set all data to new user instance
     const user = new User();
-    const permissionRepository = PermissionRepository.getRepository(this._db);
     await user.import({
       name: data.name,
       email: data.email,
@@ -69,8 +66,7 @@ export class UserRepository {
         ? ValueUtils.getBirthday(data.birthday)
         : undefined,
       avatar: data.avatar,
-      permissions: ((await permissionRepository.default()) ??
-        []) as Permission[],
+      permissions: [],
       created_at: new Date(),
       updated_at: new Date(),
       is_deleted: false,

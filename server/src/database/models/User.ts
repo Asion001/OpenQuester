@@ -13,7 +13,6 @@ import {
 import { IUser } from "../../interfaces/user/IUser";
 import { File } from "./File";
 import { Permission } from "./Permission";
-import { EUserPermissions } from "../../enums/EUserPermissions";
 import { Package } from "./Package";
 
 @Entity("user")
@@ -61,19 +60,6 @@ export class User implements IUser {
     inverseJoinColumn: { name: "permission_id", referencedColumnName: "id" },
   })
   permissions!: Permission[];
-
-  public isAdmin() {
-    if (!this.permissions?.length) {
-      return false;
-    }
-
-    for (const p of this.permissions) {
-      if (p.id == EUserPermissions.admin) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   public async import(data: IUser) {
     this.name = data.name;

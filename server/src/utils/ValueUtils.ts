@@ -28,7 +28,7 @@ export class ValueUtils {
   public static validateId(id: string | number): number {
     id = Number(id);
 
-    if (id < 1 || isNaN(id)) {
+    if (id < 1 || Number.isNaN(id)) {
       throw new ClientError(ClientResponse.BAD_USER_ID);
     }
 

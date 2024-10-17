@@ -11,7 +11,6 @@ import { File } from "./models/File";
 import { Permission } from "./models/Permission";
 import { UserPermissions } from "./models/UserPermission";
 import { Package } from "./models/Package";
-import { ErrorModel } from "./models/ErrorModel";
 
 // Migrations imports
 import { CreateUserAndFileTables_1_1_1722683756069 as createUserAndFileTables } from "./migrations/CreateUserAndFileTables_1_1_1722683756069";
@@ -19,6 +18,7 @@ import { UpdateUserModelFields_1_11_1723107959823 as updateUserModelFields } fro
 import { CreatePermissionTable_1_2_1723128633623 as createPermissionTable } from "./migrations/CreatePermissionTable_1_2_1723128633623";
 import { UpdateUserRequiredFields_1_21_1723204474011 as updateUserRequiredFields } from "./migrations/UpdateUserRequiredFields_1_21_1723204474011";
 import { WriteMoreInfoToDB_0_2_9_1725692779638 as writeMoreToDB } from "./migrations/WriteMoreInfoToDB_0_2_9_1725692779638";
+import { ChangePermissionValidation_0_3_0_1729181792142 as changePermissionValidation } from "./migrations/ChangePermissionValidation_0_3_0_1729181792142";
 
 // Init env
 const env = Environment.instance;
@@ -46,13 +46,14 @@ export const AppDataSource = new DataSource({
   database: env.DB_NAME,
   synchronize: false,
   logging: env.DB_LOGGER,
-  entities: [User, File, Permission, UserPermissions, Package, ErrorModel],
+  entities: [User, File, Permission, UserPermissions, Package],
   migrations: [
     createUserAndFileTables,
     updateUserModelFields,
     createPermissionTable,
     updateUserRequiredFields,
     writeMoreToDB,
+    changePermissionValidation,
   ],
   migrationsRun: true,
   subscribers: [],

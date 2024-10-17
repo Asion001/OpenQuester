@@ -25,15 +25,15 @@ import { logMiddleware } from "./middleware/log/DebugLogMiddleware";
  */
 export class ServeApi {
   /** Express app */
-  protected _app!: Express;
+  protected _app: Express;
   /** Express server */
   protected _server!: Server;
   /** Application listening port */
-  protected _port!: number;
+  protected _port: number;
   /** Database instance */
-  protected _db!: Database;
+  protected _db: Database;
   /** Server services locator */
-  protected _serverServices!: ServerServices;
+  protected _serverServices: ServerServices;
 
   constructor(protected _context: ApiContext) {
     this._db = this._context.db;

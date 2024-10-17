@@ -5,14 +5,12 @@ import { UpdateUser } from "../../managers/user/UpdateUser";
 import { ApiContext } from "../../services/context/ApiContext";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ClientResponse } from "../../enums/ClientResponse";
-import { validateParamsIDMiddleware } from "../../middleware/request/UserRequestMiddleware";
 import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
-import {
-  requireAdmin,
-  requireAdminIfIdProvided,
-} from "../../middleware/role/RoleMiddleware";
+import { requirePermissionIfIdProvided } from "../../middleware/permission/PermissionMiddleware";
 import { validateWithSchema } from "../../middleware/SchemaMiddleware";
+import { checkPermission } from "../../middleware/permission/PermissionMiddleware";
+import { Permissions } from "../../enums/Permissions";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -28,24 +26,32 @@ export class UserRestApiController {
 
     app.use("/v1/user", router);
 
-    app.get(`/v1/users`, requireAdmin(this.ctx.db), this.listUsers);
+    app.get(
+      `/v1/users`,
+      checkPermission(this.ctx.db, Permissions.GET_ALL_USERS),
+      this.listUsers
+    );
+
     router.get(
       "(/:id)?",
-      validateParamsIDMiddleware,
-      requireAdminIfIdProvided(this.ctx.db),
+      requirePermissionIfIdProvided(this.ctx.db, Permissions.GET_ANOTHER_USER),
       this.getUser
     );
     router.patch(
       "(/:id)?",
-      validateParamsIDMiddleware,
-      requireAdminIfIdProvided(this.ctx.db),
+      requirePermissionIfIdProvided(
+        this.ctx.db,
+        Permissions.CHANGE_ANOTHER_USER
+      ),
       validateWithSchema(UpdateUser),
       this.updateUser
     );
     router.delete(
       "(/:id)?",
-      validateParamsIDMiddleware,
-      requireAdminIfIdProvided(this.ctx.db),
+      requirePermissionIfIdProvided(
+        this.ctx.db,
+        Permissions.DELETE_ANOTHER_USER
+      ),
       this.deleteUser
     );
   }
@@ -113,9 +119,7 @@ export class UserRestApiController {
 
   private listUsers = async (req: Request, res: Response) => {
     try {
-      const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
-
-      const result = await this._userService.list(this.ctx.db, tokenPayload);
+      const result = await this._userService.list(this.ctx.db);
 
       if (result) {
         return res.status(HttpStatus.OK).send(result);
