@@ -1,7 +1,6 @@
 import { type Repository } from "typeorm";
 import { type Database } from "../Database";
 import { Permission } from "../models/Permission";
-import { EUserPermissions } from "../../enums/EUserPermissions";
 
 export class PermissionRepository {
   private static _instance: PermissionRepository;
@@ -17,15 +16,5 @@ export class PermissionRepository {
     }
 
     return this._instance;
-  }
-
-  /**
-   * Return default permissions for user
-   */
-  public async default() {
-    return this._repository
-      .createQueryBuilder("permission")
-      .where("id=:id", { id: EUserPermissions.user })
-      .getOne();
   }
 }

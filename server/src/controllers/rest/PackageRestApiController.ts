@@ -13,7 +13,7 @@ import { ClientResponse } from "../../enums/ClientResponse";
 import { UserRepository } from "../../database/repositories/UserRepository";
 
 export class PackageRestApiController {
-  private _storageService!: IStorage;
+  private _storageService: IStorage;
   private _db: Database;
 
   constructor(ctx: ApiContext) {
@@ -22,8 +22,11 @@ export class PackageRestApiController {
     this._db = ctx.db;
 
     // Init storage service
-    const storageFactory = ctx.serverServices.get(StorageServiceFactory);
-    this._storageService = storageFactory.createStorageService(ctx, "minio");
+    const ss = ctx.serverServices;
+
+    this._storageService = ss
+      .get(StorageServiceFactory)
+      .createStorageService(ctx, "minio");
 
     app.use("/v1/package", router);
 

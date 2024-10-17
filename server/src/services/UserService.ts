@@ -25,23 +25,14 @@ export class UserService {
   ): Promise<User> {
     // Token validated by middleware, so no need to validate it
     const id = ValueUtils.validateId(tokenPayload.id);
-    const repository = UserRepository.getRepository(db);
-
-    return repository.get(id);
+    return UserRepository.getRepository(db).get(id);
   }
 
   /**
    * Get list of all available users in DB
    */
-  public async list(db: Database, tokenPayload: JWTPayload) {
-    const repository = UserRepository.getRepository(db);
-    const requestUser = await repository.get(tokenPayload.id);
-
-    if (requestUser.isAdmin()) {
-      return repository.list();
-    }
-
-    throw new ClientError(ClientResponse.ACCESS_DENIED);
+  public async list(db: Database) {
+    return UserRepository.getRepository(db).list();
   }
 
   /**
@@ -54,16 +45,12 @@ export class UserService {
       return this.getByTokenPayload(db, tokenPayload);
     }
 
+    // User asks for himself
     if (tokenPayload.id == userId) {
       return repository.get(userId);
     }
 
-    const requestUser = await repository.get(tokenPayload.id);
-    if (requestUser.isAdmin()) {
-      return repository.get(userId);
-    }
-
-    throw new ClientError(ClientResponse.ACCESS_DENIED);
+    return repository.get(userId);
   }
 
   /**

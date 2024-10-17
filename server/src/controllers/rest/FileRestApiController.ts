@@ -9,15 +9,18 @@ import { HttpStatus } from "../../enums/HttpStatus";
 import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 
 export class FileRestApiController {
-  private _storageService!: IStorage;
+  private _storageService: IStorage;
 
   constructor(ctx: ApiContext) {
     const app = ctx.app;
     const router = Router();
 
     // Get storage service
-    const storageFactory = ctx.serverServices.get(StorageServiceFactory);
-    this._storageService = storageFactory.createStorageService(ctx, "minio");
+    const ss = ctx.serverServices;
+
+    this._storageService = ss
+      .get(StorageServiceFactory)
+      .createStorageService(ctx, "minio");
 
     app.use("/v1/file", router);
 
