@@ -3,37 +3,37 @@
  */
 export enum ClientResponse {
   // User
-  USER_NOT_FOUND = "User not found",
-  ALREADY_LOGGED_IN = "User is already logged in",
-  USER_ALREADY_EXISTS = "User with this name or email already exists",
-  NO_USER_DATA = "No user data provided",
-  WRONG_PASSWORD = "Wrong password, please try again",
+  USER_NOT_FOUND = "user_not_found",
+  ALREADY_LOGGED_IN = "user_logged_in",
+  USER_ALREADY_EXISTS = "user_already_exists",
+  NO_USER_DATA = "no_user_data",
+  WRONG_PASSWORD = "wrong_password",
 
   // Auth
-  NO_REFRESH = "Please provide refresh_token",
-  INVALID_REFRESH = "Invalid or expired refresh token",
-  INVALID_TOKEN = "Token invalid or expired",
-  ACCESS_DENIED = "Access denied",
-  TOO_MANY_REQUESTS = "Too many requests, please try again later",
-  NO_PERMISSION = "You don't have permission to perform this action",
+  NO_REFRESH = "no_refresh",
+  INVALID_REFRESH = "invalid_refresh",
+  INVALID_TOKEN = "invalid_token",
+  ACCESS_DENIED = "access_denied",
+  TOO_MANY_REQUESTS = "too_many_requests",
+  NO_PERMISSION = "no_permission",
 
   // Validation
-  VALIDATION_ERROR = "Validation error",
-  FIELDS_REQUIRED = "%s fields is required",
-  BAD_USER_ID = "Please provide id that greater than 1",
+  VALIDATION_ERROR = "validation_error",
+  FIELDS_REQUIRED = "fields_required",
+  BAD_USER_ID = "bad_user_id",
 
   // Package
-  NO_CONTENT_ROUNDS = 'Content does not contain "rounds"!',
-  WRONG_CONTENT = "Wrong 'content' argument type, it should be a valid JSON object!",
-  EMPTY_CONTENT = "Content is empty!",
-  CANNOT_SAVE_CONTENT = "Cannot save content to the Database, probably it is incorrect or empty",
-  PACKAGE_AUTHOR_NOT_FOUND = "User that upload package not found, upload aborted",
+  NO_CONTENT_ROUNDS = "no_content_rounds",
+  WRONG_CONTENT = "wrong_content",
+  EMPTY_CONTENT = "empty_content",
+  CANNOT_SAVE_CONTENT = "cannot_save_content",
+  PACKAGE_AUTHOR_NOT_FOUND = "package_author_not_found",
 
   // File
-  FILENAME_REQUIRED = '"filename" field is required',
-  FILENAME_INVALID = '"filename" should be a valid string',
+  FILENAME_REQUIRED = "filename_required",
+  FILENAME_INVALID = "filename_invalid",
 
   // Other
-  DELETE_REQUEST_SENT = "Delete request sent",
-  USER_PERMISSION_NOT_EXISTS = "Permission %name with ID %id does not exists",
+  DELETE_REQUEST_SENT = "delete_request_sent",
+  USER_PERMISSION_NOT_EXISTS = "user_permission_not_exists",
 }

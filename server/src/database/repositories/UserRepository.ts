@@ -2,7 +2,7 @@ import { type Repository } from "typeorm";
 import { User } from "../models/User";
 import { type Database } from "../Database";
 import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
-import { Crypto } from "../../interfaces/Crypto";
+import { ICrypto } from "../../interfaces/ICrypto";
 import { CryptoUtils } from "../../utils/CryptoUtils";
 import { ValueUtils } from "../../utils/ValueUtils";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
@@ -10,6 +10,8 @@ import { ClientError } from "../../error/ClientError";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { ISelectOptions } from "../../interfaces/ISelectOptions";
 import { UserOrId } from "../../types/user/user";
+import { TranslateService as ts } from "../../services/text/TranslateService";
+import { Language } from "../../types/text/translation";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -55,7 +57,7 @@ export class UserRepository {
     }) as Promise<User[]>;
   }
 
-  public async create(data: IRegisterUser, crypto?: Crypto) {
+  public async create(data: IRegisterUser, crypto?: ICrypto) {
     // Set all data to new user instance
     const user = new User();
     await user.import({
@@ -88,12 +90,11 @@ export class UserRepository {
       .getOne();
   }
 
-  public async delete(user: UserOrId) {
-    const _user = await this._getUserFromInput(user);
+  public async delete(user: UserOrId, userLang?: Language) {
+    const _user = await this._getUserFromInput(user, userLang);
 
-    _user.is_deleted = false;
+    _user.is_deleted = true;
     this.update(_user);
-    return;
   }
 
   public async update(user: UserOrId) {
@@ -112,19 +113,22 @@ export class UserRepository {
     );
   }
 
-  private async _getUserFromInput(input: UserOrId) {
+  private async _getUserFromInput(input: UserOrId, userLang?: Language) {
     let user: User | null = null;
 
     if (input instanceof User) {
-      user = input;
+      return input;
     }
 
-    if (typeof input === "number") {
-      user = await this._repository.findOne({ where: { id: input } });
+    if (typeof input === "number" || typeof input === "string") {
+      const id = ValueUtils.validateId(input, userLang);
+      user = await this._repository.findOne({ where: { id } });
     }
 
     if (!user) {
-      throw new ClientError(ClientResponse.USER_NOT_FOUND);
+      throw new ClientError(
+        ts.translate(ClientResponse.USER_NOT_FOUND, userLang)
+      );
     }
 
     return user;

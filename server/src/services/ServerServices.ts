@@ -3,6 +3,9 @@ import { ServerResponse } from "../enums/ServerResponse";
 
 type Constructor = new (...args: any[]) => any;
 
+/**
+ * Stores instances of all server services
+ */
 export class ServerServices {
   private _services = new Map<Constructor, any>();
 

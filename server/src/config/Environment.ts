@@ -7,7 +7,7 @@ import { type LoggerOptions } from "typeorm";
 import { Logger } from "../utils/Logger";
 import { JWTUtils } from "../utils/JWTUtils";
 import { ValueUtils } from "../utils/ValueUtils";
-import { envVar } from "../types/env/env";
+import { EnvVar } from "../types/env/env";
 import { ServerResponse } from "../enums/ServerResponse";
 import { ServerError } from "../error/ServerError";
 import { LogLevel } from "../types/log/log";
@@ -99,7 +99,7 @@ export class Environment {
    */
   public getEnvVar(
     variable: string,
-    type: envVar | envVar[],
+    type: EnvVar | EnvVar[],
     defaultValue: unknown = undefined
   ): any {
     let success = false;

@@ -4,6 +4,7 @@ import { type Request, type Response, type NextFunction } from "express";
 import { Environment } from "../config/Environment";
 import { ClientResponse } from "../enums/ClientResponse";
 import { HttpStatus } from "../enums/HttpStatus";
+import { TranslateService as ts } from "../services/text/TranslateService";
 
 export const verifyToken = (
   req: Request,
@@ -14,23 +15,24 @@ export const verifyToken = (
     return next();
   }
   const env = Environment.instance;
-  const header = req.header("Authorization");
+  const header = req.headers.authorization;
 
   const scheme = header?.split(" ")[0];
   const token = header?.split(" ")[1];
+  const lang = req.headers["accept-language"];
 
   if (!token || scheme !== env.JWT_SCHEME)
-    return res
-      .status(HttpStatus.UNAUTHORIZED)
-      .json({ error: ClientResponse.ACCESS_DENIED });
+    return res.status(HttpStatus.UNAUTHORIZED).json({
+      error: ts.translate(ClientResponse.ACCESS_DENIED, lang),
+    });
 
   try {
     jwt.verify(token, env.JWT_SECRET);
     next();
   } catch {
-    res
-      .status(HttpStatus.UNAUTHORIZED)
-      .json({ error: ClientResponse.INVALID_TOKEN });
+    res.status(HttpStatus.UNAUTHORIZED).json({
+      error: ts.translate(ClientResponse.INVALID_TOKEN, lang),
+    });
   }
 };
 
@@ -56,7 +58,10 @@ export const validateTokenForAuth = (
   if (token && scheme == env.JWT_SCHEME) {
     try {
       jwt.verify(token, env.JWT_SECRET);
-      res.status(HttpStatus.BAD_REQUEST).send(ClientResponse.ALREADY_LOGGED_IN);
+      const lang = ts.parseHeader(req.headers["accept-language"]);
+      res
+        .status(HttpStatus.BAD_REQUEST)
+        .send(ts.translate(ClientResponse.ALREADY_LOGGED_IN, lang));
     } catch {
       // Token invalid - continue
     }
@@ -74,7 +79,10 @@ export const validateRefresh = (
   next: NextFunction
 ) => {
   if (!req.body.refresh_token) {
-    return res.status(HttpStatus.BAD_REQUEST).send(ClientResponse.NO_REFRESH);
+    const lang = ts.parseHeader(req.headers["accept-language"]);
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send(ts.translate(ClientResponse.NO_REFRESH, lang));
   }
   next();
 };

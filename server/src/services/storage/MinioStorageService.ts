@@ -14,6 +14,7 @@ import { PackageRepository } from "../../database/repositories/PackageRepository
 import { Database } from "../../database/Database";
 import { User } from "../../database/models/User";
 import { FileRepository } from "../../database/repositories/FileRepository";
+import { Language } from "../../types/text/translation";
 
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
@@ -58,7 +59,6 @@ export class MinioStorageService implements IStorage {
     filename: string,
     expiresIn: number = 60 * 30 // Default: 30 min
   ) {
-    // TODO: Implement cache in future
     const filePath = this._parseFilePath(filename);
     return this._client.presignedGetObject(
       this._context.bucket,
@@ -90,15 +90,17 @@ export class MinioStorageService implements IStorage {
   public async uploadPackage(
     content: OQContentStructure,
     author: User,
-    expiresIn: number = 60 * 5 // Default: 5 min
+    expiresIn: number = 60 * 5, // Default: 5 min
+    userLang?: Language
   ) {
     const repository = PackageRepository.getRepository(this._db);
     const links = this._contentStructureService.getUploadLinksForFiles(
       content,
       this,
-      expiresIn
+      expiresIn,
+      userLang
     );
-    repository.create(content, author);
+    repository.create(content, author, userLang);
     return links;
   }
 

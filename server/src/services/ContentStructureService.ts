@@ -6,6 +6,8 @@ import { OQFileStructure } from "../interfaces/file/structures/OQFileStructure";
 import { OQQuestionsStructure } from "../interfaces/file/structures/OQQuestionsStructure";
 import { OQRoundStructure } from "../interfaces/file/structures/OQRoundStructure";
 import { OQThemeStructure } from "../interfaces/file/structures/OQThemeStructure";
+import { Language } from "../types/text/translation";
+import { TranslateService as ts } from "./text/TranslateService";
 
 /**
  * Class that manages all actions related to content.json file and it's structure
@@ -17,10 +19,13 @@ export class ContentStructureService {
   public async getUploadLinksForFiles(
     content: OQContentStructure,
     storage: IStorage,
-    expiresIn?: number
+    expiresIn?: number,
+    userLang?: Language
   ): Promise<{ [key: string]: string }> {
     if (!content?.rounds) {
-      throw new ClientError(ClientResponse.NO_CONTENT_ROUNDS);
+      throw new ClientError(
+        ts.translate(ClientResponse.NO_CONTENT_ROUNDS, userLang)
+      );
     }
 
     /** Nested objects stack */
