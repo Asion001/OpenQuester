@@ -10,6 +10,7 @@ import { ClientError } from "../error/ClientError";
 import { UserRepository } from "../database/repositories/UserRepository";
 import { TranslateService as ts } from "./text/TranslateService";
 import { JWTUtils } from "../utils/JWTUtils";
+import { TemplateUtils } from "../utils/TemplateUtils";
 
 export class UserService {
   /**
@@ -116,10 +117,10 @@ export class UserService {
         }))
       ) {
         throw new ClientError(
-          ClientResponse.USER_PERMISSION_NOT_EXISTS.replace(
-            "%name",
-            p.name
-          ).replace("%id", p.id)
+          TemplateUtils.text(ClientResponse.USER_PERMISSION_NOT_EXISTS, {
+            name: p.name,
+            id: p.id,
+          })
         );
       }
     }

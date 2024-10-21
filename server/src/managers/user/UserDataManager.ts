@@ -9,6 +9,7 @@ import { ServerError } from "../../error/ServerError";
 import { ISchema } from "../../interfaces/ISchema";
 import { Language } from "../../types/text/translation";
 import { TranslateService as ts } from "../../services/text/TranslateService";
+import { TemplateUtils } from "../../utils/TemplateUtils";
 
 export class UserDataManager implements ISchema {
   protected _userData?: IInputUserData;
@@ -52,9 +53,10 @@ export class UserDataManager implements ISchema {
     }
     if (r.length > 0) {
       throw new ClientError(
-        `${ts
-          .translate(ClientResponse.FIELDS_REQUIRED, userLang)
-          .replace("%s", `[${[...r]}]`)}`
+        TemplateUtils.text(
+          ts.translate(ClientResponse.FIELDS_REQUIRED, userLang),
+          { fields: [...r] }
+        )
       );
     }
   }

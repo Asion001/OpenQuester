@@ -61,7 +61,7 @@ export const validateTokenForAuth = (
       const lang = ts.parseHeader(req.headers["accept-language"]);
       res
         .status(HttpStatus.BAD_REQUEST)
-        .send(ts.translate(ClientResponse.ALREADY_LOGGED_IN, lang));
+        .send({ error: ts.translate(ClientResponse.ALREADY_LOGGED_IN, lang) });
     } catch {
       // Token invalid - continue
     }

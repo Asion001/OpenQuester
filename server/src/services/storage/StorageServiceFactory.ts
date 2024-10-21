@@ -9,6 +9,7 @@ import { ServerResponse } from "../../enums/ServerResponse";
 import { ServerError } from "../../error/ServerError";
 import { ApiContext } from "../context/ApiContext";
 import { FileContext } from "../../types/file/fileContext";
+import { TemplateUtils } from "../../utils/TemplateUtils";
 
 export class StorageServiceFactory {
   private _storage!: IStorage;
@@ -30,7 +31,9 @@ export class StorageServiceFactory {
         break;
       default:
         throw new ServerError(
-          ServerResponse.UNSUPPORTED_STORAGE_NAME.replace("%name", storageName)
+          TemplateUtils.text(ServerResponse.UNSUPPORTED_STORAGE_NAME, {
+            name: storageName,
+          })
         );
     }
 
@@ -52,10 +55,9 @@ export class StorageServiceFactory {
         return StorageContextBuilder.buildS3Context() as IS3Context;
       default:
         throw new ServerError(
-          ServerResponse.UNSUPPORTED_STORAGE_TYPE.replace(
-            "%type",
-            String(storageType)
-          )
+          TemplateUtils.text(ServerResponse.UNSUPPORTED_STORAGE_TYPE, {
+            type: String(storageType),
+          })
         );
     }
   }

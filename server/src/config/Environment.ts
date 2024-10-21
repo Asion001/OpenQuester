@@ -11,6 +11,7 @@ import { EnvVar } from "../types/env/env";
 import { ServerResponse } from "../enums/ServerResponse";
 import { ServerError } from "../error/ServerError";
 import { LogLevel } from "../types/log/log";
+import { TemplateUtils } from "../utils/TemplateUtils";
 
 const ENV_TYPES = ["local", "prod", "test"];
 
@@ -128,10 +129,12 @@ export class Environment {
       }
     } else {
       throw new ServerError(
-        ServerResponse.ENV_VAR_WRONG_TYPE.replace("%var", variable)
-          .replace("%expectedType", String(type))
-          .replace("%value", String(value))
-          .replace("%type", typeof variable)
+        TemplateUtils.text(ServerResponse.ENV_VAR_WRONG_TYPE, {
+          var: variable,
+          expectedType: String(type),
+          value: String(value),
+          type: typeof variable,
+        })
       );
     }
   }
@@ -148,10 +151,10 @@ export class Environment {
 
     if (!ENV_TYPES.includes(this._type)) {
       throw new ServerError(
-        ServerResponse.INVALID_ENV_TYPE.replace(
-          "%types",
-          ENV_TYPES.join(", ")
-        ).replace("%type", this._type)
+        TemplateUtils.text(ServerResponse.INVALID_ENV_TYPE, {
+          types: ENV_TYPES.join(", "),
+          type: this._type,
+        })
       );
     }
 
