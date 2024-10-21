@@ -28,6 +28,7 @@ export function checkPermission(db: Database, permission: Permissions) {
           error: ts.translate(ClientResponse.NO_PERMISSION, lang),
         });
       }
+
       next();
     } catch (error) {
       next(error);
@@ -47,7 +48,17 @@ export function requirePermissionIfIdProvided(
     if (req.params.id) {
       try {
         const lang = ts.parseHeader(req.headers["accept-language"]);
-        ValueUtils.validateId(req.params.id, lang);
+        const id = ValueUtils.validateId(req.params.id, lang);
+        const reqId = JWTUtils.getTokenPayload(req.headers.authorization).id;
+        const userRepository = UserRepository.getRepository(db);
+
+        const user = await userRepository.get(id);
+        const requestUser = await userRepository.get(reqId);
+
+        if (user?.id === requestUser?.id) {
+          return next();
+        }
+
         return checkPermission(db, permission)(req, res, next);
       } catch (err: unknown) {
         const { message, code } = await ErrorController.resolveError(err);
