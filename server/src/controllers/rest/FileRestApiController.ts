@@ -8,6 +8,7 @@ import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 import { TranslateService as ts } from "../../services/text/TranslateService";
+
 export class FileRestApiController {
   private _storageService: IStorage;
 
@@ -55,11 +56,9 @@ export class FileRestApiController {
       this._storageService.delete(req.body.filename);
 
       const lang = req.headers["accept-language"];
-      res
-        .status(HttpStatus.NO_CONTENT)
-        .send({
-          message: ts.translate(ClientResponse.DELETE_REQUEST_SENT, lang),
-        });
+      res.status(HttpStatus.NO_CONTENT).send({
+        message: ts.translate(ClientResponse.DELETE_REQUEST_SENT, lang),
+      });
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(err);
       res.status(code).send({ error: message });
