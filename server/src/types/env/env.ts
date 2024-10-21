@@ -1,1 +1,1 @@
-export type envVar = "string" | "number" | "boolean";
+export type EnvVar = "string" | "number" | "boolean";

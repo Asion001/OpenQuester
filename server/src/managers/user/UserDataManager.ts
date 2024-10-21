@@ -7,6 +7,9 @@ import { ServerResponse } from "../../enums/ServerResponse";
 import { ClientError } from "../../error/ClientError";
 import { ServerError } from "../../error/ServerError";
 import { ISchema } from "../../interfaces/ISchema";
+import { Language } from "../../types/text/translation";
+import { TranslateService as ts } from "../../services/text/TranslateService";
+import { TemplateUtils } from "../../utils/TemplateUtils";
 
 export class UserDataManager implements ISchema {
   protected _userData?: IInputUserData;
@@ -34,7 +37,7 @@ export class UserDataManager implements ISchema {
    *
    * By default it's called in `validate()`
    */
-  public validateFields() {
+  public validateFields(userLang?: string) {
     if (!this._required?.length) {
       return;
     }
@@ -50,7 +53,10 @@ export class UserDataManager implements ISchema {
     }
     if (r.length > 0) {
       throw new ClientError(
-        `${ClientResponse.FIELDS_REQUIRED.replace("%s", `[${[...r]}]`)}`
+        TemplateUtils.text(
+          ts.translate(ClientResponse.FIELDS_REQUIRED, userLang),
+          { fields: [...r] }
+        )
       );
     }
   }
@@ -58,12 +64,14 @@ export class UserDataManager implements ISchema {
   /**
    * Validates manager user data using validation schema
    */
-  public validate() {
+  public validate(userLang?: Language) {
     if (!this._userData || !ValueUtils.isValidObject(this._userData)) {
-      throw new ClientError(ClientResponse.NO_USER_DATA);
+      throw new ClientError(
+        ts.translate(ClientResponse.NO_USER_DATA, userLang)
+      );
     }
 
-    this.validateFields();
+    this.validateFields(userLang);
 
     if (!this._schema) {
       throw new ServerError(ServerResponse.NO_SCHEMA);
@@ -78,7 +86,9 @@ export class UserDataManager implements ISchema {
 
     if (error) {
       throw new ClientError(
-        `${ClientResponse.VALIDATION_ERROR}: ${error.message}`
+        `${ts.translate(ClientResponse.VALIDATION_ERROR, userLang)}: ${
+          error.message
+        }`
       );
     }
 

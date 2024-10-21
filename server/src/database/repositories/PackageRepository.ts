@@ -5,6 +5,8 @@ import { OQContentStructure } from "../../interfaces/file/structures/OQContentSt
 import { ClientError } from "../../error/ClientError";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { User } from "../models/User";
+import { TranslateService as ts } from "../../services/text/TranslateService";
+import { Language } from "../../types/text/translation";
 
 export class PackageRepository {
   private static _instance: PackageRepository;
@@ -22,7 +24,11 @@ export class PackageRepository {
     return this._instance;
   }
 
-  public async create(content: OQContentStructure, author: User) {
+  public async create(
+    content: OQContentStructure,
+    author: User,
+    userLang?: Language
+  ) {
     // Return pack if it exists in DB and has same metadata id
     const existingPack = await this._getIfExists(content);
     if (existingPack) {
@@ -38,7 +44,9 @@ export class PackageRepository {
     });
 
     if (!pack.content) {
-      throw new ClientError(ClientResponse.CANNOT_SAVE_CONTENT);
+      throw new ClientError(
+        ts.translate(ClientResponse.CANNOT_SAVE_CONTENT, userLang)
+      );
     }
 
     await this._repository.save(pack);

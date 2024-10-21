@@ -1,8 +1,8 @@
 import { type Request, type Response, Router } from "express";
 
+import { type ApiContext } from "../../services/context/ApiContext";
 import { IStorage } from "../../interfaces/file/IStorage";
 import { verifyContentJSONMiddleware } from "../../middleware/file/FileMiddleware";
-import { type ApiContext } from "../../services/context/ApiContext";
 import { throttleByUserMiddleware } from "../../middleware/ThrottleMiddleware";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { ErrorController } from "../../error/ErrorController";
@@ -11,6 +11,7 @@ import { Database } from "../../database/Database";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { UserRepository } from "../../database/repositories/UserRepository";
+import { TranslateService as ts } from "../../services/text/TranslateService";
 
 export class PackageRestApiController {
   private _storageService: IStorage;
@@ -45,14 +46,17 @@ export class PackageRestApiController {
       const user = await userRepository.get(payload.id);
 
       if (!user || !user.id) {
+        const lang = ts.parseHeader(req.headers["accept-language"]);
         return res
           .status(HttpStatus.BAD_REQUEST)
-          .send(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
+          .send(ts.translate(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND, lang));
       }
 
       const data = await this._storageService.uploadPackage(
         req.body.content,
-        user
+        user,
+        undefined,
+        ts.parseHeader(req.headers["accept-language"])
       );
       return res.status(HttpStatus.OK).send(data);
     } catch (err: unknown) {

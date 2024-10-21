@@ -61,6 +61,10 @@ export class Logger {
     const prefix = "[DEBUG]: ";
     let text = "";
 
+    if (obj instanceof Map) {
+      obj = Object.fromEntries(obj);
+    }
+
     // Parse object to show it fully
     if (typeof obj === "object") {
       const seen = new Set();

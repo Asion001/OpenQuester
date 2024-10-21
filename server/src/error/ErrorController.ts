@@ -1,3 +1,5 @@
+import { type Request } from "express";
+
 import { QueryFailedError } from "typeorm";
 import { HttpStatus } from "../enums/HttpStatus";
 import { ServerResponse } from "../enums/ServerResponse";
@@ -6,6 +8,7 @@ import { ClientError } from "./ClientError";
 import { OQError } from "./OQError";
 import { ServerError } from "./ServerError";
 import { ClientResponse } from "../enums/ClientResponse";
+import { TranslateService as ts } from "../services/text/TranslateService";
 
 export class ErrorController {
   /**
@@ -47,15 +50,16 @@ export class ErrorController {
     };
   }
 
-  public static async resolveUserQueryError(error: unknown) {
+  public static async resolveUserQueryError(error: unknown, req: Request) {
     let err = error;
     if (
       // Catch query error from TypeORM (if user already exists)
       err instanceof QueryFailedError &&
       err.message.includes("duplicate key value")
     ) {
+      const lang = ts.parseHeader(req.headers["accept-language"]);
       err = new ClientError(
-        ClientResponse.USER_ALREADY_EXISTS,
+        ts.translate(ClientResponse.USER_ALREADY_EXISTS, lang),
         HttpStatus.NOT_FOUND
       );
     }

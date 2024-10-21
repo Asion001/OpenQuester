@@ -1,20 +1,21 @@
 import { Environment } from "../../config/Environment";
 import { IStorage } from "../../interfaces/file/IStorage";
-import { storage } from "../../types/storage/storage";
-import { storageType } from "../../types/storage/storageType";
+import { Storage } from "../../types/storage/storage";
+import { StorageType } from "../../types/storage/storageType";
 import { MinioStorageService } from "./MinioStorageService";
 import { IS3Context } from "../../interfaces/file/IS3Context";
 import { StorageContextBuilder } from "../context/storage/StorageContextBuilder";
 import { ServerResponse } from "../../enums/ServerResponse";
 import { ServerError } from "../../error/ServerError";
 import { ApiContext } from "../context/ApiContext";
-import { fileContext } from "../../types/file/fileContext";
+import { FileContext } from "../../types/file/fileContext";
+import { TemplateUtils } from "../../utils/TemplateUtils";
 
 export class StorageServiceFactory {
   private _storage!: IStorage;
-  private _storageMap: Map<storage, IStorage> = new Map();
+  private _storageMap: Map<Storage, IStorage> = new Map();
 
-  public createStorageService(ctx: ApiContext, storageName: storage): IStorage {
+  public createStorageService(ctx: ApiContext, storageName: Storage): IStorage {
     storageName =
       storageName ??
       Environment.instance.getEnvVar("STORAGE_NAME", "string", "minio");
@@ -30,7 +31,9 @@ export class StorageServiceFactory {
         break;
       default:
         throw new ServerError(
-          ServerResponse.UNSUPPORTED_STORAGE_NAME.replace("%name", storageName)
+          TemplateUtils.text(ServerResponse.UNSUPPORTED_STORAGE_NAME, {
+            name: storageName,
+          })
         );
     }
 
@@ -42,7 +45,7 @@ export class StorageServiceFactory {
   }
 
   /** File context and storage service init */
-  public createFileContext(storageType?: storageType): fileContext {
+  public createFileContext(storageType?: StorageType): FileContext {
     storageType =
       storageType ??
       Environment.instance.getEnvVar("STORAGE_TYPE", "string", "s3");
@@ -52,10 +55,9 @@ export class StorageServiceFactory {
         return StorageContextBuilder.buildS3Context() as IS3Context;
       default:
         throw new ServerError(
-          ServerResponse.UNSUPPORTED_STORAGE_TYPE.replace(
-            "%type",
-            String(storageType)
-          )
+          TemplateUtils.text(ServerResponse.UNSUPPORTED_STORAGE_TYPE, {
+            type: String(storageType),
+          })
         );
     }
   }

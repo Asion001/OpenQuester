@@ -44,15 +44,12 @@ export class AuthRestApiController {
 
   private register = async (req: Request, res: Response) => {
     try {
-      const result = await this._authService.register(
-        this.ctx.db,
-        req.body,
-        this.ctx.crypto
-      );
+      const result = await this._authService.register(this.ctx, req);
       return res.status(HttpStatus.CREATED).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveUserQueryError(
-        err
+        err,
+        req
       );
       return res.status(code).send({ error: message });
     }
@@ -60,11 +57,7 @@ export class AuthRestApiController {
 
   private login = async (req: Request, res: Response) => {
     try {
-      const result = await this._authService.login(
-        this.ctx.db,
-        req.body,
-        this.ctx.crypto
-      );
+      const result = await this._authService.login(this.ctx, req);
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(err);
@@ -74,7 +67,7 @@ export class AuthRestApiController {
 
   private refresh = async (req: Request, res: Response) => {
     try {
-      const result = JWTUtils.refresh(req.body.refresh_token);
+      const result = JWTUtils.refresh(req);
       res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(err);

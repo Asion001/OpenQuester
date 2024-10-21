@@ -19,6 +19,6 @@ export type TokenOptions = {
   refreshExpiresIn: string;
 };
 
-export type jwtSecret = {
+export type JWTSecret = {
   jwt_secret: string;
 };
