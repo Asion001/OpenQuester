@@ -2,10 +2,6 @@ import { ClientResponse } from "../enums/ClientResponse";
 import { ClientError } from "../error/ClientError";
 import { IStorage } from "../interfaces/file/IStorage";
 import { OQContentStructure } from "../interfaces/file/structures/OQContentStructure";
-import { OQFileStructure } from "../interfaces/file/structures/OQFileStructure";
-import { OQQuestionsStructure } from "../interfaces/file/structures/OQQuestionsStructure";
-import { OQRoundStructure } from "../interfaces/file/structures/OQRoundStructure";
-import { OQThemeStructure } from "../interfaces/file/structures/OQThemeStructure";
 
 /**
  * Class that manages all actions related to content.json file and it's structure
@@ -24,9 +20,7 @@ export class ContentStructureService {
     }
 
     /** Nested objects stack */
-    const stack: Array<
-      OQRoundStructure | OQThemeStructure | OQQuestionsStructure
-    > = [...content.rounds];
+    const stack: Array<any> = [...content.rounds];
     /** Output object that contains upload links for each file in stack */
     const fileLinks: { [key: string]: string } = {};
     /** Map used for caching */
@@ -38,7 +32,7 @@ export class ContentStructureService {
     while (stack.length > 0) {
       const current = stack.shift();
 
-      if (this._hasFile(current)) {
+      if (current && this._hasFile(current)) {
         const filename = current.file.sha256;
 
         if (filename) {
@@ -78,7 +72,7 @@ export class ContentStructureService {
   }
 
   /** Check if current object of stack has correct and non-empty file field */
-  private _hasFile(obj: any): obj is OQFileStructure {
+  private _hasFile(obj: any) {
     return (
       obj && typeof obj.file === "object" && typeof obj.file.sha256 === "string"
     );

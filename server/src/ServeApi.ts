@@ -19,6 +19,7 @@ import { UserService } from "./services/UserService";
 import { ContentStructureService } from "./services/ContentStructureService";
 import { AuthService } from "./services/AuthService";
 import { logMiddleware } from "./middleware/log/DebugLogMiddleware";
+import { SwaggerRestApiController } from "./controllers/rest/SwaggerController";
 
 /**
  * Servers all api endpoints in one place.
@@ -93,6 +94,7 @@ export class ServeApi {
     new UserRestApiController(this._context);
     new FileRestApiController(this._context);
     new PackageRestApiController(this._context);
+    new SwaggerRestApiController(this._context);
   }
 
   /**

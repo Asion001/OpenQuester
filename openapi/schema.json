@@ -12,21 +12,28 @@
   "paths": {
     "/v1/file": {
       "get": {
+        "summary": "Get link to file from server",
+        "tags": ["File"],
         "requestBody": {
           "required": true,
-          "description": "filename which you want to get",
+          "description": "Filename which you want to get",
           "content": {
             "application/json": {
               "schema": {
-                "type": "string",
-                "example": "somefilename.jpg"
+                "type": "object",
+                "properties": {
+                  "filename": {
+                    "type": "string",
+                    "example": "some_filename.jpg"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Get link that allows you to see the file",
+            "description": "Get link that allows you to view the file",
             "content": {
               "application/json": {
                 "schema": {
@@ -34,7 +41,7 @@
                   "properties": {
                     "url": {
                       "type": "string",
-                      "example": "http://localhost:9000/filename/bucket-upload-link"
+                      "example": "http://localhost:9000/file-get-link"
                     }
                   }
                 }
@@ -60,14 +67,21 @@
         }
       },
       "post": {
+        "summary": "Get link to upload file on server",
+        "tags": ["File"],
         "requestBody": {
           "required": true,
-          "description": "filename which you want to put in bucket",
+          "description": "Filename which you want to put in bucket",
           "content": {
             "application/json": {
               "schema": {
-                "type": "string",
-                "example": "somefilename.jpg"
+                "type": "object",
+                "properties": {
+                  "filename": {
+                    "type": "string",
+                    "example": "some_filename.jpg"
+                  }
+                }
               }
             }
           }
@@ -81,7 +95,8 @@
                   "type": "object",
                   "properties": {
                     "url": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "http://localhost:9000/file-upload-link"
                     }
                   }
                 }
@@ -107,14 +122,18 @@
         }
       },
       "delete": {
+        "summary": "Delete file from bucket",
+        "tags": ["File"],
         "requestBody": {
           "required": true,
-          "description": "filename which you want to delete",
+          "description": "Filename which you want to delete",
           "content": {
             "application/json": {
               "schema": {
-                "type": "string",
-                "example": "somefilename.jpg"
+                "type": "object",
+                "properties": {
+                  "filename": "some_filename.jpg"
+                }
               }
             }
           }
@@ -128,13 +147,8 @@
                   "type": "object",
                   "properties": {
                     "message": {
-                      "type": "object",
-                      "properties": {
-                        "message": {
-                          "type": "string",
-                          "example": "Delete request sent"
-                        }
-                      }
+                      "type": "string",
+                      "example": "Delete request sent"
                     }
                   }
                 }
@@ -162,15 +176,18 @@
     },
     "/v1/package/upload": {
       "post": {
+        "summary": "Get upload links for every file in `content.json`",
+        "tags": ["Package"],
         "requestBody": {
-          "description": "content.json file data",
+          "description": "Data from `content.json` file",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "content": {
-                    "type": "object"
+                    "$ref": "#/components/schemas/OQContentStructure"
                   }
                 },
                 "required": ["content"]
@@ -180,16 +197,17 @@
         },
         "responses": {
           "200": {
-            "description": "Content returned with updated \"file\" fields with links",
+            "description": "Returns object of key-values where key is filename, and value is file upload link",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "content": {
-                      "type": "object",
-                      "example": { "filename": "file upload link" }
-                    }
+                    "filename": "file upload link",
+                    "filename2": "file upload link",
+                    "filename3": "file upload link",
+                    "filename4": "file upload link",
+                    "filename5": "file upload link"
                   }
                 }
               }
@@ -216,6 +234,8 @@
     },
     "/v1/user/{id}": {
       "get": {
+        "summary": "Get user info by id",
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -272,6 +292,8 @@
         }
       },
       "patch": {
+        "summary": "Update user by id",
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -338,6 +360,8 @@
         }
       },
       "delete": {
+        "summary": "Delete user by id",
+        "tags": ["User"],
         "parameters": [
           {
             "name": "id",
@@ -389,6 +413,8 @@
     },
     "/v1/user/": {
       "get": {
+        "summary": "Get user by his token",
+        "tags": ["User"],
         "responses": {
           "200": {
             "description": "Get user data successfully",
@@ -419,7 +445,8 @@
         }
       },
       "patch": {
-        "summary": "Update user info.",
+        "summary": "Update user by his token",
+        "tags": ["User"],
         "requestBody": {
           "required": true,
           "content": {
@@ -460,7 +487,8 @@
         }
       },
       "delete": {
-        "summary": "Delete user.",
+        "summary": "Delete user by his token",
+        "tags": ["User"],
         "responses": {
           "204": {
             "description": "User deleted successfully"
@@ -487,6 +515,7 @@
     "/v1/users/": {
       "get": {
         "summary": "Get all users info",
+        "tags": ["Users"],
         "responses": {
           "200": {
             "description": "Get all users data successfully",
@@ -539,6 +568,7 @@
     "/v1/auth/register": {
       "post": {
         "summary": "User Registration",
+        "tags": ["Auth"],
         "requestBody": {
           "required": true,
           "content": {
@@ -569,7 +599,7 @@
                   "properties": {
                     "error": {
                       "type": "string",
-                      "example": "[\"name\", \"password\"] is required"
+                      "example": "name,password is required"
                     }
                   }
                 }
@@ -582,6 +612,7 @@
     "/v1/auth/login": {
       "post": {
         "summary": "User Login",
+        "tags": ["Auth"],
         "requestBody": {
           "required": true,
           "content": {
@@ -625,6 +656,7 @@
     "/v1/auth/refresh": {
       "post": {
         "summary": "Refresh tokens",
+        "tags": ["Auth"],
         "requestBody": {
           "required": true,
           "content": {
@@ -740,6 +772,20 @@
             "type": "string",
             "format": "binary"
           },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "is_deleted": {
+            "type": "boolean",
+            "example": false
+          },
           "permissions": {
             "type": "array",
             "items": {
@@ -760,20 +806,6 @@
               { "id": 1, "name": "admin" },
               { "id": 2, "name": "user" }
             ]
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
-          },
-          "is_deleted": {
-            "type": "boolean",
-            "example": false
           }
         }
       },
@@ -851,6 +883,195 @@
           }
         },
         "required": ["access_token", "refresh_token"]
+      },
+      "OQContentStructure": {
+        "type": "object",
+        "properties": {
+          "metadata": {
+            "type": "object",
+            "$ref": "#/components/schemas/OQMetadataStructure"
+          },
+          "rounds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OQRoundStructure"
+            }
+          }
+        }
+      },
+      "OQMetadataStructure": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "ha1_ju-156random-string_asd-12f"
+          },
+          "title": {
+            "type": "string",
+            "example": "Package title"
+          },
+          "date": {
+            "type": "string",
+            "example": "2024-12-12T00:00:00.000"
+          },
+          "publisher": {
+            "type": "string",
+            "example": "username"
+          },
+          "logo": {
+            "type": "object",
+            "$ref": "#/components/schemas/OQLogoFile"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Anime"
+            }
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "username"
+            }
+          },
+          "language": {
+            "type": "string",
+            "example": "EN"
+          },
+          "restriction": {
+            "type": "string",
+            "example": "16+"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Package comment"
+          }
+        }
+      },
+      "OQLogoFile": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "object",
+            "$ref": "#/components/schemas/OQFileContentStructure"
+          }
+        }
+      },
+      "OQQuestionFile": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "object",
+            "$ref": "#/components/schemas/OQFileContentStructure"
+          },
+          "displayTime": {
+            "type": "number",
+            "example": 5000
+          },
+          "answerDelay": {
+            "type": "number",
+            "example": 2500
+          }
+        }
+      },
+      "OQAnswerFile": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "object",
+            "$ref": "#/components/schemas/OQFileContentStructure"
+          },
+          "displayTime": {
+            "type": "number",
+            "example": 5000
+          }
+        }
+      },
+      "OQFileContentStructure": {
+        "type": "object",
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "example": "f611efcb4eb3716cebddec66d4c220438b89830e4d2bb0825d3953cbf8ae3b77"
+          },
+          "type": {
+            "type": "string",
+            "example": "image"
+          }
+        }
+      },
+      "OQRoundStructure": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Round name"
+          },
+          "themes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OQThemeStructure"
+            }
+          }
+        }
+      },
+      "OQThemeStructure": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Theme name"
+          },
+          "comment": {
+            "type": "string",
+            "example": "Theme comment"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OQQuestionsStructure"
+            }
+          }
+        }
+      },
+      "OQQuestionsStructure": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "example": 200
+          },
+          "type": {
+            "type": "string",
+            "example": "regular"
+          },
+          "text": {
+            "type": "string",
+            "example": "Question text"
+          },
+          "hostHint": {
+            "type": "string",
+            "example": "Host hints about the answer"
+          },
+          "playersHint": {
+            "type": "string",
+            "example": "Question comment for players"
+          },
+          "answerText": {
+            "type": "string",
+            "example": "Actual answer"
+          },
+          "questionFile": {
+            "type": "object",
+            "$ref": "#/components/schemas/OQQuestionFile"
+          },
+          "answerFile": {
+            "type": "object",
+            "$ref": "#/components/schemas/OQAnswerFile"
+          }
+        }
       }
     }
   }
