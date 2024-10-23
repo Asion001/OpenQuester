@@ -12,6 +12,7 @@ import {
 import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { validateWithSchema } from "../../middleware/SchemaMiddleware";
+import { ServerServices } from "../../services/ServerServices";
 
 /**
  * Handles all endpoints related to user authorization
@@ -23,7 +24,7 @@ export class AuthRestApiController {
     const app = this.ctx.app;
     const router = Router();
 
-    this._authService = ctx.serverServices.get(AuthService);
+    this._authService = ServerServices.auth;
 
     app.use("/v1/auth", router);
 

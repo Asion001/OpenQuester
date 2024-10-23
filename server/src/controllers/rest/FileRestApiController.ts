@@ -6,8 +6,8 @@ import { ApiContext } from "../../services/context/ApiContext";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
-import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 import { TranslateService as ts } from "../../services/text/TranslateService";
+import { ServerServices } from "../../services/ServerServices";
 
 export class FileRestApiController {
   private _storageService: IStorage;
@@ -16,12 +16,10 @@ export class FileRestApiController {
     const app = ctx.app;
     const router = Router();
 
-    // Get storage service
-    const ss = ctx.serverServices;
-
-    this._storageService = ss
-      .get(StorageServiceFactory)
-      .createStorageService(ctx, "minio");
+    this._storageService = ServerServices.storage.createStorageService(
+      ctx,
+      "minio"
+    );
 
     app.use("/v1/file", router);
 
