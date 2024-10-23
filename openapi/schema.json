@@ -13,7 +13,9 @@
     "/v1/file": {
       "get": {
         "summary": "Get link to file from server",
-        "tags": ["File"],
+        "tags": [
+          "File"
+        ],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to get",
@@ -68,7 +70,9 @@
       },
       "post": {
         "summary": "Get link to upload file on server",
-        "tags": ["File"],
+        "tags": [
+          "File"
+        ],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to put in bucket",
@@ -123,7 +127,9 @@
       },
       "delete": {
         "summary": "Delete file from bucket",
-        "tags": ["File"],
+        "tags": [
+          "File"
+        ],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to delete",
@@ -132,7 +138,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "filename": "some_filename.jpg"
+                  "filename": {
+                    "type": "string",
+                    "example": "some_filename.jpg"
+                  }
                 }
               }
             }
@@ -177,7 +186,9 @@
     "/v1/package/upload": {
       "post": {
         "summary": "Get upload links for every file in `content.json`",
-        "tags": ["Package"],
+        "tags": [
+          "Package"
+        ],
         "requestBody": {
           "description": "Data from `content.json` file",
           "required": true,
@@ -190,7 +201,9 @@
                     "$ref": "#/components/schemas/OQContentStructure"
                   }
                 },
-                "required": ["content"]
+                "required": [
+                  "content"
+                ]
               }
             }
           }
@@ -203,11 +216,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "filename": "file upload link",
-                    "filename2": "file upload link",
-                    "filename3": "file upload link",
-                    "filename4": "file upload link",
-                    "filename5": "file upload link"
+                    "filename": {
+                      "type": "string",
+                      "example": "file upload link"
+                    }
                   }
                 }
               }
@@ -235,7 +247,9 @@
     "/v1/user/{id}": {
       "get": {
         "summary": "Get user info by id",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -293,7 +307,9 @@
       },
       "patch": {
         "summary": "Update user by id",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -361,7 +377,9 @@
       },
       "delete": {
         "summary": "Delete user by id",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -414,7 +432,9 @@
     "/v1/user/": {
       "get": {
         "summary": "Get user by his token",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "responses": {
           "200": {
             "description": "Get user data successfully",
@@ -446,7 +466,9 @@
       },
       "patch": {
         "summary": "Update user by his token",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -488,7 +510,9 @@
       },
       "delete": {
         "summary": "Delete user by his token",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "responses": {
           "204": {
             "description": "User deleted successfully"
@@ -515,7 +539,9 @@
     "/v1/users/": {
       "get": {
         "summary": "Get all users info",
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "responses": {
           "200": {
             "description": "Get all users data successfully",
@@ -568,7 +594,9 @@
     "/v1/auth/register": {
       "post": {
         "summary": "User Registration",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -612,7 +640,9 @@
     "/v1/auth/login": {
       "post": {
         "summary": "User Login",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -656,7 +686,9 @@
     "/v1/auth/refresh": {
       "post": {
         "summary": "Refresh tokens",
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -668,7 +700,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["refresh_token"]
+                "required": [
+                  "refresh_token"
+                ]
               }
             }
           }
@@ -800,11 +834,20 @@
                   "example": "admin"
                 }
               },
-              "required": ["id", "name"]
+              "required": [
+                "id",
+                "name"
+              ]
             },
             "example": [
-              { "id": 1, "name": "admin" },
-              { "id": 2, "name": "user" }
+              {
+                "id": 1,
+                "name": "admin"
+              },
+              {
+                "id": 2,
+                "name": "user"
+              }
             ]
           }
         }
@@ -856,7 +899,11 @@
             "format": "binary"
           }
         },
-        "required": ["name", "email", "password"]
+        "required": [
+          "name",
+          "email",
+          "password"
+        ]
       },
       "InputLoginUser": {
         "type": "object",
@@ -870,7 +917,10 @@
             "example": "mySuperCoolPassword123"
           }
         },
-        "required": ["login", "password"]
+        "required": [
+          "login",
+          "password"
+        ]
       },
       "ResponseAuthData": {
         "type": "object",
@@ -882,7 +932,10 @@
             "type": "string"
           }
         },
-        "required": ["access_token", "refresh_token"]
+        "required": [
+          "access_token",
+          "refresh_token"
+        ]
       },
       "OQContentStructure": {
         "type": "object",

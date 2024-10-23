@@ -3,7 +3,6 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:built_value/json_object.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -12,14 +11,14 @@ part 'v1_package_upload_post200_response.g.dart';
 /// V1PackageUploadPost200Response
 ///
 /// Properties:
-/// * [content]
+/// * [filename]
 @BuiltValue()
 abstract class V1PackageUploadPost200Response
     implements
         Built<V1PackageUploadPost200Response,
             V1PackageUploadPost200ResponseBuilder> {
-  @BuiltValueField(wireName: r'content')
-  JsonObject? get content;
+  @BuiltValueField(wireName: r'filename')
+  String? get filename;
 
   V1PackageUploadPost200Response._();
 
@@ -51,11 +50,11 @@ class _$V1PackageUploadPost200ResponseSerializer
     V1PackageUploadPost200Response object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
-    if (object.content != null) {
-      yield r'content';
+    if (object.filename != null) {
+      yield r'filename';
       yield serializers.serialize(
-        object.content,
-        specifiedType: const FullType(JsonObject),
+        object.filename,
+        specifiedType: const FullType(String),
       );
     }
   }
@@ -83,12 +82,12 @@ class _$V1PackageUploadPost200ResponseSerializer
       final key = serializedList[i] as String;
       final value = serializedList[i + 1];
       switch (key) {
-        case r'content':
+        case r'filename':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
-          result.content = valueDes;
+            specifiedType: const FullType(String),
+          ) as String;
+          result.filename = valueDes;
           break;
         default:
           unhandled.add(key);

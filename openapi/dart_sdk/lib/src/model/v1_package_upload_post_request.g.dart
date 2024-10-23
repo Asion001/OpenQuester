@@ -8,7 +8,7 @@ part of 'v1_package_upload_post_request.dart';
 
 class _$V1PackageUploadPostRequest extends V1PackageUploadPostRequest {
   @override
-  final JsonObject content;
+  final OQContentStructure content;
 
   factory _$V1PackageUploadPostRequest(
           [void Function(V1PackageUploadPostRequestBuilder)? updates]) =>
@@ -55,9 +55,10 @@ class V1PackageUploadPostRequestBuilder
         Builder<V1PackageUploadPostRequest, V1PackageUploadPostRequestBuilder> {
   _$V1PackageUploadPostRequest? _$v;
 
-  JsonObject? _content;
-  JsonObject? get content => _$this._content;
-  set content(JsonObject? content) => _$this._content = content;
+  OQContentStructureBuilder? _content;
+  OQContentStructureBuilder get content =>
+      _$this._content ??= new OQContentStructureBuilder();
+  set content(OQContentStructureBuilder? content) => _$this._content = content;
 
   V1PackageUploadPostRequestBuilder() {
     V1PackageUploadPostRequest._defaults(this);
@@ -66,7 +67,7 @@ class V1PackageUploadPostRequestBuilder
   V1PackageUploadPostRequestBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _content = $v.content;
+      _content = $v.content.toBuilder();
       _$v = null;
     }
     return this;
@@ -87,10 +88,21 @@ class V1PackageUploadPostRequestBuilder
   V1PackageUploadPostRequest build() => _build();
 
   _$V1PackageUploadPostRequest _build() {
-    final _$result = _$v ??
-        new _$V1PackageUploadPostRequest._(
-            content: BuiltValueNullFieldError.checkNotNull(
-                content, r'V1PackageUploadPostRequest', 'content'));
+    _$V1PackageUploadPostRequest _$result;
+    try {
+      _$result =
+          _$v ?? new _$V1PackageUploadPostRequest._(content: content.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'content';
+        content.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'V1PackageUploadPostRequest', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

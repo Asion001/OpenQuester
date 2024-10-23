@@ -8,13 +8,13 @@ part of 'v1_package_upload_post200_response.dart';
 
 class _$V1PackageUploadPost200Response extends V1PackageUploadPost200Response {
   @override
-  final JsonObject? content;
+  final String? filename;
 
   factory _$V1PackageUploadPost200Response(
           [void Function(V1PackageUploadPost200ResponseBuilder)? updates]) =>
       (new V1PackageUploadPost200ResponseBuilder()..update(updates))._build();
 
-  _$V1PackageUploadPost200Response._({this.content}) : super._();
+  _$V1PackageUploadPost200Response._({this.filename}) : super._();
 
   @override
   V1PackageUploadPost200Response rebuild(
@@ -28,13 +28,14 @@ class _$V1PackageUploadPost200Response extends V1PackageUploadPost200Response {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is V1PackageUploadPost200Response && content == other.content;
+    return other is V1PackageUploadPost200Response &&
+        filename == other.filename;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, content.hashCode);
+    _$hash = $jc(_$hash, filename.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -42,7 +43,7 @@ class _$V1PackageUploadPost200Response extends V1PackageUploadPost200Response {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'V1PackageUploadPost200Response')
-          ..add('content', content))
+          ..add('filename', filename))
         .toString();
   }
 }
@@ -53,9 +54,9 @@ class V1PackageUploadPost200ResponseBuilder
             V1PackageUploadPost200ResponseBuilder> {
   _$V1PackageUploadPost200Response? _$v;
 
-  JsonObject? _content;
-  JsonObject? get content => _$this._content;
-  set content(JsonObject? content) => _$this._content = content;
+  String? _filename;
+  String? get filename => _$this._filename;
+  set filename(String? filename) => _$this._filename = filename;
 
   V1PackageUploadPost200ResponseBuilder() {
     V1PackageUploadPost200Response._defaults(this);
@@ -64,7 +65,7 @@ class V1PackageUploadPost200ResponseBuilder
   V1PackageUploadPost200ResponseBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _content = $v.content;
+      _filename = $v.filename;
       _$v = null;
     }
     return this;
@@ -86,7 +87,7 @@ class V1PackageUploadPost200ResponseBuilder
 
   _$V1PackageUploadPost200Response _build() {
     final _$result =
-        _$v ?? new _$V1PackageUploadPost200Response._(content: content);
+        _$v ?? new _$V1PackageUploadPost200Response._(filename: filename);
     replace(_$result);
     return _$result;
   }

@@ -46,14 +46,14 @@ Please follow the [installation procedure](#installation--usage) and then run th
 import 'package:openapi/openapi.dart';
 
 
-final api = Openapi().getDefaultApi();
+final api = Openapi().getAuthApi();
 final InputLoginUser inputLoginUser = ; // InputLoginUser | 
 
 try {
     final response = await api.v1AuthLoginPost(inputLoginUser);
     print(response);
 } catch on DioException (e) {
-    print("Exception when calling DefaultApi->v1AuthLoginPost: $e\n");
+    print("Exception when calling AuthApi->v1AuthLoginPost: $e\n");
 }
 
 ```
@@ -64,20 +64,20 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-[*DefaultApi*](doc/DefaultApi.md) | [**v1AuthLoginPost**](doc/DefaultApi.md#v1authloginpost) | **POST** /v1/auth/login | User Login
-[*DefaultApi*](doc/DefaultApi.md) | [**v1AuthRefreshPost**](doc/DefaultApi.md#v1authrefreshpost) | **POST** /v1/auth/refresh | Refresh tokens
-[*DefaultApi*](doc/DefaultApi.md) | [**v1AuthRegisterPost**](doc/DefaultApi.md#v1authregisterpost) | **POST** /v1/auth/register | User Registration
-[*DefaultApi*](doc/DefaultApi.md) | [**v1FileDelete**](doc/DefaultApi.md#v1filedelete) | **DELETE** /v1/file | 
-[*DefaultApi*](doc/DefaultApi.md) | [**v1FileGet**](doc/DefaultApi.md#v1fileget) | **GET** /v1/file | 
-[*DefaultApi*](doc/DefaultApi.md) | [**v1FilePost**](doc/DefaultApi.md#v1filepost) | **POST** /v1/file | 
-[*DefaultApi*](doc/DefaultApi.md) | [**v1PackageUploadPost**](doc/DefaultApi.md#v1packageuploadpost) | **POST** /v1/package/upload | 
-[*DefaultApi*](doc/DefaultApi.md) | [**v1UserDelete**](doc/DefaultApi.md#v1userdelete) | **DELETE** /v1/user/ | Delete user.
-[*DefaultApi*](doc/DefaultApi.md) | [**v1UserGet**](doc/DefaultApi.md#v1userget) | **GET** /v1/user/ | 
-[*DefaultApi*](doc/DefaultApi.md) | [**v1UserIdDelete**](doc/DefaultApi.md#v1useriddelete) | **DELETE** /v1/user/{id} | 
-[*DefaultApi*](doc/DefaultApi.md) | [**v1UserIdGet**](doc/DefaultApi.md#v1useridget) | **GET** /v1/user/{id} | 
-[*DefaultApi*](doc/DefaultApi.md) | [**v1UserIdPatch**](doc/DefaultApi.md#v1useridpatch) | **PATCH** /v1/user/{id} | 
-[*DefaultApi*](doc/DefaultApi.md) | [**v1UserPatch**](doc/DefaultApi.md#v1userpatch) | **PATCH** /v1/user/ | Update user info.
-[*DefaultApi*](doc/DefaultApi.md) | [**v1UsersGet**](doc/DefaultApi.md#v1usersget) | **GET** /v1/users/ | Get all users info
+[*AuthApi*](doc/AuthApi.md) | [**v1AuthLoginPost**](doc/AuthApi.md#v1authloginpost) | **POST** /v1/auth/login | User Login
+[*AuthApi*](doc/AuthApi.md) | [**v1AuthRefreshPost**](doc/AuthApi.md#v1authrefreshpost) | **POST** /v1/auth/refresh | Refresh tokens
+[*AuthApi*](doc/AuthApi.md) | [**v1AuthRegisterPost**](doc/AuthApi.md#v1authregisterpost) | **POST** /v1/auth/register | User Registration
+[*FileApi*](doc/FileApi.md) | [**v1FileDelete**](doc/FileApi.md#v1filedelete) | **DELETE** /v1/file | Delete file from bucket
+[*FileApi*](doc/FileApi.md) | [**v1FileGet**](doc/FileApi.md#v1fileget) | **GET** /v1/file | Get link to file from server
+[*FileApi*](doc/FileApi.md) | [**v1FilePost**](doc/FileApi.md#v1filepost) | **POST** /v1/file | Get link to upload file on server
+[*PackageApi*](doc/PackageApi.md) | [**v1PackageUploadPost**](doc/PackageApi.md#v1packageuploadpost) | **POST** /v1/package/upload | Get upload links for every file in &#x60;content.json&#x60;
+[*UserApi*](doc/UserApi.md) | [**v1UserDelete**](doc/UserApi.md#v1userdelete) | **DELETE** /v1/user/ | Delete user by his token
+[*UserApi*](doc/UserApi.md) | [**v1UserGet**](doc/UserApi.md#v1userget) | **GET** /v1/user/ | Get user by his token
+[*UserApi*](doc/UserApi.md) | [**v1UserIdDelete**](doc/UserApi.md#v1useriddelete) | **DELETE** /v1/user/{id} | Delete user by id
+[*UserApi*](doc/UserApi.md) | [**v1UserIdGet**](doc/UserApi.md#v1useridget) | **GET** /v1/user/{id} | Get user info by id
+[*UserApi*](doc/UserApi.md) | [**v1UserIdPatch**](doc/UserApi.md#v1useridpatch) | **PATCH** /v1/user/{id} | Update user by id
+[*UserApi*](doc/UserApi.md) | [**v1UserPatch**](doc/UserApi.md#v1userpatch) | **PATCH** /v1/user/ | Update user by his token
+[*UsersApi*](doc/UsersApi.md) | [**v1UsersGet**](doc/UsersApi.md#v1usersget) | **GET** /v1/users/ | Get all users info
 
 
 ## Documentation For Models
@@ -85,6 +85,15 @@ Class | Method | HTTP request | Description
  - [InputLoginUser](doc/InputLoginUser.md)
  - [InputRegisterUser](doc/InputRegisterUser.md)
  - [InputUpdateUser](doc/InputUpdateUser.md)
+ - [OQAnswerFile](doc/OQAnswerFile.md)
+ - [OQContentStructure](doc/OQContentStructure.md)
+ - [OQFileContentStructure](doc/OQFileContentStructure.md)
+ - [OQLogoFile](doc/OQLogoFile.md)
+ - [OQMetadataStructure](doc/OQMetadataStructure.md)
+ - [OQQuestionFile](doc/OQQuestionFile.md)
+ - [OQQuestionsStructure](doc/OQQuestionsStructure.md)
+ - [OQRoundStructure](doc/OQRoundStructure.md)
+ - [OQThemeStructure](doc/OQThemeStructure.md)
  - [ResponseAuthData](doc/ResponseAuthData.md)
  - [ResponsePrivateUser](doc/ResponsePrivateUser.md)
  - [ResponsePrivateUserPermissionsInner](doc/ResponsePrivateUserPermissionsInner.md)
@@ -93,9 +102,9 @@ Class | Method | HTTP request | Description
  - [V1AuthRefreshPostRequest](doc/V1AuthRefreshPostRequest.md)
  - [V1AuthRegisterPost400Response](doc/V1AuthRegisterPost400Response.md)
  - [V1FileDelete204Response](doc/V1FileDelete204Response.md)
- - [V1FileDelete204ResponseMessage](doc/V1FileDelete204ResponseMessage.md)
  - [V1FileGet200Response](doc/V1FileGet200Response.md)
  - [V1FileGet400Response](doc/V1FileGet400Response.md)
+ - [V1FileGetRequest](doc/V1FileGetRequest.md)
  - [V1FilePost200Response](doc/V1FilePost200Response.md)
  - [V1PackageUploadPost200Response](doc/V1PackageUploadPost200Response.md)
  - [V1PackageUploadPost400Response](doc/V1PackageUploadPost400Response.md)

@@ -8,7 +8,7 @@ part of 'v1_file_delete204_response.dart';
 
 class _$V1FileDelete204Response extends V1FileDelete204Response {
   @override
-  final V1FileDelete204ResponseMessage? message;
+  final String? message;
 
   factory _$V1FileDelete204Response(
           [void Function(V1FileDelete204ResponseBuilder)? updates]) =>
@@ -52,11 +52,9 @@ class V1FileDelete204ResponseBuilder
         Builder<V1FileDelete204Response, V1FileDelete204ResponseBuilder> {
   _$V1FileDelete204Response? _$v;
 
-  V1FileDelete204ResponseMessageBuilder? _message;
-  V1FileDelete204ResponseMessageBuilder get message =>
-      _$this._message ??= new V1FileDelete204ResponseMessageBuilder();
-  set message(V1FileDelete204ResponseMessageBuilder? message) =>
-      _$this._message = message;
+  String? _message;
+  String? get message => _$this._message;
+  set message(String? message) => _$this._message = message;
 
   V1FileDelete204ResponseBuilder() {
     V1FileDelete204Response._defaults(this);
@@ -65,7 +63,7 @@ class V1FileDelete204ResponseBuilder
   V1FileDelete204ResponseBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _message = $v.message?.toBuilder();
+      _message = $v.message;
       _$v = null;
     }
     return this;
@@ -86,21 +84,7 @@ class V1FileDelete204ResponseBuilder
   V1FileDelete204Response build() => _build();
 
   _$V1FileDelete204Response _build() {
-    _$V1FileDelete204Response _$result;
-    try {
-      _$result =
-          _$v ?? new _$V1FileDelete204Response._(message: _message?.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'message';
-        _message?.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'V1FileDelete204Response', _$failedField, e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ?? new _$V1FileDelete204Response._(message: message);
     replace(_$result);
     return _$result;
   }

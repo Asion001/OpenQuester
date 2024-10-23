@@ -17,6 +17,15 @@ import 'package:openapi/src/model/date.dart';
 import 'package:openapi/src/model/input_login_user.dart';
 import 'package:openapi/src/model/input_register_user.dart';
 import 'package:openapi/src/model/input_update_user.dart';
+import 'package:openapi/src/model/oq_answer_file.dart';
+import 'package:openapi/src/model/oq_content_structure.dart';
+import 'package:openapi/src/model/oq_file_content_structure.dart';
+import 'package:openapi/src/model/oq_logo_file.dart';
+import 'package:openapi/src/model/oq_metadata_structure.dart';
+import 'package:openapi/src/model/oq_question_file.dart';
+import 'package:openapi/src/model/oq_questions_structure.dart';
+import 'package:openapi/src/model/oq_round_structure.dart';
+import 'package:openapi/src/model/oq_theme_structure.dart';
 import 'package:openapi/src/model/response_auth_data.dart';
 import 'package:openapi/src/model/response_private_user.dart';
 import 'package:openapi/src/model/response_private_user_permissions_inner.dart';
@@ -25,9 +34,9 @@ import 'package:openapi/src/model/v1_auth_refresh_post400_response.dart';
 import 'package:openapi/src/model/v1_auth_refresh_post_request.dart';
 import 'package:openapi/src/model/v1_auth_register_post400_response.dart';
 import 'package:openapi/src/model/v1_file_delete204_response.dart';
-import 'package:openapi/src/model/v1_file_delete204_response_message.dart';
 import 'package:openapi/src/model/v1_file_get200_response.dart';
 import 'package:openapi/src/model/v1_file_get400_response.dart';
+import 'package:openapi/src/model/v1_file_get_request.dart';
 import 'package:openapi/src/model/v1_file_post200_response.dart';
 import 'package:openapi/src/model/v1_package_upload_post200_response.dart';
 import 'package:openapi/src/model/v1_package_upload_post400_response.dart';
@@ -42,6 +51,15 @@ part 'serializers.g.dart';
   InputLoginUser,
   InputRegisterUser,
   InputUpdateUser,
+  OQAnswerFile,
+  OQContentStructure,
+  OQFileContentStructure,
+  OQLogoFile,
+  OQMetadataStructure,
+  OQQuestionFile,
+  OQQuestionsStructure,
+  OQRoundStructure,
+  OQThemeStructure,
   ResponseAuthData,
   ResponsePrivateUser,
   ResponsePrivateUserPermissionsInner,
@@ -50,9 +68,9 @@ part 'serializers.g.dart';
   V1AuthRefreshPostRequest,
   V1AuthRegisterPost400Response,
   V1FileDelete204Response,
-  V1FileDelete204ResponseMessage,
   V1FileGet200Response,
   V1FileGet400Response,
+  V1FileGetRequest,
   V1FilePost200Response,
   V1PackageUploadPost200Response,
   V1PackageUploadPost400Response,
