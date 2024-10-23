@@ -11,6 +11,7 @@ import { validateWithSchema } from "../../middleware/SchemaMiddleware";
 import { checkPermission } from "../../middleware/permission/PermissionMiddleware";
 import { Permissions } from "../../enums/Permissions";
 import { TranslateService as ts } from "../../services/text/TranslateService";
+import { ServerServices } from "../../services/ServerServices";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -22,7 +23,7 @@ export class UserRestApiController {
     const app = this.ctx.app;
     const router = Router();
 
-    this._userService = this.ctx.serverServices.get(UserService);
+    this._userService = ServerServices.user;
 
     app.use("/v1/user", router);
 

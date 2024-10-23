@@ -1,30 +1,48 @@
-import { ServerError } from "../error/ServerError";
-import { ServerResponse } from "../enums/ServerResponse";
-
-type Constructor = new (...args: any[]) => any;
+import { UserService } from "./UserService";
+import { ContentStructureService } from "./ContentStructureService";
+import { AuthService } from "./AuthService";
+import { StorageServiceFactory } from "./storage/StorageServiceFactory";
 
 /**
+ * Server services locator
+ *
  * Stores instances of all server services
  */
 export class ServerServices {
-  private _services = new Map<Constructor, any>();
+  private static _user: UserService;
+  private static _content: ContentStructureService;
+  private static _auth: AuthService;
+  private static _storage: StorageServiceFactory;
 
-  constructor() {
-    //
-  }
-
-  public register<T>(
-    serviceClass: new (...args: any[]) => T,
-    ...serviceArgs: any[]
-  ): void {
-    this._services.set(serviceClass, new serviceClass(...serviceArgs));
-  }
-
-  public get<T>(serviceClass: new (...args: any[]) => T): T {
-    const service = this._services.get(serviceClass);
-    if (!service) {
-      throw new ServerError(ServerResponse.SERVICE_NOT_FOUND);
+  public static get user() {
+    if (!this._user) {
+      this._user = new UserService();
     }
-    return service as T;
+
+    return this._user;
+  }
+
+  public static get content() {
+    if (!this._content) {
+      this._content = new ContentStructureService();
+    }
+
+    return this._content;
+  }
+
+  public static get auth() {
+    if (!this._auth) {
+      this._auth = new AuthService();
+    }
+
+    return this._auth;
+  }
+
+  public static get storage() {
+    if (!this._storage) {
+      this._storage = new StorageServiceFactory();
+    }
+
+    return this._storage;
   }
 }

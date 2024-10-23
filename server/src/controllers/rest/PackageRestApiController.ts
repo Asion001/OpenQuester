@@ -6,12 +6,12 @@ import { verifyContentJSONMiddleware } from "../../middleware/file/FileMiddlewar
 import { throttleByUserMiddleware } from "../../middleware/ThrottleMiddleware";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { ErrorController } from "../../error/ErrorController";
-import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 import { Database } from "../../database/Database";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { UserRepository } from "../../database/repositories/UserRepository";
 import { TranslateService as ts } from "../../services/text/TranslateService";
+import { ServerServices } from "../../services/ServerServices";
 
 export class PackageRestApiController {
   private _storageService: IStorage;
@@ -22,12 +22,10 @@ export class PackageRestApiController {
     const app = ctx.app;
     this._db = ctx.db;
 
-    // Init storage service
-    const ss = ctx.serverServices;
-
-    this._storageService = ss
-      .get(StorageServiceFactory)
-      .createStorageService(ctx, "minio");
+    this._storageService = ServerServices.storage.createStorageService(
+      ctx,
+      "minio"
+    );
 
     app.use("/v1/package", router);
 

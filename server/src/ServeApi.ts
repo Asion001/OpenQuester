@@ -12,14 +12,8 @@ import { verifyToken } from "./middleware/AuthMiddleware";
 import { UserRestApiController } from "./controllers/rest/UserRestApiController";
 import { FileRestApiController } from "./controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
-import { StorageServiceFactory } from "./services/storage/StorageServiceFactory";
 import { ServerError } from "./error/ServerError";
-import { ServerServices } from "./services/ServerServices";
-import { UserService } from "./services/UserService";
-import { ContentStructureService } from "./services/ContentStructureService";
-import { AuthService } from "./services/AuthService";
 import { logMiddleware } from "./middleware/log/DebugLogMiddleware";
-import { TranslateService } from "./services/text/TranslateService";
 
 /**
  * Servers all api endpoints in one place.
@@ -33,14 +27,11 @@ export class ServeApi {
   protected _port: number;
   /** Database instance */
   protected _db: Database;
-  /** Server services locator */
-  protected _ss: ServerServices;
 
   constructor(protected _context: ApiContext) {
     this._db = this._context.db;
     this._app = this._context.app;
     this._port = 3000;
-    this._ss = this._context.serverServices;
   }
 
   public async init() {
@@ -58,9 +49,6 @@ export class ServeApi {
       this._server = this._app.listen(this._port, () => {
         Logger.info(`App listening on port: ${this._port}`);
       });
-
-      // Register server services
-      this._registerServices();
 
       // Attach API controllers
       this._attachControllers();
@@ -94,19 +82,5 @@ export class ServeApi {
     new UserRestApiController(this._context);
     new FileRestApiController(this._context);
     new PackageRestApiController(this._context);
-  }
-
-  /**
-   * Register all services in ServerServices instance, which is service locator.
-   *
-   * This allows us to use always only one instance of each service and place
-   * them together in one place.
-   */
-  private _registerServices() {
-    this._ss.register(UserService);
-    this._ss.register(ContentStructureService);
-    this._ss.register(AuthService);
-    this._ss.register(StorageServiceFactory);
-    this._ss.register(TranslateService);
   }
 }
