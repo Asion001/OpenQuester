@@ -1,8 +1,9 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["src/index.ts", "src/database/DataSource.ts"],
+  entry: ["src/index.ts"],
   outDir: "dist",
   clean: true,
-  ignore: ["**/*.md"], // Ignore all .md files during the build
+  ignore: ["**/*.md", "**/*.log"],
+  minify: true,
 });

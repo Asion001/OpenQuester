@@ -1,5 +1,7 @@
 import { OQFileContentStructure } from "./OQFileContentStructure";
 
-export interface OQFileStructure {
+export interface OQQuestionFile {
   file: OQFileContentStructure;
+  displayTime: number;
+  answerDelay: number;
 }
