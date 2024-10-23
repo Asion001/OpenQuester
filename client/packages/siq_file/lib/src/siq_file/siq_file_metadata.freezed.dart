@@ -20,10 +20,10 @@ SiqFileMetadata _$SiqFileMetadataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SiqFileMetadata {
-  String get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  DateTime get date => throw _privateConstructorUsedError;
-  String get publisher => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
+  DateTime? get date => throw _privateConstructorUsedError;
+  String? get publisher => throw _privateConstructorUsedError;
   FileObject? get logo => throw _privateConstructorUsedError;
   List<String> get tags => throw _privateConstructorUsedError;
   List<String> get authors => throw _privateConstructorUsedError;
@@ -48,10 +48,10 @@ abstract class $SiqFileMetadataCopyWith<$Res> {
       _$SiqFileMetadataCopyWithImpl<$Res, SiqFileMetadata>;
   @useResult
   $Res call(
-      {String id,
-      String title,
-      DateTime date,
-      String publisher,
+      {String? id,
+      String? title,
+      DateTime? date,
+      String? publisher,
       FileObject? logo,
       List<String> tags,
       List<String> authors,
@@ -77,10 +77,10 @@ class _$SiqFileMetadataCopyWithImpl<$Res, $Val extends SiqFileMetadata>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? date = null,
-    Object? publisher = null,
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? date = freezed,
+    Object? publisher = freezed,
     Object? logo = freezed,
     Object? tags = null,
     Object? authors = null,
@@ -89,22 +89,22 @@ class _$SiqFileMetadataCopyWithImpl<$Res, $Val extends SiqFileMetadata>
     Object? comment = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
+              as String?,
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      date: null == date
+              as String?,
+      date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      publisher: null == publisher
+              as DateTime?,
+      publisher: freezed == publisher
           ? _value.publisher
           : publisher // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       logo: freezed == logo
           ? _value.logo
           : logo // ignore: cast_nullable_to_non_nullable
@@ -156,10 +156,10 @@ abstract class _$$SiqFileMetadataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
-      String title,
-      DateTime date,
-      String publisher,
+      {String? id,
+      String? title,
+      DateTime? date,
+      String? publisher,
       FileObject? logo,
       List<String> tags,
       List<String> authors,
@@ -184,10 +184,10 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? date = null,
-    Object? publisher = null,
+    Object? id = freezed,
+    Object? title = freezed,
+    Object? date = freezed,
+    Object? publisher = freezed,
     Object? logo = freezed,
     Object? tags = null,
     Object? authors = null,
@@ -196,22 +196,22 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
     Object? comment = freezed,
   }) {
     return _then(_$SiqFileMetadataImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: null == title
+              as String?,
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      date: null == date
+              as String?,
+      date: freezed == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      publisher: null == publisher
+              as DateTime?,
+      publisher: freezed == publisher
           ? _value.publisher
           : publisher // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       logo: freezed == logo
           ? _value.logo
           : logo // ignore: cast_nullable_to_non_nullable
@@ -244,10 +244,10 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SiqFileMetadataImpl implements _SiqFileMetadata {
   _$SiqFileMetadataImpl(
-      {required this.id,
-      required this.title,
-      required this.date,
-      required this.publisher,
+      {this.id,
+      this.title,
+      this.date,
+      this.publisher,
       this.logo,
       final List<String> tags = const [],
       final List<String> authors = const [],
@@ -261,13 +261,13 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
       _$$SiqFileMetadataImplFromJson(json);
 
   @override
-  final String id;
+  final String? id;
   @override
-  final String title;
+  final String? title;
   @override
-  final DateTime date;
+  final DateTime? date;
   @override
-  final String publisher;
+  final String? publisher;
   @override
   final FileObject? logo;
   final List<String> _tags;
@@ -354,10 +354,10 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
 
 abstract class _SiqFileMetadata implements SiqFileMetadata {
   factory _SiqFileMetadata(
-      {required final String id,
-      required final String title,
-      required final DateTime date,
-      required final String publisher,
+      {final String? id,
+      final String? title,
+      final DateTime? date,
+      final String? publisher,
       final FileObject? logo,
       final List<String> tags,
       final List<String> authors,
@@ -369,13 +369,13 @@ abstract class _SiqFileMetadata implements SiqFileMetadata {
       _$SiqFileMetadataImpl.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
-  String get title;
+  String? get title;
   @override
-  DateTime get date;
+  DateTime? get date;
   @override
-  String get publisher;
+  String? get publisher;
   @override
   FileObject? get logo;
   @override

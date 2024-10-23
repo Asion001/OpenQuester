@@ -8,10 +8,10 @@ part 'siq_file_metadata.g.dart';
 @freezed
 class SiqFileMetadata with _$SiqFileMetadata {
   factory SiqFileMetadata({
-    required String id,
-    required String title,
-    required DateTime date,
-    required String publisher,
+    String? id,
+    String? title,
+    DateTime? date,
+    String? publisher,
     FileObject? logo,
     @Default([]) List<String> tags,
     @Default([]) List<String> authors,
