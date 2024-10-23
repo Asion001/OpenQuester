@@ -18,3 +18,5 @@ test/performance/
 # Minio
 minio/
 
+# Openapi scheme
+schema.json

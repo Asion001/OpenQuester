@@ -54,6 +54,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - run: cp openapi/schema.json server/
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
