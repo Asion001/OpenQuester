@@ -8,6 +8,7 @@ import { JWTUtils } from "../utils/JWTUtils";
 import { HttpStatus } from "../enums/HttpStatus";
 import { ValueUtils } from "../utils/ValueUtils";
 import { ClientResponse } from "../enums/ClientResponse";
+import { TranslateService as ts } from "../services/text/TranslateService";
 
 // Define rate limit configuration
 const RATE_LIMIT = 10;
@@ -27,7 +28,7 @@ export const throttleByUserMiddleware: RequestHandler = (
   if (!userId) {
     return res
       .status(HttpStatus.UNAUTHORIZED)
-      .send({ error: ClientResponse.ACCESS_DENIED });
+      .send({ error: ts.localize(ClientResponse.ACCESS_DENIED, req.headers) });
   }
 
   const now = Date.now();
@@ -44,7 +45,9 @@ export const throttleByUserMiddleware: RequestHandler = (
   if (recentTimestamps.length >= RATE_LIMIT) {
     return res
       .status(HttpStatus.TOO_MANY_REQUESTS)
-      .send({ error: ClientResponse.TOO_MANY_REQUESTS });
+      .send({
+        error: ts.localize(ClientResponse.TOO_MANY_REQUESTS, req.headers),
+      });
   }
 
   // Add current timestamp to the list

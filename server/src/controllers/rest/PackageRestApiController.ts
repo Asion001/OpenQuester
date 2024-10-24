@@ -1,16 +1,17 @@
 import { type Request, type Response, Router } from "express";
 
+import { type ApiContext } from "../../services/context/ApiContext";
 import { IStorage } from "../../interfaces/file/IStorage";
 import { verifyContentJSONMiddleware } from "../../middleware/file/FileMiddleware";
-import { type ApiContext } from "../../services/context/ApiContext";
 import { throttleByUserMiddleware } from "../../middleware/ThrottleMiddleware";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { ErrorController } from "../../error/ErrorController";
-import { StorageServiceFactory } from "../../services/storage/StorageServiceFactory";
 import { Database } from "../../database/Database";
 import { JWTUtils } from "../../utils/JWTUtils";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { UserRepository } from "../../database/repositories/UserRepository";
+import { TranslateService as ts } from "../../services/text/TranslateService";
+import { ServerServices } from "../../services/ServerServices";
 
 export class PackageRestApiController {
   private _storageService: IStorage;
@@ -21,12 +22,10 @@ export class PackageRestApiController {
     const app = ctx.app;
     this._db = ctx.db;
 
-    // Init storage service
-    const ss = ctx.serverServices;
-
-    this._storageService = ss
-      .get(StorageServiceFactory)
-      .createStorageService(ctx, "minio");
+    this._storageService = ServerServices.storage.createStorageService(
+      ctx,
+      "minio"
+    );
 
     app.use("/v1/package", router);
 
@@ -47,7 +46,9 @@ export class PackageRestApiController {
       if (!user || !user.id) {
         return res
           .status(HttpStatus.BAD_REQUEST)
-          .send(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
+          .send(
+            ts.localize(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND, req.headers)
+          );
       }
 
       const data = await this._storageService.uploadPackage(
@@ -56,7 +57,10 @@ export class PackageRestApiController {
       );
       return res.status(HttpStatus.OK).send(data);
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       return res.status(code).send({ error: message });
     }
   };

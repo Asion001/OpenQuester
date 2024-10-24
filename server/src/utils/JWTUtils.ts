@@ -2,12 +2,13 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import * as jwt from "jsonwebtoken";
+import { type Request } from "express";
 
 import { Environment } from "../config/Environment";
 import {
   JWTPayload,
   JWTResponse,
-  jwtSecret,
+  JWTSecret,
   TokenOptions,
 } from "../types/jwt/jwt";
 import { ClientResponse } from "../enums/ClientResponse";
@@ -43,7 +44,7 @@ export class JWTUtils {
       .toString("base64")
       .slice(0, length);
 
-    const data: jwtSecret = {
+    const data: JWTSecret = {
       jwt_secret: secret,
     };
 
@@ -72,7 +73,7 @@ export class JWTUtils {
       return this.generateSecret(options);
     }
 
-    const data: jwtSecret = JSON.parse(file);
+    const data: JWTSecret = JSON.parse(file);
     return data.jwt_secret;
   }
 
@@ -109,11 +110,11 @@ export class JWTUtils {
   /**
    * Refreshes user tokens by checking given refresh_token
    */
-  public static refresh(token: string, options?: TokenOptions): JWTResponse {
+  public static refresh(req: Request, options?: TokenOptions): JWTResponse {
     try {
       const env = Environment.instance;
       const decode = jwt.verify(
-        token,
+        req.body.refresh_token,
         options?.refreshSecret ?? env.JWT_REFRESH_SECRET
       );
       const { access_token, refresh_token } = JWTUtils.generateTokens(

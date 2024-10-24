@@ -3,6 +3,7 @@ import { IS3Context } from "../../../interfaces/file/IS3Context";
 import { ValueUtils } from "../../../utils/ValueUtils";
 import { ServerResponse } from "../../../enums/ServerResponse";
 import { ServerError } from "../../../error/ServerError";
+import { TemplateUtils } from "../../../utils/TemplateUtils";
 
 export class StorageContextBuilder {
   public static buildS3Context(): IS3Context | undefined {
@@ -20,10 +21,9 @@ export class StorageContextBuilder {
       let text: string;
       if (err && ValueUtils.isError(err)) {
         const error = err as Error;
-        text = ServerResponse.BAD_S3_INIT_WITH_MESSAGE.replace(
-          "%message",
-          error.message
-        );
+        text = TemplateUtils.text(ServerResponse.BAD_S3_INIT_WITH_MESSAGE, {
+          message: error.message,
+        });
       } else {
         text = ServerResponse.BAD_S3_INIT;
       }

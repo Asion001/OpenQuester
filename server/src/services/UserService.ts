@@ -1,97 +1,54 @@
-import { User } from "../database/models/User";
+import { type ApiContext } from "./context/ApiContext";
+import { type Request } from "express";
+
 import { UserPermissions } from "../database/models/UserPermission";
 import { IPermission } from "../interfaces/IPermission";
 import { Permission } from "../database/models/Permission";
 import { ValueUtils } from "../utils/ValueUtils";
-import { IUpdateUser } from "../interfaces/user/IUpdateUser";
-import { type ApiContext } from "./context/ApiContext";
-import { type Database } from "../database/Database";
-import { Crypto } from "../interfaces/Crypto";
-import { JWTPayload } from "../types/jwt/jwt";
 import { ClientResponse } from "../enums/ClientResponse";
-import { ServerResponse } from "../enums/ServerResponse";
 import { ClientError } from "../error/ClientError";
-import { ServerError } from "../error/ServerError";
 import { UserRepository } from "../database/repositories/UserRepository";
+import { JWTUtils } from "../utils/JWTUtils";
+import { TemplateUtils } from "../utils/TemplateUtils";
 
 export class UserService {
   /**
-   * Allows for user to get info about himself by sending request with his token
-   * in headers.
-   */
-  public async getByTokenPayload(
-    db: Database,
-    tokenPayload: JWTPayload
-  ): Promise<User> {
-    // Token validated by middleware, so no need to validate it
-    const id = ValueUtils.validateId(tokenPayload.id);
-    return UserRepository.getRepository(db).get(id);
-  }
-
-  /**
    * Get list of all available users in DB
    */
-  public async list(db: Database) {
-    return UserRepository.getRepository(db).list();
+  public async list(ctx: ApiContext) {
+    return UserRepository.getRepository(ctx.db).list({
+      relations: ["permissions"],
+    });
   }
 
   /**
    * Retrieve one user
    */
-  public async get(db: Database, userId: number, tokenPayload: JWTPayload) {
-    const repository = UserRepository.getRepository(db);
-
-    if (!userId) {
-      return this.getByTokenPayload(db, tokenPayload);
-    }
-
-    // User asks for himself
-    if (tokenPayload.id == userId) {
-      return repository.get(userId);
-    }
-
-    return repository.get(userId);
+  public async get(ctx: ApiContext, req: Request) {
+    return UserRepository.getRepository(ctx.db).get(this._getId(req));
   }
 
   /**
    * Update user by params id
    */
-  public async update(
-    db: Database,
-    crypto: Crypto,
-    tokenPayload: JWTPayload,
-    updateData: IUpdateUser,
-    userId?: number
-  ) {
-    const id = ValueUtils.validateId(userId ?? tokenPayload.id);
-
-    if (tokenPayload.id == id) {
-      return this.performUpdate(db, crypto, id, updateData);
-    }
-
-    throw new ClientError(ClientResponse.ACCESS_DENIED);
+  public async update(ctx: ApiContext, req: Request) {
+    return this.performUpdate(ctx, req, this._getId(req));
   }
 
   /**
    * Delete user by params id
    */
-  public async delete(db: Database, userId: number, tokenPayload: JWTPayload) {
-    const id = ValueUtils.validateId(userId ?? tokenPayload.id);
-
-    if (tokenPayload.id == id) {
-      return this.performDelete(db, id);
-    }
-
-    throw new ClientError(ClientResponse.ACCESS_DENIED);
+  public async delete(ctx: ApiContext, req: Request) {
+    return this.performDelete(ctx, req);
   }
 
   /**
    * User deletion logic
    */
-  private async performDelete(db: Database, id: number) {
-    const repository = UserRepository.getRepository(db);
+  private async performDelete(ctx: ApiContext, req: Request) {
+    const repository = UserRepository.getRepository(ctx.db);
 
-    const user = await repository.get(id, {
+    const user = await repository.get(this._getId(req), {
       select: ["is_deleted"],
       relations: ["permissions"],
     });
@@ -100,23 +57,15 @@ export class UserService {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
-    return repository.delete(user);
+    repository.delete(user);
   }
 
   /**
    * User updating logic
    */
-  private async performUpdate(
-    db: Database,
-    crypto: Crypto,
-    id: number,
-    body: IUpdateUser
-  ) {
-    if (!crypto) {
-      throw new ServerError(ServerResponse.NO_CRYPTO);
-    }
-
-    const repository = UserRepository.getRepository(db);
+  private async performUpdate(ctx: ApiContext, req: Request, id: number) {
+    const repository = UserRepository.getRepository(ctx.db);
+    const body = req.body;
 
     const user = await repository.get(id, {
       relations: ["permissions"],
@@ -133,10 +82,7 @@ export class UserService {
       user.birthday = ValueUtils.getBirthday(body.birthday);
     }
 
-    repository.update(user);
-    // Do not return back user password
-    delete user.password;
-
+    await repository.update(user);
     return user.export();
   }
 
@@ -168,10 +114,10 @@ export class UserService {
         }))
       ) {
         throw new ClientError(
-          ClientResponse.USER_PERMISSION_NOT_EXISTS.replace(
-            "%name",
-            p.name
-          ).replace("%id", p.id)
+          TemplateUtils.text(ClientResponse.USER_PERMISSION_NOT_EXISTS, {
+            name: p.name,
+            id: p.id,
+          })
         );
       }
     }
@@ -224,5 +170,13 @@ export class UserService {
     });
 
     return user;
+  }
+
+  private _getId(req: Request) {
+    const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
+    const paramsId = Number(req.params.id);
+    return ValueUtils.validateId(
+      Number.isNaN(paramsId) ? tokenPayload.id : paramsId
+    );
   }
 }

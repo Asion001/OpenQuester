@@ -2,7 +2,7 @@ import { type Repository } from "typeorm";
 import { User } from "../models/User";
 import { type Database } from "../Database";
 import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
-import { Crypto } from "../../interfaces/Crypto";
+import { ICrypto } from "../../interfaces/ICrypto";
 import { CryptoUtils } from "../../utils/CryptoUtils";
 import { ValueUtils } from "../../utils/ValueUtils";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
@@ -55,7 +55,7 @@ export class UserRepository {
     }) as Promise<User[]>;
   }
 
-  public async create(data: IRegisterUser, crypto?: Crypto) {
+  public async create(data: IRegisterUser, crypto?: ICrypto) {
     // Set all data to new user instance
     const user = new User();
     await user.import({
@@ -91,9 +91,8 @@ export class UserRepository {
   public async delete(user: UserOrId) {
     const _user = await this._getUserFromInput(user);
 
-    _user.is_deleted = false;
+    _user.is_deleted = true;
     this.update(_user);
-    return;
   }
 
   public async update(user: UserOrId) {
@@ -116,11 +115,12 @@ export class UserRepository {
     let user: User | null = null;
 
     if (input instanceof User) {
-      user = input;
+      return input;
     }
 
-    if (typeof input === "number") {
-      user = await this._repository.findOne({ where: { id: input } });
+    if (typeof input === "number" || typeof input === "string") {
+      const id = ValueUtils.validateId(input);
+      user = await this._repository.findOne({ where: { id } });
     }
 
     if (!user) {

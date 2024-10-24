@@ -49,9 +49,9 @@ export class UserDataManager implements ISchema {
       }
     }
     if (r.length > 0) {
-      throw new ClientError(
-        `${ClientResponse.FIELDS_REQUIRED.replace("%s", `[${[...r]}]`)}`
-      );
+      throw new ClientError(ClientResponse.FIELDS_REQUIRED, undefined, {
+        fields: [...r],
+      });
     }
   }
 
@@ -77,9 +77,9 @@ export class UserDataManager implements ISchema {
     // TODO: Validate avatar field when implemented
 
     if (error) {
-      throw new ClientError(
-        `${ClientResponse.VALIDATION_ERROR}: ${error.message}`
-      );
+      throw new ClientError(ClientResponse.VALIDATION_ERROR, undefined, {
+        error,
+      });
     }
 
     return value;

@@ -9,11 +9,11 @@ import { ContentStructureService } from "../ContentStructureService";
 import { SHA256Characters } from "../../constants/sha256";
 import { ValueUtils } from "../../utils/ValueUtils";
 import { ApiContext } from "../context/ApiContext";
-import { StorageServiceFactory } from "./StorageServiceFactory";
 import { PackageRepository } from "../../database/repositories/PackageRepository";
 import { Database } from "../../database/Database";
 import { User } from "../../database/models/User";
 import { FileRepository } from "../../database/repositories/FileRepository";
+import { ServerServices } from "../ServerServices";
 
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
@@ -24,11 +24,8 @@ export class MinioStorageService implements IStorage {
   private _db: Database;
 
   constructor(ctx: ApiContext) {
-    const storageFactory = ctx.serverServices.get(StorageServiceFactory);
-    this._context = storageFactory.createFileContext("s3");
-    this._contentStructureService = ctx.serverServices.get(
-      ContentStructureService
-    );
+    this._context = ServerServices.storage.createFileContext("s3");
+    this._contentStructureService = ServerServices.content;
 
     this._db = ctx.db;
 
@@ -58,7 +55,6 @@ export class MinioStorageService implements IStorage {
     filename: string,
     expiresIn: number = 60 * 30 // Default: 30 min
   ) {
-    // TODO: Implement cache in future
     const filePath = this._parseFilePath(filename);
     return this._client.presignedGetObject(
       this._context.bucket,

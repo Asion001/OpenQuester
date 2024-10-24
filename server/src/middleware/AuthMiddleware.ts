@@ -4,6 +4,7 @@ import { type Request, type Response, type NextFunction } from "express";
 import { Environment } from "../config/Environment";
 import { ClientResponse } from "../enums/ClientResponse";
 import { HttpStatus } from "../enums/HttpStatus";
+import { TranslateService as ts } from "../services/text/TranslateService";
 
 export const verifyToken = (
   req: Request,
@@ -14,23 +15,23 @@ export const verifyToken = (
     return next();
   }
   const env = Environment.instance;
-  const header = req.header("Authorization");
+  const header = req.headers.authorization;
 
   const scheme = header?.split(" ")[0];
   const token = header?.split(" ")[1];
 
   if (!token || scheme !== env.JWT_SCHEME)
-    return res
-      .status(HttpStatus.UNAUTHORIZED)
-      .json({ error: ClientResponse.ACCESS_DENIED });
+    return res.status(HttpStatus.UNAUTHORIZED).json({
+      error: ts.localize(ClientResponse.ACCESS_DENIED, req.headers),
+    });
 
   try {
     jwt.verify(token, env.JWT_SECRET);
     next();
   } catch {
-    res
-      .status(HttpStatus.UNAUTHORIZED)
-      .json({ error: ClientResponse.INVALID_TOKEN });
+    return res.status(HttpStatus.UNAUTHORIZED).json({
+      error: ts.localize(ClientResponse.INVALID_TOKEN, req.headers),
+    });
   }
 };
 
@@ -56,7 +57,9 @@ export const validateTokenForAuth = (
   if (token && scheme == env.JWT_SCHEME) {
     try {
       jwt.verify(token, env.JWT_SECRET);
-      res.status(HttpStatus.BAD_REQUEST).send(ClientResponse.ALREADY_LOGGED_IN);
+      return res.status(HttpStatus.BAD_REQUEST).send({
+        error: ts.localize(ClientResponse.ALREADY_LOGGED_IN, req.headers),
+      });
     } catch {
       // Token invalid - continue
     }
@@ -74,7 +77,9 @@ export const validateRefresh = (
   next: NextFunction
 ) => {
   if (!req.body.refresh_token) {
-    return res.status(HttpStatus.BAD_REQUEST).send(ClientResponse.NO_REFRESH);
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send(ts.localize(ClientResponse.NO_REFRESH, req.headers));
   }
   next();
 };

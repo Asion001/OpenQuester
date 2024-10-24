@@ -9,7 +9,6 @@ import { Database } from "./database/Database";
 import { AppDataSource } from "./database/DataSource";
 import { ApiContext } from "./services/context/ApiContext";
 import { ErrorController } from "./error/ErrorController";
-import { ServerServices } from "./services/ServerServices";
 
 const main = async () => {
   Logger.info(`Initializing API Context`);
@@ -19,7 +18,6 @@ const main = async () => {
     db: Database.getInstance(AppDataSource),
     app: express(),
     env: Environment.instance,
-    serverServices: new ServerServices(),
   });
 
   if (cluster.isPrimary) {

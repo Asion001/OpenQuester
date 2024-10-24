@@ -1,4 +1,6 @@
+import { IncomingHttpHeaders } from "http";
 import { QueryFailedError } from "typeorm";
+
 import { HttpStatus } from "../enums/HttpStatus";
 import { ServerResponse } from "../enums/ServerResponse";
 import { Logger } from "../utils/Logger";
@@ -6,15 +8,24 @@ import { ClientError } from "./ClientError";
 import { OQError } from "./OQError";
 import { ServerError } from "./ServerError";
 import { ClientResponse } from "../enums/ClientResponse";
+import { TranslateService as ts } from "../services/text/TranslateService";
+import { Language } from "../types/text/translation";
+import { ValueUtils } from "../utils/ValueUtils";
+import { TemplateUtils } from "../utils/TemplateUtils";
 
 export class ErrorController {
   /**
    * Resolves error and returns it message and code
    */
-  public static async resolveError(error: unknown): Promise<{
+  public static async resolveError(
+    error: unknown,
+    headers?: IncomingHttpHeaders
+  ): Promise<{
     message: string;
     code: number;
   }> {
+    error = this._formatError(error, ts.parseHeaders(headers));
+
     if (!(error instanceof OQError)) {
       let message: string = "";
 
@@ -47,7 +58,10 @@ export class ErrorController {
     };
   }
 
-  public static async resolveUserQueryError(error: unknown) {
+  public static async resolveUserQueryError(
+    error: unknown,
+    headers: IncomingHttpHeaders
+  ) {
     let err = error;
     if (
       // Catch query error from TypeORM (if user already exists)
@@ -59,7 +73,28 @@ export class ErrorController {
         HttpStatus.NOT_FOUND
       );
     }
-    const { message, code } = await ErrorController.resolveError(err);
+    const { message, code } = await ErrorController.resolveError(err, headers);
     return { message, code };
+  }
+
+  private static _formatError<T>(error: T, lang?: Language): T {
+    if (!(error instanceof OQError)) {
+      return error;
+    }
+    const args = error.textArgs;
+
+    let message: string;
+    if (ts.translationKeys.includes(error.message)) {
+      message = ts.translate(error.message, lang);
+    } else {
+      message = error.message;
+    }
+
+    if (args && ValueUtils.isObject(args) && !ValueUtils.isEmpty(args)) {
+      message = TemplateUtils.text(message, args);
+    }
+
+    error.message = message;
+    return error;
   }
 }

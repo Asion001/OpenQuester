@@ -1,2 +1,2 @@
 // Later, if needed, add other storage types as union
-export type storageType = "s3";
+export type StorageType = "s3";
