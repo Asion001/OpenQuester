@@ -12,7 +12,7 @@ export class SwaggerRestApiController {
   constructor(ctx: ApiContext) {
     const app = ctx.app;
     const router = Router();
-    this._jsonPath = path.join(process.cwd(), "./schema.json");
+    this._jsonPath = path.join(process.cwd(), "../openapi/schema.json");
 
     app.use("/v1/api-docs", router);
 
