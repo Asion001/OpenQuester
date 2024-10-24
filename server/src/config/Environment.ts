@@ -14,6 +14,7 @@ import { LogLevel } from "../types/log/log";
 import { TemplateUtils } from "../utils/TemplateUtils";
 
 const ENV_TYPES = ["local", "prod", "test"];
+const ENV_PREFIX = "[ENV]: ";
 
 /**
  * Class of environment layer.
@@ -49,9 +50,6 @@ export class Environment {
   // Logs
   public LOG_LEVEL!: LogLevel;
 
-  // Workers
-  public WORKERS_COUNT!: number;
-
   private constructor() {
     //
   }
@@ -86,7 +84,7 @@ export class Environment {
 
     // Do not load variables in test environment. It should be mocked for testing
     if (process?.env["ENV"] === "test") {
-      Logger.error("Running in `test` environment!!");
+      Logger.error("Running in `test` environment!!", ENV_PREFIX);
       return;
     }
 
@@ -161,26 +159,17 @@ export class Environment {
     const prod = this._type === "prod";
 
     if (prod) {
-      Logger.warn(bold("Running in production environment"));
+      Logger.warn(bold("Running in production environment"), ENV_PREFIX);
     }
 
     if (this._type === "local") {
-      Logger.info("Running in local environment");
+      Logger.info("Running in local environment", ENV_PREFIX);
     }
 
     this.loadDB();
     this.loadJWT();
-    this.loadWorkers();
 
     this.LOG_LEVEL = this.getEnvVar("LOG_LEVEL", "string", "info");
-  }
-
-  private loadWorkers() {
-    this.WORKERS_COUNT = Number(this.getEnvVar("WORKERS_COUNT", "number", 2));
-
-    if (this.WORKERS_COUNT < 1) {
-      this.WORKERS_COUNT = 2;
-    }
   }
 
   private loadJWT() {
