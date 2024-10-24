@@ -23,9 +23,8 @@ export function checkPermission(db: Database, permission: Permissions) {
 
       const userPermissions = user.permissions.map((v) => v.name);
       if (!userPermissions.includes(permission)) {
-        const lang = ts.parseHeader(req.headers["accept-language"]);
         return res.status(HttpStatus.BAD_REQUEST).send({
-          error: ts.translate(ClientResponse.NO_PERMISSION, lang),
+          error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
         });
       }
 
@@ -47,8 +46,7 @@ export function requirePermissionIfIdProvided(
   return async (req: Request, res: Response, next: NextFunction) => {
     if (req.params.id) {
       try {
-        const lang = ts.parseHeader(req.headers["accept-language"]);
-        const id = ValueUtils.validateId(req.params.id, lang);
+        const id = ValueUtils.validateId(req.params.id);
         const reqId = JWTUtils.getTokenPayload(req.headers.authorization).id;
         const userRepository = UserRepository.getRepository(db);
 
@@ -61,7 +59,10 @@ export function requirePermissionIfIdProvided(
 
         return checkPermission(db, permission)(req, res, next);
       } catch (err: unknown) {
-        const { message, code } = await ErrorController.resolveError(err);
+        const { message, code } = await ErrorController.resolveError(
+          err,
+          req.headers
+        );
         return res.status(code).send({ error: message });
       }
     }

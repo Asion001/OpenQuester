@@ -19,19 +19,18 @@ export const verifyToken = (
 
   const scheme = header?.split(" ")[0];
   const token = header?.split(" ")[1];
-  const lang = req.headers["accept-language"];
 
   if (!token || scheme !== env.JWT_SCHEME)
     return res.status(HttpStatus.UNAUTHORIZED).json({
-      error: ts.translate(ClientResponse.ACCESS_DENIED, lang),
+      error: ts.localize(ClientResponse.ACCESS_DENIED, req.headers),
     });
 
   try {
     jwt.verify(token, env.JWT_SECRET);
     next();
   } catch {
-    res.status(HttpStatus.UNAUTHORIZED).json({
-      error: ts.translate(ClientResponse.INVALID_TOKEN, lang),
+    return res.status(HttpStatus.UNAUTHORIZED).json({
+      error: ts.localize(ClientResponse.INVALID_TOKEN, req.headers),
     });
   }
 };
@@ -58,10 +57,9 @@ export const validateTokenForAuth = (
   if (token && scheme == env.JWT_SCHEME) {
     try {
       jwt.verify(token, env.JWT_SECRET);
-      const lang = ts.parseHeader(req.headers["accept-language"]);
-      res
-        .status(HttpStatus.BAD_REQUEST)
-        .send({ error: ts.translate(ClientResponse.ALREADY_LOGGED_IN, lang) });
+      return res.status(HttpStatus.BAD_REQUEST).send({
+        error: ts.localize(ClientResponse.ALREADY_LOGGED_IN, req.headers),
+      });
     } catch {
       // Token invalid - continue
     }
@@ -79,10 +77,9 @@ export const validateRefresh = (
   next: NextFunction
 ) => {
   if (!req.body.refresh_token) {
-    const lang = ts.parseHeader(req.headers["accept-language"]);
     return res
       .status(HttpStatus.BAD_REQUEST)
-      .send(ts.translate(ClientResponse.NO_REFRESH, lang));
+      .send(ts.localize(ClientResponse.NO_REFRESH, req.headers));
   }
   next();
 };

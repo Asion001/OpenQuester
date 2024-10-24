@@ -13,7 +13,6 @@ import {
 } from "../types/jwt/jwt";
 import { ClientResponse } from "../enums/ClientResponse";
 import { ClientError } from "../error/ClientError";
-import { TranslateService as ts } from "../services/text/TranslateService";
 
 const WRITE_PATH = path.resolve(process.cwd(), "storage/");
 
@@ -127,8 +126,7 @@ export class JWTUtils {
         refresh_token,
       };
     } catch {
-      const lang = ts.parseHeader(req.headers["accept-language"]);
-      throw new ClientError(ts.translate(ClientResponse.INVALID_REFRESH, lang));
+      throw new ClientError(ClientResponse.INVALID_REFRESH);
     }
   }
 }

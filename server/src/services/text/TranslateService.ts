@@ -4,6 +4,7 @@ import fs from "fs";
 import { ValueUtils } from "../../utils/ValueUtils";
 import { Language, Translation } from "../../types/text/translation";
 import { Logger } from "../../utils/Logger";
+import { IncomingHttpHeaders } from "http";
 
 /**
  * Static service that handles translations from `storage/language/*.json` files by translation key
@@ -13,12 +14,35 @@ export class TranslateService {
     process.cwd(),
     "storage/language"
   );
-
   private static _translationsMap = new Map<Language, Translation>();
 
-  /**
-   * Loads a translation file for a given language.
-   */
+  private static _translationKeys: string[] = [];
+
+  /** Returns array that contains all translation keys */
+  public static get translationKeys() {
+    if (this._translationKeys.length > 0) {
+      return this._translationKeys;
+    }
+
+    this._loadTranslationKeys();
+    return this._translationKeys;
+  }
+
+  private static _loadTranslationKeys() {
+    let translation = this._translationsMap.get("en");
+
+    if (!translation || Object.keys(translation).length < 1) {
+      const filePath = path.join(this._translationsPath, "en.json");
+      translation = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    }
+
+    for (const key of Object.keys(translation as Translation)) {
+      if (!this._translationKeys.includes(key)) {
+        this._translationKeys.push(key);
+      }
+    }
+  }
+
   private static _loadTranslation(language: Language): Translation | null {
     const existing = this._translationsMap.get(language);
     if (!ValueUtils.isBad(existing) && !ValueUtils.isEmpty(existing)) {
@@ -39,6 +63,14 @@ export class TranslateService {
     }
 
     return null;
+  }
+
+  public static localize(
+    translationKey: string,
+    headers?: IncomingHttpHeaders
+  ) {
+    const lang = this.parseHeaders(headers);
+    return this.translate(translationKey, lang);
   }
 
   /**
@@ -64,10 +96,14 @@ export class TranslateService {
   /**
    * Parse "Accept-Language" header to get the first preferred language.
    */
-  public static parseHeader(acceptLangHeader: string | undefined): string {
-    if (!acceptLangHeader) {
+  public static parseHeaders(headers?: IncomingHttpHeaders): string {
+    if (!headers) {
       return "en";
     }
-    return acceptLangHeader.split(",")[0].split(";")[0].split("-")[0];
+    const langHeader = headers["accept-language"];
+    if (!langHeader) {
+      return "en";
+    }
+    return langHeader.split(",")[0].split(";")[0].split("-")[0];
   }
 }

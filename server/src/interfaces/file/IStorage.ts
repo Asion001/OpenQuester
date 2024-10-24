@@ -1,5 +1,4 @@
 import { User } from "../../database/models/User";
-import { Language } from "../../types/text/translation";
 import { OQContentStructure } from "./structures/OQContentStructure";
 
 export interface IStorage {
@@ -11,8 +10,7 @@ export interface IStorage {
   uploadPackage(
     content: OQContentStructure,
     author: User,
-    expiresIn?: number,
-    userLang?: Language
+    expiresIn?: number
   ): Promise<{ [key: string]: string }>;
   delete(filename: string): Promise<void>;
 }

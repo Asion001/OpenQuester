@@ -1,7 +1,5 @@
 import { ClientResponse } from "../enums/ClientResponse";
 import { ClientError } from "../error/ClientError";
-import { TranslateService as ts } from "../services/text/TranslateService";
-import { Language } from "../types/text/translation";
 
 export class ValueUtils {
   /**
@@ -27,11 +25,11 @@ export class ValueUtils {
   /**
    * Validates that given id is numeric and valid
    */
-  public static validateId(id: string | number, userLang?: Language): number {
+  public static validateId(id: string | number): number {
     id = Number(id);
 
     if (id < 1 || Number.isNaN(id)) {
-      throw new ClientError(ts.translate(ClientResponse.BAD_USER_ID, userLang));
+      throw new ClientError(ClientResponse.BAD_USER_ID);
     }
 
     return id;

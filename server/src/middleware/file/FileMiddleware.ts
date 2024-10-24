@@ -12,18 +12,17 @@ export const verifyContentJSONMiddleware = (
   next: NextFunction
 ) => {
   const content = req.body?.content;
-  const lang = req.headers["accept-language"];
 
   if (!ValueUtils.isObject(content)) {
     return res.status(HttpStatus.BAD_REQUEST).send({
-      error: ts.translate(ClientResponse.WRONG_CONTENT, lang),
+      error: ts.localize(ClientResponse.WRONG_CONTENT, req.headers),
     });
   }
 
   if (ValueUtils.isEmpty(content)) {
     return res
       .status(HttpStatus.BAD_REQUEST)
-      .send({ error: ts.translate(ClientResponse.EMPTY_CONTENT, lang) });
+      .send({ error: ts.localize(ClientResponse.EMPTY_CONTENT, req.headers) });
   }
 
   return next();
@@ -35,18 +34,21 @@ export const validateFilename = (
   next: NextFunction
 ) => {
   const filename = req.body.filename;
-  const lang = req.headers["accept-language"];
 
   if (ValueUtils.isBad(filename)) {
     return res
       .status(HttpStatus.BAD_REQUEST)
-      .send({ error: ts.translate(ClientResponse.FILENAME_REQUIRED, lang) });
+      .send({
+        error: ts.localize(ClientResponse.FILENAME_REQUIRED, req.headers),
+      });
   }
 
   if (!ValueUtils.isString(filename) || ValueUtils.isEmpty(filename)) {
     return res
       .status(HttpStatus.BAD_REQUEST)
-      .send({ error: ts.translate(ClientResponse.FILENAME_INVALID, lang) });
+      .send({
+        error: ts.localize(ClientResponse.FILENAME_INVALID, req.headers),
+      });
   }
 
   return next();

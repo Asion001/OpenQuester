@@ -44,21 +44,23 @@ export class PackageRestApiController {
       const user = await userRepository.get(payload.id);
 
       if (!user || !user.id) {
-        const lang = ts.parseHeader(req.headers["accept-language"]);
         return res
           .status(HttpStatus.BAD_REQUEST)
-          .send(ts.translate(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND, lang));
+          .send(
+            ts.localize(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND, req.headers)
+          );
       }
 
       const data = await this._storageService.uploadPackage(
         req.body.content,
-        user,
-        undefined,
-        ts.parseHeader(req.headers["accept-language"])
+        user
       );
       return res.status(HttpStatus.OK).send(data);
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       return res.status(code).send({ error: message });
     }
   };

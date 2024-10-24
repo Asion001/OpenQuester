@@ -33,7 +33,10 @@ export class FileRestApiController {
       const url = await this._storageService.get(req.body.filename);
       res.send({ url });
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       res.status(code).send({ error: message });
     }
   };
@@ -43,7 +46,10 @@ export class FileRestApiController {
       const url = await this._storageService.upload(req.body.filename);
       res.send({ url });
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       res.status(code).send({ error: message });
     }
   };
@@ -53,12 +59,14 @@ export class FileRestApiController {
       // No need to await, delete does not return any info
       this._storageService.delete(req.body.filename);
 
-      const lang = req.headers["accept-language"];
       res.status(HttpStatus.NO_CONTENT).send({
-        message: ts.translate(ClientResponse.DELETE_REQUEST_SENT, lang),
+        message: ts.localize(ClientResponse.DELETE_REQUEST_SENT, req.headers),
       });
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       res.status(code).send({ error: message });
     }
   };

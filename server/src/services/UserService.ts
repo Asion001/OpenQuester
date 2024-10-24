@@ -8,7 +8,6 @@ import { ValueUtils } from "../utils/ValueUtils";
 import { ClientResponse } from "../enums/ClientResponse";
 import { ClientError } from "../error/ClientError";
 import { UserRepository } from "../database/repositories/UserRepository";
-import { TranslateService as ts } from "./text/TranslateService";
 import { JWTUtils } from "../utils/JWTUtils";
 import { TemplateUtils } from "../utils/TemplateUtils";
 
@@ -48,7 +47,6 @@ export class UserService {
    */
   private async performDelete(ctx: ApiContext, req: Request) {
     const repository = UserRepository.getRepository(ctx.db);
-    const lang = ts.parseHeader(req.headers["accept-language"]);
 
     const user = await repository.get(this._getId(req), {
       select: ["is_deleted"],
@@ -56,10 +54,10 @@ export class UserService {
     });
 
     if (!user || user.is_deleted) {
-      throw new ClientError(ts.translate(ClientResponse.USER_NOT_FOUND, lang));
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
-    repository.delete(user, lang);
+    repository.delete(user);
   }
 
   /**
@@ -74,8 +72,7 @@ export class UserService {
     });
 
     if (!user) {
-      const lang = ts.parseHeader(req.headers["accept-language"]);
-      throw new ClientError(ts.translate(ClientResponse.USER_NOT_FOUND, lang));
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     user.name = body.name ?? user.name;
@@ -179,8 +176,7 @@ export class UserService {
     const tokenPayload = JWTUtils.getTokenPayload(req.headers.authorization);
     const paramsId = Number(req.params.id);
     return ValueUtils.validateId(
-      Number.isNaN(paramsId) ? tokenPayload.id : paramsId,
-      ts.parseHeader(req.headers["accept-language"])
+      Number.isNaN(paramsId) ? tokenPayload.id : paramsId
     );
   }
 }

@@ -50,7 +50,7 @@ export class AuthRestApiController {
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveUserQueryError(
         err,
-        req
+        req.headers
       );
       return res.status(code).send({ error: message });
     }
@@ -61,7 +61,10 @@ export class AuthRestApiController {
       const result = await this._authService.login(this.ctx, req);
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       return res.status(code).send({ error: message });
     }
   };
@@ -71,7 +74,10 @@ export class AuthRestApiController {
       const result = JWTUtils.refresh(req);
       res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       res.status(code).send({ error: message });
     }
   };

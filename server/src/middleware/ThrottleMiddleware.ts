@@ -23,13 +23,12 @@ export const throttleByUserMiddleware: RequestHandler = (
   next: NextFunction
 ) => {
   const payload = JWTUtils.getTokenPayload(req.headers.authorization);
-  const lang = ts.parseHeader(req.headers["accept-language"]);
-  const userId = ValueUtils.validateId(payload.id, lang);
+  const userId = ValueUtils.validateId(payload.id);
 
   if (!userId) {
     return res
       .status(HttpStatus.UNAUTHORIZED)
-      .send({ error: ts.translate(ClientResponse.ACCESS_DENIED, lang) });
+      .send({ error: ts.localize(ClientResponse.ACCESS_DENIED, req.headers) });
   }
 
   const now = Date.now();
@@ -46,7 +45,9 @@ export const throttleByUserMiddleware: RequestHandler = (
   if (recentTimestamps.length >= RATE_LIMIT) {
     return res
       .status(HttpStatus.TOO_MANY_REQUESTS)
-      .send({ error: ts.translate(ClientResponse.TOO_MANY_REQUESTS, lang) });
+      .send({
+        error: ts.localize(ClientResponse.TOO_MANY_REQUESTS, req.headers),
+      });
   }
 
   // Add current timestamp to the list

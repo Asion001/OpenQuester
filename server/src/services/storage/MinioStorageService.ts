@@ -13,7 +13,6 @@ import { PackageRepository } from "../../database/repositories/PackageRepository
 import { Database } from "../../database/Database";
 import { User } from "../../database/models/User";
 import { FileRepository } from "../../database/repositories/FileRepository";
-import { Language } from "../../types/text/translation";
 import { ServerServices } from "../ServerServices";
 
 export class MinioStorageService implements IStorage {
@@ -87,17 +86,15 @@ export class MinioStorageService implements IStorage {
   public async uploadPackage(
     content: OQContentStructure,
     author: User,
-    expiresIn: number = 60 * 5, // Default: 5 min
-    userLang?: Language
+    expiresIn: number = 60 * 5 // Default: 5 min
   ) {
     const repository = PackageRepository.getRepository(this._db);
     const links = this._contentStructureService.getUploadLinksForFiles(
       content,
       this,
-      expiresIn,
-      userLang
+      expiresIn
     );
-    repository.create(content, author, userLang);
+    repository.create(content, author);
     return links;
   }
 

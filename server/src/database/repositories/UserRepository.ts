@@ -10,8 +10,6 @@ import { ClientError } from "../../error/ClientError";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { ISelectOptions } from "../../interfaces/ISelectOptions";
 import { UserOrId } from "../../types/user/user";
-import { TranslateService as ts } from "../../services/text/TranslateService";
-import { Language } from "../../types/text/translation";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -90,8 +88,8 @@ export class UserRepository {
       .getOne();
   }
 
-  public async delete(user: UserOrId, userLang?: Language) {
-    const _user = await this._getUserFromInput(user, userLang);
+  public async delete(user: UserOrId) {
+    const _user = await this._getUserFromInput(user);
 
     _user.is_deleted = true;
     this.update(_user);
@@ -113,7 +111,7 @@ export class UserRepository {
     );
   }
 
-  private async _getUserFromInput(input: UserOrId, userLang?: Language) {
+  private async _getUserFromInput(input: UserOrId) {
     let user: User | null = null;
 
     if (input instanceof User) {
@@ -121,14 +119,12 @@ export class UserRepository {
     }
 
     if (typeof input === "number" || typeof input === "string") {
-      const id = ValueUtils.validateId(input, userLang);
+      const id = ValueUtils.validateId(input);
       user = await this._repository.findOne({ where: { id } });
     }
 
     if (!user) {
-      throw new ClientError(
-        ts.translate(ClientResponse.USER_NOT_FOUND, userLang)
-      );
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     return user;

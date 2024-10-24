@@ -65,12 +65,14 @@ export class UserRestApiController {
         return res.status(HttpStatus.OK).send(result);
       }
 
-      const lang = ts.parseHeader(req.headers["accept-language"]);
       return res.status(HttpStatus.NOT_FOUND).send({
-        message: ts.translate(ClientResponse.USER_NOT_FOUND, lang),
+        message: ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
       });
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       return res.status(code).send({ error: message });
     }
   };
@@ -83,7 +85,7 @@ export class UserRestApiController {
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveUserQueryError(
         err,
-        req
+        req.headers
       );
       return res.status(code).send({ error: message });
     }
@@ -94,7 +96,10 @@ export class UserRestApiController {
       await this._userService.delete(this.ctx, req);
       return res.status(HttpStatus.NO_CONTENT).send();
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       return res.status(code).send({ error: message });
     }
   };
@@ -107,12 +112,14 @@ export class UserRestApiController {
         return res.status(HttpStatus.OK).send(result);
       }
 
-      const lang = ts.parseHeader(req.headers["accept-language"]);
       return res.status(HttpStatus.NOT_FOUND).send({
-        message: ts.translate(ClientResponse.USER_NOT_FOUND, lang),
+        message: ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
       });
     } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
       return res.status(code).send({ error: message });
     }
   };

@@ -7,9 +7,6 @@ import { ServerResponse } from "../../enums/ServerResponse";
 import { ClientError } from "../../error/ClientError";
 import { ServerError } from "../../error/ServerError";
 import { ISchema } from "../../interfaces/ISchema";
-import { Language } from "../../types/text/translation";
-import { TranslateService as ts } from "../../services/text/TranslateService";
-import { TemplateUtils } from "../../utils/TemplateUtils";
 
 export class UserDataManager implements ISchema {
   protected _userData?: IInputUserData;
@@ -37,7 +34,7 @@ export class UserDataManager implements ISchema {
    *
    * By default it's called in `validate()`
    */
-  public validateFields(userLang?: string) {
+  public validateFields() {
     if (!this._required?.length) {
       return;
     }
@@ -52,26 +49,21 @@ export class UserDataManager implements ISchema {
       }
     }
     if (r.length > 0) {
-      throw new ClientError(
-        TemplateUtils.text(
-          ts.translate(ClientResponse.FIELDS_REQUIRED, userLang),
-          { fields: [...r] }
-        )
-      );
+      throw new ClientError(ClientResponse.FIELDS_REQUIRED, undefined, {
+        fields: [...r],
+      });
     }
   }
 
   /**
    * Validates manager user data using validation schema
    */
-  public validate(userLang?: Language) {
+  public validate() {
     if (!this._userData || !ValueUtils.isValidObject(this._userData)) {
-      throw new ClientError(
-        ts.translate(ClientResponse.NO_USER_DATA, userLang)
-      );
+      throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
-    this.validateFields(userLang);
+    this.validateFields();
 
     if (!this._schema) {
       throw new ServerError(ServerResponse.NO_SCHEMA);
@@ -85,11 +77,9 @@ export class UserDataManager implements ISchema {
     // TODO: Validate avatar field when implemented
 
     if (error) {
-      throw new ClientError(
-        `${ts.translate(ClientResponse.VALIDATION_ERROR, userLang)}: ${
-          error.message
-        }`
-      );
+      throw new ClientError(ClientResponse.VALIDATION_ERROR, undefined, {
+        error,
+      });
     }
 
     return value;
