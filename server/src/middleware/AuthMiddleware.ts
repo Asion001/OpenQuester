@@ -11,7 +11,7 @@ export const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.url.includes("v1/auth")) {
+  if (req.url.includes("v1/auth") || req.url.includes("v1/api-docs")) {
     return next();
   }
   const env = Environment.instance;

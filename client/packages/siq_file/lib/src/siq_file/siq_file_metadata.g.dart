@@ -9,10 +9,11 @@ part of 'siq_file_metadata.dart';
 _$SiqFileMetadataImpl _$$SiqFileMetadataImplFromJson(
         Map<String, dynamic> json) =>
     _$SiqFileMetadataImpl(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      date: DateTime.parse(json['date'] as String),
-      publisher: json['publisher'] as String,
+      id: json['id'] as String?,
+      title: json['title'] as String?,
+      date:
+          json['date'] == null ? null : DateTime.parse(json['date'] as String),
+      publisher: json['publisher'] as String?,
       logo: json['logo'] == null
           ? null
           : FileObject.fromJson(json['logo'] as Map<String, dynamic>),
@@ -30,12 +31,7 @@ _$SiqFileMetadataImpl _$$SiqFileMetadataImplFromJson(
 
 Map<String, dynamic> _$$SiqFileMetadataImplToJson(
     _$SiqFileMetadataImpl instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'title': instance.title,
-    'date': instance.date.toIso8601String(),
-    'publisher': instance.publisher,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -43,6 +39,10 @@ Map<String, dynamic> _$$SiqFileMetadataImplToJson(
     }
   }
 
+  writeNotNull('id', instance.id);
+  writeNotNull('title', instance.title);
+  writeNotNull('date', instance.date?.toIso8601String());
+  writeNotNull('publisher', instance.publisher);
   writeNotNull('logo', instance.logo);
   val['tags'] = instance.tags;
   val['authors'] = instance.authors;

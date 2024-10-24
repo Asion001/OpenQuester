@@ -1,9 +1,13 @@
-import { OQFileStructure } from "./OQFileStructure";
+import { OQAnswerFile } from "./OQAnswerFile";
+import { OQQuestionFile } from "./OQQuestionFile";
 
 export interface OQQuestionsStructure {
   price: number;
   type: string;
+  text: string;
   hostHint: string;
-  questionFile: OQFileStructure;
-  answerFile: OQFileStructure;
+  playersHint: string;
+  answerText: string;
+  questionFile: OQQuestionFile;
+  answerFile: OQAnswerFile;
 }

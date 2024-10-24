@@ -14,6 +14,7 @@ import { FileRestApiController } from "./controllers/rest/FileRestApiController"
 import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
 import { ServerError } from "./error/ServerError";
 import { logMiddleware } from "./middleware/log/DebugLogMiddleware";
+import { SwaggerRestApiController } from "./controllers/rest/SwaggerController";
 
 /**
  * Servers all api endpoints in one place.
@@ -82,5 +83,6 @@ export class ServeApi {
     new UserRestApiController(this._context);
     new FileRestApiController(this._context);
     new PackageRestApiController(this._context);
+    new SwaggerRestApiController(this._context);
   }
 }

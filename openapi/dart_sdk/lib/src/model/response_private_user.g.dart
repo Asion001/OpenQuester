@@ -18,13 +18,13 @@ class _$ResponsePrivateUser extends ResponsePrivateUser {
   @override
   final Uint8List? avatar;
   @override
-  final BuiltList<ResponsePrivateUserPermissionsInner>? permissions;
-  @override
   final DateTime? createdAt;
   @override
   final DateTime? updatedAt;
   @override
   final bool? isDeleted;
+  @override
+  final BuiltList<ResponsePrivateUserPermissionsInner>? permissions;
 
   factory _$ResponsePrivateUser(
           [void Function(ResponsePrivateUserBuilder)? updates]) =>
@@ -36,10 +36,10 @@ class _$ResponsePrivateUser extends ResponsePrivateUser {
       this.email,
       this.birthday,
       this.avatar,
-      this.permissions,
       this.createdAt,
       this.updatedAt,
-      this.isDeleted})
+      this.isDeleted,
+      this.permissions})
       : super._();
 
   @override
@@ -60,10 +60,10 @@ class _$ResponsePrivateUser extends ResponsePrivateUser {
         email == other.email &&
         birthday == other.birthday &&
         avatar == other.avatar &&
-        permissions == other.permissions &&
         createdAt == other.createdAt &&
         updatedAt == other.updatedAt &&
-        isDeleted == other.isDeleted;
+        isDeleted == other.isDeleted &&
+        permissions == other.permissions;
   }
 
   @override
@@ -74,10 +74,10 @@ class _$ResponsePrivateUser extends ResponsePrivateUser {
     _$hash = $jc(_$hash, email.hashCode);
     _$hash = $jc(_$hash, birthday.hashCode);
     _$hash = $jc(_$hash, avatar.hashCode);
-    _$hash = $jc(_$hash, permissions.hashCode);
     _$hash = $jc(_$hash, createdAt.hashCode);
     _$hash = $jc(_$hash, updatedAt.hashCode);
     _$hash = $jc(_$hash, isDeleted.hashCode);
+    _$hash = $jc(_$hash, permissions.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -90,10 +90,10 @@ class _$ResponsePrivateUser extends ResponsePrivateUser {
           ..add('email', email)
           ..add('birthday', birthday)
           ..add('avatar', avatar)
-          ..add('permissions', permissions)
           ..add('createdAt', createdAt)
           ..add('updatedAt', updatedAt)
-          ..add('isDeleted', isDeleted))
+          ..add('isDeleted', isDeleted)
+          ..add('permissions', permissions))
         .toString();
   }
 }
@@ -122,14 +122,6 @@ class ResponsePrivateUserBuilder
   Uint8List? get avatar => _$this._avatar;
   set avatar(Uint8List? avatar) => _$this._avatar = avatar;
 
-  ListBuilder<ResponsePrivateUserPermissionsInner>? _permissions;
-  ListBuilder<ResponsePrivateUserPermissionsInner> get permissions =>
-      _$this._permissions ??=
-          new ListBuilder<ResponsePrivateUserPermissionsInner>();
-  set permissions(
-          ListBuilder<ResponsePrivateUserPermissionsInner>? permissions) =>
-      _$this._permissions = permissions;
-
   DateTime? _createdAt;
   DateTime? get createdAt => _$this._createdAt;
   set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
@@ -141,6 +133,14 @@ class ResponsePrivateUserBuilder
   bool? _isDeleted;
   bool? get isDeleted => _$this._isDeleted;
   set isDeleted(bool? isDeleted) => _$this._isDeleted = isDeleted;
+
+  ListBuilder<ResponsePrivateUserPermissionsInner>? _permissions;
+  ListBuilder<ResponsePrivateUserPermissionsInner> get permissions =>
+      _$this._permissions ??=
+          new ListBuilder<ResponsePrivateUserPermissionsInner>();
+  set permissions(
+          ListBuilder<ResponsePrivateUserPermissionsInner>? permissions) =>
+      _$this._permissions = permissions;
 
   ResponsePrivateUserBuilder() {
     ResponsePrivateUser._defaults(this);
@@ -154,10 +154,10 @@ class ResponsePrivateUserBuilder
       _email = $v.email;
       _birthday = $v.birthday;
       _avatar = $v.avatar;
-      _permissions = $v.permissions?.toBuilder();
       _createdAt = $v.createdAt;
       _updatedAt = $v.updatedAt;
       _isDeleted = $v.isDeleted;
+      _permissions = $v.permissions?.toBuilder();
       _$v = null;
     }
     return this;
@@ -187,10 +187,10 @@ class ResponsePrivateUserBuilder
               email: email,
               birthday: birthday,
               avatar: avatar,
-              permissions: _permissions?.build(),
               createdAt: createdAt,
               updatedAt: updatedAt,
-              isDeleted: isDeleted);
+              isDeleted: isDeleted,
+              permissions: _permissions?.build());
     } catch (_) {
       late String _$failedField;
       try {

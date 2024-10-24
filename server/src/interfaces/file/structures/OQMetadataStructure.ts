@@ -1,13 +1,14 @@
-import { OQFileStructure } from "./OQFileStructure";
+import { OQLogoFile } from "./OQLogoFile";
 
 export interface OQMetadataStructure {
   id: string;
   title: string;
   date: string;
   publisher: string;
-  logo: OQFileStructure;
+  logo: OQLogoFile;
   tags: string[];
   authors: string[];
   restriction: string;
+  language: string;
   comment: string;
 }

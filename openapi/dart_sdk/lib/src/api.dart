@@ -9,7 +9,11 @@ import 'package:openapi/src/auth/api_key_auth.dart';
 import 'package:openapi/src/auth/basic_auth.dart';
 import 'package:openapi/src/auth/bearer_auth.dart';
 import 'package:openapi/src/auth/oauth.dart';
-import 'package:openapi/src/api/default_api.dart';
+import 'package:openapi/src/api/auth_api.dart';
+import 'package:openapi/src/api/file_api.dart';
+import 'package:openapi/src/api/package_api.dart';
+import 'package:openapi/src/api/user_api.dart';
+import 'package:openapi/src/api/users_api.dart';
 
 class Openapi {
   static const String basePath = r'http://localhost';
@@ -76,9 +80,33 @@ class Openapi {
     }
   }
 
-  /// Get DefaultApi instance, base route and serializer can be overridden by a given but be careful,
+  /// Get AuthApi instance, base route and serializer can be overridden by a given but be careful,
   /// by doing that all interceptors will not be executed
-  DefaultApi getDefaultApi() {
-    return DefaultApi(dio, serializers);
+  AuthApi getAuthApi() {
+    return AuthApi(dio, serializers);
+  }
+
+  /// Get FileApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  FileApi getFileApi() {
+    return FileApi(dio, serializers);
+  }
+
+  /// Get PackageApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  PackageApi getPackageApi() {
+    return PackageApi(dio, serializers);
+  }
+
+  /// Get UserApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  UserApi getUserApi() {
+    return UserApi(dio, serializers);
+  }
+
+  /// Get UsersApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  UsersApi getUsersApi() {
+    return UsersApi(dio, serializers);
   }
 }

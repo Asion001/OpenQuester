@@ -20,10 +20,10 @@ part 'response_private_user.g.dart';
 /// * [email]
 /// * [birthday]
 /// * [avatar]
-/// * [permissions]
 /// * [createdAt]
 /// * [updatedAt]
 /// * [isDeleted]
+/// * [permissions]
 @BuiltValue()
 abstract class ResponsePrivateUser
     implements Built<ResponsePrivateUser, ResponsePrivateUserBuilder> {
@@ -42,9 +42,6 @@ abstract class ResponsePrivateUser
   @BuiltValueField(wireName: r'avatar')
   Uint8List? get avatar;
 
-  @BuiltValueField(wireName: r'permissions')
-  BuiltList<ResponsePrivateUserPermissionsInner>? get permissions;
-
   @BuiltValueField(wireName: r'created_at')
   DateTime? get createdAt;
 
@@ -53,6 +50,9 @@ abstract class ResponsePrivateUser
 
   @BuiltValueField(wireName: r'is_deleted')
   bool? get isDeleted;
+
+  @BuiltValueField(wireName: r'permissions')
+  BuiltList<ResponsePrivateUserPermissionsInner>? get permissions;
 
   ResponsePrivateUser._();
 
@@ -118,14 +118,6 @@ class _$ResponsePrivateUserSerializer
         specifiedType: const FullType(Uint8List),
       );
     }
-    if (object.permissions != null) {
-      yield r'permissions';
-      yield serializers.serialize(
-        object.permissions,
-        specifiedType: const FullType(
-            BuiltList, [FullType(ResponsePrivateUserPermissionsInner)]),
-      );
-    }
     if (object.createdAt != null) {
       yield r'created_at';
       yield serializers.serialize(
@@ -145,6 +137,14 @@ class _$ResponsePrivateUserSerializer
       yield serializers.serialize(
         object.isDeleted,
         specifiedType: const FullType(bool),
+      );
+    }
+    if (object.permissions != null) {
+      yield r'permissions';
+      yield serializers.serialize(
+        object.permissions,
+        specifiedType: const FullType(
+            BuiltList, [FullType(ResponsePrivateUserPermissionsInner)]),
       );
     }
   }
@@ -207,14 +207,6 @@ class _$ResponsePrivateUserSerializer
           ) as Uint8List;
           result.avatar = valueDes;
           break;
-        case r'permissions':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(
-                BuiltList, [FullType(ResponsePrivateUserPermissionsInner)]),
-          ) as BuiltList<ResponsePrivateUserPermissionsInner>;
-          result.permissions.replace(valueDes);
-          break;
         case r'created_at':
           final valueDes = serializers.deserialize(
             value,
@@ -235,6 +227,14 @@ class _$ResponsePrivateUserSerializer
             specifiedType: const FullType(bool),
           ) as bool;
           result.isDeleted = valueDes;
+          break;
+        case r'permissions':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(
+                BuiltList, [FullType(ResponsePrivateUserPermissionsInner)]),
+          ) as BuiltList<ResponsePrivateUserPermissionsInner>;
+          result.permissions.replace(valueDes);
           break;
         default:
           unhandled.add(key);

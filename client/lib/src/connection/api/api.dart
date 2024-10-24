@@ -14,7 +14,7 @@ class Api {
       authInterceptor,
       timeoutInterceptor,
     ],
-  ).getDefaultApi();
+  ).getAuthApi();
 }
 
 // class BearerAuthInterceptor extends AuthInterceptor {

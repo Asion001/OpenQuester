@@ -132,9 +132,20 @@ class ContentXmlParser {
   }
 
   void _convertObjects(Map<String, dynamic> json) {
-    json['logo'] = ImageFileConverter().fromJson(json['logo']).toJson();
-    json['date'] = DateTimeConverter().fromJson(json['date']).toIso8601String();
+    json['logo'] = _nullPass(
+      json['logo'],
+      (value) => ImageFileConverter().fromJson(value).toJson(),
+    );
+    json['date'] = _nullPass(
+      json['date'],
+      (value) => DateTimeConverter().fromJson(value).toIso8601String(),
+    );
     json.renameKey('name', 'title');
+  }
+
+  dynamic _nullPass(dynamic value, dynamic Function(dynamic value) converter) {
+    if (value == null) return null;
+    return converter(value);
   }
 
   SiqFile? _siqFile;

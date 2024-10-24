@@ -3,7 +3,7 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:built_value/json_object.dart';
+import 'package:openapi/src/model/oq_content_structure.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -18,7 +18,7 @@ abstract class V1PackageUploadPostRequest
     implements
         Built<V1PackageUploadPostRequest, V1PackageUploadPostRequestBuilder> {
   @BuiltValueField(wireName: r'content')
-  JsonObject get content;
+  OQContentStructure get content;
 
   V1PackageUploadPostRequest._();
 
@@ -53,7 +53,7 @@ class _$V1PackageUploadPostRequestSerializer
     yield r'content';
     yield serializers.serialize(
       object.content,
-      specifiedType: const FullType(JsonObject),
+      specifiedType: const FullType(OQContentStructure),
     );
   }
 
@@ -83,9 +83,9 @@ class _$V1PackageUploadPostRequestSerializer
         case r'content':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(JsonObject),
-          ) as JsonObject;
-          result.content = valueDes;
+            specifiedType: const FullType(OQContentStructure),
+          ) as OQContentStructure;
+          result.content.replace(valueDes);
           break;
         default:
           unhandled.add(key);
