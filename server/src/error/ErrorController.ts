@@ -11,7 +11,7 @@ import { ClientResponse } from "../enums/ClientResponse";
 import { TranslateService as ts } from "../services/text/TranslateService";
 import { Language } from "../types/text/translation";
 import { ValueUtils } from "../utils/ValueUtils";
-import { TemplateService } from "../../../.history/server/src/services/text/TemplateService_20241021190836";
+import { TemplateUtils } from "../utils/TemplateUtils";
 
 export class ErrorController {
   /**
@@ -91,7 +91,7 @@ export class ErrorController {
     }
 
     if (args && ValueUtils.isObject(args) && !ValueUtils.isEmpty(args)) {
-      message = TemplateService.text(message, args);
+      message = TemplateUtils.text(message, args);
     }
 
     error.message = message;
