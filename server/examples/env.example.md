@@ -1,3 +1,5 @@
+#
+
 ```bash
 ## Environment type ("local" | "prod" | "test")
 ENV=
@@ -22,9 +24,6 @@ DB_LOGGER=
 JWT_SCHEME=
 JWT_EXPIRES_IN=
 JWT_REFRESH_EXPIRES_IN=
-
-## Workers
-WORKERS_COUNT=
 
 ## Storage
 # e.g. "s3"
