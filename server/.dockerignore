@@ -6,6 +6,8 @@ dist
 Dockerfile
 .gitignore
 .env
+.env.pg
+.env.pg.admin
 
 # Other
 .git
