@@ -8,6 +8,9 @@ part 'env.g.dart';
   requireEnvFile: false,
 )
 class Env {
-  @EnviedField(defaultValue: 'https://api.openquester.app')
+  @EnviedField(
+    defaultValue: 'https://api.openquester.app',
+    optional: true,
+  )
   static Uri apiUrl = _Env.apiUrl;
 }

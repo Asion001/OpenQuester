@@ -23,8 +23,12 @@ mixin _$AuthData {
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
 
+  /// Serializes this AuthData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AuthData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AuthDataCopyWith<AuthData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -47,6 +51,8 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AuthData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,6 +91,8 @@ class __$$AuthDataImplCopyWithImpl<$Res>
       _$AuthDataImpl _value, $Res Function(_$AuthDataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of AuthData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -133,11 +141,13 @@ class _$AuthDataImpl implements _AuthData {
                 other.refreshToken == refreshToken));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, accessToken, refreshToken);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AuthData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthDataImplCopyWith<_$AuthDataImpl> get copyWith =>
@@ -163,8 +173,11 @@ abstract class _AuthData implements AuthData {
   String get accessToken;
   @override
   String get refreshToken;
+
+  /// Create a copy of AuthData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AuthDataImplCopyWith<_$AuthDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

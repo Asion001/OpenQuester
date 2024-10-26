@@ -20,24 +20,24 @@ class _HomeScreenState extends State<HomeScreen> {
         TestScreenRoute(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
-        return BottomNavigationBar(
-          currentIndex: tabsRouter.activeIndex,
-          onTap: tabsRouter.setActiveIndex,
-          items: const [
-            BottomNavigationBarItem(
+        return NavigationBar(
+          selectedIndex: tabsRouter.activeIndex,
+          onDestinationSelected: tabsRouter.setActiveIndex,
+          destinations: const [
+            NavigationDestination(
               label: 'Clicker',
               icon: Icon(Icons.gamepad_outlined),
-              activeIcon: Icon(Icons.gamepad),
+              selectedIcon: Icon(Icons.gamepad),
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               label: 'Profile',
               icon: Icon(Icons.person_outlined),
-              activeIcon: Icon(Icons.person),
+              selectedIcon: Icon(Icons.person),
             ),
-            BottomNavigationBarItem(
+            NavigationDestination(
               label: 'Test',
               icon: Icon(Icons.bug_report_outlined),
-              activeIcon: Icon(Icons.bug_report),
+              selectedIcon: Icon(Icons.bug_report),
             ),
           ],
         );
