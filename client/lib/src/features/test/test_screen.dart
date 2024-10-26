@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'items/file_opening.dart';
 import 'items/img_opening.dart';
-import 'items/url_generator.dart';
 import 'items/ws_test.dart';
 
 @RoutePage(name: 'TestScreenRoute')
@@ -17,7 +16,6 @@ class TestScreen extends StatelessWidget {
         padding: const EdgeInsets.all(45),
         children: [
           ('Image test', const ImgTest()),
-          ('Url test', const UrlGeneratorTest()),
           ('Pack upload test', const FileOpening()),
           ('Web socket', WsTest()),
         ].map(_itemCover).toList(),

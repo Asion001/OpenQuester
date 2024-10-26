@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:openapi/openapi.dart';
 
-import 'package:openquester/src/application/get_it.dart';
+import 'package:openquester/src/core/get_it.dart';
 import 'package:openquester/src/connection/storage/storage.dart';
 
-import '../../application/logger.dart';
+import '../../core/logger.dart';
 import '../../model/auth_data.dart' as auth_model;
 import '../api/api.dart';
 

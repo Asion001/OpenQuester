@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:openquester/src/application/get_it.dart';
+import 'package:openquester/src/core/get_it.dart';
 import 'package:openquester/src/connection/ws/ws_controller.dart';
 
 class WsTest extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:openquester/src/application/get_it.dart';
+import 'package:openquester/src/core/get_it.dart';
 import 'package:openquester/src/connection/controllers/login_controller.dart';
 import 'package:watch_it/watch_it.dart';
 

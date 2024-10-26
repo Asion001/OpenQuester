@@ -1,5 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:openquester/src/application/router.dart';
+import 'package:openquester/src/core/router.dart';
 
 import 'theme.dart';
 
@@ -19,6 +20,9 @@ class _AppState extends State<App> {
       title: 'OpenQuester',
       theme: AppTheme.current,
       routerConfig: _appRouter.config(),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
     );
   }
 }

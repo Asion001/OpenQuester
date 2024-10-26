@@ -8,7 +8,7 @@ endif
 pre_build: gen_files format 
 
 gen_locale:
-	$(PURO_CMD) dart run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/translations/
+	$(PURO_CMD) dart run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/localization/
 
 gen_files:
 	$(PURO_CMD) dart run build_runner build -d

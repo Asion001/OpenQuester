@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:openquester/src/application/env.dart';
-import 'package:openquester/src/application/logger.dart';
+import 'package:openquester/src/core/env.dart';
+import 'package:openquester/src/core/logger.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 @singleton
