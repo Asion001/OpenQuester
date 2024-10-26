@@ -1,6 +1,6 @@
 {
   "name": "openquester_api",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "",
   "scripts": {
     "start:dev:run": "wait-on ./dist/index.js && nodemon ./dist/index.js",
@@ -23,13 +23,6 @@
   },
   "dependencies": {
     "@seriousme/openapi-schema-validator": "^2.2.1",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/minio": "^7.1.0",
-    "@types/node": "^22.0.0",
-    "@types/swagger-ui-express": "^4.1.6",
     "bcryptjs": "^2.4.3",
     "colorette": "^2.0.20",
     "cors": "^2.8.5",
@@ -41,6 +34,7 @@
     "nodemon": "^3.1.4",
     "pg": "^8.12.0",
     "reflect-metadata": "^0.2.2",
+    "socket.io": "^4.8.0",
     "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20",
     "typescript": "^5.5.4"

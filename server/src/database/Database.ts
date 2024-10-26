@@ -3,6 +3,8 @@ import { Logger } from "../utils/Logger";
 import { ServerResponse } from "../enums/ServerResponse";
 import { ServerError } from "../error/ServerError";
 
+const DB_PREFIX = "[DB]: ";
+
 /**
  * Handles Database initialization and management
  */
@@ -40,7 +42,7 @@ export class Database {
    * Build connection to the database
    */
   public async build() {
-    Logger.warn("Connecting to DB...");
+    Logger.warn("Connecting to DB...", DB_PREFIX);
 
     try {
       // Force only one DataSource init at the time, so only one migrations runner will be executed
@@ -48,7 +50,7 @@ export class Database {
         await this.waitForInitialization();
       }
       this._connected = true;
-      Logger.info("Connection to DB established");
+      Logger.info("Connection to DB established", DB_PREFIX);
       Logger.info(`API version: ${process.env.npm_package_version}`);
     } catch (err: unknown) {
       let message = "unknown error";
@@ -93,9 +95,7 @@ export class Database {
       throw new ServerError(ServerResponse.DB_NOT_CONNECTED);
     }
 
-    let repository = this._repositories.get(target) as
-      | Repository<T>
-      | undefined;
+    let repository = this._repositories.get(target) as Repository<T>;
 
     if (!repository) {
       repository = this._dataSource.getRepository(target);
