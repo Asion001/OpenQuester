@@ -38,4 +38,10 @@ export class FileRepository {
 
     this._repository.save(file);
   }
+
+  public async getFileByFilename(filename: string) {
+    return this._repository.findOne({
+      where: { filename },
+    });
+  }
 }

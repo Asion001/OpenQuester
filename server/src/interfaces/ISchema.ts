@@ -1,4 +1,4 @@
 export interface ISchema {
   /** Validate schema and return back validated data */
-  validate(): { [key: string]: any };
+  validate(): Promise<{ [key: string]: any }>;
 }

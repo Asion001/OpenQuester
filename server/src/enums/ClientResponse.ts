@@ -21,6 +21,7 @@ export enum ClientResponse {
   VALIDATION_ERROR = "validation_error",
   FIELDS_REQUIRED = "fields_required",
   BAD_USER_ID = "bad_user_id",
+  NO_AVATAR = "no_avatar",
 
   // Package
   NO_CONTENT_ROUNDS = "no_content_rounds",

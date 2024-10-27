@@ -31,13 +31,13 @@ export class AuthRestApiController {
     router.post(
       `/register`,
       validateTokenForAuth,
-      validateWithSchema(RegisterUser),
+      validateWithSchema(this.ctx.db, RegisterUser),
       this.register
     );
     router.post(
       `/login`,
       validateTokenForAuth,
-      validateWithSchema(LoginUser),
+      validateWithSchema(this.ctx.db, LoginUser),
       this.login
     );
     router.post(`/refresh`, validateRefresh, this.refresh);
