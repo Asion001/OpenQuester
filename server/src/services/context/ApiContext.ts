@@ -23,6 +23,13 @@ export class ApiContext {
   }
 
   /**
+   * socket.io server
+   */
+  public get io() {
+    return this._ctx.io;
+  }
+
+  /**
    * Crypto library instance
    */
   public get crypto() {

@@ -5,9 +5,13 @@ import Swagger from "swagger-ui-express";
 import path from "path";
 import fs from "fs";
 import { ErrorController } from "../../error/ErrorController";
+import { Logger } from "../../utils/Logger";
+
+const SWAGGER_PREFIX = "[SWAGGER]: ";
 
 export class SwaggerRestApiController {
   private _jsonPath: string;
+  private _specification: { [key: string]: any };
 
   constructor(ctx: ApiContext) {
     const app = ctx.app;
@@ -16,21 +20,32 @@ export class SwaggerRestApiController {
 
     app.use("/v1/api-docs", router);
 
+    this._specification = this._getSpecification();
+
     router.use("/", Swagger.serve);
-    router.get("/raw", this.getRaw);
-    router.get("/", Swagger.setup(this.getSpecification()));
+    router.get("/raw", this._getRaw);
+    router.get("/", Swagger.setup(this.specification));
   }
 
-  private getSpecification() {
+  public get specification() {
+    if (!this._specification) {
+      this._specification = this._getSpecification();
+    }
+
+    return this._specification;
+  }
+
+  private _getSpecification() {
     const oas = fs.readFileSync(this._jsonPath, "utf-8");
     try {
+      Logger.gray("Specification reading initiated", SWAGGER_PREFIX);
       return JSON.parse(oas);
     } catch {
       return {};
     }
   }
 
-  private getRaw = async (req: Request, res: Response) => {
+  private _getRaw = async (req: Request, res: Response) => {
     try {
       res.download(this._jsonPath);
     } catch (err: unknown) {

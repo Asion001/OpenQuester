@@ -1,8 +1,9 @@
 import express from "express";
-import cors from "cors";
-
 import { type Express } from "express";
-import { type Server } from "http";
+import cors from "cors";
+import { type Server as HTTPServer } from "http";
+import { type Server as IOServer } from "socket.io";
+
 import { type Database } from "./database/Database";
 import { type ApiContext } from "./services/context/ApiContext";
 
@@ -15,6 +16,9 @@ import { PackageRestApiController } from "./controllers/rest/PackageRestApiContr
 import { ServerError } from "./error/ServerError";
 import { logMiddleware } from "./middleware/log/DebugLogMiddleware";
 import { SwaggerRestApiController } from "./controllers/rest/SwaggerController";
+import { SocketIOController } from "./controllers/io/SocketIOController";
+
+const APP_PREFIX = "[APP]: ";
 
 /**
  * Servers all api endpoints in one place.
@@ -22,16 +26,19 @@ import { SwaggerRestApiController } from "./controllers/rest/SwaggerController";
 export class ServeApi {
   /** Express app */
   protected _app: Express;
-  /** Express server */
-  protected _server!: Server;
+  /** SocketIO server */
+  protected _io: IOServer;
   /** Application listening port */
   protected _port: number;
   /** Database instance */
   protected _db: Database;
+  /** HTTP Server */
+  protected _server!: HTTPServer;
 
   constructor(protected _context: ApiContext) {
     this._db = this._context.db;
     this._app = this._context.app;
+    this._io = this._context.io;
     this._port = 3000;
   }
 
@@ -48,8 +55,9 @@ export class ServeApi {
 
       // Initialize server listening
       this._server = this._app.listen(this._port, () => {
-        Logger.info(`App listening on port: ${this._port}`);
+        Logger.info(`App listening on port: ${this._port}`, APP_PREFIX);
       });
+      this._io.listen(this._server);
 
       // Attach API controllers
       this._attachControllers();
@@ -84,5 +92,6 @@ export class ServeApi {
     new FileRestApiController(this._context);
     new PackageRestApiController(this._context);
     new SwaggerRestApiController(this._context);
+    new SocketIOController(this._context);
   }
 }

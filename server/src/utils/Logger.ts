@@ -1,9 +1,16 @@
 import fs from "fs";
 import path from "path";
-import cluster from "cluster";
 
 import { Environment } from "../config/Environment";
-import { blueBright, bold, cyanBright, green, red, yellow } from "colorette";
+import {
+  blueBright,
+  bold,
+  cyanBright,
+  gray as grayCol,
+  green,
+  red,
+  yellow,
+} from "colorette";
 import { LogLevel } from "../types/log/log";
 
 /**
@@ -22,37 +29,33 @@ export class Logger {
     return true;
   }
 
-  public static info(text: unknown, logWorker: boolean = false) {
-    if (cluster.isPrimary || logWorker) {
-      const prefix = "[INFO]: ";
-      const log = prefix + String(text);
+  public static info(text: unknown, prefix?: string) {
+    const _prefix = prefix ?? "[INFO]: ";
+    const log = green(_prefix + String(text));
 
-      if (Environment.instance.ENV !== "test") {
-        console.info(green(log));
-      }
-
-      this.writeFile(log);
+    if (Environment.instance.ENV !== "test") {
+      console.info(log);
     }
+
+    this.writeFile(log);
   }
 
-  public static warn(text: unknown, logWorker: boolean = false) {
-    if (cluster.isPrimary || logWorker) {
-      const prefix = "[WARNING]: ";
-      const log = prefix + String(text);
+  public static warn(text: unknown, prefix?: string) {
+    const _prefix = prefix ?? "[INFO]: ";
+    const log = yellow(_prefix + String(text));
 
-      if (Environment.instance.ENV !== "test") {
-        console.warn(yellow(log));
-      }
-
-      this.writeFile(log);
+    if (Environment.instance.ENV !== "test") {
+      console.warn(log);
     }
+
+    this.writeFile(log);
   }
 
-  public static error(text: unknown) {
-    const prefix = "[ERROR]: ";
-    const log = prefix + String(text);
+  public static error(text: unknown, prefix?: string) {
+    const _prefix = prefix ?? "[INFO]: ";
+    const log = bold(red(_prefix + String(text)));
 
-    console.error(bold(red(log)));
+    console.error(log);
 
     this.writeFile(log);
   }
@@ -86,9 +89,18 @@ export class Logger {
       text = String(obj);
     }
 
-    const log = prefix + text;
+    const log = cyanBright(prefix + text);
 
-    console.debug(cyanBright(log));
+    console.debug(log);
+
+    this.writeFile(log);
+  }
+
+  public static gray(text: string, prefix?: string) {
+    const _prefix = prefix ?? "";
+    const log = grayCol(_prefix + text);
+
+    console.log(log);
 
     this.writeFile(log);
   }
