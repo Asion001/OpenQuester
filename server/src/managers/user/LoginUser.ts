@@ -1,14 +1,14 @@
-import { ILoginUser } from "../../interfaces/user/ILoginUser";
 import { IInputUserData } from "../../interfaces/user/IInputUserData";
 import { UserDataManager } from "./UserDataManager";
+import { Database } from "../../database/Database";
 
 export class LoginUser extends UserDataManager {
-  constructor(data: IInputUserData) {
-    super();
+  constructor(db: Database, data: IInputUserData) {
+    super(db);
     this._userData = {
       login: data.login,
       password: data.password,
-    } as ILoginUser;
+    };
     this._required = ["login", "password"];
   }
 }

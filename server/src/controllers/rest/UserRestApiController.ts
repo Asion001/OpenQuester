@@ -44,7 +44,7 @@ export class UserRestApiController {
         this.ctx.db,
         Permissions.CHANGE_ANOTHER_USER
       ),
-      validateWithSchema(UpdateUser),
+      validateWithSchema(this.ctx.db, UpdateUser),
       this.updateUser
     );
     router.delete(

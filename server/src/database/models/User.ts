@@ -10,14 +10,14 @@ import {
   OneToMany,
 } from "typeorm";
 
-import { IUser } from "../../interfaces/user/IUser";
+import { IUserModel } from "../../interfaces/user/IUserModel";
 import { File } from "./File";
 import { Permission } from "./Permission";
 import { Package } from "./Package";
 
 @Entity("user")
 @Unique(["email", "name"])
-export class User implements IUser {
+export class User implements IUserModel {
   constructor() {
     //
   }
@@ -61,7 +61,7 @@ export class User implements IUser {
   })
   permissions!: Permission[];
 
-  public async import(data: IUser) {
+  public async import(data: IUserModel) {
     this.name = data.name;
     this.email = data.email;
     this.password = data.password;
@@ -83,6 +83,6 @@ export class User implements IUser {
       created_at: this.created_at,
       updated_at: this.updated_at,
       permissions: this.permissions,
-    } as IUser;
+    } as IUserModel;
   }
 }

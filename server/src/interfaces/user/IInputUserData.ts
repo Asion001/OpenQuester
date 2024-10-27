@@ -1,4 +1,3 @@
-import { File } from "../../database/models/File";
 import { Permission } from "../../database/models/Permission";
 
 export interface IInputUserData {
@@ -7,6 +6,6 @@ export interface IInputUserData {
   login?: string; // name or email
   password?: string;
   birthday?: Date;
-  avatar?: File;
+  avatar?: string;
   permissions?: Permission[];
 }

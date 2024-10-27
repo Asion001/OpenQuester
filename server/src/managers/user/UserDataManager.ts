@@ -7,13 +7,16 @@ import { ServerResponse } from "../../enums/ServerResponse";
 import { ClientError } from "../../error/ClientError";
 import { ServerError } from "../../error/ServerError";
 import { ISchema } from "../../interfaces/ISchema";
+import { FileRepository } from "../../database/repositories/FileRepository";
+import { Database } from "../../database/Database";
 
 export class UserDataManager implements ISchema {
   protected _userData?: IInputUserData;
   protected _schema: Joi.ObjectSchema<any>;
   protected _required?: string[];
+  protected _db: Database;
 
-  constructor() {
+  constructor(db: Database) {
     this._schema = Joi.object({
       id: Joi.number(),
       login: Joi.alternatives().try(
@@ -24,9 +27,11 @@ export class UserDataManager implements ISchema {
       email: Joi.string().email(),
       password: Joi.string().min(6).max(40),
       birthday: Joi.alternatives().try(Joi.date(), Joi.string()),
+      avatar: Joi.string(),
       permissions: Joi.array(),
     });
     this._required = [];
+    this._db = db;
   }
 
   /**
@@ -58,7 +63,7 @@ export class UserDataManager implements ISchema {
   /**
    * Validates manager user data using validation schema
    */
-  public validate() {
+  public async validate() {
     if (!this._userData || !ValueUtils.isValidObject(this._userData)) {
       throw new ClientError(ClientResponse.NO_USER_DATA);
     }
@@ -74,7 +79,17 @@ export class UserDataManager implements ISchema {
       stripUnknown: true,
     });
 
-    // TODO: Validate avatar field when implemented
+    if (this._userData.avatar) {
+      const fileRepository = FileRepository.getRepository(this._db);
+      const file = await fileRepository.getFileByFilename(
+        this._userData.avatar
+      );
+      if (!file || ValueUtils.isEmpty(file)) {
+        throw new ClientError(ClientResponse.NO_AVATAR);
+      }
+
+      value.avatar = file;
+    }
 
     if (error) {
       throw new ClientError(ClientResponse.VALIDATION_ERROR, undefined, {
