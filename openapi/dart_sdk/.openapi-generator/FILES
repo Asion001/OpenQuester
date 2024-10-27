@@ -1,6 +1,5 @@
 .gitignore
 README.md
-analysis_options.yaml
 doc/AuthApi.md
 doc/FileApi.md
 doc/InputLoginUser.md
@@ -83,18 +82,3 @@ lib/src/model/v1_user_id_get400_response.dart
 lib/src/model/v1_user_id_get404_response.dart
 lib/src/serializers.dart
 pubspec.yaml
-test/auth_api_test.dart
-test/file_api_test.dart
-test/oq_answer_file_test.dart
-test/oq_content_structure_test.dart
-test/oq_file_content_structure_test.dart
-test/oq_logo_file_test.dart
-test/oq_metadata_structure_test.dart
-test/oq_question_file_test.dart
-test/oq_questions_structure_test.dart
-test/oq_round_structure_test.dart
-test/oq_theme_structure_test.dart
-test/package_api_test.dart
-test/user_api_test.dart
-test/users_api_test.dart
-test/v1_file_get_request_test.dart

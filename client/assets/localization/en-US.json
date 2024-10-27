@@ -1,0 +1,11 @@
+{
+    "home_tabs": {
+        "home": "Home",
+        "clicker": "Clicker",
+        "profile": "Profile",
+        "test": "Test"
+    },
+    "home": {
+        "start_game": "Start Game"
+    }
+}

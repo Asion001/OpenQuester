@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:openapi/openapi.dart';
-import 'package:openquester/src/application/get_it.dart';
+import 'package:openquester/src/core/get_it.dart';
 import 'package:openquester/src/connection/controllers/login_controller.dart';
 
-import '../../application/env.dart';
+import '../../core/env.dart';
 
 @singleton
 class Api {
