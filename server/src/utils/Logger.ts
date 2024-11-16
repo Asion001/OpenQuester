@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 
-import { Environment } from "../config/Environment";
 import {
   blueBright,
   bold,
@@ -10,6 +9,7 @@ import {
   green,
   red,
   yellow,
+  magenta,
 } from "colorette";
 import { LogLevel } from "../types/log/log";
 
@@ -30,34 +30,23 @@ export class Logger {
   }
 
   public static info(text: unknown, prefix?: string) {
-    const _prefix = prefix ?? "[INFO]: ";
-    const log = green(_prefix + String(text));
-
-    if (Environment.instance.ENV !== "test") {
-      console.info(log);
-    }
-
-    this.writeFile(log);
+    this._log(green, (prefix ?? "[INFO]: ") + String(text));
   }
 
   public static warn(text: unknown, prefix?: string) {
-    const _prefix = prefix ?? "[INFO]: ";
-    const log = yellow(_prefix + String(text));
-
-    if (Environment.instance.ENV !== "test") {
-      console.warn(log);
-    }
-
-    this.writeFile(log);
+    this._log(yellow, (prefix ?? "[WARNING]: ") + String(text));
   }
 
   public static error(text: unknown, prefix?: string) {
-    const _prefix = prefix ?? "[INFO]: ";
-    const log = bold(red(_prefix + String(text)));
+    this._log(red, bold((prefix ?? "[ERROR]: ") + String(text)));
+  }
 
-    console.error(log);
+  public static pink(text: unknown, prefix?: string) {
+    this._log(magenta, (prefix ?? "") + String(text));
+  }
 
-    this.writeFile(log);
+  public static gray(text: unknown, prefix?: string) {
+    this._log(grayCol, (prefix ?? "") + String(text));
   }
 
   public static debug(obj: unknown) {
@@ -83,7 +72,7 @@ export class Logger {
           }
           return value;
         },
-        2 // Space indentation
+        2
       );
     } else {
       text = String(obj);
@@ -93,16 +82,7 @@ export class Logger {
 
     console.debug(log);
 
-    this.writeFile(log);
-  }
-
-  public static gray(text: string, prefix?: string) {
-    const _prefix = prefix ?? "";
-    const log = grayCol(_prefix + text);
-
-    console.log(log);
-
-    this.writeFile(log);
+    this._writeFile(log);
   }
 
   public static logMigrationComplete(version: string) {
@@ -112,10 +92,15 @@ export class Logger {
 
     console.log(blueBright(log));
 
-    this.writeFile(log);
+    this._writeFile(log);
   }
 
-  private static async writeFile(text: unknown) {
+  private static async _log(color: any, text: string) {
+    console.log(color(text));
+    this._writeFile(text);
+  }
+
+  private static async _writeFile(text: unknown) {
     const logPath = path.resolve(process.cwd(), `logs/logs.log`);
 
     if (!fs.existsSync(logPath)) {

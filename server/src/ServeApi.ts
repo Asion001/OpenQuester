@@ -48,10 +48,10 @@ export class ServeApi {
       await this._db.build();
 
       // Middlewares
+      this._app.use(logMiddleware);
       this._app.use(cors());
       this._app.use(express.json());
       this._app.use(verifyToken);
-      this._app.use(logMiddleware);
 
       // Initialize server listening
       this._server = this._app.listen(this._port, () => {

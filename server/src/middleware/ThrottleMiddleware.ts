@@ -43,11 +43,9 @@ export const throttleByUserMiddleware: RequestHandler = (
 
   // Check if rate limit is exceeded
   if (recentTimestamps.length >= RATE_LIMIT) {
-    return res
-      .status(HttpStatus.TOO_MANY_REQUESTS)
-      .send({
-        error: ts.localize(ClientResponse.TOO_MANY_REQUESTS, req.headers),
-      });
+    return res.status(HttpStatus.TOO_MANY_REQUESTS).send({
+      error: ts.localize(ClientResponse.TOO_MANY_REQUESTS, req.headers),
+    });
   }
 
   // Add current timestamp to the list

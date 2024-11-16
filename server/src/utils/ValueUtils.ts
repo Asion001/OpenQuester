@@ -35,6 +35,9 @@ export class ValueUtils {
     return id;
   }
 
+  /**
+   * Returns if given value can be casted as expected type or already expected type
+   */
   public static checkPrimitiveType(
     value: unknown,
     expectedType: "string" | "number" | "boolean" | "array" | "object"
@@ -49,7 +52,7 @@ export class ValueUtils {
         if (this.isString(value) && !this.isEmpty(value)) success = true;
         break;
       case "number":
-        if (this.isNumeric(value)) success = true;
+        if (this.isNumeric(value as number)) success = true;
         break;
       case "boolean":
         if (
@@ -96,7 +99,14 @@ export class ValueUtils {
     return typeof value === "boolean";
   }
 
-  public static isNumeric(value: unknown) {
+  /**
+   * Returns true if given value can be parsed as number, examples:
+   *
+   * - string "24" returns `true`
+   * - string "24a" returns `false`
+   * - all numbers returns `true`
+   */
+  public static isNumeric(value: string | number) {
     return this.isNumber(value) || !isNaN(Number(value));
   }
 
@@ -124,26 +134,13 @@ export class ValueUtils {
     );
   }
 
-  /** Removes file extension from it filename */
+  /** Removes file extension from filename */
   public static getRawFilename(filename: string): string {
     const lastDotIndex = filename.lastIndexOf(".");
     if (lastDotIndex === -1) {
       return filename;
     }
     return filename.substring(0, lastDotIndex);
-  }
-
-  public static parseJSON(value: unknown) {
-    if (this.isBad(value)) {
-      return value;
-    }
-    if (this.isObject(value) && !this.isEmpty(value)) {
-      return value;
-    }
-    if (this.isString(value)) {
-      return JSON.parse(JSON.stringify(value, null, 2));
-    }
-    return {};
   }
 
   /**
