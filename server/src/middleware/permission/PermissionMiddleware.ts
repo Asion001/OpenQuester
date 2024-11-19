@@ -18,12 +18,13 @@ export function checkPermission(db: Database, permission: Permissions) {
       const userId = JWTUtils.getTokenPayload(req?.headers?.authorization).id;
       const user = await _getUser(db, userId);
 
-      if (!(await Permission.checkPermission(user, permission))) {
-        return res.status(HttpStatus.BAD_REQUEST).send({
-          error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
-        });
+      if (await Permission.checkPermission(user, permission)) {
+        return next();
       }
-      next();
+
+      return res.status(HttpStatus.BAD_REQUEST).send({
+        error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
+      });
     } catch (error) {
       next(error);
     }

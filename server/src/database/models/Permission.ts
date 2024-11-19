@@ -17,7 +17,7 @@ export class Permission implements IPermission {
 
   public static async checkPermission(user: User, permission: Permissions) {
     const userPermissions = user.permissions.map((v) => v.name);
-    if (userPermissions.includes(permission)) {
+    if (!userPermissions.includes(permission)) {
       return false;
     }
     return true;
