@@ -3,11 +3,11 @@
 // ignore_for_file: type=lint, unused_import
 
 // Clients
-export 'file/file_client.dart';
-export 'package/package_client.dart';
-export 'user/user_client.dart';
-export 'users/users_client.dart';
-export 'auth/auth_client.dart';
+export 'clients/file_client.dart';
+export 'clients/package_client.dart';
+export 'clients/user_client.dart';
+export 'clients/users_client.dart';
+export 'clients/auth_client.dart';
 // Data classes
 export 'models/response_private_user.dart';
 export 'models/input_update_user.dart';

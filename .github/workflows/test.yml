@@ -61,9 +61,6 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
-      # Ignore editing of api_config file
-      # fixes dart format error
-      - run: git restore lib/src/connection/api/api_config.dart
       - run: dart analyze --fatal-infos
       - run: dart format lib --set-exit-if-changed
       - run: dart test

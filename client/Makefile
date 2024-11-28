@@ -18,3 +18,6 @@ format:
 
 fix:
 	$(PURO_CMD) dart fix --apply
+
+gen_api:
+	(cd ../openapi/dart_sdk/ && make build)
