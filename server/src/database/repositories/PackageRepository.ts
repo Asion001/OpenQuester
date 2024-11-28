@@ -26,7 +26,7 @@ export class PackageRepository {
     // Return pack if it exists in DB and has same metadata id
     const existingPack = await this._getIfExists(content);
     if (existingPack) {
-      return;
+      return existingPack;
     }
 
     const pack = new Package();
@@ -41,7 +41,7 @@ export class PackageRepository {
       throw new ClientError(ClientResponse.CANNOT_SAVE_CONTENT);
     }
 
-    await this._repository.save(pack);
+    this._repository.save(pack);
   }
 
   private async _getIfExists(content: OQContentStructure) {

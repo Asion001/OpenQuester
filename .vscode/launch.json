@@ -1,42 +1,48 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "client",
-            "cwd": "client",
-            "request": "launch",
-            "type": "dart",
-            "args": [
-                "--web-renderer",
-                "html"
-            ]
-        },
-        {
-            "name": "client (profile mode)",
-            "cwd": "client",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "client (release mode)",
-            "cwd": "client",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        },
-        {
-            "name": "siq_file",
-            "type": "dart",
-            "request": "launch",
-            "program": "./client/packages/siq_file/bin/siq_file.dart",
-            "args": [
-                "hash",
-                "../../../test.siq"
-            ]
-        },
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "client",
+      "cwd": "client",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--web-renderer", "html"]
+    },
+    {
+      "name": "client (profile mode)",
+      "cwd": "client",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "client (release mode)",
+      "cwd": "client",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Server",
+      "program": "${workspaceFolder}/server/dist/index.js",
+      "preLaunchTask": "npm: build - server",
+      "cwd": "${workspaceFolder}/server",
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**", "node_moduled/**/*"],
+      "envFile": "${workspaceFolder}/server/.env",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "siq_file",
+      "type": "dart",
+      "request": "launch",
+      "program": "./client/packages/siq_file/bin/siq_file.dart",
+      "args": ["hash", "../../../test.siq"]
+    }
+  ]
 }
