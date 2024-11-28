@@ -34,6 +34,8 @@ dependencies:
   universal_io: ^2.2.2
   socket_io_client: ^3.0.0
   easy_localization: ^3.0.7
+  alice: ^1.0.0-dev.12
+  alice_dio: ^1.0.4
 
 dev_dependencies:
   flutter_test:

@@ -20,14 +20,12 @@ abstract class AuthClient {
   @POST('/v1/auth/register')
   Future<ResponseAuthData> postV1AuthRegister({
     @Body() required InputRegisterUser body,
-    @DioOptions() RequestOptions? options,
   });
 
   /// User Login
   @POST('/v1/auth/login')
   Future<ResponseAuthData> postV1AuthLogin({
     @Body() required InputLoginUser body,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Refresh tokens.
@@ -36,6 +34,5 @@ abstract class AuthClient {
   @POST('/v1/auth/refresh')
   Future<ResponseAuthData> postV1AuthRefresh({
     @Body() required Object4 body,
-    @DioOptions() RequestOptions? options,
   });
 }

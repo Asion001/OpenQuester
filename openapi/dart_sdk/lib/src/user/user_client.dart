@@ -18,7 +18,6 @@ abstract class UserClient {
   @GET('/v1/user/{id}')
   Future<ResponsePrivateUser> getV1UserId({
     @Path('id') required String id,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Update user by id
@@ -26,32 +25,25 @@ abstract class UserClient {
   Future<ResponsePrivateUser> patchV1UserId({
     @Path('id') required String id,
     @Body() required InputUpdateUser body,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Delete user by id
   @DELETE('/v1/user/{id}')
   Future<void> deleteV1UserId({
     @Path('id') required String id,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Get user by his token
   @GET('/v1/user/')
-  Future<ResponsePrivateUser> getV1User({
-    @DioOptions() RequestOptions? options,
-  });
+  Future<ResponsePrivateUser> getV1User();
 
   /// Update user by his token
   @PATCH('/v1/user/')
   Future<ResponsePrivateUser> patchV1User({
     @Body() required InputUpdateUser body,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Delete user by his token
   @DELETE('/v1/user/')
-  Future<void> deleteV1User({
-    @DioOptions() RequestOptions? options,
-  });
+  Future<void> deleteV1User();
 }

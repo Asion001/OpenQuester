@@ -15,7 +15,5 @@ abstract class UsersClient {
 
   /// Get all users info
   @GET('/v1/users/')
-  Future<List<ResponsePrivateUser>> getV1Users({
-    @DioOptions() RequestOptions? options,
-  });
+  Future<List<ResponsePrivateUser>> getV1Users();
 }

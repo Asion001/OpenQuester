@@ -33,7 +33,7 @@ swagger_parser:
   # Optional (dart only).
   # Support @DioOptions annotation for interceptors.
   # If the value is 'true', then the annotation will be added to all requests.
-  dio_options_parameter_by_default: false
+  dio_options_parameter_by_default: true
 
   # Optional (dart only). Set 'true' to generate root client
   # with interface and all clients instances.
@@ -59,7 +59,7 @@ swagger_parser:
 
   # Optional. Set 'true' to use only the endpoint path for the method name.
   # Set 'false' to use operationId
-  path_method_name: true
+  #path_method_name: true
 
   # Optional (dart only). Set 'true' to include toJson() in enums.
   # If set to false, serialization will use .name instead.

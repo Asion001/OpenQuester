@@ -3,16 +3,24 @@ import 'package:injectable/injectable.dart';
 import 'package:openapi/openapi.dart';
 import 'package:openquester/src/core/get_it.dart';
 import 'package:openquester/src/connection/controllers/login_controller.dart';
+import 'package:openquester/src/utils/request_ispector.dart';
 
 import '../../core/env.dart';
 
 @singleton
 class Api {
   final api = RestClient(
-    Dio()
-      ..interceptors.addAll([
+    Dio(
+      BaseOptions(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Encoding': 'gzip',
+        },
+      ),
+    )..interceptors.addAll([
         authInterceptor,
         timeoutInterceptor,
+        aliceDioAdapter,
       ]),
     baseUrl: Env.apiUrl.toString(),
   );

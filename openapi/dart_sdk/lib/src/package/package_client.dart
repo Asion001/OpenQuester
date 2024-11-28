@@ -20,6 +20,5 @@ abstract class PackageClient {
   @POST('/v1/package/upload')
   Future<PostV1PackageUploadResponse> postV1PackageUpload({
     @Body() required Object3 body,
-    @DioOptions() RequestOptions? options,
   });
 }

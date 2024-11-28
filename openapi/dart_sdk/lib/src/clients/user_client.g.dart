@@ -22,27 +22,28 @@ class _UserClient implements UserClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponsePrivateUser> getV1UserId({required String id}) async {
+  Future<ResponsePrivateUser> getV1UserId({
+    required String id,
+    RequestOptions? options,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ResponsePrivateUser>(Options(
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
       method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/v1/user/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/user/${id}',
+    )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponsePrivateUser _value;
     try {
@@ -58,27 +59,26 @@ class _UserClient implements UserClient {
   Future<ResponsePrivateUser> patchV1UserId({
     required String id,
     required InputUpdateUser body,
+    RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = body;
-    final _options = _setStreamType<ResponsePrivateUser>(Options(
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
       method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/v1/user/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/user/${id}',
+    )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponsePrivateUser _value;
     try {
@@ -91,52 +91,51 @@ class _UserClient implements UserClient {
   }
 
   @override
-  Future<void> deleteV1UserId({required String id}) async {
+  Future<void> deleteV1UserId({
+    required String id,
+    RequestOptions? options,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(Options(
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
       method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/v1/user/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/user/${id}',
+    )..data = _data;
     await _dio.fetch<void>(_options);
   }
 
   @override
-  Future<ResponsePrivateUser> getV1User() async {
+  Future<ResponsePrivateUser> getV1User({RequestOptions? options}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<ResponsePrivateUser>(Options(
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
       method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/v1/user/',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/user/',
+    )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponsePrivateUser _value;
     try {
@@ -149,28 +148,28 @@ class _UserClient implements UserClient {
   }
 
   @override
-  Future<ResponsePrivateUser> patchV1User(
-      {required InputUpdateUser body}) async {
+  Future<ResponsePrivateUser> patchV1User({
+    required InputUpdateUser body,
+    RequestOptions? options,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = body;
-    final _options = _setStreamType<ResponsePrivateUser>(Options(
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
       method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/v1/user/',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/user/',
+    )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponsePrivateUser _value;
     try {
@@ -183,28 +182,51 @@ class _UserClient implements UserClient {
   }
 
   @override
-  Future<void> deleteV1User() async {
+  Future<void> deleteV1User({RequestOptions? options}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(Options(
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
       method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/v1/user/',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/user/',
+    )..data = _data;
     await _dio.fetch<void>(_options);
+  }
+
+  RequestOptions newRequestOptions(Object? options) {
+    if (options is RequestOptions) {
+      return options as RequestOptions;
+    }
+    if (options is Options) {
+      return RequestOptions(
+        method: options.method,
+        sendTimeout: options.sendTimeout,
+        receiveTimeout: options.receiveTimeout,
+        extra: options.extra,
+        headers: options.headers,
+        responseType: options.responseType,
+        contentType: options.contentType.toString(),
+        validateStatus: options.validateStatus,
+        receiveDataWhenStatusError: options.receiveDataWhenStatusError,
+        followRedirects: options.followRedirects,
+        maxRedirects: options.maxRedirects,
+        requestEncoder: options.requestEncoder,
+        responseDecoder: options.responseDecoder,
+        path: '',
+      );
+    }
+    return RequestOptions(path: '');
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

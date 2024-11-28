@@ -7,3 +7,4 @@ analyzer:
     no_default_cases: ignore
     sort_pub_dependencies: ignore
     invalid_annotation_target: ignore
+    unnecessary_cast: ignore

@@ -4,11 +4,11 @@
 
 import 'package:dio/dio.dart';
 
-import 'clients/file_client.dart';
-import 'clients/package_client.dart';
-import 'clients/user_client.dart';
-import 'clients/users_client.dart';
-import 'clients/auth_client.dart';
+import 'file/file_client.dart';
+import 'package/package_client.dart';
+import 'user/user_client.dart';
+import 'users/users_client.dart';
+import 'auth/auth_client.dart';
 
 /// OpenQuester API `v0.2.9`
 class RestClient {

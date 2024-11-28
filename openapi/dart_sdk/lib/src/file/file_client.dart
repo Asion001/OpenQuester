@@ -24,7 +24,6 @@ abstract class FileClient {
   @GET('/v1/file')
   Future<GetV1FileResponse> getV1File({
     @Body() required Object0 body,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Get link to upload file on server.
@@ -33,7 +32,6 @@ abstract class FileClient {
   @POST('/v1/file')
   Future<PostV1FileResponse> postV1File({
     @Body() required Object1 body,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Delete file from bucket.
@@ -42,6 +40,5 @@ abstract class FileClient {
   @DELETE('/v1/file')
   Future<DeleteV1FileResponse> deleteV1File({
     @Body() required Object2 body,
-    @DioOptions() RequestOptions? options,
   });
 }
