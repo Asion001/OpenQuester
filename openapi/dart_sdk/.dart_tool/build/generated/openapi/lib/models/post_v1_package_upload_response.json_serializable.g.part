@@ -1,0 +1,15 @@
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$PostV1PackageUploadResponseImpl _$$PostV1PackageUploadResponseImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PostV1PackageUploadResponseImpl(
+      filename: json['filename'] as String,
+    );
+
+Map<String, dynamic> _$$PostV1PackageUploadResponseImplToJson(
+        _$PostV1PackageUploadResponseImpl instance) =>
+    <String, dynamic>{
+      'filename': instance.filename,
+    };

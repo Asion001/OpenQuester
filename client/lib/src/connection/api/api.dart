@@ -8,30 +8,15 @@ import '../../core/env.dart';
 
 @singleton
 class Api {
-  final api = Openapi(
-    basePathOverride: Env.apiUrl.toString(),
-    interceptors: [
-      authInterceptor,
-      timeoutInterceptor,
-    ],
-  ).getAuthApi();
+  final api = RestClient(
+    Dio()
+      ..interceptors.addAll([
+        authInterceptor,
+        timeoutInterceptor,
+      ]),
+    baseUrl: Env.apiUrl.toString(),
+  );
 }
-
-// class BearerAuthInterceptor extends AuthInterceptor {
-//   final Map<String, String> tokens = {};
-
-//   @override
-//   void onRequest(
-//     RequestOptions options,
-//     RequestInterceptorHandler handler,
-//   ) {
-//     final accessToken = getIt.get<LoginController>().authData?.accessToken;
-//     if (accessToken != null) {
-//       options.headers['Authorization'] = 'Bearer $accessToken';
-//     }
-//     super.onRequest(options, handler);
-//   }
-// }
 
 final authInterceptor = InterceptorsWrapper(
   onRequest: (options, handler) {

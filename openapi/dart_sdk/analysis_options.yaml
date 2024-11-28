@@ -1,10 +1,9 @@
+linter:
+  rules:
+    public_member_api_docs: false
+
 analyzer:
-  language:
-    strict-inference: true
-    strict-raw-types: true
-    strict-casts: false
-  exclude:
-    - test/*.dart
-    - lib/**
   errors:
-    deprecated_member_use_from_same_package: ignore
+    no_default_cases: ignore
+    sort_pub_dependencies: ignore
+    invalid_annotation_target: ignore
