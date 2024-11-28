@@ -33,6 +33,7 @@ export enum ClientResponse {
   // File
   FILENAME_REQUIRED = "filename_required",
   FILENAME_INVALID = "filename_invalid",
+  FILE_NOT_FOUND = "file_not_found",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

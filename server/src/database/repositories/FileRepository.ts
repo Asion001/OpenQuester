@@ -18,7 +18,7 @@ export class FileRepository {
     return this._instance;
   }
 
-  public async writeFile(filename: string, path: string) {
+  public async writeFile(path: string, filename: string) {
     const fileExists = await this._repository.exists({
       where: {
         filename,
@@ -43,5 +43,15 @@ export class FileRepository {
     return this._repository.findOne({
       where: { filename },
     });
+  }
+
+  /**
+   * Remove file record from DB if it exists
+   */
+  public async removeFile(filename: string) {
+    const file = await this.getFileByFilename(filename);
+    if (file?.id && file.id > 0) {
+      return this._repository.remove(file);
+    }
   }
 }

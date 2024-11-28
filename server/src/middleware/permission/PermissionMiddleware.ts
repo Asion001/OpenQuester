@@ -10,25 +10,21 @@ import { HttpStatus } from "../../enums/HttpStatus";
 import { ValueUtils } from "../../utils/ValueUtils";
 import { ErrorController } from "../../error/ErrorController";
 import { TranslateService as ts } from "../../services/text/TranslateService";
+import { Permission } from "../../database/models/Permission";
 
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userRepository = UserRepository.getRepository(db);
       const userId = JWTUtils.getTokenPayload(req?.headers?.authorization).id;
-      const user = await userRepository.get(userId, {
-        select: ["id"],
-        relations: ["permissions"],
-      });
+      const user = await _getUser(db, userId);
 
-      const userPermissions = user.permissions.map((v) => v.name);
-      if (!userPermissions.includes(permission)) {
-        return res.status(HttpStatus.BAD_REQUEST).send({
-          error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
-        });
+      if (await Permission.checkPermission(user, permission)) {
+        return next();
       }
 
-      next();
+      return res.status(HttpStatus.BAD_REQUEST).send({
+        error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
+      });
     } catch (error) {
       next(error);
     }
@@ -48,16 +44,21 @@ export function requirePermissionIfIdProvided(
       try {
         const id = ValueUtils.validateId(req.params.id);
         const reqId = JWTUtils.getTokenPayload(req.headers.authorization).id;
-        const userRepository = UserRepository.getRepository(db);
 
-        const user = await userRepository.get(id);
-        const requestUser = await userRepository.get(reqId);
+        const user = await _getUser(db, id);
+        const requestUser = await _getUser(db, reqId);
 
         if (user?.id === requestUser?.id) {
           return next();
         }
 
-        return checkPermission(db, permission)(req, res, next);
+        if (await Permission.checkPermission(user, permission)) {
+          return next();
+        }
+
+        return res.status(HttpStatus.BAD_REQUEST).send({
+          error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
+        });
       } catch (err: unknown) {
         const { message, code } = await ErrorController.resolveError(
           err,
@@ -69,4 +70,11 @@ export function requirePermissionIfIdProvided(
 
     next();
   };
+}
+
+async function _getUser(db: Database, id: number) {
+  return UserRepository.getRepository(db).get(id, {
+    select: ["id"],
+    relations: ["permissions"],
+  });
 }

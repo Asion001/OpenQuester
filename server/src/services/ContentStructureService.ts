@@ -2,11 +2,25 @@ import { ClientResponse } from "../enums/ClientResponse";
 import { ClientError } from "../error/ClientError";
 import { IStorage } from "../interfaces/file/IStorage";
 import { OQContentStructure } from "../interfaces/file/structures/OQContentStructure";
+import { Logger } from "../utils/Logger";
+import { ValueUtils } from "../utils/ValueUtils";
 
 /**
  * Class that manages all actions related to content.json file and it's structure
  */
 export class ContentStructureService {
+  /** Map used for caching */
+  private _cache: Map<string, Promise<string>> = new Map();
+
+  /** Output object that contains upload links for each file in stack */
+  private _fileLinks: { [key: string]: string } = {};
+
+  /** Promises array that collects promises with file upload */
+  private _promises: Promise<string>[] = [];
+
+  /** Nested objects stack */
+  private _stack: Array<any> = [];
+
   /**
    * Parse content.json file and update all "file" entries with download link
    */
@@ -19,18 +33,15 @@ export class ContentStructureService {
       throw new ClientError(ClientResponse.NO_CONTENT_ROUNDS);
     }
 
-    /** Nested objects stack */
-    const stack: Array<any> = [...content.rounds];
-    /** Output object that contains upload links for each file in stack */
-    const fileLinks: { [key: string]: string } = {};
-    /** Map used for caching */
-    const cache: Map<string, Promise<string>> = new Map();
-    /** Promises array that collects promises with file upload */
-    const promises: Promise<string>[] = [];
+    if (!ValueUtils.isEmpty(this._fileLinks)) {
+      this._fileLinks = {};
+    }
+
+    this._stack = [...content.rounds];
 
     // Iterate through each object in the content to find "file" entries
-    while (stack.length > 0) {
-      const current = stack.shift();
+    while (this._stack.length > 0) {
+      const current = this._stack.shift();
 
       if (current && this._hasFile(current)) {
         const filename = current.file.sha256;
@@ -39,36 +50,40 @@ export class ContentStructureService {
           let uploadPromise: Promise<string>;
 
           // Check if the path is already cached
-          if (cache.has(filename)) {
-            uploadPromise = cache.get(filename)!;
+          if (this._cache.has(filename)) {
+            uploadPromise = this._cache.get(filename)!;
           } else {
             // Create and cache the upload promise
             uploadPromise = storage.upload(filename, expiresIn).then((link) => {
-              fileLinks[filename] = link;
+              this._fileLinks[filename] = link;
               return link;
             });
-            cache.set(filename, uploadPromise);
+            this._cache.set(filename, uploadPromise);
           }
 
           // Push the upload promise to the array
-          promises.push(uploadPromise);
+          this._promises.push(uploadPromise);
         }
       } else {
         // Push nested objects into the stack for further processing
         for (const key in current) {
           const value = current[key as keyof typeof current];
           if (typeof value === "object" && value !== null) {
-            stack.push(value);
+            this._stack.push(value);
           }
         }
       }
     }
 
     // Wait for all upload promises to complete
-    await Promise.all(promises);
+    await Promise.all(this._promises);
+    this._promises = [];
 
-    cache.clear();
-    return fileLinks;
+    Logger.gray(
+      // One entry is ~75 bytes. This could be removed later
+      `Current package cache size: ~${(this._cache.size * 75) / 1000} KB`
+    );
+    return this._fileLinks;
   }
 
   /** Check if current object of stack has correct and non-empty file field */
