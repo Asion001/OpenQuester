@@ -15,6 +15,7 @@ import '../connection/api/api.dart' as _i149;
 import '../connection/controllers/login_controller.dart' as _i421;
 import '../connection/storage/storage.dart' as _i741;
 import '../connection/ws/ws_controller.dart' as _i21;
+import 'router.dart' as _i216;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -32,6 +33,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i421.LoginController.create());
     gh.singleton<_i741.Storage>(() => _i741.Storage());
     gh.singleton<_i21.WsController>(() => _i21.WsController());
+    gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
     return this;
   }
 }
