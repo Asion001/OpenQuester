@@ -1,3 +1,4 @@
+import { FileUsageRepository } from "../database/repositories/FileUsageRepository";
 import { ClientResponse } from "../enums/ClientResponse";
 import { ClientError } from "../error/ClientError";
 import { IStorage } from "../interfaces/file/IStorage";
@@ -20,6 +21,8 @@ export class ContentStructureService {
 
   /** Nested objects stack */
   private _stack: Array<any> = [];
+
+  private _fileUsageRepository: FileUsageRepository;
 
   /**
    * Parse content.json file and update all "file" entries with download link

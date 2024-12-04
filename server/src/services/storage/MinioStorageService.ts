@@ -14,6 +14,9 @@ import { FileRepository } from "../../database/repositories/FileRepository";
 import { ServerServices } from "../ServerServices";
 import { StorageUtils } from "../../utils/StorageUtils";
 import { Logger } from "../../utils/Logger";
+import { FileUsageRepository } from "../../database/repositories/FileUsageRepository";
+import { File } from "../../database/models/File";
+import { Package } from "../../database/models/Package";
 
 const MINIO_PREFIX = "[MINIO]: ";
 
@@ -26,6 +29,7 @@ export class MinioStorageService implements IStorage {
   private _db: Database;
   private _fileRepository: FileRepository;
   private _packageRepository: PackageRepository;
+  private _fileUsageRepository: FileUsageRepository;
 
   constructor(ctx: ApiContext) {
     this._s3Context = ServerServices.storage.createFileContext("s3");
@@ -34,6 +38,7 @@ export class MinioStorageService implements IStorage {
     this._db = ctx.db;
     this._fileRepository = FileRepository.getRepository(this._db);
     this._packageRepository = PackageRepository.getRepository(this._db);
+    this._fileUsageRepository = FileUsageRepository.getRepository(this._db);
 
     this._agentOptions = {
       keepAlive: true,
@@ -106,7 +111,23 @@ export class MinioStorageService implements IStorage {
         MINIO_PREFIX
       );
     }
+    for (const filename of Object.keys(links)) {
+      const pack = await this._packageRepository.create(content, author);
+      this._writeUsage(filename, author, pack);
+    }
     return links;
+  }
+
+  private async _writeUsage(filename: string, user?: User, pack?: Package) {
+    const path = StorageUtils.parseFilePath(filename);
+    const file = new File();
+    file.import({
+      path,
+      filename,
+      created_at: new Date(),
+    });
+
+    this._fileUsageRepository.writeUsage(file, user, pack);
   }
 
   private async _writeFile(path: string, filename: string) {

@@ -7,10 +7,10 @@ import {
 } from "typeorm";
 import { Logger } from "../../utils/Logger";
 
-export class CreatePermissionTable_1_2_1723128633623
+export class CreatePermissionTable_0_1_2_1723128633623
   implements MigrationInterface
 {
-  name = "CreatePermissionTable_1_2_1723128633623";
+  name = "CreatePermissionTable_0_1_2_1723128633623";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
@@ -82,7 +82,7 @@ export class CreatePermissionTable_1_2_1723128633623
       `INSERT INTO "permission" (name) VALUES ('admin'), ('user');`
     );
 
-    Logger.logMigrationComplete("1_2");
+    Logger.logMigrationComplete("0.1.2");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

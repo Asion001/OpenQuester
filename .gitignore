@@ -9,3 +9,6 @@
 *.siq
 test*.json
 content.xml
+
+# Server
+.secret*

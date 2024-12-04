@@ -54,7 +54,7 @@ export class ChangePermissionValidation_0_3_0_1729181792142
 
     await queryRunner.query(query);
 
-    Logger.logMigrationComplete("0_3_0");
+    Logger.logMigrationComplete("0.3.0");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

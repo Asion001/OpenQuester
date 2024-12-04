@@ -1,7 +1,10 @@
 import { type Request, type Response, Router } from "express";
 
 import { IStorage } from "../../interfaces/file/IStorage";
-import { validateFilename } from "../../middleware/file/FileMiddleware";
+import {
+  checkUserAccessToDeleteFile,
+  validateFilename,
+} from "../../middleware/file/FileMiddleware";
 import { ApiContext } from "../../services/context/ApiContext";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { ErrorController } from "../../error/ErrorController";
@@ -25,7 +28,12 @@ export class FileRestApiController {
 
     router.get("/", validateFilename, this.getFile);
     router.post("/", validateFilename, this.uploadFile);
-    router.delete("/", validateFilename, this.deleteFile);
+    router.delete(
+      "/",
+      validateFilename,
+      checkUserAccessToDeleteFile(ctx.db),
+      this.deleteFile
+    );
   }
 
   private getFile = async (req: Request, res: Response) => {
