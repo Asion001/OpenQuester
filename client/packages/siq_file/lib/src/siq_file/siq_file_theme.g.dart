@@ -16,18 +16,9 @@ _$SiqFileThemeImpl _$$SiqFileThemeImplFromJson(Map<String, dynamic> json) =>
           const [],
     );
 
-Map<String, dynamic> _$$SiqFileThemeImplToJson(_$SiqFileThemeImpl instance) {
-  final val = <String, dynamic>{
-    'name': instance.name,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('comment', instance.comment);
-  val['questions'] = instance.questions;
-  return val;
-}
+Map<String, dynamic> _$$SiqFileThemeImplToJson(_$SiqFileThemeImpl instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      if (instance.comment case final value?) 'comment': value,
+      'questions': instance.questions,
+    };
