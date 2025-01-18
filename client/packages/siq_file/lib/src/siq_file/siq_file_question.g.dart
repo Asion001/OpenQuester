@@ -27,26 +27,17 @@ _$SiqFileQuestionImpl _$$SiqFileQuestionImplFromJson(
     );
 
 Map<String, dynamic> _$$SiqFileQuestionImplToJson(
-    _$SiqFileQuestionImpl instance) {
-  final val = <String, dynamic>{
-    'price': instance.price,
-    'type': _$QuestionTypeEnumMap[instance.type]!,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('text', instance.text);
-  writeNotNull('hostHint', instance.hostHint);
-  writeNotNull('playersHint', instance.playersHint);
-  writeNotNull('questionFile', instance.questionFile);
-  writeNotNull('answerText', instance.answerText);
-  writeNotNull('answerFile', instance.answerFile);
-  return val;
-}
+        _$SiqFileQuestionImpl instance) =>
+    <String, dynamic>{
+      'price': instance.price,
+      'type': _$QuestionTypeEnumMap[instance.type]!,
+      if (instance.text case final value?) 'text': value,
+      if (instance.hostHint case final value?) 'hostHint': value,
+      if (instance.playersHint case final value?) 'playersHint': value,
+      if (instance.questionFile case final value?) 'questionFile': value,
+      if (instance.answerText case final value?) 'answerText': value,
+      if (instance.answerFile case final value?) 'answerFile': value,
+    };
 
 const _$QuestionTypeEnumMap = {
   QuestionType.regular: 'regular',
