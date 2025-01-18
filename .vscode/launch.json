@@ -8,8 +8,7 @@
       "name": "client",
       "cwd": "client",
       "request": "launch",
-      "type": "dart",
-      "args": ["--web-renderer", "html"]
+      "type": "dart"
     },
     {
       "name": "client (profile mode)",
@@ -33,7 +32,10 @@
       "preLaunchTask": "npm: build - server",
       "cwd": "${workspaceFolder}/server",
       "sourceMaps": true,
-      "skipFiles": ["<node_internals>/**", "node_moduled/**/*"],
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_moduled/**/*"
+      ],
       "envFile": "${workspaceFolder}/server/.env",
       "console": "integratedTerminal"
     },
@@ -42,7 +44,10 @@
       "type": "dart",
       "request": "launch",
       "program": "./client/packages/siq_file/bin/siq_file.dart",
-      "args": ["hash", "../../../test.siq"]
+      "args": [
+        "hash",
+        "../../../test.siq"
+      ]
     }
   ]
 }

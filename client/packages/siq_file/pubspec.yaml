@@ -5,31 +5,31 @@ version: 0.0.1
 topics: [cli]
 
 environment:
-  sdk: ^3.5.3
+  sdk: ">=3.6.1 <4.0.0"
 
 # Add regular dependencies here.
 dependencies:
-  args: ^2.4.2
-  cli_completion: ^0.5.0
-  mason_logger: ^0.2.16
+  args: ^2.6.0
+  cli_completion: ^0.5.1
+  mason_logger: ^0.3.2
   universal_io: ^2.2.2
-  path: ^1.8.0
-  archive: ^3.6.1
+  path: ^1.9.0
+  archive: ^4.0.2
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   xml: ^6.5.0
-  collection: ^1.18.0
-  logger: ^2.4.0
-  crypto: ^3.0.5
-  convert: ^3.1.1
+  collection: ^1.19.0
+  logger: ^2.5.0
+  crypto: ^3.0.6
+  convert: ^3.1.2
 
 dev_dependencies:
-  lints: ^4.0.0
-  test: ^1.24.0
-  build_runner: ^2.4.1
-  build_version: ^2.0.0
-  freezed: ^2.5.7
-  json_serializable: ^6.8.0
+  lints: ^5.1.1
+  test: ^1.25.14
+  build_runner: ^2.4.14
+  build_version: ^2.1.1
+  freezed: ^2.5.8
+  json_serializable: ^6.9.3
 
 executables:
   siq_file:

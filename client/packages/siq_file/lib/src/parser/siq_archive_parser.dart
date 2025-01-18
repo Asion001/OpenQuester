@@ -19,7 +19,7 @@ class SiqArchiveParser {
       _file.stream.map(Uint8List.fromList),
       _file.fileLength,
     );
-    final archive = ZipDecoder().decodeBuffer(
+    final archive = ZipDecoder().decodeStream(
       targetStream,
       verify: false, //TODO: add option to verify
     );
@@ -60,7 +60,8 @@ class SiqArchiveParser {
   }
 
   void _parseContentFile(ArchiveFile file) {
-    final output = OutputStream();
+    final output =
+        OutputFileStream.toRamFile(RamFileHandle.asWritableRamBuffer());
     file.writeContent(output);
 
     final contentFile = utf8.decode(output.getBytes());
