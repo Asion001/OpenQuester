@@ -34,12 +34,12 @@ export class User implements IUserModel {
   @Column()
   password?: string;
 
-  @Column({ nullable: true })
-  birthday?: Date;
+  @Column({ type: "date", nullable: true })
+  birthday?: Date | null;
 
   @OneToOne(() => File, { nullable: true })
   @JoinColumn({ name: "avatar" })
-  avatar?: File;
+  avatar?: File | null;
 
   @Column()
   created_at!: Date;

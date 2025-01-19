@@ -21,11 +21,14 @@ export class FileUsageRepository {
     return this._instance;
   }
 
-  public getUsage(file: File) {
-    return this._repository.find({ where: { file } });
+  public async getUsage(file: File) {
+    return this._repository.find({
+      where: { file: { id: file.id } },
+      relations: ["file", "user", "user.avatar", "package", "package.author"],
+    });
   }
 
-  public writeUsage(file: File, user?: User, pack?: Package) {
+  public async writeUsage(file: File, user?: User, pack?: Package) {
     const usage = new FileUsage();
     usage.import({
       file,
@@ -33,6 +36,20 @@ export class FileUsageRepository {
       package: pack,
     });
 
-    this._repository.save(usage);
+    return this._repository.save(usage);
+  }
+
+  public async deleteUsage(file: File, user?: User, pack?: Package) {
+    const opts: { [key: string]: any } = { file: { id: file.id } };
+
+    if (user?.id) {
+      opts.user = { id: user.id };
+    }
+
+    if (pack?.id) {
+      opts.package = { id: pack.id };
+    }
+
+    return this._repository.delete(opts);
   }
 }

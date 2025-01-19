@@ -111,8 +111,8 @@ export class UserRepository {
       {
         name: _user.name,
         email: _user.email,
-        birthday: _user.birthday,
-        avatar: _user.avatar,
+        birthday: _user.birthday ?? null,
+        avatar: _user.avatar ?? null,
         password: _user.password,
         is_deleted: _user.is_deleted,
       }
