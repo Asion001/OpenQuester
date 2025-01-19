@@ -880,20 +880,6 @@
         },
         "required": ["login", "password"]
       },
-      "ResponseRegisterUser": {
-        "type": "object",
-        "properties": {
-          "avatar_link": {
-            "type": "string"
-          },
-          "access_token": {
-            "type": "string"
-          },
-          "refresh_token": {
-            "type": "string"
-          }
-        }
-      },
       "ResponseAuthData": {
         "type": "object",
         "properties": {

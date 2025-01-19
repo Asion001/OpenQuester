@@ -12,7 +12,7 @@ export interface IStorage {
    */
   upload(req: Request, expiresIn?: number): Promise<string>;
   /**
-   * Performs file upload directly by filename and user and/or package objects
+   * Performs file upload directly by filename and user or package objects
    * @returns presigned url
    */
   performFileUpload(
