@@ -54,18 +54,14 @@ class LoginController extends ChangeNotifier {
     try {
       loading = true;
       final inputLoginUser = InputLoginUser(
-        (b) {
-          b.login = login;
-          b.password = password;
-        },
+        login: login!,
+        password: password!,
       );
-      final result = await getIt
-          .get<Api>()
-          .api
-          .v1AuthLoginPost(inputLoginUser: inputLoginUser);
+      final result =
+          await getIt.get<Api>().api.auth.postV1AuthLogin(body: inputLoginUser);
       authData = auth_model.AuthData(
-        accessToken: result.data!.accessToken,
-        refreshToken: result.data!.refreshToken,
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken,
       );
       await getIt
           .get<Storage>()

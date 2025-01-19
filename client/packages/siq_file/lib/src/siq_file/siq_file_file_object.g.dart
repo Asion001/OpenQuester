@@ -16,17 +16,9 @@ _$SiqFileFileObjectImpl _$$SiqFileFileObjectImplFromJson(
     );
 
 Map<String, dynamic> _$$SiqFileFileObjectImplToJson(
-    _$SiqFileFileObjectImpl instance) {
-  final val = <String, dynamic>{
-    'file': instance.file,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('displayTime', instance.displayTime?.inMicroseconds);
-  return val;
-}
+        _$SiqFileFileObjectImpl instance) =>
+    <String, dynamic>{
+      'file': instance.file,
+      if (instance.displayTime?.inMicroseconds case final value?)
+        'displayTime': value,
+    };

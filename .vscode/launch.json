@@ -8,8 +8,7 @@
       "name": "client",
       "cwd": "client",
       "request": "launch",
-      "type": "dart",
-      "args": ["--web-renderer", "html"]
+      "type": "dart"
     },
     {
       "name": "client (profile mode)",
@@ -42,7 +41,10 @@
       "type": "dart",
       "request": "launch",
       "program": "./client/packages/siq_file/bin/siq_file.dart",
-      "args": ["hash", "../../../test.siq"]
+      "args": [
+        "hash",
+        "../../../test.siq"
+      ]
     }
   ]
 }

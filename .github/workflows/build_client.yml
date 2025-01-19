@@ -47,12 +47,12 @@ jobs:
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
       - name: Build web
-        run: flutter build web --wasm --no-web-resources-cdn
+        run: flutter build web --wasm --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER
 
       - name: Build android
         run: |
-          flutter build apk --release
-          flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64,android-x64
+          flutter build apk --release --build-number $GITHUB_RUN_NUMBER
+          flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64,android-x64 --build-number $GITHUB_RUN_NUMBER
       - name: Publish Web Artifacts
         uses: actions/upload-artifact@v4
         with:

@@ -30,24 +30,16 @@ _$SiqFileMetadataImpl _$$SiqFileMetadataImplFromJson(
     );
 
 Map<String, dynamic> _$$SiqFileMetadataImplToJson(
-    _$SiqFileMetadataImpl instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('id', instance.id);
-  writeNotNull('title', instance.title);
-  writeNotNull('date', instance.date?.toIso8601String());
-  writeNotNull('publisher', instance.publisher);
-  writeNotNull('logo', instance.logo);
-  val['tags'] = instance.tags;
-  val['authors'] = instance.authors;
-  writeNotNull('language', instance.language);
-  writeNotNull('restriction', instance.restriction);
-  writeNotNull('comment', instance.comment);
-  return val;
-}
+        _$SiqFileMetadataImpl instance) =>
+    <String, dynamic>{
+      if (instance.id case final value?) 'id': value,
+      if (instance.title case final value?) 'title': value,
+      if (instance.date?.toIso8601String() case final value?) 'date': value,
+      if (instance.publisher case final value?) 'publisher': value,
+      if (instance.logo case final value?) 'logo': value,
+      'tags': instance.tags,
+      'authors': instance.authors,
+      if (instance.language case final value?) 'language': value,
+      if (instance.restriction case final value?) 'restriction': value,
+      if (instance.comment case final value?) 'comment': value,
+    };

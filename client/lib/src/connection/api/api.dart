@@ -3,35 +3,28 @@ import 'package:injectable/injectable.dart';
 import 'package:openapi/openapi.dart';
 import 'package:openquester/src/core/get_it.dart';
 import 'package:openquester/src/connection/controllers/login_controller.dart';
+import 'package:openquester/src/utils/request_ispector.dart';
 
 import '../../core/env.dart';
 
 @singleton
 class Api {
-  final api = Openapi(
-    basePathOverride: Env.apiUrl.toString(),
-    interceptors: [
-      authInterceptor,
-      timeoutInterceptor,
-    ],
-  ).getAuthApi();
+  final api = RestClient(
+    Dio(
+      BaseOptions(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept-Encoding': 'gzip',
+        },
+      ),
+    )..interceptors.addAll([
+        authInterceptor,
+        timeoutInterceptor,
+        aliceDioAdapter,
+      ]),
+    baseUrl: Env.apiUrl.toString(),
+  );
 }
-
-// class BearerAuthInterceptor extends AuthInterceptor {
-//   final Map<String, String> tokens = {};
-
-//   @override
-//   void onRequest(
-//     RequestOptions options,
-//     RequestInterceptorHandler handler,
-//   ) {
-//     final accessToken = getIt.get<LoginController>().authData?.accessToken;
-//     if (accessToken != null) {
-//       options.headers['Authorization'] = 'Bearer $accessToken';
-//     }
-//     super.onRequest(options, handler);
-//   }
-// }
 
 final authInterceptor = InterceptorsWrapper(
   onRequest: (options, handler) {
