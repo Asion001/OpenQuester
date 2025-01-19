@@ -2,7 +2,6 @@ import { type Repository } from "typeorm";
 import { User } from "../models/User";
 import { type Database } from "../Database";
 import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
-import { ICrypto } from "../../interfaces/ICrypto";
 import { CryptoUtils } from "../../utils/CryptoUtils";
 import { ValueUtils } from "../../utils/ValueUtils";
 import { ILoginUser } from "../../interfaces/user/ILoginUser";
@@ -10,6 +9,9 @@ import { ClientError } from "../../error/ClientError";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { ISelectOptions } from "../../interfaces/ISelectOptions";
 import { UserOrId } from "../../types/user/user";
+import { JWTUtils } from "../../utils/JWTUtils";
+import { ApiContext } from "../../services/context/ApiContext";
+import { FileUsageRepository } from "./FileUsageRepository";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -44,7 +46,7 @@ export class UserRepository {
     return this._repository.findOne({
       where: { id },
       select: selectOptions?.select ?? USER_SELECT_FIELDS,
-      relations: selectOptions?.relations,
+      relations: selectOptions?.relations ?? ["avatar"],
     }) as Promise<User>;
   }
 
@@ -55,13 +57,13 @@ export class UserRepository {
     }) as Promise<User[]>;
   }
 
-  public async create(data: IRegisterUser, crypto?: ICrypto) {
+  public async create(ctx: ApiContext, data: IRegisterUser) {
     // Set all data to new user instance
-    const user = new User();
+    let user = new User();
     await user.import({
       name: data.name,
       email: data.email,
-      password: await CryptoUtils.hash(data.password as string, 10, crypto),
+      password: await CryptoUtils.hash(data.password, 10, ctx.crypto),
       birthday: data.birthday
         ? ValueUtils.getBirthday(data.birthday)
         : undefined,
@@ -73,7 +75,13 @@ export class UserRepository {
     });
 
     // Save new user
-    await this._repository.save(user);
+    user = await this._repository.save(user);
+
+    if (data.avatar) {
+      const fileUsageRepo = FileUsageRepository.getRepository(ctx.db);
+      await fileUsageRepo.writeUsage(data.avatar, user);
+    }
+
     return user;
   }
 
@@ -88,14 +96,14 @@ export class UserRepository {
       .getOne();
   }
 
-  public async delete(user: UserOrId) {
+  public async delete(user: User) {
     const _user = await this._getUserFromInput(user);
 
     _user.is_deleted = true;
     this.update(_user);
   }
 
-  public async update(user: UserOrId) {
+  public async update(user: User) {
     const _user = await this._getUserFromInput(user);
 
     return this._repository.update(
@@ -109,6 +117,16 @@ export class UserRepository {
         is_deleted: _user.is_deleted,
       }
     );
+  }
+
+  public static async getUserByHeader(
+    db: Database,
+    authorizationHeader?: string,
+    options?: ISelectOptions<User>
+  ) {
+    const payload = JWTUtils.getTokenPayload(authorizationHeader);
+    const id = ValueUtils.validateId(payload.id);
+    return this.getRepository(db).get(id, options);
   }
 
   private async _getUserFromInput(input: UserOrId) {

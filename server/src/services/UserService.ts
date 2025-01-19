@@ -9,7 +9,7 @@ import { ClientResponse } from "../enums/ClientResponse";
 import { ClientError } from "../error/ClientError";
 import { UserRepository } from "../database/repositories/UserRepository";
 import { JWTUtils } from "../utils/JWTUtils";
-import { TemplateUtils } from "../utils/TemplateUtils";
+import { FileUsageRepository } from "../database/repositories/FileUsageRepository";
 
 export class UserService {
   /**
@@ -17,7 +17,7 @@ export class UserService {
    */
   public async list(ctx: ApiContext) {
     return UserRepository.getRepository(ctx.db).list({
-      relations: ["permissions"],
+      relations: ["permissions", "avatar"],
     });
   }
 
@@ -66,9 +66,10 @@ export class UserService {
   private async performUpdate(ctx: ApiContext, req: Request, id: number) {
     const repository = UserRepository.getRepository(ctx.db);
     const body = req.body;
+    const fileUsageRepo = FileUsageRepository.getRepository(ctx.db);
 
     const user = await repository.get(id, {
-      relations: ["permissions"],
+      relations: ["permissions", "avatar"],
     });
 
     if (!user) {
@@ -76,13 +77,25 @@ export class UserService {
     }
 
     user.name = body.name ?? user.name;
+
+    const previousAvatar = user.avatar;
+
     user.avatar = body.avatar ?? user.avatar;
     user.updated_at = new Date();
+
     if (body.birthday) {
       user.birthday = ValueUtils.getBirthday(body.birthday);
     }
 
     await repository.update(user);
+
+    if (body.avatar && body.avatar.id != previousAvatar?.id) {
+      await fileUsageRepo.writeUsage(body.avatar, user);
+      if (previousAvatar) {
+        await fileUsageRepo.deleteUsage(previousAvatar, user);
+      }
+    }
+
     return user.export();
   }
 
@@ -113,12 +126,10 @@ export class UserService {
           },
         }))
       ) {
-        throw new ClientError(
-          TemplateUtils.text(ClientResponse.USER_PERMISSION_NOT_EXISTS, {
-            name: p.name,
-            id: p.id,
-          })
-        );
+        throw new ClientError(ClientResponse.USER_PERMISSION_NOT_EXISTS, 400, {
+          name: p.name,
+          id: p.id,
+        });
       }
     }
 

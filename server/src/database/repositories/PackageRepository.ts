@@ -22,13 +22,14 @@ export class PackageRepository {
     return this._instance;
   }
 
-  public async create(content: OQContentStructure, author: User) {
-    // Return pack if it exists in DB and has same metadata id
+  public async exists(content: OQContentStructure) {
     const existingPack = await this._getIfExists(content);
     if (existingPack) {
       return existingPack;
     }
+  }
 
+  public async create(content: OQContentStructure, author: User) {
     const pack = new Package();
     pack.import({
       content,
@@ -41,7 +42,7 @@ export class PackageRepository {
       throw new ClientError(ClientResponse.CANNOT_SAVE_CONTENT);
     }
 
-    this._repository.save(pack);
+    return this._repository.save(pack);
   }
 
   private async _getIfExists(content: OQContentStructure) {

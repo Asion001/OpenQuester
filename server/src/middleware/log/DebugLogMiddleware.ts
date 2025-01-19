@@ -55,8 +55,7 @@ function log(req: Request, responseBody: any) {
 
       // Log response body
       Logger.debug(`Response body: ${JSON.stringify(responseBody)}`);
+      console.log("\n");
     }
-
-    console.log("\n");
   }
 }

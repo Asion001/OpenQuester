@@ -3,7 +3,6 @@ import { type NextFunction, type Request, type Response } from "express";
 import { type Database } from "../../database/Database";
 import { type Permissions } from "../../enums/Permissions";
 
-import { JWTUtils } from "../../utils/JWTUtils";
 import { UserRepository } from "../../database/repositories/UserRepository";
 import { ClientResponse } from "../../enums/ClientResponse";
 import { HttpStatus } from "../../enums/HttpStatus";
@@ -15,8 +14,14 @@ import { Permission } from "../../database/models/Permission";
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = JWTUtils.getTokenPayload(req?.headers?.authorization).id;
-      const user = await _getUser(db, userId);
+      const user = await UserRepository.getUserByHeader(
+        db,
+        req.headers?.authorization,
+        {
+          select: ["id"],
+          relations: ["permissions"],
+        }
+      );
 
       if (await Permission.checkPermission(user, permission)) {
         return next();
@@ -43,10 +48,20 @@ export function requirePermissionIfIdProvided(
     if (req.params.id) {
       try {
         const id = ValueUtils.validateId(req.params.id);
-        const reqId = JWTUtils.getTokenPayload(req.headers.authorization).id;
 
-        const user = await _getUser(db, id);
-        const requestUser = await _getUser(db, reqId);
+        const user = await UserRepository.getRepository(db).get(id, {
+          select: ["id"],
+          relations: ["permissions"],
+        });
+
+        const requestUser = await UserRepository.getUserByHeader(
+          db,
+          req.headers?.authorization,
+          {
+            select: ["id"],
+            relations: ["permissions"],
+          }
+        );
 
         if (user?.id === requestUser?.id) {
           return next();
@@ -70,11 +85,4 @@ export function requirePermissionIfIdProvided(
 
     next();
   };
-}
-
-async function _getUser(db: Database, id: number) {
-  return UserRepository.getRepository(db).get(id, {
-    select: ["id"],
-    relations: ["permissions"],
-  });
 }

@@ -15,17 +15,22 @@ const RATE_LIMIT = 10;
 const RATE_LIMIT_DURATION = 60 * 1000;
 
 // Storage for tracking requests
-const userRequests: Map<number, number[]> = new Map();
+const requests: Map<number, number[]> = new Map();
 
-export const throttleByUserMiddleware: RequestHandler = (
+export const throttleMiddleware: RequestHandler = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const payload = JWTUtils.getTokenPayload(req.headers.authorization);
-  const userId = ValueUtils.validateId(payload.id);
+  let throttleValue: any;
+  try {
+    const payload = JWTUtils.getTokenPayload(req.headers.authorization);
+    throttleValue = ValueUtils.validateId(payload.id);
+  } catch {
+    throttleValue = req.ip;
+  }
 
-  if (!userId) {
+  if (!throttleValue) {
     return res
       .status(HttpStatus.UNAUTHORIZED)
       .send({ error: ts.localize(ClientResponse.ACCESS_DENIED, req.headers) });
@@ -33,24 +38,20 @@ export const throttleByUserMiddleware: RequestHandler = (
 
   const now = Date.now();
 
-  // Retrieve user request timestamps
-  const timestamps = userRequests.get(userId) || [];
+  const timestamps = requests.get(throttleValue) || [];
 
-  // Remove timestamps outside the current window
   const recentTimestamps = timestamps.filter(
     (timestamp) => now - timestamp < RATE_LIMIT_DURATION
   );
 
-  // Check if rate limit is exceeded
   if (recentTimestamps.length >= RATE_LIMIT) {
     return res.status(HttpStatus.TOO_MANY_REQUESTS).send({
       error: ts.localize(ClientResponse.TOO_MANY_REQUESTS, req.headers),
     });
   }
 
-  // Add current timestamp to the list
   recentTimestamps.push(now);
-  userRequests.set(userId, recentTimestamps);
+  requests.set(throttleValue, recentTimestamps);
 
   next();
 };

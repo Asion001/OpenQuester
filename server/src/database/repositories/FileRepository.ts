@@ -19,14 +19,14 @@ export class FileRepository {
   }
 
   public async writeFile(path: string, filename: string) {
-    const fileExists = await this._repository.exists({
+    const existingFile = await this._repository.findOne({
       where: {
         filename,
         path,
       },
     });
-    if (fileExists) {
-      return;
+    if (existingFile) {
+      return existingFile;
     }
 
     const file = new File();
@@ -36,7 +36,7 @@ export class FileRepository {
       created_at: new Date(),
     });
 
-    this._repository.save(file);
+    return this._repository.save(file);
   }
 
   public async getFileByFilename(filename: string) {

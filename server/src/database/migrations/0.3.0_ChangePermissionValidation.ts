@@ -1,4 +1,10 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+  TableUnique,
+} from "typeorm";
 import { Logger } from "../../utils/Logger";
 
 export class ChangePermissionValidation_0_3_0_1729181792142
@@ -45,6 +51,33 @@ export class ChangePermissionValidation_0_3_0_1729181792142
             isPrimary: true,
           },
         ],
+      })
+    );
+
+    await queryRunner.createUniqueConstraint(
+      "user_permissions",
+      new TableUnique({
+        columnNames: ["user_id", "permission_id"],
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      "user_permissions",
+      new TableForeignKey({
+        columnNames: ["user_id"],
+        referencedTableName: "user",
+        referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      "user_permissions",
+      new TableForeignKey({
+        columnNames: ["permission_id"],
+        referencedTableName: "permission",
+        referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
       })
     );
 

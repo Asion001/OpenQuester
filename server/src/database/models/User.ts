@@ -38,7 +38,7 @@ export class User implements IUserModel {
   birthday?: Date;
 
   @OneToOne(() => File, { nullable: true })
-  @JoinColumn()
+  @JoinColumn({ name: "avatar" })
   avatar?: File;
 
   @Column()

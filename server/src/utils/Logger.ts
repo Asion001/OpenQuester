@@ -30,23 +30,23 @@ export class Logger {
   }
 
   public static info(text: unknown, prefix?: string) {
-    this._log(green, (prefix ?? "[INFO]: ") + String(text));
+    return this._log(green, (prefix ?? "[INFO]: ") + String(text));
   }
 
   public static warn(text: unknown, prefix?: string) {
-    this._log(yellow, (prefix ?? "[WARNING]: ") + String(text));
+    return this._log(yellow, (prefix ?? "[WARNING]: ") + String(text));
   }
 
   public static error(text: unknown, prefix?: string) {
-    this._log(red, bold((prefix ?? "[ERROR]: ") + String(text)));
+    return this._log(red, bold((prefix ?? "[ERROR]: ") + String(text)));
   }
 
   public static pink(text: unknown, prefix?: string) {
-    this._log(magenta, (prefix ?? "") + String(text));
+    return this._log(magenta, (prefix ?? "") + String(text));
   }
 
   public static gray(text: unknown, prefix?: string) {
-    this._log(grayCol, (prefix ?? "") + String(text));
+    return this._log(grayCol, (prefix ?? "") + String(text));
   }
 
   public static debug(obj: unknown) {
@@ -96,8 +96,9 @@ export class Logger {
   }
 
   private static async _log(color: any, text: string) {
-    console.log(color(text));
-    this._writeFile(text);
+    const log = `[${new Date().toISOString()}] ${text}`;
+    console.log(color(log));
+    this._writeFile(log);
   }
 
   private static async _writeFile(text: unknown) {

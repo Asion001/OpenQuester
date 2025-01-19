@@ -15,7 +15,7 @@ import { UserRepository } from "../database/repositories/UserRepository";
 export class AuthService {
   public async register(ctx: ApiContext, req: Request): Promise<JWTResponse> {
     const repository = UserRepository.getRepository(ctx.db);
-    const user = await repository.create(req.body, ctx.crypto);
+    const user = await repository.create(ctx, req.body);
 
     const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
     return {

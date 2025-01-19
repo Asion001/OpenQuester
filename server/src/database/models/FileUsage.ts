@@ -10,15 +10,24 @@ export class FileUsage implements IFileUsage {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @ManyToOne(() => File, { nullable: false, onDelete: "CASCADE" })
+  @ManyToOne(() => File, (file) => file.id, {
+    nullable: false,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "file_id" })
   file!: File;
 
-  @ManyToOne(() => Package, { nullable: true, onDelete: "SET NULL" })
+  @ManyToOne(() => Package, (pack) => pack.id, {
+    nullable: true,
+    onDelete: "SET NULL",
+  })
   @JoinColumn({ name: "package_id" })
   package!: Package | undefined;
 
-  @ManyToOne(() => User, { nullable: true, onDelete: "SET NULL" })
+  @ManyToOne(() => User, (user) => user.id, {
+    nullable: true,
+    onDelete: "SET NULL",
+  })
   @JoinColumn({ name: "user_id" })
   user!: User | undefined;
 

@@ -104,6 +104,7 @@ export class TranslateService {
     if (!langHeader) {
       return "en";
     }
+    // Example: en-US;q=0.6,en;q=0.5
     return langHeader.split(",")[0].split(";")[0].split("-")[0];
   }
 }
