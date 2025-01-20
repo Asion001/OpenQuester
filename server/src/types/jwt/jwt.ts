@@ -1,24 +1,24 @@
-export type JWTPayload = {
+export interface JWTPayload {
   /** User id */
   id: number;
   /** Issued at (timestamp) */
   iat: number;
   /** Expires at (timestamp) */
   exp: number;
-};
+}
 
-export type JWTResponse = {
+export interface JWTResponse {
   access_token: string;
   refresh_token: string;
-};
+}
 
-export type TokenOptions = {
+export interface TokenOptions {
   secret: string;
   refreshSecret: string;
   expiresIn: string;
   refreshExpiresIn: string;
-};
+}
 
-export type JWTSecret = {
+export interface JWTSecret {
   jwt_secret: string;
-};
+}

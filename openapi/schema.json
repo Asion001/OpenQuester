@@ -889,8 +889,7 @@
           "refresh_token": {
             "type": "string"
           }
-        },
-        "required": ["access_token", "refresh_token"]
+        }
       },
       "OQContentStructure": {
         "type": "object",

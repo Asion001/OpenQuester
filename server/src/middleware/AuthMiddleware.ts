@@ -11,9 +11,14 @@ export const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.url.includes("v1/auth") || req.url.includes("v1/api-docs")) {
+  if (
+    req.url.includes("v1/auth") ||
+    req.url.includes("v1/api-docs") ||
+    (req.url.includes("v1/file") && req.method === "POST")
+  ) {
     return next();
   }
+
   const env = Environment.instance;
   const header = req.headers.authorization;
 

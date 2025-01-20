@@ -11,14 +11,18 @@ import { File } from "./models/File";
 import { Permission } from "./models/Permission";
 import { UserPermissions } from "./models/UserPermission";
 import { Package } from "./models/Package";
+import { FileUsage } from "./models/FileUsage";
 
 // Migrations imports
-import { CreateUserAndFileTables_1_1_1722683756069 as createUserAndFileTables } from "./migrations/CreateUserAndFileTables_1_1_1722683756069";
-import { UpdateUserModelFields_1_11_1723107959823 as updateUserModelFields } from "./migrations/UpdateUserModelFields_1_11_1723107959823";
-import { CreatePermissionTable_1_2_1723128633623 as createPermissionTable } from "./migrations/CreatePermissionTable_1_2_1723128633623";
-import { UpdateUserRequiredFields_1_21_1723204474011 as updateUserRequiredFields } from "./migrations/UpdateUserRequiredFields_1_21_1723204474011";
-import { WriteMoreInfoToDB_0_2_9_1725692779638 as writeMoreToDB } from "./migrations/WriteMoreInfoToDB_0_2_9_1725692779638";
-import { ChangePermissionValidation_0_3_0_1729181792142 as changePermissionValidation } from "./migrations/ChangePermissionValidation_0_3_0_1729181792142";
+import { CreateUserAndFileTables_0_1_1_1722683756069 as createUserAndFileTables } from "./migrations/0.1.1_CreateUserAndFileTables";
+import { UpdateUserModelFields_0_1_11_1723107959823 as updateUserModelFields } from "./migrations/0.1.11_UpdateUserModelFields";
+import { CreatePermissionTable_0_1_2_1723128633623 as createPermissionTable } from "./migrations/0.1.2_CreatePermissionTable";
+import { UpdateUserRequiredFields_0_1_21_1723204474011 as updateUserRequiredFields } from "./migrations/0.1.21_UpdateUserRequiredFields";
+import { WriteMoreInfoToDB_0_2_9_1725692779638 as writeMoreToDB } from "./migrations/0.2.9_WriteMoreInfoToDB";
+import { ChangePermissionValidation_0_3_0_1729181792142 as changePermissionValidation } from "./migrations/0.3.0_ChangePermissionValidation";
+import { AddDeleteFilePermission_0_3_9_1730832569761 as addDeletePermission } from "./migrations/0.3.9_AddDeleteFilePermission";
+import { AddFileUsageTable_1731771003354 as addFileUsageTable } from "./migrations/0.3.9_Part2AddFileUsageTable";
+import { RenameAuthorAndAvatarId_1734207358779 as renameAuthorAndAvatarId } from "./migrations/0.3.9_Part3RenameAuthorId";
 
 // Init env
 const env = Environment.instance;
@@ -46,14 +50,17 @@ export const AppDataSource = new DataSource({
   database: env.DB_NAME,
   synchronize: false,
   logging: env.DB_LOGGER,
-  entities: [User, File, Permission, UserPermissions, Package],
+  entities: [User, File, Permission, UserPermissions, Package, FileUsage],
   migrations: [
     createUserAndFileTables,
-    updateUserModelFields,
     createPermissionTable,
+    updateUserModelFields,
     updateUserRequiredFields,
     writeMoreToDB,
     changePermissionValidation,
+    addDeletePermission,
+    addFileUsageTable,
+    renameAuthorAndAvatarId,
   ],
   migrationsRun: true,
   subscribers: [],

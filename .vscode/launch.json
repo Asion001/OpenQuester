@@ -32,10 +32,7 @@
       "preLaunchTask": "npm: build - server",
       "cwd": "${workspaceFolder}/server",
       "sourceMaps": true,
-      "skipFiles": [
-        "<node_internals>/**",
-        "node_moduled/**/*"
-      ],
+      "skipFiles": ["<node_internals>/**", "node_moduled/**/*"],
       "envFile": "${workspaceFolder}/server/.env",
       "console": "integratedTerminal"
     },

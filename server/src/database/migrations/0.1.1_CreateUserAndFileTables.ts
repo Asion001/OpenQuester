@@ -7,10 +7,10 @@ import {
 } from "typeorm";
 import { Logger } from "../../utils/Logger";
 
-export class CreateUserAndFileTables_1_1_1722683756069
+export class CreateUserAndFileTables_0_1_1_1722683756069
   implements MigrationInterface
 {
-  name = "CreateUserAndFileTables_1_1_1722683756069";
+  name = "CreateUserAndFileTables_0_1_1_1722683756069";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     /** Create File table */
@@ -97,7 +97,7 @@ export class CreateUserAndFileTables_1_1_1722683756069
         onDelete: "SET NULL",
       })
     );
-    Logger.logMigrationComplete("1_1");
+    Logger.logMigrationComplete("0.1.1");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

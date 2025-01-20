@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
 
 import { IPackage } from "../../interfaces/package/IPackage";
 import { OQContentStructure } from "../../interfaces/file/structures/OQContentStructure";
@@ -24,6 +30,7 @@ export class Package implements IPackage {
   @ManyToOne(() => User, (user) => user.packages, {
     onDelete: "SET NULL",
   })
+  @JoinColumn({ name: "author" })
   author!: User;
 
   public import(data: IPackage) {

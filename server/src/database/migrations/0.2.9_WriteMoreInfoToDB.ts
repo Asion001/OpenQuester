@@ -75,7 +75,7 @@ export class WriteMoreInfoToDB_0_2_9_1725692779638
       })
     );
 
-    Logger.logMigrationComplete("0_2_9");
+    Logger.logMigrationComplete("0.2.9");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

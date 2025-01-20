@@ -8,7 +8,7 @@ export interface IUserModel extends IBaseModel {
   name?: string;
   email?: string;
   password?: string;
-  birthday?: Date;
-  avatar?: File;
+  birthday?: Date | null;
+  avatar?: File | null;
   permissions?: Permission[];
 }

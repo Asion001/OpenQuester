@@ -8,6 +8,7 @@ import { ErrorController } from "../../error/ErrorController";
 import { HttpStatus } from "../../enums/HttpStatus";
 import { TranslateService as ts } from "../../services/text/TranslateService";
 import { ServerServices } from "../../services/ServerServices";
+import { throttleMiddleware } from "../../middleware/ThrottleMiddleware";
 
 export class FileRestApiController {
   private _storageService: IStorage;
@@ -24,7 +25,7 @@ export class FileRestApiController {
     app.use("/v1/file", router);
 
     router.get("/", validateFilename, this.getFile);
-    router.post("/", validateFilename, this.uploadFile);
+    router.post("/", validateFilename, throttleMiddleware, this.uploadFile);
     router.delete("/", validateFilename, this.deleteFile);
   }
 
@@ -43,7 +44,7 @@ export class FileRestApiController {
 
   private uploadFile = async (req: Request, res: Response) => {
     try {
-      const url = await this._storageService.upload(req.body.filename);
+      const url = await this._storageService.upload(req);
       res.send({ url });
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(
@@ -56,8 +57,7 @@ export class FileRestApiController {
 
   private deleteFile = async (req: Request, res: Response) => {
     try {
-      // No need to await, delete does not return any info
-      this._storageService.delete(req.body.filename);
+      await this._storageService.delete(req);
 
       res.status(HttpStatus.NO_CONTENT).send({
         message: ts.localize(ClientResponse.DELETE_REQUEST_SENT, req.headers),

@@ -1,4 +1,10 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+  TableUnique,
+} from "typeorm";
 import { Logger } from "../../utils/Logger";
 
 export class ChangePermissionValidation_0_3_0_1729181792142
@@ -48,13 +54,40 @@ export class ChangePermissionValidation_0_3_0_1729181792142
       })
     );
 
+    await queryRunner.createUniqueConstraint(
+      "user_permissions",
+      new TableUnique({
+        columnNames: ["user_id", "permission_id"],
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      "user_permissions",
+      new TableForeignKey({
+        columnNames: ["user_id"],
+        referencedTableName: "user",
+        referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
+      })
+    );
+
+    await queryRunner.createForeignKey(
+      "user_permissions",
+      new TableForeignKey({
+        columnNames: ["permission_id"],
+        referencedTableName: "permission",
+        referencedColumnNames: ["id"],
+        onDelete: "CASCADE",
+      })
+    );
+
     let query = `INSERT INTO "permission" (name) VALUES `;
     query += `('get_all_users'), ('get_another_user'), `;
     query += `('change_another_user'), ('delete_another_user');`;
 
     await queryRunner.query(query);
 
-    Logger.logMigrationComplete("0_3_0");
+    Logger.logMigrationComplete("0.3.0");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
