@@ -1,17 +1,17 @@
 import "reflect-metadata";
 
-import { Logger } from "../utils/Logger";
-import { Environment } from "../config/Environment";
-import { ServerResponse } from "../enums/ServerResponse";
+import { Logger } from "utils/Logger";
+import { Environment } from "config/Environment";
+import { ServerResponse } from "enums/ServerResponse";
 
 // Models
-import { User } from "./models/User";
+import { User } from "database/models/User";
 import { DataSource } from "typeorm";
-import { File } from "./models/File";
-import { Permission } from "./models/Permission";
-import { UserPermissions } from "./models/UserPermission";
-import { Package } from "./models/Package";
-import { FileUsage } from "./models/FileUsage";
+import { File } from "database/models/File";
+import { Permission } from "database/models/Permission";
+import { UserPermissions } from "database/models/UserPermission";
+import { Package } from "database/models/Package";
+import { FileUsage } from "database/models/FileUsage";
 
 // Migrations imports
 import { CreateUserAndFileTables_0_1_1_1722683756069 as createUserAndFileTables } from "./migrations/0.1.1_CreateUserAndFileTables";

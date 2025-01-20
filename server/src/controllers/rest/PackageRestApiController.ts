@@ -1,13 +1,13 @@
 import { type Request, type Response, Router } from "express";
 
-import { type ApiContext } from "../../services/context/ApiContext";
-import { IStorage } from "../../interfaces/file/IStorage";
-import { verifyContentJSONMiddleware } from "../../middleware/file/FileMiddleware";
-import { throttleMiddleware } from "../../middleware/ThrottleMiddleware";
-import { HttpStatus } from "../../enums/HttpStatus";
-import { ErrorController } from "../../error/ErrorController";
-import { Database } from "../../database/Database";
-import { ServerServices } from "../../services/ServerServices";
+import { type ApiContext } from "services/context/ApiContext";
+import { IStorage } from "interfaces/file/IStorage";
+import { verifyContentJSONMiddleware } from "middleware/file/FileMiddleware";
+import { throttleMiddleware } from "middleware/ThrottleMiddleware";
+import { HttpStatus } from "enums/HttpStatus";
+import { ErrorController } from "error/ErrorController";
+import { Database } from "database/Database";
+import { ServerServices } from "services/ServerServices";
 
 export class PackageRestApiController {
   private _storageService: IStorage;

@@ -4,15 +4,15 @@ import path from "path";
 import * as jwt from "jsonwebtoken";
 import { type Request } from "express";
 
-import { Environment } from "../config/Environment";
+import { Environment } from "config/Environment";
 import {
   JWTPayload,
   JWTResponse,
   JWTSecret,
   TokenOptions,
-} from "../types/jwt/jwt";
-import { ClientResponse } from "../enums/ClientResponse";
-import { ClientError } from "../error/ClientError";
+} from "types/jwt/jwt";
+import { ClientResponse } from "enums/ClientResponse";
+import { ClientError } from "error/ClientError";
 
 const WRITE_PATH = path.resolve(process.cwd(), "storage/");
 

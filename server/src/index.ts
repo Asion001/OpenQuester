@@ -2,13 +2,13 @@ import express from "express";
 import { createServer, type Server } from "http";
 import { Server as IOServer } from "socket.io";
 
-import { Environment } from "./config/Environment";
+import { Environment } from "config/Environment";
+import { Database } from "database/Database";
+import { Logger } from "utils/Logger";
+import { AppDataSource } from "database/DataSource";
+import { ApiContext } from "services/context/ApiContext";
+import { ErrorController } from "error/ErrorController";
 import { ServeApi } from "./ServeApi";
-import { Logger } from "./utils/Logger";
-import { Database } from "./database/Database";
-import { AppDataSource } from "./database/DataSource";
-import { ApiContext } from "./services/context/ApiContext";
-import { ErrorController } from "./error/ErrorController";
 
 const main = async () => {
   Logger.info(`Initializing API Context`);

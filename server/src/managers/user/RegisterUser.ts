@@ -1,6 +1,6 @@
-import { IInputUserData } from "../../interfaces/user/IInputUserData";
-import { UserDataManager } from "./UserDataManager";
-import { Database } from "../../database/Database";
+import { IInputUserData } from "interfaces/user/IInputUserData";
+import { UserDataManager } from "managers/user/UserDataManager";
+import { Database } from "database/Database";
 
 export class RegisterUser extends UserDataManager {
   constructor(db: Database, data: IInputUserData) {

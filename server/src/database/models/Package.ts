@@ -6,9 +6,9 @@ import {
   JoinColumn,
 } from "typeorm";
 
-import { IPackage } from "../../interfaces/package/IPackage";
-import { OQContentStructure } from "../../interfaces/file/structures/OQContentStructure";
-import { User } from "./User";
+import { IPackage } from "interfaces/package/IPackage";
+import { OQContentStructure } from "interfaces/file/structures/OQContentStructure";
+import { User } from "database/models/User";
 
 /** Same type as `OQContentStructure`. Workaround to use custom type in TypeORM model */
 type ContentStructure = OQContentStructure;

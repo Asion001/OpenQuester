@@ -1,11 +1,11 @@
+import fs from "fs";
+import path from "path";
+import Swagger from "swagger-ui-express";
 import { type Request, type Response, Router } from "express";
 
-import { ApiContext } from "../../services/context/ApiContext";
-import Swagger from "swagger-ui-express";
-import path from "path";
-import fs from "fs";
-import { ErrorController } from "../../error/ErrorController";
-import { Logger } from "../../utils/Logger";
+import { ApiContext } from "services/context/ApiContext";
+import { ErrorController } from "error/ErrorController";
+import { Logger } from "utils/Logger";
 
 const SWAGGER_PREFIX = "[SWAGGER]: ";
 

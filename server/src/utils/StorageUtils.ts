@@ -1,5 +1,5 @@
-import { SHA256Characters } from "../constants/sha256";
-import { ValueUtils } from "./ValueUtils";
+import { SHA256Characters } from "constants/sha256";
+import { ValueUtils } from "utils/ValueUtils";
 
 export class StorageUtils {
   /**

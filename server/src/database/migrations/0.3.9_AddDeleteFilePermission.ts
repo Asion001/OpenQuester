@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import { Logger } from "../../utils/Logger";
+import { Logger } from "utils/Logger";
 
 export class AddDeleteFilePermission_0_3_9_1730832569761
   implements MigrationInterface

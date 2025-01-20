@@ -1,15 +1,15 @@
-import { Environment } from "../../config/Environment";
-import { IStorage } from "../../interfaces/file/IStorage";
-import { Storage } from "../../types/storage/storage";
-import { StorageType } from "../../types/storage/storageType";
-import { MinioStorageService } from "./MinioStorageService";
-import { IS3Context } from "../../interfaces/file/IS3Context";
-import { StorageContextBuilder } from "../context/storage/StorageContextBuilder";
-import { ServerResponse } from "../../enums/ServerResponse";
-import { ServerError } from "../../error/ServerError";
-import { ApiContext } from "../context/ApiContext";
-import { FileContext } from "../../types/file/fileContext";
-import { TemplateUtils } from "../../utils/TemplateUtils";
+import { Environment } from "config/Environment";
+import { IStorage } from "interfaces/file/IStorage";
+import { Storage } from "types/storage/storage";
+import { StorageType } from "types/storage/storageType";
+import { IS3Context } from "interfaces/file/IS3Context";
+import { ServerResponse } from "enums/ServerResponse";
+import { ServerError } from "error/ServerError";
+import { FileContext } from "types/file/fileContext";
+import { TemplateUtils } from "utils/TemplateUtils";
+import { StorageContextBuilder } from "services/context/storage/StorageContextBuilder";
+import { ApiContext } from "services/context/ApiContext";
+import { MinioStorageService } from "services/storage/MinioStorageService";
 
 export class StorageServiceFactory {
   private _storage!: IStorage;

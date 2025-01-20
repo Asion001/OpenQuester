@@ -1,4 +1,4 @@
-import { OQFileContentStructure } from "./OQFileContentStructure";
+import { OQFileContentStructure } from "interfaces/file/structures/OQFileContentStructure";
 
 export interface OQAnswerFile {
   file: OQFileContentStructure;

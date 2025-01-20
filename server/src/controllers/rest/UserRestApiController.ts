@@ -1,17 +1,17 @@
 import { type Request, type Response, Router } from "express";
 
-import { UserService } from "../../services/UserService";
-import { UpdateUser } from "../../managers/user/UpdateUser";
-import { ApiContext } from "../../services/context/ApiContext";
-import { ClientResponse } from "../../enums/ClientResponse";
-import { ErrorController } from "../../error/ErrorController";
-import { HttpStatus } from "../../enums/HttpStatus";
-import { requirePermissionIfIdProvided } from "../../middleware/permission/PermissionMiddleware";
-import { validateWithSchema } from "../../middleware/SchemaMiddleware";
-import { checkPermission } from "../../middleware/permission/PermissionMiddleware";
-import { Permissions } from "../../enums/Permissions";
-import { TranslateService as ts } from "../../services/text/TranslateService";
-import { ServerServices } from "../../services/ServerServices";
+import { UserService } from "services/UserService";
+import { UpdateUser } from "managers/user/UpdateUser";
+import { ApiContext } from "services/context/ApiContext";
+import { ClientResponse } from "enums/ClientResponse";
+import { ErrorController } from "error/ErrorController";
+import { HttpStatus } from "enums/HttpStatus";
+import { requirePermissionIfIdProvided } from "middleware/permission/PermissionMiddleware";
+import { validateWithSchema } from "middleware/SchemaMiddleware";
+import { checkPermission } from "middleware/permission/PermissionMiddleware";
+import { Permissions } from "enums/Permissions";
+import { TranslateService as ts } from "services/text/TranslateService";
+import { ServerServices } from "services/ServerServices";
 
 /**
  * Handles all endpoints related for User CRUD

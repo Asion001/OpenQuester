@@ -1,6 +1,6 @@
-import { Database } from "../../database/Database";
-import { FileRepository } from "../../database/repositories/FileRepository";
-import { FileUsageRepository } from "../../database/repositories/FileUsageRepository";
+import { Database } from "database/Database";
+import { FileRepository } from "database/repositories/FileRepository";
+import { FileUsageRepository } from "database/repositories/FileUsageRepository";
 
 export class DependencyService {
   private static _fileRepository: FileRepository;

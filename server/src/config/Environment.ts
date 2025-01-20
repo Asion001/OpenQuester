@@ -4,14 +4,14 @@ import path from "path";
 import { bold } from "colorette";
 import { type LoggerOptions } from "typeorm";
 
-import { Logger } from "../utils/Logger";
-import { JWTUtils } from "../utils/JWTUtils";
-import { ValueUtils } from "../utils/ValueUtils";
-import { EnvVar } from "../types/env/env";
-import { ServerResponse } from "../enums/ServerResponse";
-import { ServerError } from "../error/ServerError";
-import { LogLevel } from "../types/log/log";
-import { TemplateUtils } from "../utils/TemplateUtils";
+import { Logger } from "utils/Logger";
+import { JWTUtils } from "utils/JWTUtils";
+import { ValueUtils } from "utils/ValueUtils";
+import { EnvVar } from "types/env/env";
+import { ServerResponse } from "enums/ServerResponse";
+import { ServerError } from "error/ServerError";
+import { LogLevel } from "types/log/log";
+import { TemplateUtils } from "utils/TemplateUtils";
 
 const ENV_TYPES = ["local", "prod", "test"];
 const ENV_PREFIX = "[ENV]: ";

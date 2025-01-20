@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
-import { Logger } from "../../utils/Logger";
-import { ApiContext } from "../../services/context/ApiContext";
-import { SocketIOEvents } from "../../enums/SocketIOEvents";
+import { Logger } from "utils/Logger";
+import { ApiContext } from "services/context/ApiContext";
+import { SocketIOEvents } from "enums/SocketIOEvents";
 
 const IO_PREFIX = "[IO]: ";
 

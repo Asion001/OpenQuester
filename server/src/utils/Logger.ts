@@ -11,7 +11,7 @@ import {
   yellow,
   magenta,
 } from "colorette";
-import { LogLevel } from "../types/log/log";
+import { LogLevel } from "types/log/log";
 
 /**
  * Logger class used for writing logs and for prettier console output

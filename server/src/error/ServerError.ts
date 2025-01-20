@@ -1,4 +1,4 @@
-import { OQError } from "./OQError";
+import { OQError } from "error/OQError";
 
 export class ServerError extends OQError {
   constructor(
