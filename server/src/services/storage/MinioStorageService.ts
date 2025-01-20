@@ -4,8 +4,8 @@ import https from "https";
 
 import { Request } from "express";
 
-import { IStorage } from "interfaces/file/IStorage";
-import { IS3Context } from "interfaces/file/IS3Context";
+import { IStorage } from "types/file/IStorage";
+import { IS3Context } from "types/file/IS3Context";
 import { PackageRepository } from "database/repositories/PackageRepository";
 import { Database } from "database/Database";
 import { User } from "database/models/User";

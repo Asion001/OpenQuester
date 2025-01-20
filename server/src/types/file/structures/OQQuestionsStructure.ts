@@ -1,5 +1,5 @@
-import { OQAnswerFile } from "interfaces/file/structures/OQAnswerFile";
-import { OQQuestionFile } from "interfaces/file/structures/OQQuestionFile";
+import { OQAnswerFile } from "types/file/structures/OQAnswerFile";
+import { OQQuestionFile } from "types/file/structures/OQQuestionFile";
 
 export interface OQQuestionsStructure {
   price: number;

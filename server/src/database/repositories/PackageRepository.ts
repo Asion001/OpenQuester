@@ -1,10 +1,10 @@
 import { Repository } from "typeorm";
-import { Package } from "../models/Package";
-import { Database } from "../Database";
-import { OQContentStructure } from "../../interfaces/file/structures/OQContentStructure";
-import { ClientError } from "../../error/ClientError";
-import { ClientResponse } from "../../enums/ClientResponse";
-import { User } from "../models/User";
+import { Package } from "database/models/Package";
+import { Database } from "database/Database";
+import { OQContentStructure } from "types/file/structures/OQContentStructure";
+import { ClientError } from "error/ClientError";
+import { ClientResponse } from "enums/ClientResponse";
+import { User } from "database/models/User";
 
 export class PackageRepository {
   private static _instance: PackageRepository;

@@ -1,5 +1,5 @@
-import { OQMetadataStructure } from "interfaces/file/structures/OQMetadataStructure";
-import { OQRoundStructure } from "interfaces/file/structures/OQRoundStructure";
+import { OQMetadataStructure } from "types/file/structures/OQMetadataStructure";
+import { OQRoundStructure } from "types/file/structures/OQRoundStructure";
 
 /**
  * Top-level content structure

@@ -1,4 +1,4 @@
-import { OQThemeStructure } from "interfaces/file/structures/OQThemeStructure";
+import { OQThemeStructure } from "types/file/structures/OQThemeStructure";
 
 export interface OQRoundStructure {
   name: string;

@@ -1,8 +1,8 @@
 import { Environment } from "config/Environment";
-import { IStorage } from "interfaces/file/IStorage";
+import { IStorage } from "types/file/IStorage";
 import { Storage } from "types/storage/storage";
 import { StorageType } from "types/storage/storageType";
-import { IS3Context } from "interfaces/file/IS3Context";
+import { IS3Context } from "types/file/IS3Context";
 import { ServerResponse } from "enums/ServerResponse";
 import { ServerError } from "error/ServerError";
 import { FileContext } from "types/file/fileContext";

@@ -2,7 +2,7 @@ import { type ApiContext } from "services/context/ApiContext";
 import { type Request } from "express";
 
 import { UserPermissions } from "database/models/UserPermission";
-import { IPermission } from "interfaces/IPermission";
+import { IPermission } from "types/IPermission";
 import { Permission } from "database/models/Permission";
 import { ValueUtils } from "utils/ValueUtils";
 import { ClientResponse } from "enums/ClientResponse";

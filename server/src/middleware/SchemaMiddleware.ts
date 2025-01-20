@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express";
-import { ISchema } from "interfaces/ISchema";
+import { ISchema } from "types/ISchema";
 import { ErrorController } from "error/ErrorController";
 import { Database } from "database/Database";
 

@@ -1,17 +1,17 @@
 import { type Repository } from "typeorm";
-import { User } from "../models/User";
-import { type Database } from "../Database";
-import { IRegisterUser } from "../../interfaces/user/IRegisterUser";
-import { CryptoUtils } from "../../utils/CryptoUtils";
-import { ValueUtils } from "../../utils/ValueUtils";
-import { ILoginUser } from "../../interfaces/user/ILoginUser";
-import { ClientError } from "../../error/ClientError";
-import { ClientResponse } from "../../enums/ClientResponse";
-import { ISelectOptions } from "../../interfaces/ISelectOptions";
-import { UserOrId } from "../../types/user/user";
-import { JWTUtils } from "../../utils/JWTUtils";
-import { ApiContext } from "../../services/context/ApiContext";
-import { FileUsageRepository } from "./FileUsageRepository";
+import { User } from "database/models/User";
+import { type Database } from "database/Database";
+import { IRegisterUser } from "types/user/IRegisterUser";
+import { CryptoUtils } from "utils/CryptoUtils";
+import { ValueUtils } from "utils/ValueUtils";
+import { ILoginUser } from "types/user/ILoginUser";
+import { ClientError } from "error/ClientError";
+import { ClientResponse } from "enums/ClientResponse";
+import { ISelectOptions } from "types/ISelectOptions";
+import { UserOrId } from "types/user/user";
+import { JWTUtils } from "utils/JWTUtils";
+import { ApiContext } from "services/context/ApiContext";
+import { FileUsageRepository } from "database/repositories/FileUsageRepository";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",

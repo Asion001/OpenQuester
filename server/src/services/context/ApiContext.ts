@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { IApiContext } from "interfaces/context/IApiContext";
+import { IApiContext } from "types/context/IApiContext";
 
 export class ApiContext {
   private readonly _ctx: IApiContext;

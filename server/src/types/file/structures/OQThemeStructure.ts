@@ -1,4 +1,4 @@
-import { OQQuestionsStructure } from "interfaces/file/structures/OQQuestionsStructure";
+import { OQQuestionsStructure } from "types/file/structures/OQQuestionsStructure";
 
 export interface OQThemeStructure {
   name: string;
