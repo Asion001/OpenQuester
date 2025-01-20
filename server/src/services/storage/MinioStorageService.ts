@@ -233,7 +233,6 @@ export class MinioStorageService implements IStorage {
       return false;
     }
 
-    // If user has permissions then avatar will be deleted for everyone who use it
     const hasPermission = await Permission.checkPermission(
       user,
       Permissions.DELETE_FILE
