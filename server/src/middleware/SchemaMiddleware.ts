@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
-import { ISchema } from "../interfaces/ISchema";
-import { ErrorController } from "../error/ErrorController";
-import { Database } from "../database/Database";
+import { ISchema } from "interfaces/ISchema";
+import { ErrorController } from "error/ErrorController";
+import { Database } from "database/Database";
 
 type SchemaConstructor<T extends ISchema> = new (db: Database, data: any) => T;
 

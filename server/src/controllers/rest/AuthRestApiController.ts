@@ -1,18 +1,18 @@
 import { type Request, type Response, Router } from "express";
 
-import { AuthService } from "../../services/AuthService";
-import { RegisterUser } from "../../managers/user/RegisterUser";
-import { LoginUser } from "../../managers/user/LoginUser";
-import { JWTUtils } from "../../utils/JWTUtils";
-import { ApiContext } from "../../services/context/ApiContext";
+import { AuthService } from "services/AuthService";
+import { RegisterUser } from "managers/user/RegisterUser";
+import { LoginUser } from "managers/user/LoginUser";
+import { JWTUtils } from "utils/JWTUtils";
+import { ApiContext } from "services/context/ApiContext";
 import {
   validateRefresh,
   validateTokenForAuth,
-} from "../../middleware/AuthMiddleware";
-import { ErrorController } from "../../error/ErrorController";
-import { HttpStatus } from "../../enums/HttpStatus";
-import { validateWithSchema } from "../../middleware/SchemaMiddleware";
-import { ServerServices } from "../../services/ServerServices";
+} from "middleware/AuthMiddleware";
+import { ErrorController } from "error/ErrorController";
+import { HttpStatus } from "enums/HttpStatus";
+import { validateWithSchema } from "middleware/SchemaMiddleware";
+import { ServerServices } from "services/ServerServices";
 
 /**
  * Handles all endpoints related to user authorization

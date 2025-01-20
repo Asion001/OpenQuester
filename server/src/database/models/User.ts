@@ -10,10 +10,10 @@ import {
   OneToMany,
 } from "typeorm";
 
-import { IUserModel } from "../../interfaces/user/IUserModel";
-import { File } from "./File";
-import { Permission } from "./Permission";
-import { Package } from "./Package";
+import { IUserModel } from "interfaces/user/IUserModel";
+import { File } from "database/models/File";
+import { Permission } from "database/models/Permission";
+import { Package } from "database/models/Package";
 
 @Entity("user")
 @Unique(["email", "name"])

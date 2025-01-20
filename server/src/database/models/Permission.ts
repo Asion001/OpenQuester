@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 
-import { IPermission } from "../../interfaces/IPermission";
-import { User } from "./User";
-import { Permissions } from "../../enums/Permissions";
+import { IPermission } from "interfaces/IPermission";
+import { Permissions } from "enums/Permissions";
+import { User } from "database/models/User";
 
 @Entity("permission")
 export class Permission implements IPermission {

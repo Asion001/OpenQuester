@@ -1,5 +1,5 @@
-import { ClientResponse } from "../enums/ClientResponse";
-import { ClientError } from "../error/ClientError";
+import { ClientResponse } from "enums/ClientResponse";
+import { ClientError } from "error/ClientError";
 
 export class ValueUtils {
   /**

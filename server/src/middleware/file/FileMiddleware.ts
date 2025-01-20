@@ -1,9 +1,9 @@
 import { type Request, type Response, type NextFunction } from "express";
 
-import { ValueUtils } from "../../utils/ValueUtils";
-import { HttpStatus } from "../../enums/HttpStatus";
-import { ClientResponse } from "../../enums/ClientResponse";
-import { TranslateService as ts } from "../../services/text/TranslateService";
+import { ValueUtils } from "utils/ValueUtils";
+import { HttpStatus } from "enums/HttpStatus";
+import { ClientResponse } from "enums/ClientResponse";
+import { TranslateService as ts } from "services/text/TranslateService";
 
 /** Ensures that content is valid JSON object */
 export const verifyContentJSONMiddleware = async (

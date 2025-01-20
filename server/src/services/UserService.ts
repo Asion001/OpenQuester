@@ -1,15 +1,15 @@
-import { type ApiContext } from "./context/ApiContext";
+import { type ApiContext } from "services/context/ApiContext";
 import { type Request } from "express";
 
-import { UserPermissions } from "../database/models/UserPermission";
-import { IPermission } from "../interfaces/IPermission";
-import { Permission } from "../database/models/Permission";
-import { ValueUtils } from "../utils/ValueUtils";
-import { ClientResponse } from "../enums/ClientResponse";
-import { ClientError } from "../error/ClientError";
-import { UserRepository } from "../database/repositories/UserRepository";
-import { JWTUtils } from "../utils/JWTUtils";
-import { FileUsageRepository } from "../database/repositories/FileUsageRepository";
+import { UserPermissions } from "database/models/UserPermission";
+import { IPermission } from "interfaces/IPermission";
+import { Permission } from "database/models/Permission";
+import { ValueUtils } from "utils/ValueUtils";
+import { ClientResponse } from "enums/ClientResponse";
+import { ClientError } from "error/ClientError";
+import { UserRepository } from "database/repositories/UserRepository";
+import { JWTUtils } from "utils/JWTUtils";
+import { FileUsageRepository } from "database/repositories/FileUsageRepository";
 
 export class UserService {
   /**

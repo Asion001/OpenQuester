@@ -1,13 +1,13 @@
 import { type Request } from "express";
 
-import { type ApiContext } from "./context/ApiContext";
+import { type ApiContext } from "services/context/ApiContext";
 
-import { JWTResponse } from "../types/jwt/jwt";
-import { JWTUtils } from "../utils/JWTUtils";
-import { CryptoUtils } from "../utils/CryptoUtils";
-import { ClientResponse } from "../enums/ClientResponse";
-import { ClientError } from "../error/ClientError";
-import { UserRepository } from "../database/repositories/UserRepository";
+import { JWTResponse } from "types/jwt/jwt";
+import { JWTUtils } from "utils/JWTUtils";
+import { CryptoUtils } from "utils/CryptoUtils";
+import { ClientResponse } from "enums/ClientResponse";
+import { ClientError } from "error/ClientError";
+import { UserRepository } from "database/repositories/UserRepository";
 
 /**
  * Handles all business logic of user authorization

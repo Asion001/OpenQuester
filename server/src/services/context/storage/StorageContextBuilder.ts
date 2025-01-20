@@ -1,9 +1,9 @@
-import { Environment } from "../../../config/Environment";
-import { IS3Context } from "../../../interfaces/file/IS3Context";
-import { ValueUtils } from "../../../utils/ValueUtils";
-import { ServerResponse } from "../../../enums/ServerResponse";
-import { ServerError } from "../../../error/ServerError";
-import { TemplateUtils } from "../../../utils/TemplateUtils";
+import { Environment } from "config/Environment";
+import { IS3Context } from "interfaces/file/IS3Context";
+import { ValueUtils } from "utils/ValueUtils";
+import { ServerResponse } from "enums/ServerResponse";
+import { ServerError } from "error/ServerError";
+import { TemplateUtils } from "utils/TemplateUtils";
 
 export class StorageContextBuilder {
   public static buildS3Context(): IS3Context | undefined {

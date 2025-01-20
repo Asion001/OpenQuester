@@ -1,7 +1,7 @@
-import { UserService } from "./UserService";
-import { ContentStructureService } from "./ContentStructureService";
-import { AuthService } from "./AuthService";
-import { StorageServiceFactory } from "./storage/StorageServiceFactory";
+import { UserService } from "services/UserService";
+import { ContentStructureService } from "services/ContentStructureService";
+import { AuthService } from "services/AuthService";
+import { StorageServiceFactory } from "services/storage/StorageServiceFactory";
 
 /**
  * Server services locator

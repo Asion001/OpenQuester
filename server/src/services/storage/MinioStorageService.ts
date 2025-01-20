@@ -4,27 +4,27 @@ import https from "https";
 
 import { Request } from "express";
 
-import { IStorage } from "../../interfaces/file/IStorage";
-import { IS3Context } from "../../interfaces/file/IS3Context";
-import { ContentStructureService } from "../ContentStructureService";
-import { ApiContext } from "../context/ApiContext";
-import { PackageRepository } from "../../database/repositories/PackageRepository";
-import { Database } from "../../database/Database";
-import { User } from "../../database/models/User";
-import { FileRepository } from "../../database/repositories/FileRepository";
-import { ServerServices } from "../ServerServices";
-import { StorageUtils } from "../../utils/StorageUtils";
-import { Logger } from "../../utils/Logger";
-import { FileUsageRepository } from "../../database/repositories/FileUsageRepository";
-import { File } from "../../database/models/File";
-import { Package } from "../../database/models/Package";
-import { UserRepository } from "../../database/repositories/UserRepository";
-import { ClientError } from "../../error/ClientError";
-import { ClientResponse } from "../../enums/ClientResponse";
-import { DependencyService } from "../dependency/DependencyService";
-import { UsageEntries } from "../../types/usage/usage";
-import { Permission } from "../../database/models/Permission";
-import { Permissions } from "../../enums/Permissions";
+import { IStorage } from "interfaces/file/IStorage";
+import { IS3Context } from "interfaces/file/IS3Context";
+import { PackageRepository } from "database/repositories/PackageRepository";
+import { Database } from "database/Database";
+import { User } from "database/models/User";
+import { FileRepository } from "database/repositories/FileRepository";
+import { StorageUtils } from "utils/StorageUtils";
+import { Logger } from "utils/Logger";
+import { FileUsageRepository } from "database/repositories/FileUsageRepository";
+import { File } from "database/models/File";
+import { Package } from "database/models/Package";
+import { UserRepository } from "database/repositories/UserRepository";
+import { ClientError } from "error/ClientError";
+import { ClientResponse } from "enums/ClientResponse";
+import { UsageEntries } from "types/usage/usage";
+import { Permission } from "database/models/Permission";
+import { Permissions } from "enums/Permissions";
+import { ContentStructureService } from "services/ContentStructureService";
+import { ApiContext } from "services/context/ApiContext";
+import { ServerServices } from "services/ServerServices";
+import { DependencyService } from "services/dependency/DependencyService";
 
 const MINIO_PREFIX = "[MINIO]: ";
 

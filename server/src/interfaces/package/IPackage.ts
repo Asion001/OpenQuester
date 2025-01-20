@@ -1,5 +1,5 @@
-import { User } from "../../database/models/User";
-import { OQContentStructure } from "../file/structures/OQContentStructure";
+import { User } from "database/models/User";
+import { OQContentStructure } from "interfaces/file/structures/OQContentStructure";
 
 export interface IPackage {
   title: string;

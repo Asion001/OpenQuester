@@ -5,7 +5,7 @@ import {
   TableColumn,
   TableForeignKey,
 } from "typeorm";
-import { Logger } from "../../utils/Logger";
+import { Logger } from "utils/Logger";
 
 export class WriteMoreInfoToDB_0_2_9_1725692779638
   implements MigrationInterface

@@ -1,10 +1,10 @@
-import { Package } from "../database/models/Package";
-import { ClientResponse } from "../enums/ClientResponse";
-import { ClientError } from "../error/ClientError";
-import { IStorage } from "../interfaces/file/IStorage";
-import { OQContentStructure } from "../interfaces/file/structures/OQContentStructure";
-import { Logger } from "../utils/Logger";
-import { ValueUtils } from "../utils/ValueUtils";
+import { Package } from "database/models/Package";
+import { ClientResponse } from "enums/ClientResponse";
+import { ClientError } from "error/ClientError";
+import { IStorage } from "interfaces/file/IStorage";
+import { OQContentStructure } from "interfaces/file/structures/OQContentStructure";
+import { Logger } from "utils/Logger";
+import { ValueUtils } from "utils/ValueUtils";
 
 /**
  * Class that manages all actions related to content.json file and it's structure

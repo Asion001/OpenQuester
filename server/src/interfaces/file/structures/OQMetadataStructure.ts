@@ -1,4 +1,4 @@
-import { OQLogoFile } from "./OQLogoFile";
+import { OQLogoFile } from "interfaces/file/structures/OQLogoFile";
 
 export interface OQMetadataStructure {
   id: string;

@@ -4,11 +4,12 @@ import {
   type NextFunction,
   type RequestHandler,
 } from "express";
-import { JWTUtils } from "../utils/JWTUtils";
-import { HttpStatus } from "../enums/HttpStatus";
-import { ValueUtils } from "../utils/ValueUtils";
-import { ClientResponse } from "../enums/ClientResponse";
-import { TranslateService as ts } from "../services/text/TranslateService";
+
+import { JWTUtils } from "utils/JWTUtils";
+import { HttpStatus } from "enums/HttpStatus";
+import { ValueUtils } from "utils/ValueUtils";
+import { ClientResponse } from "enums/ClientResponse";
+import { TranslateService as ts } from "services/text/TranslateService";
 
 // Define rate limit configuration
 const RATE_LIMIT = 10;

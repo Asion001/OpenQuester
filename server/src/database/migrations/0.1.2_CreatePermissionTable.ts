@@ -5,7 +5,7 @@ import {
   TableForeignKey,
   TableUnique,
 } from "typeorm";
-import { Logger } from "../../utils/Logger";
+import { Logger } from "utils/Logger";
 
 export class CreatePermissionTable_0_1_2_1723128633623
   implements MigrationInterface

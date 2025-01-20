@@ -1,14 +1,14 @@
 import { type Request, type Response, Router } from "express";
 
-import { IStorage } from "../../interfaces/file/IStorage";
-import { validateFilename } from "../../middleware/file/FileMiddleware";
-import { ApiContext } from "../../services/context/ApiContext";
-import { ClientResponse } from "../../enums/ClientResponse";
-import { ErrorController } from "../../error/ErrorController";
-import { HttpStatus } from "../../enums/HttpStatus";
-import { TranslateService as ts } from "../../services/text/TranslateService";
-import { ServerServices } from "../../services/ServerServices";
-import { throttleMiddleware } from "../../middleware/ThrottleMiddleware";
+import { IStorage } from "interfaces/file/IStorage";
+import { validateFilename } from "middleware/file/FileMiddleware";
+import { ApiContext } from "services/context/ApiContext";
+import { ClientResponse } from "enums/ClientResponse";
+import { ErrorController } from "error/ErrorController";
+import { HttpStatus } from "enums/HttpStatus";
+import { TranslateService as ts } from "services/text/TranslateService";
+import { ServerServices } from "services/ServerServices";
+import { throttleMiddleware } from "middleware/ThrottleMiddleware";
 
 export class FileRestApiController {
   private _storageService: IStorage;

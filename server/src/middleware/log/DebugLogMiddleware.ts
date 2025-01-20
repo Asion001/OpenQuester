@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
-import { Logger } from "../../utils/Logger";
-import { ValueUtils } from "../../utils/ValueUtils";
-import { Environment } from "../../config/Environment";
+import { Logger } from "utils/Logger";
+import { ValueUtils } from "utils/ValueUtils";
+import { Environment } from "config/Environment";
 
 export const logMiddleware = async (
   req: Request,

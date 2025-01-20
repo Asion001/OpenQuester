@@ -1,17 +1,17 @@
 import { IncomingHttpHeaders } from "http";
 import { QueryFailedError } from "typeorm";
 
-import { HttpStatus } from "../enums/HttpStatus";
-import { ServerResponse } from "../enums/ServerResponse";
-import { Logger } from "../utils/Logger";
-import { ClientError } from "./ClientError";
-import { OQError } from "./OQError";
-import { ServerError } from "./ServerError";
-import { ClientResponse } from "../enums/ClientResponse";
-import { TranslateService as ts } from "../services/text/TranslateService";
-import { Language } from "../types/text/translation";
-import { ValueUtils } from "../utils/ValueUtils";
-import { TemplateUtils } from "../utils/TemplateUtils";
+import { HttpStatus } from "enums/HttpStatus";
+import { ServerResponse } from "enums/ServerResponse";
+import { Logger } from "utils/Logger";
+import { ClientResponse } from "enums/ClientResponse";
+import { TranslateService as ts } from "services/text/TranslateService";
+import { Language } from "types/text/translation";
+import { ValueUtils } from "utils/ValueUtils";
+import { TemplateUtils } from "utils/TemplateUtils";
+import { ClientError } from "error/ClientError";
+import { OQError } from "error/OQError";
+import { ServerError } from "error/ServerError";
 
 export class ErrorController {
   /**

@@ -4,19 +4,19 @@ import cors from "cors";
 import { type Server as HTTPServer } from "http";
 import { type Server as IOServer } from "socket.io";
 
-import { type Database } from "./database/Database";
-import { type ApiContext } from "./services/context/ApiContext";
+import { type Database } from "database/Database";
+import { type ApiContext } from "services/context/ApiContext";
 
-import { Logger } from "./utils/Logger";
-import { AuthRestApiController } from "./controllers/rest/AuthRestApiController";
-import { verifyToken } from "./middleware/AuthMiddleware";
-import { UserRestApiController } from "./controllers/rest/UserRestApiController";
-import { FileRestApiController } from "./controllers/rest/FileRestApiController";
-import { PackageRestApiController } from "./controllers/rest/PackageRestApiController";
-import { ServerError } from "./error/ServerError";
-import { logMiddleware } from "./middleware/log/DebugLogMiddleware";
-import { SwaggerRestApiController } from "./controllers/rest/SwaggerController";
-import { SocketIOController } from "./controllers/io/SocketIOController";
+import { Logger } from "utils/Logger";
+import { AuthRestApiController } from "controllers/rest/AuthRestApiController";
+import { verifyToken } from "middleware/AuthMiddleware";
+import { UserRestApiController } from "controllers/rest/UserRestApiController";
+import { FileRestApiController } from "controllers/rest/FileRestApiController";
+import { PackageRestApiController } from "controllers/rest/PackageRestApiController";
+import { ServerError } from "error/ServerError";
+import { logMiddleware } from "middleware/log/DebugLogMiddleware";
+import { SwaggerRestApiController } from "controllers/rest/SwaggerController";
+import { SocketIOController } from "controllers/io/SocketIOController";
 
 const APP_PREFIX = "[APP]: ";
 

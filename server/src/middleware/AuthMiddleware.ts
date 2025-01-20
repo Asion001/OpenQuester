@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import { type Request, type Response, type NextFunction } from "express";
 
-import { Environment } from "../config/Environment";
-import { ClientResponse } from "../enums/ClientResponse";
-import { HttpStatus } from "../enums/HttpStatus";
-import { TranslateService as ts } from "../services/text/TranslateService";
+import { Environment } from "config/Environment";
+import { ClientResponse } from "enums/ClientResponse";
+import { HttpStatus } from "enums/HttpStatus";
+import { TranslateService as ts } from "services/text/TranslateService";
 
 export const verifyToken = (
   req: Request,
