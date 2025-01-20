@@ -1,6 +1,7 @@
 import { Request } from "express";
-import { User } from "../../database/models/User";
-import { Package } from "../../database/models/Package";
+
+import { User } from "database/models/User";
+import { Package } from "database/models/Package";
 
 export interface IStorage {
   /** @returns presigned url */
