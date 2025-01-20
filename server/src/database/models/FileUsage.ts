@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 
-import { IFileUsage } from "interfaces/file/IFileUsage";
+import { IFileUsage } from "types/file/IFileUsage";
 import { File } from "database/models/File";
 import { Package } from "database/models/Package";
 import { User } from "database/models/User";

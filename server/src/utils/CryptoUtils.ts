@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { ICrypto } from "interfaces/ICrypto";
+import { ICrypto } from "types/ICrypto";
 
 export class CryptoUtils {
   public static async hash(

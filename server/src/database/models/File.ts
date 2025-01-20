@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-import { IFile } from "interfaces/file/IFile";
+import { IFile } from "types/file/IFile";
 
 @Entity("file")
 export class File implements IFile {

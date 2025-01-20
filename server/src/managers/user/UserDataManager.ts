@@ -1,12 +1,12 @@
 import Joi from "joi";
 
-import { IInputUserData } from "interfaces/user/IInputUserData";
+import { IInputUserData } from "types/user/IInputUserData";
 import { ValueUtils } from "utils/ValueUtils";
 import { ClientResponse } from "enums/ClientResponse";
 import { ServerResponse } from "enums/ServerResponse";
 import { ClientError } from "error/ClientError";
 import { ServerError } from "error/ServerError";
-import { ISchema } from "interfaces/ISchema";
+import { ISchema } from "types/ISchema";
 import { FileRepository } from "database/repositories/FileRepository";
 import { Database } from "database/Database";
 

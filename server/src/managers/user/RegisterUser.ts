@@ -1,4 +1,4 @@
-import { IInputUserData } from "interfaces/user/IInputUserData";
+import { IInputUserData } from "types/user/IInputUserData";
 import { UserDataManager } from "managers/user/UserDataManager";
 import { Database } from "database/Database";
 

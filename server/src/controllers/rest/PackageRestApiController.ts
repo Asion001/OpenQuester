@@ -1,7 +1,7 @@
 import { type Request, type Response, Router } from "express";
 
 import { type ApiContext } from "services/context/ApiContext";
-import { IStorage } from "interfaces/file/IStorage";
+import { IStorage } from "types/file/IStorage";
 import { verifyContentJSONMiddleware } from "middleware/file/FileMiddleware";
 import { throttleMiddleware } from "middleware/ThrottleMiddleware";
 import { HttpStatus } from "enums/HttpStatus";

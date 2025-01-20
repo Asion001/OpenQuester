@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 
-import { IPermission } from "interfaces/IPermission";
+import { IPermission } from "types/IPermission";
 import { Permissions } from "enums/Permissions";
 import { User } from "database/models/User";
 
