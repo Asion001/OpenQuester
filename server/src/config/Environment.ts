@@ -34,6 +34,13 @@ export class Environment {
   public DB_PORT!: number;
   public DB_LOGGER!: LoggerOptions;
 
+  // Redis
+  public REDIS_USERNAME!: string;
+  public REDIS_PASSWORD!: string;
+  public REDIS_HOST!: string;
+  public REDIS_PORT!: number;
+  public REDIS_DB_NUMBER!: number;
+
   // JWT vars
   public JWT_SECRET!: string;
   public JWT_SCHEME!: string;
@@ -99,7 +106,8 @@ export class Environment {
   public getEnvVar(
     variable: string,
     type: EnvVar | EnvVar[],
-    defaultValue: unknown = undefined
+    defaultValue: unknown = undefined,
+    optional: boolean = false
   ): any {
     let success = false;
     let value = process.env[variable] ?? defaultValue;
@@ -125,7 +133,7 @@ export class Environment {
         case "string":
           return String(value);
       }
-    } else {
+    } else if (!optional) {
       throw new ServerError(
         TemplateUtils.text(ServerResponse.ENV_VAR_WRONG_TYPE, {
           var: variable,
@@ -170,6 +178,16 @@ export class Environment {
     this.loadJWT();
 
     this.LOG_LEVEL = this.getEnvVar("LOG_LEVEL", "string", "info");
+
+    this.loadRedis();
+  }
+
+  private loadRedis() {
+    this.REDIS_USERNAME = this.getEnvVar("REDIS_USERNAME", "string", "", true);
+    this.REDIS_PASSWORD = this.getEnvVar("REDIS_PASSWORD", "string", "", true);
+    this.REDIS_HOST = this.getEnvVar("REDIS_HOST", "string", "localhost");
+    this.REDIS_PORT = this.getEnvVar("REDIS_PORT", "number", 6379);
+    this.REDIS_DB_NUMBER = this.getEnvVar("REDIS_DB_NUMBER", "number", 0);
   }
 
   private loadJWT() {
