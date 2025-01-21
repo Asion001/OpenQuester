@@ -15,8 +15,8 @@ storage/test/
 .nyc_output/
 test/performance/
 
-# Minio
-minio/
+# Data
+data/
 
 # Openapi scheme
 schema.json

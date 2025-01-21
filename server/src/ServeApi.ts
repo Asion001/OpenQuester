@@ -17,6 +17,7 @@ import { ServerError } from "error/ServerError";
 import { logMiddleware } from "middleware/log/DebugLogMiddleware";
 import { SwaggerRestApiController } from "controllers/rest/SwaggerController";
 import { SocketIOController } from "controllers/io/SocketIOController";
+import { RedisConfig } from "config/RedisConfig";
 
 const APP_PREFIX = "[APP]: ";
 
@@ -61,6 +62,9 @@ export class ServeApi {
 
       // Attach API controllers
       this._attachControllers();
+
+      // Connect to Redis
+      await RedisConfig.waitForConnection();
     } catch (err: unknown) {
       let message = "unknown error";
       if (err instanceof Error) {

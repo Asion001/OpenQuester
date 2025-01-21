@@ -31,8 +31,23 @@ services:
       MINIO_ROOT_USER: ROOTNAME
       MINIO_ROOT_PASSWORD: CHANGEME123
     volumes:
-      - ./minio/data:/data
+      - ./data/minio:/data
     command: server /data --console-address ":9001"
+
+  # If you want to store data after container restart, do not forget to give permission to the folder
+  # Also adjust ports from 127.0.0.1:6380:6379 to 127.0.0.1:6379:6379 if you need default port
+  # sudo chown -R 1001:1001 ./data/redis && sudo chmod -R 775 ./data/redis
+  oq-redis:
+    container_name: oq-redis
+    image: bitnami/redis
+    ports:
+      - "127.0.0.1:6380:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+      - REDIS_AOF_ENABLED=yes
+    volumes:
+      - ./data/redis:/bitnami/redis/data
 
 volumes:
   pgdata:
