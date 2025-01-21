@@ -12,6 +12,13 @@ DB_PASS=
 DB_HOST=
 DB_PORT=
 
+# Redis
+REDIS_USERNAME=
+REDIS_PASSWORD=
+REDIS_HOST=
+REDIS_PORT=
+REDIS_DB_NUMBER=
+
 # Logs
 # info | debug | verbose
 LOG_LEVEL=
