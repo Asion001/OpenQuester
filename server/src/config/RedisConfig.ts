@@ -6,19 +6,19 @@ import { Logger } from "utils/Logger";
 const REDIS_PREFIX = "[REDIS]: ";
 
 export class RedisConfig {
-  private static _instance: Redis;
+  private static _client: Redis;
   private static _env: Environment = Environment.instance;
 
-  public static getInstance(): Redis {
-    if (!this._instance) {
+  public static getClient(): Redis {
+    if (!this._client) {
       Logger.debug(this._generateLink());
-      this._instance = new Redis(this._generateLink());
+      this._client = new Redis(this._generateLink());
     }
-    return this._instance;
+    return this._client;
   }
 
   public static async waitForConnection(): Promise<void> {
-    const client = this.getInstance();
+    const client = this.getClient();
     return new Promise((resolve, reject) => {
       client.on("ready", () => {
         Logger.info("Redis client is ready", REDIS_PREFIX);

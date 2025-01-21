@@ -6,7 +6,7 @@ export class RedisService {
   private _client: Redis;
 
   constructor() {
-    this._client = RedisConfig.getInstance();
+    this._client = RedisConfig.getClient();
   }
 
   public get connected() {
