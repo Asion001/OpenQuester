@@ -704,6 +704,86 @@
           }
         }
       }
+    },
+    "/v1/games": {
+      "get": {
+        "summary": "Get all games",
+        "tags": ["Game"],
+        "responses": {
+          "200": {
+            "description": "Get all games successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IGameListItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new game",
+        "tags": ["Game"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IGameCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Game created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1077,6 +1157,180 @@
           "answerFile": {
             "type": "object",
             "$ref": "#/components/schemas/OQAnswerFile"
+          }
+        }
+      },
+      "IGameState": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "game1234"
+          },
+          "createdBy": {
+            "type": "number",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Game Title"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "currentRound": {
+            "type": "number",
+            "example": 1
+          },
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Player"
+            }
+          },
+          "maxPlayers": {
+            "type": "number",
+            "example": 10
+          },
+          "packageId": {
+            "type": "number",
+            "example": 1
+          },
+          "lastAnsweredUserId": {
+            "type": "number",
+            "example": 2
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          }
+        }
+      },
+      "IGameListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "game1234"
+          },
+          "createdBy": {
+            "type": "number",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Game Title"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "currentRound": {
+            "type": "number",
+            "example": 1
+          },
+          "players": {
+            "type": "number",
+            "example": 5
+          },
+          "maxPlayers": {
+            "type": "number",
+            "example": 10
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "package": {
+            "$ref": "#/components/schemas/IPackageItem"
+          }
+        }
+      },
+      "IGameCreate": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Game Title"
+          },
+          "packageId": {
+            "type": "number",
+            "example": 1
+          },
+          "isPrivate": {
+            "type": "boolean",
+            "example": false
+          },
+          "maxPlayers": {
+            "type": "number",
+            "example": 10
+          }
+        }
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "number",
+            "example": 1
+          },
+          "score": {
+            "type": "number",
+            "example": 100
+          },
+          "role": {
+            "type": "string",
+            "enum": ["player", "showman", "spectator"],
+            "example": "player"
+          },
+          "connected": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "IPackageItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Package Title"
+          },
+          "ageRestriction": {
+            "type": "string",
+            "enum": ["A18", "A16", "A12", "NONE"],
+            "example": "A18"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "rounds": {
+            "type": "number",
+            "example": 5
+          },
+          "author": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 1
+              },
+              "name": {
+                "type": "string",
+                "example": "Author Name"
+              }
+            }
           }
         }
       }

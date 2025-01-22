@@ -3,6 +3,8 @@
   "user_logged_in": "User is already logged in",
   "user_already_exists": "User with this name or email already exists",
   "no_user_data": "No user data provided",
+  "no_game_data": "No game data provided",
+  "bad_game_data": "Bad game data for game %id",
   "wrong_password": "Wrong password, please try again",
   "no_refresh": "Please provide refresh_token",
   "invalid_refresh": "Invalid or expired refresh token",

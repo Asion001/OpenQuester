@@ -3,7 +3,7 @@ import path from "path";
 import Swagger from "swagger-ui-express";
 import { type Request, type Response, Router } from "express";
 
-import { ApiContext } from "services/context/ApiContext";
+import { type ApiContext } from "services/context/ApiContext";
 import { ErrorController } from "error/ErrorController";
 import { Logger } from "utils/Logger";
 

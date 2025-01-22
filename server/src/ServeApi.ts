@@ -18,6 +18,7 @@ import { logMiddleware } from "middleware/log/DebugLogMiddleware";
 import { SwaggerRestApiController } from "controllers/rest/SwaggerController";
 import { SocketIOController } from "controllers/io/SocketIOController";
 import { RedisConfig } from "config/RedisConfig";
+import { GameRestApiController } from "controllers/rest/GameRestApiController";
 
 const APP_PREFIX = "[APP]: ";
 
@@ -94,6 +95,7 @@ export class ServeApi {
     new AuthRestApiController(this._context);
     new UserRestApiController(this._context);
     new FileRestApiController(this._context);
+    new GameRestApiController(this._context);
     new PackageRestApiController(this._context);
     new SwaggerRestApiController(this._context);
     new SocketIOController(this._context);

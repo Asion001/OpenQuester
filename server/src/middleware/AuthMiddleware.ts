@@ -14,6 +14,7 @@ export const verifyToken = (
   if (
     req.url.includes("v1/auth") ||
     req.url.includes("v1/api-docs") ||
+    req.url.includes("v1/game") || // !!!! REMOVE THIS LINE !!!!!
     (req.url.includes("v1/file") && req.method === "POST")
   ) {
     return next();

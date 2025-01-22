@@ -36,6 +36,10 @@ export enum ClientResponse {
   FILE_NOT_FOUND = "file_not_found",
   DELETE_FROM_PACKAGE = "delete_from_package",
 
+  // Game
+  NO_GAME_DATA = "no_game_data",
+  BAD_GAME_DATA = "bad_game_data",
+
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",
   USER_PERMISSION_NOT_EXISTS = "user_permission_not_exists",
