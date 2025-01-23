@@ -20,7 +20,6 @@ SiqFileMetadata _$SiqFileMetadataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SiqFileMetadata {
-  String? get id => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   DateTime? get date => throw _privateConstructorUsedError;
   String? get publisher => throw _privateConstructorUsedError;
@@ -48,8 +47,7 @@ abstract class $SiqFileMetadataCopyWith<$Res> {
       _$SiqFileMetadataCopyWithImpl<$Res, SiqFileMetadata>;
   @useResult
   $Res call(
-      {String? id,
-      String? title,
+      {String? title,
       DateTime? date,
       String? publisher,
       FileObject? logo,
@@ -77,7 +75,6 @@ class _$SiqFileMetadataCopyWithImpl<$Res, $Val extends SiqFileMetadata>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
     Object? title = freezed,
     Object? date = freezed,
     Object? publisher = freezed,
@@ -89,10 +86,6 @@ class _$SiqFileMetadataCopyWithImpl<$Res, $Val extends SiqFileMetadata>
     Object? comment = freezed,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -156,8 +149,7 @@ abstract class _$$SiqFileMetadataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id,
-      String? title,
+      {String? title,
       DateTime? date,
       String? publisher,
       FileObject? logo,
@@ -184,7 +176,6 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
     Object? title = freezed,
     Object? date = freezed,
     Object? publisher = freezed,
@@ -196,10 +187,6 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
     Object? comment = freezed,
   }) {
     return _then(_$SiqFileMetadataImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
       title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -244,8 +231,7 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SiqFileMetadataImpl implements _SiqFileMetadata {
   _$SiqFileMetadataImpl(
-      {this.id,
-      this.title,
+      {this.title,
       this.date,
       this.publisher,
       this.logo,
@@ -260,8 +246,6 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
   factory _$SiqFileMetadataImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileMetadataImplFromJson(json);
 
-  @override
-  final String? id;
   @override
   final String? title;
   @override
@@ -297,7 +281,7 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
 
   @override
   String toString() {
-    return 'SiqFileMetadata(id: $id, title: $title, date: $date, publisher: $publisher, logo: $logo, tags: $tags, authors: $authors, language: $language, restriction: $restriction, comment: $comment)';
+    return 'SiqFileMetadata(title: $title, date: $date, publisher: $publisher, logo: $logo, tags: $tags, authors: $authors, language: $language, restriction: $restriction, comment: $comment)';
   }
 
   @override
@@ -305,7 +289,6 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SiqFileMetadataImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.publisher, publisher) ||
@@ -324,7 +307,6 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      id,
       title,
       date,
       publisher,
@@ -354,8 +336,7 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
 
 abstract class _SiqFileMetadata implements SiqFileMetadata {
   factory _SiqFileMetadata(
-      {final String? id,
-      final String? title,
+      {final String? title,
       final DateTime? date,
       final String? publisher,
       final FileObject? logo,
@@ -368,8 +349,6 @@ abstract class _SiqFileMetadata implements SiqFileMetadata {
   factory _SiqFileMetadata.fromJson(Map<String, dynamic> json) =
       _$SiqFileMetadataImpl.fromJson;
 
-  @override
-  String? get id;
   @override
   String? get title;
   @override

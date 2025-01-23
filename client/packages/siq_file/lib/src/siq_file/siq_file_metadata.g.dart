@@ -9,7 +9,6 @@ part of 'siq_file_metadata.dart';
 _$SiqFileMetadataImpl _$$SiqFileMetadataImplFromJson(
         Map<String, dynamic> json) =>
     _$SiqFileMetadataImpl(
-      id: json['id'] as String?,
       title: json['title'] as String?,
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
@@ -32,7 +31,6 @@ _$SiqFileMetadataImpl _$$SiqFileMetadataImplFromJson(
 Map<String, dynamic> _$$SiqFileMetadataImplToJson(
         _$SiqFileMetadataImpl instance) =>
     <String, dynamic>{
-      if (instance.id case final value?) 'id': value,
       if (instance.title case final value?) 'title': value,
       if (instance.date?.toIso8601String() case final value?) 'date': value,
       if (instance.publisher case final value?) 'publisher': value,

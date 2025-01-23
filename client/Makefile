@@ -12,6 +12,7 @@ gen_locale:
 
 gen_files:
 	$(PURO_CMD) dart run build_runner build -d
+	(cd packages/siq_file/ && make gen_files)
 
 format:
 	$(PURO_CMD) dart format lib
