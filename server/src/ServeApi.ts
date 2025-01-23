@@ -16,9 +16,9 @@ import { PackageRestApiController } from "controllers/rest/PackageRestApiControl
 import { ServerError } from "error/ServerError";
 import { logMiddleware } from "middleware/log/DebugLogMiddleware";
 import { SwaggerRestApiController } from "controllers/rest/SwaggerController";
-import { SocketIOController } from "controllers/io/SocketIOController";
 import { RedisConfig } from "config/RedisConfig";
 import { GameRestApiController } from "controllers/rest/GameRestApiController";
+import { SocketIOInitializer } from "controllers/io/SocketIOInitializer";
 
 const APP_PREFIX = "[APP]: ";
 
@@ -98,6 +98,6 @@ export class ServeApi {
     new GameRestApiController(this._context);
     new PackageRestApiController(this._context);
     new SwaggerRestApiController(this._context);
-    new SocketIOController(this._context);
+    new SocketIOInitializer(this._context);
   }
 }
