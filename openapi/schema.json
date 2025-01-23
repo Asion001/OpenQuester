@@ -705,6 +705,68 @@
         }
       }
     },
+    "/events/joinRoom": {
+      "post": {
+        "summary": "Join a room !!! EXAMPLE EVENTS, WILL BE CHANGED LATER IN THIS PR",
+        "description": "Emits the 'joinRoom' event to the server.",
+        "tags": ["Socket.IO"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roomId": {
+                    "type": "string",
+                    "description": "ID of the room to join"
+                  }
+                },
+                "required": ["roomId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledgment from the server"
+          }
+        }
+      }
+    },
+    "/events/sendMessage": {
+      "post": {
+        "summary": "Send a message",
+        "tags": ["Socket.IO"],
+        "description": "Emits the 'sendMessage' event to the server.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roomId": {
+                    "type": "string",
+                    "description": "ID of the room"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Message to send"
+                  }
+                },
+                "required": ["roomId", "message"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledgment from the server"
+          }
+        }
+      }
+    },
     "/v1/games": {
       "get": {
         "summary": "Get all games",

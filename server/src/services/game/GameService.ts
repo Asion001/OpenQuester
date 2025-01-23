@@ -1,7 +1,6 @@
 import Redis from "ioredis";
 import { type Request } from "express";
 
-// import { type ApiContext } from "services/context/ApiContext";
 import { RedisConfig } from "config/RedisConfig";
 import { IGameCreateData } from "types/game/IGameCreate";
 import { IGameListItem } from "types/game/IGameListItem";
@@ -14,6 +13,7 @@ import { ApiContext } from "../context/ApiContext";
 import { PackageRepository } from "database/repositories/PackageRepository";
 import { Database } from "database/Database";
 import { EAgeRestriction } from "enums/game/EAgeRestriction";
+import { SocketIOEvents } from "enums/SocketIOEvents";
 
 export class GameService {
   private _redisClient: Redis;
@@ -122,11 +122,11 @@ export class GameService {
   }
 
   // Push 10 games to redis for testing
-  public async test() {
+  public async test(ctx: ApiContext) {
     const keys = [];
 
     for (let i = 0; i < 10; i++) {
-      keys.push(`${GAME_NAMESPACE}:${i}`);
+      keys.push(`${GAME_NAMESPACE}:${this._generateId()}`);
     }
 
     for (const key of keys) {
@@ -152,6 +152,7 @@ export class GameService {
         },
       };
       await this._redisClient.set(key, JSON.stringify(gameData));
+      ctx.io.emit(SocketIOEvents.GAMES, { created: gameData });
     }
     return true;
   }

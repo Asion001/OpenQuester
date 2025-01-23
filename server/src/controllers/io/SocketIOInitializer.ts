@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { ApiContext } from "services/context/ApiContext";
-import { SocketIOGameListController } from "controllers/io/game/SocketIOGameListController";
+import { SocketIOGameController } from "controllers/io/game/SocketIOGameController";
 import { SocketIOEvents } from "enums/SocketIOEvents";
 
 export class SocketIOInitializer {
@@ -17,6 +17,6 @@ export class SocketIOInitializer {
   private _initializeControllers(socket: Socket, ctx: ApiContext) {
     const socketContext = { socket, apiContext: ctx };
 
-    new SocketIOGameListController(socketContext);
+    new SocketIOGameController(socketContext);
   }
 }

@@ -70,7 +70,7 @@ export class GameRestApiController {
 
   private test = async (req: Request, res: Response) => {
     try {
-      const result = await this._gameService.test();
+      const result = await this._gameService.test(this.ctx);
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(
