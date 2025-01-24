@@ -136,40 +136,4 @@ export class GameService {
       data: gameData,
     } as IGameEvent);
   }
-
-  // Push 10 games to redis for testing
-  public async test(ctx: ApiContext) {
-    const keys = [];
-
-    for (let i = 0; i < 10; i++) {
-      keys.push(`${GAME_NAMESPACE}:${this._generateGameId()}`);
-    }
-
-    for (const key of keys) {
-      const gameData: IGameListItem = {
-        id: key.split(":")[1],
-        createdBy: 1,
-        title: `Game ${key}`,
-        createdAt: new Date(),
-        currentRound: 0,
-        players: 3,
-        maxPlayers: 12,
-        startedAt: undefined,
-        package: {
-          id: 5,
-          title: "Test package",
-          ageRestriction: EAgeRestriction.A18,
-          createdAt: new Date(),
-          rounds: 5,
-          author: {
-            id: 2,
-            name: "Test author",
-          },
-        },
-      };
-      await this._redisClient.set(key, JSON.stringify(gameData));
-      this._emitSocketGameCreated(ctx, gameData);
-    }
-    return true;
-  }
 }

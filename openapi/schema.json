@@ -10,10 +10,10 @@
     }
   ],
   "paths": {
-    "/v1/file": {
+    "/v1/files": {
       "get": {
         "summary": "Get link to file from server",
-        "tags": ["File"],
+        "tags": ["Files"],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to get",
@@ -68,7 +68,7 @@
       },
       "post": {
         "summary": "Get link to upload file on server",
-        "tags": ["File"],
+        "tags": ["Files"],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to put in bucket",
@@ -123,7 +123,7 @@
       },
       "delete": {
         "summary": "Delete file from bucket",
-        "tags": ["File"],
+        "tags": ["Files"],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to delete",
@@ -177,10 +177,10 @@
         }
       }
     },
-    "/v1/package/upload": {
+    "/v1/packages": {
       "post": {
         "summary": "Get upload links for every file in `content.json`",
-        "tags": ["Package"],
+        "tags": ["Packages"],
         "requestBody": {
           "description": "Data from `content.json` file",
           "required": true,
@@ -234,10 +234,10 @@
         }
       }
     },
-    "/v1/user/{id}": {
+    "/v1/users/{id}": {
       "get": {
         "summary": "Get user info by id",
-        "tags": ["User"],
+        "tags": ["Users"],
         "parameters": [
           {
             "name": "id",
@@ -295,7 +295,7 @@
       },
       "patch": {
         "summary": "Update user by id",
-        "tags": ["User"],
+        "tags": ["Users"],
         "parameters": [
           {
             "name": "id",
@@ -363,7 +363,7 @@
       },
       "delete": {
         "summary": "Delete user by id",
-        "tags": ["User"],
+        "tags": ["Users"],
         "parameters": [
           {
             "name": "id",
@@ -404,107 +404,6 @@
                     "error": {
                       "type": "string",
                       "example": "User not found"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/user/": {
-      "get": {
-        "summary": "Get user by his token",
-        "tags": ["User"],
-        "responses": {
-          "200": {
-            "description": "Get user data successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponsePrivateUser"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid or expired JWT token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or expired JWT token"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "summary": "Update user by his token",
-        "tags": ["User"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InputUpdateUser"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Update user data successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponsePrivateUser"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid or expired JWT token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or expired JWT token"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete user by his token",
-        "tags": ["User"],
-        "responses": {
-          "204": {
-            "description": "User deleted successfully"
-          },
-          "400": {
-            "description": "Invalid or expired JWT token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or expired JWT token"
                     }
                   }
                 }
@@ -565,12 +464,10 @@
             }
           }
         }
-      }
-    },
-    "/v1/auth/register": {
+      },
       "post": {
         "summary": "User Registration",
-        "tags": ["Auth"],
+        "tags": ["Users"],
         "requestBody": {
           "required": true,
           "content": {
@@ -708,7 +605,7 @@
     "/v1/games": {
       "get": {
         "summary": "Get all games",
-        "tags": ["Game"],
+        "tags": ["Games"],
         "responses": {
           "200": {
             "description": "Get all games successfully",
@@ -743,7 +640,7 @@
       },
       "post": {
         "summary": "Create a new game",
-        "tags": ["Game"],
+        "tags": ["Games"],
         "requestBody": {
           "required": true,
           "content": {
@@ -787,7 +684,7 @@
     "/v1/games/{id}": {
       "get": {
         "summary": "Get game by id",
-        "tags": ["Game"],
+        "tags": ["Games"],
         "parameters": [
           {
             "name": "id",

@@ -30,19 +30,19 @@ export class UserRestApiController {
     app.use("/v1/users", router);
 
     router.get(
-      `/`,
+      "/",
       checkPermission(this.ctx.db, Permissions.GET_ALL_USERS),
       this.listUsers
     );
 
     router.post(
-      "/?",
+      "/",
       validateTokenForAuth,
       validateWithSchema(this.ctx.db, RegisterUser),
       this.register
     );
     router.get(
-      "(/:id)?",
+      "/:id",
       requirePermissionIfIdProvided(this.ctx.db, Permissions.GET_ANOTHER_USER),
       this.getUser
     );
