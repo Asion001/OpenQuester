@@ -13,7 +13,7 @@ import {
   GAME_NAMESPACE,
 } from "constants/game";
 import { UserRepository } from "database/repositories/UserRepository";
-import { ApiContext } from "../context/ApiContext";
+import { ApiContext } from "services/context/ApiContext";
 import { PackageRepository } from "database/repositories/PackageRepository";
 import { Database } from "database/Database";
 import { SocketIOEvents } from "enums/SocketIOEvents";
