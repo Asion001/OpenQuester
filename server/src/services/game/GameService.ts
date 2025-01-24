@@ -61,7 +61,7 @@ export class GameService {
     const createdByUser = await UserRepository.getUserByHeader(
       ctx.db,
       req.headers.authorization,
-      { select: ["id"], relations: [] }
+      { select: ["id", "name"], relations: [] }
     );
 
     const packageRepo = this._getPackageRepository(ctx.db);
@@ -86,7 +86,7 @@ export class GameService {
 
     const gameData: IGameListItem = {
       id: gameId,
-      createdBy: createdByUser.id,
+      createdBy: { id: createdByUser.id, name: createdByUser.name },
       title: data.title,
       createdAt: new Date(),
       currentRound: 0,

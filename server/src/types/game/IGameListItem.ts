@@ -1,4 +1,5 @@
 import { EAgeRestriction } from "enums/game/EAgeRestriction";
+import { IShortUserInfo } from "types/user/IShortUserInfo";
 
 interface IPackageItem {
   id: number;
@@ -6,15 +7,12 @@ interface IPackageItem {
   ageRestriction: EAgeRestriction;
   createdAt: Date;
   rounds: number;
-  author: {
-    id: number;
-    name: string;
-  };
+  author: IShortUserInfo;
 }
 
 export interface IGameListItem {
   id: string;
-  createdBy: number;
+  createdBy: IShortUserInfo;
   title: string;
   createdAt: Date;
   currentRound: number;

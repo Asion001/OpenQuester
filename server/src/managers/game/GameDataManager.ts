@@ -8,6 +8,7 @@ import { ServerError } from "error/ServerError";
 import { ISchema } from "types/ISchema";
 import { Database } from "database/Database";
 import { IGameCreateData } from "types/game/IGameCreate";
+import { EAgeRestriction } from "enums/game/EAgeRestriction";
 
 export class GameDataManager implements ISchema {
   protected _gameData?: IGameCreateData;
@@ -18,10 +19,10 @@ export class GameDataManager implements ISchema {
   constructor(db: Database) {
     this._schema = Joi.object({
       title: Joi.string().min(3).max(50),
-      packageId: Joi.number(),
+      packageId: Joi.number().min(0),
       isPrivate: Joi.boolean(),
-      maxPlayers: Joi.number(),
-      ageRestriction: Joi.string(),
+      maxPlayers: Joi.number().min(2).max(15),
+      ageRestriction: Joi.valid(...Object.values(EAgeRestriction)),
     });
     this._required = [];
     this._db = db;

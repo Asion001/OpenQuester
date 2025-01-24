@@ -1184,8 +1184,7 @@
             "example": "AH2S"
           },
           "createdBy": {
-            "type": "integer",
-            "example": 1
+            "$ref": "#/components/schemas/IShortUserInfo"
           },
           "title": {
             "type": "string",
@@ -1266,6 +1265,19 @@
           }
         }
       },
+      "IShortUserInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          }
+        }
+      },
       "IGameEvent": {
         "type": "string",
         "enum": ["created", "changed", "deleted", "started"],
@@ -1297,17 +1309,7 @@
             "example": 5
           },
           "author": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "integer",
-                "example": 1
-              },
-              "name": {
-                "type": "string",
-                "example": "Author Name"
-              }
-            }
+            "$ref": "#/components/schemas/IShortUserInfo"
           }
         }
       }

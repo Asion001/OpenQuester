@@ -23,7 +23,7 @@ export class PackageRepository {
   }
 
   public async get(id: number) {
-    return this._repository.findOne({ where: { id } });
+    return this._repository.findOne({ where: { id }, relations: ["author"] });
   }
 
   public async create(content: OQContentStructure, author: User) {

@@ -33,6 +33,8 @@ export class UserRestApiController {
       this.listUsers
     );
 
+    router.get("/me", this.getUser);
+
     router.post(
       "/",
       validateTokenForAuth,
