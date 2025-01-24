@@ -26,7 +26,7 @@ mixin _$IPackageItem {
       throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   int get rounds => throw _privateConstructorUsedError;
-  Author get author => throw _privateConstructorUsedError;
+  IShortUserInfo get author => throw _privateConstructorUsedError;
 
   /// Serializes this IPackageItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,9 +50,9 @@ abstract class $IPackageItemCopyWith<$Res> {
       IPackageItemAgeRestriction ageRestriction,
       DateTime createdAt,
       int rounds,
-      Author author});
+      IShortUserInfo author});
 
-  $AuthorCopyWith<$Res> get author;
+  $IShortUserInfoCopyWith<$Res> get author;
 }
 
 /// @nodoc
@@ -101,7 +101,7 @@ class _$IPackageItemCopyWithImpl<$Res, $Val extends IPackageItem>
       author: null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
-              as Author,
+              as IShortUserInfo,
     ) as $Val);
   }
 
@@ -109,8 +109,8 @@ class _$IPackageItemCopyWithImpl<$Res, $Val extends IPackageItem>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $AuthorCopyWith<$Res> get author {
-    return $AuthorCopyWith<$Res>(_value.author, (value) {
+  $IShortUserInfoCopyWith<$Res> get author {
+    return $IShortUserInfoCopyWith<$Res>(_value.author, (value) {
       return _then(_value.copyWith(author: value) as $Val);
     });
   }
@@ -130,10 +130,10 @@ abstract class _$$IPackageItemImplCopyWith<$Res>
       IPackageItemAgeRestriction ageRestriction,
       DateTime createdAt,
       int rounds,
-      Author author});
+      IShortUserInfo author});
 
   @override
-  $AuthorCopyWith<$Res> get author;
+  $IShortUserInfoCopyWith<$Res> get author;
 }
 
 /// @nodoc
@@ -180,7 +180,7 @@ class __$$IPackageItemImplCopyWithImpl<$Res>
       author: null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
-              as Author,
+              as IShortUserInfo,
     ));
   }
 }
@@ -210,7 +210,7 @@ class _$IPackageItemImpl implements _IPackageItem {
   @override
   final int rounds;
   @override
-  final Author author;
+  final IShortUserInfo author;
 
   @override
   String toString() {
@@ -260,7 +260,7 @@ abstract class _IPackageItem implements IPackageItem {
       required final IPackageItemAgeRestriction ageRestriction,
       required final DateTime createdAt,
       required final int rounds,
-      required final Author author}) = _$IPackageItemImpl;
+      required final IShortUserInfo author}) = _$IPackageItemImpl;
 
   factory _IPackageItem.fromJson(Map<String, dynamic> json) =
       _$IPackageItemImpl.fromJson;
@@ -276,7 +276,7 @@ abstract class _IPackageItem implements IPackageItem {
   @override
   int get rounds;
   @override
-  Author get author;
+  IShortUserInfo get author;
 
   /// Create a copy of IPackageItem
   /// with the given fields replaced by the non-null parameter values.

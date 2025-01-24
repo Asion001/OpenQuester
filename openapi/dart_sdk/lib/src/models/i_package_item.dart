@@ -4,8 +4,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'author.dart';
 import 'i_package_item_age_restriction.dart';
+import 'i_short_user_info.dart';
 
 part 'i_package_item.freezed.dart';
 part 'i_package_item.g.dart';
@@ -18,7 +18,7 @@ class IPackageItem with _$IPackageItem {
     required IPackageItemAgeRestriction ageRestriction,
     required DateTime createdAt,
     required int rounds,
-    required Author author,
+    required IShortUserInfo author,
   }) = _IPackageItem;
   
   factory IPackageItem.fromJson(Map<String, Object?> json) => _$IPackageItemFromJson(json);

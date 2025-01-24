@@ -21,7 +21,7 @@ IGameListItem _$IGameListItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$IGameListItem {
   String get id => throw _privateConstructorUsedError;
-  int get createdBy => throw _privateConstructorUsedError;
+  IShortUserInfo get createdBy => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   int get currentRound => throw _privateConstructorUsedError;
@@ -48,7 +48,7 @@ abstract class $IGameListItemCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      int createdBy,
+      IShortUserInfo createdBy,
       String title,
       DateTime createdAt,
       int currentRound,
@@ -57,6 +57,7 @@ abstract class $IGameListItemCopyWith<$Res> {
       DateTime startedAt,
       IPackageItem package});
 
+  $IShortUserInfoCopyWith<$Res> get createdBy;
   $IPackageItemCopyWith<$Res> get package;
 }
 
@@ -93,7 +94,7 @@ class _$IGameListItemCopyWithImpl<$Res, $Val extends IGameListItem>
       createdBy: null == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
-              as int,
+              as IShortUserInfo,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -129,6 +130,16 @@ class _$IGameListItemCopyWithImpl<$Res, $Val extends IGameListItem>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
+  $IShortUserInfoCopyWith<$Res> get createdBy {
+    return $IShortUserInfoCopyWith<$Res>(_value.createdBy, (value) {
+      return _then(_value.copyWith(createdBy: value) as $Val);
+    });
+  }
+
+  /// Create a copy of IGameListItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
   $IPackageItemCopyWith<$Res> get package {
     return $IPackageItemCopyWith<$Res>(_value.package, (value) {
       return _then(_value.copyWith(package: value) as $Val);
@@ -146,7 +157,7 @@ abstract class _$$IGameListItemImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      int createdBy,
+      IShortUserInfo createdBy,
       String title,
       DateTime createdAt,
       int currentRound,
@@ -155,6 +166,8 @@ abstract class _$$IGameListItemImplCopyWith<$Res>
       DateTime startedAt,
       IPackageItem package});
 
+  @override
+  $IShortUserInfoCopyWith<$Res> get createdBy;
   @override
   $IPackageItemCopyWith<$Res> get package;
 }
@@ -190,7 +203,7 @@ class __$$IGameListItemImplCopyWithImpl<$Res>
       createdBy: null == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
-              as int,
+              as IShortUserInfo,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -243,7 +256,7 @@ class _$IGameListItemImpl implements _IGameListItem {
   @override
   final String id;
   @override
-  final int createdBy;
+  final IShortUserInfo createdBy;
   @override
   final String title;
   @override
@@ -309,7 +322,7 @@ class _$IGameListItemImpl implements _IGameListItem {
 abstract class _IGameListItem implements IGameListItem {
   const factory _IGameListItem(
       {required final String id,
-      required final int createdBy,
+      required final IShortUserInfo createdBy,
       required final String title,
       required final DateTime createdAt,
       required final int currentRound,
@@ -324,7 +337,7 @@ abstract class _IGameListItem implements IGameListItem {
   @override
   String get id;
   @override
-  int get createdBy;
+  IShortUserInfo get createdBy;
   @override
   String get title;
   @override

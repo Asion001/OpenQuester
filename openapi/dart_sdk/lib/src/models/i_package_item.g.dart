@@ -14,7 +14,7 @@ _$IPackageItemImpl _$$IPackageItemImplFromJson(Map<String, dynamic> json) =>
           IPackageItemAgeRestriction.fromJson(json['ageRestriction'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
       rounds: (json['rounds'] as num).toInt(),
-      author: Author.fromJson(json['author'] as Map<String, dynamic>),
+      author: IShortUserInfo.fromJson(json['author'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$IPackageItemImplToJson(_$IPackageItemImpl instance) =>

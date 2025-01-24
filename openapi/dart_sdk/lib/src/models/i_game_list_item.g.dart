@@ -9,7 +9,8 @@ part of 'i_game_list_item.dart';
 _$IGameListItemImpl _$$IGameListItemImplFromJson(Map<String, dynamic> json) =>
     _$IGameListItemImpl(
       id: json['id'] as String,
-      createdBy: (json['createdBy'] as num).toInt(),
+      createdBy:
+          IShortUserInfo.fromJson(json['createdBy'] as Map<String, dynamic>),
       title: json['title'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       currentRound: (json['currentRound'] as num).toInt(),

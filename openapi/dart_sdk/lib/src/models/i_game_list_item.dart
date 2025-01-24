@@ -5,6 +5,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'i_package_item.dart';
+import 'i_short_user_info.dart';
 
 part 'i_game_list_item.freezed.dart';
 part 'i_game_list_item.g.dart';
@@ -13,7 +14,7 @@ part 'i_game_list_item.g.dart';
 class IGameListItem with _$IGameListItem {
   const factory IGameListItem({
     required String id,
-    required int createdBy,
+    required IShortUserInfo createdBy,
     required String title,
     required DateTime createdAt,
     required int currentRound,
