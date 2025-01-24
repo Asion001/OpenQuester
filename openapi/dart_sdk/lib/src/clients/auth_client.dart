@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../models/input_login_user.dart';
-import '../models/input_register_user.dart';
 import '../models/object4.dart';
 import '../models/response_auth_data.dart';
 
@@ -15,13 +14,6 @@ part 'auth_client.g.dart';
 @RestApi()
 abstract class AuthClient {
   factory AuthClient(Dio dio, {String? baseUrl}) = _AuthClient;
-
-  /// User Registration
-  @POST('/v1/auth/register')
-  Future<ResponseAuthData> postV1AuthRegister({
-    @Body() required InputRegisterUser body,
-    @DioOptions() RequestOptions? options,
-  });
 
   /// User Login
   @POST('/v1/auth/login')

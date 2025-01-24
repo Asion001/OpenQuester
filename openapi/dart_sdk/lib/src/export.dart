@@ -3,11 +3,12 @@
 // ignore_for_file: type=lint, unused_import
 
 // Clients
-export 'clients/file_client.dart';
-export 'clients/package_client.dart';
-export 'clients/user_client.dart';
+export 'clients/files_client.dart';
+export 'clients/packages_client.dart';
 export 'clients/users_client.dart';
 export 'clients/auth_client.dart';
+export 'clients/games_client.dart';
+export 'clients/socket_io_client.dart';
 // Data classes
 export 'models/response_private_user.dart';
 export 'models/input_update_user.dart';
@@ -23,16 +24,27 @@ export 'models/oq_file_content_structure.dart';
 export 'models/oq_round_structure.dart';
 export 'models/oq_theme_structure.dart';
 export 'models/oq_questions_structure.dart';
-export 'models/get_v1_file_response.dart';
+export 'models/i_game_state.dart';
+export 'models/i_game_list_item.dart';
+export 'models/i_game_create_data.dart';
+export 'models/player.dart';
+export 'models/i_game_event.dart';
+export 'models/i_package_item.dart';
+export 'models/get_v1_files_response.dart';
 export 'models/object0.dart';
-export 'models/post_v1_file_response.dart';
+export 'models/post_v1_files_response.dart';
 export 'models/object1.dart';
-export 'models/delete_v1_file_response.dart';
+export 'models/delete_v1_files_response.dart';
 export 'models/object2.dart';
-export 'models/post_v1_package_upload_response.dart';
+export 'models/post_v1_packages_response.dart';
 export 'models/object3.dart';
 export 'models/object4.dart';
+export 'models/post_subscription_games_response.dart';
 export 'models/permissions.dart';
+export 'models/author.dart';
+export 'models/i_game_create_data_age_restriction.dart';
+export 'models/player_role.dart';
+export 'models/i_package_item_age_restriction.dart';
 // Root client
 export 'rest_client.dart';
 

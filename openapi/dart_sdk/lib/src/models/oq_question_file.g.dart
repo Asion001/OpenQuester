@@ -10,8 +10,8 @@ _$OQQuestionFileImpl _$$OQQuestionFileImplFromJson(Map<String, dynamic> json) =>
     _$OQQuestionFileImpl(
       file:
           OQFileContentStructure.fromJson(json['file'] as Map<String, dynamic>),
-      displayTime: json['displayTime'] as num,
-      answerDelay: json['answerDelay'] as num,
+      displayTime: (json['displayTime'] as num).toInt(),
+      answerDelay: (json['answerDelay'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$OQQuestionFileImplToJson(

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_client.dart';
+part of 'files_client.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'auth_client.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
-class _AuthClient implements AuthClient {
-  _AuthClient(
+class _FilesClient implements FilesClient {
+  _FilesClient(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,8 +22,8 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponseAuthData> postV1AuthLogin({
-    required InputLoginUser body,
+  Future<GetV1FilesResponse> getV1Files({
+    required Object0 body,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
@@ -36,18 +36,18 @@ class _AuthClient implements AuthClient {
     newOptions.headers.addAll(_dio.options.headers);
     newOptions.headers.addAll(_headers);
     final _options = newOptions.copyWith(
-      method: 'POST',
+      method: 'GET',
       baseUrl: _combineBaseUrls(
         _dio.options.baseUrl,
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/login',
+      path: '/v1/files',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
+    late GetV1FilesResponse _value;
     try {
-      _value = ResponseAuthData.fromJson(_result.data!);
+      _value = GetV1FilesResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -56,8 +56,8 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<ResponseAuthData> postV1AuthRefresh({
-    required Object4 body,
+  Future<PostV1FilesResponse> postV1Files({
+    required Object1 body,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
@@ -76,12 +76,46 @@ class _AuthClient implements AuthClient {
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/refresh',
+      path: '/v1/files',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
+    late PostV1FilesResponse _value;
     try {
-      _value = ResponseAuthData.fromJson(_result.data!);
+      _value = PostV1FilesResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<DeleteV1FilesResponse> deleteV1Files({
+    required Object2 body,
+    RequestOptions? options,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = body;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'DELETE',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/files',
+    )..data = _data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late DeleteV1FilesResponse _value;
+    try {
+      _value = DeleteV1FilesResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

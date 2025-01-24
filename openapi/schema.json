@@ -801,7 +801,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "name": {
@@ -841,7 +841,7 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "number",
+                  "type": "integer",
                   "example": 1
                 },
                 "name": {
@@ -1021,11 +1021,11 @@
             "$ref": "#/components/schemas/OQFileContentStructure"
           },
           "displayTime": {
-            "type": "number",
+            "type": "integer",
             "example": 5000
           },
           "answerDelay": {
-            "type": "number",
+            "type": "integer",
             "example": 2500
           }
         }
@@ -1038,7 +1038,7 @@
             "$ref": "#/components/schemas/OQFileContentStructure"
           },
           "displayTime": {
-            "type": "number",
+            "type": "integer",
             "example": 5000
           }
         }
@@ -1094,7 +1094,7 @@
         "type": "object",
         "properties": {
           "price": {
-            "type": "number",
+            "type": "integer",
             "example": 200
           },
           "type": {
@@ -1135,7 +1135,7 @@
             "example": "game1234"
           },
           "createdBy": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "title": {
@@ -1148,7 +1148,7 @@
             "example": "2024-01-01T00:00:00Z"
           },
           "currentRound": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "players": {
@@ -1158,15 +1158,15 @@
             }
           },
           "maxPlayers": {
-            "type": "number",
+            "type": "integer",
             "example": 10
           },
           "packageId": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "lastAnsweredUserId": {
-            "type": "number",
+            "type": "integer",
             "example": 2
           },
           "startedAt": {
@@ -1184,7 +1184,7 @@
             "example": "AH2S"
           },
           "createdBy": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "title": {
@@ -1197,15 +1197,15 @@
             "example": "2024-01-01T00:00:00Z"
           },
           "currentRound": {
-            "type": "number",
+            "type": "integer",
             "example": 0
           },
           "players": {
-            "type": "number",
+            "type": "integer",
             "example": 5
           },
           "maxPlayers": {
-            "type": "number",
+            "type": "integer",
             "example": 10
           },
           "startedAt": {
@@ -1226,7 +1226,7 @@
             "example": "Game Title"
           },
           "packageId": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "isPrivate": {
@@ -1239,7 +1239,7 @@
             "example": "A18"
           },
           "maxPlayers": {
-            "type": "number",
+            "type": "integer",
             "example": 10
           }
         }
@@ -1248,11 +1248,11 @@
         "type": "object",
         "properties": {
           "userId": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "score": {
-            "type": "number",
+            "type": "integer",
             "example": 100
           },
           "role": {
@@ -1275,7 +1275,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "title": {
@@ -1293,14 +1293,14 @@
             "example": "2024-01-01T00:00:00Z"
           },
           "rounds": {
-            "type": "number",
+            "type": "integer",
             "example": 5
           },
           "author": {
             "type": "object",
             "properties": {
               "id": {
-                "type": "number",
+                "type": "integer",
                 "example": 1
               },
               "name": {

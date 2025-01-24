@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_client.dart';
+part of 'games_client.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'auth_client.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
-class _AuthClient implements AuthClient {
-  _AuthClient(
+class _GamesClient implements GamesClient {
+  _GamesClient(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,32 +22,31 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponseAuthData> postV1AuthLogin({
-    required InputLoginUser body,
-    RequestOptions? options,
-  }) async {
+  Future<List<IGameListItem>> getV1Games({RequestOptions? options}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = body;
+    const Map<String, dynamic>? _data = null;
     final newOptions = newRequestOptions(options);
     newOptions.extra.addAll(_extra);
     newOptions.headers.addAll(_dio.options.headers);
     newOptions.headers.addAll(_headers);
     final _options = newOptions.copyWith(
-      method: 'POST',
+      method: 'GET',
       baseUrl: _combineBaseUrls(
         _dio.options.baseUrl,
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/login',
+      path: '/v1/games',
     )..data = _data;
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<IGameListItem> _value;
     try {
-      _value = ResponseAuthData.fromJson(_result.data!);
+      _value = _result.data!
+          .map((dynamic i) => IGameListItem.fromJson(i as Map<String, dynamic>))
+          .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -56,8 +55,8 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<ResponseAuthData> postV1AuthRefresh({
-    required Object4 body,
+  Future<IGameListItem> postV1Games({
+    required IGameCreateData body,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
@@ -76,12 +75,46 @@ class _AuthClient implements AuthClient {
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/refresh',
+      path: '/v1/games',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
+    late IGameListItem _value;
     try {
-      _value = ResponseAuthData.fromJson(_result.data!);
+      _value = IGameListItem.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<IGameListItem> getV1GamesId({
+    required String id,
+    RequestOptions? options,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'GET',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/games/${id}',
+    )..data = _data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late IGameListItem _value;
+    try {
+      _value = IGameListItem.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

@@ -9,7 +9,7 @@ part of 'oq_questions_structure.dart';
 _$OQQuestionsStructureImpl _$$OQQuestionsStructureImplFromJson(
         Map<String, dynamic> json) =>
     _$OQQuestionsStructureImpl(
-      price: json['price'] as num,
+      price: (json['price'] as num).toInt(),
       type: json['type'] as String,
       text: json['text'] as String,
       hostHint: json['hostHint'] as String,

@@ -20,7 +20,7 @@ OQQuestionsStructure _$OQQuestionsStructureFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$OQQuestionsStructure {
-  num get price => throw _privateConstructorUsedError;
+  int get price => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get hostHint => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ abstract class $OQQuestionsStructureCopyWith<$Res> {
       _$OQQuestionsStructureCopyWithImpl<$Res, OQQuestionsStructure>;
   @useResult
   $Res call(
-      {num price,
+      {int price,
       String type,
       String text,
       String hostHint,
@@ -88,7 +88,7 @@ class _$OQQuestionsStructureCopyWithImpl<$Res,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -150,7 +150,7 @@ abstract class _$$OQQuestionsStructureImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {num price,
+      {int price,
       String type,
       String text,
       String hostHint,
@@ -191,7 +191,7 @@ class __$$OQQuestionsStructureImplCopyWithImpl<$Res>
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -241,7 +241,7 @@ class _$OQQuestionsStructureImpl implements _OQQuestionsStructure {
       _$$OQQuestionsStructureImplFromJson(json);
 
   @override
-  final num price;
+  final int price;
   @override
   final String type;
   @override
@@ -307,7 +307,7 @@ class _$OQQuestionsStructureImpl implements _OQQuestionsStructure {
 
 abstract class _OQQuestionsStructure implements OQQuestionsStructure {
   const factory _OQQuestionsStructure(
-      {required final num price,
+      {required final int price,
       required final String type,
       required final String text,
       required final String hostHint,
@@ -320,7 +320,7 @@ abstract class _OQQuestionsStructure implements OQQuestionsStructure {
       _$OQQuestionsStructureImpl.fromJson;
 
   @override
-  num get price;
+  int get price;
   @override
   String get type;
   @override

@@ -12,7 +12,7 @@ part 'response_private_user.g.dart';
 @Freezed()
 class ResponsePrivateUser with _$ResponsePrivateUser {
   const factory ResponsePrivateUser({
-    required num id,
+    required int id,
     required String name,
     required String email,
     required DateTime birthday,

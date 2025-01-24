@@ -9,7 +9,7 @@ part of 'response_private_user.dart';
 _$ResponsePrivateUserImpl _$$ResponsePrivateUserImplFromJson(
         Map<String, dynamic> json) =>
     _$ResponsePrivateUserImpl(
-      id: json['id'] as num,
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       email: json['email'] as String,
       birthday: DateTime.parse(json['birthday'] as String),

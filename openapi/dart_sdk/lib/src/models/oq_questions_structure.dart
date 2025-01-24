@@ -13,7 +13,7 @@ part 'oq_questions_structure.g.dart';
 @Freezed()
 class OQQuestionsStructure with _$OQQuestionsStructure {
   const factory OQQuestionsStructure({
-    required num price,
+    required int price,
     required String type,
     required String text,
     required String hostHint,
