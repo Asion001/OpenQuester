@@ -14,14 +14,12 @@ import { TranslateService as ts } from "services/text/TranslateService";
 import { ServerServices } from "services/ServerServices";
 import { validateTokenForAuth } from "middleware/AuthMiddleware";
 import { RegisterUser } from "managers/user/RegisterUser";
-import { AuthService } from "services/AuthService";
 
 /**
  * Handles all endpoints related for User CRUD
  */
 export class UserRestApiController {
   private _userService: UserService = ServerServices.user;
-  private _authService: AuthService = ServerServices.auth;
 
   constructor(private ctx: ApiContext) {
     const app = this.ctx.app;
@@ -67,7 +65,7 @@ export class UserRestApiController {
 
   private register = async (req: Request, res: Response) => {
     try {
-      const result = await this._authService.register(this.ctx, req);
+      const result = await this._userService.register(this.ctx, req);
       return res.status(HttpStatus.CREATED).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveUserQueryError(
