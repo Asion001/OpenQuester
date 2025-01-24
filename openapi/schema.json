@@ -1218,27 +1218,6 @@
           }
         }
       },
-      "IGameCreate": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "example": "Game Title"
-          },
-          "packageId": {
-            "type": "number",
-            "example": 1
-          },
-          "isPrivate": {
-            "type": "boolean",
-            "example": false
-          },
-          "maxPlayers": {
-            "type": "number",
-            "example": 10
-          }
-        }
-      },
       "IGameCreateData": {
         "type": "object",
         "properties": {
@@ -1289,7 +1268,7 @@
       },
       "IGameEvent": {
         "type": "string",
-        "enum": ["created", "changed", "deleted", "started", "playerJoined"],
+        "enum": ["created", "changed", "deleted", "started"],
         "example": "created"
       },
       "IPackageItem": {
