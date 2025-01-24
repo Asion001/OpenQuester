@@ -705,68 +705,6 @@
         }
       }
     },
-    "/events/joinRoom": {
-      "post": {
-        "summary": "Join a room !!! EXAMPLE EVENTS, WILL BE CHANGED LATER IN THIS PR",
-        "description": "Emits the 'joinRoom' event to the server.",
-        "tags": ["Socket.IO"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "roomId": {
-                    "type": "string",
-                    "description": "ID of the room to join"
-                  }
-                },
-                "required": ["roomId"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Acknowledgment from the server"
-          }
-        }
-      }
-    },
-    "/events/sendMessage": {
-      "post": {
-        "summary": "Send a message",
-        "tags": ["Socket.IO"],
-        "description": "Emits the 'sendMessage' event to the server.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "roomId": {
-                    "type": "string",
-                    "description": "ID of the room"
-                  },
-                  "message": {
-                    "type": "string",
-                    "description": "Message to send"
-                  }
-                },
-                "required": ["roomId", "message"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Acknowledgment from the server"
-          }
-        }
-      }
-    },
     "/v1/games": {
       "get": {
         "summary": "Get all games",
@@ -811,7 +749,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/IGameCreate"
+                "$ref": "#/components/schemas/IGameCreateData"
               }
             }
           }
@@ -822,8 +760,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean",
-                  "example": true
+                  "$ref": "#/components/schemas/IGameListItem"
                 }
               }
             }
@@ -838,6 +775,77 @@
                     "error": {
                       "type": "string",
                       "example": "Bad request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/games/{id}": {
+      "get": {
+        "summary": "Get game by id",
+        "tags": ["Game"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get game data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IGameListItem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Game not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Game not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscription/games": {
+      "post": {
+        "summary": "Subscribe to games events",
+        "tags": ["Socket.IO"],
+        "description": "Subscribes to the 'games' event to receive updates about game changes, creations, and removals.",
+        "responses": {
+          "200": {
+            "description": "Subscribed to game events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "event": {
+                      "$ref": "#/components/schemas/IGameEvent"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/IGameListItem"
                     }
                   }
                 }
@@ -1276,7 +1284,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "example": "game1234"
+            "example": "AH2S"
           },
           "createdBy": {
             "type": "number",
@@ -1293,7 +1301,7 @@
           },
           "currentRound": {
             "type": "number",
-            "example": 1
+            "example": 0
           },
           "players": {
             "type": "number",
@@ -1334,6 +1342,32 @@
           }
         }
       },
+      "IGameCreateData": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Game Title"
+          },
+          "packageId": {
+            "type": "number",
+            "example": 1
+          },
+          "isPrivate": {
+            "type": "boolean",
+            "example": false
+          },
+          "ageRestriction": {
+            "type": "string",
+            "enum": ["A18", "A16", "A12", "NONE"],
+            "example": "A18"
+          },
+          "maxPlayers": {
+            "type": "number",
+            "example": 10
+          }
+        }
+      },
       "Player": {
         "type": "object",
         "properties": {
@@ -1355,6 +1389,11 @@
             "example": true
           }
         }
+      },
+      "IGameEvent": {
+        "type": "string",
+        "enum": ["created", "changed", "deleted", "started", "playerJoined"],
+        "example": "created"
       },
       "IPackageItem": {
         "type": "object",

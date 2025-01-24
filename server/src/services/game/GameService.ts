@@ -7,13 +7,18 @@ import { IGameListItem } from "types/game/IGameListItem";
 import { ClientError } from "error/ClientError";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
-import { GAME_NAMESPACE } from "constants/game";
+import {
+  GAME_ID_CHARACTERS,
+  GAME_ID_CHARACTERS_LENGTH,
+  GAME_NAMESPACE,
+} from "constants/game";
 import { UserRepository } from "database/repositories/UserRepository";
 import { ApiContext } from "../context/ApiContext";
 import { PackageRepository } from "database/repositories/PackageRepository";
 import { Database } from "database/Database";
 import { EAgeRestriction } from "enums/game/EAgeRestriction";
 import { SocketIOEvents } from "enums/SocketIOEvents";
+import { IGameEvent } from "types/game/IGameEvent";
 
 export class GameService {
   private _redisClient: Redis;
@@ -54,7 +59,7 @@ export class GameService {
   public async create(ctx: ApiContext, req: Request) {
     const data: IGameCreateData = req.body;
 
-    const gameId = this._generateId();
+    const gameId = this._generateGameId();
     const key = `${GAME_NAMESPACE}:${gameId}`;
 
     const createdByUser = await UserRepository.getUserByHeader(
@@ -68,7 +73,7 @@ export class GameService {
     const packageData = await packageRepo.get(data.packageId);
 
     if (!packageData) {
-      throw new ClientError("no package data");
+      throw new ClientError(ClientResponse.PACKAGE_NOT_FOUND);
     }
 
     const packageAuthor = await UserRepository.getRepository(ctx.db).get(
@@ -96,13 +101,15 @@ export class GameService {
         rounds: packageData.content.rounds.length,
         author: {
           id: packageAuthor.id,
-          name: packageAuthor.name!,
+          name: packageAuthor.name,
         },
       },
     };
 
     await this._redisClient.set(key, JSON.stringify(gameData));
-    return true;
+    this._emitSocketGameCreated(ctx, gameData);
+
+    return gameData;
   }
 
   private _getPackageRepository(db: Database) {
@@ -112,13 +119,22 @@ export class GameService {
     return this._packageRepository;
   }
 
-  private _generateId() {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  private _generateGameId() {
     let result = "";
-    for (let i = 0; i < 4; i++) {
-      result += characters[Math.floor(Math.random() * characters.length)];
+    for (let i = 0; i < GAME_ID_CHARACTERS_LENGTH; i++) {
+      result +=
+        GAME_ID_CHARACTERS[
+          Math.floor(Math.random() * GAME_ID_CHARACTERS.length)
+        ];
     }
     return result;
+  }
+
+  private _emitSocketGameCreated(ctx: ApiContext, gameData: IGameListItem) {
+    ctx.io.emit(SocketIOEvents.GAMES, {
+      event: "created",
+      data: gameData,
+    } as IGameEvent);
   }
 
   // Push 10 games to redis for testing
@@ -126,7 +142,7 @@ export class GameService {
     const keys = [];
 
     for (let i = 0; i < 10; i++) {
-      keys.push(`${GAME_NAMESPACE}:${this._generateId()}`);
+      keys.push(`${GAME_NAMESPACE}:${this._generateGameId()}`);
     }
 
     for (const key of keys) {
@@ -152,7 +168,7 @@ export class GameService {
         },
       };
       await this._redisClient.set(key, JSON.stringify(gameData));
-      ctx.io.emit(SocketIOEvents.GAMES, { created: gameData });
+      this._emitSocketGameCreated(ctx, gameData);
     }
     return true;
   }

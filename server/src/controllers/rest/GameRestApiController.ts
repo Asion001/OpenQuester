@@ -26,7 +26,6 @@ export class GameRestApiController {
       this.createGame
     );
     router.get(`(/:id)?`, this.getGame);
-    router.post(`/test`, this.test);
   }
 
   private getGame = async (req: Request, res: Response) => {
@@ -58,19 +57,6 @@ export class GameRestApiController {
   private createGame = async (req: Request, res: Response) => {
     try {
       const result = await this._gameService.create(this.ctx, req);
-      return res.status(HttpStatus.OK).send(result);
-    } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(
-        err,
-        req.headers
-      );
-      return res.status(code).send({ error: message });
-    }
-  };
-
-  private test = async (req: Request, res: Response) => {
-    try {
-      const result = await this._gameService.test(this.ctx);
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(

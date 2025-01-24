@@ -19,6 +19,7 @@
   "no_content_rounds": "Content does not contain 'rounds'!",
   "wrong_content": "Wrong 'content' argument type, it should be a valid JSON object!",
   "empty_content": "Content is empty!",
+  "package_not_found": "Package not found",
   "cannot_save_content": "Cannot save content to the Database, probably it is incorrect or empty",
   "package_author_not_found": "User that upload package not found, upload aborted",
   "filename_required": "'filename' field is required",
