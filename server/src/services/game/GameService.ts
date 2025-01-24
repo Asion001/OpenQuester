@@ -16,9 +16,8 @@ import { UserRepository } from "database/repositories/UserRepository";
 import { ApiContext } from "../context/ApiContext";
 import { PackageRepository } from "database/repositories/PackageRepository";
 import { Database } from "database/Database";
-import { EAgeRestriction } from "enums/game/EAgeRestriction";
 import { SocketIOEvents } from "enums/SocketIOEvents";
-import { IGameEvent } from "types/game/IGameEvent";
+import { EGameEvent, IGameEvent } from "types/game/IGameEvent";
 
 export class GameService {
   private _redisClient: Redis;
@@ -59,9 +58,6 @@ export class GameService {
   public async create(ctx: ApiContext, req: Request) {
     const data: IGameCreateData = req.body;
 
-    const gameId = this._generateGameId();
-    const key = `${GAME_NAMESPACE}:${gameId}`;
-
     const createdByUser = await UserRepository.getUserByHeader(
       ctx.db,
       req.headers.authorization,
@@ -77,12 +73,16 @@ export class GameService {
     }
 
     const packageAuthor = await UserRepository.getRepository(ctx.db).get(
-      packageData.author.id
+      packageData.author.id,
+      { select: ["id", "name"], relations: [] }
     );
 
     if (!packageAuthor) {
       throw new ClientError(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
     }
+
+    const gameId = this._generateGameId();
+    const key = `${GAME_NAMESPACE}:${gameId}`;
 
     const gameData: IGameListItem = {
       id: gameId,
@@ -96,7 +96,7 @@ export class GameService {
       package: {
         id: data.packageId,
         title: packageData.title,
-        ageRestriction: data.ageRestriction ?? EAgeRestriction.NONE,
+        ageRestriction: data.ageRestriction,
         createdAt: packageData.created_at,
         rounds: packageData.content.rounds.length,
         author: {
@@ -132,7 +132,7 @@ export class GameService {
 
   private _emitSocketGameCreated(ctx: ApiContext, gameData: IGameListItem) {
     ctx.io.emit(SocketIOEvents.GAMES, {
-      event: "created",
+      event: EGameEvent.CREATED,
       data: gameData,
     } as IGameEvent);
   }

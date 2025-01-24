@@ -1,6 +1,6 @@
 import { IGameListItem } from "types/game/IGameListItem";
 
-enum GameEvent {
+export enum EGameEvent {
   CREATED = "created",
   CHANGED = "changed",
   DELETED = "deleted",
@@ -8,6 +8,6 @@ enum GameEvent {
 }
 
 export interface IGameEvent {
-  event: GameEvent;
+  event: EGameEvent;
   data: Partial<IGameListItem>;
 }
