@@ -18,6 +18,7 @@ import { PackageRepository } from "database/repositories/PackageRepository";
 import { Database } from "database/Database";
 import { SocketIOEvents } from "enums/SocketIOEvents";
 import { EGameEvent, IGameEvent } from "types/game/IGameEvent";
+import { IGame } from "types/game/IGame";
 
 export class GameService {
   private _redisClient: Redis;
@@ -84,9 +85,9 @@ export class GameService {
     const gameId = this._generateGameId();
     const key = `${GAME_NAMESPACE}:${gameId}`;
 
-    const gameData: IGameListItem = {
+    const gameData: IGame = {
       id: gameId,
-      createdBy: { id: createdByUser.id, name: createdByUser.name },
+      createdBy: createdByUser.id,
       title: data.title,
       createdAt: new Date(),
       currentRound: 0,
@@ -99,17 +100,24 @@ export class GameService {
         ageRestriction: data.ageRestriction,
         createdAt: packageData.created_at,
         rounds: packageData.content.rounds.length,
-        author: {
-          id: packageAuthor.id,
-          name: packageAuthor.name,
-        },
+        author: packageAuthor.id,
       },
     };
 
     await this._redisClient.set(key, JSON.stringify(gameData));
-    this._emitSocketGameCreated(ctx, gameData);
 
-    return gameData;
+    const gameDataOutput: IGameListItem = {
+      ...gameData,
+      createdBy: { id: createdByUser.id, name: createdByUser.name },
+      package: {
+        ...gameData.package,
+        author: { id: packageAuthor.id, name: packageAuthor.name },
+      },
+    };
+
+    this._emitSocketGameCreated(ctx, gameDataOutput);
+
+    return gameDataOutput;
   }
 
   private _getPackageRepository(db: Database) {
