@@ -9,6 +9,8 @@ import '../../core/env.dart';
 
 @singleton
 class Api {
+  static Api get I => getIt<Api>();
+
   final api = RestClient(
     Dio(
       BaseOptions(

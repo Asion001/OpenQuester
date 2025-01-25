@@ -1,30 +1,30 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:openquester/generated/locale_keys.g.dart';
-import 'package:openquester/src/core/router.gr.dart';
+import 'package:openquester/common_imports.dart';
 
 @RoutePage()
-class NavBar extends StatelessWidget {
-  const NavBar({super.key});
+class HomeBuilderScreen extends StatelessWidget {
+  const HomeBuilderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isWideModeOn = UiModeUtils.wideModeOn(context);
     return AutoTabsScaffold(
       appBarBuilder: (context, tabsRouter) {
         return AppBar();
       },
       routes: const [
         HomeRoute(),
-        ProfileRoute(),
+        PackagesListRoute(),
       ],
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return NavigationBar(
-          selectedIndex: tabsRouter.activeIndex,
-          onDestinationSelected: tabsRouter.setActiveIndex,
-          destinations: _destionations,
-        );
-      },
+      bottomNavigationBuilder: isWideModeOn
+          ? null
+          : (_, tabsRouter) {
+              return NavigationBar(
+                selectedIndex: tabsRouter.activeIndex,
+                onDestinationSelected: tabsRouter.setActiveIndex,
+                destinations: _destionations,
+              );
+            },
     );
   }
 
@@ -32,13 +32,13 @@ class NavBar extends StatelessWidget {
     return [
       NavigationDestination(
         label: LocaleKeys.home_tabs_home.tr(),
-        icon: Icon(Icons.space_dashboard_outlined),
-        selectedIcon: Icon(Icons.space_dashboard),
+        icon: Icon(Icons.star_outline_rounded),
+        selectedIcon: Icon(Icons.star_rounded),
       ),
       NavigationDestination(
-        label: LocaleKeys.home_tabs_profile.tr(),
-        icon: Icon(Icons.person_outlined),
-        selectedIcon: Icon(Icons.person),
+        label: LocaleKeys.home_tabs_packages.tr(),
+        icon: Icon(Icons.folder_outlined),
+        selectedIcon: Icon(Icons.folder),
       ),
     ];
   }

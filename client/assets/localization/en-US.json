@@ -1,11 +1,12 @@
 {
-    "home_tabs": {
-        "home": "Home",
-        "clicker": "Clicker",
-        "profile": "Profile",
-        "test": "Test"
-    },
-    "home": {
-        "start_game": "Start Game"
-    }
+  "home_tabs": {
+    "home": "Home",
+    "packages": "Packages"
+  },
+  "home": {
+    "start_game": "Start Game"
+  },
+  "clicker": "Clicker",
+  "profile": "Profile",
+  "test": "Test"
 }
