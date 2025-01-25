@@ -254,7 +254,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponsePrivateUser"
+                  "$ref": "#/components/schemas/ResponseUser"
                 }
               }
             }
@@ -322,7 +322,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponsePrivateUser"
+                  "$ref": "#/components/schemas/ResponseUser"
                 }
               }
             }
@@ -425,7 +425,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ResponsePrivateUser"
+                    "$ref": "#/components/schemas/ResponseUser"
                   }
                 }
               }
@@ -499,6 +499,59 @@
                     "error": {
                       "type": "string",
                       "example": "name,password is required"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/me": {
+      "get": {
+        "summary": "Get info about user itself by auth token",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Get user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseUser"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Token invalid or expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
                     }
                   }
                 }
@@ -797,7 +850,7 @@
       }
     },
     "schemas": {
-      "ResponsePrivateUser": {
+      "ResponseUser": {
         "type": "object",
         "properties": {
           "id": {
@@ -1124,55 +1177,6 @@
           "answerFile": {
             "type": "object",
             "$ref": "#/components/schemas/OQAnswerFile"
-          }
-        }
-      },
-      "IGameState": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "example": "game1234"
-          },
-          "createdBy": {
-            "type": "integer",
-            "example": 1
-          },
-          "title": {
-            "type": "string",
-            "example": "Game Title"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
-          },
-          "currentRound": {
-            "type": "integer",
-            "example": 1
-          },
-          "players": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Player"
-            }
-          },
-          "maxPlayers": {
-            "type": "integer",
-            "example": 10
-          },
-          "packageId": {
-            "type": "integer",
-            "example": 1
-          },
-          "lastAnsweredUserId": {
-            "type": "integer",
-            "example": 2
-          },
-          "startedAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
           }
         }
       },
