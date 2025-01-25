@@ -1,4 +1,4 @@
-import { File } from "../../database/models/File";
+import { File } from "database/models/File";
 
 export interface IRegisterUser {
   name: string;

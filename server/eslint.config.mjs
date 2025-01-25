@@ -14,6 +14,12 @@ export default [
     },
   },
   {
-    ignores: ["**/dist", "**/build", "**/node_modules", "**/test"],
+    ignores: [
+      "**/dist",
+      "**/build",
+      "**/node_modules",
+      "**/test",
+      "**/.history",
+    ],
   },
 ];

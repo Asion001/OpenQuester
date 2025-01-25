@@ -9,6 +9,6 @@ export interface IGameListItem {
   currentRound: number;
   players: number;
   maxPlayers: number;
-  startedAt?: Date;
+  startedAt: Date | null;
   package: IPackageListItem;
 }

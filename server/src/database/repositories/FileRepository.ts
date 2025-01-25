@@ -1,6 +1,6 @@
 import { type Repository } from "typeorm";
-import { type Database } from "../Database";
-import { File } from "../models/File";
+import { type Database } from "database/Database";
+import { File } from "database/models/File";
 
 export class FileRepository {
   private static _instance: FileRepository;

@@ -1,15 +1,15 @@
 import { type NextFunction, type Request, type Response } from "express";
 
-import { type Database } from "../../database/Database";
-import { type Permissions } from "../../enums/Permissions";
+import { type Database } from "database/Database";
+import { type Permissions } from "enums/Permissions";
 
-import { UserRepository } from "../../database/repositories/UserRepository";
-import { ClientResponse } from "../../enums/ClientResponse";
-import { HttpStatus } from "../../enums/HttpStatus";
-import { ValueUtils } from "../../utils/ValueUtils";
-import { ErrorController } from "../../error/ErrorController";
-import { TranslateService as ts } from "../../services/text/TranslateService";
-import { Permission } from "../../database/models/Permission";
+import { UserRepository } from "database/repositories/UserRepository";
+import { ClientResponse } from "enums/ClientResponse";
+import { HttpStatus } from "enums/HttpStatus";
+import { ValueUtils } from "utils/ValueUtils";
+import { ErrorController } from "error/ErrorController";
+import { TranslateService as ts } from "services/text/TranslateService";
+import { Permission } from "database/models/Permission";
 
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -30,8 +30,12 @@ export function checkPermission(db: Database, permission: Permissions) {
       return res.status(HttpStatus.BAD_REQUEST).send({
         error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
       });
-    } catch (error) {
-      next(error);
+    } catch (err: unknown) {
+      const { message, code } = await ErrorController.resolveError(
+        err,
+        req.headers
+      );
+      return res.status(code).send({ error: message });
     }
   };
 }
