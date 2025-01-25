@@ -1,6 +1,6 @@
 import { type Repository } from "typeorm";
-import { type Database } from "../Database";
-import { Permission } from "../models/Permission";
+import { type Database } from "database/Database";
+import { Permission } from "database/models/Permission";
 
 export class PermissionRepository {
   private static _instance: PermissionRepository;

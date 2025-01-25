@@ -26,9 +26,9 @@ export class UserDataManager implements ISchema {
       name: Joi.string().min(3).max(30),
       email: Joi.string().email(),
       password: Joi.string().min(6).max(40),
-      birthday: Joi.alternatives().try(Joi.date(), Joi.string()),
-      avatar: Joi.string(),
-      permissions: Joi.array(),
+      birthday: Joi.alternatives().try(Joi.date(), Joi.string()).allow(null),
+      avatar: Joi.string().allow(null),
+      permissions: Joi.array().allow(null),
     });
     this._required = [];
     this._db = db;

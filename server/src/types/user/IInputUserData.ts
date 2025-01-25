@@ -1,4 +1,4 @@
-import { Permission } from "../../database/models/Permission";
+import { Permission } from "database/models/Permission";
 
 export interface IInputUserData {
   name?: string;

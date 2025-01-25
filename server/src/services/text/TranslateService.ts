@@ -1,10 +1,10 @@
 import path from "path";
 import fs from "fs";
-
-import { ValueUtils } from "../../utils/ValueUtils";
-import { Language, Translation } from "../../types/text/translation";
-import { Logger } from "../../utils/Logger";
 import { IncomingHttpHeaders } from "http";
+
+import { ValueUtils } from "utils/ValueUtils";
+import { Language, Translation } from "types/text/translation";
+import { Logger } from "utils/Logger";
 
 /**
  * Static service that handles translations from `storage/language/*.json` files by translation key

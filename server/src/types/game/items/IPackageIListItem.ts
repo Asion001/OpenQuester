@@ -7,5 +7,6 @@ export interface IPackageListItem {
   ageRestriction: EAgeRestriction;
   createdAt: Date;
   rounds: number;
+  tags: string[];
   author: IShortUserInfo;
 }

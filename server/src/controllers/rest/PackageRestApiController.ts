@@ -3,7 +3,6 @@ import { type Request, type Response, Router } from "express";
 import { type ApiContext } from "services/context/ApiContext";
 import { IStorage } from "types/file/IStorage";
 import { verifyContentJSONMiddleware } from "middleware/file/FileMiddleware";
-import { throttleMiddleware } from "middleware/ThrottleMiddleware";
 import { HttpStatus } from "enums/HttpStatus";
 import { ErrorController } from "error/ErrorController";
 import { ServerServices } from "services/ServerServices";
@@ -22,12 +21,7 @@ export class PackageRestApiController {
 
     app.use("/v1/packages", router);
 
-    router.post(
-      "/",
-      verifyContentJSONMiddleware,
-      throttleMiddleware,
-      this.uploadPackage
-    );
+    router.post("/", verifyContentJSONMiddleware, this.uploadPackage);
   }
 
   private uploadPackage = async (req: Request, res: Response) => {
