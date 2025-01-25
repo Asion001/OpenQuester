@@ -24,8 +24,20 @@ export class UserRestApiController {
   constructor(private ctx: ApiContext) {
     const app = this.ctx.app;
     const router = Router();
+    const meRouter = Router();
 
+    app.use("/v1/me", meRouter);
     app.use("/v1/users", router);
+
+    meRouter.get("/", this.getUser);
+
+    meRouter.patch(
+      "/",
+      validateWithSchema(this.ctx.db, UpdateUser),
+      this.updateUser
+    );
+
+    meRouter.get("/", this.deleteUser);
 
     router.get(
       "/",
@@ -33,21 +45,21 @@ export class UserRestApiController {
       this.listUsers
     );
 
-    router.get("/me", this.getUser);
-
     router.post(
       "/",
       validateTokenForAuth,
       validateWithSchema(this.ctx.db, RegisterUser),
       this.register
     );
+
     router.get(
       "/:id",
       requirePermissionIfIdProvided(this.ctx.db, Permissions.GET_ANOTHER_USER),
       this.getUser
     );
+
     router.patch(
-      "(/:id)?",
+      "/:id",
       requirePermissionIfIdProvided(
         this.ctx.db,
         Permissions.CHANGE_ANOTHER_USER
@@ -55,8 +67,9 @@ export class UserRestApiController {
       validateWithSchema(this.ctx.db, UpdateUser),
       this.updateUser
     );
+
     router.delete(
-      "(/:id)?",
+      "/:id",
       requirePermissionIfIdProvided(
         this.ctx.db,
         Permissions.DELETE_ANOTHER_USER
