@@ -10,7 +10,7 @@ export 'clients/auth_client.dart';
 export 'clients/games_client.dart';
 export 'clients/socket_io_client.dart';
 // Data classes
-export 'models/response_private_user.dart';
+export 'models/response_user.dart';
 export 'models/input_update_user.dart';
 export 'models/input_register_user.dart';
 export 'models/input_login_user.dart';
@@ -24,7 +24,6 @@ export 'models/oq_file_content_structure.dart';
 export 'models/oq_round_structure.dart';
 export 'models/oq_theme_structure.dart';
 export 'models/oq_questions_structure.dart';
-export 'models/i_game_state.dart';
 export 'models/i_game_list_item.dart';
 export 'models/i_game_create_data.dart';
 export 'models/player.dart';

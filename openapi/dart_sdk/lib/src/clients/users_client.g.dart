@@ -22,7 +22,7 @@ class _UsersClient implements UsersClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponsePrivateUser> getV1UsersId({
+  Future<ResponseUser> getV1UsersId({
     required String id,
     RequestOptions? options,
   }) async {
@@ -45,9 +45,9 @@ class _UsersClient implements UsersClient {
       path: '/v1/users/${id}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponsePrivateUser _value;
+    late ResponseUser _value;
     try {
-      _value = ResponsePrivateUser.fromJson(_result.data!);
+      _value = ResponseUser.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -56,7 +56,7 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<ResponsePrivateUser> patchV1UsersId({
+  Future<ResponseUser> patchV1UsersId({
     required String id,
     required InputUpdateUser body,
     RequestOptions? options,
@@ -80,9 +80,9 @@ class _UsersClient implements UsersClient {
       path: '/v1/users/${id}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponsePrivateUser _value;
+    late ResponseUser _value;
     try {
-      _value = ResponsePrivateUser.fromJson(_result.data!);
+      _value = ResponseUser.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -117,8 +117,7 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<List<ResponsePrivateUser>> getV1Users(
-      {RequestOptions? options}) async {
+  Future<List<ResponseUser>> getV1Users({RequestOptions? options}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -138,11 +137,10 @@ class _UsersClient implements UsersClient {
       path: '/v1/users/',
     )..data = _data;
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ResponsePrivateUser> _value;
+    late List<ResponseUser> _value;
     try {
       _value = _result.data!
-          .map((dynamic i) =>
-              ResponsePrivateUser.fromJson(i as Map<String, dynamic>))
+          .map((dynamic i) => ResponseUser.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
@@ -183,6 +181,100 @@ class _UsersClient implements UsersClient {
       rethrow;
     }
     return _value;
+  }
+
+  @override
+  Future<List<ResponseUser>> getV1Me({RequestOptions? options}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'GET',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/me',
+    )..data = _data;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<ResponseUser> _value;
+    try {
+      _value = _result.data!
+          .map((dynamic i) => ResponseUser.fromJson(i as Map<String, dynamic>))
+          .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ResponseUser> patchV1Me({
+    required String id,
+    required InputUpdateUser body,
+    RequestOptions? options,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = body;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'PATCH',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/me',
+    )..data = _data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ResponseUser _value;
+    try {
+      _value = ResponseUser.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<void> deleteV1Me({
+    required String id,
+    RequestOptions? options,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'DELETE',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/me',
+    )..data = _data;
+    await _dio.fetch<void>(_options);
   }
 
   RequestOptions newRequestOptions(Object? options) {
