@@ -41,6 +41,7 @@ export 'models/object3.dart';
 export 'models/object4.dart';
 export 'models/post_subscription_games_response.dart';
 export 'models/permissions.dart';
+export 'models/oq_metadata_structure_age_restriction.dart';
 export 'models/i_game_create_data_age_restriction.dart';
 export 'models/player_role.dart';
 export 'models/i_package_item_age_restriction.dart';

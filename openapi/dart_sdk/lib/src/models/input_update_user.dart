@@ -12,8 +12,8 @@ class InputUpdateUser with _$InputUpdateUser {
   const factory InputUpdateUser({
     required String name,
     required String password,
-    required DateTime birthday,
-    required String avatar,
+    DateTime? birthday,
+    String? avatar,
   }) = _InputUpdateUser;
   
   factory InputUpdateUser.fromJson(Map<String, Object?> json) => _$InputUpdateUserFromJson(json);

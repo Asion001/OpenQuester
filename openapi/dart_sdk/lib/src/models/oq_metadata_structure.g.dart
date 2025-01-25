@@ -11,15 +11,16 @@ _$OQMetadataStructureImpl _$$OQMetadataStructureImplFromJson(
     _$OQMetadataStructureImpl(
       id: json['id'] as String,
       title: json['title'] as String,
-      date: json['date'] as String,
-      publisher: json['publisher'] as String,
-      logo: OQLogoFile.fromJson(json['logo'] as Map<String, dynamic>),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      ageRestriction: OQMetadataStructureAgeRestriction.fromJson(
+          json['ageRestriction'] as String),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      authors:
-          (json['authors'] as List<dynamic>).map((e) => e as String).toList(),
-      language: json['language'] as String,
-      restriction: json['restriction'] as String,
-      comment: json['comment'] as String,
+      author: (json['author'] as num).toInt(),
+      logo: json['logo'] == null
+          ? null
+          : OQLogoFile.fromJson(json['logo'] as Map<String, dynamic>),
+      language: json['language'] as String?,
+      comment: json['comment'] as String?,
     );
 
 Map<String, dynamic> _$$OQMetadataStructureImplToJson(
@@ -27,12 +28,11 @@ Map<String, dynamic> _$$OQMetadataStructureImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'date': instance.date,
-      'publisher': instance.publisher,
-      'logo': instance.logo,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'ageRestriction': instance.ageRestriction,
       'tags': instance.tags,
-      'authors': instance.authors,
+      'author': instance.author,
+      'logo': instance.logo,
       'language': instance.language,
-      'restriction': instance.restriction,
       'comment': instance.comment,
     };

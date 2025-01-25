@@ -1143,7 +1143,8 @@
             "example": "Package title"
           },
           "createdAt": {
-            "type": "date-time",
+            "format": "date-time",
+            "type": "string",
             "example": "2024-01-01T00:00:00Z"
           },
           "logo": {

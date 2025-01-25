@@ -12,8 +12,10 @@ _$InputRegisterUserImpl _$$InputRegisterUserImplFromJson(
       name: json['name'] as String,
       email: json['email'] as String,
       password: json['password'] as String,
-      birthday: DateTime.parse(json['birthday'] as String),
-      avatar: json['avatar'] as String,
+      birthday: json['birthday'] == null
+          ? null
+          : DateTime.parse(json['birthday'] as String),
+      avatar: json['avatar'] as String?,
     );
 
 Map<String, dynamic> _$$InputRegisterUserImplToJson(
@@ -22,6 +24,6 @@ Map<String, dynamic> _$$InputRegisterUserImplToJson(
       'name': instance.name,
       'email': instance.email,
       'password': instance.password,
-      'birthday': instance.birthday.toIso8601String(),
+      'birthday': instance.birthday?.toIso8601String(),
       'avatar': instance.avatar,
     };
