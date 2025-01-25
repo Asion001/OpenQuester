@@ -1,4 +1,3 @@
-import { IPackageItem } from "types/game/items/IPackageItem";
 import { IGameListItem } from "types/game/IGameListItem";
 
 type pickFields =
@@ -12,5 +11,5 @@ type pickFields =
 
 export interface IGame extends Pick<IGameListItem, pickFields> {
   createdBy: number;
-  package: IPackageItem;
+  package: number;
 }

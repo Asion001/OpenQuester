@@ -987,11 +987,13 @@
           "birthday": {
             "type": "string",
             "format": "date",
-            "example": "2024-01-01"
+            "example": "2024-01-01",
+            "nullable": true
           },
           "avatar": {
             "type": "string",
-            "example": "filename_of_file_in_bucket"
+            "example": "filename_of_file_in_bucket",
+            "nullable": true
           },
           "created_at": {
             "type": "string",
@@ -1140,17 +1142,19 @@
             "type": "string",
             "example": "Package title"
           },
-          "date": {
-            "type": "string",
-            "example": "2024-12-12T00:00:00.000"
-          },
-          "publisher": {
-            "type": "string",
-            "example": "username"
+          "createdAt": {
+            "type": "date-time",
+            "example": "2024-01-01T00:00:00Z"
           },
           "logo": {
             "type": "object",
-            "$ref": "#/components/schemas/OQLogoFile"
+            "$ref": "#/components/schemas/OQLogoFile",
+            "nullable": true
+          },
+          "ageRestriction": {
+            "type": "string",
+            "enum": ["A18", "A16", "A12", "NONE"],
+            "example": "A18"
           },
           "tags": {
             "type": "array",
@@ -1159,24 +1163,19 @@
               "example": "Anime"
             }
           },
-          "authors": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": "username"
-            }
+          "author": {
+            "type": "integer",
+            "example": 6
           },
           "language": {
             "type": "string",
-            "example": "EN"
-          },
-          "restriction": {
-            "type": "string",
-            "example": "16+"
+            "example": "EN",
+            "nullable": true
           },
           "comment": {
             "type": "string",
-            "example": "Package comment"
+            "example": "Package comment",
+            "nullable": true
           }
         }
       },

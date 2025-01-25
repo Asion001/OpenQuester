@@ -43,7 +43,7 @@ export class GameRestApiController {
 
   private listGames = async (req: Request, res: Response) => {
     try {
-      const result = await this._gameService.list();
+      const result = await this._gameService.list(this.ctx);
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(

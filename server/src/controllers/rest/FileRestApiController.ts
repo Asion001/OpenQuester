@@ -8,7 +8,6 @@ import { ErrorController } from "error/ErrorController";
 import { HttpStatus } from "enums/HttpStatus";
 import { TranslateService as ts } from "services/text/TranslateService";
 import { ServerServices } from "services/ServerServices";
-import { throttleMiddleware } from "middleware/ThrottleMiddleware";
 
 export class FileRestApiController {
   private _storageService: IStorage;
@@ -25,7 +24,7 @@ export class FileRestApiController {
     app.use("/v1/files", router);
 
     router.get("/", validateFilename, this.getFile);
-    router.post("/", validateFilename, throttleMiddleware, this.uploadFile);
+    router.post("/", validateFilename, this.uploadFile);
     router.delete("/", validateFilename, this.deleteFile);
   }
 

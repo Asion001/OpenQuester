@@ -20,6 +20,6 @@ export interface IGameState {
   players: Player[];
   maxPlayers: number;
   packageId: number;
-  lastAnsweredUserId?: number;
-  startedAt?: Date;
+  lastAnsweredUserId: number | null;
+  startedAt: Date | null;
 }
