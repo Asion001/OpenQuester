@@ -1,7 +1,6 @@
 import { OQLogoFile } from "types/file/structures/OQLogoFile";
 
 export interface OQMetadataStructure {
-  id: string;
   title: string;
   date: string;
   publisher: string;

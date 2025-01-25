@@ -1,8 +1,8 @@
 import { type Request, type Response, Router } from "express";
 
-import { UserService } from "services/UserService";
+import { type ApiContext } from "services/context/ApiContext";
+import { type UserService } from "services/UserService";
 import { UpdateUser } from "managers/user/UpdateUser";
-import { ApiContext } from "services/context/ApiContext";
 import { ClientResponse } from "enums/ClientResponse";
 import { ErrorController } from "error/ErrorController";
 import { HttpStatus } from "enums/HttpStatus";
@@ -12,34 +12,54 @@ import { checkPermission } from "middleware/permission/PermissionMiddleware";
 import { Permissions } from "enums/Permissions";
 import { TranslateService as ts } from "services/text/TranslateService";
 import { ServerServices } from "services/ServerServices";
+import { validateTokenForAuth } from "middleware/AuthMiddleware";
+import { RegisterUser } from "managers/user/RegisterUser";
 
 /**
  * Handles all endpoints related for User CRUD
  */
 export class UserRestApiController {
-  private _userService: UserService;
+  private _userService: UserService = ServerServices.user;
 
   constructor(private ctx: ApiContext) {
     const app = this.ctx.app;
     const router = Router();
+    const meRouter = Router();
 
-    this._userService = ServerServices.user;
+    app.use("/v1/me", meRouter);
+    app.use("/v1/users", router);
 
-    app.use("/v1/user", router);
+    meRouter.get("/", this.getUser);
 
-    app.get(
-      `/v1/users`,
+    meRouter.patch(
+      "/",
+      validateWithSchema(this.ctx.db, UpdateUser),
+      this.updateUser
+    );
+
+    meRouter.get("/", this.deleteUser);
+
+    router.get(
+      "/",
       checkPermission(this.ctx.db, Permissions.GET_ALL_USERS),
       this.listUsers
     );
 
+    router.post(
+      "/",
+      validateTokenForAuth,
+      validateWithSchema(this.ctx.db, RegisterUser),
+      this.register
+    );
+
     router.get(
-      "(/:id)?",
+      "/:id",
       requirePermissionIfIdProvided(this.ctx.db, Permissions.GET_ANOTHER_USER),
       this.getUser
     );
+
     router.patch(
-      "(/:id)?",
+      "/:id",
       requirePermissionIfIdProvided(
         this.ctx.db,
         Permissions.CHANGE_ANOTHER_USER
@@ -47,8 +67,9 @@ export class UserRestApiController {
       validateWithSchema(this.ctx.db, UpdateUser),
       this.updateUser
     );
+
     router.delete(
-      "(/:id)?",
+      "/:id",
       requirePermissionIfIdProvided(
         this.ctx.db,
         Permissions.DELETE_ANOTHER_USER
@@ -56,6 +77,19 @@ export class UserRestApiController {
       this.deleteUser
     );
   }
+
+  private register = async (req: Request, res: Response) => {
+    try {
+      const result = await this._userService.register(this.ctx, req);
+      return res.status(HttpStatus.CREATED).send(result);
+    } catch (err: unknown) {
+      const { message, code } = await ErrorController.resolveUserQueryError(
+        err,
+        req.headers
+      );
+      return res.status(code).send({ error: message });
+    }
+  };
 
   private getUser = async (req: Request, res: Response) => {
     try {

@@ -21,7 +21,7 @@ OQAnswerFile _$OQAnswerFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OQAnswerFile {
   OQFileContentStructure get file => throw _privateConstructorUsedError;
-  num get displayTime => throw _privateConstructorUsedError;
+  int get displayTime => throw _privateConstructorUsedError;
 
   /// Serializes this OQAnswerFile to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $OQAnswerFileCopyWith<$Res> {
           OQAnswerFile value, $Res Function(OQAnswerFile) then) =
       _$OQAnswerFileCopyWithImpl<$Res, OQAnswerFile>;
   @useResult
-  $Res call({OQFileContentStructure file, num displayTime});
+  $Res call({OQFileContentStructure file, int displayTime});
 
   $OQFileContentStructureCopyWith<$Res> get file;
 }
@@ -70,7 +70,7 @@ class _$OQAnswerFileCopyWithImpl<$Res, $Val extends OQAnswerFile>
       displayTime: null == displayTime
           ? _value.displayTime
           : displayTime // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
     ) as $Val);
   }
 
@@ -93,7 +93,7 @@ abstract class _$$OQAnswerFileImplCopyWith<$Res>
       __$$OQAnswerFileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({OQFileContentStructure file, num displayTime});
+  $Res call({OQFileContentStructure file, int displayTime});
 
   @override
   $OQFileContentStructureCopyWith<$Res> get file;
@@ -123,7 +123,7 @@ class __$$OQAnswerFileImplCopyWithImpl<$Res>
       displayTime: null == displayTime
           ? _value.displayTime
           : displayTime // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
     ));
   }
 }
@@ -139,7 +139,7 @@ class _$OQAnswerFileImpl implements _OQAnswerFile {
   @override
   final OQFileContentStructure file;
   @override
-  final num displayTime;
+  final int displayTime;
 
   @override
   String toString() {
@@ -179,7 +179,7 @@ class _$OQAnswerFileImpl implements _OQAnswerFile {
 abstract class _OQAnswerFile implements OQAnswerFile {
   const factory _OQAnswerFile(
       {required final OQFileContentStructure file,
-      required final num displayTime}) = _$OQAnswerFileImpl;
+      required final int displayTime}) = _$OQAnswerFileImpl;
 
   factory _OQAnswerFile.fromJson(Map<String, dynamic> json) =
       _$OQAnswerFileImpl.fromJson;
@@ -187,7 +187,7 @@ abstract class _OQAnswerFile implements OQAnswerFile {
   @override
   OQFileContentStructure get file;
   @override
-  num get displayTime;
+  int get displayTime;
 
   /// Create a copy of OQAnswerFile
   /// with the given fields replaced by the non-null parameter values.

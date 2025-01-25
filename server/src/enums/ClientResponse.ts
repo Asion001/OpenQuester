@@ -29,12 +29,17 @@ export enum ClientResponse {
   EMPTY_CONTENT = "empty_content",
   CANNOT_SAVE_CONTENT = "cannot_save_content",
   PACKAGE_AUTHOR_NOT_FOUND = "package_author_not_found",
+  PACKAGE_NOT_FOUND = "package_not_found",
 
   // File
   FILENAME_REQUIRED = "filename_required",
   FILENAME_INVALID = "filename_invalid",
   FILE_NOT_FOUND = "file_not_found",
   DELETE_FROM_PACKAGE = "delete_from_package",
+
+  // Game
+  NO_GAME_DATA = "no_game_data",
+  BAD_GAME_DATA = "bad_game_data",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

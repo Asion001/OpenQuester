@@ -20,7 +20,7 @@ Permissions _$PermissionsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Permissions {
-  num get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
 
   /// Serializes this Permissions to a JSON map.
@@ -39,7 +39,7 @@ abstract class $PermissionsCopyWith<$Res> {
           Permissions value, $Res Function(Permissions) then) =
       _$PermissionsCopyWithImpl<$Res, Permissions>;
   @useResult
-  $Res call({num id, String name});
+  $Res call({int id, String name});
 }
 
 /// @nodoc
@@ -64,7 +64,7 @@ class _$PermissionsCopyWithImpl<$Res, $Val extends Permissions>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -81,7 +81,7 @@ abstract class _$$PermissionsImplCopyWith<$Res>
       __$$PermissionsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({num id, String name});
+  $Res call({int id, String name});
 }
 
 /// @nodoc
@@ -104,7 +104,7 @@ class __$$PermissionsImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -122,7 +122,7 @@ class _$PermissionsImpl implements _Permissions {
       _$$PermissionsImplFromJson(json);
 
   @override
-  final num id;
+  final int id;
   @override
   final String name;
 
@@ -162,13 +162,13 @@ class _$PermissionsImpl implements _Permissions {
 
 abstract class _Permissions implements Permissions {
   const factory _Permissions(
-      {required final num id, required final String name}) = _$PermissionsImpl;
+      {required final int id, required final String name}) = _$PermissionsImpl;
 
   factory _Permissions.fromJson(Map<String, dynamic> json) =
       _$PermissionsImpl.fromJson;
 
   @override
-  num get id;
+  int get id;
   @override
   String get name;
 

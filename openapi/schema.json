@@ -10,10 +10,10 @@
     }
   ],
   "paths": {
-    "/v1/file": {
+    "/v1/files": {
       "get": {
         "summary": "Get link to file from server",
-        "tags": ["File"],
+        "tags": ["Files"],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to get",
@@ -68,7 +68,7 @@
       },
       "post": {
         "summary": "Get link to upload file on server",
-        "tags": ["File"],
+        "tags": ["Files"],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to put in bucket",
@@ -123,7 +123,7 @@
       },
       "delete": {
         "summary": "Delete file from bucket",
-        "tags": ["File"],
+        "tags": ["Files"],
         "requestBody": {
           "required": true,
           "description": "Filename which you want to delete",
@@ -177,10 +177,10 @@
         }
       }
     },
-    "/v1/package/upload": {
+    "/v1/packages": {
       "post": {
         "summary": "Get upload links for every file in `content.json`",
-        "tags": ["Package"],
+        "tags": ["Packages"],
         "requestBody": {
           "description": "Data from `content.json` file",
           "required": true,
@@ -234,10 +234,10 @@
         }
       }
     },
-    "/v1/user/{id}": {
+    "/v1/users/{id}": {
       "get": {
         "summary": "Get user info by id",
-        "tags": ["User"],
+        "tags": ["Users"],
         "parameters": [
           {
             "name": "id",
@@ -254,7 +254,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponsePrivateUser"
+                  "$ref": "#/components/schemas/ResponseUser"
                 }
               }
             }
@@ -295,7 +295,7 @@
       },
       "patch": {
         "summary": "Update user by id",
-        "tags": ["User"],
+        "tags": ["Users"],
         "parameters": [
           {
             "name": "id",
@@ -322,7 +322,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponsePrivateUser"
+                  "$ref": "#/components/schemas/ResponseUser"
                 }
               }
             }
@@ -363,7 +363,7 @@
       },
       "delete": {
         "summary": "Delete user by id",
-        "tags": ["User"],
+        "tags": ["Users"],
         "parameters": [
           {
             "name": "id",
@@ -413,107 +413,6 @@
         }
       }
     },
-    "/v1/user/": {
-      "get": {
-        "summary": "Get user by his token",
-        "tags": ["User"],
-        "responses": {
-          "200": {
-            "description": "Get user data successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponsePrivateUser"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid or expired JWT token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or expired JWT token"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "summary": "Update user by his token",
-        "tags": ["User"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InputUpdateUser"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Update user data successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponsePrivateUser"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid or expired JWT token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or expired JWT token"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete user by his token",
-        "tags": ["User"],
-        "responses": {
-          "204": {
-            "description": "User deleted successfully"
-          },
-          "400": {
-            "description": "Invalid or expired JWT token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or expired JWT token"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/users/": {
       "get": {
         "summary": "Get all users info",
@@ -526,7 +425,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ResponsePrivateUser"
+                    "$ref": "#/components/schemas/ResponseUser"
                   }
                 }
               }
@@ -565,12 +464,10 @@
             }
           }
         }
-      }
-    },
-    "/v1/auth/register": {
+      },
       "post": {
         "summary": "User Registration",
-        "tags": ["Auth"],
+        "tags": ["Users"],
         "requestBody": {
           "required": true,
           "content": {
@@ -602,6 +499,178 @@
                     "error": {
                       "type": "string",
                       "example": "name,password is required"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/me": {
+      "get": {
+        "summary": "Get info about user itself by auth token",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Get user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResponseUser"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Token invalid or expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update user by auth token",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InputUpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update user data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Token invalid or expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by auth token",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "400": {
+            "description": "Token invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Token invalid or expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
                     }
                   }
                 }
@@ -704,6 +773,156 @@
           }
         }
       }
+    },
+    "/v1/games": {
+      "get": {
+        "summary": "Get all games",
+        "tags": ["Games"],
+        "responses": {
+          "200": {
+            "description": "Get all games successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IGameListItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new game",
+        "tags": ["Games"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IGameCreateData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Game created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IGameListItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/games/{id}": {
+      "get": {
+        "summary": "Get game by id",
+        "tags": ["Games"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get game data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IGameListItem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Game not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Game not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscription/games": {
+      "post": {
+        "summary": "Subscribe to games events",
+        "tags": ["Socket.IO"],
+        "description": "Subscribes to the 'games' event to receive updates about game changes, creations, and removals.",
+        "responses": {
+          "200": {
+            "description": "Subscribed to game events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "event": {
+                      "$ref": "#/components/schemas/IGameEvent"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/IGameListItem"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -750,11 +969,11 @@
       }
     },
     "schemas": {
-      "ResponsePrivateUser": {
+      "ResponseUser": {
         "type": "object",
         "properties": {
           "id": {
-            "type": "number",
+            "type": "integer",
             "example": 1
           },
           "name": {
@@ -794,7 +1013,7 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "number",
+                  "type": "integer",
                   "example": 1
                 },
                 "name": {
@@ -974,11 +1193,11 @@
             "$ref": "#/components/schemas/OQFileContentStructure"
           },
           "displayTime": {
-            "type": "number",
+            "type": "integer",
             "example": 5000
           },
           "answerDelay": {
-            "type": "number",
+            "type": "integer",
             "example": 2500
           }
         }
@@ -991,7 +1210,7 @@
             "$ref": "#/components/schemas/OQFileContentStructure"
           },
           "displayTime": {
-            "type": "number",
+            "type": "integer",
             "example": 5000
           }
         }
@@ -1047,7 +1266,7 @@
         "type": "object",
         "properties": {
           "price": {
-            "type": "number",
+            "type": "integer",
             "example": 200
           },
           "type": {
@@ -1077,6 +1296,143 @@
           "answerFile": {
             "type": "object",
             "$ref": "#/components/schemas/OQAnswerFile"
+          }
+        }
+      },
+      "IGameListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "AH2S"
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/IShortUserInfo"
+          },
+          "title": {
+            "type": "string",
+            "example": "Game Title"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "currentRound": {
+            "type": "integer",
+            "example": 0
+          },
+          "players": {
+            "type": "integer",
+            "example": 5
+          },
+          "maxPlayers": {
+            "type": "integer",
+            "example": 10
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "package": {
+            "$ref": "#/components/schemas/IPackageItem"
+          }
+        }
+      },
+      "IGameCreateData": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Game Title"
+          },
+          "packageId": {
+            "type": "integer",
+            "example": 1
+          },
+          "isPrivate": {
+            "type": "boolean",
+            "example": false
+          },
+          "ageRestriction": {
+            "type": "string",
+            "enum": ["A18", "A16", "A12", "NONE"],
+            "example": "A18"
+          },
+          "maxPlayers": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "score": {
+            "type": "integer",
+            "example": 100
+          },
+          "role": {
+            "type": "string",
+            "enum": ["player", "showman", "spectator"],
+            "example": "player"
+          },
+          "connected": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "IShortUserInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "John"
+          }
+        }
+      },
+      "IGameEvent": {
+        "type": "string",
+        "enum": ["created", "changed", "deleted", "started"],
+        "example": "created"
+      },
+      "IPackageItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Package Title"
+          },
+          "ageRestriction": {
+            "type": "string",
+            "enum": ["A18", "A16", "A12", "NONE"],
+            "example": "A18"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "rounds": {
+            "type": "integer",
+            "example": 5
+          },
+          "author": {
+            "$ref": "#/components/schemas/IShortUserInfo"
           }
         }
       }

@@ -13,17 +13,6 @@ import { UserRepository } from "database/repositories/UserRepository";
  * Handles all business logic of user authorization
  */
 export class AuthService {
-  public async register(ctx: ApiContext, req: Request): Promise<JWTResponse> {
-    const repository = UserRepository.getRepository(ctx.db);
-    const user = await repository.create(ctx, req.body);
-
-    const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
-    return {
-      access_token,
-      refresh_token,
-    };
-  }
-
   public async login(ctx: ApiContext, req: Request): Promise<JWTResponse> {
     const repository = UserRepository.getRepository(ctx.db);
     const data = req.body;

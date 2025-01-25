@@ -1,8 +1,8 @@
 import { type Request, type Response, Router } from "express";
 
+import { type ApiContext } from "services/context/ApiContext";
 import { IStorage } from "types/file/IStorage";
 import { validateFilename } from "middleware/file/FileMiddleware";
-import { ApiContext } from "services/context/ApiContext";
 import { ClientResponse } from "enums/ClientResponse";
 import { ErrorController } from "error/ErrorController";
 import { HttpStatus } from "enums/HttpStatus";
@@ -22,7 +22,7 @@ export class FileRestApiController {
       "minio"
     );
 
-    app.use("/v1/file", router);
+    app.use("/v1/files", router);
 
     router.get("/", validateFilename, this.getFile);
     router.post("/", validateFilename, throttleMiddleware, this.uploadFile);

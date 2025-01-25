@@ -3,6 +3,7 @@ import { ContentStructureService } from "services/ContentStructureService";
 import { AuthService } from "services/AuthService";
 import { StorageServiceFactory } from "services/storage/StorageServiceFactory";
 import { RedisService } from "services/RedisService";
+import { GameService } from "services/game/GameService";
 
 /**
  * Server services locator
@@ -15,6 +16,7 @@ export class ServerServices {
   private static _auth: AuthService;
   private static _storage: StorageServiceFactory;
   private static _redis: RedisService;
+  private static _game: GameService;
 
   public static get user() {
     if (!this._user) {
@@ -54,5 +56,13 @@ export class ServerServices {
     }
 
     return this._redis;
+  }
+
+  public static get game() {
+    if (!this._game) {
+      this._game = new GameService();
+    }
+
+    return this._game;
   }
 }

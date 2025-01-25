@@ -12,6 +12,8 @@ import { UserOrId } from "types/user/user";
 import { JWTUtils } from "utils/JWTUtils";
 import { ApiContext } from "services/context/ApiContext";
 import { FileUsageRepository } from "database/repositories/FileUsageRepository";
+import { JWTPayload } from "types/jwt/jwt";
+import { HttpStatus } from "enums/HttpStatus";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -124,7 +126,17 @@ export class UserRepository {
     authorizationHeader?: string,
     options?: ISelectOptions<User>
   ) {
-    const payload = JWTUtils.getTokenPayload(authorizationHeader);
+    let payload: JWTPayload;
+
+    try {
+      payload = JWTUtils.getTokenPayload(authorizationHeader);
+    } catch {
+      throw new ClientError(
+        ClientResponse.INVALID_TOKEN,
+        HttpStatus.UNAUTHORIZED
+      );
+    }
+
     const id = ValueUtils.validateId(payload.id);
     return this.getRepository(db).get(id, options);
   }

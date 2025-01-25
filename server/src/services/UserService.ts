@@ -10,8 +10,20 @@ import { ClientError } from "error/ClientError";
 import { UserRepository } from "database/repositories/UserRepository";
 import { JWTUtils } from "utils/JWTUtils";
 import { FileUsageRepository } from "database/repositories/FileUsageRepository";
+import { JWTResponse } from "types/jwt/jwt";
 
 export class UserService {
+  public async register(ctx: ApiContext, req: Request): Promise<JWTResponse> {
+    const repository = UserRepository.getRepository(ctx.db);
+    const user = await repository.create(ctx, req.body);
+
+    const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
+    return {
+      access_token,
+      refresh_token,
+    };
+  }
+
   /**
    * Get list of all available users in DB
    */

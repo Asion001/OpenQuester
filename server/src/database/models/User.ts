@@ -26,13 +26,13 @@ export class User implements IUserModel {
   id!: number;
 
   @Column()
-  name?: string;
+  name!: string;
 
   @Column()
   email?: string;
 
   @Column()
-  password?: string;
+  password!: string;
 
   @Column({ type: "date", nullable: true })
   birthday?: Date | null;

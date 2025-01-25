@@ -1,10 +1,9 @@
 import { type Request, type Response, Router } from "express";
 
-import { AuthService } from "services/AuthService";
-import { RegisterUser } from "managers/user/RegisterUser";
+import { type ApiContext } from "services/context/ApiContext";
+import { type AuthService } from "services/AuthService";
 import { LoginUser } from "managers/user/LoginUser";
 import { JWTUtils } from "utils/JWTUtils";
-import { ApiContext } from "services/context/ApiContext";
 import {
   validateRefresh,
   validateTokenForAuth,
@@ -14,9 +13,6 @@ import { HttpStatus } from "enums/HttpStatus";
 import { validateWithSchema } from "middleware/SchemaMiddleware";
 import { ServerServices } from "services/ServerServices";
 
-/**
- * Handles all endpoints related to user authorization
- */
 export class AuthRestApiController {
   private _authService: AuthService;
 
@@ -29,12 +25,6 @@ export class AuthRestApiController {
     app.use("/v1/auth", router);
 
     router.post(
-      `/register`,
-      validateTokenForAuth,
-      validateWithSchema(this.ctx.db, RegisterUser),
-      this.register
-    );
-    router.post(
       `/login`,
       validateTokenForAuth,
       validateWithSchema(this.ctx.db, LoginUser),
@@ -42,19 +32,6 @@ export class AuthRestApiController {
     );
     router.post(`/refresh`, validateRefresh, this.refresh);
   }
-
-  private register = async (req: Request, res: Response) => {
-    try {
-      const result = await this._authService.register(this.ctx, req);
-      return res.status(HttpStatus.CREATED).send(result);
-    } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveUserQueryError(
-        err,
-        req.headers
-      );
-      return res.status(code).send({ error: message });
-    }
-  };
 
   private login = async (req: Request, res: Response) => {
     try {

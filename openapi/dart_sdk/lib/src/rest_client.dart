@@ -4,11 +4,12 @@
 
 import 'package:dio/dio.dart';
 
-import 'clients/file_client.dart';
-import 'clients/package_client.dart';
-import 'clients/user_client.dart';
+import 'clients/files_client.dart';
+import 'clients/packages_client.dart';
 import 'clients/users_client.dart';
 import 'clients/auth_client.dart';
+import 'clients/games_client.dart';
+import 'clients/socket_io_client.dart';
 
 /// OpenQuester API `v0.2.9`
 class RestClient {
@@ -23,19 +24,22 @@ class RestClient {
 
   static String get version => '0.2.9';
 
-  FileClient? _file;
-  PackageClient? _package;
-  UserClient? _user;
+  FilesClient? _files;
+  PackagesClient? _packages;
   UsersClient? _users;
   AuthClient? _auth;
+  GamesClient? _games;
+  SocketIOClient? _socketIO;
 
-  FileClient get file => _file ??= FileClient(_dio, baseUrl: _baseUrl);
+  FilesClient get files => _files ??= FilesClient(_dio, baseUrl: _baseUrl);
 
-  PackageClient get package => _package ??= PackageClient(_dio, baseUrl: _baseUrl);
-
-  UserClient get user => _user ??= UserClient(_dio, baseUrl: _baseUrl);
+  PackagesClient get packages => _packages ??= PackagesClient(_dio, baseUrl: _baseUrl);
 
   UsersClient get users => _users ??= UsersClient(_dio, baseUrl: _baseUrl);
 
   AuthClient get auth => _auth ??= AuthClient(_dio, baseUrl: _baseUrl);
+
+  GamesClient get games => _games ??= GamesClient(_dio, baseUrl: _baseUrl);
+
+  SocketIOClient get socketIO => _socketIO ??= SocketIOClient(_dio, baseUrl: _baseUrl);
 }

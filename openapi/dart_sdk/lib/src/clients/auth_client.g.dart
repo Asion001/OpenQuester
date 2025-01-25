@@ -22,40 +22,6 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponseAuthData> postV1AuthRegister({
-    required InputRegisterUser body,
-    RequestOptions? options,
-  }) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = body;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
-      method: 'POST',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/auth/register',
-    )..data = _data;
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
-    try {
-      _value = ResponseAuthData.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
   Future<ResponseAuthData> postV1AuthLogin({
     required InputLoginUser body,
     RequestOptions? options,

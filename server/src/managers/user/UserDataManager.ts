@@ -61,18 +61,18 @@ export class UserDataManager implements ISchema {
   }
 
   /**
-   * Validates manager user data using validation schema
+   * Validates user data using validation schema
    */
   public async validate() {
+    if (!this._schema) {
+      throw new ServerError(ServerResponse.NO_SCHEMA);
+    }
+
     if (!this._userData || !ValueUtils.isValidObject(this._userData)) {
       throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
     this.validateFields();
-
-    if (!this._schema) {
-      throw new ServerError(ServerResponse.NO_SCHEMA);
-    }
 
     const { value, error } = this._schema.validate(this._userData, {
       allowUnknown: false,

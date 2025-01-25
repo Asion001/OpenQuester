@@ -11,8 +11,7 @@ export class RedisConfig {
 
   public static getClient(): Redis {
     if (!this._client) {
-      Logger.debug(this._generateLink());
-      this._client = new Redis(this._generateLink());
+      this._client = new Redis(this._getRedisLink());
     }
     return this._client;
   }
@@ -35,7 +34,7 @@ export class RedisConfig {
     });
   }
 
-  private static _generateLink(): string {
+  private static _getRedisLink(): string {
     const username = this._env.REDIS_USERNAME || "";
     const password = this._env.REDIS_PASSWORD || "";
     const host = this._env.REDIS_HOST || "localhost";

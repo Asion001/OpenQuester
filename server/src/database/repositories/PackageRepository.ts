@@ -22,11 +22,8 @@ export class PackageRepository {
     return this._instance;
   }
 
-  public async exists(content: OQContentStructure) {
-    const existingPack = await this._getIfExists(content);
-    if (existingPack) {
-      return existingPack;
-    }
+  public async get(id: number) {
+    return this._repository.findOne({ where: { id }, relations: ["author"] });
   }
 
   public async create(content: OQContentStructure, author: User) {
@@ -43,17 +40,5 @@ export class PackageRepository {
     }
 
     return this._repository.save(pack);
-  }
-
-  private async _getIfExists(content: OQContentStructure) {
-    const pack = await this._repository
-      .createQueryBuilder("package")
-      .where("content -> 'metadata' ->> 'id' = :id", {
-        id: content.metadata?.id,
-      })
-      .limit(1)
-      .getOne();
-
-    return pack ?? null;
   }
 }

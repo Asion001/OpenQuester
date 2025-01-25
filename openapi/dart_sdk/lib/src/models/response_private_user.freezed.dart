@@ -20,7 +20,7 @@ ResponsePrivateUser _$ResponsePrivateUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ResponsePrivateUser {
-  num get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   DateTime get birthday => throw _privateConstructorUsedError;
@@ -50,7 +50,7 @@ abstract class $ResponsePrivateUserCopyWith<$Res> {
       _$ResponsePrivateUserCopyWithImpl<$Res, ResponsePrivateUser>;
   @useResult
   $Res call(
-      {num id,
+      {int id,
       String name,
       String email,
       DateTime birthday,
@@ -90,7 +90,7 @@ class _$ResponsePrivateUserCopyWithImpl<$Res, $Val extends ResponsePrivateUser>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -136,7 +136,7 @@ abstract class _$$ResponsePrivateUserImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {num id,
+      {int id,
       String name,
       String email,
       DateTime birthday,
@@ -174,7 +174,7 @@ class __$$ResponsePrivateUserImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -230,7 +230,7 @@ class _$ResponsePrivateUserImpl implements _ResponsePrivateUser {
       _$$ResponsePrivateUserImplFromJson(json);
 
   @override
-  final num id;
+  final int id;
   @override
   final String name;
   @override
@@ -315,7 +315,7 @@ class _$ResponsePrivateUserImpl implements _ResponsePrivateUser {
 
 abstract class _ResponsePrivateUser implements ResponsePrivateUser {
   const factory _ResponsePrivateUser(
-          {required final num id,
+          {required final int id,
           required final String name,
           required final String email,
           required final DateTime birthday,
@@ -330,7 +330,7 @@ abstract class _ResponsePrivateUser implements ResponsePrivateUser {
       _$ResponsePrivateUserImpl.fromJson;
 
   @override
-  num get id;
+  int get id;
   @override
   String get name;
   @override

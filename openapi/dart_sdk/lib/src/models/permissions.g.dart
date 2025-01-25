@@ -8,7 +8,7 @@ part of 'permissions.dart';
 
 _$PermissionsImpl _$$PermissionsImplFromJson(Map<String, dynamic> json) =>
     _$PermissionsImpl(
-      id: json['id'] as num,
+      id: (json['id'] as num).toInt(),
       name: json['name'] as String,
     );
 

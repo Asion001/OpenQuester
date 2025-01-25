@@ -194,20 +194,7 @@ export class MinioStorageService implements IStorage {
       throw new ClientError(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
     }
 
-    let pack: Package | undefined;
-
-    const existingPack = await this._packageRepository.exists(content);
-    if (existingPack) {
-      pack = existingPack;
-      Logger.pink(
-        `Package "${content.metadata.id}" uploaded by "ID:${author.id}"`,
-        MINIO_PREFIX
-      );
-    }
-
-    if (!pack) {
-      pack = await this._packageRepository.create(content, author);
-    }
+    const pack = await this._packageRepository.create(content, author);
 
     const links = await this._contentStructureService.getUploadLinksForFiles(
       content,
