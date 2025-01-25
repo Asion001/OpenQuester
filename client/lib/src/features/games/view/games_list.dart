@@ -7,8 +7,11 @@ class GamesList extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<int, GameListItem>(
+    return PagedListView<int, GameListItem>.separated(
       pagingController: getIt<GamesListController>().pagingController,
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      separatorBuilder: (BuildContext context, int index) =>
+          Divider(height: 27),
       builderDelegate: PagedChildBuilderDelegate<GameListItem>(
         itemBuilder: (context, item, index) => GameListItemWidget(item: item),
       ),

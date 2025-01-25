@@ -11,11 +11,12 @@
 import 'package:auto_route/auto_route.dart' as _i7;
 import 'package:openquester/src/features/clicker/clicker_page.dart'
     deferred as _i1;
-import 'package:openquester/src/features/home/home.dart' deferred as _i3;
-import 'package:openquester/src/features/nav_bar/nav_bar.dart' deferred as _i2;
+import 'package:openquester/src/features/home/home.dart' deferred as _i2;
+import 'package:openquester/src/features/home_tabs/home_tabs.dart'
+    deferred as _i3;
 import 'package:openquester/src/features/packages/view/packages_list.dart'
     deferred as _i4;
-import 'package:openquester/src/features/profile/profile_page.dart'
+import 'package:openquester/src/features/profile/view/profile_page.dart'
     deferred as _i5;
 import 'package:openquester/src/features/test/test_screen.dart' deferred as _i6;
 
@@ -42,29 +43,7 @@ class ClickerRoute extends _i7.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.HomeBuilderScreen]
-class HomeBuilderRoute extends _i7.PageRouteInfo<void> {
-  const HomeBuilderRoute({List<_i7.PageRouteInfo>? children})
-      : super(
-          HomeBuilderRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomeBuilderRoute';
-
-  static _i7.PageInfo page = _i7.PageInfo(
-    name,
-    builder: (data) {
-      return _i7.DeferredWidget(
-        _i2.loadLibrary,
-        () => _i2.HomeBuilderScreen(),
-      );
-    },
-  );
-}
-
-/// generated route for
-/// [_i3.HomeScreen]
+/// [_i2.HomeScreen]
 class HomeRoute extends _i7.PageRouteInfo<void> {
   const HomeRoute({List<_i7.PageRouteInfo>? children})
       : super(
@@ -78,8 +57,30 @@ class HomeRoute extends _i7.PageRouteInfo<void> {
     name,
     builder: (data) {
       return _i7.DeferredWidget(
+        _i2.loadLibrary,
+        () => _i2.HomeScreen(),
+      );
+    },
+  );
+}
+
+/// generated route for
+/// [_i3.HomeTabsScreen]
+class HomeTabsRoute extends _i7.PageRouteInfo<void> {
+  const HomeTabsRoute({List<_i7.PageRouteInfo>? children})
+      : super(
+          HomeTabsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeTabsRoute';
+
+  static _i7.PageInfo page = _i7.PageInfo(
+    name,
+    builder: (data) {
+      return _i7.DeferredWidget(
         _i3.loadLibrary,
-        () => _i3.HomeScreen(),
+        () => _i3.HomeTabsScreen(),
       );
     },
   );

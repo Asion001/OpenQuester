@@ -8,5 +8,10 @@
   },
   "clicker": "Clicker",
   "profile": "Profile",
-  "test": "Test"
+  "test": "Test",
+  "created_by": "Created by {}",
+  "rounds": {
+    "one": "{} round",
+    "other": "{} rounds"
+  }
 }

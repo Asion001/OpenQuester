@@ -2,25 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AppTheme {
-  static final _defaultTheme = ThemeData.dark();
-
-  static ThemeData get _theme => _defaultTheme.copyWith(
-        bottomNavigationBarTheme:
-            _defaultTheme.bottomNavigationBarTheme.copyWith(
-          type: BottomNavigationBarType.shifting,
-          landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-          selectedItemColor: _defaultTheme.colorScheme.onPrimary,
-          unselectedItemColor: _defaultTheme.colorScheme.primary,
+  static ThemeData change(ThemeData theme) {
+    return theme.copyWith(
+      bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
+        type: BottomNavigationBarType.shifting,
+        landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
+        selectedItemColor: theme.colorScheme.onPrimary,
+        unselectedItemColor: theme.colorScheme.primary,
+      ),
+      appBarTheme: AppBarTheme(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: theme.colorScheme.onSecondaryFixedVariant,
+          systemNavigationBarDividerColor: theme.colorScheme.onSecondary,
         ),
-        appBarTheme: AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle(
-            systemNavigationBarColor:
-                _defaultTheme.colorScheme.onSecondaryFixedVariant,
-            systemNavigationBarDividerColor:
-                _defaultTheme.colorScheme.onSecondary,
-          ),
-        ),
-      );
+      ),
+    );
+  }
 
-  static ThemeData get current => _theme;
+  static ThemeData get light => change(ThemeData.light());
+  static ThemeData get dark => change(ThemeData.dark());
 }

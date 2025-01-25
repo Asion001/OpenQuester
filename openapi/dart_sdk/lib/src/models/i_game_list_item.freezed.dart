@@ -27,8 +27,8 @@ mixin _$IGameListItem {
   int get currentRound => throw _privateConstructorUsedError;
   int get players => throw _privateConstructorUsedError;
   int get maxPlayers => throw _privateConstructorUsedError;
-  DateTime get startedAt => throw _privateConstructorUsedError;
   IPackageItem get package => throw _privateConstructorUsedError;
+  DateTime? get startedAt => throw _privateConstructorUsedError;
 
   /// Serializes this IGameListItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,8 +54,8 @@ abstract class $IGameListItemCopyWith<$Res> {
       int currentRound,
       int players,
       int maxPlayers,
-      DateTime startedAt,
-      IPackageItem package});
+      IPackageItem package,
+      DateTime? startedAt});
 
   $IShortUserInfoCopyWith<$Res> get createdBy;
   $IPackageItemCopyWith<$Res> get package;
@@ -83,8 +83,8 @@ class _$IGameListItemCopyWithImpl<$Res, $Val extends IGameListItem>
     Object? currentRound = null,
     Object? players = null,
     Object? maxPlayers = null,
-    Object? startedAt = null,
     Object? package = null,
+    Object? startedAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -115,14 +115,14 @@ class _$IGameListItemCopyWithImpl<$Res, $Val extends IGameListItem>
           ? _value.maxPlayers
           : maxPlayers // ignore: cast_nullable_to_non_nullable
               as int,
-      startedAt: null == startedAt
-          ? _value.startedAt
-          : startedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       package: null == package
           ? _value.package
           : package // ignore: cast_nullable_to_non_nullable
               as IPackageItem,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 
@@ -163,8 +163,8 @@ abstract class _$$IGameListItemImplCopyWith<$Res>
       int currentRound,
       int players,
       int maxPlayers,
-      DateTime startedAt,
-      IPackageItem package});
+      IPackageItem package,
+      DateTime? startedAt});
 
   @override
   $IShortUserInfoCopyWith<$Res> get createdBy;
@@ -192,8 +192,8 @@ class __$$IGameListItemImplCopyWithImpl<$Res>
     Object? currentRound = null,
     Object? players = null,
     Object? maxPlayers = null,
-    Object? startedAt = null,
     Object? package = null,
+    Object? startedAt = freezed,
   }) {
     return _then(_$IGameListItemImpl(
       id: null == id
@@ -224,14 +224,14 @@ class __$$IGameListItemImplCopyWithImpl<$Res>
           ? _value.maxPlayers
           : maxPlayers // ignore: cast_nullable_to_non_nullable
               as int,
-      startedAt: null == startedAt
-          ? _value.startedAt
-          : startedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       package: null == package
           ? _value.package
           : package // ignore: cast_nullable_to_non_nullable
               as IPackageItem,
+      startedAt: freezed == startedAt
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -247,8 +247,8 @@ class _$IGameListItemImpl implements _IGameListItem {
       required this.currentRound,
       required this.players,
       required this.maxPlayers,
-      required this.startedAt,
-      required this.package});
+      required this.package,
+      this.startedAt});
 
   factory _$IGameListItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$IGameListItemImplFromJson(json);
@@ -268,13 +268,13 @@ class _$IGameListItemImpl implements _IGameListItem {
   @override
   final int maxPlayers;
   @override
-  final DateTime startedAt;
-  @override
   final IPackageItem package;
+  @override
+  final DateTime? startedAt;
 
   @override
   String toString() {
-    return 'IGameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, currentRound: $currentRound, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, package: $package)';
+    return 'IGameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, currentRound: $currentRound, players: $players, maxPlayers: $maxPlayers, package: $package, startedAt: $startedAt)';
   }
 
   @override
@@ -293,15 +293,15 @@ class _$IGameListItemImpl implements _IGameListItem {
             (identical(other.players, players) || other.players == players) &&
             (identical(other.maxPlayers, maxPlayers) ||
                 other.maxPlayers == maxPlayers) &&
+            (identical(other.package, package) || other.package == package) &&
             (identical(other.startedAt, startedAt) ||
-                other.startedAt == startedAt) &&
-            (identical(other.package, package) || other.package == package));
+                other.startedAt == startedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, createdBy, title, createdAt,
-      currentRound, players, maxPlayers, startedAt, package);
+      currentRound, players, maxPlayers, package, startedAt);
 
   /// Create a copy of IGameListItem
   /// with the given fields replaced by the non-null parameter values.
@@ -328,8 +328,8 @@ abstract class _IGameListItem implements IGameListItem {
       required final int currentRound,
       required final int players,
       required final int maxPlayers,
-      required final DateTime startedAt,
-      required final IPackageItem package}) = _$IGameListItemImpl;
+      required final IPackageItem package,
+      final DateTime? startedAt}) = _$IGameListItemImpl;
 
   factory _IGameListItem.fromJson(Map<String, dynamic> json) =
       _$IGameListItemImpl.fromJson;
@@ -349,9 +349,9 @@ abstract class _IGameListItem implements IGameListItem {
   @override
   int get maxPlayers;
   @override
-  DateTime get startedAt;
-  @override
   IPackageItem get package;
+  @override
+  DateTime? get startedAt;
 
   /// Create a copy of IGameListItem
   /// with the given fields replaced by the non-null parameter values.

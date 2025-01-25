@@ -4,7 +4,7 @@ import 'package:openquester/src/core/get_it.dart';
 import 'package:openquester/src/connection/controllers/login_controller.dart';
 import 'package:watch_it/watch_it.dart';
 
-import '../../ui/fields/password_fields.dart';
+import '../../../ui/fields/password_fields.dart';
 
 @RoutePage()
 class ProfilePage extends WatchingWidget {
@@ -17,6 +17,7 @@ class ProfilePage extends WatchingWidget {
     final auth = watchPropertyValue((LoginController m) => m.authData);
 
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: auth == null
             ? _loginField(login, password, context)

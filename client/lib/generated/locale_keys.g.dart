@@ -9,4 +9,6 @@ abstract class LocaleKeys {
   static const clicker = 'clicker';
   static const profile = 'profile';
   static const test = 'test';
+  static const created_by = 'created_by';
+  static const rounds = 'rounds';
 }

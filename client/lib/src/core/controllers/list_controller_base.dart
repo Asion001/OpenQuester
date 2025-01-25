@@ -4,7 +4,7 @@ import 'package:openquester/src/core/logger.dart';
 
 abstract class ListControllerBase<I> extends ChangeNotifier {
   @protected
-  Future<List<I>> getPage(ListRequest request);
+  Future<ListResponse<I>> getPage(ListRequest request);
 
   Future<void> init() async {
     pagingController.addPageRequestListener(_fetchPage);
@@ -14,12 +14,12 @@ abstract class ListControllerBase<I> extends ChangeNotifier {
     try {
       final listRequest = ListRequest(offset: pageKey);
       final newItems = await getPage(listRequest);
-      final isLastPage = newItems.length < listRequest.limit;
+      final isLastPage = newItems.metadata.total < listRequest.limit;
       if (isLastPage) {
-        pagingController.appendLastPage(newItems);
+        pagingController.appendLastPage(newItems.list);
       } else {
-        final nextPageKey = pageKey + newItems.length;
-        pagingController.appendPage(newItems, nextPageKey);
+        final nextPageKey = pageKey + newItems.list.length;
+        pagingController.appendPage(newItems.list, nextPageKey);
       }
     } catch (e, s) {
       pagingController.error = e;
@@ -44,4 +44,18 @@ class ListRequest {
   });
   final int limit;
   final int offset;
+}
+
+class ListResponse<I> {
+  const ListResponse({
+    required this.list,
+    required this.metadata,
+  });
+  final List<I> list;
+  final ListResponseMeta metadata;
+}
+
+class ListResponseMeta {
+  const ListResponseMeta({required this.total});
+  final int total;
 }
