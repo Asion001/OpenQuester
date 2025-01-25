@@ -23,12 +23,16 @@ import { IGame } from "types/game/IGame";
 export class GameService {
   private _redisClient: Redis;
   private _packageRepository!: PackageRepository;
+  private _userRepository!: UserRepository;
 
   constructor() {
     this._redisClient = RedisConfig.getClient();
   }
 
-  public async get(gameId: string): Promise<IGameListItem | undefined> {
+  public async get(
+    ctx: ApiContext,
+    gameId: string
+  ): Promise<IGameListItem | undefined> {
     const key = `${GAME_NAMESPACE}:${gameId}`;
     const value = await this._redisClient.get(key);
 
@@ -37,7 +41,26 @@ export class GameService {
     }
 
     try {
-      return JSON.parse(value);
+      const record: IGame = JSON.parse(value);
+      const userRepo = this._getUserRepository(ctx.db);
+
+      const createdBy = await userRepo.get(record.createdBy, {
+        select: ["id", "name"],
+        relations: [],
+      });
+      const author = await userRepo.get(record.package.author, {
+        select: ["id", "name"],
+        relations: [],
+      });
+
+      return {
+        ...record,
+        createdBy,
+        package: {
+          ...record.package,
+          author,
+        },
+      };
     } catch {
       throw new ClientError(
         ClientResponse.BAD_GAME_DATA,
@@ -49,11 +72,20 @@ export class GameService {
 
   public async list() {
     const keys = await this._redisClient.keys(`${GAME_NAMESPACE}:*`);
-    return Promise.all(
-      keys.map(async (key) => {
-        return this.get(key.split(":")[1]);
+
+    const pipeline = this._redisClient.pipeline();
+    keys.forEach((key) => pipeline.get(key));
+    const res = await pipeline.exec();
+
+    return res
+      ?.map((record) => {
+        try {
+          return JSON.parse(record[1] as string);
+        } catch {
+          // Ignore invalid games
+        }
       })
-    );
+      .filter(Boolean);
   }
 
   public async create(ctx: ApiContext, req: Request) {
@@ -100,6 +132,7 @@ export class GameService {
         ageRestriction: data.ageRestriction,
         createdAt: packageData.created_at,
         rounds: packageData.content.rounds.length,
+        tags: packageData.content.metadata.tags,
         author: packageAuthor.id,
       },
     };
@@ -125,6 +158,13 @@ export class GameService {
       this._packageRepository = PackageRepository.getRepository(db);
     }
     return this._packageRepository;
+  }
+
+  private _getUserRepository(db: Database) {
+    if (!this._userRepository) {
+      this._userRepository = UserRepository.getRepository(db);
+    }
+    return this._userRepository;
   }
 
   private _generateGameId() {

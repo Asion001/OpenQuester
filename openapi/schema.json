@@ -1050,11 +1050,13 @@
           "birthday": {
             "type": "string",
             "format": "date",
-            "example": "2024-01-01"
+            "example": "2024-01-01",
+            "nullable": true
           },
           "avatar": {
             "type": "string",
-            "example": "filename_of_file_in_bucket"
+            "example": "filename_of_file_in_bucket",
+            "nullable": true
           }
         }
       },
@@ -1076,11 +1078,13 @@
           "birthday": {
             "type": "string",
             "format": "date",
-            "example": "2024-01-01"
+            "example": "2024-01-01",
+            "nullable": true
           },
           "avatar": {
             "type": "string",
-            "example": "filename_of_file_in_bucket"
+            "example": "filename_of_file_in_bucket",
+            "nullable": true
           }
         },
         "required": ["name", "email", "password"]

@@ -1,9 +1,9 @@
 import { type Repository } from "typeorm";
-import { type Database } from "../Database";
-import { FileUsage } from "../models/FileUsage";
-import { File } from "../models/File";
-import { Package } from "../models/Package";
-import { User } from "../models/User";
+import { type Database } from "database/Database";
+import { FileUsage } from "database/models/FileUsage";
+import { File } from "database/models/File";
+import { Package } from "database/models/Package";
+import { User } from "database/models/User";
 
 export class FileUsageRepository {
   private static _instance: FileUsageRepository;
