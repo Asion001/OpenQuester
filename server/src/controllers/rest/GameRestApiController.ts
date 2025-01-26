@@ -7,6 +7,9 @@ import { ServerServices } from "services/ServerServices";
 import { HttpStatus } from "enums/HttpStatus";
 import { validateWithSchema } from "middleware/SchemaMiddleware";
 import { CreateGameSchema } from "managers/game/CreateGameSchema";
+import { IPaginationOpts } from "types/pagination/IPaginationOpts";
+import { IGame } from "types/game/IGame";
+import { ValueUtils } from "utils/ValueUtils";
 
 export class GameRestApiController {
   private _gameService: GameService;
@@ -43,7 +46,22 @@ export class GameRestApiController {
 
   private listGames = async (req: Request, res: Response) => {
     try {
-      const result = await this._gameService.list(this.ctx);
+      // TODO: Implement better validation
+      const paginationOpts: IPaginationOpts<IGame> = {
+        limit: ValueUtils.isNumeric(req.query.limit)
+          ? Number(req.query.limit)
+          : 10,
+        offset: ValueUtils.isNumeric(req.query.offset)
+          ? Number(req.query.offset)
+          : 0,
+        order:
+          req.query.order == "asc" || req.query.order == "desc"
+            ? req.query.order
+            : "desc",
+        sortBy: (req.query.sortBy as keyof IGame) ?? "createdAt",
+      };
+
+      const result = await this._gameService.list(this.ctx, paginationOpts);
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(

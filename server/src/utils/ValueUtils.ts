@@ -106,7 +106,7 @@ export class ValueUtils {
    * - string "24a" returns `false`
    * - all numbers returns `true`
    */
-  public static isNumeric(value: string | number) {
+  public static isNumeric(value: string | number | unknown) {
     return this.isNumber(value) || !isNaN(Number(value));
   }
 
