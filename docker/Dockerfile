@@ -12,6 +12,8 @@ RUN npm ci
 # Bundle app source
 COPY server .
 
+ENV NODE_ENV=production
+
 # Build the TypeScript files
 RUN npm run build
 
