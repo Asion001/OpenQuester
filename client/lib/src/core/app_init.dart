@@ -14,7 +14,7 @@ class AppInit {
     // Init localization
     await EasyLocalization.ensureInitialized();
 
-    configureDependencies();
+    await configureDependencies();
 
     AppInit.packageInfo = await PackageInfo.fromPlatform();
 

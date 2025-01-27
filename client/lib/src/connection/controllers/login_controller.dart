@@ -5,7 +5,7 @@ import 'package:openquester/common_imports.dart';
 
 import '../../model/auth_data.dart' as auth_model;
 
-@singleton
+@Singleton(order: 2)
 class LoginController extends ChangeNotifier {
   LoginController({this.authData});
 
@@ -33,7 +33,7 @@ class LoginController extends ChangeNotifier {
 
   static const authDataStorageKey = 'auth_data';
 
-  @factoryMethod
+  @FactoryMethod(preResolve: true)
   static Future<LoginController> create() async {
     final savedData = await getIt.get<Storage>().get(authDataStorageKey);
     auth_model.AuthData? authData;

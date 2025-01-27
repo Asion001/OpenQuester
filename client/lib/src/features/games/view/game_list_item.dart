@@ -13,9 +13,18 @@ class GameListItemWidget extends StatelessWidget {
       child: ListTile(
         onTap: () {},
         title: Text(item.title),
-        subtitle: Text(
-          _subtitle(),
-          overflow: TextOverflow.ellipsis,
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              item.package.title,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              _subtitle(),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ).paddingTop(4),
         trailing: Icon(Icons.play_arrow_outlined),
         titleAlignment: ListTileTitleAlignment.titleHeight,
@@ -25,7 +34,6 @@ class GameListItemWidget extends StatelessWidget {
 
   String _subtitle() {
     return [
-      item.package.title,
       [
         DateFormat.yMd().format(item.package.createdAt),
         LocaleKeys.rounds.plural(item.package.rounds),

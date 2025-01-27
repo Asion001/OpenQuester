@@ -29,11 +29,20 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.singleton<_i149.Api>(() => _i149.Api());
-    gh.singletonAsync<_i421.LoginController>(
-        () => _i421.LoginController.create());
     gh.singleton<_i741.Storage>(() => _i741.Storage());
     gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
+    gh.singleton<_i149.Api>(() => _i149.Api());
+    await gh.singletonAsync<_i421.LoginController>(
+      () => _i421.LoginController.create(),
+      preResolve: true,
+    );
+    await gh.singletonAsync<_i496.SocketController>(
+      () {
+        final i = _i496.SocketController();
+        return i.init().then((_) => i);
+      },
+      preResolve: true,
+    );
     await gh.singletonAsync<_i747.GamesListController>(
       () {
         final i = _i747.GamesListController();
@@ -41,7 +50,6 @@ extension GetItInjectableX on _i174.GetIt {
       },
       preResolve: true,
     );
-    gh.singleton<_i496.SocketController>(() => _i496.SocketController());
     return this;
   }
 }

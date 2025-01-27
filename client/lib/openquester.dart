@@ -9,6 +9,7 @@ export 'src/connection/api/api.dart';
 export 'src/connection/controllers/login_controller.dart';
 export 'src/connection/files/file_service.dart';
 export 'src/connection/socket/socket_controller.dart';
+export 'src/connection/socket/socket_subscriptions.dart';
 export 'src/connection/storage/storage.dart';
 export 'src/core/app_init.dart';
 export 'src/core/application.dart';

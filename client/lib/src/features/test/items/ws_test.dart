@@ -8,7 +8,7 @@ class WsTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: getIt.get<SocketController>().connect,
+      onPressed: getIt.get<SocketController>().createConnection,
       icon: Icon(Icons.connect_without_contact),
     );
   }

@@ -3,24 +3,25 @@ import 'dart:convert';
 import 'package:openquester/common_imports.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
-@Singleton(order: 2)
+@Singleton(order: 3)
 class SocketController {
   static final socketUri = Env.apiUrl;
-  late Socket generalConnection;
+  late Socket general;
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
-    generalConnection = await connect();
+    general = await createConnection();
+    general.connect();
   }
 
-  Future<Socket> connect() async {
+  Future<Socket> createConnection({String? path}) async {
     final optionsBuilder = OptionBuilder()
       ..setTransports(['websocket'])
       ..enableForceNewConnection()
       ..setExtraHeaders(await _headers())
       ..disableAutoConnect();
     final options = optionsBuilder.build();
-    final url = socketUri.toString();
+    final url = socketUri.toString() + (path ?? '');
     final socket = io(url, options)
       ..onAny(_logRequest)
       ..onAnyOutgoing(_logOutgoing)
