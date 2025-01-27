@@ -7,15 +7,19 @@ class GameListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(item.title),
-      subtitle: Text(
-        _subtitle(),
-        overflow: TextOverflow.ellipsis,
-      ).paddingTop(4),
-      trailing: Icon(Icons.play_arrow_outlined),
-      titleAlignment: ListTileTitleAlignment.titleHeight,
-      contentPadding: EdgeInsets.symmetric(horizontal: 8),
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      clipBehavior: Clip.antiAlias,
+      child: ListTile(
+        onTap: () {},
+        title: Text(item.title),
+        subtitle: Text(
+          _subtitle(),
+          overflow: TextOverflow.ellipsis,
+        ).paddingTop(4),
+        trailing: Icon(Icons.play_arrow_outlined),
+        titleAlignment: ListTileTitleAlignment.titleHeight,
+      ),
     );
   }
 
