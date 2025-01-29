@@ -23,6 +23,7 @@ import {
   EPaginationOrder,
 } from "types/pagination/IPaginationOpts";
 import { IPaginatedResult } from "types/pagination/IPaginatedResult";
+import { HttpStatus } from "enums/HttpStatus";
 
 export class GameRepository {
   private static _instance: GameRepository;
@@ -46,7 +47,11 @@ export class GameRepository {
     const value = await this._redisClient.get(key);
 
     if (!value) {
-      throw new ClientError(ClientResponse.GAME_NOT_FOUND, 400, { gameId });
+      throw new ClientError(
+        ClientResponse.GAME_NOT_FOUND,
+        HttpStatus.NOT_FOUND,
+        { gameId }
+      );
     }
 
     try {
@@ -62,7 +67,7 @@ export class GameRepository {
   ): Promise<IPaginatedResult<IGame[]>> {
     const keys = await this._redisClient.keys(`${GAME_NAMESPACE}:*`);
 
-    // Fetch all game data using a pipeline
+    // Fetch all game data in one redis request
     const pipeline = this._redisClient.pipeline();
     keys.forEach((key) => pipeline.get(key));
     const pipelineResult = await pipeline.exec();
@@ -85,9 +90,9 @@ export class GameRepository {
 
     const totalCount = validGames.length;
 
+    // Sorting
     const { sortBy = "createdAt", order = EPaginationOrder.ASC } =
       paginationOpts;
-
     validGames.sort((a, b) => this.compareGames(a, b, sortBy, order));
 
     // Pagination

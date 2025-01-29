@@ -35,9 +35,6 @@ export class GameRestApiController {
     try {
       const result = await this._gameService.get(this.ctx, req.params.id);
 
-      if (!result) {
-        return res.status(HttpStatus.NOT_FOUND).send();
-      }
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(

@@ -41,6 +41,14 @@ export class MinioStorageService implements IStorage {
   private _packageRepository: PackageRepository;
   private _fileUsageRepository: FileUsageRepository;
   private _userRepository: UserRepository;
+  private readonly ALLOWED_TYPES = new Set([
+    "jpg",
+    "jpeg",
+    "mp4",
+    "mp3",
+    "mkv",
+    "png",
+  ]);
 
   constructor(ctx: ApiContext) {
     this._s3Context = ServerServices.storage.createFileContext("s3");
@@ -58,6 +66,7 @@ export class MinioStorageService implements IStorage {
       keepAliveMsecs: 500,
       timeout: 5000,
       noDelay: true,
+      scheduling: "lifo",
     };
 
     this._agent = this._s3Context.useSSL
@@ -102,7 +111,7 @@ export class MinioStorageService implements IStorage {
   ) {
     const fileExtension = ValueUtils.getFileExtension(filename);
 
-    if (!ALLOWED_TYPES.includes(fileExtension)) {
+    if (!this.ALLOWED_TYPES.has(fileExtension)) {
       throw new ClientError(ClientResponse.UNSUPPORTED_FILE_TYPE, 400, {
         type: fileExtension,
         file: filename,
