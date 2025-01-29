@@ -7,9 +7,9 @@ import { ServerServices } from "services/ServerServices";
 import { HttpStatus } from "enums/HttpStatus";
 import { validateWithSchema } from "middleware/SchemaMiddleware";
 import { CreateGameSchema } from "managers/game/CreateGameSchema";
-import { IPaginationOpts } from "types/pagination/IPaginationOpts";
 import { IGame } from "types/game/IGame";
-import { ValueUtils } from "utils/ValueUtils";
+import { PaginationSchema } from "managers/pagination/PaginationSchema";
+import { EPaginationOrder } from "types/pagination/IPaginationOpts";
 
 export class GameRestApiController {
   private _gameService: GameService;
@@ -34,6 +34,10 @@ export class GameRestApiController {
   private getGame = async (req: Request, res: Response) => {
     try {
       const result = await this._gameService.get(this.ctx, req.params.id);
+
+      if (!result) {
+        return res.status(HttpStatus.NOT_FOUND).send();
+      }
       return res.status(HttpStatus.OK).send(result);
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(
@@ -46,20 +50,23 @@ export class GameRestApiController {
 
   private listGames = async (req: Request, res: Response) => {
     try {
-      // TODO: Implement better validation
-      const paginationOpts: IPaginationOpts<IGame> = {
-        limit: ValueUtils.isNumeric(req.query.limit)
-          ? Number(req.query.limit)
-          : 10,
-        offset: ValueUtils.isNumeric(req.query.offset)
-          ? Number(req.query.offset)
-          : 0,
-        order:
-          req.query.order == "asc" || req.query.order == "desc"
-            ? req.query.order
-            : "desc",
-        sortBy: (req.query.sortBy as keyof IGame) ?? "createdAt",
-      };
+      const paginationOpts = await new PaginationSchema<IGame>({
+        data: {
+          sortBy: req.query.sortBy as keyof IGame,
+          order: req.query.order as EPaginationOrder,
+          limit: Number(req.query.limit),
+          offset: Number(req.query.offset),
+        },
+        possibleSortByFields: [
+          "id",
+          "title",
+          "createdAt",
+          "createdBy",
+          "maxPlayers",
+          "players",
+          "startedAt",
+        ],
+      }).validate();
 
       const result = await this._gameService.list(this.ctx, paginationOpts);
       return res.status(HttpStatus.OK).send(result);

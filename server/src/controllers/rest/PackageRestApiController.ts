@@ -22,6 +22,7 @@ export class PackageRestApiController {
     app.use("/v1/packages", router);
 
     router.post("/", verifyContentJSONMiddleware, this.uploadPackage);
+    // TODO: Packages list
   }
 
   private uploadPackage = async (req: Request, res: Response) => {

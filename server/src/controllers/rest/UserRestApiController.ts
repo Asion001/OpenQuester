@@ -14,6 +14,9 @@ import { TranslateService as ts } from "services/text/TranslateService";
 import { ServerServices } from "services/ServerServices";
 import { validateTokenForAuth } from "middleware/AuthMiddleware";
 import { RegisterUser } from "managers/user/RegisterUser";
+import { PaginationSchema } from "managers/pagination/PaginationSchema";
+import { User } from "database/models/User";
+import { EPaginationOrder } from "types/pagination/IPaginationOpts";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -140,7 +143,24 @@ export class UserRestApiController {
 
   private listUsers = async (req: Request, res: Response) => {
     try {
-      const result = await this._userService.list(this.ctx);
+      const paginationOpts = await new PaginationSchema<User>({
+        data: {
+          sortBy: req.query.sortBy as keyof User,
+          order: req.query.order as EPaginationOrder,
+          limit: Number(req.query.limit),
+          offset: Number(req.query.offset),
+        },
+        possibleSortByFields: [
+          "id",
+          "is_deleted",
+          "created_at",
+          "name",
+          "email",
+          "updated_at",
+        ],
+      }).validate();
+
+      const result = await this._userService.list(this.ctx, paginationOpts);
 
       if (result) {
         return res.status(HttpStatus.OK).send(result);

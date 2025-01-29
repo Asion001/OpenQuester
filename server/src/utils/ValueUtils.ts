@@ -143,6 +143,11 @@ export class ValueUtils {
     return filename.substring(0, lastDotIndex);
   }
 
+  public static getFileExtension(filename: string) {
+    const parts = filename.split(".");
+    return parts[parts.length - 1];
+  }
+
   /**
    * Validates that provided entity is non-empty object with at least one non-empty field
    */

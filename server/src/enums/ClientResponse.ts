@@ -30,16 +30,19 @@ export enum ClientResponse {
   CANNOT_SAVE_CONTENT = "cannot_save_content",
   PACKAGE_AUTHOR_NOT_FOUND = "package_author_not_found",
   PACKAGE_NOT_FOUND = "package_not_found",
+  PACKAGE_FAILED_TO_UPLOAD = "package_failed_to_upload",
 
   // File
   FILENAME_REQUIRED = "filename_required",
   FILENAME_INVALID = "filename_invalid",
   FILE_NOT_FOUND = "file_not_found",
   DELETE_FROM_PACKAGE = "delete_from_package",
+  UNSUPPORTED_FILE_TYPE = "unsupported_file_type",
 
   // Game
   NO_GAME_DATA = "no_game_data",
-  BAD_GAME_DATA = "bad_game_data",
+  BAD_GAME_CREATION = "bad_game_creation",
+  GAME_NOT_FOUND = "game_not_found",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

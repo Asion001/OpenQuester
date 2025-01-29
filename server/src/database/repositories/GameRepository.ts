@@ -17,9 +17,12 @@ import { ClientError } from "error/ClientError";
 import { ClientResponse } from "enums/ClientResponse";
 import { ValueUtils } from "utils/ValueUtils";
 import { IGameCreateData } from "types/game/IGameCreate";
-import { HttpStatus } from "enums/HttpStatus";
 import { User } from "database/models/User";
-import { IPaginationOpts } from "types/pagination/IPaginationOpts";
+import {
+  IPaginationOpts,
+  EPaginationOrder,
+} from "types/pagination/IPaginationOpts";
+import { IPaginatedResult } from "types/pagination/IPaginatedResult";
 
 export class GameRepository {
   private static _instance: GameRepository;
@@ -43,117 +46,99 @@ export class GameRepository {
     const value = await this._redisClient.get(key);
 
     if (!value) {
-      return;
+      throw new ClientError(ClientResponse.GAME_NOT_FOUND, 400, { gameId });
     }
 
     try {
       const record: IGame = JSON.parse(value);
       return this._convertRedisRecord(ctx, record);
     } catch {
-      throw new ClientError(
-        ClientResponse.BAD_GAME_DATA,
-        HttpStatus.BAD_REQUEST,
-        { id: gameId }
-      );
+      return;
     }
   }
 
-  public async getAllGamesRaw(paginationOpts: IPaginationOpts<IGame>) {
-    // Fetch all keys matching the pattern
+  public async getAllGamesRaw(
+    paginationOpts: IPaginationOpts<IGame>
+  ): Promise<IPaginatedResult<IGame[]>> {
     const keys = await this._redisClient.keys(`${GAME_NAMESPACE}:*`);
 
-    // Initialize the pipeline to fetch all game data
+    // Fetch all game data using a pipeline
     const pipeline = this._redisClient.pipeline();
-    for (const key of keys) {
-      pipeline.get(key);
-    }
-
-    // Execute the pipeline and process results
+    keys.forEach((key) => pipeline.get(key));
     const pipelineResult = await pipeline.exec();
 
-    if (!pipelineResult) {
-      return [];
+    if (!pipelineResult?.length) {
+      return { data: [], pageInfo: { total: 0, totalOnPage: 0 } };
     }
 
-    // Parse each game record, skipping invalid ones
-    const games = await Promise.all(
-      pipelineResult.map(async (rawRecord) => {
+    // Parse and filter valid games
+    const games: (IGame | undefined)[] = await Promise.all(
+      pipelineResult.map(async ([err, raw]) => {
         try {
-          return JSON.parse(rawRecord[1] as string) as IGame;
+          return err ? undefined : JSON.parse(raw as string);
         } catch {
           // Ignore invalid games
-          return undefined;
         }
       })
     );
+    const validGames = games.filter((g): g is IGame => !ValueUtils.isBad(g));
 
-    // Default values if pagination options are not provided
-    const offset = ValueUtils.isNumeric(paginationOpts.offset)
-      ? paginationOpts.offset
-      : 0;
-    const limit = ValueUtils.isNumeric(paginationOpts.limit)
-      ? paginationOpts.limit
-      : 10;
-    const sortBy: keyof IGame = paginationOpts.sortBy ?? "createdAt";
-    const order: "asc" | "desc" = paginationOpts.order ?? "asc";
+    const totalCount = validGames.length;
 
-    // Sort the games based on the selected field and order
-    games.sort((a, b) => {
-      if (a === undefined) {
-        return order === "asc" ? -1 : 1;
-      }
+    const { sortBy = "createdAt", order = EPaginationOrder.ASC } =
+      paginationOpts;
 
-      if (b === undefined) {
-        return order === "asc" ? 1 : -1;
-      }
+    validGames.sort((a, b) => this.compareGames(a, b, sortBy, order));
 
-      const fieldA = a[sortBy];
-      const fieldB = b[sortBy];
+    // Pagination
+    const { offset, limit } = paginationOpts;
+    const paginatedGames = validGames.slice(offset, offset + limit);
 
-      if (fieldA === null && fieldB === null) {
-        return 0;
-      }
+    return {
+      data: paginatedGames,
+      pageInfo: { totalOnPage: validGames.length, total: totalCount },
+    };
+  }
 
-      if (fieldA === null) {
-        return order === "asc" ? -1 : 1;
-      }
+  private compareGames(
+    a: IGame,
+    b: IGame,
+    sortBy: keyof IGame,
+    order: EPaginationOrder
+  ): number {
+    const fieldA = a[sortBy];
+    const fieldB = b[sortBy];
 
-      if (fieldB === null) {
-        return order === "asc" ? 1 : -1;
-      }
+    if (fieldA === fieldB) return 0;
+    if (fieldA === null) return order === "asc" ? -1 : 1;
+    if (fieldB === null) return order === "asc" ? 1 : -1;
 
-      if (fieldA === fieldB) {
-        return 0;
-      }
+    if (order === "asc") {
+      return fieldA > fieldB ? 1 : -1;
+    }
 
-      if (order === "asc") {
-        return fieldA > fieldB ? 1 : -1;
-      }
-
-      return fieldA < fieldB ? 1 : -1;
-    });
-
-    // Paginate results by skipping `offset` number of items and taking `limit` items
-    const paginatedGames = games.slice(offset, offset + limit);
-
-    const validGames: IGame[] = paginatedGames.filter(
-      (val) => !ValueUtils.isBad(val)
-    );
-
-    // TODO: Implement result according to IPaginationResult
-    return validGames;
+    return fieldA < fieldB ? 1 : -1;
   }
 
   public async getAllGames(
     ctx: ApiContext,
     paginationOpts: IPaginationOpts<IGame>
-  ): Promise<IGameListItem[]> {
-    const games = await this.getAllGamesRaw(paginationOpts);
+  ): Promise<IPaginatedResult<IGameListItem[]>> {
+    const { data, pageInfo } = await this.getAllGamesRaw(paginationOpts);
 
-    // TODO: Implement result according to IPaginationResult
-    return Promise.all(
-      games.map(async (val) => await this._convertRedisRecord(ctx, val))
+    const gamesItems = await Promise.all(
+      data.map((g) => this._convertRedisRecord(ctx, g))
     );
+
+    // Redis record converting could return undefined - need to filter again
+    const validGames = gamesItems.filter(
+      (g): g is IGameListItem => !ValueUtils.isBad(g)
+    );
+
+    return {
+      data: validGames,
+      pageInfo: { ...pageInfo, totalOnPage: validGames.length },
+    };
   }
 
   public async createGame(
@@ -175,6 +160,10 @@ export class GameRepository {
 
     const gameId = this._generateGameId();
     const key = `${GAME_NAMESPACE}:${gameId}`;
+
+    if (await this._redisClient.get(key)) {
+      throw new ClientError(ClientResponse.BAD_GAME_CREATION);
+    }
 
     // Redis entity
     const gameDataRaw: IGame = {
@@ -212,7 +201,7 @@ export class GameRepository {
   private async _convertRedisRecord(
     ctx: ApiContext,
     record: IGame
-  ): Promise<IGameListItem> {
+  ): Promise<IGameListItem | undefined> {
     const userRepo = this._getUserRepository(ctx.db);
     const packageRepo = this._getPackageRepository(ctx.db);
 
@@ -224,7 +213,7 @@ export class GameRepository {
     const packData = await packageRepo.get(record.package);
 
     if (!packData) {
-      throw new ClientError(ClientResponse.BAD_GAME_DATA);
+      return;
     }
 
     if (!packData.author) {

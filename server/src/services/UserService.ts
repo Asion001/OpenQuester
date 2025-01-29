@@ -11,6 +11,8 @@ import { UserRepository } from "database/repositories/UserRepository";
 import { JWTUtils } from "utils/JWTUtils";
 import { FileUsageRepository } from "database/repositories/FileUsageRepository";
 import { JWTResponse } from "types/jwt/jwt";
+import { IPaginationOpts } from "types/pagination/IPaginationOpts";
+import { User } from "database/models/User";
 
 export class UserService {
   public async register(ctx: ApiContext, req: Request): Promise<JWTResponse> {
@@ -27,8 +29,8 @@ export class UserService {
   /**
    * Get list of all available users in DB
    */
-  public async list(ctx: ApiContext) {
-    return UserRepository.getRepository(ctx.db).list({
+  public async list(ctx: ApiContext, paginationOpts: IPaginationOpts<User>) {
+    return UserRepository.getRepository(ctx.db).list(paginationOpts, {
       relations: ["permissions", "avatar"],
     });
   }
@@ -37,7 +39,9 @@ export class UserService {
    * Retrieve one user
    */
   public async get(ctx: ApiContext, req: Request) {
-    return UserRepository.getRepository(ctx.db).get(this._getId(req));
+    return UserRepository.getRepository(ctx.db).get(this._getId(req), {
+      relations: ["permissions", "avatar"],
+    });
   }
 
   /**

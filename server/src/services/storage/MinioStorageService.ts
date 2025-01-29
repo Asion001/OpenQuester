@@ -25,8 +25,10 @@ import { ContentStructureService } from "services/ContentStructureService";
 import { ApiContext } from "services/context/ApiContext";
 import { ServerServices } from "services/ServerServices";
 import { DependencyService } from "services/dependency/DependencyService";
+import { ValueUtils } from "utils/ValueUtils";
 
 const MINIO_PREFIX = "[MINIO]: ";
+const ALLOWED_TYPES = ["jpg", "jpeg", "mp4", "mp3", "mkv", "png"];
 
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
@@ -52,8 +54,9 @@ export class MinioStorageService implements IStorage {
 
     this._agentOptions = {
       keepAlive: true,
-      maxSockets: 50,
-      keepAliveMsecs: 1000,
+      maxSockets: 100,
+      keepAliveMsecs: 500,
+      timeout: 5000,
       noDelay: true,
     };
 
@@ -67,7 +70,7 @@ export class MinioStorageService implements IStorage {
       useSSL: this._s3Context.useSSL,
       accessKey: this._s3Context.accessKey,
       secretKey: this._s3Context.secretKey,
-      partSize: 5 * 1024 * 1024,
+      partSize: 10 * 1024 * 1024,
       transportAgent: this._agent,
     });
   }
@@ -97,6 +100,15 @@ export class MinioStorageService implements IStorage {
     user?: User,
     pack?: Package
   ) {
+    const fileExtension = ValueUtils.getFileExtension(filename);
+
+    if (!ALLOWED_TYPES.includes(fileExtension)) {
+      throw new ClientError(ClientResponse.UNSUPPORTED_FILE_TYPE, 400, {
+        type: fileExtension,
+        file: filename,
+      });
+    }
+
     const filenameWithPath = StorageUtils.parseFilePath(filename);
     const link = await this._client.presignedPutObject(
       this._s3Context.bucket,

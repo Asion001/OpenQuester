@@ -14,6 +14,8 @@ import { ApiContext } from "services/context/ApiContext";
 import { FileUsageRepository } from "database/repositories/FileUsageRepository";
 import { JWTPayload } from "types/jwt/jwt";
 import { HttpStatus } from "enums/HttpStatus";
+import { PaginatedResults } from "database/pagination/PaginatedResults";
+import { IPaginationOpts } from "types/pagination/IPaginationOpts";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -52,11 +54,27 @@ export class UserRepository {
     }) as Promise<User>;
   }
 
-  public async list(selectOptions?: ISelectOptions<User>) {
-    return this._repository.find({
-      select: selectOptions?.select ?? USER_SELECT_FIELDS,
-      relations: selectOptions?.relations,
-    }) as Promise<User[]>;
+  public async list(
+    paginationOpts: IPaginationOpts<User>,
+    selectOptions?: ISelectOptions<User>
+  ) {
+    const alias = this._repository.metadata.name.toLowerCase();
+
+    const qb = this._repository
+      .createQueryBuilder(alias)
+      .select(
+        selectOptions?.select
+          ? selectOptions.select.map((field) => `user.${field}`)
+          : USER_SELECT_FIELDS.map((field) => `user.${field}`)
+      );
+
+    if (selectOptions?.relations) {
+      for (const relation of selectOptions.relations) {
+        qb.leftJoinAndSelect(`user.${relation}`, relation);
+      }
+    }
+
+    return PaginatedResults.paginateEntityAndSelect<User>(qb, paginationOpts);
   }
 
   public async create(ctx: ApiContext, data: IRegisterUser) {
@@ -91,8 +109,9 @@ export class UserRepository {
    * Returns user with specified login data
    */
   public async login(data: ILoginUser) {
+    const alias = this._repository.metadata.name.toLowerCase();
     return this._repository
-      .createQueryBuilder("user")
+      .createQueryBuilder(alias)
       .where("user.email = :email", { email: data.login })
       .orWhere("user.name = :name", { name: data.login })
       .getOne();
