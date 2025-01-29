@@ -28,7 +28,6 @@ import { DependencyService } from "services/dependency/DependencyService";
 import { ValueUtils } from "utils/ValueUtils";
 
 const MINIO_PREFIX = "[MINIO]: ";
-const ALLOWED_TYPES = ["jpg", "jpeg", "mp4", "mp3", "mkv", "png"];
 
 export class MinioStorageService implements IStorage {
   private _client: Minio.Client;
