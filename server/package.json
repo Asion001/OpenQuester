@@ -1,6 +1,6 @@
 {
   "name": "openquester_api",
-  "version": "0.3.13",
+  "version": "0.5.2",
   "description": "",
   "scripts": {
     "start:dev:run": "wait-on ./dist/index.js && nodemon ./dist/index.js",
@@ -42,7 +42,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
-    "@seriousme/openapi-schema-validator": "^2.2.1",
     "@swc/core": "^1.7.6",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.17",

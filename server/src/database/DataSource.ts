@@ -62,6 +62,7 @@ export const AppDataSource = new DataSource({
     addFileUsageTable,
     renameAuthorAndAvatarId,
   ],
+  poolSize: 25,
   migrationsRun: true,
   subscribers: [],
 });

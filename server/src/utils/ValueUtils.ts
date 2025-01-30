@@ -106,7 +106,7 @@ export class ValueUtils {
    * - string "24a" returns `false`
    * - all numbers returns `true`
    */
-  public static isNumeric(value: string | number) {
+  public static isNumeric(value: string | number | unknown) {
     return this.isNumber(value) || !isNaN(Number(value));
   }
 
@@ -141,6 +141,11 @@ export class ValueUtils {
       return filename;
     }
     return filename.substring(0, lastDotIndex);
+  }
+
+  public static getFileExtension(filename: string) {
+    const parts = filename.split(".");
+    return parts[parts.length - 1].toLowerCase();
   }
 
   /**

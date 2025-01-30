@@ -15,7 +15,7 @@ import { FileRestApiController } from "controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "controllers/rest/PackageRestApiController";
 import { ServerError } from "error/ServerError";
 import { logMiddleware } from "middleware/log/DebugLogMiddleware";
-import { SwaggerRestApiController } from "controllers/rest/SwaggerController";
+import { SwaggerRestApiController } from "controllers/rest/SwaggerRestApiController";
 import { RedisConfig } from "config/RedisConfig";
 import { SocketIOInitializer } from "controllers/io/SocketIOInitializer";
 import { GameRestApiController } from "controllers/rest/GameRestApiController";

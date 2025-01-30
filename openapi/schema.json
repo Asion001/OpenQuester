@@ -417,16 +417,18 @@
       "get": {
         "summary": "Get all users info",
         "tags": ["Users"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UsersPaginationParams"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Get all users data successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ResponseUser"
-                  }
+                  "$ref": "#/components/schemas/PaginatedUsers"
                 }
               }
             }
@@ -778,16 +780,18 @@
       "get": {
         "summary": "Get all games",
         "tags": ["Games"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/GamesPaginationParams"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Get all games successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IGameListItem"
-                  }
+                  "$ref": "#/components/schemas/PaginatedGames"
                 }
               }
             }
@@ -1436,6 +1440,123 @@
           },
           "author": {
             "$ref": "#/components/schemas/IShortUserInfo"
+          }
+        }
+      },
+      "PaginatedUsers": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResponseUser"
+            }
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "example": 1000
+              }
+            }
+          }
+        }
+      },
+      "PaginatedGames": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IGameListItem"
+            }
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "example": 1000
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "UsersPaginationParams": {
+        "name": "pagination",
+        "in": "query",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "sortBy": {
+              "type": "string",
+              "enum": [
+                "id",
+                "is_deleted",
+                "created_at",
+                "name",
+                "email",
+                "updated_at"
+              ],
+              "example": "createdAt"
+            },
+            "order": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "example": "asc"
+            },
+            "limit": {
+              "type": "integer",
+              "example": 10,
+              "minimum": 1,
+              "maximum": 50
+            },
+            "offset": {
+              "type": "integer",
+              "example": 0,
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "GamesPaginationParams": {
+        "name": "pagination",
+        "in": "query",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "sortBy": {
+              "type": "string",
+              "enum": [
+                "id",
+                "title",
+                "createdAt",
+                "createdBy",
+                "maxPlayers",
+                "players",
+                "startedAt"
+              ],
+              "example": "createdAt"
+            },
+            "order": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "example": "asc"
+            },
+            "limit": {
+              "type": "integer",
+              "example": 10,
+              "minimum": 1,
+              "maximum": 50
+            },
+            "offset": {
+              "type": "integer",
+              "example": 0,
+              "minimum": 0
+            }
           }
         }
       }
