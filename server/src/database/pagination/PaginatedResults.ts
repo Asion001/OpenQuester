@@ -27,7 +27,7 @@ export class PaginatedResults {
 
     return {
       data,
-      pageInfo: { total, totalOnPage: data.length },
+      pageInfo: { total },
     };
   }
 }

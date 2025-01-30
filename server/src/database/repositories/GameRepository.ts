@@ -73,7 +73,7 @@ export class GameRepository {
     const pipelineResult = await pipeline.exec();
 
     if (!pipelineResult?.length) {
-      return { data: [], pageInfo: { total: 0, totalOnPage: 0 } };
+      return { data: [], pageInfo: { total: 0 } };
     }
 
     // Parse and filter valid games
@@ -101,7 +101,7 @@ export class GameRepository {
 
     return {
       data: paginatedGames,
-      pageInfo: { totalOnPage: validGames.length, total: totalCount },
+      pageInfo: { total: totalCount },
     };
   }
 
@@ -142,7 +142,7 @@ export class GameRepository {
 
     return {
       data: validGames,
-      pageInfo: { ...pageInfo, totalOnPage: validGames.length },
+      pageInfo: { ...pageInfo },
     };
   }
 

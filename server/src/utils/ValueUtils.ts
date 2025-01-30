@@ -145,7 +145,7 @@ export class ValueUtils {
 
   public static getFileExtension(filename: string) {
     const parts = filename.split(".");
-    return parts[parts.length - 1];
+    return parts[parts.length - 1].toLowerCase();
   }
 
   /**

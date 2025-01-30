@@ -419,7 +419,7 @@
         "tags": ["Users"],
         "parameters": [
           {
-            "$ref": "#/components/parameters/PaginationParams"
+            "$ref": "#/components/parameters/UsersPaginationParams"
           }
         ],
         "responses": {
@@ -782,7 +782,7 @@
         "tags": ["Games"],
         "parameters": [
           {
-            "$ref": "#/components/parameters/PaginationParams"
+            "$ref": "#/components/parameters/GamesPaginationParams"
           }
         ],
         "responses": {
@@ -1458,10 +1458,6 @@
               "total": {
                 "type": "integer",
                 "example": 1000
-              },
-              "totalOnPage": {
-                "type": "integer",
-                "example": 50
               }
             }
           }
@@ -1482,10 +1478,6 @@
               "total": {
                 "type": "integer",
                 "example": 1000
-              },
-              "totalOnPage": {
-                "type": "integer",
-                "example": 50
               }
             }
           }
@@ -1493,7 +1485,7 @@
       }
     },
     "parameters": {
-      "PaginationParams": {
+      "UsersPaginationParams": {
         "name": "pagination",
         "in": "query",
         "schema": {
@@ -1501,6 +1493,52 @@
           "properties": {
             "sortBy": {
               "type": "string",
+              "enum": [
+                "id",
+                "is_deleted",
+                "created_at",
+                "name",
+                "email",
+                "updated_at"
+              ],
+              "example": "createdAt"
+            },
+            "order": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "example": "asc"
+            },
+            "limit": {
+              "type": "integer",
+              "example": 10,
+              "minimum": 1,
+              "maximum": 50
+            },
+            "offset": {
+              "type": "integer",
+              "example": 0,
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "GamesPaginationParams": {
+        "name": "pagination",
+        "in": "query",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "sortBy": {
+              "type": "string",
+              "enum": [
+                "id",
+                "title",
+                "createdAt",
+                "createdBy",
+                "maxPlayers",
+                "players",
+                "startedAt"
+              ],
               "example": "createdAt"
             },
             "order": {
