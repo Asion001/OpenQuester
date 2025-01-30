@@ -117,9 +117,14 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<List<ResponseUser>> getV1Users({RequestOptions? options}) async {
+  Future<PaginatedUsers> getV1Users({
+    Pagination? pagination,
+    RequestOptions? options,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'pagination': pagination?.toJson()
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
@@ -136,12 +141,10 @@ class _UsersClient implements UsersClient {
       queryParameters: queryParameters,
       path: '/v1/users/',
     )..data = _data;
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ResponseUser> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginatedUsers _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => ResponseUser.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = PaginatedUsers.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

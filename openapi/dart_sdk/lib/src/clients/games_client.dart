@@ -7,6 +7,8 @@ import 'package:retrofit/retrofit.dart';
 
 import '../models/i_game_create_data.dart';
 import '../models/i_game_list_item.dart';
+import '../models/paginated_games.dart';
+import '../models/pagination2.dart';
 
 part 'games_client.g.dart';
 
@@ -16,7 +18,8 @@ abstract class GamesClient {
 
   /// Get all games
   @GET('/v1/games')
-  Future<List<IGameListItem>> getV1Games({
+  Future<PaginatedGames> getV1Games({
+    @Query('pagination') Pagination2? pagination,
     @DioOptions() RequestOptions? options,
   });
 

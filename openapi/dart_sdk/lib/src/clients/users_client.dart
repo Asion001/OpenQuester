@@ -7,6 +7,8 @@ import 'package:retrofit/retrofit.dart';
 
 import '../models/input_register_user.dart';
 import '../models/input_update_user.dart';
+import '../models/paginated_users.dart';
+import '../models/pagination.dart';
 import '../models/response_auth_data.dart';
 import '../models/response_user.dart';
 
@@ -40,7 +42,8 @@ abstract class UsersClient {
 
   /// Get all users info
   @GET('/v1/users/')
-  Future<List<ResponseUser>> getV1Users({
+  Future<PaginatedUsers> getV1Users({
+    @Query('pagination') Pagination? pagination,
     @DioOptions() RequestOptions? options,
   });
 

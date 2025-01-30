@@ -62,9 +62,8 @@ class GamesListController extends ListControllerBase<GameListItem> {
   Future<ListResponse<GameListItem>> getPage(request) async {
     final list = await Api.I.api.games.getV1Games();
     return ListResponse(
-      list: list,
-      //TODO: Add total
-      metadata: ListResponseMeta(total: 10),
+      list: list.data,
+      metadata: ListResponseMeta(total: list.pageInfo.total),
     );
   }
 }

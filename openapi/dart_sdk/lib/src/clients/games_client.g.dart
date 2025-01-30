@@ -22,9 +22,14 @@ class _GamesClient implements GamesClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<IGameListItem>> getV1Games({RequestOptions? options}) async {
+  Future<PaginatedGames> getV1Games({
+    Pagination2? pagination,
+    RequestOptions? options,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'pagination': pagination?.toJson()
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
@@ -41,12 +46,10 @@ class _GamesClient implements GamesClient {
       queryParameters: queryParameters,
       path: '/v1/games',
     )..data = _data;
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<IGameListItem> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginatedGames _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => IGameListItem.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = PaginatedGames.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
