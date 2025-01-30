@@ -52,10 +52,7 @@ export function checkPermission(db: Database, permission: Permissions) {
  * Require some permission from user, that makes request, if he passed
  * the id in request params, which means he's doing request on another user
  */
-export function requirePermissionIfIdProvided(
-  db: Database,
-  permission: Permissions
-) {
+export function checkPermissionWithId(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     if (req.params.id) {
       try {
@@ -93,8 +90,8 @@ export function requirePermissionIfIdProvided(
         );
         return res.status(code).send({ error: message });
       }
+    } else {
+      throw new ClientError(ClientResponse.BAD_USER_ID);
     }
-
-    next();
   };
 }

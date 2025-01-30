@@ -232,6 +232,87 @@
             }
           }
         }
+      },
+      "get": {
+        "summary": "Get all packages",
+        "tags": ["Packages"],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/PackagesPaginationParams"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all packages data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedPackages"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/packages/{id}": {
+      "get": {
+        "summary": "Get package by id",
+        "tags": ["Packages"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get package data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IPackageItem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Package not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Package not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/users/{id}": {
@@ -1413,6 +1494,26 @@
         "enum": ["created", "changed", "deleted", "started"],
         "example": "created"
       },
+      "PaginatedPackages": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IPackageItem"
+            }
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "example": 1000
+              }
+            }
+          }
+        }
+      },
       "IPackageItem": {
         "type": "object",
         "properties": {
@@ -1539,6 +1640,36 @@
                 "players",
                 "startedAt"
               ],
+              "example": "createdAt"
+            },
+            "order": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "example": "asc"
+            },
+            "limit": {
+              "type": "integer",
+              "example": 10,
+              "minimum": 1,
+              "maximum": 50
+            },
+            "offset": {
+              "type": "integer",
+              "example": 0,
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "PackagesPaginationParams": {
+        "name": "pagination",
+        "in": "query",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "sortBy": {
+              "type": "string",
+              "enum": ["id", "title", "createdAt", "author"],
               "example": "createdAt"
             },
             "order": {

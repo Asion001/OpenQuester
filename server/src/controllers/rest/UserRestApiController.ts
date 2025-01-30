@@ -6,7 +6,7 @@ import { UpdateUser } from "managers/user/UpdateUser";
 import { ClientResponse } from "enums/ClientResponse";
 import { ErrorController } from "error/ErrorController";
 import { HttpStatus } from "enums/HttpStatus";
-import { requirePermissionIfIdProvided } from "middleware/permission/PermissionMiddleware";
+import { checkPermissionWithId } from "middleware/permission/PermissionMiddleware";
 import { validateWithSchema } from "middleware/SchemaMiddleware";
 import { checkPermission } from "middleware/permission/PermissionMiddleware";
 import { Permissions } from "enums/Permissions";
@@ -57,26 +57,20 @@ export class UserRestApiController {
 
     router.get(
       "/:id",
-      requirePermissionIfIdProvided(this.ctx.db, Permissions.GET_ANOTHER_USER),
+      checkPermissionWithId(this.ctx.db, Permissions.GET_ANOTHER_USER),
       this.getUser
     );
 
     router.patch(
       "/:id",
-      requirePermissionIfIdProvided(
-        this.ctx.db,
-        Permissions.CHANGE_ANOTHER_USER
-      ),
+      checkPermissionWithId(this.ctx.db, Permissions.CHANGE_ANOTHER_USER),
       validateWithSchema(this.ctx.db, UpdateUser),
       this.updateUser
     );
 
     router.delete(
       "/:id",
-      requirePermissionIfIdProvided(
-        this.ctx.db,
-        Permissions.DELETE_ANOTHER_USER
-      ),
+      checkPermissionWithId(this.ctx.db, Permissions.DELETE_ANOTHER_USER),
       this.deleteUser
     );
   }
