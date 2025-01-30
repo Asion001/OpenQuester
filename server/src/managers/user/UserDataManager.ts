@@ -13,7 +13,7 @@ import { Database } from "database/Database";
 export class UserDataManager implements ISchema {
   protected _userData?: IInputUserData;
   protected _schema: Joi.ObjectSchema<any>;
-  protected _required?: string[];
+  protected _required: string[];
   protected _db: Database;
 
   constructor(db: Database) {

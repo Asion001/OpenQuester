@@ -3,26 +3,24 @@ import { ClientResponse } from "enums/ClientResponse";
 import { ClientError } from "error/ClientError";
 import { IStorage } from "types/file/IStorage";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
-import { ValueUtils } from "utils/ValueUtils";
+import { OQFileContentStructure } from "types/file/structures/OQFileContentStructure";
+import { OQQuestionsStructure } from "types/file/structures/OQQuestionsStructure";
+import { OQRoundStructure } from "types/file/structures/OQRoundStructure";
+import { OQThemeStructure } from "types/file/structures/OQThemeStructure";
+
+type TraversableObject =
+  | OQContentStructure
+  | OQRoundStructure
+  | OQThemeStructure
+  | OQQuestionsStructure
+  | OQFileContentStructure;
 
 /**
  * Class that manages all actions related to content.json file and it's structure
  */
 export class ContentStructureService {
-  private _fileLinks: { [key: string]: string };
-  private _promises: Array<Promise<string>>;
-  private _stack: Set<any>;
   private _storage!: IStorage;
 
-  constructor() {
-    this._promises = [];
-    this._fileLinks = {};
-    this._stack = new Set();
-  }
-
-  /**
-   * Parse content.json file and update all "file" entries with download link
-   */
   public async getUploadLinksForFiles(
     content: OQContentStructure,
     storage: IStorage,
@@ -33,60 +31,37 @@ export class ContentStructureService {
       throw new ClientError(ClientResponse.NO_CONTENT_ROUNDS);
     }
 
-    if (!ValueUtils.isEmpty(this._fileLinks)) {
-      this._fileLinks = {};
-    }
-
     this._storage = storage;
-    this._stack = new Set(content.rounds);
-    this._promises = [];
+    const fileLinks: Record<string, string> = {};
+    const promises: Promise<void>[] = [];
+    const stack: TraversableObject[] = [...content.rounds];
 
-    // Iterate through each object in the content to find "file" entries
-    while (this._stack.size > 0) {
-      const current = this._stack.values().next().value;
-      this._stack.delete(current);
+    while (stack.length > 0) {
+      const current = stack.pop()!;
 
-      if (current && this._hasFile(current)) {
+      if (this._hasFile(current)) {
         const filename = current.file.sha256;
-
-        if (filename) {
-          const uploadPromise = this._uploadPromise(filename, expiresIn, pack);
-          this._promises.push(uploadPromise);
-        }
-      } else {
-        this._updateStack(current);
+        promises.push(
+          this._storage
+            .performFileUpload(filename, expiresIn, undefined, pack)
+            .then((link) => {
+              fileLinks[filename] = link;
+            })
+        );
+      } else if (typeof current === "object" && current !== null) {
+        Object.values(current).forEach((value) => {
+          if (typeof value === "object" && value !== null) {
+            stack.push(value as TraversableObject);
+          }
+        });
       }
     }
 
-    await Promise.all(this._promises);
-    this._promises.length = 0;
-
-    return this._fileLinks;
+    await Promise.all(promises);
+    return fileLinks;
   }
 
-  private _updateStack(current: any) {
-    // Push nested objects into the stack for further processing
-    for (const key in current) {
-      const value = current[key as keyof typeof current];
-      if (typeof value === "object" && value !== null) {
-        this._stack.add(value);
-      }
-    }
-  }
-
-  private _uploadPromise(filename: string, expiresIn: number, pack: Package) {
-    return this._storage
-      .performFileUpload(filename, expiresIn, undefined, pack)
-      .then((link) => {
-        this._fileLinks[filename] = link;
-        return link;
-      });
-  }
-
-  /** Check if current object of stack has correct and non-empty file field */
-  private _hasFile(obj: any) {
-    return (
-      obj && typeof obj.file === "object" && typeof obj.file.sha256 === "string"
-    );
+  private _hasFile(obj: object): obj is { file: OQFileContentStructure } {
+    return "file" in obj && typeof (obj as any).file?.sha256 === "string";
   }
 }

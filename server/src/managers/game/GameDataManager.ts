@@ -13,7 +13,7 @@ import { EAgeRestriction } from "enums/game/EAgeRestriction";
 export class GameDataManager implements ISchema {
   protected _gameData?: IGameCreateData;
   protected _schema: Joi.ObjectSchema<any>;
-  protected _required?: string[];
+  protected _required: string[];
   protected _db: Database;
 
   constructor(db: Database) {

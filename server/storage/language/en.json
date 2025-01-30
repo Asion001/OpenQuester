@@ -4,7 +4,8 @@
   "user_already_exists": "User with this name or email already exists",
   "no_user_data": "No user data provided",
   "no_game_data": "No game data provided",
-  "bad_game_data": "Bad game data for game %id",
+  "bad_game_creation": "Something went wrong during game creation, please try again",
+  "game_not_found": "Game with id '%gameId' not found",
   "wrong_password": "Wrong password, please try again",
   "no_refresh": "Please provide refresh_token",
   "invalid_refresh": "Invalid or expired refresh token",
@@ -21,11 +22,13 @@
   "empty_content": "Content is empty!",
   "package_not_found": "Package not found",
   "cannot_save_content": "Cannot save content to the Database, probably it is incorrect or empty",
+  "package_failed_to_upload": "Package is failed to upload: %error",
   "package_author_not_found": "User that upload package not found, upload aborted",
   "filename_required": "'filename' field is required",
   "filename_invalid": "'filename' should be a valid string",
   "file_not_found": "File with provided filename not found",
   "delete_request_sent": "Delete request sent",
   "user_permission_not_exists": "Permission %name with ID %id does not exists",
-  "delete_from_package": "Files from packages can be deleted only with packages. File used in: %packages"
+  "delete_from_package": "Files from packages can be deleted only with packages. File used in: %packages",
+  "unsupported_file_type": "Unsupported file type '%type'. File: '%file'"
 }

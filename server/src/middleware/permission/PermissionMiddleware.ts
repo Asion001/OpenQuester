@@ -10,6 +10,7 @@ import { ValueUtils } from "utils/ValueUtils";
 import { ErrorController } from "error/ErrorController";
 import { TranslateService as ts } from "services/text/TranslateService";
 import { Permission } from "database/models/Permission";
+import { ClientError } from "error/ClientError";
 
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -22,6 +23,13 @@ export function checkPermission(db: Database, permission: Permissions) {
           relations: ["permissions"],
         }
       );
+
+      if (!user) {
+        throw new ClientError(
+          ClientResponse.ACCESS_DENIED,
+          HttpStatus.UNAUTHORIZED
+        );
+      }
 
       if (await Permission.checkPermission(user, permission)) {
         return next();
