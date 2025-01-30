@@ -19,17 +19,17 @@ class GamesListController extends ListControllerBase<GameListItem> {
 
   Future<void> _onSocketEvent(dynamic data) async {
     final gameEvent = PostSubscriptionGamesResponse.fromJson(data);
-    const gameChangedEvents = [
-      IGameEvent.changed,
-      IGameEvent.started,
-    ];
     final game = gameEvent.data;
-    if (gameChangedEvents.contains(gameEvent.event)) {
-      _updateItem(game);
-    } else if (gameEvent.event == IGameEvent.created) {
-      _addFirstItem(game);
-    } else if (gameEvent.event == IGameEvent.deleted) {
-      _deleteItem(game);
+    switch (gameEvent.event) {
+      case IGameEvent.changed:
+      case IGameEvent.started:
+        _updateItem(game);
+      case IGameEvent.created:
+        _addFirstItem(game);
+      case IGameEvent.deleted:
+        _deleteItem(game);
+      case IGameEvent.$unknown:
+        break;
     }
   }
 
