@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the latest git tag
-GIT_TAG=$(git describe --tags --abbrev=0)
+GIT_TAG=$1 || $(git describe --tags --abbrev=0)
 
 if [ -z "$GIT_TAG" ]; then
   echo "No tags found. Exiting."
