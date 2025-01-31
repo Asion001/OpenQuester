@@ -9,9 +9,9 @@ import '../models/games_sort_by.dart';
 import '../models/i_game_create_data.dart';
 import '../models/i_game_list_item.dart';
 import '../models/order_direction.dart';
-import '../models/paggination_limit.dart';
-import '../models/paggination_offset.dart';
 import '../models/paginated_games.dart';
+import '../models/pagination_limit.dart';
+import '../models/pagination_offset.dart';
 
 part 'games_client.g.dart';
 
@@ -22,10 +22,10 @@ abstract class GamesClient {
   /// Get all games
   @GET('/v1/games')
   Future<PaginatedGames> getV1Games({
-    @Query('limit') required PagginationLimit limit,
-    @Query('offset') required PagginationOffset offset,
-    @Query('sortBy') GamesSortBy? sortBy,
-    @Query('order') OrderDirection? order,
+    @Query('sortBy') required GamesSortBy sortBy,
+    @Query('order') required OrderDirection order,
+    @Query('limit') required PaginationLimit limit,
+    @Query('offset') required PaginationOffset offset,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });

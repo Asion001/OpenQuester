@@ -21,7 +21,7 @@ PaginatedUsers _$PaginatedUsersFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PaginatedUsers {
   List<ResponseUser> get data => throw _privateConstructorUsedError;
-  PageInfo get pageInfo => throw _privateConstructorUsedError;
+  PageInfo2 get pageInfo => throw _privateConstructorUsedError;
 
   /// Serializes this PaginatedUsers to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,9 +39,9 @@ abstract class $PaginatedUsersCopyWith<$Res> {
           PaginatedUsers value, $Res Function(PaginatedUsers) then) =
       _$PaginatedUsersCopyWithImpl<$Res, PaginatedUsers>;
   @useResult
-  $Res call({List<ResponseUser> data, PageInfo pageInfo});
+  $Res call({List<ResponseUser> data, PageInfo2 pageInfo});
 
-  $PageInfoCopyWith<$Res> get pageInfo;
+  $PageInfo2CopyWith<$Res> get pageInfo;
 }
 
 /// @nodoc
@@ -70,7 +70,7 @@ class _$PaginatedUsersCopyWithImpl<$Res, $Val extends PaginatedUsers>
       pageInfo: null == pageInfo
           ? _value.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
-              as PageInfo,
+              as PageInfo2,
     ) as $Val);
   }
 
@@ -78,8 +78,8 @@ class _$PaginatedUsersCopyWithImpl<$Res, $Val extends PaginatedUsers>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PageInfoCopyWith<$Res> get pageInfo {
-    return $PageInfoCopyWith<$Res>(_value.pageInfo, (value) {
+  $PageInfo2CopyWith<$Res> get pageInfo {
+    return $PageInfo2CopyWith<$Res>(_value.pageInfo, (value) {
       return _then(_value.copyWith(pageInfo: value) as $Val);
     });
   }
@@ -93,10 +93,10 @@ abstract class _$$PaginatedUsersImplCopyWith<$Res>
       __$$PaginatedUsersImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ResponseUser> data, PageInfo pageInfo});
+  $Res call({List<ResponseUser> data, PageInfo2 pageInfo});
 
   @override
-  $PageInfoCopyWith<$Res> get pageInfo;
+  $PageInfo2CopyWith<$Res> get pageInfo;
 }
 
 /// @nodoc
@@ -123,7 +123,7 @@ class __$$PaginatedUsersImplCopyWithImpl<$Res>
       pageInfo: null == pageInfo
           ? _value.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
-              as PageInfo,
+              as PageInfo2,
     ));
   }
 }
@@ -147,7 +147,7 @@ class _$PaginatedUsersImpl implements _PaginatedUsers {
   }
 
   @override
-  final PageInfo pageInfo;
+  final PageInfo2 pageInfo;
 
   @override
   String toString() {
@@ -189,7 +189,7 @@ class _$PaginatedUsersImpl implements _PaginatedUsers {
 abstract class _PaginatedUsers implements PaginatedUsers {
   const factory _PaginatedUsers(
       {required final List<ResponseUser> data,
-      required final PageInfo pageInfo}) = _$PaginatedUsersImpl;
+      required final PageInfo2 pageInfo}) = _$PaginatedUsersImpl;
 
   factory _PaginatedUsers.fromJson(Map<String, dynamic> json) =
       _$PaginatedUsersImpl.fromJson;
@@ -197,7 +197,7 @@ abstract class _PaginatedUsers implements PaginatedUsers {
   @override
   List<ResponseUser> get data;
   @override
-  PageInfo get pageInfo;
+  PageInfo2 get pageInfo;
 
   /// Create a copy of PaginatedUsers
   /// with the given fields replaced by the non-null parameter values.

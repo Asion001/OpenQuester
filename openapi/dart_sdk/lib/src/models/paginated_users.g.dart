@@ -11,7 +11,7 @@ _$PaginatedUsersImpl _$$PaginatedUsersImplFromJson(Map<String, dynamic> json) =>
       data: (json['data'] as List<dynamic>)
           .map((e) => ResponseUser.fromJson(e as Map<String, dynamic>))
           .toList(),
-      pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
+      pageInfo: PageInfo2.fromJson(json['pageInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$PaginatedUsersImplToJson(

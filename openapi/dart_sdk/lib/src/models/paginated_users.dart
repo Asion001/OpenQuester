@@ -4,7 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'page_info.dart';
+import 'page_info2.dart';
 import 'response_user.dart';
 
 part 'paginated_users.freezed.dart';
@@ -14,7 +14,7 @@ part 'paginated_users.g.dart';
 class PaginatedUsers with _$PaginatedUsers {
   const factory PaginatedUsers({
     required List<ResponseUser> data,
-    required PageInfo pageInfo,
+    required PageInfo2 pageInfo,
   }) = _PaginatedUsers;
   
   factory PaginatedUsers.fromJson(Map<String, Object?> json) => _$PaginatedUsersFromJson(json);
