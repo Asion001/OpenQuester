@@ -38,6 +38,7 @@ dependencies:
   infinite_scroll_pagination: ^4.1.0
   nb_utils: ^7.0.9
   gap: ^3.0.1
+  dio_cache_interceptor: ^3.5.1
 
 dev_dependencies:
   flutter_test:

@@ -57,6 +57,86 @@ class _PackagesClient implements PackagesClient {
     return _value;
   }
 
+  @override
+  Future<PaginatedPackages> getV1Packages({
+    required PackagesSortBy sortBy,
+    required OrderDirection order,
+    required int limit,
+    required int offset,
+    Map<String, dynamic>? extras,
+    RequestOptions? options,
+  }) async {
+    final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
+    final queryParameters = <String, dynamic>{
+      r'sortBy': sortBy.toJson(),
+      r'order': order.toJson(),
+      r'limit': limit,
+      r'offset': offset,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'GET',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/packages',
+    )..data = _data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PaginatedPackages _value;
+    try {
+      _value = PaginatedPackages.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<IPackageItem> getV1PackagesId({
+    required String id,
+    Map<String, dynamic>? extras,
+    RequestOptions? options,
+  }) async {
+    final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'GET',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/packages/${id}',
+    )..data = _data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late IPackageItem _value;
+    try {
+      _value = IPackageItem.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions newRequestOptions(Object? options) {
     if (options is RequestOptions) {
       return options as RequestOptions;

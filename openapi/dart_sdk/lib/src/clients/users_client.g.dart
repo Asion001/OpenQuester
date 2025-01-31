@@ -124,20 +124,20 @@ class _UsersClient implements UsersClient {
 
   @override
   Future<PaginatedUsers> getV1Users({
+    required UsersSortBy sortBy,
+    required OrderDirection order,
     required int limit,
     required int offset,
-    UsersSortBy? sortBy,
-    OrderDirection? order,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
     _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{
+      r'sortBy': sortBy.toJson(),
+      r'order': order.toJson(),
       r'limit': limit,
       r'offset': offset,
-      r'sortBy': sortBy?.toJson(),
-      r'order': order?.toJson(),
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

@@ -240,6 +240,7 @@
           {
             "name": "sortBy",
             "in": "query",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/PackagesSortBy"
             }
@@ -247,6 +248,7 @@
           {
             "name": "order",
             "in": "query",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/OrderDirection"
             }
@@ -529,6 +531,7 @@
           {
             "name": "sortBy",
             "in": "query",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/UsersSortBy"
             }
@@ -536,6 +539,7 @@
           {
             "name": "order",
             "in": "query",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/OrderDirection"
             }
@@ -919,6 +923,7 @@
           {
             "name": "sortBy",
             "in": "query",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/GamesSortBy"
             }
@@ -926,6 +931,7 @@
           {
             "name": "order",
             "in": "query",
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/OrderDirection"
             }
@@ -1671,7 +1677,7 @@
         "type": "string",
         "enum": ["asc", "desc"],
         "example": "asc",
-        "default": "asc"
+        "default": "desc"
       },
       "PaginationLimit": {
         "type": "integer",

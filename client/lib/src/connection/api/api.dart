@@ -1,11 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
-import 'package:openapi/openapi.dart';
-import 'package:openquester/src/core/get_it.dart';
-import 'package:openquester/src/connection/controllers/login_controller.dart';
-import 'package:openquester/src/utils/request_ispector.dart';
-
-import '../../core/env.dart';
+import 'package:openquester/common_imports.dart';
 
 @Singleton(order: 1)
 class Api {
@@ -20,6 +14,7 @@ class Api {
         },
       ),
     )..interceptors.addAll([
+        dioCacheInterceptor,
         authInterceptor,
         timeoutInterceptor,
         aliceDioAdapter,
