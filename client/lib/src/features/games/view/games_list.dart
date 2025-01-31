@@ -7,11 +7,15 @@ class GamesList extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<int, GameListItem>(
-      pagingController: getIt<GamesListController>().pagingController,
-      builderDelegate: PagedChildBuilderDelegate<GameListItem>(
-        animateTransitions: true,
-        itemBuilder: (context, item, index) => GameListItemWidget(item: item),
+    return RefreshIndicator.adaptive(
+      onRefresh: () async =>
+          getIt<GamesListController>().pagingController.refresh(),
+      child: PagedListView<int, GameListItem>(
+        pagingController: getIt<GamesListController>().pagingController,
+        builderDelegate: PagedChildBuilderDelegate<GameListItem>(
+          animateTransitions: true,
+          itemBuilder: (context, item, index) => GameListItemWidget(item: item),
+        ),
       ),
     );
   }

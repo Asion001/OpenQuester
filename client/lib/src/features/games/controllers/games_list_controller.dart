@@ -63,6 +63,8 @@ class GamesListController extends ListControllerBase<GameListItem> {
     final list = await Api.I.api.games.getV1Games(
       limit: request.limit,
       offset: request.offset,
+      order: OrderDirection.desc,
+      sortBy: GamesSortBy.createdAt,
     );
     return ListResponse(
       list: list.data,
