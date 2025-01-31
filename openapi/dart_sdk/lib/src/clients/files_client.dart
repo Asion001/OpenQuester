@@ -24,6 +24,7 @@ abstract class FilesClient {
   @GET('/v1/files')
   Future<GetV1FilesResponse> getV1Files({
     @Body() required Object0 body,
+    @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 
@@ -33,6 +34,7 @@ abstract class FilesClient {
   @POST('/v1/files')
   Future<PostV1FilesResponse> postV1Files({
     @Body() required Object1 body,
+    @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 
@@ -42,6 +44,7 @@ abstract class FilesClient {
   @DELETE('/v1/files')
   Future<DeleteV1FilesResponse> deleteV1Files({
     @Body() required Object2 body,
+    @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 }

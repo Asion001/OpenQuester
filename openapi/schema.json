@@ -1309,7 +1309,8 @@
             "example": "Package title"
           },
           "createdAt": {
-            "type": "date-time",
+            "format": "date-time",
+            "type": "string",
             "example": "2024-01-01T00:00:00Z"
           },
           "logo": {
@@ -1502,7 +1503,8 @@
           "startedAt": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
+            "example": "2024-01-01T00:00:00Z",
+            "nullable": true
           },
           "package": {
             "$ref": "#/components/schemas/IPackageItem"

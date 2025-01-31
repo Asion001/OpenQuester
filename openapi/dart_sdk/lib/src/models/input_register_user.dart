@@ -13,8 +13,8 @@ class InputRegisterUser with _$InputRegisterUser {
     required String name,
     required String email,
     required String password,
-    required DateTime birthday,
-    required String avatar,
+    DateTime? birthday,
+    String? avatar,
   }) = _InputRegisterUser;
   
   factory InputRegisterUser.fromJson(Map<String, Object?> json) => _$InputRegisterUserFromJson(json);

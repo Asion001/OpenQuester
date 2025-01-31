@@ -23,8 +23,8 @@ mixin _$InputRegisterUser {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
-  DateTime get birthday => throw _privateConstructorUsedError;
-  String get avatar => throw _privateConstructorUsedError;
+  DateTime? get birthday => throw _privateConstructorUsedError;
+  String? get avatar => throw _privateConstructorUsedError;
 
   /// Serializes this InputRegisterUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,8 +46,8 @@ abstract class $InputRegisterUserCopyWith<$Res> {
       {String name,
       String email,
       String password,
-      DateTime birthday,
-      String avatar});
+      DateTime? birthday,
+      String? avatar});
 }
 
 /// @nodoc
@@ -68,8 +68,8 @@ class _$InputRegisterUserCopyWithImpl<$Res, $Val extends InputRegisterUser>
     Object? name = null,
     Object? email = null,
     Object? password = null,
-    Object? birthday = null,
-    Object? avatar = null,
+    Object? birthday = freezed,
+    Object? avatar = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -84,14 +84,14 @@ class _$InputRegisterUserCopyWithImpl<$Res, $Val extends InputRegisterUser>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      birthday: null == birthday
+      birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      avatar: null == avatar
+              as DateTime?,
+      avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -108,8 +108,8 @@ abstract class _$$InputRegisterUserImplCopyWith<$Res>
       {String name,
       String email,
       String password,
-      DateTime birthday,
-      String avatar});
+      DateTime? birthday,
+      String? avatar});
 }
 
 /// @nodoc
@@ -128,8 +128,8 @@ class __$$InputRegisterUserImplCopyWithImpl<$Res>
     Object? name = null,
     Object? email = null,
     Object? password = null,
-    Object? birthday = null,
-    Object? avatar = null,
+    Object? birthday = freezed,
+    Object? avatar = freezed,
   }) {
     return _then(_$InputRegisterUserImpl(
       name: null == name
@@ -144,14 +144,14 @@ class __$$InputRegisterUserImplCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      birthday: null == birthday
+      birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      avatar: null == avatar
+              as DateTime?,
+      avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -163,8 +163,8 @@ class _$InputRegisterUserImpl implements _InputRegisterUser {
       {required this.name,
       required this.email,
       required this.password,
-      required this.birthday,
-      required this.avatar});
+      this.birthday,
+      this.avatar});
 
   factory _$InputRegisterUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$InputRegisterUserImplFromJson(json);
@@ -176,9 +176,9 @@ class _$InputRegisterUserImpl implements _InputRegisterUser {
   @override
   final String password;
   @override
-  final DateTime birthday;
+  final DateTime? birthday;
   @override
-  final String avatar;
+  final String? avatar;
 
   @override
   String toString() {
@@ -226,8 +226,8 @@ abstract class _InputRegisterUser implements InputRegisterUser {
       {required final String name,
       required final String email,
       required final String password,
-      required final DateTime birthday,
-      required final String avatar}) = _$InputRegisterUserImpl;
+      final DateTime? birthday,
+      final String? avatar}) = _$InputRegisterUserImpl;
 
   factory _InputRegisterUser.fromJson(Map<String, dynamic> json) =
       _$InputRegisterUserImpl.fromJson;
@@ -239,9 +239,9 @@ abstract class _InputRegisterUser implements InputRegisterUser {
   @override
   String get password;
   @override
-  DateTime get birthday;
+  DateTime? get birthday;
   @override
-  String get avatar;
+  String? get avatar;
 
   /// Create a copy of InputRegisterUser
   /// with the given fields replaced by the non-null parameter values.

@@ -22,8 +22,8 @@ InputUpdateUser _$InputUpdateUserFromJson(Map<String, dynamic> json) {
 mixin _$InputUpdateUser {
   String get name => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
-  DateTime get birthday => throw _privateConstructorUsedError;
-  String get avatar => throw _privateConstructorUsedError;
+  DateTime? get birthday => throw _privateConstructorUsedError;
+  String? get avatar => throw _privateConstructorUsedError;
 
   /// Serializes this InputUpdateUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $InputUpdateUserCopyWith<$Res> {
           InputUpdateUser value, $Res Function(InputUpdateUser) then) =
       _$InputUpdateUserCopyWithImpl<$Res, InputUpdateUser>;
   @useResult
-  $Res call({String name, String password, DateTime birthday, String avatar});
+  $Res call({String name, String password, DateTime? birthday, String? avatar});
 }
 
 /// @nodoc
@@ -61,8 +61,8 @@ class _$InputUpdateUserCopyWithImpl<$Res, $Val extends InputUpdateUser>
   $Res call({
     Object? name = null,
     Object? password = null,
-    Object? birthday = null,
-    Object? avatar = null,
+    Object? birthday = freezed,
+    Object? avatar = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -73,14 +73,14 @@ class _$InputUpdateUserCopyWithImpl<$Res, $Val extends InputUpdateUser>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      birthday: null == birthday
+      birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      avatar: null == avatar
+              as DateTime?,
+      avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -93,7 +93,7 @@ abstract class _$$InputUpdateUserImplCopyWith<$Res>
       __$$InputUpdateUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String password, DateTime birthday, String avatar});
+  $Res call({String name, String password, DateTime? birthday, String? avatar});
 }
 
 /// @nodoc
@@ -111,8 +111,8 @@ class __$$InputUpdateUserImplCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? password = null,
-    Object? birthday = null,
-    Object? avatar = null,
+    Object? birthday = freezed,
+    Object? avatar = freezed,
   }) {
     return _then(_$InputUpdateUserImpl(
       name: null == name
@@ -123,14 +123,14 @@ class __$$InputUpdateUserImplCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
-      birthday: null == birthday
+      birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      avatar: null == avatar
+              as DateTime?,
+      avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -139,10 +139,7 @@ class __$$InputUpdateUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$InputUpdateUserImpl implements _InputUpdateUser {
   const _$InputUpdateUserImpl(
-      {required this.name,
-      required this.password,
-      required this.birthday,
-      required this.avatar});
+      {required this.name, required this.password, this.birthday, this.avatar});
 
   factory _$InputUpdateUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$InputUpdateUserImplFromJson(json);
@@ -152,9 +149,9 @@ class _$InputUpdateUserImpl implements _InputUpdateUser {
   @override
   final String password;
   @override
-  final DateTime birthday;
+  final DateTime? birthday;
   @override
-  final String avatar;
+  final String? avatar;
 
   @override
   String toString() {
@@ -200,8 +197,8 @@ abstract class _InputUpdateUser implements InputUpdateUser {
   const factory _InputUpdateUser(
       {required final String name,
       required final String password,
-      required final DateTime birthday,
-      required final String avatar}) = _$InputUpdateUserImpl;
+      final DateTime? birthday,
+      final String? avatar}) = _$InputUpdateUserImpl;
 
   factory _InputUpdateUser.fromJson(Map<String, dynamic> json) =
       _$InputUpdateUserImpl.fromJson;
@@ -211,9 +208,9 @@ abstract class _InputUpdateUser implements InputUpdateUser {
   @override
   String get password;
   @override
-  DateTime get birthday;
+  DateTime? get birthday;
   @override
-  String get avatar;
+  String? get avatar;
 
   /// Create a copy of InputUpdateUser
   /// with the given fields replaced by the non-null parameter values.

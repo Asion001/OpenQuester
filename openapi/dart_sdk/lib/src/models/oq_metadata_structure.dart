@@ -5,6 +5,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'oq_logo_file.dart';
+import 'oq_metadata_structure_age_restriction.dart';
 
 part 'oq_metadata_structure.freezed.dart';
 part 'oq_metadata_structure.g.dart';
@@ -14,14 +15,13 @@ class OQMetadataStructure with _$OQMetadataStructure {
   const factory OQMetadataStructure({
     required String id,
     required String title,
-    required String date,
-    required String publisher,
-    required OQLogoFile logo,
+    required DateTime createdAt,
+    required OQMetadataStructureAgeRestriction ageRestriction,
     required List<String> tags,
-    required List<String> authors,
-    required String language,
-    required String restriction,
-    required String comment,
+    required int author,
+    OQLogoFile? logo,
+    String? language,
+    String? comment,
   }) = _OQMetadataStructure;
   
   factory OQMetadataStructure.fromJson(Map<String, Object?> json) => _$OQMetadataStructureFromJson(json);

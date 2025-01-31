@@ -7,8 +7,10 @@ import 'package:openquester/src/utils/request_ispector.dart';
 
 import '../../core/env.dart';
 
-@singleton
+@Singleton(order: 1)
 class Api {
+  static Api get I => getIt<Api>();
+
   final api = RestClient(
     Dio(
       BaseOptions(

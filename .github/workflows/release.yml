@@ -11,7 +11,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  update_version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update version in files
+        run: ./scripts/update_version.sh
+
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "Update version to $LATEST_TAG"
+          git push origin main
+
   tests:
+    needs: [update_version]
     uses: ./.github/workflows/test.yml
 
   build_client:

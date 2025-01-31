@@ -1,24 +1,36 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:injectable/injectable.dart';
-
-import 'router.gr.dart';
+import 'package:openquester/common_imports.dart';
 
 @AutoRouterConfig(deferredLoading: true)
-@Singleton()
+@singleton
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
-          page: NavBar.page,
+          page: HomeTabsRoute.page,
           initial: true,
           children: homeTabs,
+        ),
+        AutoRoute(
+          page: ClickerRoute.page,
+          path: '/clicker',
+          fullscreenDialog: true,
+        ),
+        AutoRoute(
+          page: ProfileRoute.page,
+          path: '/profile',
+          fullscreenDialog: true,
+        ),
+        AutoRoute(
+          page: TestScreenRoute.page,
+          path: '/test',
+          fullscreenDialog: true,
         ),
       ];
 
   List<AutoRoute> get homeTabs => [
         AutoRoute(page: HomeRoute.page, path: 'home'),
-        AutoRoute(page: ClickerRoute.page, path: 'clicker'),
-        AutoRoute(page: ProfileRoute.page, path: 'profile'),
-        AutoRoute(page: TestScreenRoute.page, path: 'test'),
+        AutoRoute(page: PackagesListRoute.page, path: 'packages'),
       ];
+
+  static AppRouter get I => getIt<AppRouter>();
 }

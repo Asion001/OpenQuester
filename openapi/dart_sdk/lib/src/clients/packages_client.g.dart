@@ -24,9 +24,11 @@ class _PackagesClient implements PackagesClient {
   @override
   Future<PostV1PackagesResponse> postV1Packages({
     required Object3 body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
