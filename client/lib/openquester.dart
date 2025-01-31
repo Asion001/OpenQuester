@@ -14,6 +14,7 @@ export 'src/connection/storage/storage.dart';
 export 'src/core/app_init.dart';
 export 'src/core/application.dart';
 export 'src/core/controllers/list_controller_base.dart';
+export 'src/core/controllers/time_controller.dart';
 export 'src/core/env.dart';
 export 'src/core/get_it.config.dart';
 export 'src/core/get_it.dart';
