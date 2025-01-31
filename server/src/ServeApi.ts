@@ -19,6 +19,7 @@ import { SwaggerRestApiController } from "controllers/rest/SwaggerRestApiControl
 import { RedisConfig } from "config/RedisConfig";
 import { SocketIOInitializer } from "controllers/io/SocketIOInitializer";
 import { GameRestApiController } from "controllers/rest/GameRestApiController";
+import { JWT_SECRET_LENGTH } from "constants/jwt";
 
 const APP_PREFIX = "[APP]: ";
 
@@ -46,6 +47,11 @@ export class ServeApi {
 
   public async init() {
     try {
+      await this._context.env.loadJWTConfig(
+        JWT_SECRET_LENGTH,
+        RedisConfig.getClient()
+      );
+
       // Build database connection
       await this._db.build();
 

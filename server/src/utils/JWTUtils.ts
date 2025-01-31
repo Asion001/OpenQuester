@@ -1,12 +1,34 @@
 import * as jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { type Request } from "express";
 
 import { Environment } from "config/Environment";
 import { JWTPayload, JWTResponse, TokenOptions } from "types/jwt/jwt";
 import { ClientResponse } from "enums/ClientResponse";
 import { ClientError } from "error/ClientError";
+import { RedisConfig } from "config/RedisConfig";
+import { JWT_SECRET_REDIS_KEY } from "constants/jwt";
 
 export class JWTUtils {
+  /**
+   * Generate and return secret for JWT token
+   * @param length secret length
+   * @returns secret for JWT token
+   */
+  public static async generateSecret(length: number) {
+    const value = await RedisConfig.getClient().get(JWT_SECRET_REDIS_KEY);
+    if (value) {
+      return value;
+    }
+
+    const secret = crypto
+      .randomBytes(length)
+      .toString("base64")
+      .slice(0, length);
+
+    return secret;
+  }
+
   /**
    * Returns token payload
    */

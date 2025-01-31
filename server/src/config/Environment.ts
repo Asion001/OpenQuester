@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { bold } from "colorette";
 import { type LoggerOptions } from "typeorm";
+import type Redis from "ioredis";
 
 import { Logger } from "utils/Logger";
 import { ValueUtils } from "utils/ValueUtils";
@@ -11,6 +12,8 @@ import { ServerResponse } from "enums/ServerResponse";
 import { ServerError } from "error/ServerError";
 import { LogLevel } from "types/log/log";
 import { TemplateUtils } from "utils/TemplateUtils";
+import { JWTUtils } from "utils/JWTUtils";
+import { JWT_SECRET_REDIS_KEY } from "constants/jwt";
 
 const ENV_TYPES = ["local", "prod", "test"];
 const ENV_PREFIX = "[ENV]: ";
@@ -144,6 +147,40 @@ export class Environment {
     }
   }
 
+  public async loadJWTConfig(length: number, redisClient: Redis) {
+    const secret = await redisClient.get(JWT_SECRET_REDIS_KEY);
+    if (secret) {
+      this.JWT_SECRET = secret;
+    } else {
+      this.JWT_SECRET = await JWTUtils.generateSecret(length);
+      await redisClient.set(JWT_SECRET_REDIS_KEY, this.JWT_SECRET);
+    }
+
+    this.JWT_REFRESH_SECRET = this.getEnvVar(
+      "JWT_REFRESH_SECRET",
+      ["string", "number"],
+      this.JWT_SECRET
+    );
+    this.JWT_EXPIRES_IN = this.getEnvVar(
+      "JWT_EXPIRES_IN",
+      ["string", "number"],
+      "1h"
+    );
+    this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar(
+      "JWT_REFRESH_EXPIRES_IN",
+      ["string", "number"],
+      "75 days"
+    );
+    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME", "string", "Bearer");
+
+    this.JWT_TOKEN_OPTIONS = {
+      secret: this.JWT_SECRET,
+      expiresIn: this.JWT_EXPIRES_IN,
+      refreshSecret: this.JWT_REFRESH_SECRET,
+      refreshExpiresIn: this.JWT_REFRESH_EXPIRES_IN,
+    };
+  }
+
   /**
    * Environment variables loading logic and validation
    */
@@ -174,7 +211,6 @@ export class Environment {
     }
 
     this.loadDB();
-    this.loadJWT();
 
     this.LOG_LEVEL = this.getEnvVar("LOG_LEVEL", "string", "info");
 
@@ -187,33 +223,6 @@ export class Environment {
     this.REDIS_HOST = this.getEnvVar("REDIS_HOST", "string", "localhost");
     this.REDIS_PORT = this.getEnvVar("REDIS_PORT", "number", 6379);
     this.REDIS_DB_NUMBER = this.getEnvVar("REDIS_DB_NUMBER", "number", 0);
-  }
-
-  private loadJWT() {
-    this.JWT_SECRET = this.getEnvVar("JWT_SECRET", ["string"]);
-    this.JWT_REFRESH_SECRET = this.getEnvVar(
-      "JWT_REFRESH_SECRET",
-      ["string", "number"],
-      this.JWT_SECRET
-    );
-    this.JWT_EXPIRES_IN = this.getEnvVar(
-      "JWT_EXPIRES_IN",
-      ["string", "number"],
-      "30m"
-    );
-    this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar(
-      "JWT_REFRESH_EXPIRES_IN",
-      ["string", "number"],
-      "30 days"
-    );
-    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME", "string", "Bearer");
-
-    this.JWT_TOKEN_OPTIONS = {
-      secret: this.JWT_SECRET,
-      expiresIn: this.JWT_EXPIRES_IN,
-      refreshSecret: this.JWT_REFRESH_SECRET,
-      refreshExpiresIn: this.JWT_REFRESH_EXPIRES_IN,
-    };
   }
 
   private loadDB() {
