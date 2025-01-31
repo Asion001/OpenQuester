@@ -87,8 +87,6 @@ export class MinioStorageService implements IStorage {
       partSize: 10 * 1024 * 1024,
       transportAgent: this._agent,
     });
-
-    this._warmup();
   }
 
   public async get(
@@ -348,11 +346,5 @@ export class MinioStorageService implements IStorage {
       //
     }
     return this._fileRepository.writeFile(path, filename);
-  }
-
-  private async _warmup() {
-    for (let i = 0; i < 10; i++) {
-      this._client.listBuckets();
-    }
   }
 }

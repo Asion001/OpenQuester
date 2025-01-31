@@ -15,7 +15,7 @@
   "no_permission": "You don't have permission to perform this action",
   "validation_error": "%error",
   "fields_required": "%fields fields is required",
-  "bad_user_id": "Please provide id that greater than 1",
+  "bad_user_id": "Bad user id provided",
   "no_avatar": "Avatar with this filename is not found",
   "no_content_rounds": "Content does not contain 'rounds'!",
   "wrong_content": "Wrong 'content' argument type, it should be a valid JSON object!",
