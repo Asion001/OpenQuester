@@ -5,7 +5,6 @@ import { bold } from "colorette";
 import { type LoggerOptions } from "typeorm";
 
 import { Logger } from "utils/Logger";
-import { JWTUtils } from "utils/JWTUtils";
 import { ValueUtils } from "utils/ValueUtils";
 import { EnvVar } from "types/env/env";
 import { ServerResponse } from "enums/ServerResponse";
@@ -191,7 +190,7 @@ export class Environment {
   }
 
   private loadJWT() {
-    this.JWT_SECRET = JWTUtils.getSecret();
+    this.JWT_SECRET = this.getEnvVar("JWT_SECRET", ["string"]);
     this.JWT_REFRESH_SECRET = this.getEnvVar(
       "JWT_REFRESH_SECRET",
       ["string", "number"],
