@@ -419,7 +419,34 @@
         "tags": ["Users"],
         "parameters": [
           {
-            "$ref": "#/components/parameters/UsersPaginationParams"
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/UsersSortBy"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderDirection"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PagginationLimit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PagginationOffset"
+            }
           }
         ],
         "responses": {
@@ -782,7 +809,34 @@
         "tags": ["Games"],
         "parameters": [
           {
-            "$ref": "#/components/parameters/GamesPaginationParams"
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/GamesSortBy"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderDirection"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PagginationLimit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PagginationOffset"
+            }
           }
         ],
         "responses": {
@@ -1147,7 +1201,8 @@
             "example": "Package title"
           },
           "createdAt": {
-            "type": "date-time",
+            "format": "date-time",
+            "type": "string",
             "example": "2024-01-01T00:00:00Z"
           },
           "logo": {
@@ -1340,7 +1395,8 @@
           "startedAt": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
+            "example": "2024-01-01T00:00:00Z",
+            "nullable": true
           },
           "package": {
             "$ref": "#/components/schemas/IPackageItem"
@@ -1482,83 +1538,54 @@
             }
           }
         }
-      }
-    },
-    "parameters": {
-      "UsersPaginationParams": {
-        "name": "pagination",
-        "in": "query",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "sortBy": {
-              "type": "string",
-              "enum": [
-                "id",
-                "is_deleted",
-                "created_at",
-                "name",
-                "email",
-                "updated_at"
-              ],
-              "example": "createdAt"
-            },
-            "order": {
-              "type": "string",
-              "enum": ["asc", "desc"],
-              "example": "asc"
-            },
-            "limit": {
-              "type": "integer",
-              "example": 10,
-              "minimum": 1,
-              "maximum": 50
-            },
-            "offset": {
-              "type": "integer",
-              "example": 0,
-              "minimum": 0
-            }
-          }
-        }
       },
-      "GamesPaginationParams": {
-        "name": "pagination",
-        "in": "query",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "sortBy": {
-              "type": "string",
-              "enum": [
-                "id",
-                "title",
-                "createdAt",
-                "createdBy",
-                "maxPlayers",
-                "players",
-                "startedAt"
-              ],
-              "example": "createdAt"
-            },
-            "order": {
-              "type": "string",
-              "enum": ["asc", "desc"],
-              "example": "asc"
-            },
-            "limit": {
-              "type": "integer",
-              "example": 10,
-              "minimum": 1,
-              "maximum": 50
-            },
-            "offset": {
-              "type": "integer",
-              "example": 0,
-              "minimum": 0
-            }
-          }
-        }
+      "GamesSortBy": {
+        "type": "string",
+        "nullable": true,
+        "enum": [
+          "id",
+          "title",
+          "createdAt",
+          "createdBy",
+          "maxPlayers",
+          "players",
+          "startedAt"
+        ],
+        "example": "createdAt",
+        "default": "createdAt"
+      },
+      "OrderDirection": {
+        "type": "string",
+        "enum": ["asc", "desc"],
+        "example": "asc",
+        "default": "asc"
+      },
+      "PagginationLimit": {
+        "type": "integer",
+        "example": 10,
+        "minimum": 1,
+        "maximum": 50,
+        "default": 10
+      },
+      "PagginationOffset": {
+        "type": "integer",
+        "example": 0,
+        "minimum": 0
+      },
+      "UsersSortBy": {
+        "type": "string",
+        "nullable": true,
+        "enum": [
+          "id",
+          "title",
+          "createdAt",
+          "createdBy",
+          "maxPlayers",
+          "players",
+          "startedAt"
+        ],
+        "example": "createdAt",
+        "default": "createdAt"
       }
     }
   }

@@ -1,17 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
-import 'package:openapi/openapi.dart';
+import 'package:openquester/common_imports.dart';
 
-import 'package:openquester/src/core/get_it.dart';
-import 'package:openquester/src/connection/storage/storage.dart';
-
-import '../../core/logger.dart';
 import '../../model/auth_data.dart' as auth_model;
-import '../api/api.dart';
 
-@singleton
+@Singleton(order: 2)
 class LoginController extends ChangeNotifier {
   LoginController({this.authData});
 
@@ -39,7 +33,7 @@ class LoginController extends ChangeNotifier {
 
   static const authDataStorageKey = 'auth_data';
 
-  @factoryMethod
+  @FactoryMethod(preResolve: true)
   static Future<LoginController> create() async {
     final savedData = await getIt.get<Storage>().get(authDataStorageKey);
     auth_model.AuthData? authData;

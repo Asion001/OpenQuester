@@ -11,8 +11,10 @@ _$InputUpdateUserImpl _$$InputUpdateUserImplFromJson(
     _$InputUpdateUserImpl(
       name: json['name'] as String,
       password: json['password'] as String,
-      birthday: DateTime.parse(json['birthday'] as String),
-      avatar: json['avatar'] as String,
+      birthday: json['birthday'] == null
+          ? null
+          : DateTime.parse(json['birthday'] as String),
+      avatar: json['avatar'] as String?,
     );
 
 Map<String, dynamic> _$$InputUpdateUserImplToJson(
@@ -20,6 +22,6 @@ Map<String, dynamic> _$$InputUpdateUserImplToJson(
     <String, dynamic>{
       'name': instance.name,
       'password': instance.password,
-      'birthday': instance.birthday.toIso8601String(),
+      'birthday': instance.birthday?.toIso8601String(),
       'avatar': instance.avatar,
     };

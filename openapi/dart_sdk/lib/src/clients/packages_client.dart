@@ -20,6 +20,7 @@ abstract class PackagesClient {
   @POST('/v1/packages')
   Future<PostV1PackagesResponse> postV1Packages({
     @Body() required Object3 body,
+    @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 }

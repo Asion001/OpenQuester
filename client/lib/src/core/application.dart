@@ -18,11 +18,13 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'OpenQuester',
-      theme: AppTheme.current,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
       routerConfig: getIt<AppRouter>().config(),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return GestureDetector(
           onLongPress: alice.showInspector,

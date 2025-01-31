@@ -16,8 +16,10 @@ _$IGameListItemImpl _$$IGameListItemImplFromJson(Map<String, dynamic> json) =>
       currentRound: (json['currentRound'] as num).toInt(),
       players: (json['players'] as num).toInt(),
       maxPlayers: (json['maxPlayers'] as num).toInt(),
-      startedAt: DateTime.parse(json['startedAt'] as String),
       package: IPackageItem.fromJson(json['package'] as Map<String, dynamic>),
+      startedAt: json['startedAt'] == null
+          ? null
+          : DateTime.parse(json['startedAt'] as String),
     );
 
 Map<String, dynamic> _$$IGameListItemImplToJson(_$IGameListItemImpl instance) =>
@@ -29,6 +31,6 @@ Map<String, dynamic> _$$IGameListItemImplToJson(_$IGameListItemImpl instance) =>
       'currentRound': instance.currentRound,
       'players': instance.players,
       'maxPlayers': instance.maxPlayers,
-      'startedAt': instance.startedAt.toIso8601String(),
       'package': instance.package,
+      'startedAt': instance.startedAt?.toIso8601String(),
     };

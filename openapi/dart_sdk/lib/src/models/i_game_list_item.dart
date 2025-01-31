@@ -20,8 +20,8 @@ class IGameListItem with _$IGameListItem {
     required int currentRound,
     required int players,
     required int maxPlayers,
-    required DateTime startedAt,
     required IPackageItem package,
+    DateTime? startedAt,
   }) = _IGameListItem;
   
   factory IGameListItem.fromJson(Map<String, Object?> json) => _$IGameListItemFromJson(json);

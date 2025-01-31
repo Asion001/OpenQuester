@@ -22,9 +22,12 @@ class _SocketIOClient implements SocketIOClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PostSubscriptionGamesResponse> postSubscriptionGames(
-      {RequestOptions? options}) async {
+  Future<PostSubscriptionGamesResponse> postSubscriptionGames({
+    Map<String, dynamic>? extras,
+    RequestOptions? options,
+  }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

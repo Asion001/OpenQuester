@@ -15,8 +15,6 @@ class ResponseUser with _$ResponseUser {
     required int id,
     required String name,
     required String email,
-    required DateTime birthday,
-    required String avatar,
     @JsonKey(name: 'created_at')
     required DateTime createdAt,
     @JsonKey(name: 'updated_at')
@@ -24,6 +22,8 @@ class ResponseUser with _$ResponseUser {
     @JsonKey(name: 'is_deleted')
     required bool isDeleted,
     required List<Permissions> permissions,
+    DateTime? birthday,
+    String? avatar,
   }) = _ResponseUser;
   
   factory ResponseUser.fromJson(Map<String, Object?> json) => _$ResponseUserFromJson(json);

@@ -1,11 +1,32 @@
 {
-    "home_tabs": {
-        "home": "Home",
-        "clicker": "Clicker",
-        "profile": "Profile",
-        "test": "Test"
-    },
-    "home": {
-        "start_game": "Start Game"
-    }
+  "home_tabs": {
+    "home": "Home",
+    "packages": "Packages"
+  },
+  "home": {
+    "start_game": "Start Game"
+  },
+  "clicker": "Clicker",
+  "profile": "Profile",
+  "test": "Test",
+  "created_by": "created by {}",
+  "rounds": {
+    "one": "{} round",
+    "other": "{} rounds"
+  },
+  "game_tile_tooltips": {
+    "players": "Players playing/maximum",
+    "rounds": "Rounds played/total",
+    "packages_title": "Package title",
+    "game_title": "Game title"
+  },
+  "duration": {
+    "h": "h",
+    "m": "m",
+    "s": "s"
+  },
+  "game_status": {
+    "started": "Started"
+  },
+  "hosted_by": "hosted by {}"
 }

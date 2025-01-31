@@ -5,7 +5,7 @@ else
 PURO_CMD = puro
 endif
 
-pre_build: gen_files format 
+pre_build: gen_files gen_indexes gen_api gen_locale format 
 
 gen_locale:
 	$(PURO_CMD) dart run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/localization/
@@ -13,6 +13,9 @@ gen_locale:
 gen_files:
 	$(PURO_CMD) dart run build_runner build -d
 	(cd packages/siq_file/ && make gen_files)
+
+gen_indexes:
+	$(PURO_CMD) flutter pub global run index_generator
 
 format:
 	$(PURO_CMD) dart format lib
