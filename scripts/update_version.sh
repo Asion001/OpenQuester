@@ -1,35 +1,55 @@
 #!/bin/bash
+set -e
 
-# Get the latest git tag
-GIT_TAG=$1 || $(git describe --tags --abbrev=0)
-
-if [ -z "$GIT_TAG" ]; then
-  echo "No tags found. Exiting."
-  exit 1
+# Determine the version to use.
+if [ -n "$1" ]; then
+  # If a version is passed as $1, use it.
+  VERSION="$1"
+  GIT_TAG="v$VERSION"
+else
+  # If no argument is passed, get the latest git tag.
+  GIT_TAG=$(git describe --tags --abbrev=0)
+  if [ -z "$GIT_TAG" ]; then
+    echo "No tags found. Exiting."
+    exit 1
+  fi
+  VERSION=$(echo "$GIT_TAG" | sed 's/^v//')
 fi
 
-# Extract version number from the tag (assuming the tag is in the format v1.2.3)
-VERSION=$(echo $GIT_TAG | sed 's/^v//')
+echo "Using version: $VERSION"
 
-if [ -z "$VERSION" ]; then
-  echo "Failed to extract version from tag. Exiting."
-  exit 1
-fi
-
-# Update pubspec.yaml with the new version
+# Update pubspec.yaml with the new version.
 PUBSPEC_FILE="client/pubspec.yaml"
-if grep -q "^version: $VERSION" $PUBSPEC_FILE; then
+if grep -q "^version: $VERSION" "$PUBSPEC_FILE"; then
   echo "Version in $PUBSPEC_FILE is already up to date."
 else
-  sed -i "s/^version:.*/version: $VERSION/" $PUBSPEC_FILE
+  sed -i "s/^version:.*/version: $VERSION/" "$PUBSPEC_FILE"
   echo "Updated version in $PUBSPEC_FILE to $VERSION"
 fi
 
-# Update package.json with the new version
+# Update package.json with the new version.
 PACKAGE_JSON_FILE="server/package.json"
-if grep -q "\"version\": \"$VERSION\"" $PACKAGE_JSON_FILE; then
+if grep -q "\"version\": \"$VERSION\"" "$PACKAGE_JSON_FILE"; then
   echo "Version in $PACKAGE_JSON_FILE is already up to date."
 else
-  sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" $PACKAGE_JSON_FILE
+  sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" "$PACKAGE_JSON_FILE"
   echo "Updated version in $PACKAGE_JSON_FILE to $VERSION"
+fi
+
+# If a version was passed as an argument, commit the changes and create/push a new tag.
+if [ -n "$1" ]; then
+  echo "Creating commit and tag for version $VERSION"
+
+  # Stage the changed files.
+  git add "$PUBSPEC_FILE" "$PACKAGE_JSON_FILE"
+
+  # Commit the changes.
+  git commit -m "Update version to $VERSION" || echo "No changes to commit."
+
+  # Create a new tag.
+  git tag "$GIT_TAG"
+
+  # Push the commit and the new tag.
+  git push origin HEAD
+  git push origin "$GIT_TAG"
 fi
