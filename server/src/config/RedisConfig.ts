@@ -7,7 +7,7 @@ const REDIS_PREFIX = "[REDIS]: ";
 
 export class RedisConfig {
   private static _client: Redis;
-  private static _env: Environment = Environment.instance;
+  private static _env: Environment;
 
   public static getClient(): Redis {
     if (!this._client) {
@@ -35,6 +35,9 @@ export class RedisConfig {
   }
 
   private static _getRedisLink(): string {
+    if (!this._env) {
+      this._env = Environment?.instance;
+    }
     const username = this._env.REDIS_USERNAME || "";
     const password = this._env.REDIS_PASSWORD || "";
     const host = this._env.REDIS_HOST || "localhost";
