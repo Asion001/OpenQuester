@@ -14,7 +14,7 @@ abstract class ListControllerBase<I> extends ChangeNotifier {
     try {
       final listRequest = ListRequest(offset: pageKey);
       final newItems = await getPage(listRequest);
-      final isLastPage = newItems.metadata.total < listRequest.limit;
+      final isLastPage = newItems.list.length < listRequest.limit;
       if (isLastPage) {
         pagingController.appendLastPage(newItems.list);
       } else {

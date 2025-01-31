@@ -60,7 +60,10 @@ class GamesListController extends ListControllerBase<GameListItem> {
 
   @override
   Future<ListResponse<GameListItem>> getPage(request) async {
-    final list = await Api.I.api.games.getV1Games();
+    final list = await Api.I.api.games.getV1Games(
+      limit: request.limit,
+      offset: request.offset,
+    );
     return ListResponse(
       list: list.data,
       metadata: ListResponseMeta(total: list.pageInfo.total),

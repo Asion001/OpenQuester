@@ -1,3 +1,1 @@
-library openapi;
-
-export '../src/export.dart';
+export 'src/export.dart';

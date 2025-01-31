@@ -20,10 +20,10 @@ Pagination _$PaginationFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Pagination {
-  SortBy get sortBy => throw _privateConstructorUsedError;
-  Order get order => throw _privateConstructorUsedError;
   int get limit => throw _privateConstructorUsedError;
   int get offset => throw _privateConstructorUsedError;
+  SortBy get sortBy => throw _privateConstructorUsedError;
+  Order get order => throw _privateConstructorUsedError;
 
   /// Serializes this Pagination to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $PaginationCopyWith<$Res> {
           Pagination value, $Res Function(Pagination) then) =
       _$PaginationCopyWithImpl<$Res, Pagination>;
   @useResult
-  $Res call({SortBy sortBy, Order order, int limit, int offset});
+  $Res call({int limit, int offset, SortBy sortBy, Order order});
 }
 
 /// @nodoc
@@ -59,20 +59,12 @@ class _$PaginationCopyWithImpl<$Res, $Val extends Pagination>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sortBy = null,
-    Object? order = null,
     Object? limit = null,
     Object? offset = null,
+    Object? sortBy = null,
+    Object? order = null,
   }) {
     return _then(_value.copyWith(
-      sortBy: null == sortBy
-          ? _value.sortBy
-          : sortBy // ignore: cast_nullable_to_non_nullable
-              as SortBy,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as Order,
       limit: null == limit
           ? _value.limit
           : limit // ignore: cast_nullable_to_non_nullable
@@ -81,6 +73,14 @@ class _$PaginationCopyWithImpl<$Res, $Val extends Pagination>
           ? _value.offset
           : offset // ignore: cast_nullable_to_non_nullable
               as int,
+      sortBy: null == sortBy
+          ? _value.sortBy
+          : sortBy // ignore: cast_nullable_to_non_nullable
+              as SortBy,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as Order,
     ) as $Val);
   }
 }
@@ -93,7 +93,7 @@ abstract class _$$PaginationImplCopyWith<$Res>
       __$$PaginationImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({SortBy sortBy, Order order, int limit, int offset});
+  $Res call({int limit, int offset, SortBy sortBy, Order order});
 }
 
 /// @nodoc
@@ -109,20 +109,12 @@ class __$$PaginationImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? sortBy = null,
-    Object? order = null,
     Object? limit = null,
     Object? offset = null,
+    Object? sortBy = null,
+    Object? order = null,
   }) {
     return _then(_$PaginationImpl(
-      sortBy: null == sortBy
-          ? _value.sortBy
-          : sortBy // ignore: cast_nullable_to_non_nullable
-              as SortBy,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as Order,
       limit: null == limit
           ? _value.limit
           : limit // ignore: cast_nullable_to_non_nullable
@@ -131,6 +123,14 @@ class __$$PaginationImplCopyWithImpl<$Res>
           ? _value.offset
           : offset // ignore: cast_nullable_to_non_nullable
               as int,
+      sortBy: null == sortBy
+          ? _value.sortBy
+          : sortBy // ignore: cast_nullable_to_non_nullable
+              as SortBy,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as Order,
     ));
   }
 }
@@ -139,26 +139,28 @@ class __$$PaginationImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PaginationImpl implements _Pagination {
   const _$PaginationImpl(
-      {required this.sortBy,
-      required this.order,
-      required this.limit,
-      required this.offset});
+      {required this.limit,
+      required this.offset,
+      this.sortBy = SortBy.createdAt,
+      this.order = Order.asc});
 
   factory _$PaginationImpl.fromJson(Map<String, dynamic> json) =>
       _$$PaginationImplFromJson(json);
 
   @override
-  final SortBy sortBy;
-  @override
-  final Order order;
-  @override
   final int limit;
   @override
   final int offset;
+  @override
+  @JsonKey()
+  final SortBy sortBy;
+  @override
+  @JsonKey()
+  final Order order;
 
   @override
   String toString() {
-    return 'Pagination(sortBy: $sortBy, order: $order, limit: $limit, offset: $offset)';
+    return 'Pagination(limit: $limit, offset: $offset, sortBy: $sortBy, order: $order)';
   }
 
   @override
@@ -166,15 +168,15 @@ class _$PaginationImpl implements _Pagination {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PaginationImpl &&
-            (identical(other.sortBy, sortBy) || other.sortBy == sortBy) &&
-            (identical(other.order, order) || other.order == order) &&
             (identical(other.limit, limit) || other.limit == limit) &&
-            (identical(other.offset, offset) || other.offset == offset));
+            (identical(other.offset, offset) || other.offset == offset) &&
+            (identical(other.sortBy, sortBy) || other.sortBy == sortBy) &&
+            (identical(other.order, order) || other.order == order));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, sortBy, order, limit, offset);
+  int get hashCode => Object.hash(runtimeType, limit, offset, sortBy, order);
 
   /// Create a copy of Pagination
   /// with the given fields replaced by the non-null parameter values.
@@ -194,22 +196,22 @@ class _$PaginationImpl implements _Pagination {
 
 abstract class _Pagination implements Pagination {
   const factory _Pagination(
-      {required final SortBy sortBy,
-      required final Order order,
-      required final int limit,
-      required final int offset}) = _$PaginationImpl;
+      {required final int limit,
+      required final int offset,
+      final SortBy sortBy,
+      final Order order}) = _$PaginationImpl;
 
   factory _Pagination.fromJson(Map<String, dynamic> json) =
       _$PaginationImpl.fromJson;
 
   @override
-  SortBy get sortBy;
-  @override
-  Order get order;
-  @override
   int get limit;
   @override
   int get offset;
+  @override
+  SortBy get sortBy;
+  @override
+  Order get order;
 
   /// Create a copy of Pagination
   /// with the given fields replaced by the non-null parameter values.

@@ -24,9 +24,11 @@ class _AuthClient implements AuthClient {
   @override
   Future<ResponseAuthData> postV1AuthLogin({
     required InputLoginUser body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -58,9 +60,11 @@ class _AuthClient implements AuthClient {
   @override
   Future<ResponseAuthData> postV1AuthRefresh({
     required Object4 body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

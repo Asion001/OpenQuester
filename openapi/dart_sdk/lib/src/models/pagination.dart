@@ -13,10 +13,12 @@ part 'pagination.g.dart';
 @Freezed()
 class Pagination with _$Pagination {
   const factory Pagination({
-    required SortBy sortBy,
-    required Order order,
     required int limit,
     required int offset,
+    @Default(SortBy.createdAt)
+    SortBy sortBy,
+    @Default(Order.asc)
+    Order order,
   }) = _Pagination;
   
   factory Pagination.fromJson(Map<String, Object?> json) => _$PaginationFromJson(json);

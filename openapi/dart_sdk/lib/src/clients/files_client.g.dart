@@ -24,9 +24,11 @@ class _FilesClient implements FilesClient {
   @override
   Future<GetV1FilesResponse> getV1Files({
     required Object0 body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -58,9 +60,11 @@ class _FilesClient implements FilesClient {
   @override
   Future<PostV1FilesResponse> postV1Files({
     required Object1 body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -92,9 +96,11 @@ class _FilesClient implements FilesClient {
   @override
   Future<DeleteV1FilesResponse> deleteV1Files({
     required Object2 body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

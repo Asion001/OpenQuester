@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'pagination2.dart';
+part of 'games_pagination_params.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,47 +14,53 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Pagination2 _$Pagination2FromJson(Map<String, dynamic> json) {
-  return _Pagination2.fromJson(json);
+GamesPaginationParams _$GamesPaginationParamsFromJson(
+    Map<String, dynamic> json) {
+  return _GamesPaginationParams.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Pagination2 {
+mixin _$GamesPaginationParams {
   int get limit => throw _privateConstructorUsedError;
   int get offset => throw _privateConstructorUsedError;
-  Order get order => throw _privateConstructorUsedError;
-  SortBy2 get sortBy => throw _privateConstructorUsedError;
+  GamesPaginationParamsOrder get order => throw _privateConstructorUsedError;
+  GamesPaginationParamsSortBy get sortBy => throw _privateConstructorUsedError;
 
-  /// Serializes this Pagination2 to a JSON map.
+  /// Serializes this GamesPaginationParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Pagination2
+  /// Create a copy of GamesPaginationParams
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $Pagination2CopyWith<Pagination2> get copyWith =>
+  $GamesPaginationParamsCopyWith<GamesPaginationParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $Pagination2CopyWith<$Res> {
-  factory $Pagination2CopyWith(
-          Pagination2 value, $Res Function(Pagination2) then) =
-      _$Pagination2CopyWithImpl<$Res, Pagination2>;
+abstract class $GamesPaginationParamsCopyWith<$Res> {
+  factory $GamesPaginationParamsCopyWith(GamesPaginationParams value,
+          $Res Function(GamesPaginationParams) then) =
+      _$GamesPaginationParamsCopyWithImpl<$Res, GamesPaginationParams>;
   @useResult
-  $Res call({int limit, int offset, Order order, SortBy2 sortBy});
+  $Res call(
+      {int limit,
+      int offset,
+      GamesPaginationParamsOrder order,
+      GamesPaginationParamsSortBy sortBy});
 }
 
 /// @nodoc
-class _$Pagination2CopyWithImpl<$Res, $Val extends Pagination2>
-    implements $Pagination2CopyWith<$Res> {
-  _$Pagination2CopyWithImpl(this._value, this._then);
+class _$GamesPaginationParamsCopyWithImpl<$Res,
+        $Val extends GamesPaginationParams>
+    implements $GamesPaginationParamsCopyWith<$Res> {
+  _$GamesPaginationParamsCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Pagination2
+  /// Create a copy of GamesPaginationParams
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -76,35 +82,41 @@ class _$Pagination2CopyWithImpl<$Res, $Val extends Pagination2>
       order: null == order
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
-              as Order,
+              as GamesPaginationParamsOrder,
       sortBy: null == sortBy
           ? _value.sortBy
           : sortBy // ignore: cast_nullable_to_non_nullable
-              as SortBy2,
+              as GamesPaginationParamsSortBy,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$Pagination2ImplCopyWith<$Res>
-    implements $Pagination2CopyWith<$Res> {
-  factory _$$Pagination2ImplCopyWith(
-          _$Pagination2Impl value, $Res Function(_$Pagination2Impl) then) =
-      __$$Pagination2ImplCopyWithImpl<$Res>;
+abstract class _$$GamesPaginationParamsImplCopyWith<$Res>
+    implements $GamesPaginationParamsCopyWith<$Res> {
+  factory _$$GamesPaginationParamsImplCopyWith(
+          _$GamesPaginationParamsImpl value,
+          $Res Function(_$GamesPaginationParamsImpl) then) =
+      __$$GamesPaginationParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int limit, int offset, Order order, SortBy2 sortBy});
+  $Res call(
+      {int limit,
+      int offset,
+      GamesPaginationParamsOrder order,
+      GamesPaginationParamsSortBy sortBy});
 }
 
 /// @nodoc
-class __$$Pagination2ImplCopyWithImpl<$Res>
-    extends _$Pagination2CopyWithImpl<$Res, _$Pagination2Impl>
-    implements _$$Pagination2ImplCopyWith<$Res> {
-  __$$Pagination2ImplCopyWithImpl(
-      _$Pagination2Impl _value, $Res Function(_$Pagination2Impl) _then)
+class __$$GamesPaginationParamsImplCopyWithImpl<$Res>
+    extends _$GamesPaginationParamsCopyWithImpl<$Res,
+        _$GamesPaginationParamsImpl>
+    implements _$$GamesPaginationParamsImplCopyWith<$Res> {
+  __$$GamesPaginationParamsImplCopyWithImpl(_$GamesPaginationParamsImpl _value,
+      $Res Function(_$GamesPaginationParamsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Pagination2
+  /// Create a copy of GamesPaginationParams
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -114,7 +126,7 @@ class __$$Pagination2ImplCopyWithImpl<$Res>
     Object? order = null,
     Object? sortBy = null,
   }) {
-    return _then(_$Pagination2Impl(
+    return _then(_$GamesPaginationParamsImpl(
       limit: null == limit
           ? _value.limit
           : limit // ignore: cast_nullable_to_non_nullable
@@ -126,26 +138,26 @@ class __$$Pagination2ImplCopyWithImpl<$Res>
       order: null == order
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
-              as Order,
+              as GamesPaginationParamsOrder,
       sortBy: null == sortBy
           ? _value.sortBy
           : sortBy // ignore: cast_nullable_to_non_nullable
-              as SortBy2,
+              as GamesPaginationParamsSortBy,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$Pagination2Impl implements _Pagination2 {
-  const _$Pagination2Impl(
+class _$GamesPaginationParamsImpl implements _GamesPaginationParams {
+  const _$GamesPaginationParamsImpl(
       {required this.limit,
       required this.offset,
-      this.order = Order.asc,
-      this.sortBy = SortBy2.createdAt});
+      this.order = GamesPaginationParamsOrder.asc,
+      this.sortBy = GamesPaginationParamsSortBy.createdAt});
 
-  factory _$Pagination2Impl.fromJson(Map<String, dynamic> json) =>
-      _$$Pagination2ImplFromJson(json);
+  factory _$GamesPaginationParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GamesPaginationParamsImplFromJson(json);
 
   @override
   final int limit;
@@ -153,21 +165,21 @@ class _$Pagination2Impl implements _Pagination2 {
   final int offset;
   @override
   @JsonKey()
-  final Order order;
+  final GamesPaginationParamsOrder order;
   @override
   @JsonKey()
-  final SortBy2 sortBy;
+  final GamesPaginationParamsSortBy sortBy;
 
   @override
   String toString() {
-    return 'Pagination2(limit: $limit, offset: $offset, order: $order, sortBy: $sortBy)';
+    return 'GamesPaginationParams(limit: $limit, offset: $offset, order: $order, sortBy: $sortBy)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Pagination2Impl &&
+            other is _$GamesPaginationParamsImpl &&
             (identical(other.limit, limit) || other.limit == limit) &&
             (identical(other.offset, offset) || other.offset == offset) &&
             (identical(other.order, order) || other.order == order) &&
@@ -178,45 +190,46 @@ class _$Pagination2Impl implements _Pagination2 {
   @override
   int get hashCode => Object.hash(runtimeType, limit, offset, order, sortBy);
 
-  /// Create a copy of Pagination2
+  /// Create a copy of GamesPaginationParams
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$Pagination2ImplCopyWith<_$Pagination2Impl> get copyWith =>
-      __$$Pagination2ImplCopyWithImpl<_$Pagination2Impl>(this, _$identity);
+  _$$GamesPaginationParamsImplCopyWith<_$GamesPaginationParamsImpl>
+      get copyWith => __$$GamesPaginationParamsImplCopyWithImpl<
+          _$GamesPaginationParamsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$Pagination2ImplToJson(
+    return _$$GamesPaginationParamsImplToJson(
       this,
     );
   }
 }
 
-abstract class _Pagination2 implements Pagination2 {
-  const factory _Pagination2(
+abstract class _GamesPaginationParams implements GamesPaginationParams {
+  const factory _GamesPaginationParams(
       {required final int limit,
       required final int offset,
-      final Order order,
-      final SortBy2 sortBy}) = _$Pagination2Impl;
+      final GamesPaginationParamsOrder order,
+      final GamesPaginationParamsSortBy sortBy}) = _$GamesPaginationParamsImpl;
 
-  factory _Pagination2.fromJson(Map<String, dynamic> json) =
-      _$Pagination2Impl.fromJson;
+  factory _GamesPaginationParams.fromJson(Map<String, dynamic> json) =
+      _$GamesPaginationParamsImpl.fromJson;
 
   @override
   int get limit;
   @override
   int get offset;
   @override
-  Order get order;
+  GamesPaginationParamsOrder get order;
   @override
-  SortBy2 get sortBy;
+  GamesPaginationParamsSortBy get sortBy;
 
-  /// Create a copy of Pagination2
+  /// Create a copy of GamesPaginationParams
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Pagination2ImplCopyWith<_$Pagination2Impl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$GamesPaginationParamsImplCopyWith<_$GamesPaginationParamsImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

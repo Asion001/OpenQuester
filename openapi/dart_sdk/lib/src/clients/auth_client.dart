@@ -19,6 +19,7 @@ abstract class AuthClient {
   @POST('/v1/auth/login')
   Future<ResponseAuthData> postV1AuthLogin({
     @Body() required InputLoginUser body,
+    @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 
@@ -28,6 +29,7 @@ abstract class AuthClient {
   @POST('/v1/auth/refresh')
   Future<ResponseAuthData> postV1AuthRefresh({
     @Body() required Object4 body,
+    @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 }

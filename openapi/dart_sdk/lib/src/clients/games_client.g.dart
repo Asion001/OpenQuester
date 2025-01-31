@@ -23,12 +23,20 @@ class _GamesClient implements GamesClient {
 
   @override
   Future<PaginatedGames> getV1Games({
-    Pagination2? pagination,
+    required int limit,
+    required int offset,
+    GamesSortBy? sortBy,
+    OrderDirection? order,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{
-      r'pagination': pagination?.toJson()
+      r'limit': limit,
+      r'offset': offset,
+      r'sortBy': sortBy?.toJson(),
+      r'order': order?.toJson(),
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -60,9 +68,11 @@ class _GamesClient implements GamesClient {
   @override
   Future<IGameListItem> postV1Games({
     required IGameCreateData body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -94,9 +104,11 @@ class _GamesClient implements GamesClient {
   @override
   Future<IGameListItem> getV1GamesId({
     required String id,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

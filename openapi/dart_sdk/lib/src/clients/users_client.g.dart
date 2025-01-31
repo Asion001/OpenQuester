@@ -24,9 +24,11 @@ class _UsersClient implements UsersClient {
   @override
   Future<ResponseUser> getV1UsersId({
     required String id,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -59,9 +61,11 @@ class _UsersClient implements UsersClient {
   Future<ResponseUser> patchV1UsersId({
     required String id,
     required InputUpdateUser body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -93,9 +97,11 @@ class _UsersClient implements UsersClient {
   @override
   Future<void> deleteV1UsersId({
     required String id,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -118,12 +124,20 @@ class _UsersClient implements UsersClient {
 
   @override
   Future<PaginatedUsers> getV1Users({
-    Pagination? pagination,
+    required int limit,
+    required int offset,
+    UsersSortBy? sortBy,
+    OrderDirection? order,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{
-      r'pagination': pagination?.toJson()
+      r'limit': limit,
+      r'offset': offset,
+      r'sortBy': sortBy?.toJson(),
+      r'order': order?.toJson(),
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -155,9 +169,11 @@ class _UsersClient implements UsersClient {
   @override
   Future<ResponseAuthData> postV1Users({
     required InputRegisterUser body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -187,8 +203,12 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<List<ResponseUser>> getV1Me({RequestOptions? options}) async {
+  Future<List<ResponseUser>> getV1Me({
+    Map<String, dynamic>? extras,
+    RequestOptions? options,
+  }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -223,9 +243,11 @@ class _UsersClient implements UsersClient {
   Future<ResponseUser> patchV1Me({
     required String id,
     required InputUpdateUser body,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -257,9 +279,11 @@ class _UsersClient implements UsersClient {
   @override
   Future<void> deleteV1Me({
     required String id,
+    Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
