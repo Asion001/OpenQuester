@@ -232,6 +232,114 @@
             }
           }
         }
+      },
+      "get": {
+        "summary": "Get all packages",
+        "tags": ["Packages"],
+        "parameters": [
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/PackagesSortBy"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderDirection"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PaginationLimit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PaginationOffset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all packages data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedPackages"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Bad request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/packages/{id}": {
+      "get": {
+        "summary": "Get package by id",
+        "tags": ["Packages"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get package data successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IPackageItem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Package not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Package not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v1/users/{id}": {
@@ -437,7 +545,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/PagginationLimit"
+              "$ref": "#/components/schemas/PaginationLimit"
             }
           },
           {
@@ -445,7 +553,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/PagginationOffset"
+              "$ref": "#/components/schemas/PaginationOffset"
             }
           }
         ],
@@ -827,7 +935,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/PagginationLimit"
+              "$ref": "#/components/schemas/PaginationLimit"
             }
           },
           {
@@ -835,7 +943,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/PagginationOffset"
+              "$ref": "#/components/schemas/PaginationOffset"
             }
           }
         ],
@@ -1469,6 +1577,26 @@
         "enum": ["created", "changed", "deleted", "started"],
         "example": "created"
       },
+      "PaginatedPackages": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IPackageItem"
+            }
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer",
+                "example": 1000
+              }
+            }
+          }
+        }
+      },
       "IPackageItem": {
         "type": "object",
         "properties": {
@@ -1539,6 +1667,24 @@
           }
         }
       },
+      "OrderDirection": {
+        "type": "string",
+        "enum": ["asc", "desc"],
+        "example": "asc",
+        "default": "asc"
+      },
+      "PaginationLimit": {
+        "type": "integer",
+        "example": 10,
+        "minimum": 1,
+        "maximum": 50,
+        "default": 10
+      },
+      "PaginationOffset": {
+        "type": "integer",
+        "example": 0,
+        "minimum": 0
+      },
       "GamesSortBy": {
         "type": "string",
         "nullable": true,
@@ -1554,24 +1700,6 @@
         "example": "createdAt",
         "default": "createdAt"
       },
-      "OrderDirection": {
-        "type": "string",
-        "enum": ["asc", "desc"],
-        "example": "asc",
-        "default": "asc"
-      },
-      "PagginationLimit": {
-        "type": "integer",
-        "example": 10,
-        "minimum": 1,
-        "maximum": 50,
-        "default": 10
-      },
-      "PagginationOffset": {
-        "type": "integer",
-        "example": 0,
-        "minimum": 0
-      },
       "UsersSortBy": {
         "type": "string",
         "nullable": true,
@@ -1586,6 +1714,13 @@
         ],
         "example": "createdAt",
         "default": "createdAt"
+      },
+      "PackagesSortBy": {
+        "type": "string",
+        "nullable": true,
+        "enum": ["id", "title", "created_at", "author"],
+        "example": "created_at",
+        "default": "created_at"
       }
     }
   }

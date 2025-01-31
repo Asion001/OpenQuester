@@ -43,10 +43,9 @@ const main = async () => {
     );
   });
 
-  // All worker should serve api with same context
   const api = new ServeApi(context);
 
-  await api?.init();
+  await api.init();
 
   if (!api || !api.server) {
     Logger.error(`API serve error`);

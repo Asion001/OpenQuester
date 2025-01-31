@@ -28,7 +28,7 @@ export class GameRestApiController {
       validateWithSchema(this.ctx.db, CreateGameSchema),
       this.createGame
     );
-    router.get(`(/:id)?`, this.getGame);
+    router.get(`/:id`, this.getGame);
   }
 
   private getGame = async (req: Request, res: Response) => {

@@ -26,6 +26,12 @@ import { ApiContext } from "services/context/ApiContext";
 import { ServerServices } from "services/ServerServices";
 import { DependencyService } from "services/dependency/DependencyService";
 import { ValueUtils } from "utils/ValueUtils";
+import { IPaginationOpts } from "types/pagination/IPaginationOpts";
+import { IPackage } from "types/package/IPackage";
+import { IPaginatedResult } from "types/pagination/IPaginatedResult";
+import { ISelectOptions } from "types/ISelectOptions";
+import { IPackageListItem } from "types/game/items/IPackageIListItem";
+import { EAgeRestriction } from "enums/game/EAgeRestriction";
 
 const MINIO_PREFIX = "[MINIO]: ";
 
@@ -198,6 +204,59 @@ export class MinioStorageService implements IStorage {
     const filePath = StorageUtils.parseFilePath(filename);
     this._fileRepository.removeFile(filename);
     return this._client.removeObject(this._s3Context.bucket, filePath);
+  }
+
+  public async getPackage(packId: string | number): Promise<IPackageListItem> {
+    const id = ValueUtils.validateId(packId);
+    const pack = await this._packageRepository.get(id);
+    if (!pack) {
+      throw new ClientError(ClientResponse.PACKAGE_NOT_FOUND);
+    }
+    // TODO: This will be reworked after moving to better package model
+    return {
+      id: pack.id,
+      ageRestriction: EAgeRestriction.NONE,
+      createdAt: pack?.created_at,
+      rounds: pack.content.rounds.length,
+      tags: pack.content.metadata.tags,
+      title: pack.title,
+      author: {
+        id: pack.author.id,
+        name: pack.author.name,
+      },
+    };
+  }
+
+  public async listPackages(
+    paginationOpts: IPaginationOpts<IPackage>,
+    selectOptions?: ISelectOptions<IPackage>
+  ): Promise<IPaginatedResult<IPackageListItem[]>> {
+    const paginatedList = await this._packageRepository.list(
+      paginationOpts,
+      selectOptions
+    );
+
+    const packageListItems = paginatedList.data.map(
+      (pack): IPackageListItem => {
+        return {
+          id: pack.id,
+          ageRestriction: EAgeRestriction.NONE,
+          createdAt: pack.created_at,
+          rounds: pack.content.rounds.length,
+          tags: pack.content.metadata.tags,
+          title: pack.title,
+          author: {
+            id: pack.author.id,
+            name: pack.author.name,
+          },
+        };
+      }
+    );
+
+    return {
+      data: packageListItems,
+      pageInfo: { ...paginatedList.pageInfo },
+    };
   }
 
   public async uploadPackage(
