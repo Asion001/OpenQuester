@@ -19,7 +19,11 @@ class GameListItemWidget extends WatchingWidget {
             ListTile(
               title: Tooltip(
                 message: LocaleKeys.game_tile_tooltips_game_title.tr(),
-                child: Text(item.title),
+                child: Text(
+                  item.title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
               ).shrink(),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
