@@ -19,6 +19,7 @@ class IPackageItem with _$IPackageItem {
     required DateTime createdAt,
     required int rounds,
     required IShortUserInfo author,
+    required List<String> tags,
   }) = _IPackageItem;
   
   factory IPackageItem.fromJson(Map<String, Object?> json) => _$IPackageItemFromJson(json);

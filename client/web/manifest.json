@@ -1,11 +1,11 @@
 {
-  "name": "openquester",
-  "short_name": "openquester",
+  "name": "OpenQuester",
+  "short_name": "OpenQuester",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#191919",
   "theme_color": "#7e7e7e",
-  "description": "A new Flutter project.",
+  "description": "Community driven quiz game",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [

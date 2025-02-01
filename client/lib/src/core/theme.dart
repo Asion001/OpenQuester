@@ -12,8 +12,8 @@ class AppTheme {
       ),
       appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: theme.colorScheme.onSecondaryFixedVariant,
-          systemNavigationBarDividerColor: theme.colorScheme.onSecondary,
+          systemNavigationBarColor: theme.colorScheme.surfaceContainer,
+          systemNavigationBarDividerColor: theme.colorScheme.surfaceContainer,
         ),
       ),
     );

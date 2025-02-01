@@ -12,6 +12,7 @@ class GamesList extends WatchingWidget {
           getIt<GamesListController>().pagingController.refresh(),
       child: PagedListView<int, GameListItem>(
         pagingController: getIt<GamesListController>().pagingController,
+        padding: EdgeInsets.only(bottom: 8),
         builderDelegate: PagedChildBuilderDelegate<GameListItem>(
           animateTransitions: true,
           itemBuilder: (context, item, index) => GameListItemWidget(item: item),
