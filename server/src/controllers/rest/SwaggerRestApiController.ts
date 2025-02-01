@@ -2,9 +2,9 @@ import fs from "fs";
 import path from "path";
 import Swagger from "swagger-ui-express";
 import { type Request, type Response, Router } from "express";
+import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 
 import { type ApiContext } from "services/context/ApiContext";
-import { ErrorController } from "error/ErrorController";
 import { Logger } from "utils/Logger";
 
 const SWAGGER_PREFIX = "[SWAGGER]: ";
@@ -13,8 +13,8 @@ export class SwaggerRestApiController {
   private _jsonPath: string;
   private _specification: { [key: string]: any };
 
-  constructor(ctx: ApiContext) {
-    const app = ctx.app;
+  constructor(private readonly ctx: ApiContext) {
+    const app = this.ctx.app;
     const router = Router();
     this._jsonPath = path.join(process.cwd(), "../openapi/schema.json");
 
@@ -23,7 +23,7 @@ export class SwaggerRestApiController {
     this._specification = this._getSpecification();
 
     router.use("/", Swagger.serve);
-    router.get("/raw", this._getRaw);
+    router.get("/raw", asyncHandler(this._getRaw));
     router.get("/", Swagger.setup(this.specification));
   }
 
@@ -46,11 +46,6 @@ export class SwaggerRestApiController {
   }
 
   private _getRaw = async (req: Request, res: Response) => {
-    try {
-      res.download(this._jsonPath);
-    } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(err);
-      return res.status(code).send({ error: message });
-    }
+    res.download(this._jsonPath);
   };
 }

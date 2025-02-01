@@ -27,11 +27,19 @@ export class RedisConfig {
         Logger.error(`Redis client error: ${error}`, REDIS_PREFIX);
         reject(error);
       });
-      client.on("end", () => {
-        Logger.error(`Redis client stopped`);
-        reject();
-      });
     });
+  }
+
+  public static async disconnect() {
+    if (this._client && this._client.status === "ready") {
+      this._client.disconnect(false);
+    }
+
+    try {
+      await this._client.ping();
+    } catch {
+      Logger.warn("Redis connection closed", REDIS_PREFIX);
+    }
   }
 
   private static _getRedisLink(): string {

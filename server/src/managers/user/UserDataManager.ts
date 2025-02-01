@@ -20,8 +20,13 @@ export class UserDataManager implements ISchema {
     this._schema = Joi.object({
       id: Joi.number(),
       login: Joi.alternatives().try(
-        Joi.string().min(3).max(30),
-        Joi.string().email()
+        Joi.string()
+          .pattern(/^[a-zA-Z0-9_]+$/)
+          .min(3)
+          .max(30),
+        Joi.string()
+          .pattern(/^[a-zA-Z0-9_]+$/)
+          .email()
       ),
       name: Joi.string().min(3).max(30),
       email: Joi.string().email(),

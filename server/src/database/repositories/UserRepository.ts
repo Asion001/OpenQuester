@@ -78,6 +78,15 @@ export class UserRepository {
   }
 
   public async create(ctx: ApiContext, data: IRegisterUser) {
+    const existing = await this._repository.findOne({
+      select: ["id"],
+      where: [{ name: data.name }, { email: data.email }],
+    });
+
+    if (existing && existing.id >= 0) {
+      throw new ClientError(ClientResponse.USER_ALREADY_EXISTS);
+    }
+
     // Set all data to new user instance
     let user = new User();
     await user.import({

@@ -13,11 +13,15 @@ import { FileUsageRepository } from "database/repositories/FileUsageRepository";
 import { JWTResponse } from "types/jwt/jwt";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
 import { User } from "database/models/User";
+import { IRegisterUser } from "types/user/IRegisterUser";
 
 export class UserService {
-  public async register(ctx: ApiContext, req: Request): Promise<JWTResponse> {
+  public async register(
+    ctx: ApiContext,
+    data: IRegisterUser
+  ): Promise<JWTResponse> {
     const repository = UserRepository.getRepository(ctx.db);
-    const user = await repository.create(ctx, req.body);
+    const user = await repository.create(ctx, data);
 
     const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
     return {

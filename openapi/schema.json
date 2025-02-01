@@ -10,27 +10,21 @@
     }
   ],
   "paths": {
-    "/v1/files": {
+    "/v1/files/{filename}": {
       "get": {
         "summary": "Get link to file from server",
         "tags": ["Files"],
-        "requestBody": {
-          "required": true,
-          "description": "Filename which you want to get",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "filename": {
-                    "type": "string",
-                    "example": "some_filename.jpg"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "some_filename.jpg"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Get link that allows you to view the file",
@@ -69,23 +63,17 @@
       "post": {
         "summary": "Get link to upload file on server",
         "tags": ["Files"],
-        "requestBody": {
-          "required": true,
-          "description": "Filename which you want to put in bucket",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "filename": {
-                    "type": "string",
-                    "example": "some_filename.jpg"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "some_filename.jpg"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Get link that allows you to put the file",
@@ -124,23 +112,17 @@
       "delete": {
         "summary": "Delete file from bucket",
         "tags": ["Files"],
-        "requestBody": {
-          "required": true,
-          "description": "Filename which you want to delete",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "filename": {
-                    "type": "string",
-                    "example": "some_filename.jpg"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "some_filename.jpg"
             }
           }
-        },
+        ],
         "responses": {
           "204": {
             "description": "Delete request send successfully",
@@ -204,13 +186,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "filename": {
-                      "type": "string",
-                      "example": "file upload link"
-                    }
-                  }
+                  "$ref": "#/components/schemas/IPackageUploadResponse"
                 }
               }
             }
@@ -1727,6 +1703,24 @@
         "enum": ["id", "title", "created_at", "author"],
         "example": "created_at",
         "default": "created_at"
+      },
+      "IPackageUploadResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "uploadLinks": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "uniqueIdentifier": "https://example.com/upload/file.jpg"
+            }
+          }
+        }
       }
     }
   }

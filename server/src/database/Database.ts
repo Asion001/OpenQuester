@@ -116,8 +116,13 @@ export class Database {
     this._connected = true;
   }
 
-  public disconnect(): void {
+  public async disconnect(): Promise<void> {
+    if (this._dataSource.isInitialized) {
+      await this._dataSource.destroy();
+    }
+    Database._instanceMap.delete(this._dataSource);
     this._connected = false;
+    Logger.warn("Database connection closed", DB_PREFIX);
   }
 
   public get connected(): boolean {

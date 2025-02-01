@@ -1,4 +1,4 @@
-import { type Request } from "express";
+import { IncomingHttpHeaders } from "http";
 
 import { IGameCreateData } from "types/game/IGameCreate";
 import { IGameListItem } from "types/game/IGameListItem";
@@ -24,12 +24,14 @@ export class GameService {
     return this._getGameRepository().getAllGames(ctx, paginationOpts);
   }
 
-  public async create(ctx: ApiContext, req: Request) {
-    const gameData: IGameCreateData = req.body;
-
+  public async create(
+    ctx: ApiContext,
+    gameData: IGameCreateData,
+    headers: IncomingHttpHeaders
+  ) {
     const createdByUser = await UserRepository.getUserByHeader(
       ctx.db,
-      req.headers.authorization,
+      headers.authorization,
       { select: ["id", "name"], relations: [] }
     );
 

@@ -1,5 +1,3 @@
-import { type Request } from "express";
-
 import { type ApiContext } from "services/context/ApiContext";
 
 import { JWTResponse } from "types/jwt/jwt";
@@ -8,14 +6,14 @@ import { CryptoUtils } from "utils/CryptoUtils";
 import { ClientResponse } from "enums/ClientResponse";
 import { ClientError } from "error/ClientError";
 import { UserRepository } from "database/repositories/UserRepository";
+import { ILoginUser } from "types/user/ILoginUser";
 
 /**
  * Handles all business logic of user authorization
  */
 export class AuthService {
-  public async login(ctx: ApiContext, req: Request): Promise<JWTResponse> {
+  public async login(ctx: ApiContext, data: ILoginUser): Promise<JWTResponse> {
     const repository = UserRepository.getRepository(ctx.db);
-    const data = req.body;
     const user = await repository.login(data);
 
     if (!user) {
