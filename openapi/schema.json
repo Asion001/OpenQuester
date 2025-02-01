@@ -1630,6 +1630,13 @@
           },
           "author": {
             "$ref": "#/components/schemas/IShortUserInfo"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Anime"
+            }
           }
         }
       },

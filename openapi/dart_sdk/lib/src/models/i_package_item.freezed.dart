@@ -27,6 +27,7 @@ mixin _$IPackageItem {
   DateTime get createdAt => throw _privateConstructorUsedError;
   int get rounds => throw _privateConstructorUsedError;
   IShortUserInfo get author => throw _privateConstructorUsedError;
+  List<String> get tags => throw _privateConstructorUsedError;
 
   /// Serializes this IPackageItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,7 +51,8 @@ abstract class $IPackageItemCopyWith<$Res> {
       IPackageItemAgeRestriction ageRestriction,
       DateTime createdAt,
       int rounds,
-      IShortUserInfo author});
+      IShortUserInfo author,
+      List<String> tags});
 
   $IShortUserInfoCopyWith<$Res> get author;
 }
@@ -76,6 +78,7 @@ class _$IPackageItemCopyWithImpl<$Res, $Val extends IPackageItem>
     Object? createdAt = null,
     Object? rounds = null,
     Object? author = null,
+    Object? tags = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -102,6 +105,10 @@ class _$IPackageItemCopyWithImpl<$Res, $Val extends IPackageItem>
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as IShortUserInfo,
+      tags: null == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 
@@ -130,7 +137,8 @@ abstract class _$$IPackageItemImplCopyWith<$Res>
       IPackageItemAgeRestriction ageRestriction,
       DateTime createdAt,
       int rounds,
-      IShortUserInfo author});
+      IShortUserInfo author,
+      List<String> tags});
 
   @override
   $IShortUserInfoCopyWith<$Res> get author;
@@ -155,6 +163,7 @@ class __$$IPackageItemImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? rounds = null,
     Object? author = null,
+    Object? tags = null,
   }) {
     return _then(_$IPackageItemImpl(
       id: null == id
@@ -181,6 +190,10 @@ class __$$IPackageItemImplCopyWithImpl<$Res>
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as IShortUserInfo,
+      tags: null == tags
+          ? _value._tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -194,7 +207,9 @@ class _$IPackageItemImpl implements _IPackageItem {
       required this.ageRestriction,
       required this.createdAt,
       required this.rounds,
-      required this.author});
+      required this.author,
+      required final List<String> tags})
+      : _tags = tags;
 
   factory _$IPackageItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$IPackageItemImplFromJson(json);
@@ -211,10 +226,17 @@ class _$IPackageItemImpl implements _IPackageItem {
   final int rounds;
   @override
   final IShortUserInfo author;
+  final List<String> _tags;
+  @override
+  List<String> get tags {
+    if (_tags is EqualUnmodifiableListView) return _tags;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_tags);
+  }
 
   @override
   String toString() {
-    return 'IPackageItem(id: $id, title: $title, ageRestriction: $ageRestriction, createdAt: $createdAt, rounds: $rounds, author: $author)';
+    return 'IPackageItem(id: $id, title: $title, ageRestriction: $ageRestriction, createdAt: $createdAt, rounds: $rounds, author: $author, tags: $tags)';
   }
 
   @override
@@ -229,13 +251,14 @@ class _$IPackageItemImpl implements _IPackageItem {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.rounds, rounds) || other.rounds == rounds) &&
-            (identical(other.author, author) || other.author == author));
+            (identical(other.author, author) || other.author == author) &&
+            const DeepCollectionEquality().equals(other._tags, _tags));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, title, ageRestriction, createdAt, rounds, author);
+  int get hashCode => Object.hash(runtimeType, id, title, ageRestriction,
+      createdAt, rounds, author, const DeepCollectionEquality().hash(_tags));
 
   /// Create a copy of IPackageItem
   /// with the given fields replaced by the non-null parameter values.
@@ -260,7 +283,8 @@ abstract class _IPackageItem implements IPackageItem {
       required final IPackageItemAgeRestriction ageRestriction,
       required final DateTime createdAt,
       required final int rounds,
-      required final IShortUserInfo author}) = _$IPackageItemImpl;
+      required final IShortUserInfo author,
+      required final List<String> tags}) = _$IPackageItemImpl;
 
   factory _IPackageItem.fromJson(Map<String, dynamic> json) =
       _$IPackageItemImpl.fromJson;
@@ -277,6 +301,8 @@ abstract class _IPackageItem implements IPackageItem {
   int get rounds;
   @override
   IShortUserInfo get author;
+  @override
+  List<String> get tags;
 
   /// Create a copy of IPackageItem
   /// with the given fields replaced by the non-null parameter values.

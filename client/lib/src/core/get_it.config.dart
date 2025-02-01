@@ -31,10 +31,10 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.singleton<_i895.DioController>(() => _i895.DioController()..init());
     gh.singleton<_i741.Storage>(() => _i741.Storage());
     gh.singleton<_i697.TimeController>(() => _i697.TimeController()..init());
     gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
-    gh.singleton<_i895.DioController>(() => _i895.DioController()..init());
     gh.singleton<_i149.Api>(() => _i149.Api());
     await gh.singletonAsync<_i421.LoginController>(
       () => _i421.LoginController.create(),
