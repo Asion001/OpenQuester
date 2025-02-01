@@ -12,6 +12,7 @@ import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
 import '../connection/api/api.dart' as _i149;
+import '../connection/controllers/dio_controller.dart' as _i895;
 import '../connection/controllers/login_controller.dart' as _i421;
 import '../connection/socket/socket_controller.dart' as _i496;
 import '../connection/storage/storage.dart' as _i741;
@@ -31,8 +32,9 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.singleton<_i741.Storage>(() => _i741.Storage());
-    gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
     gh.singleton<_i697.TimeController>(() => _i697.TimeController()..init());
+    gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
+    gh.singleton<_i895.DioController>(() => _i895.DioController()..init());
     gh.singleton<_i149.Api>(() => _i149.Api());
     await gh.singletonAsync<_i421.LoginController>(
       () => _i421.LoginController.create(),

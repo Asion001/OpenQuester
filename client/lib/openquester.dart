@@ -6,7 +6,7 @@ export 'common_imports.dart';
 export 'generated/assets.gen.dart';
 export 'main.dart';
 export 'src/connection/api/api.dart';
-export 'src/connection/api/api_cache.dart';
+export 'src/connection/controllers/dio_controller.dart';
 export 'src/connection/controllers/login_controller.dart';
 export 'src/connection/files/file_service.dart';
 export 'src/connection/socket/socket_controller.dart';

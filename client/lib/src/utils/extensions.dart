@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 import 'package:universal_io/io.dart';
 
@@ -42,4 +43,9 @@ extension IPackageItemAgeRestrictionX on IPackageItemAgeRestriction {
         IPackageItemAgeRestriction.a16: '16+',
         IPackageItemAgeRestriction.a18: '18+',
       }[this];
+}
+
+extension WidgetX on Widget {
+  Widget shrink() =>
+      Row(mainAxisSize: MainAxisSize.min, children: [flexible()]);
 }

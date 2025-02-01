@@ -18,9 +18,9 @@ class GameListItemWidget extends WatchingWidget {
               title: Tooltip(
                 message: LocaleKeys.game_tile_tooltips_game_title.tr(),
                 child: Text(item.title),
-              ),
+              ).shrink(),
               subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Tooltip(
                     message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
@@ -38,10 +38,11 @@ class GameListItemWidget extends WatchingWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-              ).paddingTop(4),
-              trailing: Icon(Icons.play_arrow_outlined),
-              titleAlignment: ListTileTitleAlignment.titleHeight,
+              ).paddingTop(4).shrink(),
+              trailing: Icon(Icons.play_arrow),
+              titleAlignment: ListTileTitleAlignment.bottom,
               contentPadding: EdgeInsets.only(right: 16, left: 4),
+              mouseCursor: MouseCursor.defer,
             ).expand(),
           ],
         ).paddingSymmetric(horizontal: 2),
@@ -91,7 +92,7 @@ class _GameListItemBadges extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _Badge(
-            icon: Icons.person,
+            icon: Icons.person_outline,
             tooltip: LocaleKeys.game_tile_tooltips_players.tr(),
             label: [item.players, item.maxPlayers].join('/'),
           ),

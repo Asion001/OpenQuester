@@ -1,5 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
+// ignore_for_file: constant_identifier_names
+
 abstract class LocaleKeys {
   static const home_tabs_home = 'home_tabs.home';
   static const home_tabs_packages = 'home_tabs.packages';

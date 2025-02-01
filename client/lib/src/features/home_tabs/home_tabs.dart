@@ -28,6 +28,7 @@ class HomeTabsScreen extends StatelessWidget {
                     selectedIndex: tabsRouter.activeIndex,
                     onDestinationSelected: tabsRouter.setActiveIndex,
                     destinations: _destionations,
+                    height: 60,
                   );
                 },
         ),
