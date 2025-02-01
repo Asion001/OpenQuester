@@ -1,11 +1,7 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
-import 'package:universal_io/io.dart';
 
 @Singleton(order: 0)
 class DioController {
