@@ -15,6 +15,7 @@ _$IPackageItemImpl _$$IPackageItemImplFromJson(Map<String, dynamic> json) =>
       createdAt: DateTime.parse(json['createdAt'] as String),
       rounds: (json['rounds'] as num).toInt(),
       author: IShortUserInfo.fromJson(json['author'] as Map<String, dynamic>),
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$$IPackageItemImplToJson(_$IPackageItemImpl instance) =>
@@ -25,4 +26,5 @@ Map<String, dynamic> _$$IPackageItemImplToJson(_$IPackageItemImpl instance) =>
       'createdAt': instance.createdAt.toIso8601String(),
       'rounds': instance.rounds,
       'author': instance.author,
+      'tags': instance.tags,
     };

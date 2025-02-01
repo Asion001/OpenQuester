@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
@@ -17,10 +19,14 @@ class GameListItemWidget extends WatchingWidget {
             ListTile(
               title: Tooltip(
                 message: LocaleKeys.game_tile_tooltips_game_title.tr(),
-                child: Text(item.title),
-              ),
+                child: Text(
+                  item.title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+              ).shrink(),
               subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Tooltip(
                     message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
@@ -38,10 +44,11 @@ class GameListItemWidget extends WatchingWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
-              ).paddingTop(4),
-              trailing: Icon(Icons.play_arrow_outlined),
-              titleAlignment: ListTileTitleAlignment.titleHeight,
+              ).paddingTop(4).shrink(),
+              trailing: Icon(Icons.play_arrow),
+              titleAlignment: ListTileTitleAlignment.bottom,
               contentPadding: EdgeInsets.only(right: 16, left: 4),
+              mouseCursor: MouseCursor.defer,
             ).expand(),
           ],
         ).paddingSymmetric(horizontal: 2),
@@ -55,6 +62,10 @@ class GameListItemWidget extends WatchingWidget {
       [
         ageRestriction,
         DateFormat.yMd().format(item.package.createdAt),
+        if (item.package.tags.isNotEmpty)
+          item.package.tags
+              .sublist(0, min(3, item.package.tags.length))
+              .join(','),
         LocaleKeys.created_by.tr(args: [item.package.author.name]),
       ].nonNulls.join(' | ')
     ].join('\n');
@@ -91,7 +102,7 @@ class _GameListItemBadges extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _Badge(
-            icon: Icons.person,
+            icon: Icons.person_outline,
             tooltip: LocaleKeys.game_tile_tooltips_players.tr(),
             label: [item.players, item.maxPlayers].join('/'),
           ),
