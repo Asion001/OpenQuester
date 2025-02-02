@@ -8,7 +8,9 @@ class HomeTabsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isWideModeOn = UiModeUtils.wideModeOn(context);
-    return MaxSizeContainer(child: isWideModeOn ? _wideBody() : _mobileBody());
+    return Scaffold(
+      body: MaxSizeContainer(child: isWideModeOn ? _wideBody() : _mobileBody()),
+    );
   }
 
   Widget _wideBody() {
