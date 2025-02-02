@@ -50,7 +50,7 @@ if [ -n "$1" ]; then
   echo "Creating commit and tag for version $VERSION"
 
   # Stage the changed files.
-  git add "$PUBSPEC_FILE" "$PACKAGE_JSON_FILE"
+  git add "$PUBSPEC_FILE" "$PACKAGE_JSON_FILE" "SCHEMA_JSON_FILE"
 
   # Commit the changes.
   git commit -m "Update version to $VERSION" || echo "No changes to commit."
