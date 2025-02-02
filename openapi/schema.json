@@ -1226,7 +1226,9 @@
           },
           "password": {
             "type": "string",
-            "example": "mySuperCoolPassword123"
+            "example": "mySuperCoolPassword123",
+            "minimum": 6,
+            "maximum": 128
           },
           "birthday": {
             "type": "string",
@@ -1251,7 +1253,9 @@
           },
           "password": {
             "type": "string",
-            "example": "mySuperCoolPassword123"
+            "example": "mySuperCoolPassword123",
+            "minimum": 6,
+            "maximum": 128
           }
         },
         "required": ["login", "password"]

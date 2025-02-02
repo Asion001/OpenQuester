@@ -1,15 +1,15 @@
+import Joi from "joi";
+
 import {
   EPaginationOrder,
   IPaginationOpts,
 } from "types/pagination/IPaginationOpts";
-import Joi from "joi";
 import { ServerError } from "error/ServerError";
 import { ClientError } from "error/ClientError";
 import { ServerResponse } from "enums/ServerResponse";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
 import { IPaginationSchemaOpts } from "types/pagination/IPaginationSchemaOpts";
-import { Logger } from "utils/Logger";
 import { LIMIT_MAX, LIMIT_MIN, OFFSET_MIN } from "constants/pagination";
 
 export class PaginationSchema<T> {
@@ -17,7 +17,6 @@ export class PaginationSchema<T> {
   protected _paginationData: IPaginationOpts<T>;
 
   constructor(schemaOpts: IPaginationSchemaOpts<T>) {
-    Logger.debug("pagination");
     this._schema = Joi.object<IPaginationOpts<T>>({
       limit: Joi.number().required().min(LIMIT_MIN).max(LIMIT_MAX).required(),
       offset: Joi.number().required().min(OFFSET_MIN).required(),
