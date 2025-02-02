@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "OpenQuester API",
-    "version": "0.2.9"
+    "version": "0.8.0"
   },
   "security": [
     {
@@ -169,13 +169,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "content": {
-                    "$ref": "#/components/schemas/OQContentStructure"
-                  }
-                },
-                "required": ["content"]
+                "$ref": "#/components/schemas/PackageCreationInput"
               }
             }
           }
@@ -850,13 +844,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "refresh_token": {
-                    "type": "string"
-                  }
-                },
-                "required": ["refresh_token"]
+                "$ref": "#/components/schemas/AuthRefreshInput"
               }
             }
           }
@@ -1117,6 +1105,33 @@
       }
     },
     "schemas": {
+      "PageInfo": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "example": 1000
+          }
+        }
+      },
+      "AuthRefreshInput": {
+        "type": "object",
+        "properties": {
+          "refresh_token": {
+            "type": "string"
+          }
+        },
+        "required": ["refresh_token"]
+      },
+      "PackageCreationInput": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "$ref": "#/components/schemas/OQContentStructure"
+          }
+        },
+        "required": ["content"]
+      },
       "ResponseUser": {
         "type": "object",
         "properties": {
@@ -1578,15 +1593,7 @@
               "$ref": "#/components/schemas/IPackageItem"
             }
           },
-          "pageInfo": {
-            "type": "object",
-            "properties": {
-              "total": {
-                "type": "integer",
-                "example": 1000
-              }
-            }
-          }
+          "pageInfo": { "$ref": "#/components/schemas/PageInfo" }
         }
       },
       "IPackageItem": {
@@ -1636,13 +1643,7 @@
             }
           },
           "pageInfo": {
-            "type": "object",
-            "properties": {
-              "total": {
-                "type": "integer",
-                "example": 1000
-              }
-            }
+            "$ref": "#/components/schemas/PageInfo"
           }
         }
       },
@@ -1656,13 +1657,7 @@
             }
           },
           "pageInfo": {
-            "type": "object",
-            "properties": {
-              "total": {
-                "type": "integer",
-                "example": 1000
-              }
-            }
+            "$ref": "#/components/schemas/PageInfo"
           }
         }
       },
