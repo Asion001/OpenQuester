@@ -48,7 +48,7 @@ class PackageListItemWidget extends WatchingWidget {
           item.tags.sublist(0, min(3, item.tags.length)).join(','),
         LocaleKeys.rounds.plural(item.rounds),
         LocaleKeys.created_by.tr(args: [item.author.name]),
-      ].nonNulls.join(' | ')
+      ].nonNulls.join(' • ')
     ].join('\n');
   }
 }
