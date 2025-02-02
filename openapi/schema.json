@@ -1191,12 +1191,14 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "John Doe"
+            "example": "John Doe",
+            "nullable": true
           },
           "email": {
             "type": "string",
             "example": "user@example.com",
-            "format": "email"
+            "format": "email",
+            "nullable": true
           },
           "birthday": {
             "type": "string",
@@ -1503,6 +1505,7 @@
           },
           "packageId": {
             "type": "integer",
+            "minimum": 0,
             "example": 1
           },
           "isPrivate": {
@@ -1516,6 +1519,8 @@
           },
           "maxPlayers": {
             "type": "integer",
+            "minimum": 2,
+            "maximum": 15,
             "example": 10
           }
         }
