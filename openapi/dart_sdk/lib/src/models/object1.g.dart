@@ -8,10 +8,10 @@ part of 'object1.dart';
 
 _$Object1Impl _$$Object1ImplFromJson(Map<String, dynamic> json) =>
     _$Object1Impl(
-      filename: json['filename'] as String,
+      refreshToken: json['refresh_token'] as String,
     );
 
 Map<String, dynamic> _$$Object1ImplToJson(_$Object1Impl instance) =>
     <String, dynamic>{
-      'filename': instance.filename,
+      'refresh_token': instance.refreshToken,
     };

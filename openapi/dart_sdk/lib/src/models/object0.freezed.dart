@@ -20,7 +20,7 @@ Object0 _$Object0FromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Object0 {
-  String get filename => throw _privateConstructorUsedError;
+  OQContentStructure get content => throw _privateConstructorUsedError;
 
   /// Serializes this Object0 to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +36,9 @@ abstract class $Object0CopyWith<$Res> {
   factory $Object0CopyWith(Object0 value, $Res Function(Object0) then) =
       _$Object0CopyWithImpl<$Res, Object0>;
   @useResult
-  $Res call({String filename});
+  $Res call({OQContentStructure content});
+
+  $OQContentStructureCopyWith<$Res> get content;
 }
 
 /// @nodoc
@@ -54,14 +56,24 @@ class _$Object0CopyWithImpl<$Res, $Val extends Object0>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? filename = null,
+    Object? content = null,
   }) {
     return _then(_value.copyWith(
-      filename: null == filename
-          ? _value.filename
-          : filename // ignore: cast_nullable_to_non_nullable
-              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as OQContentStructure,
     ) as $Val);
+  }
+
+  /// Create a copy of Object0
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $OQContentStructureCopyWith<$Res> get content {
+    return $OQContentStructureCopyWith<$Res>(_value.content, (value) {
+      return _then(_value.copyWith(content: value) as $Val);
+    });
   }
 }
 
@@ -72,7 +84,10 @@ abstract class _$$Object0ImplCopyWith<$Res> implements $Object0CopyWith<$Res> {
       __$$Object0ImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String filename});
+  $Res call({OQContentStructure content});
+
+  @override
+  $OQContentStructureCopyWith<$Res> get content;
 }
 
 /// @nodoc
@@ -88,13 +103,13 @@ class __$$Object0ImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? filename = null,
+    Object? content = null,
   }) {
     return _then(_$Object0Impl(
-      filename: null == filename
-          ? _value.filename
-          : filename // ignore: cast_nullable_to_non_nullable
-              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as OQContentStructure,
     ));
   }
 }
@@ -102,17 +117,17 @@ class __$$Object0ImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$Object0Impl implements _Object0 {
-  const _$Object0Impl({required this.filename});
+  const _$Object0Impl({required this.content});
 
   factory _$Object0Impl.fromJson(Map<String, dynamic> json) =>
       _$$Object0ImplFromJson(json);
 
   @override
-  final String filename;
+  final OQContentStructure content;
 
   @override
   String toString() {
-    return 'Object0(filename: $filename)';
+    return 'Object0(content: $content)';
   }
 
   @override
@@ -120,13 +135,12 @@ class _$Object0Impl implements _Object0 {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$Object0Impl &&
-            (identical(other.filename, filename) ||
-                other.filename == filename));
+            (identical(other.content, content) || other.content == content));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, filename);
+  int get hashCode => Object.hash(runtimeType, content);
 
   /// Create a copy of Object0
   /// with the given fields replaced by the non-null parameter values.
@@ -145,12 +159,13 @@ class _$Object0Impl implements _Object0 {
 }
 
 abstract class _Object0 implements Object0 {
-  const factory _Object0({required final String filename}) = _$Object0Impl;
+  const factory _Object0({required final OQContentStructure content}) =
+      _$Object0Impl;
 
   factory _Object0.fromJson(Map<String, dynamic> json) = _$Object0Impl.fromJson;
 
   @override
-  String get filename;
+  OQContentStructure get content;
 
   /// Create a copy of Object0
   /// with the given fields replaced by the non-null parameter values.

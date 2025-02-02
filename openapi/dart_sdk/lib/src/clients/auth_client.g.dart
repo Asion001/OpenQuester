@@ -59,7 +59,7 @@ class _AuthClient implements AuthClient {
 
   @override
   Future<ResponseAuthData> postV1AuthRefresh({
-    required Object4 body,
+    required Object1 body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {

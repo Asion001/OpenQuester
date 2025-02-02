@@ -20,8 +20,8 @@ InputUpdateUser _$InputUpdateUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$InputUpdateUser {
-  String get name => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
   DateTime? get birthday => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
 
@@ -41,7 +41,7 @@ abstract class $InputUpdateUserCopyWith<$Res> {
           InputUpdateUser value, $Res Function(InputUpdateUser) then) =
       _$InputUpdateUserCopyWithImpl<$Res, InputUpdateUser>;
   @useResult
-  $Res call({String name, String password, DateTime? birthday, String? avatar});
+  $Res call({String? name, String? email, DateTime? birthday, String? avatar});
 }
 
 /// @nodoc
@@ -59,20 +59,20 @@ class _$InputUpdateUserCopyWithImpl<$Res, $Val extends InputUpdateUser>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? password = null,
+    Object? name = freezed,
+    Object? email = freezed,
     Object? birthday = freezed,
     Object? avatar = freezed,
   }) {
     return _then(_value.copyWith(
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
@@ -93,7 +93,7 @@ abstract class _$$InputUpdateUserImplCopyWith<$Res>
       __$$InputUpdateUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String password, DateTime? birthday, String? avatar});
+  $Res call({String? name, String? email, DateTime? birthday, String? avatar});
 }
 
 /// @nodoc
@@ -109,20 +109,20 @@ class __$$InputUpdateUserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? password = null,
+    Object? name = freezed,
+    Object? email = freezed,
     Object? birthday = freezed,
     Object? avatar = freezed,
   }) {
     return _then(_$InputUpdateUserImpl(
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
@@ -139,15 +139,15 @@ class __$$InputUpdateUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$InputUpdateUserImpl implements _InputUpdateUser {
   const _$InputUpdateUserImpl(
-      {required this.name, required this.password, this.birthday, this.avatar});
+      {this.name, this.email, this.birthday, this.avatar});
 
   factory _$InputUpdateUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$InputUpdateUserImplFromJson(json);
 
   @override
-  final String name;
+  final String? name;
   @override
-  final String password;
+  final String? email;
   @override
   final DateTime? birthday;
   @override
@@ -155,7 +155,7 @@ class _$InputUpdateUserImpl implements _InputUpdateUser {
 
   @override
   String toString() {
-    return 'InputUpdateUser(name: $name, password: $password, birthday: $birthday, avatar: $avatar)';
+    return 'InputUpdateUser(name: $name, email: $email, birthday: $birthday, avatar: $avatar)';
   }
 
   @override
@@ -164,8 +164,7 @@ class _$InputUpdateUserImpl implements _InputUpdateUser {
         (other.runtimeType == runtimeType &&
             other is _$InputUpdateUserImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.birthday, birthday) ||
                 other.birthday == birthday) &&
             (identical(other.avatar, avatar) || other.avatar == avatar));
@@ -173,8 +172,7 @@ class _$InputUpdateUserImpl implements _InputUpdateUser {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, password, birthday, avatar);
+  int get hashCode => Object.hash(runtimeType, name, email, birthday, avatar);
 
   /// Create a copy of InputUpdateUser
   /// with the given fields replaced by the non-null parameter values.
@@ -195,8 +193,8 @@ class _$InputUpdateUserImpl implements _InputUpdateUser {
 
 abstract class _InputUpdateUser implements InputUpdateUser {
   const factory _InputUpdateUser(
-      {required final String name,
-      required final String password,
+      {final String? name,
+      final String? email,
       final DateTime? birthday,
       final String? avatar}) = _$InputUpdateUserImpl;
 
@@ -204,9 +202,9 @@ abstract class _InputUpdateUser implements InputUpdateUser {
       _$InputUpdateUserImpl.fromJson;
 
   @override
-  String get name;
+  String? get name;
   @override
-  String get password;
+  String? get email;
   @override
   DateTime? get birthday;
   @override

@@ -20,7 +20,8 @@ Object1 _$Object1FromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Object1 {
-  String get filename => throw _privateConstructorUsedError;
+  @JsonKey(name: 'refresh_token')
+  String get refreshToken => throw _privateConstructorUsedError;
 
   /// Serializes this Object1 to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ abstract class $Object1CopyWith<$Res> {
   factory $Object1CopyWith(Object1 value, $Res Function(Object1) then) =
       _$Object1CopyWithImpl<$Res, Object1>;
   @useResult
-  $Res call({String filename});
+  $Res call({@JsonKey(name: 'refresh_token') String refreshToken});
 }
 
 /// @nodoc
@@ -54,12 +55,12 @@ class _$Object1CopyWithImpl<$Res, $Val extends Object1>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? filename = null,
+    Object? refreshToken = null,
   }) {
     return _then(_value.copyWith(
-      filename: null == filename
-          ? _value.filename
-          : filename // ignore: cast_nullable_to_non_nullable
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -72,7 +73,7 @@ abstract class _$$Object1ImplCopyWith<$Res> implements $Object1CopyWith<$Res> {
       __$$Object1ImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String filename});
+  $Res call({@JsonKey(name: 'refresh_token') String refreshToken});
 }
 
 /// @nodoc
@@ -88,12 +89,12 @@ class __$$Object1ImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? filename = null,
+    Object? refreshToken = null,
   }) {
     return _then(_$Object1Impl(
-      filename: null == filename
-          ? _value.filename
-          : filename // ignore: cast_nullable_to_non_nullable
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -102,17 +103,19 @@ class __$$Object1ImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$Object1Impl implements _Object1 {
-  const _$Object1Impl({required this.filename});
+  const _$Object1Impl(
+      {@JsonKey(name: 'refresh_token') required this.refreshToken});
 
   factory _$Object1Impl.fromJson(Map<String, dynamic> json) =>
       _$$Object1ImplFromJson(json);
 
   @override
-  final String filename;
+  @JsonKey(name: 'refresh_token')
+  final String refreshToken;
 
   @override
   String toString() {
-    return 'Object1(filename: $filename)';
+    return 'Object1(refreshToken: $refreshToken)';
   }
 
   @override
@@ -120,13 +123,13 @@ class _$Object1Impl implements _Object1 {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$Object1Impl &&
-            (identical(other.filename, filename) ||
-                other.filename == filename));
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, filename);
+  int get hashCode => Object.hash(runtimeType, refreshToken);
 
   /// Create a copy of Object1
   /// with the given fields replaced by the non-null parameter values.
@@ -145,12 +148,15 @@ class _$Object1Impl implements _Object1 {
 }
 
 abstract class _Object1 implements Object1 {
-  const factory _Object1({required final String filename}) = _$Object1Impl;
+  const factory _Object1(
+      {@JsonKey(name: 'refresh_token')
+      required final String refreshToken}) = _$Object1Impl;
 
   factory _Object1.fromJson(Map<String, dynamic> json) = _$Object1Impl.fromJson;
 
   @override
-  String get filename;
+  @JsonKey(name: 'refresh_token')
+  String get refreshToken;
 
   /// Create a copy of Object1
   /// with the given fields replaced by the non-null parameter values.

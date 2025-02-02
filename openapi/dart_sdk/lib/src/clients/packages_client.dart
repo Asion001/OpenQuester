@@ -6,13 +6,13 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../models/i_package_item.dart';
-import '../models/object3.dart';
+import '../models/i_package_upload_response.dart';
+import '../models/object0.dart';
 import '../models/order_direction.dart';
 import '../models/packages_sort_by.dart';
 import '../models/paginated_packages.dart';
 import '../models/pagination_limit.dart';
 import '../models/pagination_offset.dart';
-import '../models/post_v1_packages_response.dart';
 
 part 'packages_client.g.dart';
 
@@ -24,8 +24,8 @@ abstract class PackagesClient {
   ///
   /// [body] - Name not received and was auto-generated.
   @POST('/v1/packages')
-  Future<PostV1PackagesResponse> postV1Packages({
-    @Body() required Object3 body,
+  Future<IPackageUploadResponse> postV1Packages({
+    @Body() required Object0 body,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
