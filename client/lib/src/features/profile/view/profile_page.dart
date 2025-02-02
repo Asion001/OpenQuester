@@ -14,12 +14,12 @@ class ProfilePage extends WatchingWidget {
   Widget build(BuildContext context) {
     final login = watchPropertyValue((LoginController m) => m.login);
     final password = watchPropertyValue((LoginController m) => m.password);
-    final auth = watchPropertyValue((LoginController m) => m.authData);
+    final autorized = watchPropertyValue((LoginController m) => m.autorized);
 
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: auth == null
+        child: !autorized
             ? _loginField(login, password, context)
             : _authorizedProfile(),
       ),

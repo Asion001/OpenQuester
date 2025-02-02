@@ -65,7 +65,7 @@ class GameListItemWidget extends WatchingWidget {
         if (item.package.tags.isNotEmpty)
           item.package.tags
               .sublist(0, min(3, item.package.tags.length))
-              .join(','),
+              .join(', '),
         LocaleKeys.created_by.tr(args: [item.package.author.name]),
       ].nonNulls.join(' | ')
     ].join('\n');

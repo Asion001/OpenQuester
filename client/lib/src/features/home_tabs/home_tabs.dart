@@ -9,30 +9,45 @@ class HomeTabsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWideModeOn = UiModeUtils.wideModeOn(context);
     return Scaffold(
-      body: MaxSizeContainer(
-        child: AutoTabsScaffold(
-          appBarBuilder: (context, tabsRouter) {
-            return AppBar(
-              title: Text(_destionations[tabsRouter.activeIndex].label),
-              leading: ProfileBtn(),
-            );
-          },
-          routes: const [
-            HomeRoute(),
-            PackagesListRoute(),
-          ],
-          bottomNavigationBuilder: isWideModeOn
-              ? null
-              : (_, tabsRouter) {
-                  return NavigationBar(
-                    selectedIndex: tabsRouter.activeIndex,
-                    onDestinationSelected: tabsRouter.setActiveIndex,
-                    destinations: _destionations,
-                    height: 60,
-                  );
-                },
+      body: SafeArea(
+        child: MaxSizeContainer(
+          child: isWideModeOn ? _wideBody() : _mobileBody(),
         ),
       ),
+    );
+  }
+
+  Widget _wideBody() {
+    return Scaffold(
+      appBar: homeAppBar(title: LocaleKeys.home_tabs_home.tr()),
+      body: Row(
+        children: [
+          GamesList().expand(),
+          PackagesListScreen().expand(),
+        ],
+      ),
+    );
+  }
+
+  Widget _mobileBody() {
+    return AutoTabsScaffold(
+      appBarBuilder: (context, tabsRouter) {
+        return homeAppBar(
+          title: _destionations[tabsRouter.activeIndex].label,
+        );
+      },
+      routes: const [
+        HomeRoute(),
+        PackagesListRoute(),
+      ],
+      bottomNavigationBuilder: (_, tabsRouter) {
+        return NavigationBar(
+          selectedIndex: tabsRouter.activeIndex,
+          onDestinationSelected: tabsRouter.setActiveIndex,
+          destinations: _destionations,
+          height: 60,
+        );
+      },
     );
   }
 
@@ -50,4 +65,11 @@ class HomeTabsScreen extends StatelessWidget {
       ),
     ];
   }
+}
+
+AppBar homeAppBar({required String title}) {
+  return AppBar(
+    title: Text(title),
+    leading: ProfileBtn(),
+  );
 }

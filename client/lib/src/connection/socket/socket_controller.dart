@@ -35,7 +35,7 @@ class SocketController {
   }
 
   Future<Map<String, dynamic>> _headers() async {
-    final authToken = getIt.get<LoginController>().authData?.accessToken;
+    final authToken = getIt.get<LoginController>().accessToken;
     return {'Authorization': 'Bearer $authToken'};
   }
 

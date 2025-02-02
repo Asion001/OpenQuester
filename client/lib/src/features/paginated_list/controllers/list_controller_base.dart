@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:openquester/src/core/logger.dart';
 
-abstract class ListControllerBase<I> extends ChangeNotifier {
+abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
   @protected
   Future<ListResponse<I>> getPage(ListRequest request);
 
@@ -27,6 +27,34 @@ abstract class ListControllerBase<I> extends ChangeNotifier {
     }
   }
 
+  @protected
+  Future<void> deleteItem(I item) async {
+    if (pagingController.itemList == null) return;
+    final list = List<I>.from(pagingController.itemList!);
+    final gameIndex = list.indexWhere((e) => e.id == item.id);
+    if (gameIndex < 0) return;
+    list.removeAt(gameIndex);
+    pagingController.itemList = list;
+  }
+
+  @protected
+  Future<void> addFirstItem(I item) async {
+    if (pagingController.itemList == null) return;
+    final list = List<I>.from(pagingController.itemList!);
+    list.insert(0, item);
+    pagingController.itemList = list;
+  }
+
+  @protected
+  Future<void> updateItem(I game) async {
+    if (pagingController.itemList == null) return;
+    final list = List<I>.from(pagingController.itemList!);
+    final gameIndex = list.indexWhere((e) => e.id == game.id);
+    if (gameIndex < 0) return;
+    list[gameIndex] = game;
+    pagingController.itemList = list;
+  }
+
   @override
   Future<void> dispose() async {
     super.dispose();
@@ -40,7 +68,7 @@ abstract class ListControllerBase<I> extends ChangeNotifier {
 class ListRequest {
   const ListRequest({
     required this.offset,
-    this.limit = 10,
+    this.limit = 20,
   });
   final int limit;
   final int offset;

@@ -1,15 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
 
-import '../../model/auth_data.dart' as auth_model;
-
 @Singleton(order: 2)
 class LoginController extends ChangeNotifier {
-  LoginController({this.authData});
-
-  auth_model.AuthData? authData;
+  AuthData? _authData;
   String? _login;
   String? get login => _login;
   set login(String? value) {
@@ -31,17 +28,21 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool get autorized => _authData != null;
+
+  FutureOr<String?> get accessToken async {
+    if (_authData?.expired() ?? false) await refreshToken();
+    return _authData?.accessToken;
+  }
+
   static const authDataStorageKey = 'auth_data';
 
-  @FactoryMethod(preResolve: true)
-  static Future<LoginController> create() async {
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
     final savedData = await getIt.get<Storage>().get(authDataStorageKey);
-    auth_model.AuthData? authData;
     if (savedData != null) {
-      authData = auth_model.AuthData.fromJson(jsonDecode(savedData.toString()));
+      _authData = AuthData.fromJson(jsonDecode(savedData.toString()));
     }
-
-    return LoginController(authData: authData);
   }
 
   Future<(bool, String?)> loginUser() async {
@@ -53,16 +54,16 @@ class LoginController extends ChangeNotifier {
       );
       final result =
           await getIt.get<Api>().api.auth.postV1AuthLogin(body: inputLoginUser);
-      authData = auth_model.AuthData(
+      _authData = AuthData(
         accessToken: result.accessToken,
         refreshToken: result.refreshToken,
       );
       await getIt
           .get<Storage>()
-          .put(authDataStorageKey, jsonEncode(authData!.toJson()));
+          .put(authDataStorageKey, jsonEncode(_authData!.toJson()));
 
       loading = true;
-      return (authData != null, 'AuthData == null');
+      return (_authData != null, 'AuthData == null');
     } catch (e) {
       logger.e(e);
       loading = false;
@@ -70,8 +71,26 @@ class LoginController extends ChangeNotifier {
     }
   }
 
+  Future<String?> refreshToken() async {
+    if (_authData == null) return null;
+    try {
+      var body = Object4(refreshToken: _authData!.refreshToken);
+      _authData = null;
+      final result =
+          await getIt.get<Api>().api.auth.postV1AuthRefresh(body: body);
+      _authData = AuthData.fromAuthData(result);
+      notifyListeners();
+      return _authData?.accessToken;
+    } catch (e) {
+      logger.w(e);
+      _authData = null;
+      notifyListeners();
+      return null;
+    }
+  }
+
   void logOut() {
-    authData = null;
+    _authData = null;
     getIt.get<Storage>().rm(authDataStorageKey);
     notifyListeners();
   }

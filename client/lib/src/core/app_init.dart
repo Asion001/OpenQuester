@@ -14,13 +14,15 @@ class AppInit {
     // Init localization
     await EasyLocalization.ensureInitialized();
 
-    await configureDependencies();
-
     AppInit.packageInfo = await PackageInfo.fromPlatform();
 
     setUrlStrategy(PathUrlStrategy());
 
     logger.i(await getInitInfo());
+  }
+
+  static Future<void> buildInit() async {
+    await configureDependencies();
   }
 
   static Future<String> getInitInfo() async {
