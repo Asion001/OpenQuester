@@ -45,7 +45,7 @@ class PackageListItemWidget extends WatchingWidget {
         ageRestriction,
         DateFormat.yMd().format(item.createdAt),
         if (item.tags.isNotEmpty)
-          item.tags.sublist(0, min(3, item.tags.length)).join(','),
+          item.tags.sublist(0, min(5, item.tags.length)).join(', '),
         LocaleKeys.rounds.plural(item.rounds),
         LocaleKeys.created_by.tr(args: [item.author.name]),
       ].nonNulls.join(' • ')
