@@ -11,7 +11,7 @@ _$PaginatedGamesImpl _$$PaginatedGamesImplFromJson(Map<String, dynamic> json) =>
       data: (json['data'] as List<dynamic>)
           .map((e) => IGameListItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      pageInfo: PageInfo3.fromJson(json['pageInfo'] as Map<String, dynamic>),
+      pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$PaginatedGamesImplToJson(

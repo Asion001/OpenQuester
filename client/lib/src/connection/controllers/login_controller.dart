@@ -74,7 +74,7 @@ class LoginController extends ChangeNotifier {
   Future<String?> refreshToken() async {
     if (_authData == null) return null;
     try {
-      var body = Object4(refreshToken: _authData!.refreshToken);
+      var body = AuthRefreshInput(refreshToken: _authData!.refreshToken);
       _authData = null;
       final result =
           await getIt.get<Api>().api.auth.postV1AuthRefresh(body: body);

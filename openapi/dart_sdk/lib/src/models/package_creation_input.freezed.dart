@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'object3.dart';
+part of 'package_creation_input.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,27 +14,29 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Object3 _$Object3FromJson(Map<String, dynamic> json) {
-  return _Object3.fromJson(json);
+PackageCreationInput _$PackageCreationInputFromJson(Map<String, dynamic> json) {
+  return _PackageCreationInput.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Object3 {
+mixin _$PackageCreationInput {
   OQContentStructure get content => throw _privateConstructorUsedError;
 
-  /// Serializes this Object3 to a JSON map.
+  /// Serializes this PackageCreationInput to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of Object3
+  /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $Object3CopyWith<Object3> get copyWith => throw _privateConstructorUsedError;
+  $PackageCreationInputCopyWith<PackageCreationInput> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $Object3CopyWith<$Res> {
-  factory $Object3CopyWith(Object3 value, $Res Function(Object3) then) =
-      _$Object3CopyWithImpl<$Res, Object3>;
+abstract class $PackageCreationInputCopyWith<$Res> {
+  factory $PackageCreationInputCopyWith(PackageCreationInput value,
+          $Res Function(PackageCreationInput) then) =
+      _$PackageCreationInputCopyWithImpl<$Res, PackageCreationInput>;
   @useResult
   $Res call({OQContentStructure content});
 
@@ -42,16 +44,17 @@ abstract class $Object3CopyWith<$Res> {
 }
 
 /// @nodoc
-class _$Object3CopyWithImpl<$Res, $Val extends Object3>
-    implements $Object3CopyWith<$Res> {
-  _$Object3CopyWithImpl(this._value, this._then);
+class _$PackageCreationInputCopyWithImpl<$Res,
+        $Val extends PackageCreationInput>
+    implements $PackageCreationInputCopyWith<$Res> {
+  _$PackageCreationInputCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Object3
+  /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -66,7 +69,7 @@ class _$Object3CopyWithImpl<$Res, $Val extends Object3>
     ) as $Val);
   }
 
-  /// Create a copy of Object3
+  /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -78,10 +81,11 @@ class _$Object3CopyWithImpl<$Res, $Val extends Object3>
 }
 
 /// @nodoc
-abstract class _$$Object3ImplCopyWith<$Res> implements $Object3CopyWith<$Res> {
-  factory _$$Object3ImplCopyWith(
-          _$Object3Impl value, $Res Function(_$Object3Impl) then) =
-      __$$Object3ImplCopyWithImpl<$Res>;
+abstract class _$$PackageCreationInputImplCopyWith<$Res>
+    implements $PackageCreationInputCopyWith<$Res> {
+  factory _$$PackageCreationInputImplCopyWith(_$PackageCreationInputImpl value,
+          $Res Function(_$PackageCreationInputImpl) then) =
+      __$$PackageCreationInputImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({OQContentStructure content});
@@ -91,21 +95,21 @@ abstract class _$$Object3ImplCopyWith<$Res> implements $Object3CopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$Object3ImplCopyWithImpl<$Res>
-    extends _$Object3CopyWithImpl<$Res, _$Object3Impl>
-    implements _$$Object3ImplCopyWith<$Res> {
-  __$$Object3ImplCopyWithImpl(
-      _$Object3Impl _value, $Res Function(_$Object3Impl) _then)
+class __$$PackageCreationInputImplCopyWithImpl<$Res>
+    extends _$PackageCreationInputCopyWithImpl<$Res, _$PackageCreationInputImpl>
+    implements _$$PackageCreationInputImplCopyWith<$Res> {
+  __$$PackageCreationInputImplCopyWithImpl(_$PackageCreationInputImpl _value,
+      $Res Function(_$PackageCreationInputImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Object3
+  /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? content = null,
   }) {
-    return _then(_$Object3Impl(
+    return _then(_$PackageCreationInputImpl(
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -116,25 +120,25 @@ class __$$Object3ImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$Object3Impl implements _Object3 {
-  const _$Object3Impl({required this.content});
+class _$PackageCreationInputImpl implements _PackageCreationInput {
+  const _$PackageCreationInputImpl({required this.content});
 
-  factory _$Object3Impl.fromJson(Map<String, dynamic> json) =>
-      _$$Object3ImplFromJson(json);
+  factory _$PackageCreationInputImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PackageCreationInputImplFromJson(json);
 
   @override
   final OQContentStructure content;
 
   @override
   String toString() {
-    return 'Object3(content: $content)';
+    return 'PackageCreationInput(content: $content)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Object3Impl &&
+            other is _$PackageCreationInputImpl &&
             (identical(other.content, content) || other.content == content));
   }
 
@@ -142,35 +146,38 @@ class _$Object3Impl implements _Object3 {
   @override
   int get hashCode => Object.hash(runtimeType, content);
 
-  /// Create a copy of Object3
+  /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$Object3ImplCopyWith<_$Object3Impl> get copyWith =>
-      __$$Object3ImplCopyWithImpl<_$Object3Impl>(this, _$identity);
+  _$$PackageCreationInputImplCopyWith<_$PackageCreationInputImpl>
+      get copyWith =>
+          __$$PackageCreationInputImplCopyWithImpl<_$PackageCreationInputImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$Object3ImplToJson(
+    return _$$PackageCreationInputImplToJson(
       this,
     );
   }
 }
 
-abstract class _Object3 implements Object3 {
-  const factory _Object3({required final OQContentStructure content}) =
-      _$Object3Impl;
+abstract class _PackageCreationInput implements PackageCreationInput {
+  const factory _PackageCreationInput(
+      {required final OQContentStructure content}) = _$PackageCreationInputImpl;
 
-  factory _Object3.fromJson(Map<String, dynamic> json) = _$Object3Impl.fromJson;
+  factory _PackageCreationInput.fromJson(Map<String, dynamic> json) =
+      _$PackageCreationInputImpl.fromJson;
 
   @override
   OQContentStructure get content;
 
-  /// Create a copy of Object3
+  /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$Object3ImplCopyWith<_$Object3Impl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$PackageCreationInputImplCopyWith<_$PackageCreationInputImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

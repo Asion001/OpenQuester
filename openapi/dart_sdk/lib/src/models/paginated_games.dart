@@ -5,7 +5,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'i_game_list_item.dart';
-import 'page_info3.dart';
+import 'page_info.dart';
 
 part 'paginated_games.freezed.dart';
 part 'paginated_games.g.dart';
@@ -14,7 +14,7 @@ part 'paginated_games.g.dart';
 class PaginatedGames with _$PaginatedGames {
   const factory PaginatedGames({
     required List<IGameListItem> data,
-    required PageInfo3 pageInfo,
+    required PageInfo pageInfo,
   }) = _PaginatedGames;
   
   factory PaginatedGames.fromJson(Map<String, Object?> json) => _$PaginatedGamesFromJson(json);

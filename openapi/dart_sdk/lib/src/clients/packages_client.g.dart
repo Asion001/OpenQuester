@@ -23,7 +23,7 @@ class _PackagesClient implements PackagesClient {
 
   @override
   Future<IPackageUploadResponse> postV1Packages({
-    required Object0 body,
+    required PackageCreationInput body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {

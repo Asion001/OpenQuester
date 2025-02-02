@@ -7,8 +7,8 @@ import 'package:retrofit/retrofit.dart';
 
 import '../models/i_package_item.dart';
 import '../models/i_package_upload_response.dart';
-import '../models/object0.dart';
 import '../models/order_direction.dart';
+import '../models/package_creation_input.dart';
 import '../models/packages_sort_by.dart';
 import '../models/paginated_packages.dart';
 import '../models/pagination_limit.dart';
@@ -20,12 +20,10 @@ part 'packages_client.g.dart';
 abstract class PackagesClient {
   factory PackagesClient(Dio dio, {String? baseUrl}) = _PackagesClient;
 
-  /// Get upload links for every file in `content.json`.
-  ///
-  /// [body] - Name not received and was auto-generated.
+  /// Get upload links for every file in `content.json`
   @POST('/v1/packages')
   Future<IPackageUploadResponse> postV1Packages({
-    @Body() required Object0 body,
+    @Body() required PackageCreationInput body,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });

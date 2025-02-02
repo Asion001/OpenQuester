@@ -1,18 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'object0.dart';
+part of 'package_creation_input.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$Object0Impl _$$Object0ImplFromJson(Map<String, dynamic> json) =>
-    _$Object0Impl(
+_$PackageCreationInputImpl _$$PackageCreationInputImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PackageCreationInputImpl(
       content:
           OQContentStructure.fromJson(json['content'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$Object0ImplToJson(_$Object0Impl instance) =>
+Map<String, dynamic> _$$PackageCreationInputImplToJson(
+        _$PackageCreationInputImpl instance) =>
     <String, dynamic>{
       'content': instance.content,
     };

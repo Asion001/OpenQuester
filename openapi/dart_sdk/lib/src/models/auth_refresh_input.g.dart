@@ -1,17 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'object1.dart';
+part of 'auth_refresh_input.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$Object1Impl _$$Object1ImplFromJson(Map<String, dynamic> json) =>
-    _$Object1Impl(
+_$AuthRefreshInputImpl _$$AuthRefreshInputImplFromJson(
+        Map<String, dynamic> json) =>
+    _$AuthRefreshInputImpl(
       refreshToken: json['refresh_token'] as String,
     );
 
-Map<String, dynamic> _$$Object1ImplToJson(_$Object1Impl instance) =>
+Map<String, dynamic> _$$AuthRefreshInputImplToJson(
+        _$AuthRefreshInputImpl instance) =>
     <String, dynamic>{
       'refresh_token': instance.refreshToken,
     };

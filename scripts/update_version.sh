@@ -36,6 +36,15 @@ else
   echo "Updated version in $PACKAGE_JSON_FILE to $VERSION"
 fi
 
+# Update schema.json with the new version.
+SCHEMA_JSON_FILE="openapi/schema.json"
+if grep -q "\"version\": \"$VERSION\"" "$SCHEMA_JSON_FILE"; then
+  echo "Version in $SCHEMA_JSON_FILE is already up to date."
+else
+  sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" "$SCHEMA_JSON_FILE"
+  echo "Updated version in $SCHEMA_JSON_FILE to $VERSION"
+fi
+
 # If a version was passed as an argument, commit the changes and create/push a new tag.
 if [ -n "$1" ]; then
   echo "Creating commit and tag for version $VERSION"

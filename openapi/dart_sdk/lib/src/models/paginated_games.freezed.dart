@@ -21,7 +21,7 @@ PaginatedGames _$PaginatedGamesFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PaginatedGames {
   List<IGameListItem> get data => throw _privateConstructorUsedError;
-  PageInfo3 get pageInfo => throw _privateConstructorUsedError;
+  PageInfo get pageInfo => throw _privateConstructorUsedError;
 
   /// Serializes this PaginatedGames to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,9 +39,9 @@ abstract class $PaginatedGamesCopyWith<$Res> {
           PaginatedGames value, $Res Function(PaginatedGames) then) =
       _$PaginatedGamesCopyWithImpl<$Res, PaginatedGames>;
   @useResult
-  $Res call({List<IGameListItem> data, PageInfo3 pageInfo});
+  $Res call({List<IGameListItem> data, PageInfo pageInfo});
 
-  $PageInfo3CopyWith<$Res> get pageInfo;
+  $PageInfoCopyWith<$Res> get pageInfo;
 }
 
 /// @nodoc
@@ -70,7 +70,7 @@ class _$PaginatedGamesCopyWithImpl<$Res, $Val extends PaginatedGames>
       pageInfo: null == pageInfo
           ? _value.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
-              as PageInfo3,
+              as PageInfo,
     ) as $Val);
   }
 
@@ -78,8 +78,8 @@ class _$PaginatedGamesCopyWithImpl<$Res, $Val extends PaginatedGames>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PageInfo3CopyWith<$Res> get pageInfo {
-    return $PageInfo3CopyWith<$Res>(_value.pageInfo, (value) {
+  $PageInfoCopyWith<$Res> get pageInfo {
+    return $PageInfoCopyWith<$Res>(_value.pageInfo, (value) {
       return _then(_value.copyWith(pageInfo: value) as $Val);
     });
   }
@@ -93,10 +93,10 @@ abstract class _$$PaginatedGamesImplCopyWith<$Res>
       __$$PaginatedGamesImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<IGameListItem> data, PageInfo3 pageInfo});
+  $Res call({List<IGameListItem> data, PageInfo pageInfo});
 
   @override
-  $PageInfo3CopyWith<$Res> get pageInfo;
+  $PageInfoCopyWith<$Res> get pageInfo;
 }
 
 /// @nodoc
@@ -123,7 +123,7 @@ class __$$PaginatedGamesImplCopyWithImpl<$Res>
       pageInfo: null == pageInfo
           ? _value.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
-              as PageInfo3,
+              as PageInfo,
     ));
   }
 }
@@ -147,7 +147,7 @@ class _$PaginatedGamesImpl implements _PaginatedGames {
   }
 
   @override
-  final PageInfo3 pageInfo;
+  final PageInfo pageInfo;
 
   @override
   String toString() {
@@ -189,7 +189,7 @@ class _$PaginatedGamesImpl implements _PaginatedGames {
 abstract class _PaginatedGames implements PaginatedGames {
   const factory _PaginatedGames(
       {required final List<IGameListItem> data,
-      required final PageInfo3 pageInfo}) = _$PaginatedGamesImpl;
+      required final PageInfo pageInfo}) = _$PaginatedGamesImpl;
 
   factory _PaginatedGames.fromJson(Map<String, dynamic> json) =
       _$PaginatedGamesImpl.fromJson;
@@ -197,7 +197,7 @@ abstract class _PaginatedGames implements PaginatedGames {
   @override
   List<IGameListItem> get data;
   @override
-  PageInfo3 get pageInfo;
+  PageInfo get pageInfo;
 
   /// Create a copy of PaginatedGames
   /// with the given fields replaced by the non-null parameter values.
