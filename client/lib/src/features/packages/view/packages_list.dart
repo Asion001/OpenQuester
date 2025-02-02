@@ -1,5 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:openquester/common_imports.dart';
 
 @RoutePage()
 class PackagesListScreen extends StatelessWidget {
@@ -7,6 +7,8 @@ class PackagesListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox();
+    return PaginatedListWidget<PackagesListController, PackageListItem>(
+      itemBuilder: (context, item, index) => PackageListItemWidget(item: item),
+    );
   }
 }

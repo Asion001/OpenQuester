@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
+import 'package:requests_inspector/requests_inspector.dart';
 
 @Singleton(order: 0)
 class DioController {
@@ -30,22 +31,26 @@ class DioController {
 
   List<Interceptor> _interceptors() {
     return [
-      _dioCacheInterceptor,
       _authInterceptor,
+      _dioCacheInterceptor,
       if (!kIsWeb) _timeoutInterceptor,
-      aliceDioAdapter,
+      RequestsInspectorInterceptor(),
     ];
   }
 
-  final _authInterceptor = InterceptorsWrapper(
+  static final _authInterceptor = InterceptorsWrapper(
     onRequest: (options, handler) {
-      final accessToken = getIt.get<LoginController>().authData?.accessToken;
-      if (accessToken != null) {
-        options.headers['Authorization'] = 'Bearer $accessToken';
-      }
+      _setAccessToken(options);
       handler.next(options);
     },
   );
+
+  static Future<void> _setAccessToken(RequestOptions options) async {
+    final accessToken = await getIt.get<LoginController>().accessToken;
+    if (accessToken != null) {
+      options.headers['Authorization'] = 'Bearer $accessToken';
+    }
+  }
 
   final _timeoutInterceptor = InterceptorsWrapper(
     onRequest: (options, handler) {

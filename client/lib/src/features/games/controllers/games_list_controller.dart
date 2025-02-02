@@ -23,39 +23,14 @@ class GamesListController extends ListControllerBase<GameListItem> {
     switch (gameEvent.event) {
       case IGameEvent.changed:
       case IGameEvent.started:
-        _updateItem(game);
+        updateItem(game);
       case IGameEvent.created:
-        _addFirstItem(game);
+        addFirstItem(game);
       case IGameEvent.deleted:
-        _deleteItem(game);
+        deleteItem(game);
       case IGameEvent.$unknown:
         break;
     }
-  }
-
-  Future<void> _deleteItem(GameListItem game) async {
-    if (pagingController.itemList == null) return;
-    final list = List<GameListItem>.from(pagingController.itemList!);
-    final gameIndex = list.indexWhere((e) => e.id == game.id);
-    if (gameIndex < 0) return;
-    list.removeAt(gameIndex);
-    pagingController.itemList = list;
-  }
-
-  Future<void> _addFirstItem(GameListItem game) async {
-    if (pagingController.itemList == null) return;
-    final list = List<GameListItem>.from(pagingController.itemList!);
-    list.insert(0, game);
-    pagingController.itemList = list;
-  }
-
-  Future<void> _updateItem(GameListItem game) async {
-    if (pagingController.itemList == null) return;
-    final list = List<GameListItem>.from(pagingController.itemList!);
-    final gameIndex = list.indexWhere((e) => e.id == game.id);
-    if (gameIndex < 0) return;
-    list[gameIndex] = game;
-    pagingController.itemList = list;
   }
 
   @override

@@ -1,10 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:openquester/src/core/get_it.dart';
-import 'package:openquester/src/core/router.dart';
-import 'package:openquester/src/utils/request_ispector.dart';
-
-import 'theme.dart';
+import 'package:openquester/common_imports.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -14,8 +9,16 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  bool loading = true;
+  @override
+  void initState() {
+    super.initState();
+    AppInit.buildInit().then((_) => setState(() => loading = false));
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (loading) return Material();
     return MaterialApp.router(
       title: 'OpenQuester',
       theme: AppTheme.light,
@@ -25,12 +28,6 @@ class _AppState extends State<App> {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-        return GestureDetector(
-          onLongPress: alice.showInspector,
-          child: child,
-        );
-      },
     );
   }
 }

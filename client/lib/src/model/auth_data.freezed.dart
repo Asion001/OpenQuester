@@ -114,8 +114,9 @@ class __$$AuthDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AuthDataImpl implements _AuthData {
-  _$AuthDataImpl({required this.accessToken, required this.refreshToken});
+class _$AuthDataImpl extends _AuthData {
+  _$AuthDataImpl({required this.accessToken, required this.refreshToken})
+      : super._();
 
   factory _$AuthDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthDataImplFromJson(json);
@@ -161,10 +162,11 @@ class _$AuthDataImpl implements _AuthData {
   }
 }
 
-abstract class _AuthData implements AuthData {
+abstract class _AuthData extends AuthData {
   factory _AuthData(
       {required final String accessToken,
       required final String refreshToken}) = _$AuthDataImpl;
+  _AuthData._() : super._();
 
   factory _AuthData.fromJson(Map<String, dynamic> json) =
       _$AuthDataImpl.fromJson;
