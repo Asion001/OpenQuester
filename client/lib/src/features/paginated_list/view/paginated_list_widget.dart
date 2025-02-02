@@ -13,14 +13,16 @@ class PaginatedListWidget<_Controller extends ListControllerBase<ListItem>,
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator.adaptive(
-      onRefresh: () async => getIt<_Controller>().pagingController.refresh(),
-      child: PagedListView<int, ListItem>(
-        pagingController: getIt<_Controller>().pagingController,
-        padding: EdgeInsets.only(bottom: 8),
-        builderDelegate: PagedChildBuilderDelegate<ListItem>(
-          animateTransitions: true,
-          itemBuilder: itemBuilder,
+    return SafeArea(
+      child: RefreshIndicator.adaptive(
+        onRefresh: () async => getIt<_Controller>().pagingController.refresh(),
+        child: PagedListView<int, ListItem>(
+          pagingController: getIt<_Controller>().pagingController,
+          padding: EdgeInsets.only(bottom: 8),
+          builderDelegate: PagedChildBuilderDelegate<ListItem>(
+            animateTransitions: true,
+            itemBuilder: itemBuilder,
+          ),
         ),
       ),
     );
