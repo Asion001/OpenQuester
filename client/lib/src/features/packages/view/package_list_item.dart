@@ -27,9 +27,9 @@ class PackageListItemWidget extends WatchingWidget {
             child: Text(
               _packInfo(),
               overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             ),
           ).paddingTop(4).shrink(),
-          trailing: Icon(Icons.play_arrow),
           titleAlignment: ListTileTitleAlignment.bottom,
           contentPadding: EdgeInsets.only(right: 16, left: 4),
           mouseCursor: MouseCursor.defer,
@@ -46,6 +46,7 @@ class PackageListItemWidget extends WatchingWidget {
         DateFormat.yMd().format(item.createdAt),
         if (item.tags.isNotEmpty)
           item.tags.sublist(0, min(3, item.tags.length)).join(','),
+        LocaleKeys.rounds.plural(item.rounds),
         LocaleKeys.created_by.tr(args: [item.author.name]),
       ].nonNulls.join(' | ')
     ].join('\n');
