@@ -1,8 +1,6 @@
 import * as Minio from "minio";
-import http from "http";
+import http, { IncomingHttpHeaders } from "http";
 import https from "https";
-
-import { Request } from "express";
 
 import { IStorage } from "types/file/IStorage";
 import { IS3Context } from "types/file/IS3Context";
@@ -23,7 +21,6 @@ import { Permission } from "database/models/Permission";
 import { Permissions } from "enums/Permissions";
 import { ContentStructureService } from "services/ContentStructureService";
 import { ApiContext } from "services/context/ApiContext";
-import { ServerServices } from "services/ServerServices";
 import { DependencyService } from "services/dependency/DependencyService";
 import { ValueUtils } from "utils/ValueUtils";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
@@ -32,6 +29,8 @@ import { IPaginatedResult } from "types/pagination/IPaginatedResult";
 import { ISelectOptions } from "types/ISelectOptions";
 import { IPackageListItem } from "types/game/items/IPackageIListItem";
 import { EAgeRestriction } from "enums/game/EAgeRestriction";
+import { OQContentStructure } from "types/file/structures/OQContentStructure";
+import { IPackageUploadResponse } from "types/package/IPackageUploadResponse";
 
 const MINIO_PREFIX = "[MINIO]: ";
 
@@ -56,8 +55,8 @@ export class MinioStorageService implements IStorage {
   ]);
 
   constructor(ctx: ApiContext) {
-    this._s3Context = ServerServices.storage.createFileContext("s3");
-    this._contentStructureService = ServerServices.content;
+    this._s3Context = ctx.serverServices.storage.createFileContext("s3");
+    this._contentStructureService = ctx.serverServices.content;
 
     this._db = ctx.db;
     this._fileRepository = FileRepository.getRepository(this._db);
@@ -102,10 +101,10 @@ export class MinioStorageService implements IStorage {
   }
 
   public async upload(
-    req: Request,
+    filename: string,
     expiresIn: number = 30 // Default: 30 sec
   ) {
-    return this.performFileUpload(req.body.filename, expiresIn);
+    return this.performFileUpload(filename, expiresIn);
   }
 
   public async performFileUpload(
@@ -141,8 +140,7 @@ export class MinioStorageService implements IStorage {
     return link;
   }
 
-  public async delete(req: Request) {
-    const filename = req.body.filename;
+  public async delete(filename: string, headers: IncomingHttpHeaders) {
     const usageRecords = await DependencyService.getFileUsage(
       this._db,
       filename
@@ -181,7 +179,7 @@ export class MinioStorageService implements IStorage {
     }
 
     if (usedByUsers) {
-      result.removed = await this._handleAvatarRemove(req, filename, usage);
+      result.removed = await this._handleAvatarRemove(headers, filename, usage);
     }
 
     if (!result.removed) {
@@ -260,13 +258,13 @@ export class MinioStorageService implements IStorage {
   }
 
   public async uploadPackage(
-    req: Request,
+    content: OQContentStructure,
+    headers: IncomingHttpHeaders,
     expiresIn: number = 60 * 5 // Default: 5 min
-  ) {
-    const content = req.body.content;
+  ): Promise<IPackageUploadResponse> {
     const author = await UserRepository.getUserByHeader(
       this._db,
-      req.headers?.authorization
+      headers.authorization
     );
 
     if (!author || !author.id) {
@@ -281,17 +279,20 @@ export class MinioStorageService implements IStorage {
       pack,
       expiresIn
     );
-    return links;
+    return {
+      id: pack.id,
+      uploadLinks: links,
+    };
   }
 
   private async _handleAvatarRemove(
-    req: Request,
+    headers: IncomingHttpHeaders,
     filename: string,
     usage: UsageEntries
   ) {
     const user = await UserRepository.getUserByHeader(
       this._db,
-      req.headers.authorization,
+      headers.authorization,
       { relations: ["permissions"] }
     );
 

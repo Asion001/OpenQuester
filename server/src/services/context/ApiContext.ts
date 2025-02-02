@@ -43,4 +43,11 @@ export class ApiContext {
   public get env() {
     return this._ctx.env;
   }
+
+  /**
+   * Server services locator
+   */
+  public get serverServices() {
+    return this._ctx.serverServices;
+  }
 }

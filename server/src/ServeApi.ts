@@ -1,5 +1,6 @@
 import express from "express";
 import { type Express } from "express";
+import helmet from "helmet";
 import cors from "cors";
 import { type Server as HTTPServer } from "http";
 import { type Server as IOServer } from "socket.io";
@@ -9,7 +10,7 @@ import { type ApiContext } from "services/context/ApiContext";
 
 import { Logger } from "utils/Logger";
 import { AuthRestApiController } from "controllers/rest/AuthRestApiController";
-import { verifyToken } from "middleware/AuthMiddleware";
+import { verifyToken } from "middleware/authMiddleware";
 import { UserRestApiController } from "controllers/rest/UserRestApiController";
 import { FileRestApiController } from "controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "controllers/rest/PackageRestApiController";
@@ -20,6 +21,7 @@ import { RedisConfig } from "config/RedisConfig";
 import { SocketIOInitializer } from "controllers/io/SocketIOInitializer";
 import { GameRestApiController } from "controllers/rest/GameRestApiController";
 import { JWT_SECRET_LENGTH } from "constants/jwt";
+import { errorMiddleware } from "middleware/errorMiddleware";
 
 const APP_PREFIX = "[APP]: ";
 
@@ -28,17 +30,17 @@ const APP_PREFIX = "[APP]: ";
  */
 export class ServeApi {
   /** Express app */
-  protected _app: Express;
+  private readonly _app: Express;
   /** SocketIO server */
-  protected _io: IOServer;
+  private readonly _io: IOServer;
   /** Application listening port */
-  protected _port: number;
+  private readonly _port: number;
   /** Database instance */
-  protected _db: Database;
+  private readonly _db: Database;
   /** HTTP Server */
-  protected _server!: HTTPServer;
+  private _server!: HTTPServer;
 
-  constructor(protected _context: ApiContext) {
+  constructor(private readonly _context: ApiContext) {
     this._db = this._context.db;
     this._app = this._context.app;
     this._io = this._context.io;
@@ -56,8 +58,10 @@ export class ServeApi {
       await this._db.build();
 
       // Middlewares
-      this._app.use(logMiddleware);
       this._app.use(cors());
+      this._app.use(helmet());
+      this._app.disable("x-powered-by");
+      this._app.use(logMiddleware);
       this._app.use(express.json());
       this._app.use(verifyToken);
 
@@ -69,6 +73,7 @@ export class ServeApi {
 
       // Attach API controllers
       this._attachControllers();
+      this._app.use(errorMiddleware);
 
       // Connect to Redis
       await RedisConfig.waitForConnection();

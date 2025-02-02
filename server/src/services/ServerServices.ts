@@ -11,14 +11,23 @@ import { GameService } from "services/game/GameService";
  * Stores instances of all server services
  */
 export class ServerServices {
-  private static _user: UserService;
-  private static _content: ContentStructureService;
-  private static _auth: AuthService;
-  private static _storage: StorageServiceFactory;
-  private static _redis: RedisService;
-  private static _game: GameService;
+  private _user: UserService;
+  private _content: ContentStructureService;
+  private _auth: AuthService;
+  private _storage: StorageServiceFactory;
+  private _redis: RedisService;
+  private _game: GameService;
 
-  public static get user() {
+  constructor() {
+    this._user = new UserService();
+    this._content = new ContentStructureService();
+    this._auth = new AuthService();
+    this._storage = new StorageServiceFactory();
+    this._redis = new RedisService();
+    this._game = new GameService();
+  }
+
+  public get user() {
     if (!this._user) {
       this._user = new UserService();
     }
@@ -26,7 +35,7 @@ export class ServerServices {
     return this._user;
   }
 
-  public static get content() {
+  public get content() {
     if (!this._content) {
       this._content = new ContentStructureService();
     }
@@ -34,7 +43,7 @@ export class ServerServices {
     return this._content;
   }
 
-  public static get auth() {
+  public get auth() {
     if (!this._auth) {
       this._auth = new AuthService();
     }
@@ -42,7 +51,7 @@ export class ServerServices {
     return this._auth;
   }
 
-  public static get storage() {
+  public get storage() {
     if (!this._storage) {
       this._storage = new StorageServiceFactory();
     }
@@ -50,7 +59,7 @@ export class ServerServices {
     return this._storage;
   }
 
-  public static get redis() {
+  public get redis() {
     if (!this._redis) {
       this._redis = new RedisService();
     }
@@ -58,7 +67,7 @@ export class ServerServices {
     return this._redis;
   }
 
-  public static get game() {
+  public get game() {
     if (!this._game) {
       this._game = new GameService();
     }

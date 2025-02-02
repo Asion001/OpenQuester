@@ -10,27 +10,21 @@
     }
   ],
   "paths": {
-    "/v1/files": {
+    "/v1/files/{filename}": {
       "get": {
         "summary": "Get link to file from server",
         "tags": ["Files"],
-        "requestBody": {
-          "required": true,
-          "description": "Filename which you want to get",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "filename": {
-                    "type": "string",
-                    "example": "some_filename.jpg"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "some_filename.jpg"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Get link that allows you to view the file",
@@ -69,23 +63,17 @@
       "post": {
         "summary": "Get link to upload file on server",
         "tags": ["Files"],
-        "requestBody": {
-          "required": true,
-          "description": "Filename which you want to put in bucket",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "filename": {
-                    "type": "string",
-                    "example": "some_filename.jpg"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "some_filename.jpg"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Get link that allows you to put the file",
@@ -124,23 +112,17 @@
       "delete": {
         "summary": "Delete file from bucket",
         "tags": ["Files"],
-        "requestBody": {
-          "required": true,
-          "description": "Filename which you want to delete",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "filename": {
-                    "type": "string",
-                    "example": "some_filename.jpg"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "filename",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "some_filename.jpg"
             }
           }
-        },
+        ],
         "responses": {
           "204": {
             "description": "Delete request send successfully",
@@ -204,13 +186,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "filename": {
-                      "type": "string",
-                      "example": "file upload link"
-                    }
-                  }
+                  "$ref": "#/components/schemas/IPackageUploadResponse"
                 }
               }
             }
@@ -1215,11 +1191,14 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "John Doe"
+            "example": "John Doe",
+            "nullable": true
           },
-          "password": {
+          "email": {
             "type": "string",
-            "example": "mySuperCoolPassword123"
+            "example": "user@example.com",
+            "format": "email",
+            "nullable": true
           },
           "birthday": {
             "type": "string",
@@ -1247,7 +1226,9 @@
           },
           "password": {
             "type": "string",
-            "example": "mySuperCoolPassword123"
+            "example": "mySuperCoolPassword123",
+            "minimum": 6,
+            "maximum": 128
           },
           "birthday": {
             "type": "string",
@@ -1272,7 +1253,9 @@
           },
           "password": {
             "type": "string",
-            "example": "mySuperCoolPassword123"
+            "example": "mySuperCoolPassword123",
+            "minimum": 6,
+            "maximum": 128
           }
         },
         "required": ["login", "password"]
@@ -1526,6 +1509,7 @@
           },
           "packageId": {
             "type": "integer",
+            "minimum": 0,
             "example": 1
           },
           "isPrivate": {
@@ -1539,6 +1523,8 @@
           },
           "maxPlayers": {
             "type": "integer",
+            "minimum": 2,
+            "maximum": 15,
             "example": 10
           }
         }
@@ -1734,6 +1720,24 @@
         "enum": ["id", "title", "created_at", "author"],
         "example": "created_at",
         "default": "created_at"
+      },
+      "IPackageUploadResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "uploadLinks": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "uniqueIdentifier": "https://example.com/upload/file.jpg"
+            }
+          }
+        }
       }
     }
   }

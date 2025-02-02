@@ -22,8 +22,8 @@ class _PackagesClient implements PackagesClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PostV1PackagesResponse> postV1Packages({
-    required Object3 body,
+  Future<IPackageUploadResponse> postV1Packages({
+    required Object0 body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -47,9 +47,9 @@ class _PackagesClient implements PackagesClient {
       path: '/v1/packages',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PostV1PackagesResponse _value;
+    late IPackageUploadResponse _value;
     try {
-      _value = PostV1PackagesResponse.fromJson(_result.data!);
+      _value = IPackageUploadResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

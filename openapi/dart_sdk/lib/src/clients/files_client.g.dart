@@ -22,8 +22,8 @@ class _FilesClient implements FilesClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<GetV1FilesResponse> getV1Files({
-    required Object0 body,
+  Future<GetV1FilesFilenameResponse> getV1FilesFilename({
+    required String filename,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -32,7 +32,7 @@ class _FilesClient implements FilesClient {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = body;
+    const Map<String, dynamic>? _data = null;
     final newOptions = newRequestOptions(options);
     newOptions.extra.addAll(_extra);
     newOptions.headers.addAll(_dio.options.headers);
@@ -44,12 +44,12 @@ class _FilesClient implements FilesClient {
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/files',
+      path: '/v1/files/${filename}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late GetV1FilesResponse _value;
+    late GetV1FilesFilenameResponse _value;
     try {
-      _value = GetV1FilesResponse.fromJson(_result.data!);
+      _value = GetV1FilesFilenameResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -58,8 +58,8 @@ class _FilesClient implements FilesClient {
   }
 
   @override
-  Future<PostV1FilesResponse> postV1Files({
-    required Object1 body,
+  Future<PostV1FilesFilenameResponse> postV1FilesFilename({
+    required String filename,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -68,7 +68,7 @@ class _FilesClient implements FilesClient {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = body;
+    const Map<String, dynamic>? _data = null;
     final newOptions = newRequestOptions(options);
     newOptions.extra.addAll(_extra);
     newOptions.headers.addAll(_dio.options.headers);
@@ -80,12 +80,12 @@ class _FilesClient implements FilesClient {
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/files',
+      path: '/v1/files/${filename}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PostV1FilesResponse _value;
+    late PostV1FilesFilenameResponse _value;
     try {
-      _value = PostV1FilesResponse.fromJson(_result.data!);
+      _value = PostV1FilesFilenameResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -94,8 +94,8 @@ class _FilesClient implements FilesClient {
   }
 
   @override
-  Future<DeleteV1FilesResponse> deleteV1Files({
-    required Object2 body,
+  Future<DeleteV1FilesFilenameResponse> deleteV1FilesFilename({
+    required String filename,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -104,7 +104,7 @@ class _FilesClient implements FilesClient {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = body;
+    const Map<String, dynamic>? _data = null;
     final newOptions = newRequestOptions(options);
     newOptions.extra.addAll(_extra);
     newOptions.headers.addAll(_dio.options.headers);
@@ -116,12 +116,12 @@ class _FilesClient implements FilesClient {
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/files',
+      path: '/v1/files/${filename}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DeleteV1FilesResponse _value;
+    late DeleteV1FilesFilenameResponse _value;
     try {
-      _value = DeleteV1FilesResponse.fromJson(_result.data!);
+      _value = DeleteV1FilesFilenameResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

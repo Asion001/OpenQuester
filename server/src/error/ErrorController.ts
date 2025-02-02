@@ -1,10 +1,8 @@
 import { IncomingHttpHeaders } from "http";
-import { QueryFailedError } from "typeorm";
 
 import { HttpStatus } from "enums/HttpStatus";
 import { ServerResponse } from "enums/ServerResponse";
 import { Logger } from "utils/Logger";
-import { ClientResponse } from "enums/ClientResponse";
 import { TranslateService as ts } from "services/text/TranslateService";
 import { Language } from "types/text/translation";
 import { ValueUtils } from "utils/ValueUtils";
@@ -56,25 +54,6 @@ export class ErrorController {
       message: ServerResponse.INTERNAL_SERVER_ERROR,
       code: HttpStatus.INTERNAL,
     };
-  }
-
-  public static async resolveUserQueryError(
-    error: unknown,
-    headers: IncomingHttpHeaders
-  ) {
-    let err = error;
-    if (
-      // Catch query error from TypeORM (if user already exists)
-      err instanceof QueryFailedError &&
-      err.message.includes("duplicate key value")
-    ) {
-      err = new ClientError(
-        ClientResponse.USER_ALREADY_EXISTS,
-        HttpStatus.NOT_FOUND
-      );
-    }
-    const { message, code } = await ErrorController.resolveError(err, headers);
-    return { message, code };
   }
 
   private static _formatError<T>(error: T, lang?: Language): T {

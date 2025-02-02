@@ -4,13 +4,15 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'oq_content_structure.dart';
+
 part 'object0.freezed.dart';
 part 'object0.g.dart';
 
 @Freezed()
 class Object0 with _$Object0 {
   const factory Object0({
-    required String filename,
+    required OQContentStructure content,
   }) = _Object0;
   
   factory Object0.fromJson(Map<String, Object?> json) => _$Object0FromJson(json);

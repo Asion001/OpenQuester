@@ -200,14 +200,13 @@ export class Environment {
       );
     }
 
-    const prod = this._type === "prod";
-
-    if (prod) {
-      Logger.warn(bold("Running in production environment"), ENV_PREFIX);
-    }
-
-    if (this._type === "local") {
-      Logger.info("Running in local environment", ENV_PREFIX);
+    switch (this._type) {
+      case "prod":
+        Logger.warn(bold("Running in production environment"), ENV_PREFIX);
+        break;
+      case "local":
+        Logger.info("Running in local environment", ENV_PREFIX);
+        break;
     }
 
     this.loadDB();
@@ -227,6 +226,7 @@ export class Environment {
 
   private loadDB() {
     const prod = this._type === "prod";
+
     this.DB_TYPE = this.getEnvVar("DB_TYPE", "string", "pg");
     this.DB_NAME = this.getEnvVar(
       "DB_NAME",

@@ -2,71 +2,60 @@ import { type Request, type Response, Router } from "express";
 
 import { type ApiContext } from "services/context/ApiContext";
 import { IStorage } from "types/file/IStorage";
-import { validateFilename } from "middleware/file/FileMiddleware";
 import { ClientResponse } from "enums/ClientResponse";
-import { ErrorController } from "error/ErrorController";
 import { HttpStatus } from "enums/HttpStatus";
 import { TranslateService as ts } from "services/text/TranslateService";
-import { ServerServices } from "services/ServerServices";
+import { asyncHandler } from "middleware/asyncHandlerMiddleware";
+import { RequestDataValidator as RequestDataValidator } from "schemes/RequestDataValidator";
+import { filenameScheme } from "schemes/file/fileSchemes";
 
 export class FileRestApiController {
-  private _storageService: IStorage;
+  private readonly _storageService: IStorage;
 
-  constructor(ctx: ApiContext) {
-    const app = ctx.app;
+  constructor(private readonly ctx: ApiContext) {
+    const app = this.ctx.app;
     const router = Router();
 
-    this._storageService = ServerServices.storage.createStorageService(
-      ctx,
+    this._storageService = this.ctx.serverServices.storage.createStorageService(
+      this.ctx,
       "minio"
     );
 
     app.use("/v1/files", router);
 
-    router.get("/", validateFilename, this.getFile);
-    router.post("/", validateFilename, this.uploadFile);
-    router.delete("/", validateFilename, this.deleteFile);
+    router.get("/:filename", asyncHandler(this.getFile));
+    router.post("/:filename", asyncHandler(this.uploadFile));
+    router.delete("/:filename", asyncHandler(this.deleteFile));
   }
 
   private getFile = async (req: Request, res: Response) => {
-    try {
-      const url = await this._storageService.get(req.body.filename);
-      res.send({ url });
-    } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(
-        err,
-        req.headers
-      );
-      res.status(code).send({ error: message });
-    }
+    const validatedData = await this._validateParamsFilename(req);
+
+    const url = await this._storageService.get(validatedData.filename);
+    res.send({ url });
   };
 
   private uploadFile = async (req: Request, res: Response) => {
-    try {
-      const url = await this._storageService.upload(req);
-      res.send({ url });
-    } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(
-        err,
-        req.headers
-      );
-      res.status(code).send({ error: message });
-    }
+    const validatedData = await this._validateParamsFilename(req);
+
+    const url = await this._storageService.upload(validatedData.filename);
+    res.send({ url });
   };
 
   private deleteFile = async (req: Request, res: Response) => {
-    try {
-      await this._storageService.delete(req);
+    const validatedData = await this._validateParamsFilename(req);
 
-      res.status(HttpStatus.NO_CONTENT).send({
-        message: ts.localize(ClientResponse.DELETE_REQUEST_SENT, req.headers),
-      });
-    } catch (err: unknown) {
-      const { message, code } = await ErrorController.resolveError(
-        err,
-        req.headers
-      );
-      res.status(code).send({ error: message });
-    }
+    await this._storageService.delete(validatedData.filename, req.headers);
+
+    res.status(HttpStatus.NO_CONTENT).send({
+      message: ts.localize(ClientResponse.DELETE_REQUEST_SENT, req.headers),
+    });
   };
+
+  private async _validateParamsFilename(req: Request) {
+    return new RequestDataValidator<{ filename: string }>(
+      { filename: req.params.filename },
+      filenameScheme()
+    ).validate();
+  }
 }

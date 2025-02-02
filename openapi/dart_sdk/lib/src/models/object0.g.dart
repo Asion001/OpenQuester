@@ -8,10 +8,11 @@ part of 'object0.dart';
 
 _$Object0Impl _$$Object0ImplFromJson(Map<String, dynamic> json) =>
     _$Object0Impl(
-      filename: json['filename'] as String,
+      content:
+          OQContentStructure.fromJson(json['content'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$Object0ImplToJson(_$Object0Impl instance) =>
     <String, dynamic>{
-      'filename': instance.filename,
+      'content': instance.content,
     };

@@ -16,6 +16,7 @@ export const verifyToken = (
     req.url.includes("v1/api-docs") ||
     req.url.includes("v1/games") ||
     req.url.includes("v1/users") ||
+    (req.url.includes("v1/packages") && req.method === "GET") ||
     (req.url.includes("v1/file") && req.method === "POST")
   ) {
     return next();

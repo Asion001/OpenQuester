@@ -10,7 +10,8 @@ part 'object1.g.dart';
 @Freezed()
 class Object1 with _$Object1 {
   const factory Object1({
-    required String filename,
+    @JsonKey(name: 'refresh_token')
+    required String refreshToken,
   }) = _Object1;
   
   factory Object1.fromJson(Map<String, Object?> json) => _$Object1FromJson(json);

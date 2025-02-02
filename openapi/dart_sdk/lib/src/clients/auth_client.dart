@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../models/input_login_user.dart';
-import '../models/object4.dart';
+import '../models/object1.dart';
 import '../models/response_auth_data.dart';
 
 part 'auth_client.g.dart';
@@ -28,7 +28,7 @@ abstract class AuthClient {
   /// [body] - Name not received and was auto-generated.
   @POST('/v1/auth/refresh')
   Future<ResponseAuthData> postV1AuthRefresh({
-    @Body() required Object4 body,
+    @Body() required Object1 body,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
