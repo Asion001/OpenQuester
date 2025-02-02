@@ -2,14 +2,12 @@ import { type Request, type Response, Router } from "express";
 
 import { type ApiContext } from "services/context/ApiContext";
 import { type AuthService } from "services/AuthService";
-import { LoginUser } from "managers/user/LoginUser";
 import { JWTUtils } from "utils/JWTUtils";
 import {
   validateRefresh,
   validateTokenForAuth,
 } from "middleware/authMiddleware";
 import { HttpStatus } from "enums/HttpStatus";
-import { validateWithSchema } from "middleware/schemaMiddleware";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 import { RequestDataValidator } from "schemes/RequestDataValidator";
 import { ILoginUser } from "types/user/ILoginUser";
@@ -26,12 +24,7 @@ export class AuthRestApiController {
 
     app.use("/v1/auth", router);
 
-    router.post(
-      `/login`,
-      validateTokenForAuth,
-      validateWithSchema(this.ctx.db, LoginUser),
-      asyncHandler(this.login)
-    );
+    router.post(`/login`, validateTokenForAuth, asyncHandler(this.login));
     router.post(`/refresh`, validateRefresh, asyncHandler(this.refresh));
   }
 

@@ -2,22 +2,31 @@ import { type Request, type Response, Router } from "express";
 
 import { type ApiContext } from "services/context/ApiContext";
 import { type UserService } from "services/UserService";
-import { UpdateUser } from "managers/user/UpdateUser";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
 import { checkPermissionWithId } from "middleware/permission/PermissionMiddleware";
-import { validateWithSchema } from "middleware/schemaMiddleware";
 import { checkPermission } from "middleware/permission/PermissionMiddleware";
 import { Permissions } from "enums/Permissions";
 import { TranslateService as ts } from "services/text/TranslateService";
 import { validateTokenForAuth } from "middleware/authMiddleware";
 import { PaginationSchema } from "schemes/pagination/PaginationSchema";
 import { User } from "database/models/User";
+import { File } from "database/models/File";
 import { EPaginationOrder } from "types/pagination/IPaginationOpts";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 import { RequestDataValidator } from "schemes/RequestDataValidator";
 import { IRegisterUser } from "types/user/IRegisterUser";
-import { userRegisterScheme } from "schemes/user/userSchemes";
+import {
+  userIdScheme,
+  userRegisterScheme,
+  userUpdateScheme,
+} from "schemes/user/userSchemes";
+import { UserRepository } from "database/repositories/UserRepository";
+import { ClientError } from "error/ClientError";
+import { IUpdateUserDataInput } from "types/user/IUpdateUserDataInput";
+import { FileRepository } from "database/repositories/FileRepository";
+import { ValueUtils } from "utils/ValueUtils";
+import { IRegisterUserInput } from "types/user/IRegisterUserInput";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -37,11 +46,7 @@ export class UserRestApiController {
 
     meRouter.get("/", asyncHandler(this.getUser));
 
-    meRouter.patch(
-      "/",
-      validateWithSchema(this.ctx.db, UpdateUser),
-      asyncHandler(this.updateUser)
-    );
+    meRouter.patch("/", asyncHandler(this.updateUser));
 
     meRouter.get("/", asyncHandler(this.deleteUser));
 
@@ -62,7 +67,6 @@ export class UserRestApiController {
     router.patch(
       "/:id",
       checkPermissionWithId(this.ctx.db, Permissions.CHANGE_ANOTHER_USER),
-      validateWithSchema(this.ctx.db, UpdateUser),
       asyncHandler(this.updateUser)
     );
 
@@ -74,17 +78,44 @@ export class UserRestApiController {
   }
 
   private register = async (req: Request, res: Response) => {
-    const validatedData = await new RequestDataValidator<IRegisterUser>(
+    const validatedData = await new RequestDataValidator<IRegisterUserInput>(
       req.body,
       userRegisterScheme()
     ).validate();
 
-    const result = await this._userService.register(this.ctx, validatedData);
+    let avatarFile: File | null = null;
+
+    if (Object.keys(validatedData).length < 1) {
+      throw new ClientError(ClientResponse.NO_USER_DATA);
+    }
+
+    if (validatedData.avatar) {
+      const fileRepo = FileRepository.getRepository(this.ctx.db);
+      avatarFile = await fileRepo.getFileByFilename(validatedData.avatar);
+    }
+
+    if (ValueUtils.isBad(avatarFile)) {
+      throw new ClientError(ClientResponse.NO_AVATAR);
+    }
+
+    const registerData: IRegisterUser = {
+      ...validatedData,
+      avatar: avatarFile,
+    };
+
+    const result = await this._userService.register(this.ctx, registerData);
     return res.status(HttpStatus.CREATED).send(result);
   };
 
   private getUser = async (req: Request, res: Response) => {
-    const result = await this._userService.get(this.ctx, req);
+    const id: number = await this._getUserId(req);
+
+    const validatedData = await new RequestDataValidator<{ userId: number }>(
+      { userId: id },
+      userIdScheme()
+    ).validate();
+
+    const result = await this._userService.get(this.ctx, validatedData.userId);
 
     if (result) {
       return res.status(HttpStatus.OK).send(result);
@@ -96,13 +127,45 @@ export class UserRestApiController {
   };
 
   private updateUser = async (req: Request, res: Response) => {
-    const result = await this._userService.update(this.ctx, req);
+    const id: number = await this._getUserId(req);
+
+    const validatedData = await new RequestDataValidator<IUpdateUserDataInput>(
+      { id, ...req.body },
+      userUpdateScheme()
+    ).validate();
+
+    if (Object.keys(validatedData).length < 1) {
+      throw new ClientError(ClientResponse.NO_USER_DATA);
+    }
+
+    let avatarFile: File | null = null;
+
+    if (validatedData.avatar) {
+      const fileRepo = FileRepository.getRepository(this.ctx.db);
+      avatarFile = await fileRepo.getFileByFilename(validatedData.avatar);
+    }
+
+    if (ValueUtils.isBad(avatarFile)) {
+      throw new ClientError(ClientResponse.NO_AVATAR);
+    }
+
+    const result = await this._userService.update(this.ctx, {
+      ...validatedData,
+      avatar: avatarFile,
+    });
 
     return res.status(HttpStatus.OK).send(result);
   };
 
   private deleteUser = async (req: Request, res: Response) => {
-    await this._userService.delete(this.ctx, req);
+    const id: number = await this._getUserId(req);
+
+    const validatedData = await new RequestDataValidator<{ userId: number }>(
+      { userId: id },
+      userIdScheme()
+    ).validate();
+
+    await this._userService.delete(this.ctx, validatedData.userId);
     return res.status(HttpStatus.NO_CONTENT).send();
   };
 
@@ -134,4 +197,17 @@ export class UserRestApiController {
       message: ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
     });
   };
+
+  private async _getUserId(req: Request) {
+    if (req.params.id) {
+      return Number(req.params.id);
+    } else {
+      const user = await UserRepository.getUserByHeader(
+        this.ctx.db,
+        req.headers.authorization,
+        { select: ["id"] }
+      );
+      return user.id;
+    }
+  }
 }

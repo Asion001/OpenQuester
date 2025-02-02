@@ -14,12 +14,10 @@ export enum ClientResponse {
   INVALID_REFRESH = "invalid_refresh",
   INVALID_TOKEN = "invalid_token",
   ACCESS_DENIED = "access_denied",
-  TOO_MANY_REQUESTS = "too_many_requests",
   NO_PERMISSION = "no_permission",
 
   // Validation
   VALIDATION_ERROR = "validation_error",
-  FIELDS_REQUIRED = "fields_required",
   BAD_USER_ID = "bad_user_id",
   NO_AVATAR = "no_avatar",
 
@@ -30,12 +28,10 @@ export enum ClientResponse {
   CANNOT_SAVE_CONTENT = "cannot_save_content",
   PACKAGE_AUTHOR_NOT_FOUND = "package_author_not_found",
   PACKAGE_NOT_FOUND = "package_not_found",
-  PACKAGE_FAILED_TO_UPLOAD = "package_failed_to_upload",
 
   // File
   FILENAME_REQUIRED = "filename_required",
   FILENAME_INVALID = "filename_invalid",
-  FILE_NOT_FOUND = "file_not_found",
   DELETE_FROM_PACKAGE = "delete_from_package",
   UNSUPPORTED_FILE_TYPE = "unsupported_file_type",
 
@@ -46,5 +42,4 @@ export enum ClientResponse {
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",
-  USER_PERMISSION_NOT_EXISTS = "user_permission_not_exists",
 }

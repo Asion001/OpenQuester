@@ -1193,9 +1193,10 @@
             "type": "string",
             "example": "John Doe"
           },
-          "password": {
+          "email": {
             "type": "string",
-            "example": "mySuperCoolPassword123"
+            "example": "user@example.com",
+            "format": "email"
           },
           "birthday": {
             "type": "string",

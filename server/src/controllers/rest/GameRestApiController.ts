@@ -3,8 +3,6 @@ import { type Request, type Response, Router } from "express";
 import { type ApiContext } from "services/context/ApiContext";
 import { type GameService } from "services/game/GameService";
 import { HttpStatus } from "enums/HttpStatus";
-import { validateWithSchema } from "middleware/schemaMiddleware";
-import { CreateGameSchema } from "managers/game/CreateGameSchema";
 import { IGame } from "types/game/IGame";
 import { PaginationSchema } from "schemes/pagination/PaginationSchema";
 import { EPaginationOrder } from "types/pagination/IPaginationOpts";
@@ -12,6 +10,8 @@ import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 import { RequestDataValidator } from "schemes/RequestDataValidator";
 import { IGameCreateData } from "types/game/IGameCreate";
 import { createGameScheme, gameIdScheme } from "schemes/game/gameSchemes";
+import { ClientError } from "error/ClientError";
+import { ClientResponse } from "enums/ClientResponse";
 
 export class GameRestApiController {
   private readonly _gameService: GameService;
@@ -25,11 +25,7 @@ export class GameRestApiController {
     app.use("/v1/games", router);
 
     router.get(`/`, asyncHandler(this.listGames));
-    router.post(
-      `/`,
-      validateWithSchema(this.ctx.db, CreateGameSchema),
-      this.createGame
-    );
+    router.post(`/`, asyncHandler(this.createGame));
     router.get(`/:id`, asyncHandler(this.getGame));
   }
 
@@ -72,6 +68,10 @@ export class GameRestApiController {
       req.body,
       createGameScheme()
     ).validate();
+
+    if (Object.keys(validatedData).length < 1) {
+      throw new ClientError(ClientResponse.NO_GAME_DATA);
+    }
 
     const result = await this._gameService.create(
       this.ctx,
