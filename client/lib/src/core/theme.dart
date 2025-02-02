@@ -11,11 +11,15 @@ class AppTheme {
         unselectedItemColor: theme.colorScheme.primary,
       ),
       appBarTheme: AppBarTheme(
-        systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: theme.colorScheme.surfaceContainer,
-          systemNavigationBarDividerColor: theme.colorScheme.surfaceContainer,
-        ),
+        systemOverlayStyle: systemOverlay(theme),
       ),
+    );
+  }
+
+  static SystemUiOverlayStyle systemOverlay(ThemeData theme) {
+    return SystemUiOverlayStyle(
+      systemNavigationBarColor: theme.colorScheme.surfaceContainer,
+      systemNavigationBarDividerColor: theme.colorScheme.surfaceContainer,
     );
   }
 

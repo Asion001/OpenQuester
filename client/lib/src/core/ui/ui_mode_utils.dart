@@ -7,5 +7,5 @@ class UiModeUtils {
   }
 
   static const double maximumWidth = wideModeWidth;
-  static const double wideModeWidth = 800;
+  static const double wideModeWidth = 1200;
 }
