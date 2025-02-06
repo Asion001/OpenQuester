@@ -188,7 +188,7 @@ export class GameRepository {
     // List item returned to client
     const gameDataOutput: IGameListItem = {
       ...gameDataRaw,
-      createdBy: { id: createdBy.id, name: createdBy.name },
+      createdBy: { id: createdBy.id, username: createdBy.username },
       package: {
         id: gameData.packageId,
         title: packageData.title,
@@ -196,7 +196,10 @@ export class GameRepository {
         createdAt: packageData.created_at,
         rounds: packageData.content.rounds.length,
         tags: packageData.content.metadata.tags,
-        author: { id: packageData.author.id, name: packageData.author.name },
+        author: {
+          id: packageData.author.id,
+          username: packageData.author.username,
+        },
       },
     };
 
@@ -211,7 +214,7 @@ export class GameRepository {
     const packageRepo = this._getPackageRepository(ctx.db);
 
     const createdBy = await userRepo.get(record.createdBy, {
-      select: ["id", "name"],
+      select: ["id", "username"],
       relations: [],
     });
 
@@ -239,7 +242,7 @@ export class GameRepository {
         ageRestriction: packMeta.ageRestriction ?? EAgeRestriction.NONE,
         author: {
           id: packData.author.id,
-          name: packData.author.name,
+          username: packData.author.username,
         },
       },
     };

@@ -1,32 +1,14 @@
 import { type ApiContext } from "services/context/ApiContext";
-
-import { ValueUtils } from "utils/ValueUtils";
 import { ClientResponse } from "enums/ClientResponse";
 import { ClientError } from "error/ClientError";
 import { UserRepository } from "database/repositories/UserRepository";
-import { JWTUtils } from "utils/JWTUtils";
 import { FileUsageRepository } from "database/repositories/FileUsageRepository";
-import { JWTResponse } from "types/jwt/jwt";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
 import { User } from "database/models/User";
-import { IRegisterUser } from "types/user/IRegisterUser";
 import { IUpdateUserData } from "types/user/IUpdateUserData";
+import { ValueUtils } from "utils/ValueUtils";
 
 export class UserService {
-  public async register(
-    ctx: ApiContext,
-    data: IRegisterUser
-  ): Promise<JWTResponse> {
-    const repository = UserRepository.getRepository(ctx.db);
-    const user = await repository.create(ctx, data);
-
-    const { access_token, refresh_token } = JWTUtils.generateTokens(user.id);
-    return {
-      access_token,
-      refresh_token,
-    };
-  }
-
   /**
    * Get list of all available users in DB
    */
@@ -65,10 +47,13 @@ export class UserService {
   private async performDelete(ctx: ApiContext, userId: number) {
     const repository = UserRepository.getRepository(ctx.db);
 
-    const user = await repository.get(userId, {
-      select: ["is_deleted"],
-      relations: ["permissions"],
-    });
+    const user = await repository.findOne(
+      { id: userId },
+      {
+        select: ["id", "is_deleted"],
+        relations: ["permissions"],
+      }
+    );
 
     if (!user || user.is_deleted) {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
@@ -96,7 +81,7 @@ export class UserService {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
-    user.name = data.name ?? user.name;
+    user.username = data.username ?? user.username;
 
     const previousAvatar = user.avatar;
 
@@ -104,7 +89,11 @@ export class UserService {
     user.updated_at = new Date();
 
     if (data.birthday) {
-      user.birthday = ValueUtils.getBirthday(data.birthday);
+      const date = new Date(data.birthday);
+      if (!ValueUtils.isValidDate(date)) {
+        throw new ClientError(ClientResponse.BAD_DATE_FORMAT);
+      }
+      user.birthday = date;
     }
 
     await repository.update(user);

@@ -1,3 +1,4 @@
+import { EFileSource } from "enums/file/EFileSource";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 import { IFile } from "types/file/IFile";
@@ -10,6 +11,13 @@ export class File implements IFile {
   @Column()
   path!: string;
 
+  @Column({
+    type: "enum",
+    enum: EFileSource,
+    enumName: "file_source_enum",
+  })
+  source!: EFileSource;
+
   @Column()
   filename!: string;
 
@@ -19,6 +27,7 @@ export class File implements IFile {
   public import(data: IFile) {
     this.path = data.path;
     this.filename = data.filename;
+    this.source = data.source;
     this.created_at = data.created_at;
   }
 }

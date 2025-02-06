@@ -1,6 +1,5 @@
 import { UserService } from "services/UserService";
 import { ContentStructureService } from "services/ContentStructureService";
-import { AuthService } from "services/AuthService";
 import { StorageServiceFactory } from "services/storage/StorageServiceFactory";
 import { RedisService } from "services/RedisService";
 import { GameService } from "services/game/GameService";
@@ -13,7 +12,6 @@ import { GameService } from "services/game/GameService";
 export class ServerServices {
   private _user: UserService;
   private _content: ContentStructureService;
-  private _auth: AuthService;
   private _storage: StorageServiceFactory;
   private _redis: RedisService;
   private _game: GameService;
@@ -21,7 +19,6 @@ export class ServerServices {
   constructor() {
     this._user = new UserService();
     this._content = new ContentStructureService();
-    this._auth = new AuthService();
     this._storage = new StorageServiceFactory();
     this._redis = new RedisService();
     this._game = new GameService();
@@ -41,14 +38,6 @@ export class ServerServices {
     }
 
     return this._content;
-  }
-
-  public get auth() {
-    if (!this._auth) {
-      this._auth = new AuthService();
-    }
-
-    return this._auth;
   }
 
   public get storage() {

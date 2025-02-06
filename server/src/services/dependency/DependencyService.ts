@@ -21,7 +21,7 @@ export class DependencyService {
   }
 
   /**
-   * Return array of
+   * Return array of file usage
    */
   public static async getFileUsage(db: Database, filename: string) {
     const fileRepo = this.fileRepository(db);

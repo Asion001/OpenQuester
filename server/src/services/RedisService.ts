@@ -14,7 +14,7 @@ export class RedisService {
   }
 
   /**
-   * @param key cache key. Example of key with namespace: "cache:users:1"
+   * @param key storing key. Example of key with namespace: "cache:users:1"
    * @param expire expire time in seconds
    */
   public async set(key: string, value: string, expire?: number): Promise<void> {

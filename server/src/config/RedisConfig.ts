@@ -2,6 +2,8 @@ import Redis from "ioredis";
 
 import { Environment } from "config/Environment";
 import { Logger } from "utils/Logger";
+import { ServerError } from "error/ServerError";
+import { ServerResponse } from "enums/ServerResponse";
 
 const REDIS_PREFIX = "[REDIS]: ";
 
@@ -11,22 +13,51 @@ export class RedisConfig {
 
   public static getClient(): Redis {
     if (!this._client) {
-      this._client = new Redis(this._getRedisLink());
+      this._client = new Redis(this._getRedisLink(), {
+        maxRetriesPerRequest: 10,
+      });
     }
     return this._client;
   }
 
   public static async waitForConnection(): Promise<void> {
     const client = this.getClient();
+
+    if (client.status === "ready") {
+      Logger.info("Redis client is ready", REDIS_PREFIX);
+      return;
+    }
+
     return new Promise((resolve, reject) => {
-      client.on("ready", () => {
+      if (client.status === "connecting") {
+        Logger.info("Redis client is connecting...", REDIS_PREFIX);
+      }
+
+      const timeout = setTimeout(() => {
+        cleanup();
+        reject(new ServerError(ServerResponse.REDIS_CONNECTION_TIMEOUT));
+      }, 30000);
+
+      const cleanup = () => {
+        clearTimeout(timeout);
+        client.off("ready", readyHandler);
+        client.off("error", errorHandler);
+      };
+
+      const readyHandler = () => {
+        cleanup();
         Logger.info("Redis client is ready", REDIS_PREFIX);
         resolve();
-      });
-      client.on("error", (error) => {
+      };
+
+      const errorHandler = (error: Error) => {
+        cleanup();
         Logger.error(`Redis client error: ${error}`, REDIS_PREFIX);
         reject(error);
-      });
+      };
+
+      client.on("ready", readyHandler);
+      client.on("error", errorHandler);
     });
   }
 

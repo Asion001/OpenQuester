@@ -1,5 +1,6 @@
 import { Package } from "database/models/Package";
 import { ClientResponse } from "enums/ClientResponse";
+import { EFileSource } from "enums/file/EFileSource";
 import { ClientError } from "error/ClientError";
 import { IStorage } from "types/file/IStorage";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
@@ -43,7 +44,13 @@ export class ContentStructureService {
         const filename = current.file.sha256;
         promises.push(
           this._storage
-            .performFileUpload(filename, expiresIn, undefined, pack)
+            .performFileUpload(
+              filename,
+              expiresIn,
+              EFileSource.S3,
+              undefined,
+              pack
+            )
             .then((link) => {
               fileLinks[filename] = link;
             })

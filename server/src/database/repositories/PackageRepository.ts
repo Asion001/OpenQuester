@@ -17,7 +17,7 @@ const PACKAGE_SELECT_FIELDS = [
   "created_at",
   "content",
   "author.id",
-  "author.name",
+  "author.username",
 ];
 
 export class PackageRepository {

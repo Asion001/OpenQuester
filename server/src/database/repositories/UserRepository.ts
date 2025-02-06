@@ -1,28 +1,26 @@
-import { type Repository } from "typeorm";
+import { SessionData } from "express-session";
+import { FindOptionsWhere, type Repository } from "typeorm";
+
 import { User } from "database/models/User";
 import { type Database } from "database/Database";
-import { IRegisterUser } from "types/user/IRegisterUser";
-import { CryptoUtils } from "utils/CryptoUtils";
 import { ValueUtils } from "utils/ValueUtils";
-import { ILoginUser } from "types/user/ILoginUser";
 import { ClientError } from "error/ClientError";
 import { ClientResponse } from "enums/ClientResponse";
 import { ISelectOptions } from "types/ISelectOptions";
 import { UserOrId } from "types/user/user";
-import { JWTUtils } from "utils/JWTUtils";
-import { ApiContext } from "services/context/ApiContext";
 import { FileUsageRepository } from "database/repositories/FileUsageRepository";
-import { JWTPayload } from "types/jwt/jwt";
 import { HttpStatus } from "enums/HttpStatus";
 import { PaginatedResults } from "database/pagination/PaginatedResults";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
+import { IRegisterUser } from "types/user/IRegisterUser";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
-  "name",
+  "username",
   "email",
   "birthday",
   "avatar",
+  "discord_id",
   "created_at",
   "updated_at",
   "is_deleted",
@@ -48,10 +46,32 @@ export class UserRepository {
 
   public async get(id: number, selectOptions?: ISelectOptions<User>) {
     return this._repository.findOne({
-      where: { id },
+      where: { id, is_deleted: false },
       select: selectOptions?.select ?? USER_SELECT_FIELDS,
       relations: selectOptions?.relations ?? ["avatar"],
     }) as Promise<User>;
+  }
+
+  public async find(
+    where: FindOptionsWhere<User>,
+    selectOptions?: ISelectOptions<User>
+  ) {
+    return this._repository.find({
+      where,
+      select: selectOptions?.select ?? USER_SELECT_FIELDS,
+      relations: selectOptions?.relations ?? ["avatar"],
+    });
+  }
+
+  public async findOne(
+    where: FindOptionsWhere<User>,
+    selectOptions?: ISelectOptions<User>
+  ) {
+    return this._repository.findOne({
+      where,
+      select: selectOptions?.select ?? USER_SELECT_FIELDS,
+      relations: selectOptions?.relations ?? ["avatar"],
+    });
   }
 
   public async list(
@@ -77,10 +97,20 @@ export class UserRepository {
     return PaginatedResults.paginateEntityAndSelect<User>(qb, paginationOpts);
   }
 
-  public async create(ctx: ApiContext, data: IRegisterUser) {
+  public async create(db: Database, data: IRegisterUser) {
+    const whereOpts: FindOptionsWhere<User>[] = [{ username: data.username }];
+
+    if (data.email) {
+      whereOpts.push({ email: data.email });
+    }
+
+    if (data.discord_id) {
+      whereOpts.push({ discord_id: data.discord_id });
+    }
+
     const existing = await this._repository.findOne({
       select: ["id"],
-      where: [{ name: data.name }, { email: data.email }],
+      where: whereOpts,
     });
 
     if (existing && existing.id >= 0) {
@@ -90,12 +120,10 @@ export class UserRepository {
     // Set all data to new user instance
     let user = new User();
     await user.import({
-      name: data.name,
+      username: data.username,
       email: data.email,
-      password: await CryptoUtils.hash(data.password, 10, ctx.crypto),
-      birthday: data.birthday
-        ? ValueUtils.getBirthday(data.birthday)
-        : undefined,
+      discord_id: data.discord_id,
+      birthday: data.birthday ? new Date(data.birthday) : undefined,
       avatar: data.avatar,
       permissions: [],
       created_at: new Date(),
@@ -107,29 +135,18 @@ export class UserRepository {
     user = await this._repository.save(user);
 
     if (data.avatar) {
-      const fileUsageRepo = FileUsageRepository.getRepository(ctx.db);
+      const fileUsageRepo = FileUsageRepository.getRepository(db);
       await fileUsageRepo.writeUsage(data.avatar, user);
     }
 
     return user;
   }
 
-  /**
-   * Returns user with specified login data
-   */
-  public async login(data: ILoginUser) {
-    const alias = this._repository.metadata.name.toLowerCase();
-    return this._repository
-      .createQueryBuilder(alias)
-      .where("user.email = :email", { email: data.login })
-      .orWhere("user.name = :name", { name: data.login })
-      .getOne();
-  }
-
   public async delete(user: User) {
     const _user = await this._getUserFromInput(user);
 
     _user.is_deleted = true;
+    _user.updated_at = new Date();
     this.update(_user);
   }
 
@@ -139,33 +156,28 @@ export class UserRepository {
     return this._repository.update(
       { id: _user.id },
       {
-        name: _user.name,
+        username: _user.username,
         email: _user.email,
         birthday: _user.birthday ?? null,
         avatar: _user.avatar ?? null,
-        password: _user.password,
         is_deleted: _user.is_deleted,
       }
     );
   }
 
-  public static async getUserByHeader(
+  public static async getUserBySession(
     db: Database,
-    authorizationHeader?: string,
+    session: SessionData,
     options?: ISelectOptions<User>
   ) {
-    let payload: JWTPayload;
-
-    try {
-      payload = JWTUtils.getTokenPayload(authorizationHeader);
-    } catch {
+    if (!session.userId) {
       throw new ClientError(
-        ClientResponse.INVALID_TOKEN,
+        ClientResponse.INVALID_SESSION,
         HttpStatus.UNAUTHORIZED
       );
     }
 
-    const id = ValueUtils.validateId(payload.id);
+    const id = ValueUtils.validateId(session.userId);
     return this.getRepository(db).get(id, options);
   }
 

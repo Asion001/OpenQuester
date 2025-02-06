@@ -1,7 +1,4 @@
-import express from "express";
 import { type Express } from "express";
-import helmet from "helmet";
-import cors from "cors";
 import { type Server as HTTPServer } from "http";
 import { type Server as IOServer } from "socket.io";
 
@@ -10,18 +7,17 @@ import { type ApiContext } from "services/context/ApiContext";
 
 import { Logger } from "utils/Logger";
 import { AuthRestApiController } from "controllers/rest/AuthRestApiController";
-import { verifyToken } from "middleware/authMiddleware";
 import { UserRestApiController } from "controllers/rest/UserRestApiController";
 import { FileRestApiController } from "controllers/rest/FileRestApiController";
 import { PackageRestApiController } from "controllers/rest/PackageRestApiController";
 import { ServerError } from "error/ServerError";
-import { logMiddleware } from "middleware/log/DebugLogMiddleware";
 import { SwaggerRestApiController } from "controllers/rest/SwaggerRestApiController";
 import { RedisConfig } from "config/RedisConfig";
 import { SocketIOInitializer } from "controllers/io/SocketIOInitializer";
 import { GameRestApiController } from "controllers/rest/GameRestApiController";
-import { JWT_SECRET_LENGTH } from "constants/jwt";
+import { SESSION_SECRET_LENGTH } from "constants/session";
 import { errorMiddleware } from "middleware/errorMiddleware";
+import { MiddlewareController } from "controllers/middleware/MiddlewareController";
 
 const APP_PREFIX = "[APP]: ";
 
@@ -49,21 +45,21 @@ export class ServeApi {
 
   public async init() {
     try {
-      await this._context.env.loadJWTConfig(
-        JWT_SECRET_LENGTH,
-        RedisConfig.getClient()
+      const redisClient = RedisConfig.getClient();
+
+      await this._context.env.loadSessionConfig(
+        SESSION_SECRET_LENGTH,
+        redisClient
       );
 
       // Build database connection
       await this._db.build();
 
+      // Connect to Redis
+      await RedisConfig.waitForConnection();
+
       // Middlewares
-      this._app.use(cors());
-      this._app.use(helmet());
-      this._app.disable("x-powered-by");
-      this._app.use(logMiddleware);
-      this._app.use(express.json());
-      this._app.use(verifyToken);
+      await new MiddlewareController(this._context, redisClient).initialize();
 
       // Initialize server listening
       this._server = this._app.listen(this._port, () => {
@@ -74,9 +70,6 @@ export class ServeApi {
       // Attach API controllers
       this._attachControllers();
       this._app.use(errorMiddleware);
-
-      // Connect to Redis
-      await RedisConfig.waitForConnection();
     } catch (err: unknown) {
       let message = "unknown error";
       if (err instanceof Error) {
