@@ -45,6 +45,7 @@ jobs:
           flutter-version-file: ./client/pubspec.yaml
           cache: true
       - run: flutter pub get
+      - run: echo "${{ vars.ENV_FILE_CONTENT }}" > .env
       - run: dart run build_runner build --delete-conflicting-outputs
       - name: Build web
         run: flutter build web --wasm --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER

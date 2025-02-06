@@ -59,6 +59,7 @@ jobs:
           channel: stable
           flutter-version-file: ./client/pubspec.yaml
           cache: true
+      - run: echo "${{ vars.ENV_FILE_CONTENT }}" > .env
       - run: flutter pub get
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: dart analyze --fatal-infos
