@@ -22,7 +22,7 @@ class _FilesClient implements FilesClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<GetV1FilesFilenameResponse> getV1FilesFilename({
+  Future<FileLinkResponse> getV1FilesFilename({
     required String filename,
     Map<String, dynamic>? extras,
     RequestOptions? options,
@@ -47,9 +47,9 @@ class _FilesClient implements FilesClient {
       path: '/v1/files/${filename}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late GetV1FilesFilenameResponse _value;
+    late FileLinkResponse _value;
     try {
-      _value = GetV1FilesFilenameResponse.fromJson(_result.data!);
+      _value = FileLinkResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -58,7 +58,7 @@ class _FilesClient implements FilesClient {
   }
 
   @override
-  Future<PostV1FilesFilenameResponse> postV1FilesFilename({
+  Future<FileUploadLinkResponse> postV1FilesFilename({
     required String filename,
     Map<String, dynamic>? extras,
     RequestOptions? options,
@@ -83,9 +83,9 @@ class _FilesClient implements FilesClient {
       path: '/v1/files/${filename}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PostV1FilesFilenameResponse _value;
+    late FileUploadLinkResponse _value;
     try {
-      _value = PostV1FilesFilenameResponse.fromJson(_result.data!);
+      _value = FileUploadLinkResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -94,7 +94,7 @@ class _FilesClient implements FilesClient {
   }
 
   @override
-  Future<DeleteV1FilesFilenameResponse> deleteV1FilesFilename({
+  Future<DeleteRequestResponse> deleteV1FilesFilename({
     required String filename,
     Map<String, dynamic>? extras,
     RequestOptions? options,
@@ -119,9 +119,9 @@ class _FilesClient implements FilesClient {
       path: '/v1/files/${filename}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DeleteV1FilesFilenameResponse _value;
+    late DeleteRequestResponse _value;
     try {
-      _value = DeleteV1FilesFilenameResponse.fromJson(_result.data!);
+      _value = DeleteRequestResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

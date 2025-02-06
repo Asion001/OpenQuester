@@ -11,4 +11,8 @@ part of 'env.dart';
 // generated_from: .env
 final class _Env {
   static final Uri apiUrl = Uri.parse('https://api.openquester.app');
+
+  static final Uri clientAppUrl = Uri.parse('https://openquester.app');
+
+  static const String discordAuthClientId = '1337107931501563926';
 }

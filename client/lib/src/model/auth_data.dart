@@ -18,13 +18,6 @@ class AuthData with _$AuthData {
 
   const AuthData._();
 
-  factory AuthData.fromAuthData(ResponseAuthData data) {
-    return AuthData(
-      accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
-    );
-  }
-
   Map<String, dynamic>? tokenData() {
     if (accessToken.isEmptyOrNull) return null;
 

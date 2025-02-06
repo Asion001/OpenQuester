@@ -22,8 +22,7 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponseAuthData> postV1AuthLogin({
-    required InputLoginUser body,
+  Future<void> getV1AuthDiscord({
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -32,34 +31,25 @@ class _AuthClient implements AuthClient {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = body;
+    const Map<String, dynamic>? _data = null;
     final newOptions = newRequestOptions(options);
     newOptions.extra.addAll(_extra);
     newOptions.headers.addAll(_dio.options.headers);
     newOptions.headers.addAll(_headers);
     final _options = newOptions.copyWith(
-      method: 'POST',
+      method: 'GET',
       baseUrl: _combineBaseUrls(
         _dio.options.baseUrl,
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/login',
+      path: '/v1/auth/discord',
     )..data = _data;
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
-    try {
-      _value = ResponseAuthData.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
+    await _dio.fetch<void>(_options);
   }
 
   @override
-  Future<ResponseAuthData> postV1AuthRefresh({
-    required AuthRefreshInput body,
+  Future<void> getV1AuthDiscordCallback({
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -68,24 +58,51 @@ class _AuthClient implements AuthClient {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = body;
+    const Map<String, dynamic>? _data = null;
     final newOptions = newRequestOptions(options);
     newOptions.extra.addAll(_extra);
     newOptions.headers.addAll(_dio.options.headers);
     newOptions.headers.addAll(_headers);
     final _options = newOptions.copyWith(
-      method: 'POST',
+      method: 'GET',
       baseUrl: _combineBaseUrls(
         _dio.options.baseUrl,
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/refresh',
+      path: '/v1/auth/discord/callback',
+    )..data = _data;
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
+  Future<LogoutResponse> getV1AuthLogout({
+    Map<String, dynamic>? extras,
+    RequestOptions? options,
+  }) async {
+    final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'GET',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/auth/logout',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
+    late LogoutResponse _value;
     try {
-      _value = ResponseAuthData.fromJson(_result.data!);
+      _value = LogoutResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
