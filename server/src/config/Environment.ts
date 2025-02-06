@@ -31,6 +31,10 @@ export class Environment {
   /** Used for singleton implementation */
   private static _instance: Environment | undefined = undefined;
 
+  // URLs
+  public CLIENT_URL!: string;
+  public SERVER_URL!: string;
+
   // DB vars
   public DB_TYPE!: string;
   public DB_NAME!: string;
@@ -55,11 +59,11 @@ export class Environment {
   public LOG_LEVEL!: LogLevel;
 
   // Discord
-  DISCORD_CLIENT_ID!: number;
-  DISCORD_CLIENT_SECRET!: string;
-  DISCORD_CALLBACK_URL!: string;
-  DISCORD_SUCCESSFUL_REDIRECT_URL!: string;
-  DISCORD_FAILURE_REDIRECT_URL!: string;
+  public DISCORD_CLIENT_ID!: number;
+  public DISCORD_CLIENT_SECRET!: string;
+  public DISCORD_CALLBACK_URL!: string;
+  public DISCORD_SUCCESS_REDIRECT_URL!: string;
+  public DISCORD_FAILURE_REDIRECT_URL!: string;
 
   private constructor() {
     //
@@ -161,7 +165,7 @@ export class Environment {
     this.SESSION_MAX_AGE = this.getEnvVar(
       "SESSION_MAX_AGE",
       "number",
-      7 * 24 * 60 * 60 * 1000 // 7 days
+      24 * 30 * 24 * 60 * 60 * 1000 // 2 years
     );
   }
 
@@ -200,6 +204,17 @@ export class Environment {
 
     this.loadRedis();
     this.loadDiscord();
+
+    this.CLIENT_URL = this.getEnvVar(
+      "CLIENT_URL",
+      "string",
+      "http://localhost:3000/"
+    );
+    this.SERVER_URL = this.getEnvVar(
+      "SERVER_URL",
+      "string",
+      "http://localhost:3000/"
+    );
   }
 
   private loadRedis() {
@@ -218,15 +233,18 @@ export class Environment {
     );
     this.DISCORD_CALLBACK_URL = this.getEnvVar(
       "DISCORD_CALLBACK_URL",
-      "string"
+      "string",
+      `${this.SERVER_URL}/v1/auth/discord`
     );
-    this.DISCORD_SUCCESSFUL_REDIRECT_URL = this.getEnvVar(
+    this.DISCORD_SUCCESS_REDIRECT_URL = this.getEnvVar(
       "DISCORD_SUCCESSFUL_REDIRECT_URL",
-      "string"
+      "string",
+      `${this.CLIENT_URL}/`
     );
     this.DISCORD_FAILURE_REDIRECT_URL = this.getEnvVar(
       "DISCORD_FAILURE_REDIRECT_URL",
-      "string"
+      "string",
+      `${this.CLIENT_URL}/`
     );
   }
 

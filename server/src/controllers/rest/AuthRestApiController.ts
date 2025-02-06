@@ -47,7 +47,7 @@ export class AuthRestApiController {
       "discord",
       {
         failureRedirect: this.ctx.env.DISCORD_FAILURE_REDIRECT_URL,
-        successRedirect: this.ctx.env.DISCORD_SUCCESSFUL_REDIRECT_URL,
+        successRedirect: this.ctx.env.DISCORD_SUCCESS_REDIRECT_URL,
       },
       (err: Error, user: User) => {
         if (err || !user) {
@@ -60,7 +60,7 @@ export class AuthRestApiController {
           if (err) {
             return res.send();
           }
-          res.redirect(this.ctx.env.DISCORD_SUCCESSFUL_REDIRECT_URL);
+          res.redirect(this.ctx.env.DISCORD_SUCCESS_REDIRECT_URL);
         });
       }
     )(req, res);

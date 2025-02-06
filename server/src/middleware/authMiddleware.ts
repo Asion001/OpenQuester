@@ -20,12 +20,12 @@ const isPublicEndpoint = (url: string, method: string): boolean => {
     "v1/auth",
     "v1/auth/discord",
     "v1/api-docs",
-    "v1/games",
     "v1/users",
   ];
 
   const conditionalEndpoints = [
     { url: "v1/packages", method: "GET" },
+    { url: "v1/games", method: "GET" },
     { url: "v1/file", method: "POST" },
   ];
 

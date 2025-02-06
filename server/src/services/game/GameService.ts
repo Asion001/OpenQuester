@@ -9,6 +9,8 @@ import { EGameEvent, IGameEvent } from "types/game/IGameEvent";
 import { IGame } from "types/game/IGame";
 import { GameRepository } from "database/repositories/GameRepository";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
+import { ClientError } from "error/ClientError";
+import { ClientResponse } from "enums/ClientResponse";
 
 export class GameService {
   private _gameRepository?: GameRepository;
@@ -34,6 +36,10 @@ export class GameService {
       session,
       { select: ["id", "username"], relations: [] }
     );
+
+    if (!createdByUser) {
+      throw new ClientError(ClientResponse.ACCESS_DENIED);
+    }
 
     const gameDataOutput = await this.gameRepository.createGame(
       ctx,

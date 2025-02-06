@@ -13,7 +13,9 @@ export class RedisConfig {
 
   public static getClient(): Redis {
     if (!this._client) {
-      this._client = new Redis(this._getRedisLink());
+      this._client = new Redis(this._getRedisLink(), {
+        maxRetriesPerRequest: 10,
+      });
     }
     return this._client;
   }
