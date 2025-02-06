@@ -11,13 +11,14 @@ import { ErrorController } from "error/ErrorController";
 import { TranslateService as ts } from "services/text/TranslateService";
 import { Permission } from "database/models/Permission";
 import { ClientError } from "error/ClientError";
+import { SessionData } from "express-session";
 
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await UserRepository.getUserByHeader(
+      const user = await UserRepository.getUserBySession(
         db,
-        req.headers?.authorization,
+        req.session as SessionData,
         {
           select: ["id"],
           relations: ["permissions"],
@@ -35,7 +36,7 @@ export function checkPermission(db: Database, permission: Permissions) {
         return next();
       }
 
-      return res.status(HttpStatus.BAD_REQUEST).send({
+      return res.status(HttpStatus.FORBIDDEN).send({
         error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
       });
     } catch (err: unknown) {
@@ -63,9 +64,9 @@ export function checkPermissionWithId(db: Database, permission: Permissions) {
           relations: ["permissions"],
         });
 
-        const requestUser = await UserRepository.getUserByHeader(
+        const requestUser = await UserRepository.getUserBySession(
           db,
-          req.headers?.authorization,
+          req.session as SessionData,
           {
             select: ["id"],
             relations: ["permissions"],
@@ -80,7 +81,7 @@ export function checkPermissionWithId(db: Database, permission: Permissions) {
           return next();
         }
 
-        return res.status(HttpStatus.BAD_REQUEST).send({
+        return res.status(HttpStatus.FORBIDDEN).send({
           error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
         });
       } catch (err: unknown) {

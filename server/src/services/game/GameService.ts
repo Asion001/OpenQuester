@@ -1,4 +1,4 @@
-import { IncomingHttpHeaders } from "http";
+import { SessionData } from "express-session";
 
 import { IGameCreateData } from "types/game/IGameCreate";
 import { IGameListItem } from "types/game/IGameListItem";
@@ -17,25 +17,25 @@ export class GameService {
     ctx: ApiContext,
     gameId: string
   ): Promise<IGameListItem | undefined> {
-    return this._getGameRepository().getGame(ctx, gameId);
+    return this.gameRepository.getGame(ctx, gameId);
   }
 
   public async list(ctx: ApiContext, paginationOpts: IPaginationOpts<IGame>) {
-    return this._getGameRepository().getAllGames(ctx, paginationOpts);
+    return this.gameRepository.getAllGames(ctx, paginationOpts);
   }
 
   public async create(
     ctx: ApiContext,
     gameData: IGameCreateData,
-    headers: IncomingHttpHeaders
+    session: SessionData
   ) {
-    const createdByUser = await UserRepository.getUserByHeader(
+    const createdByUser = await UserRepository.getUserBySession(
       ctx.db,
-      headers.authorization,
-      { select: ["id", "name"], relations: [] }
+      session,
+      { select: ["id", "username"], relations: [] }
     );
 
-    const gameDataOutput = await this._getGameRepository().createGame(
+    const gameDataOutput = await this.gameRepository.createGame(
       ctx,
       gameData,
       createdByUser
@@ -53,7 +53,7 @@ export class GameService {
     } as IGameEvent);
   }
 
-  private _getGameRepository() {
+  private get gameRepository() {
     if (!this._gameRepository) {
       this._gameRepository = GameRepository.getInstance();
     }

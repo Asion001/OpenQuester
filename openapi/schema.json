@@ -6,7 +6,7 @@
   },
   "security": [
     {
-      "JWTAuth": []
+      "SessionAuth": []
     }
   ],
   "paths": {
@@ -31,13 +31,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "example": "http://localhost:9000/file-get-link"
-                    }
-                  }
+                  "$ref": "#/components/schemas/FileLinkResponse"
                 }
               }
             }
@@ -47,13 +41,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Bad filename"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BadFilenameResponse"
                 }
               }
             }
@@ -80,13 +68,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "example": "http://localhost:9000/file-upload-link"
-                    }
-                  }
+                  "$ref": "#/components/schemas/FileUploadLinkResponse"
                 }
               }
             }
@@ -96,13 +78,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Bad filename"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BadFilenameResponse"
                 }
               }
             }
@@ -129,13 +105,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Delete request sent"
-                    }
-                  }
+                  "$ref": "#/components/schemas/DeleteRequestResponse"
                 }
               }
             }
@@ -145,13 +115,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Bad filename"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BadFilenameResponse"
                 }
               }
             }
@@ -190,13 +154,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Content is empty!"
-                    }
-                  }
+                  "$ref": "#/components/schemas/EmptyContentResponse"
                 }
               }
             }
@@ -256,13 +214,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Bad request"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -300,13 +252,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Package not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/PackageNotFoundResponse"
                 }
               }
             }
@@ -339,18 +285,12 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid or expired JWT token",
+          "401": {
+            "description": "Invalid or expired session",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or expired JWT token"
-                    }
-                  }
+                  "$ref": "#/components/schemas/InvalidSessionResponse"
                 }
               }
             }
@@ -360,13 +300,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserNotFoundResponse"
                 }
               }
             }
@@ -407,18 +341,12 @@
               }
             }
           },
-          "400": {
-            "description": "You don't have permissions for this operation",
+          "403": {
+            "description": "Permission denied",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "You don't have permission to perform this action"
-                    }
-                  }
+                  "$ref": "#/components/schemas/PermissionDeniedResponse"
                 }
               }
             }
@@ -428,13 +356,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserNotFoundResponse"
                 }
               }
             }
@@ -458,18 +380,12 @@
           "204": {
             "description": "User deleted successfully"
           },
-          "400": {
-            "description": "You don't have permissions for this operation",
+          "403": {
+            "description": "Permission denied",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "You don't have permission to perform this action"
-                    }
-                  }
+                  "$ref": "#/components/schemas/PermissionDeniedResponse"
                 }
               }
             }
@@ -479,13 +395,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserNotFoundResponse"
                 }
               }
             }
@@ -542,18 +452,12 @@
               }
             }
           },
-          "400": {
-            "description": "You have no access",
+          "403": {
+            "description": "Permission denied",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "You don't have permission to perform this action"
-                    }
-                  }
+                  "$ref": "#/components/schemas/PermissionDeniedResponse"
                 }
               }
             }
@@ -563,55 +467,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User not found"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "User Registration",
-        "tags": ["Users"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InputRegisterUser"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "User registered successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseAuthData"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request - Validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "name,password is required"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserNotFoundResponse"
                 }
               }
             }
@@ -621,7 +477,7 @@
     },
     "/v1/me": {
       "get": {
-        "summary": "Get info about user itself by auth token",
+        "summary": "Get info about current user",
         "tags": ["Users"],
         "responses": {
           "200": {
@@ -629,26 +485,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ResponseUser"
-                  }
+                  "$ref": "#/components/schemas/ResponseUser"
                 }
               }
             }
           },
-          "400": {
-            "description": "Token invalid",
+          "401": {
+            "description": "Invalid session",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Token invalid or expired"
-                    }
-                  }
+                  "$ref": "#/components/schemas/InvalidSessionResponse"
                 }
               }
             }
@@ -658,13 +505,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserNotFoundResponse"
                 }
               }
             }
@@ -672,18 +513,8 @@
         }
       },
       "patch": {
-        "summary": "Update user by auth token",
+        "summary": "Update current user",
         "tags": ["Users"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -705,18 +536,12 @@
               }
             }
           },
-          "400": {
-            "description": "Token invalid",
+          "401": {
+            "description": "Invalid session",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Token invalid or expired"
-                    }
-                  }
+                  "$ref": "#/components/schemas/InvalidSessionResponse"
                 }
               }
             }
@@ -726,13 +551,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserNotFoundResponse"
                 }
               }
             }
@@ -740,34 +559,18 @@
         }
       },
       "delete": {
-        "summary": "Delete user by auth token",
+        "summary": "Delete current user",
         "tags": ["Users"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "204": {
             "description": "User deleted successfully"
           },
-          "400": {
-            "description": "Token invalid",
+          "401": {
+            "description": "Invalid session",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Token invalid or expired"
-                    }
-                  }
+                  "$ref": "#/components/schemas/InvalidSessionResponse"
                 }
               }
             }
@@ -777,13 +580,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "User not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserNotFoundResponse"
                 }
               }
             }
@@ -791,43 +588,31 @@
         }
       }
     },
-    "/v1/auth/login": {
-      "post": {
-        "summary": "User Login",
+    "/v1/auth/discord": {
+      "get": {
+        "summary": "Initiate Discord OAuth",
         "tags": ["Auth"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InputLoginUser"
-              }
-            }
-          }
-        },
         "responses": {
-          "200": {
-            "description": "User logged in successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ResponseAuthData"
-                }
-              }
-            }
+          "302": {
+            "description": "Redirect to Discord OAuth"
+          }
+        }
+      }
+    },
+    "/v1/auth/discord/callback": {
+      "get": {
+        "summary": "Handle Discord OAuth callback",
+        "tags": ["Auth"],
+        "responses": {
+          "302": {
+            "description": "Redirect to home page on successful authentication"
           },
-          "400": {
-            "description": "Bad Request - Validation error",
+          "401": {
+            "description": "Unauthorized - Discord authentication failed",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "[\"password\"] is required"
-                    }
-                  }
+                  "$ref": "#/components/schemas/DiscordAuthFailedResponse"
                 }
               }
             }
@@ -835,43 +620,17 @@
         }
       }
     },
-    "/v1/auth/refresh": {
-      "post": {
-        "summary": "Refresh tokens",
+    "/v1/auth/logout": {
+      "get": {
+        "summary": "Logout user",
         "tags": ["Auth"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthRefreshInput"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "Tokens refreshed",
+            "description": "User logged out successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseAuthData"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid or expired refresh token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Invalid or expired refresh token"
-                    }
-                  }
+                  "$ref": "#/components/schemas/LogoutResponse"
                 }
               }
             }
@@ -933,13 +692,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Bad request"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -975,13 +728,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Bad request"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BadRequestResponse"
                 }
               }
             }
@@ -1019,13 +766,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string",
-                      "example": "Game not found"
-                    }
-                  }
+                  "$ref": "#/components/schemas/GameNotFoundResponse"
                 }
               }
             }
@@ -1044,15 +785,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "event": {
-                      "$ref": "#/components/schemas/IGameEvent"
-                    },
-                    "data": {
-                      "$ref": "#/components/schemas/IGameListItem"
-                    }
-                  }
+                  "$ref": "#/components/schemas/GameEventSubscription"
                 }
               }
             }
@@ -1063,45 +796,11 @@
   },
   "components": {
     "securitySchemes": {
-      "JWTAuth": {
-        "type": "http",
-        "scheme": "Bearer",
-        "bearerFormat": "JWT",
-        "description": "JWT Authorization header using the Bearer scheme."
-      }
-    },
-    "responses": {
-      "UnauthorizedError": {
-        "description": "Unauthorized - Invalid or missing token",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Access denied"
-                }
-              }
-            }
-          }
-        }
-      },
-      "TokenExpiredError": {
-        "description": "Unauthorized - Token is expired or invalid",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Token invalid or expired"
-                }
-              }
-            }
-          }
-        }
+      "SessionAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "connect.sid",
+        "description": "Session-based authentication using cookies."
       }
     },
     "schemas": {
@@ -1113,15 +812,6 @@
             "example": 1000
           }
         }
-      },
-      "AuthRefreshInput": {
-        "type": "object",
-        "properties": {
-          "refresh_token": {
-            "type": "string"
-          }
-        },
-        "required": ["refresh_token"]
       },
       "PackageCreationInput": {
         "type": "object",
@@ -1139,13 +829,14 @@
             "type": "integer",
             "example": 1
           },
-          "name": {
+          "username": {
             "type": "string",
             "example": "John"
           },
           "email": {
             "type": "string",
-            "example": "jogn.doe@gmail.com"
+            "example": "john.doe@gmail.com",
+            "nullable": true
           },
           "birthday": {
             "type": "string",
@@ -1183,28 +874,17 @@
                 },
                 "name": {
                   "type": "string",
-                  "example": "admin"
+                  "example": "get_all_users"
                 }
-              },
-              "required": ["id", "name"]
-            },
-            "example": [
-              {
-                "id": 1,
-                "name": "admin"
-              },
-              {
-                "id": 2,
-                "name": "user"
               }
-            ]
+            }
           }
         }
       },
       "InputUpdateUser": {
         "type": "object",
         "properties": {
-          "name": {
+          "username": {
             "type": "string",
             "example": "John Doe",
             "nullable": true
@@ -1228,61 +908,12 @@
           }
         }
       },
-      "InputRegisterUser": {
+      "LogoutResponse": {
         "type": "object",
         "properties": {
-          "name": {
+          "message": {
             "type": "string",
-            "example": "John Doe"
-          },
-          "email": {
-            "type": "string",
-            "example": "someuser@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "mySuperCoolPassword123",
-            "minimum": 6,
-            "maximum": 128
-          },
-          "birthday": {
-            "type": "string",
-            "format": "date",
-            "example": "2024-01-01",
-            "nullable": true
-          },
-          "avatar": {
-            "type": "string",
-            "example": "filename_of_file_in_bucket",
-            "nullable": true
-          }
-        },
-        "required": ["name", "email", "password"]
-      },
-      "InputLoginUser": {
-        "type": "object",
-        "properties": {
-          "login": {
-            "type": "string",
-            "example": "useremail@gmail.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "mySuperCoolPassword123",
-            "minimum": 6,
-            "maximum": 128
-          }
-        },
-        "required": ["login", "password"]
-      },
-      "ResponseAuthData": {
-        "type": "object",
-        "properties": {
-          "access_token": {
-            "type": "string"
-          },
-          "refresh_token": {
-            "type": "string"
+            "example": "Logout successful"
           }
         }
       },
@@ -1290,7 +921,6 @@
         "type": "object",
         "properties": {
           "metadata": {
-            "type": "object",
             "$ref": "#/components/schemas/OQMetadataStructure"
           },
           "rounds": {
@@ -1313,12 +943,11 @@
             "example": "Package title"
           },
           "createdAt": {
-            "format": "date-time",
             "type": "string",
+            "format": "date-time",
             "example": "2024-01-01T00:00:00Z"
           },
           "logo": {
-            "type": "object",
             "$ref": "#/components/schemas/OQLogoFile",
             "nullable": true
           },
@@ -1573,7 +1202,7 @@
             "type": "integer",
             "example": 1
           },
-          "name": {
+          "username": {
             "type": "string",
             "example": "John"
           }
@@ -1697,15 +1326,7 @@
       "UsersSortBy": {
         "type": "string",
         "nullable": true,
-        "enum": [
-          "id",
-          "title",
-          "createdAt",
-          "createdBy",
-          "maxPlayers",
-          "players",
-          "startedAt"
-        ],
+        "enum": ["id", "is_deleted", "created_at", "username", "email"],
         "example": "createdAt",
         "default": "createdAt"
       },
@@ -1731,6 +1352,125 @@
             "example": {
               "uniqueIdentifier": "https://example.com/upload/file.jpg"
             }
+          }
+        }
+      },
+      "FileLinkResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "http://localhost:9000/file-get-link"
+          }
+        }
+      },
+      "BadFilenameResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Bad filename"
+          }
+        }
+      },
+      "FileUploadLinkResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "example": "http://localhost:9000/file-upload-link"
+          }
+        }
+      },
+      "DeleteRequestResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Delete request sent"
+          }
+        }
+      },
+      "EmptyContentResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Content is empty!"
+          }
+        }
+      },
+      "BadRequestResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Bad request"
+          }
+        }
+      },
+      "PackageNotFoundResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Package not found"
+          }
+        }
+      },
+      "InvalidSessionResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Session invalid or expired"
+          }
+        }
+      },
+      "UserNotFoundResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "User not found"
+          }
+        }
+      },
+      "PermissionDeniedResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "You don't have permission to perform this action"
+          }
+        }
+      },
+      "DiscordAuthFailedResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Discord authentication is failed, please try again"
+          }
+        }
+      },
+      "GameNotFoundResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Game not found"
+          }
+        }
+      },
+      "GameEventSubscription": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "$ref": "#/components/schemas/IGameEvent"
+          },
+          "data": {
+            "$ref": "#/components/schemas/IGameListItem"
           }
         }
       }

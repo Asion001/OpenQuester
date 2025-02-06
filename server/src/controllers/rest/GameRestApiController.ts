@@ -1,3 +1,4 @@
+import { SessionData } from "express-session";
 import { type Request, type Response, Router } from "express";
 
 import { type ApiContext } from "services/context/ApiContext";
@@ -76,7 +77,7 @@ export class GameRestApiController {
     const result = await this._gameService.create(
       this.ctx,
       validatedData,
-      req.headers
+      req.session as SessionData
     );
     return res.status(HttpStatus.OK).send(result);
   };

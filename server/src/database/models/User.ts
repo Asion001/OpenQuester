@@ -16,7 +16,7 @@ import { Permission } from "database/models/Permission";
 import { Package } from "database/models/Package";
 
 @Entity("user")
-@Unique(["email", "name"])
+@Unique(["email", "username", "discord_id"])
 export class User implements IUserModel {
   constructor() {
     //
@@ -25,14 +25,14 @@ export class User implements IUserModel {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
-  name!: string;
+  @Column({ type: "varchar", unique: true, nullable: false })
+  username!: string;
 
-  @Column()
-  email?: string;
+  @Column({ type: "varchar", unique: true, nullable: true })
+  email?: string | null;
 
-  @Column()
-  password!: string;
+  @Column({ type: "varchar", unique: true, nullable: true })
+  discord_id?: string | null;
 
   @Column({ type: "date", nullable: true })
   birthday?: Date | null;
@@ -62,9 +62,9 @@ export class User implements IUserModel {
   permissions!: Permission[];
 
   public async import(data: IUserModel) {
-    this.name = data.name;
+    this.username = data.username;
     this.email = data.email;
-    this.password = data.password;
+    this.discord_id = data.discord_id ?? null;
     this.birthday = data.birthday;
     this.avatar = data.avatar;
     this.created_at = data.created_at;
@@ -76,8 +76,9 @@ export class User implements IUserModel {
   public async export() {
     return {
       id: this.id,
-      name: this.name,
+      username: this.username,
       email: this.email,
+      discord_id: this.discord_id,
       birthday: this.birthday,
       avatar: this.avatar,
       created_at: this.created_at,

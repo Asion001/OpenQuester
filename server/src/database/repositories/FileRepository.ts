@@ -1,6 +1,7 @@
 import { type Repository } from "typeorm";
 import { type Database } from "database/Database";
 import { File } from "database/models/File";
+import { EFileSource } from "enums/file/EFileSource";
 
 export class FileRepository {
   private static _instance: FileRepository;
@@ -18,11 +19,12 @@ export class FileRepository {
     return this._instance;
   }
 
-  public async writeFile(path: string, filename: string) {
+  public async writeFile(path: string, filename: string, source: EFileSource) {
     const existingFile = await this._repository.findOne({
       where: {
         filename,
         path,
+        source,
       },
     });
     if (existingFile) {
@@ -33,6 +35,7 @@ export class FileRepository {
     file.import({
       path,
       filename,
+      source,
       created_at: new Date(),
     });
 
