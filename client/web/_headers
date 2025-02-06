@@ -8,6 +8,6 @@
     Cross-Origin-Opener-Policy: same-origin
 
     # Cache headers configuration
-    Cache-control: max-age=31536000, public
+    Cache-control: max-age=7200, public
 
 
