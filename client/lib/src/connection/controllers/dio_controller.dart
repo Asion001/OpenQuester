@@ -1,18 +1,22 @@
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:requests_inspector/requests_inspector.dart';
+import 'package:universal_io/io.dart';
 
 @Singleton(order: 0)
 class DioController {
   late Dio _dio;
 
-  @postConstruct
-  void init() {
+  @PostConstruct(preResolve: true)
+  Future<void> init() async {
     _dio = Dio(
       baseOptions(),
-    )..interceptors.addAll(_interceptors());
+    )..interceptors.addAll(await _interceptors());
   }
 
   Dio get client => _dio;
@@ -29,27 +33,31 @@ class DioController {
     );
   }
 
-  List<Interceptor> _interceptors() {
+  Future<CookieJar> _getCookieJar() async {
+    if (kIsWeb) {
+      return WebCookieJar();
+    } else {
+      return _getPersistCookieJar();
+    }
+  }
+
+  Future<PersistCookieJar> _getPersistCookieJar() async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String appDocPath = appDocDir.path;
+    final jar = PersistCookieJar(
+      ignoreExpires: true,
+      storage: FileStorage("$appDocPath/.cookies/"),
+    );
+    return jar;
+  }
+
+  Future<List<Interceptor>> _interceptors() async {
     return [
-      _authInterceptor,
+      CookieManager(await _getCookieJar()),
       _dioCacheInterceptor,
       if (!kIsWeb) _timeoutInterceptor,
       RequestsInspectorInterceptor(),
     ];
-  }
-
-  static final _authInterceptor = InterceptorsWrapper(
-    onRequest: (options, handler) {
-      _setAccessToken(options);
-      handler.next(options);
-    },
-  );
-
-  static Future<void> _setAccessToken(RequestOptions options) async {
-    final accessToken = await getIt.get<LoginController>().accessToken;
-    if (accessToken != null) {
-      options.headers['Authorization'] = 'Bearer $accessToken';
-    }
   }
 
   final _timeoutInterceptor = InterceptorsWrapper(

@@ -38,6 +38,10 @@ dependencies:
   gap: ^3.0.1
   dio_cache_interceptor: ^3.5.1
   requests_inspector: ^4.2.1
+  oauth2_client: ^3.3.0
+  dio_cookie_manager: ^3.2.0
+  path_provider: ^2.1.5
+  cookie_jar: ^4.0.8
 
 dev_dependencies:
   flutter_test:

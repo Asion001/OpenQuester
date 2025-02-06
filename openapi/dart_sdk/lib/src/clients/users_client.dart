@@ -5,13 +5,11 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../models/input_register_user.dart';
 import '../models/input_update_user.dart';
 import '../models/order_direction.dart';
 import '../models/paginated_users.dart';
 import '../models/pagination_limit.dart';
 import '../models/pagination_offset.dart';
-import '../models/response_auth_data.dart';
 import '../models/response_user.dart';
 import '../models/users_sort_by.dart';
 
@@ -57,34 +55,24 @@ abstract class UsersClient {
     @DioOptions() RequestOptions? options,
   });
 
-  /// User Registration
-  @POST('/v1/users/')
-  Future<ResponseAuthData> postV1Users({
-    @Body() required InputRegisterUser body,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
-  });
-
-  /// Get info about user itself by auth token
+  /// Get info about current user
   @GET('/v1/me')
-  Future<List<ResponseUser>> getV1Me({
+  Future<ResponseUser> getV1Me({
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 
-  /// Update user by auth token
+  /// Update current user
   @PATCH('/v1/me')
   Future<ResponseUser> patchV1Me({
-    @Path('id') required String id,
     @Body() required InputUpdateUser body,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 
-  /// Delete user by auth token
+  /// Delete current user
   @DELETE('/v1/me')
   Future<void> deleteV1Me({
-    @Path('id') required String id,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });

@@ -13,8 +13,7 @@ part 'response_user.g.dart';
 class ResponseUser with _$ResponseUser {
   const factory ResponseUser({
     required int id,
-    required String name,
-    required String email,
+    required String username,
     @JsonKey(name: 'created_at')
     required DateTime createdAt,
     @JsonKey(name: 'updated_at')
@@ -22,6 +21,7 @@ class ResponseUser with _$ResponseUser {
     @JsonKey(name: 'is_deleted')
     required bool isDeleted,
     required List<Permissions> permissions,
+    String? email,
     DateTime? birthday,
     String? avatar,
   }) = _ResponseUser;

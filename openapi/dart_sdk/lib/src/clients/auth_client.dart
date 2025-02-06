@@ -5,9 +5,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../models/auth_refresh_input.dart';
-import '../models/input_login_user.dart';
-import '../models/response_auth_data.dart';
+import '../models/logout_response.dart';
 
 part 'auth_client.g.dart';
 
@@ -15,18 +13,23 @@ part 'auth_client.g.dart';
 abstract class AuthClient {
   factory AuthClient(Dio dio, {String? baseUrl}) = _AuthClient;
 
-  /// User Login
-  @POST('/v1/auth/login')
-  Future<ResponseAuthData> postV1AuthLogin({
-    @Body() required InputLoginUser body,
+  /// Initiate Discord OAuth
+  @GET('/v1/auth/discord')
+  Future<void> getV1AuthDiscord({
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 
-  /// Refresh tokens
-  @POST('/v1/auth/refresh')
-  Future<ResponseAuthData> postV1AuthRefresh({
-    @Body() required AuthRefreshInput body,
+  /// Handle Discord OAuth callback
+  @GET('/v1/auth/discord/callback')
+  Future<void> getV1AuthDiscordCallback({
+    @Extras() Map<String, dynamic>? extras,
+    @DioOptions() RequestOptions? options,
+  });
+
+  /// Logout user
+  @GET('/v1/auth/logout')
+  Future<LogoutResponse> getV1AuthLogout({
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });

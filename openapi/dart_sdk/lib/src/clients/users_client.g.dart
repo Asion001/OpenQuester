@@ -167,43 +167,7 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<ResponseAuthData> postV1Users({
-    required InputRegisterUser body,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
-    final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
-    final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    final _data = body;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
-      method: 'POST',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/users/',
-    )..data = _data;
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
-    try {
-      _value = ResponseAuthData.fromJson(_result.data!);
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
-  }
-
-  @override
-  Future<List<ResponseUser>> getV1Me({
+  Future<ResponseUser> getV1Me({
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -226,12 +190,10 @@ class _UsersClient implements UsersClient {
       queryParameters: queryParameters,
       path: '/v1/me',
     )..data = _data;
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ResponseUser> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ResponseUser _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => ResponseUser.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = ResponseUser.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -241,7 +203,6 @@ class _UsersClient implements UsersClient {
 
   @override
   Future<ResponseUser> patchV1Me({
-    required String id,
     required InputUpdateUser body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
@@ -278,7 +239,6 @@ class _UsersClient implements UsersClient {
 
   @override
   Future<void> deleteV1Me({
-    required String id,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {

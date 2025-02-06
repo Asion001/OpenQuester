@@ -10,7 +10,7 @@ part 'input_update_user.g.dart';
 @Freezed()
 class InputUpdateUser with _$InputUpdateUser {
   const factory InputUpdateUser({
-    String? name,
+    String? username,
     String? email,
     DateTime? birthday,
     String? avatar,
