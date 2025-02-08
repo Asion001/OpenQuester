@@ -58,13 +58,6 @@ export class Environment {
   // Logs
   public LOG_LEVEL!: LogLevel;
 
-  // Discord
-  public DISCORD_CLIENT_ID!: number;
-  public DISCORD_CLIENT_SECRET!: string;
-  public DISCORD_CALLBACK_URL!: string;
-  public DISCORD_SUCCESS_REDIRECT_URL!: string;
-  public DISCORD_FAILURE_REDIRECT_URL!: string;
-
   private constructor() {
     //
   }
@@ -203,7 +196,6 @@ export class Environment {
     this.LOG_LEVEL = this.getEnvVar("LOG_LEVEL", "string", "info");
 
     this.loadRedis();
-    this.loadDiscord();
 
     this.CLIENT_URL = this.getEnvVar(
       "CLIENT_URL",
@@ -223,29 +215,6 @@ export class Environment {
     this.REDIS_HOST = this.getEnvVar("REDIS_HOST", "string", "localhost");
     this.REDIS_PORT = this.getEnvVar("REDIS_PORT", "number", 6379);
     this.REDIS_DB_NUMBER = this.getEnvVar("REDIS_DB_NUMBER", "number", 0);
-  }
-
-  private loadDiscord() {
-    this.DISCORD_CLIENT_ID = this.getEnvVar("DISCORD_CLIENT_ID", "number");
-    this.DISCORD_CLIENT_SECRET = this.getEnvVar(
-      "DISCORD_CLIENT_SECRET",
-      "string"
-    );
-    this.DISCORD_CALLBACK_URL = this.getEnvVar(
-      "DISCORD_CALLBACK_URL",
-      "string",
-      `${this.SERVER_URL}/v1/auth/discord`
-    );
-    this.DISCORD_SUCCESS_REDIRECT_URL = this.getEnvVar(
-      "DISCORD_SUCCESSFUL_REDIRECT_URL",
-      "string",
-      `${this.CLIENT_URL}/`
-    );
-    this.DISCORD_FAILURE_REDIRECT_URL = this.getEnvVar(
-      "DISCORD_FAILURE_REDIRECT_URL",
-      "string",
-      `${this.CLIENT_URL}/`
-    );
   }
 
   private loadDB() {

@@ -1,4 +1,3 @@
-import { type SessionData } from "express-session";
 import { type Request, type Response, Router } from "express";
 
 import { type ApiContext } from "services/context/ApiContext";
@@ -46,10 +45,7 @@ export class FileRestApiController {
   private deleteFile = async (req: Request, res: Response) => {
     const validatedData = await this._validateParamsFilename(req);
 
-    await this._storageService.delete(
-      validatedData.filename,
-      req.session as SessionData
-    );
+    await this._storageService.delete(validatedData.filename, req.session);
 
     res.status(HttpStatus.NO_CONTENT).send({
       message: ts.localize(ClientResponse.DELETE_REQUEST_SENT, req.headers),

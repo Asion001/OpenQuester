@@ -1,4 +1,3 @@
-import { SessionData } from "express-session";
 import { type Request, type Response, Router } from "express";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 
@@ -46,7 +45,7 @@ export class PackageRestApiController {
 
     const data = await this._storageService.uploadPackage(
       validatedData.content,
-      req.session as SessionData
+      req.session
     );
     return res.status(HttpStatus.OK).send(data);
   };

@@ -15,12 +15,7 @@ import { AppDataSource } from "database/DataSource";
 import { Session } from "types/auth/session";
 
 const isPublicEndpoint = (url: string, method: string): boolean => {
-  const publicEndpoints = [
-    "v1/auth",
-    "v1/auth/discord",
-    "v1/api-docs",
-    "v1/users",
-  ];
+  const publicEndpoints = ["v1/auth", "v1/api-docs", "v1/users"];
 
   const conditionalEndpoints = [
     { url: "v1/packages", method: "GET" },
