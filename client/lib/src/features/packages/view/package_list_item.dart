@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
-class PackageListItemWidget extends WatchingWidget {
+class PackageListItemWidget extends StatelessWidget {
   const PackageListItemWidget({super.key, required this.item});
   final PackageListItem item;
 

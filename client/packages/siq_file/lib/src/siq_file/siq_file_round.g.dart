@@ -18,5 +18,5 @@ _$SiqFileRoundImpl _$$SiqFileRoundImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$SiqFileRoundImplToJson(_$SiqFileRoundImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'themes': instance.themes,
+      'themes': instance.themes.map((e) => e.toJson()).toList(),
     };

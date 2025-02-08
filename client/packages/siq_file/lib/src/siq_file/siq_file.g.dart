@@ -18,6 +18,6 @@ _$SiqFileImpl _$$SiqFileImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$SiqFileImplToJson(_$SiqFileImpl instance) =>
     <String, dynamic>{
-      'metadata': instance.metadata,
-      'rounds': instance.rounds,
+      'metadata': instance.metadata.toJson(),
+      'rounds': instance.rounds.map((e) => e.toJson()).toList(),
     };

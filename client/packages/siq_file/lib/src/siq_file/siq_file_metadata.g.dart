@@ -34,7 +34,7 @@ Map<String, dynamic> _$$SiqFileMetadataImplToJson(
       if (instance.title case final value?) 'title': value,
       if (instance.date?.toIso8601String() case final value?) 'date': value,
       if (instance.publisher case final value?) 'publisher': value,
-      if (instance.logo case final value?) 'logo': value,
+      if (instance.logo?.toJson() case final value?) 'logo': value,
       'tags': instance.tags,
       'authors': instance.authors,
       if (instance.language case final value?) 'language': value,

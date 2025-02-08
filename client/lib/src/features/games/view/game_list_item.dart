@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
-class GameListItemWidget extends WatchingWidget {
+class GameListItemWidget extends StatelessWidget {
   const GameListItemWidget({super.key, required this.item});
   final GameListItem item;
 

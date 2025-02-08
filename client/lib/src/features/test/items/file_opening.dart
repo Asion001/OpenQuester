@@ -53,11 +53,11 @@ class _FileOpeningState extends State<FileOpening> {
   Future<void> _openFile() async {
     DateTime now = DateTime.now();
 
-    final result = await FileService.pickFile();
-
     final pickedTime = DateTime.now().difference(now);
     now = DateTime.now();
 
+
+    final result = await FileService.pickFile();
     final file = result?.files.first;
     if (file == null) return;
 

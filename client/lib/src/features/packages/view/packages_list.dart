@@ -7,8 +7,17 @@ class PackagesListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PaginatedListWidget<PackagesListController, PackageListItem>(
-      itemBuilder: (context, item, index) => PackageListItemWidget(item: item),
+    return Column(
+      children: [
+        ListHeader(
+          title: LocaleKeys.home_tabs_packages.tr(),
+          onTap: () => PackageUploadRoute().push(context),
+        ),
+        PaginatedListWidget<PackagesListController, PackageListItem>(
+          itemBuilder: (context, item, index) =>
+              PackageListItemWidget(item: item),
+        ).expand(),
+      ],
     );
   }
 }

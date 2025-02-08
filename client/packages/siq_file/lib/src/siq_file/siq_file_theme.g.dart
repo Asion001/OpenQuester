@@ -20,5 +20,5 @@ Map<String, dynamic> _$$SiqFileThemeImplToJson(_$SiqFileThemeImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       if (instance.comment case final value?) 'comment': value,
-      'questions': instance.questions,
+      'questions': instance.questions.map((e) => e.toJson()).toList(),
     };

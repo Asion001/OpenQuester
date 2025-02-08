@@ -34,9 +34,10 @@ Map<String, dynamic> _$$SiqFileQuestionImplToJson(
       if (instance.text case final value?) 'text': value,
       if (instance.hostHint case final value?) 'hostHint': value,
       if (instance.playersHint case final value?) 'playersHint': value,
-      if (instance.questionFile case final value?) 'questionFile': value,
+      if (instance.questionFile?.toJson() case final value?)
+        'questionFile': value,
       if (instance.answerText case final value?) 'answerText': value,
-      if (instance.answerFile case final value?) 'answerFile': value,
+      if (instance.answerFile?.toJson() case final value?) 'answerFile': value,
     };
 
 const _$QuestionTypeEnumMap = {

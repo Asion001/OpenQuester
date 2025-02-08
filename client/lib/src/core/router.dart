@@ -25,6 +25,11 @@ class AppRouter extends RootStackRouter {
           path: '/test',
           fullscreenDialog: true,
         ),
+        AutoRoute(
+          page: PackageUploadRoute.page,
+          path: '/upload-package',
+          fullscreenDialog: true,
+        ),
       ];
 
   List<AutoRoute> get homeTabs => [

@@ -18,7 +18,7 @@ _$SiqFileFileObjectImpl _$$SiqFileFileObjectImplFromJson(
 Map<String, dynamic> _$$SiqFileFileObjectImplToJson(
         _$SiqFileFileObjectImpl instance) =>
     <String, dynamic>{
-      'file': instance.file,
+      'file': instance.file.toJson(),
       if (instance.displayTime?.inMicroseconds case final value?)
         'displayTime': value,
     };
