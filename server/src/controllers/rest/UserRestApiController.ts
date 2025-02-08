@@ -1,4 +1,3 @@
-import { SessionData } from "express-session";
 import { type Request, type Response, Router } from "express";
 
 import { type ApiContext } from "services/context/ApiContext";
@@ -175,7 +174,7 @@ export class UserRestApiController {
     } else {
       const user = await UserRepository.getUserBySession(
         this.ctx.db,
-        req.session as SessionData,
+        req.session,
         { select: ["id"] }
       );
       return user?.id ?? undefined;

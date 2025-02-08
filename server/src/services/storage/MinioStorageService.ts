@@ -1,7 +1,6 @@
 import * as Minio from "minio";
 import http from "http";
 import https from "https";
-import { type SessionData } from "express-session";
 
 import { IStorage } from "types/file/IStorage";
 import { IS3Context } from "types/file/IS3Context";
@@ -39,6 +38,7 @@ import {
   UPLOAD_FILE_LINK_EXPIRES_IN,
   UPLOAD_PACKAGE_LINKS_EXPIRES_IN,
 } from "constants/storage";
+import { Session } from "types/auth/session";
 
 const MINIO_PREFIX = "[MINIO]: ";
 
@@ -154,7 +154,7 @@ export class MinioStorageService implements IStorage {
     return link;
   }
 
-  public async delete(filename: string, session: SessionData) {
+  public async delete(filename: string, session: Session) {
     const usageRecords = await DependencyService.getFileUsage(
       this._db,
       filename
@@ -273,7 +273,7 @@ export class MinioStorageService implements IStorage {
 
   public async uploadPackage(
     content: OQContentStructure,
-    session: SessionData,
+    session: Session,
     expiresIn: number = UPLOAD_PACKAGE_LINKS_EXPIRES_IN
   ): Promise<IPackageUploadResponse> {
     const author = await UserRepository.getUserBySession(this._db, session);
@@ -297,7 +297,7 @@ export class MinioStorageService implements IStorage {
   }
 
   private async _handleAvatarRemove(
-    session: SessionData,
+    session: Session,
     filename: string,
     usage: UsageEntries
   ) {

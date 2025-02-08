@@ -16,6 +16,8 @@ export enum ClientResponse {
   NO_PERMISSION = "no_permission",
   LOGOUT_SUCCESS = "logout_success",
   DISCORD_AUTH_FAILED = "discord_auth_failed",
+  OAUTH_PROVIDER_NOT_SUPPORTED = "oauth_provider_not_supported",
+  SESSION_SAVING_ERROR = "session_saving_error",
 
   // Validation
   VALIDATION_ERROR = "validation_error",

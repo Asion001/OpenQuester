@@ -31,5 +31,7 @@
   "delete_request_sent": "Delete request sent",
   "user_permission_not_exists": "Permission %name with ID %id does not exists",
   "delete_from_package": "Files from packages can be deleted only with packages. File used in: %packages",
-  "unsupported_file_type": "Unsupported file type '%type'. File: '%file'"
+  "unsupported_file_type": "Unsupported file type '%type'. File: '%file'",
+  "oauth_provider_not_supported": "Given Oauth provider is not supported",
+  "session_saving_error": "Something went wrong during session save, please try again"
 }

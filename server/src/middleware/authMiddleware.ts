@@ -7,13 +7,12 @@ import { TranslateService as ts } from "services/text/TranslateService";
 import { RequestDataValidator } from "schemes/RequestDataValidator";
 import { ISession } from "types/ISession";
 import { ValueUtils } from "utils/ValueUtils";
-import { Environment } from "config/Environment";
 import { ServerResponse } from "enums/ServerResponse";
 import { Logger } from "utils/Logger";
 import { Database } from "database/Database";
 import { UserRepository } from "database/repositories/UserRepository";
-import { SessionData } from "express-session";
 import { AppDataSource } from "database/DataSource";
+import { Session } from "types/auth/session";
 
 const isPublicEndpoint = (url: string, method: string): boolean => {
   const publicEndpoints = [
@@ -58,7 +57,7 @@ export const verifySession = async (
 
   let session: ISession | undefined = undefined;
   try {
-    session = await validateSession(req.session as SessionData);
+    session = await validateSession(req.session);
   } catch (err: unknown) {
     return handleSessionValidationError(err, req, res);
   }
@@ -70,39 +69,25 @@ export const verifySession = async (
   // TODO: Get from cache when implemented
   const user = await UserRepository.getUserBySession(
     Database.getInstance(AppDataSource),
-    req.session as SessionData
+    req.session
   );
 
   if (!user) {
     return unauthorizedError(req, res);
   }
 
+  // Refresh session expire time
+  req.session.touch();
   next();
 };
 
-export const refreshSession = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (req.session) {
-    const now = new Date().getTime();
-    req.session.cookie.expires = new Date(
-      now + Environment.instance.SESSION_MAX_AGE
-    );
-  }
-  next();
-};
-
-function validateSession(session: SessionData) {
+function validateSession(session: Session) {
   return new RequestDataValidator<ISession>(
     {
       userId: session.userId,
-      expiresAt: new Date(String(session.cookie.expires)),
     },
     Joi.object({
       userId: Joi.number().required(),
-      expiresAt: Joi.alternatives().try(Joi.string(), Joi.date()).required(),
     })
   ).validate();
 }

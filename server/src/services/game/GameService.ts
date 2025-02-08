@@ -1,5 +1,3 @@
-import { SessionData } from "express-session";
-
 import { IGameCreateData } from "types/game/IGameCreate";
 import { IGameListItem } from "types/game/IGameListItem";
 import { UserRepository } from "database/repositories/UserRepository";
@@ -11,6 +9,7 @@ import { GameRepository } from "database/repositories/GameRepository";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
 import { ClientError } from "error/ClientError";
 import { ClientResponse } from "enums/ClientResponse";
+import { Session } from "types/auth/session";
 
 export class GameService {
   private _gameRepository?: GameRepository;
@@ -29,7 +28,7 @@ export class GameService {
   public async create(
     ctx: ApiContext,
     gameData: IGameCreateData,
-    session: SessionData
+    session: Session
   ) {
     const createdByUser = await UserRepository.getUserBySession(
       ctx.db,

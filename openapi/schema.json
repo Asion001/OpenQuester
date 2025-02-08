@@ -588,31 +588,27 @@
         }
       }
     },
-    "/v1/auth/discord": {
-      "get": {
-        "summary": "Initiate Discord OAuth",
+    "/v1/auth/oauth2": {
+      "post": {
+        "summary": "Logout user",
         "tags": ["Auth"],
-        "responses": {
-          "302": {
-            "description": "Redirect to Discord OAuth"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InputOauthLogin"
+              }
+            }
           }
-        }
-      }
-    },
-    "/v1/auth/discord/callback": {
-      "get": {
-        "summary": "Handle Discord OAuth callback",
-        "tags": ["Auth"],
+        },
         "responses": {
-          "302": {
-            "description": "Redirect to home page on successful authentication"
-          },
-          "401": {
-            "description": "Unauthorized - Discord authentication failed",
+          "200": {
+            "description": "User logged in successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DiscordAuthFailedResponse"
+                  "$ref": "#/components/schemas/LogoutResponse"
                 }
               }
             }
@@ -630,7 +626,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LogoutResponse"
+                  "$ref": "#/components/schemas/ResponseUser"
                 }
               }
             }
@@ -881,6 +877,26 @@
           }
         }
       },
+      "InputOauthLogin": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "example": "HSXxyt6nrbW5Gtqw5BWfHPYk9lxDOj",
+            "nullable": false
+          },
+          "tokenSchema": {
+            "type": "string",
+            "example": "Bearer",
+            "nullable": true
+          },
+          "oauthProvider": {
+            "type": "string",
+            "example": "discord",
+            "nullable": false
+          }
+        }
+      },
       "InputUpdateUser": {
         "type": "object",
         "properties": {
@@ -1120,6 +1136,11 @@
             "type": "string",
             "format": "date-time",
             "example": "2024-01-01T00:00:00Z"
+          },
+          "ageRestriction": {
+            "type": "string",
+            "enum": ["A18", "A16", "A12", "NONE"],
+            "example": "A18"
           },
           "currentRound": {
             "type": "integer",

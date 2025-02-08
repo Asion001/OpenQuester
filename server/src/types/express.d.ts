@@ -1,5 +1,7 @@
 import "express-session";
 
+import { Session } from "type/auth/session";
+
 declare module "express-session" {
   interface SessionData {
     userId: number;
@@ -9,7 +11,7 @@ declare module "express-session" {
 declare global {
   namespace Express {
     interface Request {
-      session: session.Session & Partial<session.SessionData>;
+      session: Session;
     }
   }
 }

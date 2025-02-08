@@ -11,19 +11,14 @@ import { ErrorController } from "error/ErrorController";
 import { TranslateService as ts } from "services/text/TranslateService";
 import { Permission } from "database/models/Permission";
 import { ClientError } from "error/ClientError";
-import { SessionData } from "express-session";
 
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await UserRepository.getUserBySession(
-        db,
-        req.session as SessionData,
-        {
-          select: ["id"],
-          relations: ["permissions"],
-        }
-      );
+      const user = await UserRepository.getUserBySession(db, req.session, {
+        select: ["id"],
+        relations: ["permissions"],
+      });
 
       if (!user) {
         throw new ClientError(
@@ -66,7 +61,7 @@ export function checkPermissionWithId(db: Database, permission: Permissions) {
 
         const requestUser = await UserRepository.getUserBySession(
           db,
-          req.session as SessionData,
+          req.session,
           {
             select: ["id"],
             relations: ["permissions"],

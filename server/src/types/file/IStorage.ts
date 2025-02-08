@@ -1,4 +1,3 @@
-import { SessionData } from "express-session";
 import { User } from "database/models/User";
 import { Package } from "database/models/Package";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
@@ -9,6 +8,7 @@ import { IPackageListItem } from "types/game/items/IPackageIListItem";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
 import { IPackageUploadResponse } from "types/package/IPackageUploadResponse";
 import { EFileSource } from "enums/file/EFileSource";
+import { Session } from "types/auth/session";
 
 export interface IStorage {
   /** @returns presigned url */
@@ -30,13 +30,13 @@ export interface IStorage {
     user?: User,
     pack?: Package
   ): Promise<string>;
-  delete(filename: string, session: SessionData): Promise<void>;
+  delete(filename: string, session: Session): Promise<void>;
   // TODO: Create separate service for packages
   getPackage(id: number): Promise<IPackageListItem>;
   /** @returns object with filename as key and link to upload as value */
   uploadPackage(
     content: OQContentStructure,
-    session: SessionData,
+    session: Session,
     expiresIn?: number
   ): Promise<IPackageUploadResponse>;
   listPackages(
