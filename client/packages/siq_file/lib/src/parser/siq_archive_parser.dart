@@ -3,18 +3,20 @@ import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
+import 'package:openapi/openapi.dart';
+import 'package:siq_file/src/extensions.dart';
 
-import '../siq_file/siq_file.dart';
+
 import 'content_xml_parser.dart';
 
 class SiqArchiveParser {
   SiqArchiveParser(this._file);
 
   final FileStream _file;
-  SiqFile? _siqFile;
-  SiqFile get file => _siqFile!;
+  OQContentStructure? _siqFile;
+  OQContentStructure get file => _siqFile!;
 
-  Future<SiqFile> parse({bool hashFiles = false}) async {
+  Future<OQContentStructure> parse({bool hashFiles = false}) async {
     final targetStream = await InputFileStream.asRamFile(
       _file.stream.map(Uint8List.fromList),
       _file.fileLength,
@@ -48,7 +50,7 @@ class SiqArchiveParser {
       if (file == null) return file;
 
       final archiveFile =
-          archive.firstWhereOrNull((e) => e.name == file.file.fullPath);
+          archive.firstWhereOrNull((e) => e.name == file!.file.fullPath);
       if (archiveFile == null) return file;
 
       //TODO: make this more memory efficient

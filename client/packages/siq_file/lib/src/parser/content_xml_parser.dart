@@ -1,14 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:openapi/openapi.dart';
 import 'package:siq_file/src/converters/file_converter.dart';
 import 'package:siq_file/src/extensions.dart';
-import 'package:siq_file/src/siq_file/siq_file_theme.dart';
 import 'package:xml/xml.dart';
 
 import '../converters/time_converter.dart';
-import '../siq_file/file_object.dart';
-import '../siq_file/siq_file.dart';
-import '../siq_file/siq_file_file_object.dart';
-import '../siq_file/siq_file_question.dart';
 
 class ContentXmlParser {
   ContentXmlParser(String rawFile) {
@@ -18,23 +14,23 @@ class ContentXmlParser {
     final roundsXml = package.getElement('rounds')!;
     final rounds = roundsXml.children.map(_parseRound).toList();
 
-    _siqFile = SiqFile(metadata: metadata, rounds: rounds);
+    _siqFile = OQContentStructure(metadata: metadata, rounds: rounds);
   }
 
-  SiqFileRound _parseRound(XmlNode round) {
+  OQRoundStructure _parseRound(XmlNode round) {
     final name = round.getAttribute('name') ?? '-';
     final themes =
         round.children.map((e) => _parseTheme(e.getElement('theme')!)).toList();
-    return SiqFileRound(name: name, themes: themes);
+    return OQRoundStructure(name: name, themes: themes);
   }
 
-  SiqFileTheme _parseTheme(XmlElement theme) {
+  OQThemeStructure _parseTheme(XmlElement theme) {
     final name = theme.getAttribute('name') ?? '-';
     final comment = _getComment(theme);
     final questions =
         theme.getElement('questions')?.children.map(_parseQuestion).toList() ??
             [];
-    return SiqFileTheme(
+    return OQThemeStructure(
       name: name,
       comment: comment,
       questions: questions,
@@ -47,7 +43,7 @@ class ContentXmlParser {
     return comment;
   }
 
-  SiqFileQuestion _parseQuestion(XmlNode question) {
+  OQQuestionsStructure _parseQuestion(XmlNode question) {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
     final params = question.getElement('params');
 
@@ -76,7 +72,7 @@ class ContentXmlParser {
     final hostHint = right.join(' / ');
     final answerText = answerItemType != null ? null : answerItem?.innerText;
 
-    return SiqFileQuestion(
+    return OQQuestionsStructure(
       price: price,
       text: text,
       type: questionType,
@@ -84,16 +80,19 @@ class ContentXmlParser {
       answerFile: answerFile,
       hostHint: hostHint,
       answerText: answerText,
+      //TODO: Add playersHint
+      playersHint: '',
     );
   }
 
-  SiqFileFileObject? parseFile(XmlElement? item) {
+  OQFile? parseFile(XmlElement? item) {
     final itemType = _getFileType(item);
 
     final file = itemType == null
         ? null
-        : SiqFileFileObject(
-            file: FileObject(path: item!.innerText, type: itemType));
+        : OQFile(
+            file: OQFileContentStructure(
+                sha256: item!.innerText, type: itemType));
 
     return file;
   }
@@ -104,7 +103,7 @@ class ContentXmlParser {
     return itemType;
   }
 
-  SiqFileMetadata _parseMetadata(XmlElement package) {
+  OQMetadataStructure _parseMetadata(XmlElement package) {
     final packageAtributes =
         package.attributes.map((e) => MapEntry(e.localName, e.value));
     final Map<String, dynamic> json = Map.fromEntries(packageAtributes);
@@ -127,7 +126,7 @@ class ContentXmlParser {
     // Convert objects
     _convertObjects(json);
 
-    final metadata = SiqFileMetadata.fromJson(json);
+    final metadata = OQMetadataStructure.fromJson(json);
     return metadata;
   }
 
@@ -148,6 +147,6 @@ class ContentXmlParser {
     return converter(value);
   }
 
-  SiqFile? _siqFile;
-  SiqFile get siqFile => _siqFile!;
+  OQContentStructure? _siqFile;
+  OQContentStructure get siqFile => _siqFile!;
 }

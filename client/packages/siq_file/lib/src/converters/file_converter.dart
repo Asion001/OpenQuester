@@ -1,15 +1,15 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:openapi/openapi.dart';
 
-import '../siq_file/file_object.dart';
-
-class ImageFileConverter implements JsonConverter<FileObject, String> {
+class ImageFileConverter
+    implements JsonConverter<OQFileContentStructure, String> {
   const ImageFileConverter();
 
   @override
-  FileObject fromJson(String value) {
-    return FileObject(path: value, type: FileType.image);
+  OQFileContentStructure fromJson(String value) {
+    return OQFileContentStructure(sha256: value, type: FileType.image);
   }
 
   @override
-  String toJson(FileObject object) => object.path;
+  String toJson(OQFileContentStructure object) => object.sha256;
 }

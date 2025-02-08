@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:openquester/common_imports.dart';
 import 'package:siq_file/siq_file.dart';
-
-import '../../../connection/files/file_service.dart';
 
 class FileOpening extends StatefulWidget {
   const FileOpening({super.key});
@@ -14,7 +13,7 @@ class FileOpening extends StatefulWidget {
 }
 
 class _FileOpeningState extends State<FileOpening> {
-  SiqFile? siqFile;
+  OQContentStructure? siqFile;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,6 @@ class _FileOpeningState extends State<FileOpening> {
 
     final pickedTime = DateTime.now().difference(now);
     now = DateTime.now();
-
 
     final result = await FileService.pickFile();
     final file = result?.files.first;

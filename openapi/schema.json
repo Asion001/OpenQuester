@@ -1005,7 +1005,7 @@
           }
         }
       },
-      "OQQuestionFile": {
+      "OQFile": {
         "type": "object",
         "properties": {
           "file": {
@@ -1014,24 +1014,13 @@
           },
           "displayTime": {
             "type": "integer",
-            "example": 5000
+            "example": 5000,
+            "nullable": true
           },
           "answerDelay": {
             "type": "integer",
-            "example": 2500
-          }
-        }
-      },
-      "OQAnswerFile": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "object",
-            "$ref": "#/components/schemas/OQFileContentStructure"
-          },
-          "displayTime": {
-            "type": "integer",
-            "example": 5000
+            "example": 2500,
+            "nullable": true
           }
         }
       },
@@ -1044,7 +1033,8 @@
           },
           "type": {
             "type": "string",
-            "example": "image"
+            "example": "image",
+            "enum": ["image", "video", "audio"]
           }
         }
       },
@@ -1072,7 +1062,8 @@
           },
           "comment": {
             "type": "string",
-            "example": "Theme comment"
+            "example": "Theme comment",
+            "nullable": true
           },
           "questions": {
             "type": "array",
@@ -1091,11 +1082,13 @@
           },
           "type": {
             "type": "string",
-            "example": "regular"
+            "example": "regular",
+            "enum": ["regular", "stake", "noRisk"]
           },
           "text": {
             "type": "string",
-            "example": "Question text"
+            "example": "Question text",
+            "nullable": true
           },
           "hostHint": {
             "type": "string",
@@ -1103,19 +1096,21 @@
           },
           "playersHint": {
             "type": "string",
-            "example": "Question comment for players"
+            "example": "Question comment for players",
+            "nullable": true
           },
           "answerText": {
             "type": "string",
-            "example": "Actual answer"
+            "example": "Actual answer",
+            "nullable": true
           },
           "questionFile": {
             "type": "object",
-            "$ref": "#/components/schemas/OQQuestionFile"
+            "$ref": "#/components/schemas/OQFile"
           },
           "answerFile": {
             "type": "object",
-            "$ref": "#/components/schemas/OQAnswerFile"
+            "$ref": "#/components/schemas/OQFile"
           }
         }
       },
