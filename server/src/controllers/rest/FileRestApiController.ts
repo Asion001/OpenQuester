@@ -45,7 +45,7 @@ export class FileRestApiController {
   private deleteFile = async (req: Request, res: Response) => {
     const validatedData = await this._validateParamsFilename(req);
 
-    await this._storageService.delete(validatedData.filename, req.headers);
+    await this._storageService.delete(validatedData.filename, req.session);
 
     res.status(HttpStatus.NO_CONTENT).send({
       message: ts.localize(ClientResponse.DELETE_REQUEST_SENT, req.headers),

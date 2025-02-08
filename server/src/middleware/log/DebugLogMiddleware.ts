@@ -33,27 +33,20 @@ export const logMiddleware = async (
 function log(req: Request, responseBody: any) {
   const level = Environment.instance.LOG_LEVEL;
 
-  ///////////////// Debug logs /////////////////
   if (Logger.checkAccess(level, "debug")) {
-    // Log request path
     Logger.debug(`Request path: ${JSON.stringify(req.originalUrl)}`);
 
-    ///////////////// Verbose logs /////////////////
     if (Logger.checkAccess(level, "verbose")) {
-      // Log query params
       Logger.debug(`Query parameters: ${JSON.stringify(req.query)}`);
 
-      // Log headers
       if (!ValueUtils.isEmpty(req.headers)) {
         Logger.debug(`Request headers: ${JSON.stringify(req.headers)}`);
       }
 
-      // Log request body
       if (!ValueUtils.isEmpty(req.body)) {
         Logger.debug(`Request body: ${JSON.stringify(req.body)}`);
       }
 
-      // Log response body
       Logger.debug(`Response body: ${JSON.stringify(responseBody)}`);
       console.log("\n");
     }

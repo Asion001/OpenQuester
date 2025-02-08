@@ -76,7 +76,7 @@ export class GameRestApiController {
     const result = await this._gameService.create(
       this.ctx,
       validatedData,
-      req.headers
+      req.session
     );
     return res.status(HttpStatus.OK).send(result);
   };

@@ -45,7 +45,7 @@ export class PackageRestApiController {
 
     const data = await this._storageService.uploadPackage(
       validatedData.content,
-      req.headers
+      req.session
     );
     return res.status(HttpStatus.OK).send(data);
   };

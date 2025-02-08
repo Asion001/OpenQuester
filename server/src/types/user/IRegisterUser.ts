@@ -1,9 +1,9 @@
 import { File } from "database/models/File";
 
 export interface IRegisterUser {
-  name: string;
-  email: string;
-  password: string;
-  birthday?: Date;
-  avatar?: File;
+  username: string;
+  email?: string | null;
+  discord_id?: string | null;
+  birthday?: Date | null;
+  avatar?: File | null;
 }

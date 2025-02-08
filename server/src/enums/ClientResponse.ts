@@ -7,14 +7,17 @@ export enum ClientResponse {
   ALREADY_LOGGED_IN = "user_logged_in",
   USER_ALREADY_EXISTS = "user_already_exists",
   NO_USER_DATA = "no_user_data",
-  WRONG_PASSWORD = "wrong_password",
+  BAD_DATE_FORMAT = "bad_date_format",
 
   // Auth
   NO_REFRESH = "no_refresh",
-  INVALID_REFRESH = "invalid_refresh",
-  INVALID_TOKEN = "invalid_token",
+  INVALID_SESSION = "invalid_session",
   ACCESS_DENIED = "access_denied",
   NO_PERMISSION = "no_permission",
+  LOGOUT_SUCCESS = "logout_success",
+  DISCORD_AUTH_FAILED = "discord_auth_failed",
+  OAUTH_PROVIDER_NOT_SUPPORTED = "oauth_provider_not_supported",
+  SESSION_SAVING_ERROR = "session_saving_error",
 
   // Validation
   VALIDATION_ERROR = "validation_error",
