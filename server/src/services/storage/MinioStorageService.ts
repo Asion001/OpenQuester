@@ -1,5 +1,5 @@
 import * as Minio from "minio";
-import http, { IncomingHttpHeaders } from "http";
+import http from "http";
 import https from "https";
 
 import { IStorage } from "types/file/IStorage";
@@ -31,6 +31,14 @@ import { IPackageListItem } from "types/game/items/IPackageIListItem";
 import { EAgeRestriction } from "enums/game/EAgeRestriction";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
 import { IPackageUploadResponse } from "types/package/IPackageUploadResponse";
+import { EFileSource } from "enums/file/EFileSource";
+import { HttpStatus } from "enums/HttpStatus";
+import {
+  GET_FILE_LINK_EXPIRES_IN,
+  UPLOAD_FILE_LINK_EXPIRES_IN,
+  UPLOAD_PACKAGE_LINKS_EXPIRES_IN,
+} from "constants/storage";
+import { Session } from "types/auth/session";
 
 const MINIO_PREFIX = "[MINIO]: ";
 
@@ -90,7 +98,7 @@ export class MinioStorageService implements IStorage {
 
   public async get(
     filename: string,
-    expiresIn: number = 60 * 30 // Default: 30 min
+    expiresIn: number = GET_FILE_LINK_EXPIRES_IN
   ) {
     const filePath = StorageUtils.parseFilePath(filename);
     return this._client.presignedGetObject(
@@ -102,7 +110,7 @@ export class MinioStorageService implements IStorage {
 
   public async upload(
     filename: string,
-    expiresIn: number = 30 // Default: 30 sec
+    expiresIn: number = UPLOAD_FILE_LINK_EXPIRES_IN
   ) {
     return this.performFileUpload(filename, expiresIn);
   }
@@ -110,9 +118,14 @@ export class MinioStorageService implements IStorage {
   public async performFileUpload(
     filename: string,
     expiresIn: number,
+    source?: EFileSource,
     user?: User,
     pack?: Package
   ) {
+    if (!source) {
+      source = EFileSource.S3;
+    }
+
     const fileExtension = ValueUtils.getFileExtension(filename);
 
     if (!this.ALLOWED_TYPES.has(fileExtension)) {
@@ -131,7 +144,8 @@ export class MinioStorageService implements IStorage {
 
     const file = await this._writeFile(
       filenameWithPath.replace(filename, ""),
-      filename
+      filename,
+      source
     );
 
     if (user || pack) {
@@ -140,7 +154,7 @@ export class MinioStorageService implements IStorage {
     return link;
   }
 
-  public async delete(filename: string, headers: IncomingHttpHeaders) {
+  public async delete(filename: string, session: Session) {
     const usageRecords = await DependencyService.getFileUsage(
       this._db,
       filename
@@ -179,11 +193,11 @@ export class MinioStorageService implements IStorage {
     }
 
     if (usedByUsers) {
-      result.removed = await this._handleAvatarRemove(headers, filename, usage);
+      result.removed = await this._handleAvatarRemove(session, filename, usage);
     }
 
     if (!result.removed) {
-      throw new ClientError(ClientResponse.NO_PERMISSION);
+      throw new ClientError(ClientResponse.NO_PERMISSION, HttpStatus.FORBIDDEN);
     }
 
     const file = await this._fileRepository.getFileByFilename(filename);
@@ -220,7 +234,7 @@ export class MinioStorageService implements IStorage {
       title: pack.title,
       author: {
         id: pack.author.id,
-        name: pack.author.name,
+        username: pack.author.username,
       },
     };
   }
@@ -245,7 +259,7 @@ export class MinioStorageService implements IStorage {
           title: pack.title,
           author: {
             id: pack.author.id,
-            name: pack.author.name,
+            username: pack.author.username,
           },
         };
       }
@@ -259,13 +273,10 @@ export class MinioStorageService implements IStorage {
 
   public async uploadPackage(
     content: OQContentStructure,
-    headers: IncomingHttpHeaders,
-    expiresIn: number = 60 * 5 // Default: 5 min
+    session: Session,
+    expiresIn: number = UPLOAD_PACKAGE_LINKS_EXPIRES_IN
   ): Promise<IPackageUploadResponse> {
-    const author = await UserRepository.getUserByHeader(
-      this._db,
-      headers.authorization
-    );
+    const author = await UserRepository.getUserBySession(this._db, session);
 
     if (!author || !author.id) {
       throw new ClientError(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
@@ -286,15 +297,13 @@ export class MinioStorageService implements IStorage {
   }
 
   private async _handleAvatarRemove(
-    headers: IncomingHttpHeaders,
+    session: Session,
     filename: string,
     usage: UsageEntries
   ) {
-    const user = await UserRepository.getUserByHeader(
-      this._db,
-      headers.authorization,
-      { relations: ["permissions"] }
-    );
+    const user = await UserRepository.getUserBySession(this._db, session, {
+      relations: ["permissions"],
+    });
 
     if (!user) {
       return false;
@@ -338,7 +347,11 @@ export class MinioStorageService implements IStorage {
     return this._fileUsageRepository.writeUsage(file, user, pack);
   }
 
-  private async _writeFile(path: string, filename: string) {
+  private async _writeFile(
+    path: string,
+    filename: string,
+    source: EFileSource
+  ) {
     try {
       await this._client.statObject(this._s3Context.bucket, path + filename);
       Logger.pink(`Duplicated file upload: ${path + filename}`, MINIO_PREFIX);
@@ -346,6 +359,6 @@ export class MinioStorageService implements IStorage {
     } catch {
       //
     }
-    return this._fileRepository.writeFile(path, filename);
+    return this._fileRepository.writeFile(path, filename, source);
   }
 }

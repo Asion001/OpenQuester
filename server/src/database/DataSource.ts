@@ -1,4 +1,6 @@
 import "reflect-metadata";
+import { DataSource } from "typeorm";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 import { Logger } from "utils/Logger";
 import { Environment } from "config/Environment";
@@ -6,10 +8,8 @@ import { ServerResponse } from "enums/ServerResponse";
 
 // Models
 import { User } from "database/models/User";
-import { DataSource } from "typeorm";
 import { File } from "database/models/File";
 import { Permission } from "database/models/Permission";
-import { UserPermissions } from "database/models/UserPermission";
 import { Package } from "database/models/Package";
 import { FileUsage } from "database/models/FileUsage";
 
@@ -23,6 +23,7 @@ import { ChangePermissionValidation_0_3_0_1729181792142 as changePermissionValid
 import { AddDeleteFilePermission_0_3_9_1730832569761 as addDeletePermission } from "database/migrations/0.3.9_AddDeleteFilePermission";
 import { AddFileUsageTable_1731771003354 as addFileUsageTable } from "database/migrations/0.3.9_Part2AddFileUsageTable";
 import { RenameAuthorAndAvatarId_1734207358779 as renameAuthorAndAvatarId } from "database/migrations/0.3.9_Part3RenameAuthorId";
+import { UpdateUserAndFileAndAddDiscordId_0_8_2_1738571232826 as updateUserAndFileAndAddDiscordId } from "database/migrations/0.8.2_UpdateUserAndFileAndAddDiscordId";
 
 // Init env
 const env = Environment.instance;
@@ -50,7 +51,7 @@ export const AppDataSource = new DataSource({
   database: env.DB_NAME,
   synchronize: false,
   logging: env.DB_LOGGER,
-  entities: [User, File, Permission, UserPermissions, Package, FileUsage],
+  entities: [User, File, Permission, Package, FileUsage],
   migrations: [
     createUserAndFileTables,
     createPermissionTable,
@@ -61,8 +62,10 @@ export const AppDataSource = new DataSource({
     addDeletePermission,
     addFileUsageTable,
     renameAuthorAndAvatarId,
+    updateUserAndFileAndAddDiscordId,
   ],
   poolSize: 25,
   migrationsRun: true,
   subscribers: [],
+  namingStrategy: new SnakeNamingStrategy(),
 });

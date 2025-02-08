@@ -5,9 +5,9 @@ import { Permission } from "database/models/Permission";
 /** All possible user fields */
 export interface IUserModel extends IBaseModel {
   id?: number;
-  name: string;
-  email?: string;
-  password: string;
+  username: string;
+  email?: string | null;
+  discord_id?: string | null;
   birthday?: Date | null;
   avatar?: File | null;
   permissions?: Permission[];

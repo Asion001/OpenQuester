@@ -7,6 +7,9 @@ export enum ServerResponse {
   // Validation
   NO_SCHEMA = "No validation schema",
 
+  // Session
+  UNABLE_TO_DESTROY_SESSION = "Session '%id' of user '%userId' was unable to destroy",
+
   // Storage
   UNSUPPORTED_STORAGE_NAME = "Unsupported storage name: %name",
   UNSUPPORTED_STORAGE_TYPE = "Unsupported storage type: %type",
@@ -20,6 +23,9 @@ export enum ServerResponse {
   INVALID_DATA_SOURCE = "Data source is invalid",
   DB_NOT_CONNECTED = "DB is not connected",
   NOT_INITIALIZED = "Data source is not initialized, timeout reached",
+
+  // Redis
+  REDIS_CONNECTION_TIMEOUT = "Redis connection timeout",
 
   // Environment
   FAILED_TO_LOAD_ENV = "Failed to load environment variables, closing...",

@@ -12,10 +12,14 @@ import { ServerResponse } from "enums/ServerResponse";
 import { ServerError } from "error/ServerError";
 import { LogLevel } from "types/log/log";
 import { TemplateUtils } from "utils/TemplateUtils";
-import { JWTUtils } from "utils/JWTUtils";
-import { JWT_SECRET_REDIS_KEY } from "constants/jwt";
+import { SESSION_SECRET_REDIS_KEY } from "constants/session";
+import { SessionUtils } from "utils/SessionUtils";
 
-const ENV_TYPES = ["local", "prod", "test"];
+export enum ENV_TYPES {
+  LOCAL = "local",
+  PROD = "prod",
+  TEST = "test",
+}
 const ENV_PREFIX = "[ENV]: ";
 
 /**
@@ -23,9 +27,13 @@ const ENV_PREFIX = "[ENV]: ";
  * All `process.env` variables should be retrieved only trough this class.
  */
 export class Environment {
-  private _type!: string;
+  private _type!: ENV_TYPES;
   /** Used for singleton implementation */
   private static _instance: Environment | undefined = undefined;
+
+  // URLs
+  public CLIENT_URL!: string;
+  public SERVER_URL!: string;
 
   // DB vars
   public DB_TYPE!: string;
@@ -43,18 +51,9 @@ export class Environment {
   public REDIS_PORT!: number;
   public REDIS_DB_NUMBER!: number;
 
-  // JWT vars
-  public JWT_SECRET!: string;
-  public JWT_SCHEME!: string;
-  public JWT_REFRESH_SECRET!: string;
-  public JWT_EXPIRES_IN!: string;
-  public JWT_REFRESH_EXPIRES_IN!: string;
-  public JWT_TOKEN_OPTIONS!: {
-    secret: string;
-    refreshSecret: string;
-    expiresIn: string;
-    refreshExpiresIn: string;
-  };
+  // Session
+  public SESSION_SECRET!: string;
+  public SESSION_MAX_AGE!: number;
 
   // Logs
   public LOG_LEVEL!: LogLevel;
@@ -147,38 +146,20 @@ export class Environment {
     }
   }
 
-  public async loadJWTConfig(length: number, redisClient: Redis) {
-    const secret = await redisClient.get(JWT_SECRET_REDIS_KEY);
+  public async loadSessionConfig(length: number, redisClient: Redis) {
+    const secret = await redisClient.get(SESSION_SECRET_REDIS_KEY);
     if (secret) {
-      this.JWT_SECRET = secret;
+      this.SESSION_SECRET = secret;
     } else {
-      this.JWT_SECRET = await JWTUtils.generateSecret(length);
-      await redisClient.set(JWT_SECRET_REDIS_KEY, this.JWT_SECRET);
+      this.SESSION_SECRET = await SessionUtils.generateSecret(length);
+      await redisClient.set(SESSION_SECRET_REDIS_KEY, this.SESSION_SECRET);
     }
 
-    this.JWT_REFRESH_SECRET = this.getEnvVar(
-      "JWT_REFRESH_SECRET",
-      ["string", "number"],
-      this.JWT_SECRET
+    this.SESSION_MAX_AGE = this.getEnvVar(
+      "SESSION_MAX_AGE",
+      "number",
+      24 * 30 * 24 * 60 * 60 * 1000 // 2 years
     );
-    this.JWT_EXPIRES_IN = this.getEnvVar(
-      "JWT_EXPIRES_IN",
-      ["string", "number"],
-      "1h"
-    );
-    this.JWT_REFRESH_EXPIRES_IN = this.getEnvVar(
-      "JWT_REFRESH_EXPIRES_IN",
-      ["string", "number"],
-      "75 days"
-    );
-    this.JWT_SCHEME = this.getEnvVar("JWT_SCHEME", "string", "Bearer");
-
-    this.JWT_TOKEN_OPTIONS = {
-      secret: this.JWT_SECRET,
-      expiresIn: this.JWT_EXPIRES_IN,
-      refreshSecret: this.JWT_REFRESH_SECRET,
-      refreshExpiresIn: this.JWT_REFRESH_EXPIRES_IN,
-    };
   }
 
   /**
@@ -191,10 +172,11 @@ export class Environment {
 
     this._type = this.getEnvVar("ENV", "string", "prod");
 
-    if (!ENV_TYPES.includes(this._type)) {
+    const envTypes = [...Object.values(ENV_TYPES)];
+    if (!envTypes.includes(this._type)) {
       throw new ServerError(
         TemplateUtils.text(ServerResponse.INVALID_ENV_TYPE, {
-          types: ENV_TYPES.join(", "),
+          types: envTypes.join(", "),
           type: this._type,
         })
       );
@@ -214,6 +196,17 @@ export class Environment {
     this.LOG_LEVEL = this.getEnvVar("LOG_LEVEL", "string", "info");
 
     this.loadRedis();
+
+    this.CLIENT_URL = this.getEnvVar(
+      "CLIENT_URL",
+      "string",
+      "http://localhost:3000"
+    );
+    this.SERVER_URL = this.getEnvVar(
+      "SERVER_URL",
+      "string",
+      "http://localhost:3000"
+    );
   }
 
   private loadRedis() {

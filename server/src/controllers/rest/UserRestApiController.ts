@@ -8,25 +8,19 @@ import { checkPermissionWithId } from "middleware/permission/PermissionMiddlewar
 import { checkPermission } from "middleware/permission/PermissionMiddleware";
 import { Permissions } from "enums/Permissions";
 import { TranslateService as ts } from "services/text/TranslateService";
-import { validateTokenForAuth } from "middleware/authMiddleware";
 import { PaginationSchema } from "schemes/pagination/PaginationSchema";
 import { User } from "database/models/User";
 import { File } from "database/models/File";
 import { EPaginationOrder } from "types/pagination/IPaginationOpts";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 import { RequestDataValidator } from "schemes/RequestDataValidator";
-import { IRegisterUser } from "types/user/IRegisterUser";
-import {
-  userIdScheme,
-  userRegisterScheme,
-  userUpdateScheme,
-} from "schemes/user/userSchemes";
+import { userIdScheme, userUpdateScheme } from "schemes/user/userSchemes";
 import { UserRepository } from "database/repositories/UserRepository";
 import { ClientError } from "error/ClientError";
 import { IUpdateUserDataInput } from "types/user/IUpdateUserDataInput";
 import { FileRepository } from "database/repositories/FileRepository";
 import { ValueUtils } from "utils/ValueUtils";
-import { IRegisterUserInput } from "types/user/IRegisterUserInput";
+import { IUpdateUserData } from "types/user/IUpdateUserData";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -56,8 +50,6 @@ export class UserRestApiController {
       asyncHandler(this.listUsers)
     );
 
-    router.post("/", validateTokenForAuth, asyncHandler(this.register));
-
     router.get(
       "/:id",
       checkPermissionWithId(this.ctx.db, Permissions.GET_ANOTHER_USER),
@@ -76,36 +68,6 @@ export class UserRestApiController {
       asyncHandler(this.deleteUser)
     );
   }
-
-  private register = async (req: Request, res: Response) => {
-    const validatedData = await new RequestDataValidator<IRegisterUserInput>(
-      req.body,
-      userRegisterScheme()
-    ).validate();
-
-    let avatarFile: File | null = null;
-
-    if (Object.keys(validatedData).length < 1) {
-      throw new ClientError(ClientResponse.NO_USER_DATA);
-    }
-
-    if (validatedData.avatar) {
-      const fileRepo = FileRepository.getRepository(this.ctx.db);
-      avatarFile = await fileRepo.getFileByFilename(validatedData.avatar);
-    }
-
-    if (ValueUtils.isBad(avatarFile)) {
-      throw new ClientError(ClientResponse.NO_AVATAR);
-    }
-
-    const registerData: IRegisterUser = {
-      ...validatedData,
-      avatar: avatarFile,
-    };
-
-    const result = await this._userService.register(this.ctx, registerData);
-    return res.status(HttpStatus.CREATED).send(result);
-  };
 
   private getUser = async (req: Request, res: Response) => {
     const id: number = await this._getUserId(req);
@@ -143,16 +105,24 @@ export class UserRestApiController {
     if (validatedData.avatar) {
       const fileRepo = FileRepository.getRepository(this.ctx.db);
       avatarFile = await fileRepo.getFileByFilename(validatedData.avatar);
+
+      if (ValueUtils.isBad(avatarFile)) {
+        throw new ClientError(ClientResponse.NO_AVATAR);
+      }
     }
 
-    if (ValueUtils.isBad(avatarFile)) {
-      throw new ClientError(ClientResponse.NO_AVATAR);
+    const updateData: IUpdateUserData = {
+      id,
+      email: validatedData.email,
+      username: validatedData.username,
+      birthday: validatedData.birthday,
+    };
+
+    if (avatarFile) {
+      updateData.avatar = avatarFile;
     }
 
-    const result = await this._userService.update(this.ctx, {
-      ...validatedData,
-      avatar: avatarFile,
-    });
+    const result = await this._userService.update(this.ctx, updateData);
 
     return res.status(HttpStatus.OK).send(result);
   };
@@ -181,7 +151,7 @@ export class UserRestApiController {
         "id",
         "is_deleted",
         "created_at",
-        "name",
+        "username",
         "email",
         "updated_at",
       ],
@@ -199,15 +169,15 @@ export class UserRestApiController {
   };
 
   private async _getUserId(req: Request) {
-    if (req.params.id) {
+    if (req.params && req.params.id) {
       return Number(req.params.id);
     } else {
-      const user = await UserRepository.getUserByHeader(
+      const user = await UserRepository.getUserBySession(
         this.ctx.db,
-        req.headers.authorization,
+        req.session,
         { select: ["id"] }
       );
-      return user.id;
+      return user?.id ?? undefined;
     }
   }
 }

@@ -15,14 +15,10 @@ import { ClientError } from "error/ClientError";
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await UserRepository.getUserByHeader(
-        db,
-        req.headers?.authorization,
-        {
-          select: ["id"],
-          relations: ["permissions"],
-        }
-      );
+      const user = await UserRepository.getUserBySession(db, req.session, {
+        select: ["id"],
+        relations: ["permissions"],
+      });
 
       if (!user) {
         throw new ClientError(
@@ -35,7 +31,7 @@ export function checkPermission(db: Database, permission: Permissions) {
         return next();
       }
 
-      return res.status(HttpStatus.BAD_REQUEST).send({
+      return res.status(HttpStatus.FORBIDDEN).send({
         error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
       });
     } catch (err: unknown) {
@@ -63,9 +59,9 @@ export function checkPermissionWithId(db: Database, permission: Permissions) {
           relations: ["permissions"],
         });
 
-        const requestUser = await UserRepository.getUserByHeader(
+        const requestUser = await UserRepository.getUserBySession(
           db,
-          req.headers?.authorization,
+          req.session,
           {
             select: ["id"],
             relations: ["permissions"],
@@ -80,7 +76,7 @@ export function checkPermissionWithId(db: Database, permission: Permissions) {
           return next();
         }
 
-        return res.status(HttpStatus.BAD_REQUEST).send({
+        return res.status(HttpStatus.FORBIDDEN).send({
           error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
         });
       } catch (err: unknown) {

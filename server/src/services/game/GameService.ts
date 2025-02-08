@@ -1,5 +1,3 @@
-import { IncomingHttpHeaders } from "http";
-
 import { IGameCreateData } from "types/game/IGameCreate";
 import { IGameListItem } from "types/game/IGameListItem";
 import { UserRepository } from "database/repositories/UserRepository";
@@ -9,6 +7,9 @@ import { EGameEvent, IGameEvent } from "types/game/IGameEvent";
 import { IGame } from "types/game/IGame";
 import { GameRepository } from "database/repositories/GameRepository";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
+import { ClientError } from "error/ClientError";
+import { ClientResponse } from "enums/ClientResponse";
+import { Session } from "types/auth/session";
 
 export class GameService {
   private _gameRepository?: GameRepository;
@@ -17,25 +18,29 @@ export class GameService {
     ctx: ApiContext,
     gameId: string
   ): Promise<IGameListItem | undefined> {
-    return this._getGameRepository().getGame(ctx, gameId);
+    return this.gameRepository.getGame(ctx, gameId);
   }
 
   public async list(ctx: ApiContext, paginationOpts: IPaginationOpts<IGame>) {
-    return this._getGameRepository().getAllGames(ctx, paginationOpts);
+    return this.gameRepository.getAllGames(ctx, paginationOpts);
   }
 
   public async create(
     ctx: ApiContext,
     gameData: IGameCreateData,
-    headers: IncomingHttpHeaders
+    session: Session
   ) {
-    const createdByUser = await UserRepository.getUserByHeader(
+    const createdByUser = await UserRepository.getUserBySession(
       ctx.db,
-      headers.authorization,
-      { select: ["id", "name"], relations: [] }
+      session,
+      { select: ["id", "username"], relations: [] }
     );
 
-    const gameDataOutput = await this._getGameRepository().createGame(
+    if (!createdByUser) {
+      throw new ClientError(ClientResponse.ACCESS_DENIED);
+    }
+
+    const gameDataOutput = await this.gameRepository.createGame(
       ctx,
       gameData,
       createdByUser
@@ -53,7 +58,7 @@ export class GameService {
     } as IGameEvent);
   }
 
-  private _getGameRepository() {
+  private get gameRepository() {
     if (!this._gameRepository) {
       this._gameRepository = GameRepository.getInstance();
     }
