@@ -1042,20 +1042,7 @@
           },
           "answerDelay": {
             "type": "integer",
-            "example": 2500
-          }
-        }
-      },
-      "OQAnswerFile": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "object",
-            "$ref": "#/components/schemas/OQFileContentStructure"
-          },
-          "displayTime": {
-            "type": "integer",
-            "examples":  [5000],
+            "examples": [2500],
             "nullable": true
           }
         }

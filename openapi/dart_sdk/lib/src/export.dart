@@ -20,7 +20,6 @@ export 'models/oq_content_structure.dart';
 export 'models/oq_metadata_structure.dart';
 export 'models/oq_logo_file.dart';
 export 'models/oq_file.dart';
-export 'models/oq_answer_file.dart';
 export 'models/oq_file_content_structure.dart';
 export 'models/oq_round_structure.dart';
 export 'models/oq_theme_structure.dart';
