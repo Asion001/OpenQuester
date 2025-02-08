@@ -18,7 +18,6 @@ class SocketController {
     final optionsBuilder = OptionBuilder()
       ..setTransports(['websocket'])
       ..enableForceNewConnection()
-      ..setExtraHeaders(await _headers())
       ..disableAutoConnect();
     final options = optionsBuilder.build();
     final url = socketUri.toString() + (path ?? '');
@@ -34,14 +33,8 @@ class SocketController {
     return socket;
   }
 
-  Future<Map<String, dynamic>> _headers() async {
-    final authToken = getIt.get<AuthController>().accessToken;
-    return {'Authorization': 'Bearer $authToken'};
-  }
-
-  Future<void> _logOutgoing(String event, dynamic data) async {
-    await _logRequest(event, data, outgoing: true);
-  }
+  Future<void> _logOutgoing(String event, dynamic data) async =>
+      await _logRequest(event, data, outgoing: true);
 
   Future<void> _logRequest(
     String event,

@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:openquester/common_imports.dart';
 import 'package:universal_io/io.dart';
 
 @singleton
 class Oauth2Controller {
-  Future<String?> auth() async {
+  Future<AccessTokenResponse> auth() async {
     final redirectUri = _getRedirectUrls();
     final client = OAuth2Client(
       authorizeUrl: 'https://discord.com/oauth2/authorize',
@@ -18,7 +19,7 @@ class Oauth2Controller {
       clientId: Env.discordAuthClientId,
       scopes: ['identify', 'email'],
     );
-    return result.accessToken;
+    return result;
   }
 
   (String scheme, String uri) _getRedirectUrls() {

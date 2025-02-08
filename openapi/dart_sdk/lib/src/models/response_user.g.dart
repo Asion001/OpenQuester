@@ -13,14 +13,14 @@ _$ResponseUserImpl _$$ResponseUserImplFromJson(Map<String, dynamic> json) =>
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
       isDeleted: json['is_deleted'] as bool,
-      permissions: (json['permissions'] as List<dynamic>)
-          .map((e) => Permissions.fromJson(e as Map<String, dynamic>))
-          .toList(),
       email: json['email'] as String?,
       birthday: json['birthday'] == null
           ? null
           : DateTime.parse(json['birthday'] as String),
       avatar: json['avatar'] as String?,
+      permissions: (json['permissions'] as List<dynamic>?)
+          ?.map((e) => Permissions.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$ResponseUserImplToJson(_$ResponseUserImpl instance) =>
@@ -30,8 +30,8 @@ Map<String, dynamic> _$$ResponseUserImplToJson(_$ResponseUserImpl instance) =>
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
       'is_deleted': instance.isDeleted,
-      'permissions': instance.permissions,
       'email': instance.email,
       'birthday': instance.birthday?.toIso8601String(),
       'avatar': instance.avatar,
+      'permissions': instance.permissions,
     };

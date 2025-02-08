@@ -20,10 +20,10 @@ class ResponseUser with _$ResponseUser {
     required DateTime updatedAt,
     @JsonKey(name: 'is_deleted')
     required bool isDeleted,
-    required List<Permissions> permissions,
     String? email,
     DateTime? birthday,
     String? avatar,
+    List<Permissions>? permissions,
   }) = _ResponseUser;
   
   factory ResponseUser.fromJson(Map<String, Object?> json) => _$ResponseUserFromJson(json);

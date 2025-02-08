@@ -22,7 +22,8 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<void> getV1AuthDiscord({
+  Future<ResponseUser> postV1AuthOauth2({
+    required InputOauthLogin body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -31,48 +32,29 @@ class _AuthClient implements AuthClient {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final _data = body;
     final newOptions = newRequestOptions(options);
     newOptions.extra.addAll(_extra);
     newOptions.headers.addAll(_dio.options.headers);
     newOptions.headers.addAll(_headers);
     final _options = newOptions.copyWith(
-      method: 'GET',
+      method: 'POST',
       baseUrl: _combineBaseUrls(
         _dio.options.baseUrl,
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/discord',
+      path: '/v1/auth/oauth2',
     )..data = _data;
-    await _dio.fetch<void>(_options);
-  }
-
-  @override
-  Future<void> getV1AuthDiscordCallback({
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
-    final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
-    final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
-    final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
-      method: 'GET',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/auth/discord/callback',
-    )..data = _data;
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ResponseUser _value;
+    try {
+      _value = ResponseUser.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
   }
 
   @override

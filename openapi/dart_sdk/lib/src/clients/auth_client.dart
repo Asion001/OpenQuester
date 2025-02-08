@@ -5,7 +5,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../models/input_oauth_login.dart';
 import '../models/logout_response.dart';
+import '../models/response_user.dart';
 
 part 'auth_client.g.dart';
 
@@ -13,16 +15,10 @@ part 'auth_client.g.dart';
 abstract class AuthClient {
   factory AuthClient(Dio dio, {String? baseUrl}) = _AuthClient;
 
-  /// Initiate Discord OAuth
-  @GET('/v1/auth/discord')
-  Future<void> getV1AuthDiscord({
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
-  });
-
-  /// Handle Discord OAuth callback
-  @GET('/v1/auth/discord/callback')
-  Future<void> getV1AuthDiscordCallback({
+  /// Logout user
+  @POST('/v1/auth/oauth2')
+  Future<ResponseUser> postV1AuthOauth2({
+    @Body() required InputOauthLogin body,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });

@@ -13,8 +13,8 @@ import 'package:injectable/injectable.dart' as _i526;
 
 import '../connection/api/api.dart' as _i149;
 import '../connection/auth/oauth2_controller.dart' as _i419;
+import '../connection/controllers/auth_controller.dart' as _i785;
 import '../connection/controllers/dio_controller.dart' as _i895;
-import '../connection/controllers/auth_controller.dart' as _i421;
 import '../connection/socket/socket_controller.dart' as _i496;
 import '../connection/storage/storage.dart' as _i741;
 import '../features/games/controllers/games_list_controller.dart' as _i747;
@@ -34,15 +34,21 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.singleton<_i895.DioController>(() => _i895.DioController()..init());
+    await gh.singletonAsync<_i895.DioController>(
+      () {
+        final i = _i895.DioController();
+        return i.init().then((_) => i);
+      },
+      preResolve: true,
+    );
     gh.singleton<_i741.Storage>(() => _i741.Storage());
     gh.singleton<_i419.Oauth2Controller>(() => _i419.Oauth2Controller());
     gh.singleton<_i697.TimeController>(() => _i697.TimeController()..init());
     gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
     gh.singleton<_i149.Api>(() => _i149.Api());
-    await gh.singletonAsync<_i421.AuthController>(
+    await gh.singletonAsync<_i785.AuthController>(
       () {
-        final i = _i421.AuthController();
+        final i = _i785.AuthController();
         return i.init().then((_) => i);
       },
       preResolve: true,
