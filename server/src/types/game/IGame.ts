@@ -5,7 +5,9 @@ type pickFields =
   | "title"
   | "createdAt"
   | "currentRound"
+  | "isPrivate"
   | "players"
+  | "ageRestriction"
   | "maxPlayers"
   | "startedAt";
 

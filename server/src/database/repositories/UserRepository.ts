@@ -1,5 +1,4 @@
-import { SessionData } from "express-session";
-import { FindOptionsWhere, type Repository } from "typeorm";
+import { FindOptionsWhere, In, type Repository } from "typeorm";
 
 import { User } from "database/models/User";
 import { type Database } from "database/Database";
@@ -13,6 +12,7 @@ import { HttpStatus } from "enums/HttpStatus";
 import { PaginatedResults } from "database/pagination/PaginatedResults";
 import { IPaginationOpts } from "types/pagination/IPaginationOpts";
 import { IRegisterUser } from "types/user/IRegisterUser";
+import { Session } from "types/auth/session";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -71,6 +71,16 @@ export class UserRepository {
       where,
       select: selectOptions?.select ?? USER_SELECT_FIELDS,
       relations: selectOptions?.relations ?? ["avatar"],
+    });
+  }
+
+  public findByIds(
+    ids: number[],
+    selectOptions?: ISelectOptions<User>
+  ): Promise<User[]> {
+    return this._repository.find({
+      where: { id: In(ids) },
+      select: selectOptions?.relations ?? USER_SELECT_FIELDS,
     });
   }
 
@@ -167,7 +177,7 @@ export class UserRepository {
 
   public static async getUserBySession(
     db: Database,
-    session: SessionData,
+    session: Session,
     options?: ISelectOptions<User>
   ) {
     if (!session.userId) {

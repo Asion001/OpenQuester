@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { Package } from "database/models/Package";
 import { Database } from "database/Database";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
@@ -101,6 +101,16 @@ export class PackageRepository {
       qb,
       paginationOpts
     );
+  }
+
+  public findByIds(
+    ids: number[],
+    selectOptions?: ISelectOptions<Package>
+  ): Promise<Package[]> {
+    return this._repository.find({
+      where: { id: In(ids) },
+      relations: selectOptions?.relations ?? ["author"],
+    });
   }
 
   public async create(content: OQContentStructure, author: User) {

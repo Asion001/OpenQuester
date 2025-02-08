@@ -9,6 +9,7 @@ import { OQContentStructure } from "types/file/structures/OQContentStructure";
 import { IPackageUploadResponse } from "types/package/IPackageUploadResponse";
 import { EFileSource } from "enums/file/EFileSource";
 import { Session } from "types/auth/session";
+import { IFile } from "types/file/IFile";
 
 export interface IStorage {
   /** @returns presigned url */
@@ -30,6 +31,13 @@ export interface IStorage {
     user?: User,
     pack?: Package
   ): Promise<string>;
+  /**
+   * @returns Record with `key:value` -> `filename:s3-file-upload-link`
+   */
+  performBulkFilesUpload(
+    filesData: { files: IFile[]; user?: User; pack?: Package },
+    expiresIn?: number
+  ): Promise<Record<string, string>>;
   delete(filename: string, session: Session): Promise<void>;
   // TODO: Create separate service for packages
   getPackage(id: number): Promise<IPackageListItem>;

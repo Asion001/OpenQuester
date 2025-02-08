@@ -39,6 +39,7 @@ import {
   UPLOAD_PACKAGE_LINKS_EXPIRES_IN,
 } from "constants/storage";
 import { Session } from "types/auth/session";
+import { IFile } from "types/file/IFile";
 
 const MINIO_PREFIX = "[MINIO]: ";
 
@@ -113,6 +114,32 @@ export class MinioStorageService implements IStorage {
     expiresIn: number = UPLOAD_FILE_LINK_EXPIRES_IN
   ) {
     return this.performFileUpload(filename, expiresIn);
+  }
+
+  public async performBulkFilesUpload(
+    filesData: { files: IFile[]; user?: User; pack?: Package },
+    expiresIn?: number
+  ) {
+    const links: Record<string, string> = {};
+    for (const file of filesData.files) {
+      const filename = ValueUtils.getRawFilename(file.filename.toLowerCase());
+
+      links[filename] = await this._client.presignedPutObject(
+        this._s3Context.bucket,
+        `${file.path}${filename}`,
+        expiresIn
+      );
+    }
+
+    const files = (await this._fileRepository.bulkWriteFiles(filesData.files))
+      .generatedMaps as File[];
+
+    await this._fileUsageRepository.writeBulkUsage({
+      files,
+      pack: filesData.pack,
+    });
+
+    return links;
   }
 
   public async performFileUpload(

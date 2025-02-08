@@ -768,6 +768,35 @@
             }
           }
         }
+      },
+      "delete": {
+        "summary": "Delete game",
+        "tags": ["Games"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "400": {
+            "description": "Game not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameNotFoundResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/subscription/games": {

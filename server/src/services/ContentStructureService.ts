@@ -2,12 +2,14 @@ import { Package } from "database/models/Package";
 import { ClientResponse } from "enums/ClientResponse";
 import { EFileSource } from "enums/file/EFileSource";
 import { ClientError } from "error/ClientError";
+import { IFile } from "types/file/IFile";
 import { IStorage } from "types/file/IStorage";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
 import { OQFileContentStructure } from "types/file/structures/OQFileContentStructure";
 import { OQQuestionsStructure } from "types/file/structures/OQQuestionsStructure";
 import { OQRoundStructure } from "types/file/structures/OQRoundStructure";
 import { OQThemeStructure } from "types/file/structures/OQThemeStructure";
+import { StorageUtils } from "utils/StorageUtils";
 
 type TraversableObject =
   | OQContentStructure
@@ -33,28 +35,21 @@ export class ContentStructureService {
     }
 
     this._storage = storage;
-    const fileLinks: Record<string, string> = {};
-    const promises: Promise<void>[] = [];
     const stack: TraversableObject[] = [...content.rounds];
+    const filesToUpload: IFile[] = [];
 
     while (stack.length > 0) {
       const current = stack.pop()!;
 
       if (this._hasFile(current)) {
         const filename = current.file.sha256;
-        promises.push(
-          this._storage
-            .performFileUpload(
-              filename,
-              expiresIn,
-              EFileSource.S3,
-              undefined,
-              pack
-            )
-            .then((link) => {
-              fileLinks[filename] = link;
-            })
-        );
+
+        filesToUpload.push({
+          filename,
+          created_at: new Date(),
+          path: StorageUtils.getFilePath(filename),
+          source: EFileSource.S3,
+        });
       } else if (typeof current === "object" && current !== null) {
         Object.values(current).forEach((value) => {
           if (typeof value === "object" && value !== null) {
@@ -64,8 +59,13 @@ export class ContentStructureService {
       }
     }
 
-    await Promise.all(promises);
-    return fileLinks;
+    return await this._storage.performBulkFilesUpload(
+      {
+        files: filesToUpload,
+        pack,
+      },
+      expiresIn
+    );
   }
 
   private _hasFile(obj: object): obj is { file: OQFileContentStructure } {
