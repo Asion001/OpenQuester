@@ -5,4 +5,5 @@ export interface IS3Context {
   bucket: string;
   accessKey: string;
   secretKey: string;
+  region: string;
 }

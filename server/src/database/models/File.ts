@@ -1,11 +1,10 @@
 import { EFileSource } from "enums/file/EFileSource";
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-import { FileDTO } from "types/dto/file/FileDTO";
-import { FileModel } from "types/file/FileModel";
+import { IFile } from "types/file/IFile";
 
 @Entity("file")
-export class File implements FileModel {
+export class File implements IFile {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -25,7 +24,7 @@ export class File implements FileModel {
   @Column()
   created_at!: Date;
 
-  public import(data: FileDTO) {
+  public import(data: IFile) {
     this.path = data.path;
     this.filename = data.filename;
     this.source = data.source;
