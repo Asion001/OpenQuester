@@ -9,7 +9,7 @@ part of 'input_update_user.dart';
 _$InputUpdateUserImpl _$$InputUpdateUserImplFromJson(
         Map<String, dynamic> json) =>
     _$InputUpdateUserImpl(
-      name: json['name'] as String?,
+      username: json['username'] as String?,
       email: json['email'] as String?,
       birthday: json['birthday'] == null
           ? null
@@ -20,7 +20,7 @@ _$InputUpdateUserImpl _$$InputUpdateUserImplFromJson(
 Map<String, dynamic> _$$InputUpdateUserImplToJson(
         _$InputUpdateUserImpl instance) =>
     <String, dynamic>{
-      'name': instance.name,
+      'username': instance.username,
       'email': instance.email,
       'birthday': instance.birthday?.toIso8601String(),
       'avatar': instance.avatar,

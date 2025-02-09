@@ -66,7 +66,7 @@ class GameListItemWidget extends WatchingWidget {
           item.package.tags
               .sublist(0, min(3, item.package.tags.length))
               .join(', '),
-        LocaleKeys.created_by.tr(args: [item.package.author.name]),
+        LocaleKeys.created_by.tr(args: [item.package.author.username]),
       ].nonNulls.join(' | ')
     ].join('\n');
   }
@@ -78,7 +78,7 @@ class GameListItemWidget extends WatchingWidget {
         LocaleKeys.game_status_started.tr(),
         if (startedAt != null)
           watchIt<TimeController>().current.difference(startedAt).f(),
-        LocaleKeys.hosted_by.tr(args: [item.createdBy.name]),
+        LocaleKeys.hosted_by.tr(args: [item.createdBy.username]),
       ].join(' • ')
     ].join('\n');
   }

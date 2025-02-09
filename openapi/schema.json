@@ -608,7 +608,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LogoutResponse"
+                  "$ref": "#/components/schemas/ResponseUser"
                 }
               }
             }
@@ -626,7 +626,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResponseUser"
+                  "$ref": "#/components/schemas/LogoutResponse"
                 }
               }
             }
@@ -890,6 +890,7 @@
           },
           "permissions": {
             "type": "array",
+            "nullable": true,
             "items": {
               "type": "object",
               "properties": {
@@ -922,6 +923,7 @@
           "oauthProvider": {
             "type": "string",
             "example": "discord",
+            "enum": ["discord"],
             "nullable": false
           }
         }

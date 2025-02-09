@@ -8,18 +8,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 enum UsersSortBy {
   @JsonValue('id')
   id('id'),
-  @JsonValue('title')
-  title('title'),
-  @JsonValue('createdAt')
-  createdAt('createdAt'),
-  @JsonValue('createdBy')
-  createdBy('createdBy'),
-  @JsonValue('maxPlayers')
-  maxPlayers('maxPlayers'),
-  @JsonValue('players')
-  players('players'),
-  @JsonValue('startedAt')
-  startedAt('startedAt'),
+  @JsonValue('is_deleted')
+  isDeleted('is_deleted'),
+  @JsonValue('created_at')
+  createdAt('created_at'),
+  @JsonValue('username')
+  username('username'),
+  @JsonValue('email')
+  email('email'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 

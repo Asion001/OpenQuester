@@ -4,6 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'i_game_list_item_age_restriction.dart';
 import 'i_package_item.dart';
 import 'i_short_user_info.dart';
 
@@ -17,6 +18,7 @@ class IGameListItem with _$IGameListItem {
     required IShortUserInfo createdBy,
     required String title,
     required DateTime createdAt,
+    required IGameListItemAgeRestriction ageRestriction,
     required int currentRound,
     required int players,
     required int maxPlayers,
