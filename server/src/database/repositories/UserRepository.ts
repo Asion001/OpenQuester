@@ -80,7 +80,8 @@ export class UserRepository {
   ): Promise<User[]> {
     return this._repository.find({
       where: { id: In(ids) },
-      select: selectOptions?.relations ?? USER_SELECT_FIELDS,
+      select: selectOptions?.select ?? USER_SELECT_FIELDS,
+      relations: selectOptions?.relations ?? ["avatar"],
     });
   }
 
