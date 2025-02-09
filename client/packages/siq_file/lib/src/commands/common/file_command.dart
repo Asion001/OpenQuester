@@ -7,10 +7,9 @@ import '../../parser/siq_archive_parser.dart';
 abstract class FileCommand extends Command<int> {
   Future<OQContentStructure> getFile({
     String? xmlFilePath,
-    bool hashFiles = false,
   }) async {
     if (xmlFilePath == null) {
-      return await _getFromArchive(hashFiles);
+      return await _getFromArchive();
     }
     return _getFromXmlFile(xmlFilePath);
   }
@@ -18,11 +17,11 @@ abstract class FileCommand extends Command<int> {
   OQContentStructure _getFromXmlFile(String xmlFilePath) {
     final xmlFile = File(xmlFilePath);
     final contentFile = xmlFile.readAsStringSync();
-    final contentXml = ContentXmlParser(contentFile);
+    final contentXml = ContentXmlParser(contentFile, null);
     return contentXml.siqFile;
   }
 
-  Future<OQContentStructure> _getFromArchive(bool hashFiles) async {
+  Future<OQContentStructure> _getFromArchive() async {
     if (argResults!.rest.isEmpty) {
       usageException('Provide file path');
     }
@@ -37,7 +36,7 @@ abstract class FileCommand extends Command<int> {
       fileLength: await targetFile.length(),
     );
     final siqArchive = SiqArchiveParser(targetStream);
-    final siqFile = await siqArchive.parse(hashFiles: hashFiles);
+    final siqFile = await siqArchive.parse();
 
     return siqFile;
   }

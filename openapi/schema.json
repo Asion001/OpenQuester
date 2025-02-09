@@ -983,8 +983,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "example": "ha1_ju-156random-string_asd-12f",
-            "nullable": true
+            "example": "ha1_ju-156random-string_asd-12f"
           },
           "title": {
             "type": "string",
@@ -1058,9 +1057,9 @@
       "OQFileContentStructure": {
         "type": "object",
         "properties": {
-          "sha256": {
+          "crc32": {
             "type": "string",
-            "example": "f611efcb4eb3716cebddec66d4c220438b89830e4d2bb0825d3953cbf8ae3b77"
+            "example": "1231231332313"
           },
           "type": {
             "type": "string",
@@ -1137,11 +1136,13 @@
           },
           "questionFile": {
             "type": "object",
-            "$ref": "#/components/schemas/OQFile"
+            "$ref": "#/components/schemas/OQFile",
+            "nullable": true
           },
           "answerFile": {
             "type": "object",
-            "$ref": "#/components/schemas/OQFile"
+            "$ref": "#/components/schemas/OQFile",
+            "nullable": true
           }
         }
       },

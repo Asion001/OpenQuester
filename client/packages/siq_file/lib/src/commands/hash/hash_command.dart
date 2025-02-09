@@ -17,7 +17,7 @@ class HashCommand extends FileCommand {
 
   @override
   Future<int> run() async {
-    final siqFile = await getFile(hashFiles: true);
+    final siqFile = await getFile();
     _logger.write(jsonEncode(siqFile.toJson()));
 
     return ExitCode.success.code;

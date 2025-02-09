@@ -10,16 +10,16 @@ _$OQThemeStructureImpl _$$OQThemeStructureImplFromJson(
         Map<String, dynamic> json) =>
     _$OQThemeStructureImpl(
       name: json['name'] as String,
-      comment: json['comment'] as String,
       questions: (json['questions'] as List<dynamic>)
           .map((e) => OQQuestionsStructure.fromJson(e as Map<String, dynamic>))
           .toList(),
+      comment: json['comment'] as String?,
     );
 
 Map<String, dynamic> _$$OQThemeStructureImplToJson(
         _$OQThemeStructureImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'comment': instance.comment,
       'questions': instance.questions,
+      'comment': instance.comment,
     };

@@ -12,16 +12,14 @@ extension ListExtension<T> on List<T> {
 }
 
 extension PackageX on OQContentStructure {
-  OQContentStructure copyWithFiles(
-      OQFileContentStructure? Function(OQFileContentStructure? file)
-          setSiqFiles) {
+  OQContentStructure copyWithFiles(OQFile? Function(OQFile? file) setSiqFiles) {
     setFiles<T>(List<T> list, T Function(T) handler) {
       for (var i = 0; i < list.length; i++) {
         list[i] = handler(list[i]);
       }
     }
 
-    setQuestions(OQFile question) {
+    setQuestions(OQQuestionsStructure question) {
       final files = question.files.modifiable;
       setFiles(files, setSiqFiles);
       return question.withFiles(files);
@@ -44,4 +42,10 @@ extension PackageX on OQContentStructure {
 
     return copyWith(rounds: rounds);
   }
+}
+
+extension OQQuestionsStructureX on OQQuestionsStructure {
+  List<OQFile?> get files => [answerFile, questionFile].toList();
+  OQQuestionsStructure withFiles(List<OQFile?> files) =>
+      copyWith(answerFile: files[0], questionFile: files[1]);
 }

@@ -2,10 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
-import 'package:collection/collection.dart';
 import 'package:openapi/openapi.dart';
-import 'package:siq_file/src/extensions.dart';
-
 
 import 'content_xml_parser.dart';
 
@@ -16,7 +13,7 @@ class SiqArchiveParser {
   OQContentStructure? _siqFile;
   OQContentStructure get file => _siqFile!;
 
-  Future<OQContentStructure> parse({bool hashFiles = false}) async {
+  Future<OQContentStructure> parse() async {
     final targetStream = await InputFileStream.asRamFile(
       _file.stream.map(Uint8List.fromList),
       _file.fileLength,
@@ -27,7 +24,6 @@ class SiqArchiveParser {
     );
 
     _getContentFile(archive);
-    if (hashFiles) _hashFiles(archive);
 
     targetStream.closeSync();
 
@@ -38,30 +34,13 @@ class SiqArchiveParser {
     for (var file in archive.files) {
       if (!file.isFile) continue;
       if (file.name == 'content.xml') {
-        _parseContentFile(file);
+        _parseContentFile(file, archive);
         break;
       }
     }
   }
 
-  void _hashFiles(Archive archive) {
-    if (_siqFile == null) return;
-    _siqFile = _siqFile?.copyWithFiles((file) {
-      if (file == null) return file;
-
-      final archiveFile =
-          archive.firstWhereOrNull((e) => e.name == file!.file.fullPath);
-      if (archiveFile == null) return file;
-
-      //TODO: make this more memory efficient
-      final content = archiveFile.content;
-      final fileWithHash = file.file.copyWithHash(content);
-
-      return file.copyWith(file: fileWithHash);
-    });
-  }
-
-  void _parseContentFile(ArchiveFile file) {
+  void _parseContentFile(ArchiveFile file, Archive archive) {
     final output =
         OutputFileStream.toRamFile(RamFileHandle.asWritableRamBuffer());
     file.writeContent(output);
@@ -69,7 +48,7 @@ class SiqArchiveParser {
     final contentFile = utf8.decode(output.getBytes());
     output.clear();
 
-    final contentXml = ContentXmlParser(contentFile);
+    final contentXml = ContentXmlParser(contentFile, archive);
 
     _siqFile = contentXml.siqFile;
   }

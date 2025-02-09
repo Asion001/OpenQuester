@@ -1,13 +1,17 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:openapi/openapi.dart';
-import 'package:siq_file/src/converters/file_converter.dart';
 import 'package:siq_file/src/extensions.dart';
 import 'package:xml/xml.dart';
 
 import '../converters/time_converter.dart';
 
 class ContentXmlParser {
-  ContentXmlParser(String rawFile) {
+  ContentXmlParser(String rawFile, Archive? archive) {
+    _archive = archive;
     final document = XmlDocument.parse(rawFile);
     final package = document.getElement('package')!;
     final metadata = _parseMetadata(package);
@@ -47,9 +51,9 @@ class ContentXmlParser {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
     final params = question.getElement('params');
 
-    final questionType = QuestionType.values
+    final questionType = OQQuestionsStructureType.values
             .firstWhereOrNull((e) => e.name == question.getAttribute('type')) ??
-        QuestionType.regular;
+        OQQuestionsStructureType.regular;
 
     final questionParam = params?.children
         .firstWhereOrNull((p0) => p0.getAttribute('name') == 'question');
@@ -87,18 +91,39 @@ class ContentXmlParser {
 
   OQFile? parseFile(XmlElement? item) {
     final itemType = _getFileType(item);
-
+    final filePath = item?.innerText;
+    final rawFile = _archive?.files
+        .firstWhereOrNull((e) => e.name == filePath)
+        ?.readBytes();
+    final hash = rawFile == null ? '' : getFileCRC32(rawFile).toString();
     final file = itemType == null
         ? null
         : OQFile(
             file: OQFileContentStructure(
-                sha256: item!.innerText, type: itemType));
+              crc32: hash,
+              type: itemType,
+            ),
+          );
 
     return file;
   }
 
-  FileType? _getFileType(XmlElement? item) {
-    final itemType = FileType.values
+  String getFileCRC32(List<int> data) {
+    // Ensure the checksum is treated as an unsigned 32-bit value.
+    final checksum = int.parse(Crc32().convert(data).toString()) & 0xffffffff;
+
+    // Convert the checksum into a 4-byte big-endian representation.
+    final byteData = ByteData(4);
+    byteData.setUint32(0, checksum, Endian.big);
+    final checksumBytes = byteData.buffer.asUint8List();
+
+    // Base64 encode the 4-byte checksum.
+    final base64Checksum = base64Encode(checksumBytes);
+    return base64Checksum;
+  }
+
+  OQFileContentStructureType? _getFileType(XmlElement? item) {
+    final itemType = OQFileContentStructureType.values
         .firstWhereOrNull((e) => e.name == item?.getAttribute('type'));
     return itemType;
   }
@@ -121,7 +146,13 @@ class ContentXmlParser {
       'tags': tags.toList(),
       'authors': authors.toList(),
       'comment': comment,
+      'id': '',
+      'createdAt': DateTime.now().toIso8601String(),
+      'ageRestriction': 'NONE',
+      'author': -1,
     });
+
+    json.remove('logo');
 
     // Convert objects
     _convertObjects(json);
@@ -131,10 +162,6 @@ class ContentXmlParser {
   }
 
   void _convertObjects(Map<String, dynamic> json) {
-    json['logo'] = _nullPass(
-      json['logo'],
-      (value) => ImageFileConverter().fromJson(value).toJson(),
-    );
     json['date'] = _nullPass(
       json['date'],
       (value) => DateTimeConverter().fromJson(value).toIso8601String(),
@@ -148,5 +175,6 @@ class ContentXmlParser {
   }
 
   OQContentStructure? _siqFile;
+  Archive? _archive;
   OQContentStructure get siqFile => _siqFile!;
 }

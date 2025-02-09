@@ -21,13 +21,13 @@ OQQuestionsStructure _$OQQuestionsStructureFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OQQuestionsStructure {
   int get price => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError;
-  String get text => throw _privateConstructorUsedError;
+  OQQuestionsStructureType get type => throw _privateConstructorUsedError;
   String get hostHint => throw _privateConstructorUsedError;
-  String get playersHint => throw _privateConstructorUsedError;
-  String get answerText => throw _privateConstructorUsedError;
-  OQQuestionFile get questionFile => throw _privateConstructorUsedError;
-  OQAnswerFile get answerFile => throw _privateConstructorUsedError;
+  String? get text => throw _privateConstructorUsedError;
+  String? get playersHint => throw _privateConstructorUsedError;
+  String? get answerText => throw _privateConstructorUsedError;
+  OQFile? get questionFile => throw _privateConstructorUsedError;
+  OQFile? get answerFile => throw _privateConstructorUsedError;
 
   /// Serializes this OQQuestionsStructure to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,16 +47,16 @@ abstract class $OQQuestionsStructureCopyWith<$Res> {
   @useResult
   $Res call(
       {int price,
-      String type,
-      String text,
+      OQQuestionsStructureType type,
       String hostHint,
-      String playersHint,
-      String answerText,
-      OQQuestionFile questionFile,
-      OQAnswerFile answerFile});
+      String? text,
+      String? playersHint,
+      String? answerText,
+      OQFile? questionFile,
+      OQFile? answerFile});
 
-  $OQQuestionFileCopyWith<$Res> get questionFile;
-  $OQAnswerFileCopyWith<$Res> get answerFile;
+  $OQFileCopyWith<$Res>? get questionFile;
+  $OQFileCopyWith<$Res>? get answerFile;
 }
 
 /// @nodoc
@@ -77,12 +77,12 @@ class _$OQQuestionsStructureCopyWithImpl<$Res,
   $Res call({
     Object? price = null,
     Object? type = null,
-    Object? text = null,
     Object? hostHint = null,
-    Object? playersHint = null,
-    Object? answerText = null,
-    Object? questionFile = null,
-    Object? answerFile = null,
+    Object? text = freezed,
+    Object? playersHint = freezed,
+    Object? answerText = freezed,
+    Object? questionFile = freezed,
+    Object? answerFile = freezed,
   }) {
     return _then(_value.copyWith(
       price: null == price
@@ -92,31 +92,31 @@ class _$OQQuestionsStructureCopyWithImpl<$Res,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
+              as OQQuestionsStructureType,
       hostHint: null == hostHint
           ? _value.hostHint
           : hostHint // ignore: cast_nullable_to_non_nullable
               as String,
-      playersHint: null == playersHint
+      text: freezed == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
+      playersHint: freezed == playersHint
           ? _value.playersHint
           : playersHint // ignore: cast_nullable_to_non_nullable
-              as String,
-      answerText: null == answerText
+              as String?,
+      answerText: freezed == answerText
           ? _value.answerText
           : answerText // ignore: cast_nullable_to_non_nullable
-              as String,
-      questionFile: null == questionFile
+              as String?,
+      questionFile: freezed == questionFile
           ? _value.questionFile
           : questionFile // ignore: cast_nullable_to_non_nullable
-              as OQQuestionFile,
-      answerFile: null == answerFile
+              as OQFile?,
+      answerFile: freezed == answerFile
           ? _value.answerFile
           : answerFile // ignore: cast_nullable_to_non_nullable
-              as OQAnswerFile,
+              as OQFile?,
     ) as $Val);
   }
 
@@ -124,8 +124,12 @@ class _$OQQuestionsStructureCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $OQQuestionFileCopyWith<$Res> get questionFile {
-    return $OQQuestionFileCopyWith<$Res>(_value.questionFile, (value) {
+  $OQFileCopyWith<$Res>? get questionFile {
+    if (_value.questionFile == null) {
+      return null;
+    }
+
+    return $OQFileCopyWith<$Res>(_value.questionFile!, (value) {
       return _then(_value.copyWith(questionFile: value) as $Val);
     });
   }
@@ -134,8 +138,12 @@ class _$OQQuestionsStructureCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $OQAnswerFileCopyWith<$Res> get answerFile {
-    return $OQAnswerFileCopyWith<$Res>(_value.answerFile, (value) {
+  $OQFileCopyWith<$Res>? get answerFile {
+    if (_value.answerFile == null) {
+      return null;
+    }
+
+    return $OQFileCopyWith<$Res>(_value.answerFile!, (value) {
       return _then(_value.copyWith(answerFile: value) as $Val);
     });
   }
@@ -151,18 +159,18 @@ abstract class _$$OQQuestionsStructureImplCopyWith<$Res>
   @useResult
   $Res call(
       {int price,
-      String type,
-      String text,
+      OQQuestionsStructureType type,
       String hostHint,
-      String playersHint,
-      String answerText,
-      OQQuestionFile questionFile,
-      OQAnswerFile answerFile});
+      String? text,
+      String? playersHint,
+      String? answerText,
+      OQFile? questionFile,
+      OQFile? answerFile});
 
   @override
-  $OQQuestionFileCopyWith<$Res> get questionFile;
+  $OQFileCopyWith<$Res>? get questionFile;
   @override
-  $OQAnswerFileCopyWith<$Res> get answerFile;
+  $OQFileCopyWith<$Res>? get answerFile;
 }
 
 /// @nodoc
@@ -180,12 +188,12 @@ class __$$OQQuestionsStructureImplCopyWithImpl<$Res>
   $Res call({
     Object? price = null,
     Object? type = null,
-    Object? text = null,
     Object? hostHint = null,
-    Object? playersHint = null,
-    Object? answerText = null,
-    Object? questionFile = null,
-    Object? answerFile = null,
+    Object? text = freezed,
+    Object? playersHint = freezed,
+    Object? answerText = freezed,
+    Object? questionFile = freezed,
+    Object? answerFile = freezed,
   }) {
     return _then(_$OQQuestionsStructureImpl(
       price: null == price
@@ -195,31 +203,31 @@ class __$$OQQuestionsStructureImplCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      text: null == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String,
+              as OQQuestionsStructureType,
       hostHint: null == hostHint
           ? _value.hostHint
           : hostHint // ignore: cast_nullable_to_non_nullable
               as String,
-      playersHint: null == playersHint
+      text: freezed == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
+      playersHint: freezed == playersHint
           ? _value.playersHint
           : playersHint // ignore: cast_nullable_to_non_nullable
-              as String,
-      answerText: null == answerText
+              as String?,
+      answerText: freezed == answerText
           ? _value.answerText
           : answerText // ignore: cast_nullable_to_non_nullable
-              as String,
-      questionFile: null == questionFile
+              as String?,
+      questionFile: freezed == questionFile
           ? _value.questionFile
           : questionFile // ignore: cast_nullable_to_non_nullable
-              as OQQuestionFile,
-      answerFile: null == answerFile
+              as OQFile?,
+      answerFile: freezed == answerFile
           ? _value.answerFile
           : answerFile // ignore: cast_nullable_to_non_nullable
-              as OQAnswerFile,
+              as OQFile?,
     ));
   }
 }
@@ -230,12 +238,12 @@ class _$OQQuestionsStructureImpl implements _OQQuestionsStructure {
   const _$OQQuestionsStructureImpl(
       {required this.price,
       required this.type,
-      required this.text,
       required this.hostHint,
-      required this.playersHint,
-      required this.answerText,
-      required this.questionFile,
-      required this.answerFile});
+      this.text,
+      this.playersHint,
+      this.answerText,
+      this.questionFile,
+      this.answerFile});
 
   factory _$OQQuestionsStructureImpl.fromJson(Map<String, dynamic> json) =>
       _$$OQQuestionsStructureImplFromJson(json);
@@ -243,23 +251,23 @@ class _$OQQuestionsStructureImpl implements _OQQuestionsStructure {
   @override
   final int price;
   @override
-  final String type;
-  @override
-  final String text;
+  final OQQuestionsStructureType type;
   @override
   final String hostHint;
   @override
-  final String playersHint;
+  final String? text;
   @override
-  final String answerText;
+  final String? playersHint;
   @override
-  final OQQuestionFile questionFile;
+  final String? answerText;
   @override
-  final OQAnswerFile answerFile;
+  final OQFile? questionFile;
+  @override
+  final OQFile? answerFile;
 
   @override
   String toString() {
-    return 'OQQuestionsStructure(price: $price, type: $type, text: $text, hostHint: $hostHint, playersHint: $playersHint, answerText: $answerText, questionFile: $questionFile, answerFile: $answerFile)';
+    return 'OQQuestionsStructure(price: $price, type: $type, hostHint: $hostHint, text: $text, playersHint: $playersHint, answerText: $answerText, questionFile: $questionFile, answerFile: $answerFile)';
   }
 
   @override
@@ -269,9 +277,9 @@ class _$OQQuestionsStructureImpl implements _OQQuestionsStructure {
             other is _$OQQuestionsStructureImpl &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.text, text) || other.text == text) &&
             (identical(other.hostHint, hostHint) ||
                 other.hostHint == hostHint) &&
+            (identical(other.text, text) || other.text == text) &&
             (identical(other.playersHint, playersHint) ||
                 other.playersHint == playersHint) &&
             (identical(other.answerText, answerText) ||
@@ -284,7 +292,7 @@ class _$OQQuestionsStructureImpl implements _OQQuestionsStructure {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, price, type, text, hostHint,
+  int get hashCode => Object.hash(runtimeType, price, type, hostHint, text,
       playersHint, answerText, questionFile, answerFile);
 
   /// Create a copy of OQQuestionsStructure
@@ -308,13 +316,13 @@ class _$OQQuestionsStructureImpl implements _OQQuestionsStructure {
 abstract class _OQQuestionsStructure implements OQQuestionsStructure {
   const factory _OQQuestionsStructure(
       {required final int price,
-      required final String type,
-      required final String text,
+      required final OQQuestionsStructureType type,
       required final String hostHint,
-      required final String playersHint,
-      required final String answerText,
-      required final OQQuestionFile questionFile,
-      required final OQAnswerFile answerFile}) = _$OQQuestionsStructureImpl;
+      final String? text,
+      final String? playersHint,
+      final String? answerText,
+      final OQFile? questionFile,
+      final OQFile? answerFile}) = _$OQQuestionsStructureImpl;
 
   factory _OQQuestionsStructure.fromJson(Map<String, dynamic> json) =
       _$OQQuestionsStructureImpl.fromJson;
@@ -322,19 +330,19 @@ abstract class _OQQuestionsStructure implements OQQuestionsStructure {
   @override
   int get price;
   @override
-  String get type;
-  @override
-  String get text;
+  OQQuestionsStructureType get type;
   @override
   String get hostHint;
   @override
-  String get playersHint;
+  String? get text;
   @override
-  String get answerText;
+  String? get playersHint;
   @override
-  OQQuestionFile get questionFile;
+  String? get answerText;
   @override
-  OQAnswerFile get answerFile;
+  OQFile? get questionFile;
+  @override
+  OQFile? get answerFile;
 
   /// Create a copy of OQQuestionsStructure
   /// with the given fields replaced by the non-null parameter values.

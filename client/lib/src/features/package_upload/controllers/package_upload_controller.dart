@@ -18,11 +18,10 @@ class PackageUploadController extends ChangeNotifier {
       fileLength: file.size,
       stream: file.readStream!,
     );
-    final siqFile = await SiqArchiveParser(fileStream).parse(hashFiles: true);
-    final body = PackageCreationInput(
-      content: OQContentStructure.fromJson(siqFile.toJson()),
-    );
+    final siqFile = await SiqArchiveParser(fileStream).parse();
+    final body = PackageCreationInput(content: siqFile);
+
     final result = await Api.I.api.packages.postV1Packages(body: body);
-    print('object');
+    final links = result.uploadLinks.values.toList();
   }
 }
