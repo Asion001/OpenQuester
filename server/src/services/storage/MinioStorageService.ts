@@ -1,6 +1,10 @@
-import * as Minio from "minio";
-import http from "http";
-import https from "https";
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { IStorage } from "types/file/IStorage";
 import { IS3Context } from "types/file/IS3Context";
@@ -9,7 +13,6 @@ import { Database } from "database/Database";
 import { User } from "database/models/User";
 import { FileRepository } from "database/repositories/FileRepository";
 import { StorageUtils } from "utils/StorageUtils";
-import { Logger } from "utils/Logger";
 import { FileUsageRepository } from "database/repositories/FileUsageRepository";
 import { File } from "database/models/File";
 import { Package } from "database/models/Package";
@@ -41,60 +44,73 @@ import {
 import { Session } from "types/auth/session";
 import { IFile } from "types/file/IFile";
 
-const MINIO_PREFIX = "[MINIO]: ";
-
 export class MinioStorageService implements IStorage {
-  private _client: Minio.Client;
+  private _client: S3Client;
   private _s3Context: IS3Context;
   private _contentStructureService: ContentStructureService;
-  private _agentOptions: http.AgentOptions;
-  private _agent: http.Agent;
   private _db: Database;
   private _fileRepository: FileRepository;
   private _packageRepository: PackageRepository;
   private _fileUsageRepository: FileUsageRepository;
   private _userRepository: UserRepository;
-  private readonly ALLOWED_TYPES = new Set([
-    "jpg",
-    "jpeg",
-    "mp4",
-    "mp3",
-    "mkv",
-    "png",
-  ]);
 
-  constructor(ctx: ApiContext) {
-    this._s3Context = ctx.serverServices.storage.createFileContext("s3");
-    this._contentStructureService = ctx.serverServices.content;
+  constructor(private readonly ctx: ApiContext) {
+    this._s3Context = this.ctx.serverServices.storage.createFileContext("s3");
+    this._contentStructureService = this.ctx.serverServices.content;
 
-    this._db = ctx.db;
+    this._db = this.ctx.db;
     this._fileRepository = FileRepository.getRepository(this._db);
     this._packageRepository = PackageRepository.getRepository(this._db);
     this._fileUsageRepository = FileUsageRepository.getRepository(this._db);
     this._userRepository = UserRepository.getRepository(this._db);
 
-    this._agentOptions = {
-      keepAlive: true,
-      maxSockets: 100,
-      keepAliveMsecs: 500,
-      timeout: 5000,
-      noDelay: true,
-      scheduling: "lifo",
-    };
-
-    this._agent = this._s3Context.useSSL
-      ? new https.Agent(this._agentOptions)
-      : new http.Agent(this._agentOptions);
-
-    this._client = new Minio.Client({
-      endPoint: this._s3Context.host,
-      port: this._s3Context.port,
-      useSSL: this._s3Context.useSSL,
-      accessKey: this._s3Context.accessKey,
-      secretKey: this._s3Context.secretKey,
-      partSize: 10 * 1024 * 1024,
-      transportAgent: this._agent,
+    this._client = new S3Client({
+      credentials: {
+        accessKeyId: this._s3Context.accessKey,
+        secretAccessKey: this._s3Context.secretKey,
+      },
+      forcePathStyle: true,
+      endpoint: this._s3Context.host,
+      region: this._s3Context.region,
     });
+  }
+
+  public async generatePresignedUrl(
+    type: "PUT" | "GET",
+    bucket: string,
+    filenameWithPath: string,
+    expiresInSeconds: number,
+    filename: string
+  ) {
+    let command: PutObjectCommand | GetObjectCommand;
+    let opts = {};
+
+    switch (type) {
+      case "PUT":
+        command = new PutObjectCommand({
+          Bucket: bucket,
+          Key: filenameWithPath,
+          ContentMD5: Buffer.from(filename, "hex").toString("base64"),
+          IfNoneMatch: "*",
+        });
+
+        opts = {
+          expiresIn: expiresInSeconds,
+          unhoistableHeaders: new Set(["Content-MD5", "If-None-Match"]),
+        };
+        break;
+      case "GET":
+        command = new GetObjectCommand({
+          Bucket: bucket,
+          Key: filenameWithPath,
+        });
+        opts = {
+          expiresIn: expiresInSeconds,
+        };
+        break;
+    }
+
+    return getSignedUrl(this._client, command, opts);
   }
 
   public async get(
@@ -102,10 +118,12 @@ export class MinioStorageService implements IStorage {
     expiresIn: number = GET_FILE_LINK_EXPIRES_IN
   ) {
     const filePath = StorageUtils.parseFilePath(filename);
-    return this._client.presignedGetObject(
+    return this.generatePresignedUrl(
+      "GET",
       this._s3Context.bucket,
       filePath,
-      expiresIn
+      expiresIn,
+      filename
     );
   }
 
@@ -118,16 +136,18 @@ export class MinioStorageService implements IStorage {
 
   public async performBulkFilesUpload(
     filesData: { files: IFile[]; user?: User; pack?: Package },
-    expiresIn?: number
+    expiresIn: number
   ) {
     const links: Record<string, string> = {};
     for (const file of filesData.files) {
       const filename = ValueUtils.getRawFilename(file.filename.toLowerCase());
 
-      links[filename] = await this._client.presignedPutObject(
+      links[filename] = await this.generatePresignedUrl(
+        "PUT",
         this._s3Context.bucket,
         `${file.path}${filename}`,
-        expiresIn
+        expiresIn,
+        filename
       );
     }
 
@@ -153,20 +173,14 @@ export class MinioStorageService implements IStorage {
       source = EFileSource.S3;
     }
 
-    const fileExtension = ValueUtils.getFileExtension(filename);
-
-    if (!this.ALLOWED_TYPES.has(fileExtension)) {
-      throw new ClientError(ClientResponse.UNSUPPORTED_FILE_TYPE, 400, {
-        type: fileExtension,
-        file: filename,
-      });
-    }
-
     const filenameWithPath = StorageUtils.parseFilePath(filename);
-    const link = await this._client.presignedPutObject(
+
+    const link = await this.generatePresignedUrl(
+      "PUT",
       this._s3Context.bucket,
       filenameWithPath,
-      expiresIn
+      expiresIn,
+      filename
     );
 
     const file = await this._writeFile(
@@ -242,7 +256,12 @@ export class MinioStorageService implements IStorage {
 
     const filePath = StorageUtils.parseFilePath(filename);
     this._fileRepository.removeFile(filename);
-    return this._client.removeObject(this._s3Context.bucket, filePath);
+
+    const command = new DeleteObjectCommand({
+      Bucket: this._s3Context.bucket,
+      Key: filePath,
+    });
+    this._client.send(command);
   }
 
   public async getPackage(packId: string | number): Promise<IPackageListItem> {
@@ -379,13 +398,6 @@ export class MinioStorageService implements IStorage {
     filename: string,
     source: EFileSource
   ) {
-    try {
-      await this._client.statObject(this._s3Context.bucket, path + filename);
-      Logger.pink(`Duplicated file upload: ${path + filename}`, MINIO_PREFIX);
-      path = "duplicated/";
-    } catch {
-      //
-    }
     return this._fileRepository.writeFile(path, filename, source);
   }
 }

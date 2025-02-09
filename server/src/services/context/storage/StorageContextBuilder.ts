@@ -1,12 +1,12 @@
 import { Environment } from "config/Environment";
-import { IS3Context } from "types/file/IS3Context";
+import { S3Context } from "types/file/S3Context";
 import { ValueUtils } from "utils/ValueUtils";
 import { ServerResponse } from "enums/ServerResponse";
 import { ServerError } from "error/ServerError";
 import { TemplateUtils } from "utils/TemplateUtils";
 
 export class StorageContextBuilder {
-  public static buildS3Context(): IS3Context | undefined {
+  public static buildS3Context(): S3Context {
     const env = Environment.instance;
     try {
       return {
@@ -16,6 +16,7 @@ export class StorageContextBuilder {
         bucket: env.getEnvVar("S3_BUCKET", "string"),
         accessKey: env.getEnvVar("S3_ACCESS_KEY", "string"),
         secretKey: env.getEnvVar("S3_SECRET_KEY", "string"),
+        region: env.getEnvVar("S3_REGION", "string"),
       };
     } catch (err: unknown) {
       let text: string;
