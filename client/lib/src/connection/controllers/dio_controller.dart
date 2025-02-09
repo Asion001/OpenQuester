@@ -53,7 +53,7 @@ class DioController {
 
   Future<List<Interceptor>> _interceptors() async {
     return [
-      CookieManager(await _getCookieJar()),
+      if (!kIsWeb) CookieManager(await _getCookieJar()),
       _dioCacheInterceptor,
       if (!kIsWeb) _timeoutInterceptor,
       RequestsInspectorInterceptor(),

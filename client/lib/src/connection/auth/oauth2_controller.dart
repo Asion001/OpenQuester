@@ -34,6 +34,7 @@ class Oauth2Controller {
       uri = scheme;
     } else {
       scheme = 'com.asion.openquester';
+      uri = '$scheme:/';
     }
     return (scheme, uri);
   }
