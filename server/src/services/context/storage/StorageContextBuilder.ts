@@ -6,16 +6,15 @@ import { ServerError } from "error/ServerError";
 import { TemplateUtils } from "utils/TemplateUtils";
 
 export class StorageContextBuilder {
-  public static buildS3Context(): IS3Context | undefined {
+  public static buildS3Context(): IS3Context {
     const env = Environment.instance;
     try {
       return {
         host: env.getEnvVar("S3_HOST", "string"),
-        port: env.getEnvVar("S3_PORT", "number"),
-        useSSL: env.getEnvVar("S3_USE_SSL", "boolean"),
         bucket: env.getEnvVar("S3_BUCKET", "string"),
         accessKey: env.getEnvVar("S3_ACCESS_KEY", "string"),
         secretKey: env.getEnvVar("S3_SECRET_KEY", "string"),
+        region: env.getEnvVar("S3_REGION", "string"),
       };
     } catch (err: unknown) {
       let text: string;
