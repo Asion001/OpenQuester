@@ -21,17 +21,17 @@ ResponseUser _$ResponseUserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ResponseUser {
   int get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   DateTime get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
   DateTime get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_deleted')
   bool get isDeleted => throw _privateConstructorUsedError;
-  List<Permissions> get permissions => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
   DateTime? get birthday => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
+  List<Permissions>? get permissions => throw _privateConstructorUsedError;
 
   /// Serializes this ResponseUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,14 +51,14 @@ abstract class $ResponseUserCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String name,
-      String email,
+      String username,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'is_deleted') bool isDeleted,
-      List<Permissions> permissions,
+      String? email,
       DateTime? birthday,
-      String? avatar});
+      String? avatar,
+      List<Permissions>? permissions});
 }
 
 /// @nodoc
@@ -77,27 +77,23 @@ class _$ResponseUserCopyWithImpl<$Res, $Val extends ResponseUser>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
-    Object? email = null,
+    Object? username = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? isDeleted = null,
-    Object? permissions = null,
+    Object? email = freezed,
     Object? birthday = freezed,
     Object? avatar = freezed,
+    Object? permissions = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -111,10 +107,10 @@ class _$ResponseUserCopyWithImpl<$Res, $Val extends ResponseUser>
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
               as bool,
-      permissions: null == permissions
-          ? _value.permissions
-          : permissions // ignore: cast_nullable_to_non_nullable
-              as List<Permissions>,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
@@ -123,6 +119,10 @@ class _$ResponseUserCopyWithImpl<$Res, $Val extends ResponseUser>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String?,
+      permissions: freezed == permissions
+          ? _value.permissions
+          : permissions // ignore: cast_nullable_to_non_nullable
+              as List<Permissions>?,
     ) as $Val);
   }
 }
@@ -137,14 +137,14 @@ abstract class _$$ResponseUserImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      String name,
-      String email,
+      String username,
       @JsonKey(name: 'created_at') DateTime createdAt,
       @JsonKey(name: 'updated_at') DateTime updatedAt,
       @JsonKey(name: 'is_deleted') bool isDeleted,
-      List<Permissions> permissions,
+      String? email,
       DateTime? birthday,
-      String? avatar});
+      String? avatar,
+      List<Permissions>? permissions});
 }
 
 /// @nodoc
@@ -161,27 +161,23 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
-    Object? email = null,
+    Object? username = null,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? isDeleted = null,
-    Object? permissions = null,
+    Object? email = freezed,
     Object? birthday = freezed,
     Object? avatar = freezed,
+    Object? permissions = freezed,
   }) {
     return _then(_$ResponseUserImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: null == createdAt
           ? _value.createdAt
@@ -195,10 +191,10 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
               as bool,
-      permissions: null == permissions
-          ? _value._permissions
-          : permissions // ignore: cast_nullable_to_non_nullable
-              as List<Permissions>,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
       birthday: freezed == birthday
           ? _value.birthday
           : birthday // ignore: cast_nullable_to_non_nullable
@@ -207,6 +203,10 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String?,
+      permissions: freezed == permissions
+          ? _value._permissions
+          : permissions // ignore: cast_nullable_to_non_nullable
+              as List<Permissions>?,
     ));
   }
 }
@@ -216,14 +216,14 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
 class _$ResponseUserImpl implements _ResponseUser {
   const _$ResponseUserImpl(
       {required this.id,
-      required this.name,
-      required this.email,
+      required this.username,
       @JsonKey(name: 'created_at') required this.createdAt,
       @JsonKey(name: 'updated_at') required this.updatedAt,
       @JsonKey(name: 'is_deleted') required this.isDeleted,
-      required final List<Permissions> permissions,
+      this.email,
       this.birthday,
-      this.avatar})
+      this.avatar,
+      final List<Permissions>? permissions})
       : _permissions = permissions;
 
   factory _$ResponseUserImpl.fromJson(Map<String, dynamic> json) =>
@@ -232,9 +232,7 @@ class _$ResponseUserImpl implements _ResponseUser {
   @override
   final int id;
   @override
-  final String name;
-  @override
-  final String email;
+  final String username;
   @override
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
@@ -244,22 +242,25 @@ class _$ResponseUserImpl implements _ResponseUser {
   @override
   @JsonKey(name: 'is_deleted')
   final bool isDeleted;
-  final List<Permissions> _permissions;
   @override
-  List<Permissions> get permissions {
-    if (_permissions is EqualUnmodifiableListView) return _permissions;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_permissions);
-  }
-
+  final String? email;
   @override
   final DateTime? birthday;
   @override
   final String? avatar;
+  final List<Permissions>? _permissions;
+  @override
+  List<Permissions>? get permissions {
+    final value = _permissions;
+    if (value == null) return null;
+    if (_permissions is EqualUnmodifiableListView) return _permissions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'ResponseUser(id: $id, name: $name, email: $email, createdAt: $createdAt, updatedAt: $updatedAt, isDeleted: $isDeleted, permissions: $permissions, birthday: $birthday, avatar: $avatar)';
+    return 'ResponseUser(id: $id, username: $username, createdAt: $createdAt, updatedAt: $updatedAt, isDeleted: $isDeleted, email: $email, birthday: $birthday, avatar: $avatar, permissions: $permissions)';
   }
 
   @override
@@ -268,19 +269,20 @@ class _$ResponseUserImpl implements _ResponseUser {
         (other.runtimeType == runtimeType &&
             other is _$ResponseUserImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.email, email) || other.email == email) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.isDeleted, isDeleted) ||
                 other.isDeleted == isDeleted) &&
-            const DeepCollectionEquality()
-                .equals(other._permissions, _permissions) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.birthday, birthday) ||
                 other.birthday == birthday) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar));
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            const DeepCollectionEquality()
+                .equals(other._permissions, _permissions));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -288,14 +290,14 @@ class _$ResponseUserImpl implements _ResponseUser {
   int get hashCode => Object.hash(
       runtimeType,
       id,
-      name,
-      email,
+      username,
       createdAt,
       updatedAt,
       isDeleted,
-      const DeepCollectionEquality().hash(_permissions),
+      email,
       birthday,
-      avatar);
+      avatar,
+      const DeepCollectionEquality().hash(_permissions));
 
   /// Create a copy of ResponseUser
   /// with the given fields replaced by the non-null parameter values.
@@ -316,14 +318,14 @@ class _$ResponseUserImpl implements _ResponseUser {
 abstract class _ResponseUser implements ResponseUser {
   const factory _ResponseUser(
       {required final int id,
-      required final String name,
-      required final String email,
+      required final String username,
       @JsonKey(name: 'created_at') required final DateTime createdAt,
       @JsonKey(name: 'updated_at') required final DateTime updatedAt,
       @JsonKey(name: 'is_deleted') required final bool isDeleted,
-      required final List<Permissions> permissions,
+      final String? email,
       final DateTime? birthday,
-      final String? avatar}) = _$ResponseUserImpl;
+      final String? avatar,
+      final List<Permissions>? permissions}) = _$ResponseUserImpl;
 
   factory _ResponseUser.fromJson(Map<String, dynamic> json) =
       _$ResponseUserImpl.fromJson;
@@ -331,9 +333,7 @@ abstract class _ResponseUser implements ResponseUser {
   @override
   int get id;
   @override
-  String get name;
-  @override
-  String get email;
+  String get username;
   @override
   @JsonKey(name: 'created_at')
   DateTime get createdAt;
@@ -344,11 +344,13 @@ abstract class _ResponseUser implements ResponseUser {
   @JsonKey(name: 'is_deleted')
   bool get isDeleted;
   @override
-  List<Permissions> get permissions;
+  String? get email;
   @override
   DateTime? get birthday;
   @override
   String? get avatar;
+  @override
+  List<Permissions>? get permissions;
 
   /// Create a copy of ResponseUser
   /// with the given fields replaced by the non-null parameter values.

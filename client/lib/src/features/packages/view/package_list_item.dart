@@ -47,7 +47,7 @@ class PackageListItemWidget extends StatelessWidget {
         if (item.tags.isNotEmpty)
           item.tags.sublist(0, min(5, item.tags.length)).join(', '),
         LocaleKeys.rounds.plural(item.rounds),
-        LocaleKeys.created_by.tr(args: [item.author.name]),
+        LocaleKeys.created_by.tr(args: [item.author.username]),
       ].nonNulls.join(' • ')
     ].join('\n');
   }

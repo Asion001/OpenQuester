@@ -3,14 +3,14 @@ import 'package:envied/envied.dart';
 
 part 'env.g.dart';
 
-@Envied(
-  useConstantCase: true,
-  requireEnvFile: false,
-)
-class Env {
-  @EnviedField(
-    defaultValue: 'https://api.openquester.app',
-    optional: true,
-  )
+@Envied(useConstantCase: true, requireEnvFile: false)
+final class Env {
+  @EnviedField()
   static Uri apiUrl = _Env.apiUrl;
+
+  @EnviedField()
+  static Uri clientAppUrl = _Env.clientAppUrl;
+
+  @EnviedField()
+  static const String discordAuthClientId = _Env.discordAuthClientId;
 }

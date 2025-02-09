@@ -24,15 +24,20 @@ import {
 } from "types/pagination/IPaginationOpts";
 import { IPaginatedResult } from "types/pagination/IPaginatedResult";
 import { HttpStatus } from "enums/HttpStatus";
+import { IShortUserInfo } from "types/user/IShortUserInfo";
+import { GameIndexManager } from "database/managers/game/GameIndexManager";
+import { IGameRedisHash } from "types/game/IGameRedisHash";
 
 export class GameRepository {
   private static _instance: GameRepository;
-  private _redisClient: Redis;
+  private readonly _redisClient: Redis;
   private _packageRepository!: PackageRepository;
   private _userRepository!: UserRepository;
+  private readonly _gameIdxManager: GameIndexManager;
 
   private constructor() {
     this._redisClient = RedisConfig.getClient();
+    this._gameIdxManager = new GameIndexManager(this._redisClient);
   }
 
   public static getInstance(): GameRepository {
@@ -42,11 +47,15 @@ export class GameRepository {
     return this._instance;
   }
 
-  public async getGame(ctx: ApiContext, gameId: string) {
-    const key = `${GAME_NAMESPACE}:${gameId}`;
-    const value = await this._redisClient.get(key);
+  public async getGameKey(gameId: string) {
+    return `${GAME_NAMESPACE}:${gameId}`;
+  }
 
-    if (!value) {
+  public async getGameRaw(gameId: string) {
+    const key = await this.getGameKey(gameId);
+    const game = this._redisClient.hgetall(key);
+
+    if (!game) {
       throw new ClientError(
         ClientResponse.GAME_NOT_FOUND,
         HttpStatus.NOT_FOUND,
@@ -55,11 +64,26 @@ export class GameRepository {
     }
 
     try {
-      const record: IGame = JSON.parse(value);
-      return this._convertRedisRecord(ctx, record);
+      if (this._isValidGameHash(game)) {
+        return this._deserializeGame(game);
+      }
     } catch {
       return;
     }
+  }
+
+  public async getGame(ctx: ApiContext, gameId: string) {
+    const gameData = await this.getGameRaw(gameId);
+
+    if (!gameData) {
+      throw new ClientError(
+        ClientResponse.GAME_NOT_FOUND,
+        HttpStatus.NOT_FOUND,
+        { gameId }
+      );
+    }
+
+    return this._convertRedisRecord(ctx, gameData);
   }
 
   public async getAllGamesRaw(
@@ -93,7 +117,7 @@ export class GameRepository {
     // Sorting
     const { sortBy = "createdAt", order = EPaginationOrder.ASC } =
       paginationOpts;
-    validGames.sort((a, b) => this.compareGames(a, b, sortBy, order));
+    validGames.sort((a, b) => this._compareGames(a, b, sortBy, order));
 
     // Pagination
     const { offset, limit } = paginationOpts;
@@ -105,44 +129,83 @@ export class GameRepository {
     };
   }
 
-  private compareGames(
-    a: IGame,
-    b: IGame,
-    sortBy: keyof IGame,
-    order: EPaginationOrder
-  ): number {
-    const fieldA = a[sortBy];
-    const fieldB = b[sortBy];
-
-    if (fieldA === fieldB) return 0;
-    if (fieldA === null) return order === "asc" ? -1 : 1;
-    if (fieldB === null) return order === "asc" ? 1 : -1;
-
-    if (order === "asc") {
-      return fieldA > fieldB ? 1 : -1;
-    }
-
-    return fieldA < fieldB ? 1 : -1;
-  }
-
   public async getAllGames(
     ctx: ApiContext,
     paginationOpts: IPaginationOpts<IGame>
   ): Promise<IPaginatedResult<IGameListItem[]>> {
-    const { data, pageInfo } = await this.getAllGamesRaw(paginationOpts);
-
-    const gamesItems = await Promise.all(
-      data.map((g) => this._convertRedisRecord(ctx, g))
+    const { ids, total } = await this._gameIdxManager.findGamesByIndex(
+      {}, // No filters for now
+      {
+        offset: paginationOpts.offset,
+        limit: paginationOpts.limit,
+        order: paginationOpts.order || EPaginationOrder.DESC,
+      }
     );
 
-    // Redis record converting could return undefined - need to filter again
-    const validGames = gamesItems.filter(
-      (g): g is IGameListItem => !ValueUtils.isBad(g)
-    );
+    const packageIds = new Set<number>();
+    const userIds = new Set<number>();
+    const games = await this._fetchGameDetails(ids);
+
+    if (!games) {
+      return {
+        data: [],
+        pageInfo: {
+          total: 0,
+        },
+      };
+    }
+
+    games.forEach((game) => {
+      packageIds.add(game.package);
+      userIds.add(game.createdBy);
+    });
+
+    const [users, packages] = await Promise.all([
+      this._getUserRepository(ctx.db).findByIds(Array.from(userIds), {
+        select: ["id", "username"],
+        relations: [],
+      }) as Promise<IShortUserInfo[]>,
+      this._getPackageRepository(ctx.db).findByIds(Array.from(packageIds)),
+    ]);
+
+    const userMap = new Map(users.map((u) => [u.id, u]));
+    const packageMap = new Map(packages.map((p) => [p.id, p]));
+
+    const gamesItems = games
+      .map((game) => {
+        const createdBy = userMap.get(game.createdBy);
+        const packData = packageMap.get(game.package);
+
+        if (!packData || !packData.author) {
+          return null;
+        }
+
+        const packMeta = packData.content.metadata;
+
+        return {
+          ...game,
+          createdBy,
+          package: {
+            id: packData.id,
+            createdAt: packData.created_at,
+            rounds: packData.content.rounds.length,
+            tags: packMeta.tags,
+            title: packMeta.title,
+            ageRestriction: packMeta.ageRestriction ?? EAgeRestriction.NONE,
+            author: {
+              id: packData.author.id,
+              username: packData.author.username,
+            },
+          },
+        };
+      })
+      .filter((g): g is IGameListItem => g !== null);
 
     return {
-      data: validGames,
-      pageInfo: { ...pageInfo },
+      data: gamesItems,
+      pageInfo: {
+        total,
+      },
     };
   }
 
@@ -164,7 +227,7 @@ export class GameRepository {
     }
 
     const gameId = this._generateGameId();
-    const key = `${GAME_NAMESPACE}:${gameId}`;
+    const key = await this.getGameKey(gameId);
 
     if (await this._redisClient.get(key)) {
       throw new ClientError(ClientResponse.BAD_GAME_CREATION);
@@ -176,6 +239,8 @@ export class GameRepository {
       createdBy: createdBy.id,
       title: gameData.title,
       createdAt: new Date(),
+      isPrivate: gameData.isPrivate,
+      ageRestriction: gameData.ageRestriction,
       currentRound: 0,
       players: 0,
       maxPlayers: gameData.maxPlayers,
@@ -183,7 +248,17 @@ export class GameRepository {
       package: gameData.packageId,
     };
 
-    await this._redisClient.set(key, JSON.stringify(gameDataRaw));
+    const pipeline = this._redisClient.pipeline();
+
+    pipeline.hset(key, this._serializeGame(gameDataRaw));
+
+    this._gameIdxManager.addGameToIndexesPipeline(
+      pipeline,
+      gameDataRaw.id,
+      gameDataRaw
+    );
+
+    await pipeline.exec();
 
     // List item returned to client
     const gameDataOutput: IGameListItem = {
@@ -192,7 +267,8 @@ export class GameRepository {
       package: {
         id: gameData.packageId,
         title: packageData.title,
-        ageRestriction: gameData.ageRestriction,
+        // TODO: Get age restriction after new pack model implemented
+        ageRestriction: EAgeRestriction.NONE,
         createdAt: packageData.created_at,
         rounds: packageData.content.rounds.length,
         tags: packageData.content.metadata.tags,
@@ -204,6 +280,18 @@ export class GameRepository {
     };
 
     return gameDataOutput;
+  }
+
+  public async deleteGame(gameId: string) {
+    const key = await this.getGameKey(gameId);
+    const gameData = await this.getGameRaw(gameId);
+
+    if (!gameData) {
+      throw new ClientError(ClientResponse.GAME_NOT_FOUND);
+    }
+
+    await this._gameIdxManager.removeGameFromIndexes(gameId, gameData);
+    await this._redisClient.del(key);
   }
 
   private async _convertRedisRecord(
@@ -271,5 +359,92 @@ export class GameRepository {
         ];
     }
     return result;
+  }
+
+  private _compareGames(
+    a: IGame,
+    b: IGame,
+    sortBy: keyof IGame,
+    order: EPaginationOrder
+  ): number {
+    const fieldA = a[sortBy];
+    const fieldB = b[sortBy];
+
+    if (fieldA === fieldB) return 0;
+    if (fieldA === null) return order === "asc" ? -1 : 1;
+    if (fieldB === null) return order === "asc" ? 1 : -1;
+
+    if (order === "asc") {
+      return fieldA > fieldB ? 1 : -1;
+    }
+
+    return fieldA < fieldB ? 1 : -1;
+  }
+
+  private _isValidGameHash(data: unknown): data is IGameRedisHash {
+    const hash = data as IGameRedisHash;
+    if (typeof hash !== "object" || hash === null) return false;
+
+    const requiredKeys = [
+      "id",
+      "createdBy",
+      "title",
+      "createdAt",
+      "isPrivate",
+      "ageRestriction",
+      "currentRound",
+      "players",
+      "maxPlayers",
+      "startedAt",
+      "package",
+    ];
+
+    return requiredKeys.every(
+      (key) => typeof hash[key as keyof IGameRedisHash] === "string"
+    );
+  }
+
+  private async _fetchGameDetails(gameIds: string[]) {
+    const pipeline = this._redisClient.pipeline();
+    gameIds.forEach((id) => pipeline.hgetall(`${GAME_NAMESPACE}:${id}`));
+
+    const results = await pipeline.exec();
+    if (!results) {
+      return;
+    }
+
+    return results.map(([, data]) => this._deserializeGame(data as any));
+  }
+
+  private _serializeGame(game: IGame): IGameRedisHash {
+    return {
+      id: game.id,
+      createdBy: game.createdBy.toString(),
+      title: game.title,
+      createdAt: game.createdAt.getTime().toString(),
+      isPrivate: game.isPrivate ? "1" : "0",
+      ageRestriction: game.ageRestriction,
+      currentRound: game.currentRound.toString(),
+      players: game.players.toString(),
+      maxPlayers: game.maxPlayers.toString(),
+      package: game.package.toString(),
+      startedAt: game.startedAt?.getTime().toString() ?? "",
+    };
+  }
+
+  private _deserializeGame(data: IGameRedisHash): IGame {
+    return {
+      id: data.id,
+      createdBy: parseInt(data.createdBy),
+      title: data.title,
+      createdAt: new Date(parseInt(data.createdAt)),
+      isPrivate: data.isPrivate === "1",
+      currentRound: parseInt(data.currentRound),
+      ageRestriction: data.ageRestriction as EAgeRestriction,
+      players: parseInt(data.players),
+      maxPlayers: parseInt(data.maxPlayers),
+      package: parseInt(data.package),
+      startedAt: data.startedAt ? new Date(parseInt(data.startedAt)) : null,
+    };
   }
 }

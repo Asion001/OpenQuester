@@ -5,7 +5,7 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../models/post_subscription_games_response.dart';
+import '../models/game_event_subscription.dart';
 
 part 'socket_io_client.g.dart';
 
@@ -17,7 +17,7 @@ abstract class SocketIOClient {
   ///
   /// Subscribes to the 'games' event to receive updates about game changes, creations, and removals.
   @POST('/subscription/games')
-  Future<PostSubscriptionGamesResponse> postSubscriptionGames({
+  Future<GameEventSubscription> postSubscriptionGames({
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });

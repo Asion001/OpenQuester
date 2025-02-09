@@ -22,8 +22,8 @@ class _AuthClient implements AuthClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponseAuthData> postV1AuthLogin({
-    required InputLoginUser body,
+  Future<ResponseUser> postV1AuthOauth2({
+    required InputOauthLogin body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -44,12 +44,12 @@ class _AuthClient implements AuthClient {
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/login',
+      path: '/v1/auth/oauth2',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
+    late ResponseUser _value;
     try {
-      _value = ResponseAuthData.fromJson(_result.data!);
+      _value = ResponseUser.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -58,8 +58,7 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<ResponseAuthData> postV1AuthRefresh({
-    required AuthRefreshInput body,
+  Future<LogoutResponse> getV1AuthLogout({
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -68,24 +67,24 @@ class _AuthClient implements AuthClient {
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = body;
+    const Map<String, dynamic>? _data = null;
     final newOptions = newRequestOptions(options);
     newOptions.extra.addAll(_extra);
     newOptions.headers.addAll(_dio.options.headers);
     newOptions.headers.addAll(_headers);
     final _options = newOptions.copyWith(
-      method: 'POST',
+      method: 'GET',
       baseUrl: _combineBaseUrls(
         _dio.options.baseUrl,
         baseUrl,
       ),
       queryParameters: queryParameters,
-      path: '/v1/auth/refresh',
+      path: '/v1/auth/logout',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late ResponseAuthData _value;
+    late LogoutResponse _value;
     try {
-      _value = ResponseAuthData.fromJson(_result.data!);
+      _value = LogoutResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

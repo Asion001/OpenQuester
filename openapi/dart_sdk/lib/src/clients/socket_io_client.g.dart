@@ -22,7 +22,7 @@ class _SocketIOClient implements SocketIOClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PostSubscriptionGamesResponse> postSubscriptionGames({
+  Future<GameEventSubscription> postSubscriptionGames({
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -46,9 +46,9 @@ class _SocketIOClient implements SocketIOClient {
       path: '/subscription/games',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PostSubscriptionGamesResponse _value;
+    late GameEventSubscription _value;
     try {
-      _value = PostSubscriptionGamesResponse.fromJson(_result.data!);
+      _value = GameEventSubscription.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

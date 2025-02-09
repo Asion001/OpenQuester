@@ -5,9 +5,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../models/delete_v1_files_filename_response.dart';
-import '../models/get_v1_files_filename_response.dart';
-import '../models/post_v1_files_filename_response.dart';
+import '../models/delete_request_response.dart';
+import '../models/file_link_response.dart';
+import '../models/file_upload_link_response.dart';
 
 part 'files_client.g.dart';
 
@@ -17,7 +17,7 @@ abstract class FilesClient {
 
   /// Get link to file from server
   @GET('/v1/files/{filename}')
-  Future<GetV1FilesFilenameResponse> getV1FilesFilename({
+  Future<FileLinkResponse> getV1FilesFilename({
     @Path('filename') required String filename,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
@@ -25,7 +25,7 @@ abstract class FilesClient {
 
   /// Get link to upload file on server
   @POST('/v1/files/{filename}')
-  Future<PostV1FilesFilenameResponse> postV1FilesFilename({
+  Future<FileUploadLinkResponse> postV1FilesFilename({
     @Path('filename') required String filename,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
@@ -33,7 +33,7 @@ abstract class FilesClient {
 
   /// Delete file from bucket
   @DELETE('/v1/files/{filename}')
-  Future<DeleteV1FilesFilenameResponse> deleteV1FilesFilename({
+  Future<DeleteRequestResponse> deleteV1FilesFilename({
     @Path('filename') required String filename,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,

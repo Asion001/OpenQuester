@@ -22,4 +22,9 @@ export class StorageUtils {
     }
     return `${filename[0]}/${filename.substring(0, 2)}/${filename}`;
   }
+
+  public static getFilePath(filename: string) {
+    const fileWithPath = this.parseFilePath(filename);
+    return fileWithPath.replace(filename, "");
+  }
 }

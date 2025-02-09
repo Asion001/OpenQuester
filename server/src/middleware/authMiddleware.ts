@@ -20,7 +20,6 @@ const isPublicEndpoint = (url: string, method: string): boolean => {
   const conditionalEndpoints = [
     { url: "v1/packages", method: "GET" },
     { url: "v1/games", method: "GET" },
-    { url: "v1/file", method: "POST" },
   ];
 
   return (
