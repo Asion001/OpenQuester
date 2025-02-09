@@ -17,7 +17,12 @@ jobs:
   build_client:
     needs: [tests]
     uses: ./.github/workflows/build_client.yml
-
+    secrets:
+      ANDROID_KEYSTORE_PATH: ${{ secrets.ANDROID_KEYSTORE_PATH }}
+      ANDROID_KEY_ALIAS_NAME: ${{ secrets.ANDROID_KEY_ALIAS_NAME }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      
   build_docker:
     needs: [tests]
     uses: ./.github/workflows/docker.yml
