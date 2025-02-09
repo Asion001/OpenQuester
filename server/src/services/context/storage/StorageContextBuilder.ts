@@ -11,8 +11,6 @@ export class StorageContextBuilder {
     try {
       return {
         host: env.getEnvVar("S3_HOST", "string"),
-        port: env.getEnvVar("S3_PORT", "number"),
-        useSSL: env.getEnvVar("S3_USE_SSL", "boolean"),
         bucket: env.getEnvVar("S3_BUCKET", "string"),
         accessKey: env.getEnvVar("S3_ACCESS_KEY", "string"),
         secretKey: env.getEnvVar("S3_SECRET_KEY", "string"),

@@ -37,7 +37,6 @@ import { IPackageUploadResponse } from "types/package/IPackageUploadResponse";
 import { EFileSource } from "enums/file/EFileSource";
 import { HttpStatus } from "enums/HttpStatus";
 import {
-  GET_FILE_LINK_EXPIRES_IN,
   UPLOAD_FILE_LINK_EXPIRES_IN,
   UPLOAD_PACKAGE_LINKS_EXPIRES_IN,
 } from "constants/storage";
@@ -113,18 +112,14 @@ export class MinioStorageService implements IStorage {
     return getSignedUrl(this._client, command, opts);
   }
 
-  public async get(
-    filename: string,
-    expiresIn: number = GET_FILE_LINK_EXPIRES_IN
-  ) {
+  public async get(filename: string) {
     const filePath = StorageUtils.parseFilePath(filename);
-    return this.generatePresignedUrl(
-      "GET",
-      this._s3Context.bucket,
-      filePath,
-      expiresIn,
-      filename
-    );
+
+    const baseUrl = this._s3Context.host.endsWith("/")
+      ? `${this._s3Context.host}${this._s3Context.bucket}`
+      : `${this._s3Context.host}/${this._s3Context.bucket}`;
+
+    return `${baseUrl}/${filePath}`;
   }
 
   public async upload(
