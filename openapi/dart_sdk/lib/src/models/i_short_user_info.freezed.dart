@@ -21,7 +21,7 @@ IShortUserInfo _$IShortUserInfoFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$IShortUserInfo {
   int get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String get username => throw _privateConstructorUsedError;
 
   /// Serializes this IShortUserInfo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $IShortUserInfoCopyWith<$Res> {
           IShortUserInfo value, $Res Function(IShortUserInfo) then) =
       _$IShortUserInfoCopyWithImpl<$Res, IShortUserInfo>;
   @useResult
-  $Res call({int id, String name});
+  $Res call({int id, String username});
 }
 
 /// @nodoc
@@ -58,16 +58,16 @@ class _$IShortUserInfoCopyWithImpl<$Res, $Val extends IShortUserInfo>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
+    Object? username = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -81,7 +81,7 @@ abstract class _$$IShortUserInfoImplCopyWith<$Res>
       __$$IShortUserInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name});
+  $Res call({int id, String username});
 }
 
 /// @nodoc
@@ -98,16 +98,16 @@ class __$$IShortUserInfoImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
+    Object? username = null,
   }) {
     return _then(_$IShortUserInfoImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -116,7 +116,7 @@ class __$$IShortUserInfoImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$IShortUserInfoImpl implements _IShortUserInfo {
-  const _$IShortUserInfoImpl({required this.id, required this.name});
+  const _$IShortUserInfoImpl({required this.id, required this.username});
 
   factory _$IShortUserInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$IShortUserInfoImplFromJson(json);
@@ -124,11 +124,11 @@ class _$IShortUserInfoImpl implements _IShortUserInfo {
   @override
   final int id;
   @override
-  final String name;
+  final String username;
 
   @override
   String toString() {
-    return 'IShortUserInfo(id: $id, name: $name)';
+    return 'IShortUserInfo(id: $id, username: $username)';
   }
 
   @override
@@ -137,12 +137,13 @@ class _$IShortUserInfoImpl implements _IShortUserInfo {
         (other.runtimeType == runtimeType &&
             other is _$IShortUserInfoImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.username, username) ||
+                other.username == username));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, username);
 
   /// Create a copy of IShortUserInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -164,7 +165,7 @@ class _$IShortUserInfoImpl implements _IShortUserInfo {
 abstract class _IShortUserInfo implements IShortUserInfo {
   const factory _IShortUserInfo(
       {required final int id,
-      required final String name}) = _$IShortUserInfoImpl;
+      required final String username}) = _$IShortUserInfoImpl;
 
   factory _IShortUserInfo.fromJson(Map<String, dynamic> json) =
       _$IShortUserInfoImpl.fromJson;
@@ -172,7 +173,7 @@ abstract class _IShortUserInfo implements IShortUserInfo {
   @override
   int get id;
   @override
-  String get name;
+  String get username;
 
   /// Create a copy of IShortUserInfo
   /// with the given fields replaced by the non-null parameter values.

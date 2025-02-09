@@ -11,7 +11,7 @@ part 'i_short_user_info.g.dart';
 class IShortUserInfo with _$IShortUserInfo {
   const factory IShortUserInfo({
     required int id,
-    required String name,
+    required String username,
   }) = _IShortUserInfo;
   
   factory IShortUserInfo.fromJson(Map<String, Object?> json) => _$IShortUserInfoFromJson(json);

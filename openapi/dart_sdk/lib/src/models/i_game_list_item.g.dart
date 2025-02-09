@@ -13,6 +13,8 @@ _$IGameListItemImpl _$$IGameListItemImplFromJson(Map<String, dynamic> json) =>
           IShortUserInfo.fromJson(json['createdBy'] as Map<String, dynamic>),
       title: json['title'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      ageRestriction: IGameListItemAgeRestriction.fromJson(
+          json['ageRestriction'] as String),
       currentRound: (json['currentRound'] as num).toInt(),
       players: (json['players'] as num).toInt(),
       maxPlayers: (json['maxPlayers'] as num).toInt(),
@@ -28,6 +30,7 @@ Map<String, dynamic> _$$IGameListItemImplToJson(_$IGameListItemImpl instance) =>
       'createdBy': instance.createdBy,
       'title': instance.title,
       'createdAt': instance.createdAt.toIso8601String(),
+      'ageRestriction': instance.ageRestriction,
       'currentRound': instance.currentRound,
       'players': instance.players,
       'maxPlayers': instance.maxPlayers,

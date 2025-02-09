@@ -24,6 +24,8 @@ mixin _$IGameListItem {
   IShortUserInfo get createdBy => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  IGameListItemAgeRestriction get ageRestriction =>
+      throw _privateConstructorUsedError;
   int get currentRound => throw _privateConstructorUsedError;
   int get players => throw _privateConstructorUsedError;
   int get maxPlayers => throw _privateConstructorUsedError;
@@ -51,6 +53,7 @@ abstract class $IGameListItemCopyWith<$Res> {
       IShortUserInfo createdBy,
       String title,
       DateTime createdAt,
+      IGameListItemAgeRestriction ageRestriction,
       int currentRound,
       int players,
       int maxPlayers,
@@ -80,6 +83,7 @@ class _$IGameListItemCopyWithImpl<$Res, $Val extends IGameListItem>
     Object? createdBy = null,
     Object? title = null,
     Object? createdAt = null,
+    Object? ageRestriction = null,
     Object? currentRound = null,
     Object? players = null,
     Object? maxPlayers = null,
@@ -103,6 +107,10 @@ class _$IGameListItemCopyWithImpl<$Res, $Val extends IGameListItem>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      ageRestriction: null == ageRestriction
+          ? _value.ageRestriction
+          : ageRestriction // ignore: cast_nullable_to_non_nullable
+              as IGameListItemAgeRestriction,
       currentRound: null == currentRound
           ? _value.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
@@ -160,6 +168,7 @@ abstract class _$$IGameListItemImplCopyWith<$Res>
       IShortUserInfo createdBy,
       String title,
       DateTime createdAt,
+      IGameListItemAgeRestriction ageRestriction,
       int currentRound,
       int players,
       int maxPlayers,
@@ -189,6 +198,7 @@ class __$$IGameListItemImplCopyWithImpl<$Res>
     Object? createdBy = null,
     Object? title = null,
     Object? createdAt = null,
+    Object? ageRestriction = null,
     Object? currentRound = null,
     Object? players = null,
     Object? maxPlayers = null,
@@ -212,6 +222,10 @@ class __$$IGameListItemImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      ageRestriction: null == ageRestriction
+          ? _value.ageRestriction
+          : ageRestriction // ignore: cast_nullable_to_non_nullable
+              as IGameListItemAgeRestriction,
       currentRound: null == currentRound
           ? _value.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
@@ -244,6 +258,7 @@ class _$IGameListItemImpl implements _IGameListItem {
       required this.createdBy,
       required this.title,
       required this.createdAt,
+      required this.ageRestriction,
       required this.currentRound,
       required this.players,
       required this.maxPlayers,
@@ -262,6 +277,8 @@ class _$IGameListItemImpl implements _IGameListItem {
   @override
   final DateTime createdAt;
   @override
+  final IGameListItemAgeRestriction ageRestriction;
+  @override
   final int currentRound;
   @override
   final int players;
@@ -274,7 +291,7 @@ class _$IGameListItemImpl implements _IGameListItem {
 
   @override
   String toString() {
-    return 'IGameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, currentRound: $currentRound, players: $players, maxPlayers: $maxPlayers, package: $package, startedAt: $startedAt)';
+    return 'IGameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, currentRound: $currentRound, players: $players, maxPlayers: $maxPlayers, package: $package, startedAt: $startedAt)';
   }
 
   @override
@@ -288,6 +305,8 @@ class _$IGameListItemImpl implements _IGameListItem {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.ageRestriction, ageRestriction) ||
+                other.ageRestriction == ageRestriction) &&
             (identical(other.currentRound, currentRound) ||
                 other.currentRound == currentRound) &&
             (identical(other.players, players) || other.players == players) &&
@@ -301,7 +320,7 @@ class _$IGameListItemImpl implements _IGameListItem {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, createdBy, title, createdAt,
-      currentRound, players, maxPlayers, package, startedAt);
+      ageRestriction, currentRound, players, maxPlayers, package, startedAt);
 
   /// Create a copy of IGameListItem
   /// with the given fields replaced by the non-null parameter values.
@@ -325,6 +344,7 @@ abstract class _IGameListItem implements IGameListItem {
       required final IShortUserInfo createdBy,
       required final String title,
       required final DateTime createdAt,
+      required final IGameListItemAgeRestriction ageRestriction,
       required final int currentRound,
       required final int players,
       required final int maxPlayers,
@@ -342,6 +362,8 @@ abstract class _IGameListItem implements IGameListItem {
   String get title;
   @override
   DateTime get createdAt;
+  @override
+  IGameListItemAgeRestriction get ageRestriction;
   @override
   int get currentRound;
   @override

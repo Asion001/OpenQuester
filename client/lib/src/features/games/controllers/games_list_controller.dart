@@ -18,7 +18,7 @@ class GamesListController extends ListControllerBase<GameListItem> {
   }
 
   Future<void> _onSocketEvent(dynamic data) async {
-    final gameEvent = PostSubscriptionGamesResponse.fromJson(data);
+    final gameEvent = GameEventSubscription.fromJson(data);
     final game = gameEvent.data;
     switch (gameEvent.event) {
       case IGameEvent.changed:
