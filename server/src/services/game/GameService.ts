@@ -25,6 +25,10 @@ export class GameService {
     return this.gameRepository.getAllGames(ctx, paginationOpts);
   }
 
+  public async delete(gameId: string) {
+    return this.gameRepository.deleteGame(gameId);
+  }
+
   public async create(
     ctx: ApiContext,
     gameData: IGameCreateData,

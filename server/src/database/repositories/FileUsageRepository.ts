@@ -39,6 +39,24 @@ export class FileUsageRepository {
     return this._repository.save(usage);
   }
 
+  public async writeBulkUsage(filesData: {
+    files: File[];
+    user?: User;
+    pack?: Package;
+  }) {
+    const fileUsages = filesData.files.map((f) => {
+      const usage = new FileUsage();
+      usage.import({
+        file: f,
+        package: filesData.pack,
+        user: filesData.user,
+      });
+      return usage;
+    });
+
+    return this._repository.insert(fileUsages);
+  }
+
   public async deleteUsage(file: File, user?: User, pack?: Package) {
     const opts: { [key: string]: any } = { file: { id: file.id } };
 

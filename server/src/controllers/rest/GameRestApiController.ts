@@ -12,6 +12,8 @@ import { IGameCreateData } from "types/game/IGameCreate";
 import { createGameScheme, gameIdScheme } from "schemes/game/gameSchemes";
 import { ClientError } from "error/ClientError";
 import { ClientResponse } from "enums/ClientResponse";
+import { SocketIOEvents } from "enums/SocketIOEvents";
+import { EGameEvent, IGameEvent } from "types/game/IGameEvent";
 
 export class GameRestApiController {
   private readonly _gameService: GameService;
@@ -27,7 +29,25 @@ export class GameRestApiController {
     router.get(`/`, asyncHandler(this.listGames));
     router.post(`/`, asyncHandler(this.createGame));
     router.get(`/:id`, asyncHandler(this.getGame));
+    router.delete(`/:id`, asyncHandler(this.deleteGame));
   }
+
+  private deleteGame = async (req: Request, res: Response) => {
+    const validatedData = await new RequestDataValidator<{ gameId: string }>(
+      { gameId: req.params.gameId },
+      gameIdScheme()
+    ).validate();
+
+    await this._gameService.delete(validatedData.gameId);
+    this.ctx.io.emit(SocketIOEvents.GAMES, {
+      event: EGameEvent.DELETED,
+      data: {
+        id: validatedData.gameId,
+      },
+    } as IGameEvent);
+
+    return res.status(HttpStatus.NO_CONTENT).send();
+  };
 
   private getGame = async (req: Request, res: Response) => {
     const validatedData = await new RequestDataValidator<{ gameId: string }>(

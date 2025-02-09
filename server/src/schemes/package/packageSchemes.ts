@@ -35,7 +35,7 @@ const themes = Joi.array()
   .items(
     Joi.object({
       name: Joi.string().required(),
-      comment: Joi.string(),
+      comment: Joi.string().allow(null, ""),
       questions,
     }).required()
   )

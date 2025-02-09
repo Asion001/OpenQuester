@@ -19,9 +19,6 @@ import { ClientError } from "error/ClientError";
 import { Logger } from "utils/Logger";
 import { UserRepository } from "database/repositories/UserRepository";
 import { IDiscordProfile } from "types/discord/discord";
-import { EFileSource } from "enums/file/EFileSource";
-import { getDiscordCDNLink } from "constants/discord";
-import { FileRepository } from "database/repositories/FileRepository";
 import { IRegisterUser } from "types/user/IRegisterUser";
 
 export class AuthRestApiController {
@@ -134,7 +131,6 @@ export class AuthRestApiController {
         id: Joi.string().required(),
         username: Joi.string().required(),
         email: Joi.string().email().allow(null),
-        avatar: Joi.string().allow(null),
       })
     ).validate();
 
@@ -146,15 +142,6 @@ export class AuthRestApiController {
       user = new User();
       user.discord_id = profile.id;
       user.username = profile.username;
-      if (profile.avatar) {
-        const fileRepo = FileRepository.getRepository(this.ctx.db);
-        const file = await fileRepo.writeFile(
-          getDiscordCDNLink(profile.id, profile.avatar),
-          profile.avatar,
-          EFileSource.DISCORD
-        );
-        user.avatar = file;
-      }
       user.email = profile.email ?? null;
 
       const registerData: IRegisterUser = await user.export();
