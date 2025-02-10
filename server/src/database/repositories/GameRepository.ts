@@ -6,27 +6,27 @@ import {
   GAME_ID_CHARACTERS_LENGTH,
   GAME_NAMESPACE,
 } from "constants/game";
-import { IGame } from "types/game/IGame";
-import { ApiContext } from "services/context/ApiContext";
-import { IGameListItem } from "types/game/IGameListItem";
-import { PackageRepository } from "./PackageRepository";
-import { UserRepository } from "./UserRepository";
 import { Database } from "database/Database";
-import { EAgeRestriction } from "enums/game/EAgeRestriction";
-import { ClientError } from "error/ClientError";
-import { ClientResponse } from "enums/ClientResponse";
-import { ValueUtils } from "utils/ValueUtils";
-import { IGameCreateData } from "types/game/IGameCreate";
-import { User } from "database/models/User";
-import {
-  IPaginationOpts,
-  EPaginationOrder,
-} from "types/pagination/IPaginationOpts";
-import { IPaginatedResult } from "types/pagination/IPaginatedResult";
-import { HttpStatus } from "enums/HttpStatus";
-import { IShortUserInfo } from "types/user/IShortUserInfo";
 import { GameIndexManager } from "database/managers/game/GameIndexManager";
-import { IGameRedisHash } from "types/game/IGameRedisHash";
+import { User } from "database/models/User";
+import { PackageRepository } from "database/repositories/PackageRepository";
+import { UserRepository } from "database/repositories/UserRepository";
+import { ClientResponse } from "enums/ClientResponse";
+import { AgeRestriction } from "enums/game/AgeRestriction";
+import { HttpStatus } from "enums/HttpStatus";
+import { ClientError } from "error/ClientError";
+import { ApiContext } from "services/context/ApiContext";
+import { GameCreateDTO } from "types/dto/game/GameCreateDTO";
+import { GameDTO } from "types/dto/game/GameDTO";
+import { GameListItemDTO } from "types/dto/game/GameListItemDTO";
+import { GameRedisHashDTO } from "types/dto/game/GameRedisHashDTO";
+import { PaginatedResult } from "types/pagination/PaginatedResult";
+import {
+  PaginationOpts,
+  PaginationOrder,
+} from "types/pagination/PaginationOpts";
+import { ShortUserInfo } from "types/user/ShortUserInfo";
+import { ValueUtils } from "utils/ValueUtils";
 
 export class GameRepository {
   private static _instance: GameRepository;
@@ -87,8 +87,8 @@ export class GameRepository {
   }
 
   public async getAllGamesRaw(
-    paginationOpts: IPaginationOpts<IGame>
-  ): Promise<IPaginatedResult<IGame[]>> {
+    paginationOpts: PaginationOpts<GameDTO>
+  ): Promise<PaginatedResult<GameDTO[]>> {
     const keys = await this._redisClient.keys(`${GAME_NAMESPACE}:*`);
 
     // Fetch all game data in one redis request
@@ -101,7 +101,7 @@ export class GameRepository {
     }
 
     // Parse and filter valid games
-    const games: (IGame | undefined)[] = await Promise.all(
+    const games: (GameDTO | undefined)[] = await Promise.all(
       pipelineResult.map(async ([err, raw]) => {
         try {
           return err ? undefined : JSON.parse(raw as string);
@@ -110,12 +110,12 @@ export class GameRepository {
         }
       })
     );
-    const validGames = games.filter((g): g is IGame => !ValueUtils.isBad(g));
+    const validGames = games.filter((g): g is GameDTO => !ValueUtils.isBad(g));
 
     const totalCount = validGames.length;
 
     // Sorting
-    const { sortBy = "createdAt", order = EPaginationOrder.ASC } =
+    const { sortBy = "createdAt", order = PaginationOrder.ASC } =
       paginationOpts;
     validGames.sort((a, b) => this._compareGames(a, b, sortBy, order));
 
@@ -131,15 +131,11 @@ export class GameRepository {
 
   public async getAllGames(
     ctx: ApiContext,
-    paginationOpts: IPaginationOpts<IGame>
-  ): Promise<IPaginatedResult<IGameListItem[]>> {
+    paginationOpts: PaginationOpts<GameDTO>
+  ): Promise<PaginatedResult<GameListItemDTO[]>> {
     const { ids, total } = await this._gameIdxManager.findGamesByIndex(
       {}, // No filters for now
-      {
-        offset: paginationOpts.offset,
-        limit: paginationOpts.limit,
-        order: paginationOpts.order || EPaginationOrder.DESC,
-      }
+      paginationOpts
     );
 
     const packageIds = new Set<number>();
@@ -164,7 +160,7 @@ export class GameRepository {
       this._getUserRepository(ctx.db).findByIds(Array.from(userIds), {
         select: ["id", "username"],
         relations: [],
-      }) as Promise<IShortUserInfo[]>,
+      }) as Promise<ShortUserInfo[]>,
       this._getPackageRepository(ctx.db).findByIds(Array.from(packageIds)),
     ]);
 
@@ -191,7 +187,7 @@ export class GameRepository {
             rounds: packData.content.rounds.length,
             tags: packMeta.tags,
             title: packMeta.title,
-            ageRestriction: packMeta.ageRestriction ?? EAgeRestriction.NONE,
+            ageRestriction: packMeta.ageRestriction ?? AgeRestriction.NONE,
             author: {
               id: packData.author.id,
               username: packData.author.username,
@@ -199,7 +195,7 @@ export class GameRepository {
           },
         };
       })
-      .filter((g): g is IGameListItem => g !== null);
+      .filter((g): g is GameListItemDTO => g !== null);
 
     return {
       data: gamesItems,
@@ -211,7 +207,7 @@ export class GameRepository {
 
   public async createGame(
     ctx: ApiContext,
-    gameData: IGameCreateData,
+    gameData: GameCreateDTO,
     createdBy: User
   ) {
     const packageRepo = this._getPackageRepository(ctx.db);
@@ -234,7 +230,7 @@ export class GameRepository {
     }
 
     // Redis entity
-    const gameDataRaw: IGame = {
+    const gameDataRaw: GameDTO = {
       id: gameId,
       createdBy: createdBy.id,
       title: gameData.title,
@@ -261,14 +257,14 @@ export class GameRepository {
     await pipeline.exec();
 
     // List item returned to client
-    const gameDataOutput: IGameListItem = {
+    const gameDataOutput: GameListItemDTO = {
       ...gameDataRaw,
       createdBy: { id: createdBy.id, username: createdBy.username },
       package: {
         id: gameData.packageId,
         title: packageData.title,
         // TODO: Get age restriction after new pack model implemented
-        ageRestriction: EAgeRestriction.NONE,
+        ageRestriction: AgeRestriction.NONE,
         createdAt: packageData.created_at,
         rounds: packageData.content.rounds.length,
         tags: packageData.content.metadata.tags,
@@ -296,8 +292,8 @@ export class GameRepository {
 
   private async _convertRedisRecord(
     ctx: ApiContext,
-    record: IGame
-  ): Promise<IGameListItem | undefined> {
+    record: GameDTO
+  ): Promise<GameListItemDTO | undefined> {
     const userRepo = this._getUserRepository(ctx.db);
     const packageRepo = this._getPackageRepository(ctx.db);
 
@@ -327,7 +323,7 @@ export class GameRepository {
         rounds: packData.content.rounds.length,
         tags: packMeta.tags,
         title: packMeta.title,
-        ageRestriction: packMeta.ageRestriction ?? EAgeRestriction.NONE,
+        ageRestriction: packMeta.ageRestriction ?? AgeRestriction.NONE,
         author: {
           id: packData.author.id,
           username: packData.author.username,
@@ -362,10 +358,10 @@ export class GameRepository {
   }
 
   private _compareGames(
-    a: IGame,
-    b: IGame,
-    sortBy: keyof IGame,
-    order: EPaginationOrder
+    a: GameDTO,
+    b: GameDTO,
+    sortBy: keyof GameDTO,
+    order: PaginationOrder
   ): number {
     const fieldA = a[sortBy];
     const fieldB = b[sortBy];
@@ -381,9 +377,9 @@ export class GameRepository {
     return fieldA < fieldB ? 1 : -1;
   }
 
-  private _isValidGameHash(data: unknown): data is IGameRedisHash {
-    const hash = data as IGameRedisHash;
-    if (typeof hash !== "object" || hash === null) return false;
+  private _isValidGameHash(data: unknown): data is GameRedisHashDTO {
+    if (typeof data !== "object" || data === null) return false;
+    const hash = data as GameRedisHashDTO;
 
     const requiredKeys = [
       "id",
@@ -400,7 +396,7 @@ export class GameRepository {
     ];
 
     return requiredKeys.every(
-      (key) => typeof hash[key as keyof IGameRedisHash] === "string"
+      (key) => typeof hash[key as keyof GameRedisHashDTO] === "string"
     );
   }
 
@@ -416,7 +412,7 @@ export class GameRepository {
     return results.map(([, data]) => this._deserializeGame(data as any));
   }
 
-  private _serializeGame(game: IGame): IGameRedisHash {
+  private _serializeGame(game: GameDTO): GameRedisHashDTO {
     return {
       id: game.id,
       createdBy: game.createdBy.toString(),
@@ -432,7 +428,7 @@ export class GameRepository {
     };
   }
 
-  private _deserializeGame(data: IGameRedisHash): IGame {
+  private _deserializeGame(data: GameRedisHashDTO): GameDTO {
     return {
       id: data.id,
       createdBy: parseInt(data.createdBy),
@@ -440,7 +436,7 @@ export class GameRepository {
       createdAt: new Date(parseInt(data.createdAt)),
       isPrivate: data.isPrivate === "1",
       currentRound: parseInt(data.currentRound),
-      ageRestriction: data.ageRestriction as EAgeRestriction,
+      ageRestriction: data.ageRestriction as AgeRestriction,
       players: parseInt(data.players),
       maxPlayers: parseInt(data.maxPlayers),
       package: parseInt(data.package),

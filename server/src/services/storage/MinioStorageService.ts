@@ -6,46 +6,46 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-import { IStorage } from "types/file/IStorage";
-import { IS3Context } from "types/file/IS3Context";
-import { PackageRepository } from "database/repositories/PackageRepository";
-import { Database } from "database/Database";
-import { User } from "database/models/User";
-import { FileRepository } from "database/repositories/FileRepository";
-import { StorageUtils } from "utils/StorageUtils";
-import { FileUsageRepository } from "database/repositories/FileUsageRepository";
-import { File } from "database/models/File";
-import { Package } from "database/models/Package";
-import { UserRepository } from "database/repositories/UserRepository";
-import { ClientError } from "error/ClientError";
-import { ClientResponse } from "enums/ClientResponse";
-import { UsageEntries } from "types/usage/usage";
-import { Permission } from "database/models/Permission";
-import { Permissions } from "enums/Permissions";
-import { ContentStructureService } from "services/ContentStructureService";
-import { ApiContext } from "services/context/ApiContext";
-import { DependencyService } from "services/dependency/DependencyService";
-import { ValueUtils } from "utils/ValueUtils";
-import { IPaginationOpts } from "types/pagination/IPaginationOpts";
-import { IPackage } from "types/package/IPackage";
-import { IPaginatedResult } from "types/pagination/IPaginatedResult";
-import { ISelectOptions } from "types/ISelectOptions";
-import { IPackageListItem } from "types/game/items/IPackageIListItem";
-import { EAgeRestriction } from "enums/game/EAgeRestriction";
-import { OQContentStructure } from "types/file/structures/OQContentStructure";
-import { IPackageUploadResponse } from "types/package/IPackageUploadResponse";
-import { EFileSource } from "enums/file/EFileSource";
-import { HttpStatus } from "enums/HttpStatus";
 import {
   UPLOAD_FILE_LINK_EXPIRES_IN,
   UPLOAD_PACKAGE_LINKS_EXPIRES_IN,
 } from "constants/storage";
+import { Database } from "database/Database";
+import { File } from "database/models/File";
+import { Package } from "database/models/Package";
+import { Permission } from "database/models/Permission";
+import { User } from "database/models/User";
+import { FileRepository } from "database/repositories/FileRepository";
+import { FileUsageRepository } from "database/repositories/FileUsageRepository";
+import { PackageRepository } from "database/repositories/PackageRepository";
+import { UserRepository } from "database/repositories/UserRepository";
+import { ClientResponse } from "enums/ClientResponse";
+import { FileSource } from "enums/file/FileSource";
+import { AgeRestriction } from "enums/game/AgeRestriction";
+import { HttpStatus } from "enums/HttpStatus";
+import { Permissions } from "enums/Permissions";
+import { ClientError } from "error/ClientError";
+import { ContentStructureService } from "services/ContentStructureService";
+import { ApiContext } from "services/context/ApiContext";
+import { DependencyService } from "services/dependency/DependencyService";
 import { Session } from "types/auth/session";
-import { IFile } from "types/file/IFile";
+import { FileDTO } from "types/dto/file/FileDTO";
+import { PackageListItemDTO } from "types/dto/game/items/PackageIListItemDTO";
+import { S3Context } from "types/file/S3Context";
+import { StorageServiceModel } from "types/file/StorageServiceModel";
+import { OQContentStructure } from "types/file/structures/OQContentStructure";
+import { PackageModel } from "types/package/PackageModel";
+import { PackageUploadResponse } from "types/package/PackageUploadResponse";
+import { PaginatedResult } from "types/pagination/PaginatedResult";
+import { PaginationOpts } from "types/pagination/PaginationOpts";
+import { SelectOptions } from "types/SelectOptions";
+import { UsageEntries } from "types/usage/usage";
+import { StorageUtils } from "utils/StorageUtils";
+import { ValueUtils } from "utils/ValueUtils";
 
-export class MinioStorageService implements IStorage {
+export class MinioStorageService implements StorageServiceModel {
   private _client: S3Client;
-  private _s3Context: IS3Context;
+  private _s3Context: S3Context;
   private _contentStructureService: ContentStructureService;
   private _db: Database;
   private _fileRepository: FileRepository;
@@ -130,9 +130,9 @@ export class MinioStorageService implements IStorage {
   }
 
   public async performBulkFilesUpload(
-    filesData: { files: IFile[]; user?: User; pack?: Package },
+    filesData: { files: FileDTO[]; user?: User; pack?: Package },
     expiresIn: number
-  ) {
+  ): Promise<Record<string, string>> {
     const links: Record<string, string> = {};
     for (const file of filesData.files) {
       const filename = ValueUtils.getRawFilename(file.filename.toLowerCase());
@@ -160,12 +160,12 @@ export class MinioStorageService implements IStorage {
   public async performFileUpload(
     filename: string,
     expiresIn: number,
-    source?: EFileSource,
+    source?: FileSource,
     user?: User,
     pack?: Package
   ) {
     if (!source) {
-      source = EFileSource.S3;
+      source = FileSource.S3;
     }
 
     const filenameWithPath = StorageUtils.parseFilePath(filename);
@@ -259,7 +259,9 @@ export class MinioStorageService implements IStorage {
     this._client.send(command);
   }
 
-  public async getPackage(packId: string | number): Promise<IPackageListItem> {
+  public async getPackage(
+    packId: string | number
+  ): Promise<PackageListItemDTO> {
     const id = ValueUtils.validateId(packId);
     const pack = await this._packageRepository.get(id);
     if (!pack) {
@@ -268,7 +270,7 @@ export class MinioStorageService implements IStorage {
     // TODO: This will be reworked after moving to better package model
     return {
       id: pack.id,
-      ageRestriction: EAgeRestriction.NONE,
+      ageRestriction: AgeRestriction.NONE,
       createdAt: pack?.created_at,
       rounds: pack.content.rounds.length,
       tags: pack.content.metadata.tags,
@@ -281,19 +283,19 @@ export class MinioStorageService implements IStorage {
   }
 
   public async listPackages(
-    paginationOpts: IPaginationOpts<IPackage>,
-    selectOptions?: ISelectOptions<IPackage>
-  ): Promise<IPaginatedResult<IPackageListItem[]>> {
+    paginationOpts: PaginationOpts<PackageModel>,
+    selectOptions?: SelectOptions<PackageModel>
+  ): Promise<PaginatedResult<PackageListItemDTO[]>> {
     const paginatedList = await this._packageRepository.list(
       paginationOpts,
       selectOptions
     );
 
     const packageListItems = paginatedList.data.map(
-      (pack): IPackageListItem => {
+      (pack): PackageListItemDTO => {
         return {
           id: pack.id,
-          ageRestriction: EAgeRestriction.NONE,
+          ageRestriction: AgeRestriction.NONE,
           createdAt: pack.created_at,
           rounds: pack.content.rounds.length,
           tags: pack.content.metadata.tags,
@@ -316,7 +318,7 @@ export class MinioStorageService implements IStorage {
     content: OQContentStructure,
     session: Session,
     expiresIn: number = UPLOAD_PACKAGE_LINKS_EXPIRES_IN
-  ): Promise<IPackageUploadResponse> {
+  ): Promise<PackageUploadResponse> {
     const author = await UserRepository.getUserBySession(this._db, session);
 
     if (!author || !author.id) {
@@ -388,11 +390,7 @@ export class MinioStorageService implements IStorage {
     return this._fileUsageRepository.writeUsage(file, user, pack);
   }
 
-  private async _writeFile(
-    path: string,
-    filename: string,
-    source: EFileSource
-  ) {
+  private async _writeFile(path: string, filename: string, source: FileSource) {
     return this._fileRepository.writeFile(path, filename, source);
   }
 }

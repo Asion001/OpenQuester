@@ -1,19 +1,19 @@
 import { type Request, type Response, Router } from "express";
 
+import { ClientResponse } from "enums/ClientResponse";
+import { HttpStatus } from "enums/HttpStatus";
+import { SocketIOEvents } from "enums/SocketIOEvents";
+import { ClientError } from "error/ClientError";
+import { asyncHandler } from "middleware/asyncHandlerMiddleware";
+import { createGameScheme, gameIdScheme } from "schemes/game/gameSchemes";
+import { PaginationSchema } from "schemes/pagination/PaginationSchema";
+import { RequestDataValidator } from "schemes/RequestDataValidator";
 import { type ApiContext } from "services/context/ApiContext";
 import { type GameService } from "services/game/GameService";
-import { HttpStatus } from "enums/HttpStatus";
-import { IGame } from "types/game/IGame";
-import { PaginationSchema } from "schemes/pagination/PaginationSchema";
-import { EPaginationOrder } from "types/pagination/IPaginationOpts";
-import { asyncHandler } from "middleware/asyncHandlerMiddleware";
-import { RequestDataValidator } from "schemes/RequestDataValidator";
-import { IGameCreateData } from "types/game/IGameCreate";
-import { createGameScheme, gameIdScheme } from "schemes/game/gameSchemes";
-import { ClientError } from "error/ClientError";
-import { ClientResponse } from "enums/ClientResponse";
-import { SocketIOEvents } from "enums/SocketIOEvents";
-import { EGameEvent, IGameEvent } from "types/game/IGameEvent";
+import { GameCreateDTO } from "types/dto/game/GameCreateDTO";
+import { GameDTO } from "types/dto/game/GameDTO";
+import { GameEvent, GameEventDTO } from "types/dto/game/GameEventDTO";
+import { PaginationOrder } from "types/pagination/PaginationOpts";
 
 export class GameRestApiController {
   private readonly _gameService: GameService;
@@ -39,12 +39,14 @@ export class GameRestApiController {
     ).validate();
 
     await this._gameService.delete(validatedData.gameId);
-    this.ctx.io.emit(SocketIOEvents.GAMES, {
-      event: EGameEvent.DELETED,
+
+    const eventDataDTO: GameEventDTO = {
+      event: GameEvent.DELETED,
       data: {
         id: validatedData.gameId,
       },
-    } as IGameEvent);
+    };
+    this.ctx.io.emit(SocketIOEvents.GAMES, eventDataDTO);
 
     return res.status(HttpStatus.NO_CONTENT).send();
   };
@@ -61,10 +63,10 @@ export class GameRestApiController {
   };
 
   private listGames = async (req: Request, res: Response) => {
-    const paginationOpts = await new PaginationSchema<IGame>({
+    const paginationOpts = await new PaginationSchema<GameDTO>({
       data: {
-        sortBy: req.query.sortBy as keyof IGame,
-        order: req.query.order as EPaginationOrder,
+        sortBy: req.query.sortBy as keyof GameDTO,
+        order: req.query.order as PaginationOrder,
         limit: Number(req.query.limit),
         offset: Number(req.query.offset),
       },
@@ -84,18 +86,18 @@ export class GameRestApiController {
   };
 
   private createGame = async (req: Request, res: Response) => {
-    const validatedData = await new RequestDataValidator<IGameCreateData>(
+    const gameCreateDTO = await new RequestDataValidator<GameCreateDTO>(
       req.body,
       createGameScheme()
     ).validate();
 
-    if (Object.keys(validatedData).length < 1) {
+    if (Object.keys(gameCreateDTO).length < 1) {
       throw new ClientError(ClientResponse.NO_GAME_DATA);
     }
 
     const result = await this._gameService.create(
       this.ctx,
-      validatedData,
+      gameCreateDTO,
       req.session
     );
     return res.status(HttpStatus.OK).send(result);

@@ -10,14 +10,14 @@ import {
   OneToMany,
 } from "typeorm";
 
-import { IUserModel } from "types/user/IUserModel";
+import { UserModel } from "types/user/UserModel";
 import { File } from "database/models/File";
 import { Permission } from "database/models/Permission";
 import { Package } from "database/models/Package";
 
 @Entity("user")
 @Unique(["email", "username", "discord_id"])
-export class User implements IUserModel {
+export class User implements UserModel {
   constructor() {
     //
   }
@@ -61,7 +61,7 @@ export class User implements IUserModel {
   })
   permissions!: Permission[];
 
-  public async import(data: IUserModel) {
+  public async import(data: UserModel) {
     this.username = data.username;
     this.email = data.email;
     this.discord_id = data.discord_id ?? null;
@@ -74,6 +74,7 @@ export class User implements IUserModel {
   }
 
   public async export() {
+    // TODO: Use dependency container to export file as link (presign it)
     return {
       id: this.id,
       username: this.username,
@@ -84,6 +85,6 @@ export class User implements IUserModel {
       created_at: this.created_at,
       updated_at: this.updated_at,
       permissions: this.permissions,
-    } as IUserModel;
+    } as UserModel; // TODO: As UserDTO
   }
 }

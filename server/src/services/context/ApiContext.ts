@@ -1,11 +1,9 @@
-import bcrypt from "bcryptjs";
-
-import { IApiContext } from "types/context/IApiContext";
+import { ApiContextDTO } from "types/context/ApiContextDTO";
 
 export class ApiContext {
-  private readonly _ctx: IApiContext;
+  private readonly _ctx: ApiContextDTO;
 
-  constructor(ctx: IApiContext) {
+  constructor(ctx: ApiContextDTO) {
     this._ctx = ctx;
   }
 
@@ -28,13 +26,6 @@ export class ApiContext {
    */
   public get io() {
     return this._ctx.io;
-  }
-
-  /**
-   * Crypto library instance
-   */
-  public get crypto() {
-    return this._ctx.crypto ?? bcrypt;
   }
 
   /**

@@ -1,21 +1,26 @@
+import { type NextFunction, type Request, type Response } from "express";
 import Joi from "joi";
-import { type Request, type Response, type NextFunction } from "express";
 
+import { Environment, EnvType } from "config/Environment";
+import { Database } from "database/Database";
+import { AppDataSource } from "database/DataSource";
+import { UserRepository } from "database/repositories/UserRepository";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
-import { TranslateService as ts } from "services/text/TranslateService";
-import { RequestDataValidator } from "schemes/RequestDataValidator";
-import { ISession } from "types/ISession";
-import { ValueUtils } from "utils/ValueUtils";
 import { ServerResponse } from "enums/ServerResponse";
-import { Logger } from "utils/Logger";
-import { Database } from "database/Database";
-import { UserRepository } from "database/repositories/UserRepository";
-import { AppDataSource } from "database/DataSource";
+import { RequestDataValidator } from "schemes/RequestDataValidator";
+import { TranslateService as ts } from "services/text/TranslateService";
 import { Session } from "types/auth/session";
+import { SessionDTO } from "types/dto/auth/SessionDTO";
+import { Logger } from "utils/Logger";
+import { ValueUtils } from "utils/ValueUtils";
 
 const isPublicEndpoint = (url: string, method: string): boolean => {
   const publicEndpoints = ["v1/auth", "v1/api-docs", "v1/users", "v1/files"];
+
+  if (Environment.instance.ENV === EnvType.LOCAL) {
+    publicEndpoints.push("v1/dev");
+  }
 
   const conditionalEndpoints = [
     { url: "v1/packages", method: "GET" },
@@ -49,7 +54,7 @@ export const verifySession = async (
     return unauthorizedError(req, res);
   }
 
-  let session: ISession | undefined = undefined;
+  let session: SessionDTO;
   try {
     session = await validateSession(req.session);
   } catch (err: unknown) {
@@ -76,7 +81,7 @@ export const verifySession = async (
 };
 
 function validateSession(session: Session) {
-  return new RequestDataValidator<ISession>(
+  return new RequestDataValidator<SessionDTO>(
     {
       userId: session.userId,
     },

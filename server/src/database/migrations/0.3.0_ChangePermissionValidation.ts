@@ -5,6 +5,7 @@ import {
   TableForeignKey,
   TableUnique,
 } from "typeorm";
+
 import { Logger } from "utils/Logger";
 
 export class ChangePermissionValidation_0_3_0_1729181792142

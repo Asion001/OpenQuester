@@ -1,8 +1,8 @@
 import { Socket } from "socket.io";
-import { ISocketContext } from "types/context/ISocketContext";
+import { SocketContextDTO } from "types/context/SocketContextDTO";
 
 export class SocketIOGameController {
-  constructor(private ctx: ISocketContext) {
+  constructor(private readonly ctx: SocketContextDTO) {
     // TODO: Implement game-join, game-leave, game-change in future
   }
 

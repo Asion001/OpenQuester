@@ -1,16 +1,16 @@
 import { type Request, type Response, Router } from "express";
 
-import { type ApiContext } from "services/context/ApiContext";
-import { IStorage } from "types/file/IStorage";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
-import { TranslateService as ts } from "services/text/TranslateService";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
-import { RequestDataValidator as RequestDataValidator } from "schemes/RequestDataValidator";
+import { RequestDataValidator } from "schemes/RequestDataValidator";
 import { filenameScheme } from "schemes/file/fileSchemes";
+import { type ApiContext } from "services/context/ApiContext";
+import { TranslateService as ts } from "services/text/TranslateService";
+import { StorageServiceModel } from "types/file/StorageServiceModel";
 
 export class FileRestApiController {
-  private readonly _storageService: IStorage;
+  private readonly _storageService: StorageServiceModel;
 
   constructor(private readonly ctx: ApiContext) {
     const app = this.ctx.app;

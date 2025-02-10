@@ -1,7 +1,8 @@
 import { DataSource, EntityTarget, ObjectLiteral, Repository } from "typeorm";
-import { Logger } from "utils/Logger";
+
 import { ServerResponse } from "enums/ServerResponse";
 import { ServerError } from "error/ServerError";
+import { Logger } from "utils/Logger";
 
 const DB_PREFIX = "[DB]: ";
 

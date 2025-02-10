@@ -1,16 +1,15 @@
 import { type NextFunction, type Request, type Response } from "express";
 
 import { type Database } from "database/Database";
-import { type Permissions } from "enums/Permissions";
-
+import { Permission } from "database/models/Permission";
 import { UserRepository } from "database/repositories/UserRepository";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
-import { ValueUtils } from "utils/ValueUtils";
+import { type Permissions } from "enums/Permissions";
+import { ClientError } from "error/ClientError";
 import { ErrorController } from "error/ErrorController";
 import { TranslateService as ts } from "services/text/TranslateService";
-import { Permission } from "database/models/Permission";
-import { ClientError } from "error/ClientError";
+import { ValueUtils } from "utils/ValueUtils";
 
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {

@@ -1,9 +1,9 @@
 import Redis from "ioredis";
 
 import { Environment } from "config/Environment";
-import { Logger } from "utils/Logger";
-import { ServerError } from "error/ServerError";
 import { ServerResponse } from "enums/ServerResponse";
+import { ServerError } from "error/ServerError";
+import { Logger } from "utils/Logger";
 
 const REDIS_PREFIX = "[REDIS]: ";
 

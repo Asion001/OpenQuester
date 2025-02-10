@@ -1,8 +1,8 @@
-import { type Repository } from "typeorm";
 import { type Database } from "database/Database";
 import { File } from "database/models/File";
-import { EFileSource } from "enums/file/EFileSource";
-import { IFile } from "types/file/IFile";
+import { FileSource } from "enums/file/FileSource";
+import { type Repository } from "typeorm";
+import { FileDTO } from "types/dto/file/FileDTO";
 
 export class FileRepository {
   private static _instance: FileRepository;
@@ -20,11 +20,11 @@ export class FileRepository {
     return this._instance;
   }
 
-  public async bulkWriteFiles(files: IFile[]) {
+  public async bulkWriteFiles(files: FileDTO[]) {
     return this._repository.insert(files);
   }
 
-  public async writeFile(path: string, filename: string, source: EFileSource) {
+  public async writeFile(path: string, filename: string, source: FileSource) {
     const existingFile = await this._repository.findOne({
       where: {
         filename,

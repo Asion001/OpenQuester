@@ -1,18 +1,20 @@
-import { type ApiContext } from "services/context/ApiContext";
+import { User } from "database/models/User";
+import { FileUsageRepository } from "database/repositories/FileUsageRepository";
+import { UserRepository } from "database/repositories/UserRepository";
 import { ClientResponse } from "enums/ClientResponse";
 import { ClientError } from "error/ClientError";
-import { UserRepository } from "database/repositories/UserRepository";
-import { FileUsageRepository } from "database/repositories/FileUsageRepository";
-import { IPaginationOpts } from "types/pagination/IPaginationOpts";
-import { User } from "database/models/User";
-import { IUpdateUserData } from "types/user/IUpdateUserData";
+import { type ApiContext } from "services/context/ApiContext";
+import { PaginationOpts } from "types/pagination/PaginationOpts";
+import { UpdateUserDTO } from "types/user/UpdateUserData";
 import { ValueUtils } from "utils/ValueUtils";
 
 export class UserService {
   /**
    * Get list of all available users in DB
    */
-  public async list(ctx: ApiContext, paginationOpts: IPaginationOpts<User>) {
+  public async list(ctx: ApiContext, paginationOpts: PaginationOpts<User>) {
+    // TODO: Retrieve only avatar name and then get presigned link for it
+    // TODO: implement it in user.export() and user this method here as return. user.export() should be typed as UserDTO)
     return UserRepository.getRepository(ctx.db).list(paginationOpts, {
       relations: ["permissions", "avatar"],
     });
@@ -22,6 +24,8 @@ export class UserService {
    * Retrieve one user
    */
   public async get(ctx: ApiContext, userId: number) {
+    // TODO: Retrieve only avatar name and then get presigned link for it
+    // TODO: implement it in user.export() and user this method here as return. user.export() should be typed as UserDTO)
     return UserRepository.getRepository(ctx.db).get(userId, {
       relations: ["permissions", "avatar"],
     });
@@ -30,7 +34,7 @@ export class UserService {
   /**
    * Update user by params id
    */
-  public async update(ctx: ApiContext, updateUserData: IUpdateUserData) {
+  public async update(ctx: ApiContext, updateUserData: UpdateUserDTO) {
     return this.performUpdate(ctx, updateUserData);
   }
 
@@ -65,10 +69,7 @@ export class UserService {
   /**
    * User updating logic
    */
-  private async performUpdate(
-    ctx: ApiContext,
-    updateUserData: IUpdateUserData
-  ) {
+  private async performUpdate(ctx: ApiContext, updateUserData: UpdateUserDTO) {
     const data = updateUserData;
     const repository = UserRepository.getRepository(ctx.db);
     const fileUsageRepo = FileUsageRepository.getRepository(ctx.db);

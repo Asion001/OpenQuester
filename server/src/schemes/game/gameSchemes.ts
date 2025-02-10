@@ -1,10 +1,11 @@
+import Joi from "joi";
+
 import {
   GAME_MAX_PLAYERS,
   GAME_TITLE_MAX_CHARS,
   GAME_TITLE_MIN_CHARS,
 } from "constants/game";
-import { EAgeRestriction } from "enums/game/EAgeRestriction";
-import Joi from "joi";
+import { AgeRestriction } from "enums/game/AgeRestriction";
 
 export const gameIdScheme = () =>
   Joi.object({
@@ -21,6 +22,6 @@ export const createGameScheme = () =>
       .required(),
     packageId: Joi.number().required(),
     isPrivate: Joi.boolean().required(),
-    ageRestriction: Joi.valid(...Object.values(EAgeRestriction)).required(),
+    ageRestriction: Joi.valid(...Object.values(AgeRestriction)).required(),
     maxPlayers: Joi.number().max(GAME_MAX_PLAYERS).required(),
   });

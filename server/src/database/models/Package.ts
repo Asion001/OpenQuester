@@ -1,21 +1,21 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
+  Entity,
   JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 
-import { IPackage } from "types/package/IPackage";
-import { OQContentStructure } from "types/file/structures/OQContentStructure";
 import { User } from "database/models/User";
-import { IPackageImportData } from "types/package/IPackageImportData";
+import { OQContentStructure } from "types/file/structures/OQContentStructure";
+import { PackageDTO } from "types/package/PackageDTO";
+import { PackageModel } from "types/package/PackageModel";
 
 /** Same type as `OQContentStructure`. Workaround to use custom type in TypeORM model */
 type ContentStructure = OQContentStructure;
 
 @Entity("package")
-export class Package implements IPackage {
+export class Package implements PackageModel {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -34,7 +34,7 @@ export class Package implements IPackage {
   @JoinColumn({ name: "author" })
   author!: User;
 
-  public import(data: IPackageImportData) {
+  public import(data: PackageDTO) {
     this.title = data.title;
     this.author = data.author;
     this.content = data.content;

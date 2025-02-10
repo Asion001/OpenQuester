@@ -1,25 +1,23 @@
-import Joi from "joi";
 import { Router, type Request, type Response } from "express";
+import Joi from "joi";
 import https, { RequestOptions } from "node:https";
 
-import { type ApiContext } from "services/context/ApiContext";
 import { User } from "database/models/User";
-import { HttpStatus } from "enums/HttpStatus";
+import { UserRepository } from "database/repositories/UserRepository";
 import { ClientResponse } from "enums/ClientResponse";
-import { ServerError } from "error/ServerError";
+import { HttpStatus } from "enums/HttpStatus";
 import { ServerResponse } from "enums/ServerResponse";
-import { TranslateService as ts } from "services/text/TranslateService";
+import { ClientError } from "error/ClientError";
+import { ServerError } from "error/ServerError";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 import { RequestDataValidator } from "schemes/RequestDataValidator";
-import {
-  EOauthProvider,
-  IOauth2LoginInput,
-} from "types/auth/IOauth2LoginInput";
-import { ClientError } from "error/ClientError";
+import { type ApiContext } from "services/context/ApiContext";
+import { TranslateService as ts } from "services/text/TranslateService";
+import { DiscordProfile } from "types/discord/DiscordProfile";
+import { DiscordProfileDTO } from "types/dto/auth/DiscordProfileDTO";
+import { EOauthProvider, Oauth2LoginDTO } from "types/dto/auth/Oauth2LoginDTO";
+import { RegisterUser } from "types/user/RegisterUser";
 import { Logger } from "utils/Logger";
-import { UserRepository } from "database/repositories/UserRepository";
-import { IDiscordProfile } from "types/discord/discord";
-import { IRegisterUser } from "types/user/IRegisterUser";
 
 export class AuthRestApiController {
   constructor(private readonly ctx: ApiContext) {
@@ -33,7 +31,7 @@ export class AuthRestApiController {
   }
 
   private handleOauthLogin = async (req: Request, res: Response) => {
-    const validatedData = await new RequestDataValidator<IOauth2LoginInput>(
+    const authDTO = await new RequestDataValidator<Oauth2LoginDTO>(
       req.body,
       Joi.object({
         oauthProvider: Joi.valid(...Object.values(EOauthProvider)).required(),
@@ -44,12 +42,9 @@ export class AuthRestApiController {
 
     let userData: User | null = null;
 
-    switch (validatedData.oauthProvider) {
+    switch (authDTO.oauthProvider) {
       case "discord":
-        userData = await this.getDiscordUser(
-          validatedData.token,
-          validatedData.tokenSchema
-        );
+        userData = await this.getDiscordUser(authDTO);
 
         req.session.userId = userData.id;
 
@@ -90,17 +85,16 @@ export class AuthRestApiController {
     });
   };
 
-  private async getDiscordUser(
-    token: string,
-    tokenSchema?: string | null
-  ): Promise<User> {
+  private async getDiscordUser(authData: Oauth2LoginDTO): Promise<User> {
     const discordUser = await new Promise<string>((resolve, reject) => {
       const options: RequestOptions = {
         hostname: "discord.com",
         path: "/api/users/@me",
         method: "GET",
         headers: {
-          authorization: tokenSchema ? `${tokenSchema} ${token}` : token,
+          authorization: authData.tokenSchema
+            ? `${authData.tokenSchema} ${authData.token}`
+            : authData.token,
         },
       };
 
@@ -118,14 +112,14 @@ export class AuthRestApiController {
     });
 
     // Parse Discord response
-    let profileData: IDiscordProfile;
+    let profileData: DiscordProfile;
     try {
       profileData = JSON.parse(discordUser);
     } catch {
       throw new ClientError("Unable to parse user data");
     }
 
-    const profile = await new RequestDataValidator(
+    const profile = await new RequestDataValidator<DiscordProfileDTO>(
       profileData,
       Joi.object({
         id: Joi.string().required(),
@@ -144,7 +138,7 @@ export class AuthRestApiController {
       user.username = profile.username;
       user.email = profile.email ?? null;
 
-      const registerData: IRegisterUser = await user.export();
+      const registerData: RegisterUser = await user.export();
 
       user = await userRepo.create(this.ctx.db, registerData);
     }

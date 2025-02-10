@@ -1,7 +1,8 @@
-import { type Request, type Response, type NextFunction } from "express";
+import { type NextFunction, type Request, type Response } from "express";
+
 import { ErrorController } from "error/ErrorController";
-import { Logger } from "utils/Logger";
 import { OQError } from "error/OQError";
+import { Logger } from "utils/Logger";
 
 export const errorMiddleware = async (
   err: Error | OQError,

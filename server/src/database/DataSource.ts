@@ -2,22 +2,22 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
-import { Logger } from "utils/Logger";
 import { Environment } from "config/Environment";
 import { ServerResponse } from "enums/ServerResponse";
+import { Logger } from "utils/Logger";
 
 // Models
-import { User } from "database/models/User";
 import { File } from "database/models/File";
-import { Permission } from "database/models/Permission";
-import { Package } from "database/models/Package";
 import { FileUsage } from "database/models/FileUsage";
+import { Package } from "database/models/Package";
+import { Permission } from "database/models/Permission";
+import { User } from "database/models/User";
 
 // Migrations imports
-import { CreateUserAndFileTables_0_1_1_1722683756069 as createUserAndFileTables } from "database/migrations/0.1.1_CreateUserAndFileTables";
 import { UpdateUserModelFields_0_1_11_1723107959823 as updateUserModelFields } from "database/migrations/0.1.11_UpdateUserModelFields";
-import { CreatePermissionTable_0_1_2_1723128633623 as createPermissionTable } from "database/migrations/0.1.2_CreatePermissionTable";
+import { CreateUserAndFileTables_0_1_1_1722683756069 as createUserAndFileTables } from "database/migrations/0.1.1_CreateUserAndFileTables";
 import { UpdateUserRequiredFields_0_1_21_1723204474011 as updateUserRequiredFields } from "database/migrations/0.1.21_UpdateUserRequiredFields";
+import { CreatePermissionTable_0_1_2_1723128633623 as createPermissionTable } from "database/migrations/0.1.2_CreatePermissionTable";
 import { WriteMoreInfoToDB_0_2_9_1725692779638 as writeMoreToDB } from "database/migrations/0.2.9_WriteMoreInfoToDB";
 import { ChangePermissionValidation_0_3_0_1729181792142 as changePermissionValidation } from "database/migrations/0.3.0_ChangePermissionValidation";
 import { AddDeleteFilePermission_0_3_9_1730832569761 as addDeletePermission } from "database/migrations/0.3.9_AddDeleteFilePermission";

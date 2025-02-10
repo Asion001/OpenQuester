@@ -1,15 +1,16 @@
 import { In, Repository } from "typeorm";
-import { Package } from "database/models/Package";
+
 import { Database } from "database/Database";
-import { OQContentStructure } from "types/file/structures/OQContentStructure";
-import { ClientError } from "error/ClientError";
-import { ClientResponse } from "enums/ClientResponse";
+import { Package } from "database/models/Package";
 import { User } from "database/models/User";
-import { IPaginationOpts } from "types/pagination/IPaginationOpts";
-import { IPackage } from "types/package/IPackage";
-import { ISelectOptions } from "types/ISelectOptions";
-import { IPaginatedResult } from "types/pagination/IPaginatedResult";
 import { PaginatedResults } from "database/pagination/PaginatedResults";
+import { ClientResponse } from "enums/ClientResponse";
+import { ClientError } from "error/ClientError";
+import { OQContentStructure } from "types/file/structures/OQContentStructure";
+import { PackageModel } from "types/package/PackageModel";
+import { PaginatedResult } from "types/pagination/PaginatedResult";
+import { PaginationOpts } from "types/pagination/PaginationOpts";
+import { SelectOptions } from "types/SelectOptions";
 
 const PACKAGE_SELECT_FIELDS = [
   "id",
@@ -53,9 +54,9 @@ export class PackageRepository {
   }
 
   public async list(
-    paginationOpts: IPaginationOpts<IPackage>,
-    selectOptions?: ISelectOptions<IPackage>
-  ): Promise<IPaginatedResult<IPackage[]>> {
+    paginationOpts: PaginationOpts<PackageModel>,
+    selectOptions?: SelectOptions<PackageModel>
+  ): Promise<PaginatedResult<PackageModel[]>> {
     const alias = this._repository.metadata.name.toLowerCase();
 
     const selectFields = selectOptions?.select ?? PACKAGE_SELECT_FIELDS;
@@ -97,7 +98,7 @@ export class PackageRepository {
       }
     }
 
-    return PaginatedResults.paginateEntityAndSelect<IPackage>(
+    return PaginatedResults.paginateEntityAndSelect<PackageModel>(
       qb,
       paginationOpts
     );
@@ -105,7 +106,7 @@ export class PackageRepository {
 
   public findByIds(
     ids: number[],
-    selectOptions?: ISelectOptions<Package>
+    selectOptions?: SelectOptions<Package>
   ): Promise<Package[]> {
     return this._repository.find({
       where: { id: In(ids) },

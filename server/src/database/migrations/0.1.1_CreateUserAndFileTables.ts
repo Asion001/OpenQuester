@@ -5,6 +5,7 @@ import {
   TableForeignKey,
   TableUnique,
 } from "typeorm";
+
 import { Logger } from "utils/Logger";
 
 export class CreateUserAndFileTables_0_1_1_1722683756069

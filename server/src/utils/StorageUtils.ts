@@ -1,4 +1,3 @@
-import { SHA256Characters } from "constants/sha256";
 import { ValueUtils } from "utils/ValueUtils";
 
 export class StorageUtils {
@@ -13,14 +12,12 @@ export class StorageUtils {
    */
   public static parseFilePath(filename: string): string {
     filename = ValueUtils.getRawFilename(filename.toLowerCase());
-    if (
-      filename.length < 2 ||
-      !SHA256Characters.includes(filename[0]) ||
-      !SHA256Characters.includes(filename[1])
-    ) {
+    const sha256Regex = /^[a-f0-9]+$/;
+    if (!sha256Regex.test(filename)) {
       return `other/${filename}`;
     }
-    return `${filename[0]}/${filename.substring(0, 2)}/${filename}`;
+    // Use first two characters from valid sha256 string
+    return `${filename[0]}/${filename[0] + filename[1]}/${filename}`;
   }
 
   public static getFilePath(filename: string) {

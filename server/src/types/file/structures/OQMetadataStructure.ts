@@ -1,4 +1,4 @@
-import { EAgeRestriction } from "enums/game/EAgeRestriction";
+import { AgeRestriction } from "enums/game/AgeRestriction";
 import { OQLogoFile } from "types/file/structures/OQLogoFile";
 
 export interface OQMetadataStructure {
@@ -7,7 +7,7 @@ export interface OQMetadataStructure {
   logo: OQLogoFile;
   tags: string[];
   authors: number;
-  ageRestriction: EAgeRestriction;
+  ageRestriction: AgeRestriction;
   language: string;
   comment: string;
 }

@@ -3,6 +3,7 @@
 **OpenQuester** is a cooperative quiz game inspired by [SIGame](https://github.com/VladimirKhil/SI)
 
 ## How to download?
+
 On the **[Release page](https://github.com/Asion001/OpenQuester/releases/latest)** find **OpenQuester** installation file for your platform and download it.
 
 Or you can find download links on our website: **Work in Progress**
@@ -10,11 +11,13 @@ Or you can find download links on our website: **Work in Progress**
 ## Technology Stack
 
 - **Frontend**: **[Dart](https://dart.dev/)**, **[Flutter](https://flutter.dev/)**
-- **Backend**: **[TypeScript](https://www.typescriptlang.org/)**, **[Express](https://expressjs.com/)**, **[TypeORM](https://typeorm.io/)**
+- **Backend**: **[TypeScript](https://www.typescriptlang.org/)**, **[Express](https://expressjs.com/)**, **[TypeORM](https://typeorm.io/)**, **[Redis](https://redis.io/)**, **[MinIO](https://min.io/docs/minio/linux/developers/javascript/API.html)**
 - **SIGame Compatibility**: **OpenQuester** is compatible with [SIGame](https://github.com/VladimirKhil/SI) packages (`.siq` extension). (Work in progress)
 
 ## Contact info
+
 Have any questions or suggestions? Create a [Discussion](https://github.com/Asion001/OpenQuester/discussions) and share your thoughts with others or contact us directly:
+
 - Discord server (Coming soon)
 - Telegram of one of co-authors [Click!](https://t.me/sukui_code)
 

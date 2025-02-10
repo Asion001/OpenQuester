@@ -1,18 +1,17 @@
 import { FindOptionsWhere, In, type Repository } from "typeorm";
 
-import { User } from "database/models/User";
 import { type Database } from "database/Database";
-import { ValueUtils } from "utils/ValueUtils";
-import { ClientError } from "error/ClientError";
-import { ClientResponse } from "enums/ClientResponse";
-import { ISelectOptions } from "types/ISelectOptions";
-import { UserOrId } from "types/user/user";
-import { FileUsageRepository } from "database/repositories/FileUsageRepository";
-import { HttpStatus } from "enums/HttpStatus";
+import { User } from "database/models/User";
 import { PaginatedResults } from "database/pagination/PaginatedResults";
-import { IPaginationOpts } from "types/pagination/IPaginationOpts";
-import { IRegisterUser } from "types/user/IRegisterUser";
+import { FileUsageRepository } from "database/repositories/FileUsageRepository";
+import { ClientResponse } from "enums/ClientResponse";
+import { HttpStatus } from "enums/HttpStatus";
+import { ClientError } from "error/ClientError";
 import { Session } from "types/auth/session";
+import { PaginationOpts } from "types/pagination/PaginationOpts";
+import { SelectOptions } from "types/SelectOptions";
+import { RegisterUser } from "types/user/RegisterUser";
+import { ValueUtils } from "utils/ValueUtils";
 
 const USER_SELECT_FIELDS: (keyof User)[] = [
   "id",
@@ -44,7 +43,8 @@ export class UserRepository {
     return this._instance;
   }
 
-  public async get(id: number, selectOptions?: ISelectOptions<User>) {
+  // TODO: Fix issue with double querying for one user
+  public async get(id: number, selectOptions?: SelectOptions<User>) {
     return this._repository.findOne({
       where: { id, is_deleted: false },
       select: selectOptions?.select ?? USER_SELECT_FIELDS,
@@ -54,7 +54,7 @@ export class UserRepository {
 
   public async find(
     where: FindOptionsWhere<User>,
-    selectOptions?: ISelectOptions<User>
+    selectOptions?: SelectOptions<User>
   ) {
     return this._repository.find({
       where,
@@ -65,7 +65,7 @@ export class UserRepository {
 
   public async findOne(
     where: FindOptionsWhere<User>,
-    selectOptions?: ISelectOptions<User>
+    selectOptions?: SelectOptions<User>
   ) {
     return this._repository.findOne({
       where,
@@ -76,7 +76,7 @@ export class UserRepository {
 
   public findByIds(
     ids: number[],
-    selectOptions?: ISelectOptions<User>
+    selectOptions?: SelectOptions<User>
   ): Promise<User[]> {
     return this._repository.find({
       where: { id: In(ids) },
@@ -86,8 +86,8 @@ export class UserRepository {
   }
 
   public async list(
-    paginationOpts: IPaginationOpts<User>,
-    selectOptions?: ISelectOptions<User>
+    paginationOpts: PaginationOpts<User>,
+    selectOptions?: SelectOptions<User>
   ) {
     const alias = this._repository.metadata.name.toLowerCase();
 
@@ -108,7 +108,7 @@ export class UserRepository {
     return PaginatedResults.paginateEntityAndSelect<User>(qb, paginationOpts);
   }
 
-  public async create(db: Database, data: IRegisterUser) {
+  public async create(db: Database, data: RegisterUser) {
     const whereOpts: FindOptionsWhere<User>[] = [{ username: data.username }];
 
     if (data.email) {
@@ -154,24 +154,20 @@ export class UserRepository {
   }
 
   public async delete(user: User) {
-    const _user = await this._getUserFromInput(user);
-
-    _user.is_deleted = true;
-    _user.updated_at = new Date();
-    this.update(_user);
+    user.is_deleted = true;
+    user.updated_at = new Date();
+    this.update(user);
   }
 
   public async update(user: User) {
-    const _user = await this._getUserFromInput(user);
-
     return this._repository.update(
-      { id: _user.id },
+      { id: user.id },
       {
-        username: _user.username,
-        email: _user.email,
-        birthday: _user.birthday ?? null,
-        avatar: _user.avatar ?? null,
-        is_deleted: _user.is_deleted,
+        username: user.username,
+        email: user.email,
+        birthday: user.birthday ?? null,
+        avatar: user.avatar ?? null,
+        is_deleted: user.is_deleted,
       }
     );
   }
@@ -179,7 +175,7 @@ export class UserRepository {
   public static async getUserBySession(
     db: Database,
     session: Session,
-    options?: ISelectOptions<User>
+    options?: SelectOptions<User>
   ) {
     if (!session.userId) {
       throw new ClientError(
@@ -190,24 +186,5 @@ export class UserRepository {
 
     const id = ValueUtils.validateId(session.userId);
     return this.getRepository(db).get(id, options);
-  }
-
-  private async _getUserFromInput(input: UserOrId) {
-    let user: User | null = null;
-
-    if (input instanceof User) {
-      return input;
-    }
-
-    if (typeof input === "number" || typeof input === "string") {
-      const id = ValueUtils.validateId(input);
-      user = await this._repository.findOne({ where: { id } });
-    }
-
-    if (!user) {
-      throw new ClientError(ClientResponse.USER_NOT_FOUND);
-    }
-
-    return user;
   }
 }

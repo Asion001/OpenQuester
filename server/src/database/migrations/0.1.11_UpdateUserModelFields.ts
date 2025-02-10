@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
+
 import { Logger } from "utils/Logger";
 
 export class UpdateUserModelFields_0_1_11_1723107959823

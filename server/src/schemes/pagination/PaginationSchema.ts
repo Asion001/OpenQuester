@@ -1,26 +1,26 @@
 import Joi from "joi";
 
-import {
-  EPaginationOrder,
-  IPaginationOpts,
-} from "types/pagination/IPaginationOpts";
-import { ServerError } from "error/ServerError";
-import { ClientError } from "error/ClientError";
-import { ServerResponse } from "enums/ServerResponse";
+import { LIMIT_MAX, LIMIT_MIN, OFFSET_MIN } from "constants/pagination";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
-import { IPaginationSchemaOpts } from "types/pagination/IPaginationSchemaOpts";
-import { LIMIT_MAX, LIMIT_MIN, OFFSET_MIN } from "constants/pagination";
+import { ServerResponse } from "enums/ServerResponse";
+import { ClientError } from "error/ClientError";
+import { ServerError } from "error/ServerError";
+import {
+  PaginationOpts,
+  PaginationOrder,
+} from "types/pagination/PaginationOpts";
+import { PaginationSchemaOpts } from "types/pagination/PaginationSchemaOpts";
 
 export class PaginationSchema<T> {
-  protected _schema: Joi.ObjectSchema<IPaginationOpts<T>>;
-  protected _paginationData: IPaginationOpts<T>;
+  protected _schema: Joi.ObjectSchema<PaginationOpts<T>>;
+  protected _paginationData: PaginationOpts<T>;
 
-  constructor(schemaOpts: IPaginationSchemaOpts<T>) {
-    this._schema = Joi.object<IPaginationOpts<T>>({
+  constructor(schemaOpts: PaginationSchemaOpts<T>) {
+    this._schema = Joi.object<PaginationOpts<T>>({
       limit: Joi.number().required().min(LIMIT_MIN).max(LIMIT_MAX).required(),
       offset: Joi.number().required().min(OFFSET_MIN).required(),
-      order: Joi.valid(...Object.values(EPaginationOrder)),
+      order: Joi.valid(...Object.values(PaginationOrder)),
       sortBy: Joi.valid(...schemaOpts.possibleSortByFields),
     });
 

@@ -21,7 +21,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "some_filename.jpg"
+              "examples": ["some_filename.jpg"]
             }
           }
         ],
@@ -58,7 +58,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "some_filename.jpg"
+              "examples": ["some_filename.jpg"]
             }
           }
         ],
@@ -95,7 +95,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "some_filename.jpg"
+              "examples": ["some_filename.jpg"]
             }
           }
         ],
@@ -144,7 +144,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IPackageUploadResponse"
+                  "$ref": "#/components/schemas/PackageUploadResponse"
                 }
               }
             }
@@ -242,7 +242,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IPackageItem"
+                  "$ref": "#/components/schemas/PackageItem"
                 }
               }
             }
@@ -703,7 +703,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/IGameCreateData"
+                "$ref": "#/components/schemas/GameCreateData"
               }
             }
           }
@@ -714,7 +714,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IGameListItem"
+                  "$ref": "#/components/schemas/GameListItem"
                 }
               }
             }
@@ -752,7 +752,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/IGameListItem"
+                  "$ref": "#/components/schemas/GameListItem"
                 }
               }
             }
@@ -834,7 +834,7 @@
         "properties": {
           "total": {
             "type": "integer",
-            "example": 1000
+            "examples": [1000]
           }
         }
       },
@@ -852,55 +852,51 @@
         "properties": {
           "id": {
             "type": "integer",
-            "example": 1
+            "examples": [1]
           },
           "username": {
             "type": "string",
-            "example": "John"
+            "examples": ["John"]
           },
           "email": {
-            "type": "string",
-            "example": "john.doe@gmail.com",
-            "nullable": true
+            "type": ["string", "null"],
+            "examples": ["john.doe@gmail.com"]
           },
           "birthday": {
-            "type": "string",
+            "type": ["string", "null"],
             "format": "date",
-            "example": "2024-01-01",
-            "nullable": true
+            "examples": ["2024-01-01"]
           },
           "avatar": {
-            "type": "string",
-            "example": "filename_of_file_in_bucket",
-            "nullable": true
+            "type": ["string", "null"],
+            "examples": ["filename_of_file_in_bucket"]
           },
           "created_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
+            "examples": ["2024-01-01T00:00:00Z"]
           },
           "updated_at": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
+            "examples": ["2024-01-01T00:00:00Z"]
           },
           "is_deleted": {
             "type": "boolean",
-            "example": false
+            "examples": [false]
           },
           "permissions": {
             "type": "array",
-            "nullable": true,
             "items": {
               "type": "object",
               "properties": {
                 "id": {
                   "type": "integer",
-                  "example": 1
+                  "examples": [1]
                 },
                 "name": {
                   "type": "string",
-                  "example": "get_all_users"
+                  "examples": ["get_all_users"]
                 }
               }
             }
@@ -912,19 +908,16 @@
         "properties": {
           "token": {
             "type": "string",
-            "example": "HSXxyt6nrbW5Gtqw5BWfHPYk9lxDOj",
-            "nullable": false
+            "examples": ["HSXxyt6nrbW5Gtqw5BWfHPYk9lxDOj"]
           },
           "tokenSchema": {
-            "type": "string",
-            "example": "Bearer",
-            "nullable": true
+            "type": ["string", "null"],
+            "examples": ["Bearer"]
           },
           "oauthProvider": {
             "type": "string",
-            "example": "discord",
-            "enum": ["discord"],
-            "nullable": false
+            "examples": ["discord"],
+            "enum": ["discord"]
           }
         }
       },
@@ -932,26 +925,22 @@
         "type": "object",
         "properties": {
           "username": {
-            "type": "string",
-            "example": "John Doe",
-            "nullable": true
+            "type": ["string", "null"],
+            "examples": ["John Doe"]
           },
           "email": {
-            "type": "string",
-            "example": "user@example.com",
-            "format": "email",
-            "nullable": true
+            "type": ["string", "null"],
+            "examples": ["user@example.com"],
+            "format": "email"
           },
           "birthday": {
-            "type": "string",
+            "type": ["string", "null"],
             "format": "date",
-            "example": "2024-01-01",
-            "nullable": true
+            "examples": ["2024-01-01"]
           },
           "avatar": {
-            "type": "string",
-            "example": "filename_of_file_in_bucket",
-            "nullable": true
+            "type": ["string", "null"],
+            "examples": ["filename_of_file_in_bucket"]
           }
         }
       },
@@ -960,7 +949,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "example": "Logout successful"
+            "examples": ["Logout successful"]
           }
         }
       },
@@ -983,46 +972,43 @@
         "properties": {
           "id": {
             "type": "string",
-            "example": "ha1_ju-156random-string_asd-12f"
+            "examples": ["ha1_ju-156random-string_asd-12f"]
           },
           "title": {
             "type": "string",
-            "example": "Package title"
+            "examples": ["Package title"]
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
+            "examples": ["2024-01-01T00:00:00Z"]
           },
           "logo": {
-            "$ref": "#/components/schemas/OQLogoFile",
-            "nullable": true
+            "$ref": "#/components/schemas/OQLogoFile"
           },
           "ageRestriction": {
             "type": "string",
             "enum": ["A18", "A16", "A12", "NONE"],
-            "example": "A18"
+            "examples": ["A18"]
           },
           "tags": {
             "type": "array",
             "items": {
               "type": "string",
-              "example": "Anime"
+              "examples": ["Anime"]
             }
           },
           "author": {
             "type": "integer",
-            "example": 6
+            "examples": [6]
           },
           "language": {
-            "type": "string",
-            "example": "EN",
-            "nullable": true
+            "type": ["string", "null"],
+            "examples": ["EN"]
           },
           "comment": {
-            "type": "string",
-            "example": "Package comment",
-            "nullable": true
+            "type": ["string", "null"],
+            "examples": ["Package comment"]
           }
         }
       },
@@ -1044,11 +1030,11 @@
           },
           "displayTime": {
             "type": "integer",
-            "example": 5000
+            "examples": [5000]
           },
           "answerDelay": {
             "type": "integer",
-            "example": 2500
+            "examples": [2500]
           }
         }
       },
@@ -1061,7 +1047,7 @@
           },
           "displayTime": {
             "type": "integer",
-            "example": 5000
+            "examples": [5000]
           }
         }
       },
@@ -1070,11 +1056,13 @@
         "properties": {
           "sha256": {
             "type": "string",
-            "example": "f611efcb4eb3716cebddec66d4c220438b89830e4d2bb0825d3953cbf8ae3b77"
+            "examples": [
+              "f611efcb4eb3716cebddec66d4c220438b89830e4d2bb0825d3953cbf8ae3b77"
+            ]
           },
           "type": {
             "type": "string",
-            "example": "image"
+            "examples": ["image"]
           }
         }
       },
@@ -1083,7 +1071,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "Round name"
+            "examples": ["Round name"]
           },
           "themes": {
             "type": "array",
@@ -1098,11 +1086,11 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "Theme name"
+            "examples": ["Theme name"]
           },
           "comment": {
             "type": "string",
-            "example": "Theme comment"
+            "examples": ["Theme comment"]
           },
           "questions": {
             "type": "array",
@@ -1117,27 +1105,27 @@
         "properties": {
           "price": {
             "type": "integer",
-            "example": 200
+            "examples": [200]
           },
           "type": {
             "type": "string",
-            "example": "regular"
+            "examples": ["regular"]
           },
           "text": {
             "type": "string",
-            "example": "Question text"
+            "examples": ["Question text"]
           },
           "hostHint": {
             "type": "string",
-            "example": "Host hints about the answer"
+            "examples": ["Host hints about the answer"]
           },
           "playersHint": {
             "type": "string",
-            "example": "Question comment for players"
+            "examples": ["Question comment for players"]
           },
           "answerText": {
             "type": "string",
-            "example": "Actual answer"
+            "examples": ["Actual answer"]
           },
           "questionFile": {
             "type": "object",
@@ -1149,79 +1137,78 @@
           }
         }
       },
-      "IGameListItem": {
+      "GameListItem": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "example": "AH2S"
+            "examples": ["AH2S"]
           },
           "createdBy": {
-            "$ref": "#/components/schemas/IShortUserInfo"
+            "$ref": "#/components/schemas/ShortUserInfo"
           },
           "title": {
             "type": "string",
-            "example": "Game Title"
+            "examples": ["Game Title"]
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
+            "examples": ["2024-01-01T00:00:00Z"]
           },
           "ageRestriction": {
             "type": "string",
             "enum": ["A18", "A16", "A12", "NONE"],
-            "example": "A18"
+            "examples": ["A18"]
           },
           "currentRound": {
             "type": "integer",
-            "example": 0
+            "examples": [0]
           },
           "players": {
             "type": "integer",
-            "example": 5
+            "examples": [5]
           },
           "maxPlayers": {
             "type": "integer",
-            "example": 10
+            "examples": [10]
           },
           "startedAt": {
-            "type": "string",
+            "type": ["string", "null"],
             "format": "date-time",
-            "example": "2024-01-01T00:00:00Z",
-            "nullable": true
+            "examples": ["2024-01-01T00:00:00Z"]
           },
           "package": {
-            "$ref": "#/components/schemas/IPackageItem"
+            "$ref": "#/components/schemas/PackageItem"
           }
         }
       },
-      "IGameCreateData": {
+      "GameCreateData": {
         "type": "object",
         "properties": {
           "title": {
             "type": "string",
-            "example": "Game Title"
+            "examples": ["Game Title"]
           },
           "packageId": {
             "type": "integer",
             "minimum": 0,
-            "example": 1
+            "examples": [1]
           },
           "isPrivate": {
             "type": "boolean",
-            "example": false
+            "examples": [false]
           },
           "ageRestriction": {
             "type": "string",
             "enum": ["A18", "A16", "A12", "NONE"],
-            "example": "A18"
+            "examples": ["A18"]
           },
           "maxPlayers": {
             "type": "integer",
             "minimum": 2,
             "maximum": 15,
-            "example": 10
+            "examples": [10]
           }
         }
       },
@@ -1230,40 +1217,40 @@
         "properties": {
           "userId": {
             "type": "integer",
-            "example": 1
+            "examples": [1]
           },
           "score": {
             "type": "integer",
-            "example": 100
+            "examples": [100]
           },
           "role": {
             "type": "string",
             "enum": ["player", "showman", "spectator"],
-            "example": "player"
+            "examples": ["player"]
           },
           "connected": {
             "type": "boolean",
-            "example": true
+            "examples": [true]
           }
         }
       },
-      "IShortUserInfo": {
+      "ShortUserInfo": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
-            "example": 1
+            "examples": [1]
           },
           "username": {
             "type": "string",
-            "example": "John"
+            "examples": ["John"]
           }
         }
       },
-      "IGameEvent": {
+      "GameEvent": {
         "type": "string",
         "enum": ["created", "changed", "deleted", "started"],
-        "example": "created"
+        "examples": ["created"]
       },
       "PaginatedPackages": {
         "type": "object",
@@ -1271,45 +1258,45 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/IPackageItem"
+              "$ref": "#/components/schemas/PackageItem"
             }
           },
           "pageInfo": { "$ref": "#/components/schemas/PageInfo" }
         }
       },
-      "IPackageItem": {
+      "PackageItem": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
-            "example": 1
+            "examples": [1]
           },
           "title": {
             "type": "string",
-            "example": "Package Title"
+            "examples": ["Package Title"]
           },
           "ageRestriction": {
             "type": "string",
             "enum": ["A18", "A16", "A12", "NONE"],
-            "example": "A18"
+            "examples": ["A18"]
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "example": "2024-01-01T00:00:00Z"
+            "examples": ["2024-01-01T00:00:00Z"]
           },
           "rounds": {
             "type": "integer",
-            "example": 5
+            "examples": [5]
           },
           "author": {
-            "$ref": "#/components/schemas/IShortUserInfo"
+            "$ref": "#/components/schemas/ShortUserInfo"
           },
           "tags": {
             "type": "array",
             "items": {
               "type": "string",
-              "example": "Anime"
+              "examples": ["Anime"]
             }
           }
         }
@@ -1334,7 +1321,7 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/IGameListItem"
+              "$ref": "#/components/schemas/GameListItem"
             }
           },
           "pageInfo": {
@@ -1345,24 +1332,23 @@
       "OrderDirection": {
         "type": "string",
         "enum": ["asc", "desc"],
-        "example": "asc",
+        "examples": ["asc"],
         "default": "desc"
       },
       "PaginationLimit": {
         "type": "integer",
-        "example": 10,
+        "examples": [10],
         "minimum": 1,
         "maximum": 50,
         "default": 10
       },
       "PaginationOffset": {
         "type": "integer",
-        "example": 0,
+        "examples": [0],
         "minimum": 0
       },
       "GamesSortBy": {
-        "type": "string",
-        "nullable": true,
+        "type": ["string", "null"],
         "enum": [
           "id",
           "title",
@@ -1372,38 +1358,36 @@
           "players",
           "startedAt"
         ],
-        "example": "createdAt",
+        "examples": ["createdAt"],
         "default": "createdAt"
       },
       "UsersSortBy": {
-        "type": "string",
-        "nullable": true,
+        "type": ["string", "null"],
         "enum": ["id", "is_deleted", "created_at", "username", "email"],
-        "example": "createdAt",
+        "examples": ["createdAt"],
         "default": "createdAt"
       },
       "PackagesSortBy": {
-        "type": "string",
-        "nullable": true,
+        "type": ["string", "null"],
         "enum": ["id", "title", "created_at", "author"],
-        "example": "created_at",
+        "examples": ["created_at"],
         "default": "created_at"
       },
-      "IPackageUploadResponse": {
+      "PackageUploadResponse": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
-            "example": 1
+            "examples": [1]
           },
           "uploadLinks": {
             "type": "object",
             "additionalProperties": {
               "type": "string"
             },
-            "example": {
-              "uniqueIdentifier": "https://example.com/upload/file.jpg"
-            }
+            "examples": [
+              { "uniqueIdentifier": "https://example.com/upload/file.jpg" }
+            ]
           }
         }
       },
@@ -1412,7 +1396,7 @@
         "properties": {
           "url": {
             "type": "string",
-            "example": "http://localhost:9000/file-get-link"
+            "examples": ["http://localhost:9000/file-get-link"]
           }
         }
       },
@@ -1421,7 +1405,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "Bad filename"
+            "examples": ["Bad filename"]
           }
         }
       },
@@ -1430,7 +1414,7 @@
         "properties": {
           "url": {
             "type": "string",
-            "example": "http://localhost:9000/file-upload-link"
+            "examples": ["http://localhost:9000/file-upload-link"]
           }
         }
       },
@@ -1439,7 +1423,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "example": "Delete request sent"
+            "examples": ["Delete request sent"]
           }
         }
       },
@@ -1448,7 +1432,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "Content is empty!"
+            "examples": ["Content is empty!"]
           }
         }
       },
@@ -1457,7 +1441,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "Bad request"
+            "examples": ["Bad request"]
           }
         }
       },
@@ -1466,7 +1450,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "Package not found"
+            "examples": ["Package not found"]
           }
         }
       },
@@ -1475,7 +1459,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "Session invalid or expired"
+            "examples": ["Session invalid or expired"]
           }
         }
       },
@@ -1484,7 +1468,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "User not found"
+            "examples": ["User not found"]
           }
         }
       },
@@ -1493,7 +1477,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "You don't have permission to perform this action"
+            "examples": ["You don't have permission to perform this action"]
           }
         }
       },
@@ -1502,7 +1486,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "Discord authentication is failed, please try again"
+            "examples": ["Discord authentication is failed, please try again"]
           }
         }
       },
@@ -1511,7 +1495,7 @@
         "properties": {
           "error": {
             "type": "string",
-            "example": "Game not found"
+            "examples": ["Game not found"]
           }
         }
       },
@@ -1519,10 +1503,10 @@
         "type": "object",
         "properties": {
           "event": {
-            "$ref": "#/components/schemas/IGameEvent"
+            "$ref": "#/components/schemas/GameEvent"
           },
           "data": {
-            "$ref": "#/components/schemas/IGameListItem"
+            "$ref": "#/components/schemas/GameListItem"
           }
         }
       }

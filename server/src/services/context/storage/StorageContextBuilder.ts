@@ -1,12 +1,12 @@
 import { Environment } from "config/Environment";
-import { IS3Context } from "types/file/IS3Context";
-import { ValueUtils } from "utils/ValueUtils";
 import { ServerResponse } from "enums/ServerResponse";
 import { ServerError } from "error/ServerError";
+import { S3Context } from "types/file/S3Context";
 import { TemplateUtils } from "utils/TemplateUtils";
+import { ValueUtils } from "utils/ValueUtils";
 
 export class StorageContextBuilder {
-  public static buildS3Context(): IS3Context {
+  public static buildS3Context(): S3Context {
     const env = Environment.instance;
     try {
       return {

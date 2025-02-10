@@ -1,4 +1,5 @@
 import { type Repository } from "typeorm";
+
 import { type Database } from "database/Database";
 import { Permission } from "database/models/Permission";
 

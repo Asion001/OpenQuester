@@ -1,26 +1,27 @@
 import { type Request, type Response, Router } from "express";
 
-import { type ApiContext } from "services/context/ApiContext";
-import { type UserService } from "services/UserService";
+import { File } from "database/models/File";
+import { User } from "database/models/User";
+import { FileRepository } from "database/repositories/FileRepository";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
-import { checkPermissionWithId } from "middleware/permission/PermissionMiddleware";
-import { checkPermission } from "middleware/permission/PermissionMiddleware";
 import { Permissions } from "enums/Permissions";
-import { TranslateService as ts } from "services/text/TranslateService";
-import { PaginationSchema } from "schemes/pagination/PaginationSchema";
-import { User } from "database/models/User";
-import { File } from "database/models/File";
-import { EPaginationOrder } from "types/pagination/IPaginationOpts";
+import { ClientError } from "error/ClientError";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
+import {
+  checkPermission,
+  checkPermissionWithId,
+} from "middleware/permission/PermissionMiddleware";
+import { PaginationSchema } from "schemes/pagination/PaginationSchema";
 import { RequestDataValidator } from "schemes/RequestDataValidator";
 import { userIdScheme, userUpdateScheme } from "schemes/user/userSchemes";
-import { UserRepository } from "database/repositories/UserRepository";
-import { ClientError } from "error/ClientError";
-import { IUpdateUserDataInput } from "types/user/IUpdateUserDataInput";
-import { FileRepository } from "database/repositories/FileRepository";
+import { type ApiContext } from "services/context/ApiContext";
+import { TranslateService as ts } from "services/text/TranslateService";
+import { type UserService } from "services/UserService";
+import { PaginationOrder } from "types/pagination/PaginationOpts";
+import { UpdateUserDTO } from "types/user/UpdateUserData";
+import { UpdateUserInputDTO } from "types/user/UpdateUserDataInput";
 import { ValueUtils } from "utils/ValueUtils";
-import { IUpdateUserData } from "types/user/IUpdateUserData";
 
 /**
  * Handles all endpoints related for User CRUD
@@ -77,10 +78,10 @@ export class UserRestApiController {
       userIdScheme()
     ).validate();
 
-    const result = await this._userService.get(this.ctx, validatedData.userId);
+    const user = await this._userService.get(this.ctx, validatedData.userId);
 
-    if (result) {
-      return res.status(HttpStatus.OK).send(result);
+    if (user) {
+      return res.status(HttpStatus.OK).send(user);
     }
 
     return res.status(HttpStatus.NOT_FOUND).send({
@@ -91,38 +92,38 @@ export class UserRestApiController {
   private updateUser = async (req: Request, res: Response) => {
     const id: number = await this._getUserId(req);
 
-    const validatedData = await new RequestDataValidator<IUpdateUserDataInput>(
+    const userInputDTO = await new RequestDataValidator<UpdateUserInputDTO>(
       { id, ...req.body },
       userUpdateScheme()
     ).validate();
 
-    if (Object.keys(validatedData).length < 1) {
+    if (Object.keys(userInputDTO).length < 1) {
       throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
     let avatarFile: File | null = null;
 
-    if (validatedData.avatar) {
+    if (userInputDTO.avatar) {
       const fileRepo = FileRepository.getRepository(this.ctx.db);
-      avatarFile = await fileRepo.getFileByFilename(validatedData.avatar);
+      avatarFile = await fileRepo.getFileByFilename(userInputDTO.avatar);
 
       if (ValueUtils.isBad(avatarFile)) {
         throw new ClientError(ClientResponse.NO_AVATAR);
       }
     }
 
-    const updateData: IUpdateUserData = {
+    const userUpdateDTO: UpdateUserDTO = {
       id,
-      email: validatedData.email,
-      username: validatedData.username,
-      birthday: validatedData.birthday,
+      email: userInputDTO.email,
+      username: userInputDTO.username,
+      birthday: userInputDTO.birthday,
     };
 
     if (avatarFile) {
-      updateData.avatar = avatarFile;
+      userUpdateDTO.avatar = avatarFile;
     }
 
-    const result = await this._userService.update(this.ctx, updateData);
+    const result = await this._userService.update(this.ctx, userUpdateDTO);
 
     return res.status(HttpStatus.OK).send(result);
   };
@@ -143,7 +144,7 @@ export class UserRestApiController {
     const paginationOpts = await new PaginationSchema<User>({
       data: {
         sortBy: req.query.sortBy as keyof User,
-        order: req.query.order as EPaginationOrder,
+        order: req.query.order as PaginationOrder,
         limit: Number(req.query.limit),
         offset: Number(req.query.offset),
       },
@@ -172,12 +173,14 @@ export class UserRestApiController {
     if (req.params && req.params.id) {
       return Number(req.params.id);
     } else {
-      const user = await UserRepository.getUserBySession(
-        this.ctx.db,
-        req.session,
-        { select: ["id"] }
-      );
-      return user?.id ?? undefined;
+      const id = req.session.userId;
+      if (!id) {
+        throw new ClientError(
+          ClientResponse.USER_NOT_FOUND,
+          HttpStatus.NOT_FOUND
+        );
+      }
+      return id;
     }
   }
 }

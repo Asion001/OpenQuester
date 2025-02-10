@@ -1,9 +1,9 @@
+import { type Request, type Response, Router } from "express";
 import fs from "fs";
 import path from "path";
 import Swagger from "swagger-ui-express";
-import { type Request, type Response, Router } from "express";
-import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 
+import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 import { type ApiContext } from "services/context/ApiContext";
 import { Logger } from "utils/Logger";
 

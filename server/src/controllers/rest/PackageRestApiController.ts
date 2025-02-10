@@ -1,22 +1,22 @@
 import { type Request, type Response, Router } from "express";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 
-import { type ApiContext } from "services/context/ApiContext";
-import { IStorage } from "types/file/IStorage";
-import { verifyContentJSONMiddleware } from "middleware/file/FileMiddleware";
 import { HttpStatus } from "enums/HttpStatus";
-import { PaginationSchema } from "schemes/pagination/PaginationSchema";
-import { EPaginationOrder } from "types/pagination/IPaginationOpts";
-import { IPackage } from "types/package/IPackage";
-import { RequestDataValidator } from "schemes/RequestDataValidator";
-import { OQContentStructure } from "types/file/structures/OQContentStructure";
+import { verifyContentJSONMiddleware } from "middleware/file/FileMiddleware";
 import {
   packIdScheme,
   uploadPackageScheme,
 } from "schemes/package/packageSchemes";
+import { PaginationSchema } from "schemes/pagination/PaginationSchema";
+import { RequestDataValidator } from "schemes/RequestDataValidator";
+import { type ApiContext } from "services/context/ApiContext";
+import { StorageServiceModel } from "types/file/StorageServiceModel";
+import { OQContentStructure } from "types/file/structures/OQContentStructure";
+import { PackageModel } from "types/package/PackageModel";
+import { PaginationOrder } from "types/pagination/PaginationOpts";
 
 export class PackageRestApiController {
-  private readonly _storageService: IStorage;
+  private readonly _storageService: StorageServiceModel;
 
   constructor(private readonly ctx: ApiContext) {
     const router = Router();
@@ -61,10 +61,10 @@ export class PackageRestApiController {
   };
 
   private listPackages = async (req: Request, res: Response) => {
-    const paginationOpts = await new PaginationSchema<IPackage>({
+    const paginationOpts = await new PaginationSchema<PackageModel>({
       data: {
-        sortBy: req.query.sortBy as keyof IPackage,
-        order: req.query.order as EPaginationOrder,
+        sortBy: req.query.sortBy as keyof PackageModel,
+        order: req.query.order as PaginationOrder,
         limit: Number(req.query.limit),
         offset: Number(req.query.offset),
       },

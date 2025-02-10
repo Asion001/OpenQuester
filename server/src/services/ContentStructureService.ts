@@ -1,9 +1,9 @@
 import { Package } from "database/models/Package";
 import { ClientResponse } from "enums/ClientResponse";
-import { EFileSource } from "enums/file/EFileSource";
+import { FileSource } from "enums/file/FileSource";
 import { ClientError } from "error/ClientError";
-import { IFile } from "types/file/IFile";
-import { IStorage } from "types/file/IStorage";
+import { FileDTO } from "types/dto/file/FileDTO";
+import { StorageServiceModel } from "types/file/StorageServiceModel";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
 import { OQFileContentStructure } from "types/file/structures/OQFileContentStructure";
 import { OQQuestionsStructure } from "types/file/structures/OQQuestionsStructure";
@@ -22,21 +22,21 @@ type TraversableObject =
  * Class that manages all actions related to content.json file and it's structure
  */
 export class ContentStructureService {
-  private _storage!: IStorage;
+  private _storage!: StorageServiceModel;
 
   public async getUploadLinksForFiles(
     content: OQContentStructure,
-    storage: IStorage,
+    storage: StorageServiceModel,
     pack: Package,
     expiresIn: number
-  ): Promise<{ [key: string]: string }> {
+  ): Promise<Record<string, string>> {
     if (!content?.rounds) {
       throw new ClientError(ClientResponse.NO_CONTENT_ROUNDS);
     }
 
     this._storage = storage;
     const stack: TraversableObject[] = [...content.rounds];
-    const filesToUpload: IFile[] = [];
+    const filesToUpload: FileDTO[] = [];
 
     while (stack.length > 0) {
       const current = stack.pop()!;
@@ -48,7 +48,7 @@ export class ContentStructureService {
           filename,
           created_at: new Date(),
           path: StorageUtils.getFilePath(filename),
-          source: EFileSource.S3,
+          source: FileSource.S3,
         });
       } else if (typeof current === "object" && current !== null) {
         Object.values(current).forEach((value) => {

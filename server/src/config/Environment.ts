@@ -1,21 +1,21 @@
+import { bold } from "colorette";
 import dotenv from "dotenv";
 import fs from "fs";
-import path from "path";
-import { bold } from "colorette";
-import { type LoggerOptions } from "typeorm";
 import type Redis from "ioredis";
+import path from "path";
+import { type LoggerOptions } from "typeorm";
 
-import { Logger } from "utils/Logger";
-import { ValueUtils } from "utils/ValueUtils";
-import { EnvVar } from "types/env/env";
+import { SESSION_SECRET_REDIS_KEY } from "constants/session";
 import { ServerResponse } from "enums/ServerResponse";
 import { ServerError } from "error/ServerError";
+import { EnvVar } from "types/env/env";
 import { LogLevel } from "types/log/log";
-import { TemplateUtils } from "utils/TemplateUtils";
-import { SESSION_SECRET_REDIS_KEY } from "constants/session";
+import { Logger } from "utils/Logger";
 import { SessionUtils } from "utils/SessionUtils";
+import { TemplateUtils } from "utils/TemplateUtils";
+import { ValueUtils } from "utils/ValueUtils";
 
-export enum ENV_TYPES {
+export enum EnvType {
   LOCAL = "local",
   PROD = "prod",
   TEST = "test",
@@ -27,7 +27,7 @@ const ENV_PREFIX = "[ENV]: ";
  * All `process.env` variables should be retrieved only trough this class.
  */
 export class Environment {
-  private _type!: ENV_TYPES;
+  private _type!: EnvType;
   /** Used for singleton implementation */
   private static _instance: Environment | undefined = undefined;
 
@@ -172,7 +172,7 @@ export class Environment {
 
     this._type = this.getEnvVar("ENV", "string", "prod");
 
-    const envTypes = [...Object.values(ENV_TYPES)];
+    const envTypes = [...Object.values(EnvType)];
     if (!envTypes.includes(this._type)) {
       throw new ServerError(
         TemplateUtils.text(ServerResponse.INVALID_ENV_TYPE, {

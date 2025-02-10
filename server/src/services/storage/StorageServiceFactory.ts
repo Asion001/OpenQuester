@@ -1,28 +1,30 @@
 import { Environment } from "config/Environment";
-import { IStorage } from "types/file/IStorage";
-import { Storage } from "types/storage/storage";
-import { StorageType } from "types/storage/storageType";
-import { IS3Context } from "types/file/IS3Context";
 import { ServerResponse } from "enums/ServerResponse";
 import { ServerError } from "error/ServerError";
-import { FileContext } from "types/file/fileContext";
-import { TemplateUtils } from "utils/TemplateUtils";
-import { StorageContextBuilder } from "services/context/storage/StorageContextBuilder";
 import { ApiContext } from "services/context/ApiContext";
+import { StorageContextBuilder } from "services/context/storage/StorageContextBuilder";
 import { MinioStorageService } from "services/storage/MinioStorageService";
+import { FileContext } from "types/file/fileContext";
+import { StorageServiceModel } from "types/file/StorageServiceModel";
+import { StorageProvider } from "types/storage/storage";
+import { StorageType } from "types/storage/storageType";
+import { TemplateUtils } from "utils/TemplateUtils";
 
 export class StorageServiceFactory {
-  private _storage!: IStorage;
-  private _storageMap: Map<Storage, IStorage> = new Map();
+  private _storage!: StorageServiceModel;
+  private _storageMap: Map<StorageProvider, StorageServiceModel> = new Map();
 
-  public createStorageService(ctx: ApiContext, storageName: Storage): IStorage {
+  public createStorageService(
+    ctx: ApiContext,
+    storageName: StorageProvider
+  ): StorageServiceModel {
     storageName =
       storageName ??
       Environment.instance.getEnvVar("STORAGE_NAME", "string", "minio");
 
     const storage = this._storageMap.get(storageName);
     if (storage) {
-      return storage as IStorage;
+      return storage as StorageServiceModel;
     }
 
     switch (storageName) {
@@ -52,7 +54,7 @@ export class StorageServiceFactory {
 
     switch (storageType) {
       case "s3":
-        return StorageContextBuilder.buildS3Context() as IS3Context;
+        return StorageContextBuilder.buildS3Context();
       default:
         throw new ServerError(
           TemplateUtils.text(ServerResponse.UNSUPPORTED_STORAGE_TYPE, {

@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-import { EAgeRestriction } from "enums/game/EAgeRestriction";
+import { AgeRestriction } from "enums/game/AgeRestriction";
 
 export const packIdScheme = () =>
   Joi.object({
@@ -60,9 +60,9 @@ const metadata = Joi.object({
     }),
   }),
   tags: Joi.array().items(Joi.string()),
-  ageRestriction: Joi.valid(...Object.values(EAgeRestriction))
+  ageRestriction: Joi.valid(...Object.values(AgeRestriction))
     .allow(null)
-    .default(EAgeRestriction.NONE),
+    .default(AgeRestriction.NONE),
   language: Joi.string(),
 }).required();
 

@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
+
 import { Logger } from "utils/Logger";
 
 export class UpdateUserRequiredFields_0_1_21_1723204474011

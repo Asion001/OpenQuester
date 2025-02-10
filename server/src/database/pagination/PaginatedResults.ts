@@ -1,17 +1,17 @@
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
-import { IPaginatedResult } from "types/pagination/IPaginatedResult";
+import { PaginatedResult } from "types/pagination/PaginatedResult";
 import {
-  EPaginationOrder,
-  IPaginationOpts,
-} from "types/pagination/IPaginationOpts";
+  PaginationOrder,
+  PaginationOpts,
+} from "types/pagination/PaginationOpts";
 
 export class PaginatedResults {
   static async paginateEntityAndSelect<T extends ObjectLiteral>(
     qb: SelectQueryBuilder<T>,
-    options: IPaginationOpts<T>
-  ): Promise<IPaginatedResult<T[]>> {
+    options: PaginationOpts<T>
+  ): Promise<PaginatedResult<T[]>> {
     // Apply sorting
-    const { order = EPaginationOrder.ASC, sortBy = "created_at" } = options;
+    const { order = PaginationOrder.ASC, sortBy = "created_at" } = options;
 
     qb.orderBy(
       `${qb.alias}.${String(sortBy)}`,

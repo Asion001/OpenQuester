@@ -1,8 +1,11 @@
 import Redis, { ChainableCommander } from "ioredis";
 
 import { GAME_NAMESPACE } from "constants/game";
-import { IGame } from "types/game/IGame";
-import { EPaginationOrder } from "types/pagination/IPaginationOpts";
+import { GameDTO } from "types/dto/game/GameDTO";
+import {
+  PaginationOpts,
+  PaginationOrder,
+} from "types/pagination/PaginationOpts";
 import { ValueUtils } from "utils/ValueUtils";
 
 export class GameIndexManager {
@@ -16,7 +19,7 @@ export class GameIndexManager {
   public addGameToIndexesPipeline(
     pipeline: ChainableCommander,
     gameId: string,
-    gameData: IGame
+    gameData: GameDTO
   ): ChainableCommander {
     // Add all index operations to the same pipeline
     pipeline.zadd(
@@ -38,7 +41,7 @@ export class GameIndexManager {
     return pipeline;
   }
 
-  public async addGameToIndexes(gameId: string, gameData: IGame) {
+  public async addGameToIndexes(gameId: string, gameData: GameDTO) {
     return Promise.all([
       this._addToCreatedAtIndex(gameId, gameData),
       this._addToPrivacyIndex(gameId, gameData),
@@ -46,7 +49,7 @@ export class GameIndexManager {
     ]);
   }
 
-  public async removeGameFromIndexes(gameId: string, gameData: IGame) {
+  public async removeGameFromIndexes(gameId: string, gameData: GameDTO) {
     return Promise.all([
       this.redis.zrem(this._createdAtIndexKey, gameId),
       this.redis.srem(this._privacyIndexKey(gameData.isPrivate), gameId),
@@ -57,13 +60,13 @@ export class GameIndexManager {
     ]);
   }
 
-  public async findGamesByIndex(
+  public async findGamesByIndex<T>(
     filters: {
       createdAt?: { min?: Date; max?: Date };
       isPrivate?: boolean;
       titlePrefix?: string;
     },
-    pagination: { offset: number; limit: number; order: EPaginationOrder }
+    pagination: PaginationOpts<T>
   ): Promise<{ ids: string[]; total: number }> {
     const tempKey = `${this.INDEX_PREFIX}:temp:${Date.now()}`;
 
@@ -161,13 +164,13 @@ export class GameIndexManager {
     return null;
   }
 
-  private async _paginateResults(
+  private async _paginateResults<T>(
     tempKey: string,
-    pagination: { offset: number; limit: number; order: EPaginationOrder }
+    pagination: PaginationOpts<T>
   ) {
     const [total, ids] = await Promise.all([
       this.redis.zcard(tempKey),
-      pagination.order === EPaginationOrder.DESC
+      pagination.order === PaginationOrder.DESC
         ? this.redis.zrevrange(
             tempKey,
             pagination.offset,
@@ -183,7 +186,7 @@ export class GameIndexManager {
     return { ids, total };
   }
 
-  private async _addToCreatedAtIndex(gameId: string, gameData: IGame) {
+  private async _addToCreatedAtIndex(gameId: string, gameData: GameDTO) {
     return this.redis.zadd(
       this._createdAtIndexKey,
       gameData.createdAt.getTime(),
@@ -191,13 +194,13 @@ export class GameIndexManager {
     );
   }
 
-  private async _addToPrivacyIndex(gameId: string, gameData: IGame) {
+  private async _addToPrivacyIndex(gameId: string, gameData: GameDTO) {
     if (gameData.isPrivate) {
       await this.redis.sadd(this._privacyIndexKey(true), gameId);
     }
   }
 
-  private async _addToTitleIndex(gameId: string, gameData: IGame) {
+  private async _addToTitleIndex(gameId: string, gameData: GameDTO) {
     await this.redis.zadd(
       this._titleIndexKey,
       0,

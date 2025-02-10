@@ -1,7 +1,8 @@
 import { type Repository } from "typeorm";
+
 import { type Database } from "database/Database";
-import { FileUsage } from "database/models/FileUsage";
 import { File } from "database/models/File";
+import { FileUsage } from "database/models/FileUsage";
 import { Package } from "database/models/Package";
 import { User } from "database/models/User";
 

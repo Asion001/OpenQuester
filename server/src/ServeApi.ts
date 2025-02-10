@@ -5,19 +5,21 @@ import { type Server as IOServer } from "socket.io";
 import { type Database } from "database/Database";
 import { type ApiContext } from "services/context/ApiContext";
 
-import { Logger } from "utils/Logger";
-import { AuthRestApiController } from "controllers/rest/AuthRestApiController";
-import { UserRestApiController } from "controllers/rest/UserRestApiController";
-import { FileRestApiController } from "controllers/rest/FileRestApiController";
-import { PackageRestApiController } from "controllers/rest/PackageRestApiController";
-import { ServerError } from "error/ServerError";
-import { SwaggerRestApiController } from "controllers/rest/SwaggerRestApiController";
+import { EnvType } from "config/Environment";
 import { RedisConfig } from "config/RedisConfig";
-import { SocketIOInitializer } from "controllers/io/SocketIOInitializer";
-import { GameRestApiController } from "controllers/rest/GameRestApiController";
 import { SESSION_SECRET_LENGTH } from "constants/session";
-import { errorMiddleware } from "middleware/errorMiddleware";
+import { SocketIOInitializer } from "controllers/io/SocketIOInitializer";
 import { MiddlewareController } from "controllers/middleware/MiddlewareController";
+import { AuthRestApiController } from "controllers/rest/AuthRestApiController";
+import { DevelopmentRestApiController } from "controllers/rest/DevelopmentRestApiController";
+import { FileRestApiController } from "controllers/rest/FileRestApiController";
+import { GameRestApiController } from "controllers/rest/GameRestApiController";
+import { PackageRestApiController } from "controllers/rest/PackageRestApiController";
+import { SwaggerRestApiController } from "controllers/rest/SwaggerRestApiController";
+import { UserRestApiController } from "controllers/rest/UserRestApiController";
+import { ServerError } from "error/ServerError";
+import { errorMiddleware } from "middleware/errorMiddleware";
+import { Logger } from "utils/Logger";
 
 const APP_PREFIX = "[APP]: ";
 
@@ -103,6 +105,10 @@ export class ServeApi {
     new GameRestApiController(this._context);
     new PackageRestApiController(this._context);
     new SwaggerRestApiController(this._context);
+
+    if (this._context.env.ENV === EnvType.LOCAL) {
+      new DevelopmentRestApiController(this._context);
+    }
 
     // Socket
     new SocketIOInitializer(this._context);

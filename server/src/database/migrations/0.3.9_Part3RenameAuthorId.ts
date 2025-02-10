@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from "typeorm";
+
 import { Logger } from "utils/Logger";
 
 export class RenameAuthorAndAvatarId_1734207358779

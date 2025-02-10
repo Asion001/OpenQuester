@@ -1,6 +1,6 @@
 import "express-session";
 
-import { Session } from "type/auth/session";
+import { Session } from "types/auth/session";
 
 declare module "express-session" {
   interface SessionData {

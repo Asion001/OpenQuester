@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 import { USER_NAME_MAX_CHARS, USER_NAME_MIN_CHARS } from "constants/user";
-import { IUpdateUserDataInput } from "types/user/IUpdateUserDataInput";
+import { UpdateUserInputDTO } from "types/user/UpdateUserDataInput";
 
 export const userIdScheme = () =>
   Joi.object({
@@ -9,7 +9,7 @@ export const userIdScheme = () =>
   });
 
 export const userUpdateScheme = () =>
-  Joi.object<IUpdateUserDataInput>({
+  Joi.object<UpdateUserInputDTO>({
     id: Joi.number().min(0).allow(null),
     email: Joi.string().email().allow(null),
     username: Joi.string()

@@ -7,9 +7,9 @@ import {
   cyanBright,
   gray as grayCol,
   green,
+  magenta,
   red,
   yellow,
-  magenta,
 } from "colorette";
 import { LogLevel } from "types/log/log";
 

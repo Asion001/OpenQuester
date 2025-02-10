@@ -1,15 +1,15 @@
-import { IGameCreateData } from "types/game/IGameCreate";
-import { IGameListItem } from "types/game/IGameListItem";
-import { UserRepository } from "database/repositories/UserRepository";
-import { ApiContext } from "services/context/ApiContext";
-import { SocketIOEvents } from "enums/SocketIOEvents";
-import { EGameEvent, IGameEvent } from "types/game/IGameEvent";
-import { IGame } from "types/game/IGame";
 import { GameRepository } from "database/repositories/GameRepository";
-import { IPaginationOpts } from "types/pagination/IPaginationOpts";
-import { ClientError } from "error/ClientError";
+import { UserRepository } from "database/repositories/UserRepository";
 import { ClientResponse } from "enums/ClientResponse";
+import { SocketIOEvents } from "enums/SocketIOEvents";
+import { ClientError } from "error/ClientError";
+import { ApiContext } from "services/context/ApiContext";
 import { Session } from "types/auth/session";
+import { GameCreateDTO } from "types/dto/game/GameCreateDTO";
+import { GameDTO } from "types/dto/game/GameDTO";
+import { GameEvent, GameEventDTO } from "types/dto/game/GameEventDTO";
+import { GameListItemDTO } from "types/dto/game/GameListItemDTO";
+import { PaginationOpts } from "types/pagination/PaginationOpts";
 
 export class GameService {
   private _gameRepository?: GameRepository;
@@ -17,11 +17,11 @@ export class GameService {
   public async get(
     ctx: ApiContext,
     gameId: string
-  ): Promise<IGameListItem | undefined> {
+  ): Promise<GameListItemDTO | undefined> {
     return this.gameRepository.getGame(ctx, gameId);
   }
 
-  public async list(ctx: ApiContext, paginationOpts: IPaginationOpts<IGame>) {
+  public async list(ctx: ApiContext, paginationOpts: PaginationOpts<GameDTO>) {
     return this.gameRepository.getAllGames(ctx, paginationOpts);
   }
 
@@ -31,7 +31,7 @@ export class GameService {
 
   public async create(
     ctx: ApiContext,
-    gameData: IGameCreateData,
+    gameData: GameCreateDTO,
     session: Session
   ) {
     const createdByUser = await UserRepository.getUserBySession(
@@ -55,11 +55,13 @@ export class GameService {
     return gameDataOutput;
   }
 
-  private _emitSocketGameCreated(ctx: ApiContext, gameData: IGameListItem) {
-    ctx.io.emit(SocketIOEvents.GAMES, {
-      event: EGameEvent.CREATED,
+  private _emitSocketGameCreated(ctx: ApiContext, gameData: GameListItemDTO) {
+    const eventDataDTO: GameEventDTO = {
+      event: GameEvent.CREATED,
       data: gameData,
-    } as IGameEvent);
+    };
+
+    ctx.io.emit(SocketIOEvents.GAMES, eventDataDTO);
   }
 
   private get gameRepository() {

@@ -3,14 +3,14 @@ import { createServer, type Server } from "http";
 import { Server as IOServer } from "socket.io";
 
 import { Environment } from "config/Environment";
-import { Database } from "database/Database";
-import { Logger } from "utils/Logger";
-import { AppDataSource } from "database/DataSource";
-import { ApiContext } from "services/context/ApiContext";
-import { ErrorController } from "error/ErrorController";
-import { ServeApi } from "./ServeApi";
 import { RedisConfig } from "config/RedisConfig";
+import { Database } from "database/Database";
+import { AppDataSource } from "database/DataSource";
+import { ErrorController } from "error/ErrorController";
+import { ApiContext } from "services/context/ApiContext";
 import { ServerServices } from "services/ServerServices";
+import { ServeApi } from "src/ServeApi";
+import { Logger } from "utils/Logger";
 
 const main = async () => {
   Logger.info(`Initializing API Context`);

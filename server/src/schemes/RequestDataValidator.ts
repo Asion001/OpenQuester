@@ -1,10 +1,10 @@
 import Joi from "joi";
 
-import { ServerError } from "error/ServerError";
-import { ClientError } from "error/ClientError";
-import { ServerResponse } from "enums/ServerResponse";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
+import { ServerResponse } from "enums/ServerResponse";
+import { ClientError } from "error/ClientError";
+import { ServerError } from "error/ServerError";
 
 export class RequestDataValidator<T> {
   private _schema: Joi.ObjectSchema<T>;
