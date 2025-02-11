@@ -88,13 +88,23 @@
     }
   </script>
   <script>
-    window.onload = function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-      if (code) {
-        window.opener.postMessage(window.location.href, _url_of_the_opener_window_);
+    function postAuthenticationMessage() {
+      const message = {
+        'flutter-web-auth-2': window.location.href
+      };
+
+      if (window.opener) {
+        window.opener.postMessage(message, window.location.origin);
+        window.close();
+      } else if (window.parent && window.parent !== window) {
+        window.parent.postMessage(message, window.location.origin);
+      } else {
+        localStorage.setItem('flutter-web-auth-2', window.location.href);
+        window.close();
       }
     }
+
+    postAuthenticationMessage();
   </script>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 </head>
