@@ -1,3 +1,4 @@
+import { USER_SELECT_FIELDS } from "constants/user";
 import cookieSignature from "cookie-signature";
 
 import { UserRepository } from "database/repositories/UserRepository";
@@ -19,11 +20,21 @@ export class DevelopmentRestApiController {
       try {
         const userRepo = UserRepository.getRepository(this.ctx.db);
 
-        let user = await userRepo.findOne({
-          username: dummyUser.username,
-          email: dummyUser.email,
-          discord_id: dummyUser.discord_id,
-        });
+        let user = await userRepo.findOne(
+          {
+            username: dummyUser.username,
+            email: dummyUser.email,
+            discord_id: dummyUser.discord_id,
+          },
+          {
+            select: USER_SELECT_FIELDS,
+            relations: ["avatar", "permissions"],
+            relationSelects: {
+              avatar: ["id", "filename"],
+              permissions: ["id", "name"],
+            },
+          }
+        );
 
         if (!user) {
           user = await userRepo.create(this.ctx.db, {

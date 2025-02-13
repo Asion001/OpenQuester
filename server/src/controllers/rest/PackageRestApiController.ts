@@ -1,6 +1,7 @@
 import { type Request, type Response, Router } from "express";
 import { asyncHandler } from "middleware/asyncHandlerMiddleware";
 
+import { PACKAGE_SELECT_FIELDS } from "constants/package";
 import { HttpStatus } from "enums/HttpStatus";
 import { verifyContentJSONMiddleware } from "middleware/file/FileMiddleware";
 import {
@@ -44,8 +45,8 @@ export class PackageRestApiController {
     }>(req.body, uploadPackageScheme()).validate();
 
     const data = await this._storageService.uploadPackage(
-      validatedData.content,
-      req.session
+      req,
+      validatedData.content
     );
     return res.status(HttpStatus.OK).send(data);
   };
@@ -72,7 +73,9 @@ export class PackageRestApiController {
     }).validate();
 
     const data = await this._storageService.listPackages(paginationOpts, {
+      select: PACKAGE_SELECT_FIELDS,
       relations: ["author"],
+      relationSelects: { author: ["id", "username"] },
     });
 
     return res.status(HttpStatus.OK).send(data);

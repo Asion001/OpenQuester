@@ -5,11 +5,14 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { type Request } from "express";
 
+import { PACKAGE_SELECT_FIELDS } from "constants/package";
 import {
   UPLOAD_FILE_LINK_EXPIRES_IN,
   UPLOAD_PACKAGE_LINKS_EXPIRES_IN,
 } from "constants/storage";
+import { USER_SELECT_FIELDS } from "constants/user";
 import { Database } from "database/Database";
 import { File } from "database/models/File";
 import { Package } from "database/models/Package";
@@ -28,13 +31,11 @@ import { ClientError } from "error/ClientError";
 import { ContentStructureService } from "services/ContentStructureService";
 import { ApiContext } from "services/context/ApiContext";
 import { DependencyService } from "services/dependency/DependencyService";
-import { Session } from "types/auth/session";
 import { FileDTO } from "types/dto/file/FileDTO";
 import { PackageListItemDTO } from "types/dto/game/items/PackageIListItemDTO";
 import { S3Context } from "types/file/S3Context";
 import { StorageServiceModel } from "types/file/StorageServiceModel";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
-import { PackageModel } from "types/package/PackageModel";
 import { PackageUploadResponse } from "types/package/PackageUploadResponse";
 import { PaginatedResult } from "types/pagination/PaginatedResult";
 import { PaginationOpts } from "types/pagination/PaginationOpts";
@@ -190,7 +191,7 @@ export class MinioStorageService implements StorageServiceModel {
     return link;
   }
 
-  public async delete(filename: string, session: Session) {
+  public async delete(filename: string, req: Request) {
     const usageRecords = await DependencyService.getFileUsage(
       this._db,
       filename
@@ -229,7 +230,7 @@ export class MinioStorageService implements StorageServiceModel {
     }
 
     if (usedByUsers) {
-      result.removed = await this._handleAvatarRemove(session, filename, usage);
+      result.removed = await this._handleAvatarRemove(req, filename, usage);
     }
 
     if (!result.removed) {
@@ -263,7 +264,11 @@ export class MinioStorageService implements StorageServiceModel {
     packId: string | number
   ): Promise<PackageListItemDTO> {
     const id = ValueUtils.validateId(packId);
-    const pack = await this._packageRepository.get(id);
+    const pack = await this._packageRepository.get(id, {
+      select: PACKAGE_SELECT_FIELDS,
+      relations: ["author"],
+      relationSelects: { author: ["id", "username"] },
+    });
     if (!pack) {
       throw new ClientError(ClientResponse.PACKAGE_NOT_FOUND);
     }
@@ -283,8 +288,8 @@ export class MinioStorageService implements StorageServiceModel {
   }
 
   public async listPackages(
-    paginationOpts: PaginationOpts<PackageModel>,
-    selectOptions?: SelectOptions<PackageModel>
+    paginationOpts: PaginationOpts<Package>,
+    selectOptions: SelectOptions<Package>
   ): Promise<PaginatedResult<PackageListItemDTO[]>> {
     const paginatedList = await this._packageRepository.list(
       paginationOpts,
@@ -315,11 +320,14 @@ export class MinioStorageService implements StorageServiceModel {
   }
 
   public async uploadPackage(
+    req: Request,
     content: OQContentStructure,
-    session: Session,
     expiresIn: number = UPLOAD_PACKAGE_LINKS_EXPIRES_IN
   ): Promise<PackageUploadResponse> {
-    const author = await UserRepository.getUserBySession(this._db, session);
+    const author = await UserRepository.getUserByRequest(this._db, req, {
+      select: USER_SELECT_FIELDS,
+      relations: [],
+    });
 
     if (!author || !author.id) {
       throw new ClientError(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
@@ -340,12 +348,14 @@ export class MinioStorageService implements StorageServiceModel {
   }
 
   private async _handleAvatarRemove(
-    session: Session,
+    req: Request,
     filename: string,
     usage: UsageEntries
   ) {
-    const user = await UserRepository.getUserBySession(this._db, session, {
+    const user = await UserRepository.getUserByRequest(this._db, req, {
+      select: ["id"],
       relations: ["permissions"],
+      relationSelects: { permissions: ["id", "name"] },
     });
 
     if (!user) {

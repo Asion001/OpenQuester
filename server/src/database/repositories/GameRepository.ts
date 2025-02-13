@@ -6,6 +6,7 @@ import {
   GAME_ID_CHARACTERS_LENGTH,
   GAME_NAMESPACE,
 } from "constants/game";
+import { PACKAGE_SELECT_FIELDS } from "constants/package";
 import { Database } from "database/Database";
 import { GameIndexManager } from "database/managers/game/GameIndexManager";
 import { User } from "database/models/User";
@@ -83,7 +84,7 @@ export class GameRepository {
       );
     }
 
-    return this._convertRedisRecord(ctx, gameData);
+    return this._mapRedisRecordToGameItem(ctx, gameData);
   }
 
   public async getAllGamesRaw(
@@ -156,12 +157,17 @@ export class GameRepository {
       userIds.add(game.createdBy);
     });
 
+    // TODO: Check if works
     const [users, packages] = await Promise.all([
       this._getUserRepository(ctx.db).findByIds(Array.from(userIds), {
         select: ["id", "username"],
         relations: [],
       }) as Promise<ShortUserInfo[]>,
-      this._getPackageRepository(ctx.db).findByIds(Array.from(packageIds)),
+      this._getPackageRepository(ctx.db).findByIds(Array.from(packageIds), {
+        select: PACKAGE_SELECT_FIELDS,
+        relations: ["author"],
+        relationSelects: { author: ["id", "username"] },
+      }),
     ]);
 
     const userMap = new Map(users.map((u) => [u.id, u]));
@@ -212,7 +218,11 @@ export class GameRepository {
   ) {
     const packageRepo = this._getPackageRepository(ctx.db);
 
-    const packageData = await packageRepo.get(gameData.packageId);
+    const packageData = await packageRepo.get(gameData.packageId, {
+      select: PACKAGE_SELECT_FIELDS,
+      relations: ["author"],
+      relationSelects: { author: ["id", "username"] },
+    });
 
     if (!packageData) {
       throw new ClientError(ClientResponse.PACKAGE_NOT_FOUND);
@@ -290,7 +300,7 @@ export class GameRepository {
     await this._redisClient.del(key);
   }
 
-  private async _convertRedisRecord(
+  private async _mapRedisRecordToGameItem(
     ctx: ApiContext,
     record: GameDTO
   ): Promise<GameListItemDTO | undefined> {
@@ -302,7 +312,11 @@ export class GameRepository {
       relations: [],
     });
 
-    const packData = await packageRepo.get(record.package);
+    const packData = await packageRepo.get(record.package, {
+      select: PACKAGE_SELECT_FIELDS,
+      relations: ["author"],
+      relationSelects: { author: ["id", "username"] },
+    });
 
     if (!packData) {
       return;
@@ -310,6 +324,10 @@ export class GameRepository {
 
     if (!packData.author) {
       throw new ClientError(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
+    }
+
+    if (!createdBy) {
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     const packMeta = packData.content.metadata;

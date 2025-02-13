@@ -1,4 +1,3 @@
-import { bold } from "colorette";
 import dotenv from "dotenv";
 import fs from "fs";
 import type Redis from "ioredis";
@@ -16,7 +15,7 @@ import { TemplateUtils } from "utils/TemplateUtils";
 import { ValueUtils } from "utils/ValueUtils";
 
 export enum EnvType {
-  LOCAL = "local",
+  DEV = "dev",
   PROD = "prod",
   TEST = "test",
 }
@@ -183,11 +182,11 @@ export class Environment {
     }
 
     switch (this._type) {
-      case "prod":
-        Logger.warn(bold("Running in production environment"), ENV_PREFIX);
+      case EnvType.PROD:
+        Logger.pink("Running in production environment", ENV_PREFIX);
         break;
-      case "local":
-        Logger.info("Running in local environment", ENV_PREFIX);
+      case EnvType.DEV:
+        Logger.pink("Running in development environment", ENV_PREFIX);
         break;
     }
 

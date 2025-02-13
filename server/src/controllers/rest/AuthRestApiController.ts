@@ -2,6 +2,7 @@ import { Router, type Request, type Response } from "express";
 import Joi from "joi";
 import https, { RequestOptions } from "node:https";
 
+import { USER_SELECT_FIELDS } from "constants/user";
 import { User } from "database/models/User";
 import { UserRepository } from "database/repositories/UserRepository";
 import { ClientResponse } from "enums/ClientResponse";
@@ -130,7 +131,17 @@ export class AuthRestApiController {
 
     const userRepo = UserRepository.getRepository(this.ctx.db);
 
-    let user = await userRepo.findOne({ discord_id: profile.id });
+    let user = await userRepo.findOne(
+      { discord_id: profile.id },
+      {
+        select: USER_SELECT_FIELDS,
+        relations: ["avatar", "permissions"],
+        relationSelects: {
+          avatar: ["id", "filename"],
+          permissions: ["id", "name"],
+        },
+      }
+    );
 
     if (!user) {
       user = new User();
@@ -143,6 +154,7 @@ export class AuthRestApiController {
       user = await userRepo.create(this.ctx.db, registerData);
     }
 
+    // TODO: Use .toDTO()
     return user;
   }
 }

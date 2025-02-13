@@ -95,11 +95,7 @@ export class GameRestApiController {
       throw new ClientError(ClientResponse.NO_GAME_DATA);
     }
 
-    const result = await this._gameService.create(
-      this.ctx,
-      gameCreateDTO,
-      req.session
-    );
+    const result = await this._gameService.create(this.ctx, req, gameCreateDTO);
     return res.status(HttpStatus.OK).send(result);
   };
 }

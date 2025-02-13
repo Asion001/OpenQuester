@@ -3,6 +3,7 @@ import { type Request, type Response, Router } from "express";
 import { File } from "database/models/File";
 import { User } from "database/models/User";
 import { FileRepository } from "database/repositories/FileRepository";
+import { UserRepository } from "database/repositories/UserRepository";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
 import { Permissions } from "enums/Permissions";
@@ -17,7 +18,9 @@ import { RequestDataValidator } from "schemes/RequestDataValidator";
 import { userIdScheme, userUpdateScheme } from "schemes/user/userSchemes";
 import { type ApiContext } from "services/context/ApiContext";
 import { TranslateService as ts } from "services/text/TranslateService";
-import { type UserService } from "services/UserService";
+import { type UserService } from "services/user/UserService";
+import { UserDTO } from "types/dto/user/UserDTO";
+import { StorageServiceModel } from "types/file/StorageServiceModel";
 import { PaginationOrder } from "types/pagination/PaginationOpts";
 import { UpdateUserDTO } from "types/user/UpdateUserData";
 import { UpdateUserInputDTO } from "types/user/UpdateUserDataInput";
@@ -78,7 +81,16 @@ export class UserRestApiController {
       userIdScheme()
     ).validate();
 
-    const user = await this._userService.get(this.ctx, validatedData.userId);
+    let user: UserDTO;
+
+    if (req.user && validatedData.userId === req.user.id) {
+      user = await this.mapUserToDTO(
+        req.user,
+        this.ctx.serverServices.storage.createStorageService(this.ctx, "minio")
+      );
+    } else {
+      user = await this._userService.get(this.ctx, validatedData.userId);
+    }
 
     if (user) {
       return res.status(HttpStatus.OK).send(user);
@@ -99,6 +111,15 @@ export class UserRestApiController {
 
     if (Object.keys(userInputDTO).length < 1) {
       throw new ClientError(ClientResponse.NO_USER_DATA);
+    }
+
+    const user = await UserRepository.getRepository(this.ctx.db).get(
+      userInputDTO.id,
+      { select: ["id"], relations: [] }
+    );
+
+    if (!user) {
+      throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
     let avatarFile: File | null = null;
@@ -123,7 +144,11 @@ export class UserRestApiController {
       userUpdateDTO.avatar = avatarFile;
     }
 
-    const result = await this._userService.update(this.ctx, userUpdateDTO);
+    const result = await this._userService.update(
+      this.ctx,
+      user,
+      userUpdateDTO
+    );
 
     return res.status(HttpStatus.OK).send(result);
   };
@@ -137,6 +162,7 @@ export class UserRestApiController {
     ).validate();
 
     await this._userService.delete(this.ctx, validatedData.userId);
+
     return res.status(HttpStatus.NO_CONTENT).send();
   };
 
@@ -168,6 +194,29 @@ export class UserRestApiController {
       message: ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
     });
   };
+
+  // TODO: Remove when global service locator implemented - move to authMiddleware
+  private async mapUserToDTO(
+    user: User,
+    storageService: StorageServiceModel
+  ): Promise<UserDTO> {
+    const avatarLink = user.avatar
+      ? await storageService.get(user.avatar.filename)
+      : undefined;
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      birthday: user.birthday,
+      discordId: user.discord_id,
+      createdAt: user.created_at,
+      updatedAt: user.updated_at,
+      isDeleted: user.is_deleted,
+      permissions: user.permissions,
+      avatar: avatarLink,
+    };
+  }
 
   private async _getUserId(req: Request) {
     if (req.params && req.params.id) {

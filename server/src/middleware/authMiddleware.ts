@@ -2,6 +2,7 @@ import { type NextFunction, type Request, type Response } from "express";
 import Joi from "joi";
 
 import { Environment, EnvType } from "config/Environment";
+import { USER_SELECT_FIELDS } from "constants/user";
 import { Database } from "database/Database";
 import { AppDataSource } from "database/DataSource";
 import { UserRepository } from "database/repositories/UserRepository";
@@ -18,7 +19,7 @@ import { ValueUtils } from "utils/ValueUtils";
 const isPublicEndpoint = (url: string, method: string): boolean => {
   const publicEndpoints = ["v1/auth", "v1/api-docs", "v1/users", "v1/files"];
 
-  if (Environment.instance.ENV === EnvType.LOCAL) {
+  if (Environment.instance.ENV === EnvType.DEV) {
     publicEndpoints.push("v1/dev");
   }
 
@@ -66,9 +67,17 @@ export const verifySession = async (
   }
 
   // TODO: Get from cache when implemented
-  const user = await UserRepository.getUserBySession(
+  const user = await UserRepository.getUserByRequest(
     Database.getInstance(AppDataSource),
-    req.session
+    req,
+    {
+      select: USER_SELECT_FIELDS,
+      relations: ["avatar", "permissions"],
+      relationSelects: {
+        avatar: ["id", "filename"],
+        permissions: ["id", "name"],
+      },
+    }
   );
 
   if (!user) {
@@ -77,6 +86,8 @@ export const verifySession = async (
 
   // Refresh session expire time
   req.session.touch();
+  req.user = user;
+
   next();
 };
 

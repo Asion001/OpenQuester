@@ -106,7 +106,7 @@ export class ServeApi {
     new PackageRestApiController(this._context);
     new SwaggerRestApiController(this._context);
 
-    if (this._context.env.ENV === EnvType.LOCAL) {
+    if (this._context.env.ENV === EnvType.DEV) {
       new DevelopmentRestApiController(this._context);
     }
 

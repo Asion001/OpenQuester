@@ -1,19 +1,19 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  OneToOne,
+  Entity,
   JoinColumn,
-  Unique,
-  ManyToMany,
   JoinTable,
+  ManyToMany,
   OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  Unique,
 } from "typeorm";
 
-import { UserModel } from "types/user/UserModel";
 import { File } from "database/models/File";
-import { Permission } from "database/models/Permission";
 import { Package } from "database/models/Package";
+import { Permission } from "database/models/Permission";
+import { UserModel } from "types/user/UserModel";
 
 @Entity("user")
 @Unique(["email", "username", "discord_id"])
@@ -74,7 +74,6 @@ export class User implements UserModel {
   }
 
   public async export() {
-    // TODO: Use dependency container to export file as link (presign it)
     return {
       id: this.id,
       username: this.username,
@@ -85,6 +84,10 @@ export class User implements UserModel {
       created_at: this.created_at,
       updated_at: this.updated_at,
       permissions: this.permissions,
-    } as UserModel; // TODO: As UserDTO
+    } as User;
+  }
+
+  public async toDTO() {
+    // TODO: Implement when global service locator implemented
   }
 }

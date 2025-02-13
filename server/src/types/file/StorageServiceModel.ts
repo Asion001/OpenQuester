@@ -1,11 +1,11 @@
+import { type Request } from "express";
+
 import { Package } from "database/models/Package";
 import { User } from "database/models/User";
 import { FileSource } from "enums/file/FileSource";
-import { Session } from "types/auth/session";
 import { FileDTO } from "types/dto/file/FileDTO";
 import { PackageListItemDTO } from "types/dto/game/items/PackageIListItemDTO";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
-import { PackageModel } from "types/package/PackageModel";
 import { PackageUploadResponse } from "types/package/PackageUploadResponse";
 import { PaginatedResult } from "types/pagination/PaginatedResult";
 import { PaginationOpts } from "types/pagination/PaginationOpts";
@@ -38,17 +38,17 @@ export interface StorageServiceModel {
     filesData: { files: FileDTO[]; user?: User; pack?: Package },
     expiresIn?: number
   ): Promise<Record<string, string>>;
-  delete(filename: string, session: Session): Promise<void>;
+  delete(filename: string, req: Request): Promise<void>;
   // TODO: Create separate service for packages
   getPackage(id: number): Promise<PackageListItemDTO>;
   /** @returns object with filename as key and link to upload as value */
   uploadPackage(
+    req: Request,
     content: OQContentStructure,
-    session: Session,
     expiresIn?: number
   ): Promise<PackageUploadResponse>;
   listPackages(
-    paginationOpts: PaginationOpts<PackageModel>,
-    selectOptions?: SelectOptions<PackageModel>
+    paginationOpts: PaginationOpts<Package>,
+    selectOptions: SelectOptions<Package>
   ): Promise<PaginatedResult<PackageListItemDTO[]>>;
 }

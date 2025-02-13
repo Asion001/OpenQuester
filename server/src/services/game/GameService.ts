@@ -1,10 +1,12 @@
+import { type Request } from "express";
+
 import { GameRepository } from "database/repositories/GameRepository";
 import { UserRepository } from "database/repositories/UserRepository";
 import { ClientResponse } from "enums/ClientResponse";
+import { HttpStatus } from "enums/HttpStatus";
 import { SocketIOEvents } from "enums/SocketIOEvents";
 import { ClientError } from "error/ClientError";
 import { ApiContext } from "services/context/ApiContext";
-import { Session } from "types/auth/session";
 import { GameCreateDTO } from "types/dto/game/GameCreateDTO";
 import { GameDTO } from "types/dto/game/GameDTO";
 import { GameEvent, GameEventDTO } from "types/dto/game/GameEventDTO";
@@ -29,19 +31,17 @@ export class GameService {
     return this.gameRepository.deleteGame(gameId);
   }
 
-  public async create(
-    ctx: ApiContext,
-    gameData: GameCreateDTO,
-    session: Session
-  ) {
-    const createdByUser = await UserRepository.getUserBySession(
-      ctx.db,
-      session,
-      { select: ["id", "username"], relations: [] }
-    );
+  public async create(ctx: ApiContext, req: Request, gameData: GameCreateDTO) {
+    const createdByUser = await UserRepository.getUserByRequest(ctx.db, req, {
+      select: ["id", "username"],
+      relations: [],
+    });
 
     if (!createdByUser) {
-      throw new ClientError(ClientResponse.ACCESS_DENIED);
+      throw new ClientError(
+        ClientResponse.USER_NOT_FOUND,
+        HttpStatus.NOT_FOUND
+      );
     }
 
     const gameDataOutput = await this.gameRepository.createGame(

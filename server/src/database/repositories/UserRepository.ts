@@ -1,29 +1,18 @@
+import { type Request } from "express";
 import { FindOptionsWhere, In, type Repository } from "typeorm";
 
 import { type Database } from "database/Database";
 import { User } from "database/models/User";
 import { PaginatedResults } from "database/pagination/PaginatedResults";
+import { QueryBuilder } from "database/QueryBuilder";
 import { FileUsageRepository } from "database/repositories/FileUsageRepository";
 import { ClientResponse } from "enums/ClientResponse";
 import { HttpStatus } from "enums/HttpStatus";
 import { ClientError } from "error/ClientError";
-import { Session } from "types/auth/session";
 import { PaginationOpts } from "types/pagination/PaginationOpts";
 import { SelectOptions } from "types/SelectOptions";
 import { RegisterUser } from "types/user/RegisterUser";
 import { ValueUtils } from "utils/ValueUtils";
-
-const USER_SELECT_FIELDS: (keyof User)[] = [
-  "id",
-  "username",
-  "email",
-  "birthday",
-  "avatar",
-  "discord_id",
-  "created_at",
-  "updated_at",
-  "is_deleted",
-];
 
 export class UserRepository {
   private static _instance: UserRepository;
@@ -43,67 +32,65 @@ export class UserRepository {
     return this._instance;
   }
 
-  // TODO: Fix issue with double querying for one user
-  public async get(id: number, selectOptions?: SelectOptions<User>) {
-    return this._repository.findOne({
-      where: { id, is_deleted: false },
-      select: selectOptions?.select ?? USER_SELECT_FIELDS,
-      relations: selectOptions?.relations ?? ["avatar"],
-    }) as Promise<User>;
+  public async get(id: number, selectOptions: SelectOptions<User>) {
+    const qb = await QueryBuilder.buildFindQuery<User>(
+      this._repository,
+      { id },
+      selectOptions
+    );
+    return qb.getOne();
   }
 
   public async find(
     where: FindOptionsWhere<User>,
-    selectOptions?: SelectOptions<User>
+    selectOptions: SelectOptions<User>
   ) {
-    return this._repository.find({
+    const qb = await QueryBuilder.buildFindQuery<User>(
+      this._repository,
       where,
-      select: selectOptions?.select ?? USER_SELECT_FIELDS,
-      relations: selectOptions?.relations ?? ["avatar"],
-    });
+      selectOptions
+    );
+    return qb.getMany();
   }
 
   public async findOne(
     where: FindOptionsWhere<User>,
-    selectOptions?: SelectOptions<User>
+    selectOptions: SelectOptions<User>
   ) {
-    return this._repository.findOne({
+    const qb = await QueryBuilder.buildFindQuery<User>(
+      this._repository,
       where,
-      select: selectOptions?.select ?? USER_SELECT_FIELDS,
-      relations: selectOptions?.relations ?? ["avatar"],
-    });
+      selectOptions
+    );
+    return qb.getOne();
   }
 
   public findByIds(
     ids: number[],
-    selectOptions?: SelectOptions<User>
+    selectOptions: SelectOptions<User>
   ): Promise<User[]> {
     return this._repository.find({
       where: { id: In(ids) },
-      select: selectOptions?.select ?? USER_SELECT_FIELDS,
-      relations: selectOptions?.relations ?? ["avatar"],
+      select: selectOptions.select,
+      relations: selectOptions.relations,
     });
   }
 
   public async list(
     paginationOpts: PaginationOpts<User>,
-    selectOptions?: SelectOptions<User>
+    selectOptions: SelectOptions<User>
   ) {
     const alias = this._repository.metadata.name.toLowerCase();
 
-    const qb = this._repository
+    let qb = this._repository
       .createQueryBuilder(alias)
-      .select(
-        selectOptions?.select
-          ? selectOptions.select.map((field) => `user.${field}`)
-          : USER_SELECT_FIELDS.map((field) => `user.${field}`)
-      );
+      .select(selectOptions.select.map((field) => `${alias}.${field}`));
 
-    if (selectOptions?.relations) {
-      for (const relation of selectOptions.relations) {
-        qb.leftJoinAndSelect(`user.${relation}`, relation);
-      }
-    }
+    qb = await QueryBuilder.buildRelationsSelect(
+      qb,
+      selectOptions.relations,
+      selectOptions.relationSelects
+    );
 
     return PaginatedResults.paginateEntityAndSelect<User>(qb, paginationOpts);
   }
@@ -172,19 +159,23 @@ export class UserRepository {
     );
   }
 
-  public static async getUserBySession(
+  public static async getUserByRequest(
     db: Database,
-    session: Session,
-    options?: SelectOptions<User>
+    req: Request,
+    selectOptions: SelectOptions<User>
   ) {
-    if (!session.userId) {
+    if (!req.session.userId) {
       throw new ClientError(
         ClientResponse.INVALID_SESSION,
         HttpStatus.UNAUTHORIZED
       );
     }
 
-    const id = ValueUtils.validateId(session.userId);
-    return this.getRepository(db).get(id, options);
+    if (req.user) {
+      return req.user;
+    }
+
+    const id = ValueUtils.validateId(req.session.userId);
+    return this.getRepository(db).get(id, selectOptions);
   }
 }

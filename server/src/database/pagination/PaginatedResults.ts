@@ -1,8 +1,8 @@
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm";
 import { PaginatedResult } from "types/pagination/PaginatedResult";
 import {
-  PaginationOrder,
   PaginationOpts,
+  PaginationOrder,
 } from "types/pagination/PaginationOpts";
 
 export class PaginatedResults {

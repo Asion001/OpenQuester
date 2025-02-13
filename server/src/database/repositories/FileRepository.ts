@@ -47,6 +47,12 @@ export class FileRepository {
     return this._repository.save(file);
   }
 
+  public async getFile(id: number) {
+    return this._repository.findOne({
+      where: { id },
+    });
+  }
+
   public async getFileByFilename(filename: string) {
     return this._repository.findOne({
       where: { filename },

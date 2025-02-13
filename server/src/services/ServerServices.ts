@@ -1,8 +1,8 @@
 import { ContentStructureService } from "services/ContentStructureService";
-import { RedisService } from "services/RedisService";
-import { UserService } from "services/UserService";
 import { GameService } from "services/game/GameService";
+import { RedisService } from "services/RedisService";
 import { StorageServiceFactory } from "services/storage/StorageServiceFactory";
+import { UserService } from "services/user/UserService";
 
 /**
  * Server services locator

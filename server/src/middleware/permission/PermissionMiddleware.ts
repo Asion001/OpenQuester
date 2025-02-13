@@ -14,9 +14,10 @@ import { ValueUtils } from "utils/ValueUtils";
 export function checkPermission(db: Database, permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await UserRepository.getUserBySession(db, req.session, {
+      const user = await UserRepository.getUserByRequest(db, req, {
         select: ["id"],
         relations: ["permissions"],
+        relationSelects: { permissions: ["id", "name"] },
       });
 
       if (!user) {
@@ -53,25 +54,21 @@ export function checkPermissionWithId(db: Database, permission: Permissions) {
       try {
         const id = ValueUtils.validateId(req.params.id);
 
-        const user = await UserRepository.getRepository(db).get(id, {
+        const requestUser = await UserRepository.getUserByRequest(db, req, {
           select: ["id"],
           relations: ["permissions"],
+          relationSelects: { permissions: ["id", "name"] },
         });
 
-        const requestUser = await UserRepository.getUserBySession(
-          db,
-          req.session,
-          {
-            select: ["id"],
-            relations: ["permissions"],
-          }
-        );
+        if (!requestUser) {
+          throw new ClientError(ClientResponse.ACCESS_DENIED);
+        }
 
-        if (user?.id === requestUser?.id) {
+        if (id === requestUser?.id) {
           return next();
         }
 
-        if (await Permission.checkPermission(user, permission)) {
+        if (await Permission.checkPermission(requestUser, permission)) {
           return next();
         }
 

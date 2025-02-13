@@ -4,22 +4,13 @@ import { Database } from "database/Database";
 import { Package } from "database/models/Package";
 import { User } from "database/models/User";
 import { PaginatedResults } from "database/pagination/PaginatedResults";
+import { QueryBuilder } from "database/QueryBuilder";
 import { ClientResponse } from "enums/ClientResponse";
 import { ClientError } from "error/ClientError";
 import { OQContentStructure } from "types/file/structures/OQContentStructure";
-import { PackageModel } from "types/package/PackageModel";
 import { PaginatedResult } from "types/pagination/PaginatedResult";
 import { PaginationOpts } from "types/pagination/PaginationOpts";
 import { SelectOptions } from "types/SelectOptions";
-
-const PACKAGE_SELECT_FIELDS = [
-  "id",
-  "title",
-  "created_at",
-  "content",
-  "author.id",
-  "author.username",
-];
 
 export class PackageRepository {
   private static _instance: PackageRepository;
@@ -37,68 +28,33 @@ export class PackageRepository {
     return this._instance;
   }
 
-  public async get(id: number) {
-    const alias = this._repository.metadata.name.toLowerCase();
+  public async get(id: number, selectOptions: SelectOptions<Package>) {
+    const qb = await QueryBuilder.buildFindQuery<Package>(
+      this._repository,
+      { id },
+      selectOptions
+    );
 
-    const selectFields = PACKAGE_SELECT_FIELDS.map((field) => {
-      if (field.includes(".")) return field;
-      return `${alias}.${field}`;
-    });
-
-    return this._repository
-      .createQueryBuilder(alias)
-      .where(`${alias}.id = :packId`, { packId: id })
-      .leftJoinAndSelect(`${alias}.author`, "author")
-      .select(selectFields)
-      .getOne();
+    return qb.getOne();
   }
 
   public async list(
-    paginationOpts: PaginationOpts<PackageModel>,
-    selectOptions?: SelectOptions<PackageModel>
-  ): Promise<PaginatedResult<PackageModel[]>> {
+    paginationOpts: PaginationOpts<Package>,
+    selectOptions: SelectOptions<Package>
+  ): Promise<PaginatedResult<Package[]>> {
     const alias = this._repository.metadata.name.toLowerCase();
 
-    const selectFields = selectOptions?.select ?? PACKAGE_SELECT_FIELDS;
+    let qb = this._repository
+      .createQueryBuilder(alias)
+      .select(selectOptions.select.map((field) => `${alias}.${field}`));
 
-    // Split into main entity fields and relation fields
-    const mainFields: string[] = [];
-    const relationFields: string[] = [];
+    qb = await QueryBuilder.buildRelationsSelect(
+      qb,
+      selectOptions.relations,
+      selectOptions.relationSelects
+    );
 
-    for (const field of selectFields) {
-      if (field.includes(".")) {
-        relationFields.push(field);
-      } else {
-        mainFields.push(field);
-      }
-    }
-
-    const qb = this._repository.createQueryBuilder(alias);
-
-    // Select main entity fields
-    qb.select(mainFields.map((field) => `${alias}.${field}`));
-
-    if (selectOptions?.relations) {
-      for (const relation of selectOptions.relations) {
-        const relationAlias = relation;
-        // Join the relation without selecting all fields
-        qb.leftJoin(`${alias}.${relation}`, relationAlias);
-
-        // Extract fields for this relation from relationFields
-        const relationSelects = relationFields
-          .filter((field) => field.startsWith(`${relationAlias}.`))
-          .map((field) => {
-            const [, column] = field.split(".");
-            return `${relationAlias}.${column}`;
-          });
-
-        if (relationSelects.length > 0) {
-          qb.addSelect(relationSelects);
-        }
-      }
-    }
-
-    return PaginatedResults.paginateEntityAndSelect<PackageModel>(
+    return PaginatedResults.paginateEntityAndSelect<Package>(
       qb,
       paginationOpts
     );
@@ -106,11 +62,11 @@ export class PackageRepository {
 
   public findByIds(
     ids: number[],
-    selectOptions?: SelectOptions<Package>
+    selectOptions: SelectOptions<Package>
   ): Promise<Package[]> {
     return this._repository.find({
       where: { id: In(ids) },
-      relations: selectOptions?.relations ?? ["author"],
+      relations: selectOptions.relations,
     });
   }
 
