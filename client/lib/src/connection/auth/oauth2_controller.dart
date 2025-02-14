@@ -4,6 +4,7 @@ import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/interfaces.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:openquester/common_imports.dart';
+import 'package:web/web.dart' as web;
 
 @singleton
 class Oauth2Controller {
@@ -19,8 +20,7 @@ class Oauth2Controller {
     final result = await client.getTokenWithAuthCodeFlow(
       clientId: Env.discordAuthClientId,
       scopes: ['identify', 'email'],
-      webAuthClient:
-          kIsWeb || kIsWasm || isDesktopPlatform ? IoWebAuth() : null,
+      webAuthClient: isDesktopPlatform ? IoWebAuth() : null,
     );
     return result;
   }
@@ -29,8 +29,8 @@ class Oauth2Controller {
     String scheme = '';
     String uri = '/';
 
-    if (kIsWeb) {
-      final href = Uri.base;
+    if (kIsWeb || kIsWasm) {
+      final href = Uri.parse(web.window.location.href);
       scheme = href.scheme;
       uri = href.replace(path: '/auth.html').toString();
     } else if (isDesktopPlatform) {
