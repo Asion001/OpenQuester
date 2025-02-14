@@ -12,7 +12,8 @@ part of 'siq_file_question.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 SiqFileQuestion _$SiqFileQuestionFromJson(Map<String, dynamic> json) {
   return _SiqFileQuestion.fromJson(json);
@@ -51,18 +52,20 @@ mixin _$SiqFileQuestion {
 /// @nodoc
 abstract class $SiqFileQuestionCopyWith<$Res> {
   factory $SiqFileQuestionCopyWith(
-          SiqFileQuestion value, $Res Function(SiqFileQuestion) then) =
-      _$SiqFileQuestionCopyWithImpl<$Res, SiqFileQuestion>;
+    SiqFileQuestion value,
+    $Res Function(SiqFileQuestion) then,
+  ) = _$SiqFileQuestionCopyWithImpl<$Res, SiqFileQuestion>;
   @useResult
-  $Res call(
-      {int price,
-      QuestionType type,
-      String? text,
-      String? hostHint,
-      String? playersHint,
-      SiqFileFileObject? questionFile,
-      String? answerText,
-      SiqFileFileObject? answerFile});
+  $Res call({
+    int price,
+    QuestionType type,
+    String? text,
+    String? hostHint,
+    String? playersHint,
+    SiqFileFileObject? questionFile,
+    String? answerText,
+    SiqFileFileObject? answerFile,
+  });
 
   $SiqFileFileObjectCopyWith<$Res>? get questionFile;
   $SiqFileFileObjectCopyWith<$Res>? get answerFile;
@@ -92,40 +95,51 @@ class _$SiqFileQuestionCopyWithImpl<$Res, $Val extends SiqFileQuestion>
     Object? answerText = freezed,
     Object? answerFile = freezed,
   }) {
-    return _then(_value.copyWith(
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as int,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as QuestionType,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      hostHint: freezed == hostHint
-          ? _value.hostHint
-          : hostHint // ignore: cast_nullable_to_non_nullable
-              as String?,
-      playersHint: freezed == playersHint
-          ? _value.playersHint
-          : playersHint // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questionFile: freezed == questionFile
-          ? _value.questionFile
-          : questionFile // ignore: cast_nullable_to_non_nullable
-              as SiqFileFileObject?,
-      answerText: freezed == answerText
-          ? _value.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
-      answerFile: freezed == answerFile
-          ? _value.answerFile
-          : answerFile // ignore: cast_nullable_to_non_nullable
-              as SiqFileFileObject?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            price:
+                null == price
+                    ? _value.price
+                    : price // ignore: cast_nullable_to_non_nullable
+                        as int,
+            type:
+                null == type
+                    ? _value.type
+                    : type // ignore: cast_nullable_to_non_nullable
+                        as QuestionType,
+            text:
+                freezed == text
+                    ? _value.text
+                    : text // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            hostHint:
+                freezed == hostHint
+                    ? _value.hostHint
+                    : hostHint // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            playersHint:
+                freezed == playersHint
+                    ? _value.playersHint
+                    : playersHint // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            questionFile:
+                freezed == questionFile
+                    ? _value.questionFile
+                    : questionFile // ignore: cast_nullable_to_non_nullable
+                        as SiqFileFileObject?,
+            answerText:
+                freezed == answerText
+                    ? _value.answerText
+                    : answerText // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            answerFile:
+                freezed == answerFile
+                    ? _value.answerFile
+                    : answerFile // ignore: cast_nullable_to_non_nullable
+                        as SiqFileFileObject?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of SiqFileQuestion
@@ -160,20 +174,22 @@ class _$SiqFileQuestionCopyWithImpl<$Res, $Val extends SiqFileQuestion>
 /// @nodoc
 abstract class _$$SiqFileQuestionImplCopyWith<$Res>
     implements $SiqFileQuestionCopyWith<$Res> {
-  factory _$$SiqFileQuestionImplCopyWith(_$SiqFileQuestionImpl value,
-          $Res Function(_$SiqFileQuestionImpl) then) =
-      __$$SiqFileQuestionImplCopyWithImpl<$Res>;
+  factory _$$SiqFileQuestionImplCopyWith(
+    _$SiqFileQuestionImpl value,
+    $Res Function(_$SiqFileQuestionImpl) then,
+  ) = __$$SiqFileQuestionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int price,
-      QuestionType type,
-      String? text,
-      String? hostHint,
-      String? playersHint,
-      SiqFileFileObject? questionFile,
-      String? answerText,
-      SiqFileFileObject? answerFile});
+  $Res call({
+    int price,
+    QuestionType type,
+    String? text,
+    String? hostHint,
+    String? playersHint,
+    SiqFileFileObject? questionFile,
+    String? answerText,
+    SiqFileFileObject? answerFile,
+  });
 
   @override
   $SiqFileFileObjectCopyWith<$Res>? get questionFile;
@@ -186,8 +202,9 @@ class __$$SiqFileQuestionImplCopyWithImpl<$Res>
     extends _$SiqFileQuestionCopyWithImpl<$Res, _$SiqFileQuestionImpl>
     implements _$$SiqFileQuestionImplCopyWith<$Res> {
   __$$SiqFileQuestionImplCopyWithImpl(
-      _$SiqFileQuestionImpl _value, $Res Function(_$SiqFileQuestionImpl) _then)
-      : super(_value, _then);
+    _$SiqFileQuestionImpl _value,
+    $Res Function(_$SiqFileQuestionImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SiqFileQuestion
   /// with the given fields replaced by the non-null parameter values.
@@ -203,56 +220,66 @@ class __$$SiqFileQuestionImplCopyWithImpl<$Res>
     Object? answerText = freezed,
     Object? answerFile = freezed,
   }) {
-    return _then(_$SiqFileQuestionImpl(
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as int,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as QuestionType,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      hostHint: freezed == hostHint
-          ? _value.hostHint
-          : hostHint // ignore: cast_nullable_to_non_nullable
-              as String?,
-      playersHint: freezed == playersHint
-          ? _value.playersHint
-          : playersHint // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questionFile: freezed == questionFile
-          ? _value.questionFile
-          : questionFile // ignore: cast_nullable_to_non_nullable
-              as SiqFileFileObject?,
-      answerText: freezed == answerText
-          ? _value.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
-      answerFile: freezed == answerFile
-          ? _value.answerFile
-          : answerFile // ignore: cast_nullable_to_non_nullable
-              as SiqFileFileObject?,
-    ));
+    return _then(
+      _$SiqFileQuestionImpl(
+        price:
+            null == price
+                ? _value.price
+                : price // ignore: cast_nullable_to_non_nullable
+                    as int,
+        type:
+            null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                    as QuestionType,
+        text:
+            freezed == text
+                ? _value.text
+                : text // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        hostHint:
+            freezed == hostHint
+                ? _value.hostHint
+                : hostHint // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        playersHint:
+            freezed == playersHint
+                ? _value.playersHint
+                : playersHint // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        questionFile:
+            freezed == questionFile
+                ? _value.questionFile
+                : questionFile // ignore: cast_nullable_to_non_nullable
+                    as SiqFileFileObject?,
+        answerText:
+            freezed == answerText
+                ? _value.answerText
+                : answerText // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        answerFile:
+            freezed == answerFile
+                ? _value.answerFile
+                : answerFile // ignore: cast_nullable_to_non_nullable
+                    as SiqFileFileObject?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SiqFileQuestionImpl extends _SiqFileQuestion {
-  const _$SiqFileQuestionImpl(
-      {required this.price,
-      this.type = QuestionType.regular,
-      this.text,
-      this.hostHint,
-      this.playersHint,
-      this.questionFile,
-      this.answerText,
-      this.answerFile})
-      : super._();
+  const _$SiqFileQuestionImpl({
+    required this.price,
+    this.type = QuestionType.regular,
+    this.text,
+    this.hostHint,
+    this.playersHint,
+    this.questionFile,
+    this.answerText,
+    this.answerFile,
+  }) : super._();
 
   factory _$SiqFileQuestionImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileQuestionImplFromJson(json);
@@ -311,8 +338,17 @@ class _$SiqFileQuestionImpl extends _SiqFileQuestion {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, price, type, text, hostHint,
-      playersHint, questionFile, answerText, answerFile);
+  int get hashCode => Object.hash(
+    runtimeType,
+    price,
+    type,
+    text,
+    hostHint,
+    playersHint,
+    questionFile,
+    answerText,
+    answerFile,
+  );
 
   /// Create a copy of SiqFileQuestion
   /// with the given fields replaced by the non-null parameter values.
@@ -321,26 +357,27 @@ class _$SiqFileQuestionImpl extends _SiqFileQuestion {
   @pragma('vm:prefer-inline')
   _$$SiqFileQuestionImplCopyWith<_$SiqFileQuestionImpl> get copyWith =>
       __$$SiqFileQuestionImplCopyWithImpl<_$SiqFileQuestionImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SiqFileQuestionImplToJson(
-      this,
-    );
+    return _$$SiqFileQuestionImplToJson(this);
   }
 }
 
 abstract class _SiqFileQuestion extends SiqFileQuestion {
-  const factory _SiqFileQuestion(
-      {required final int price,
-      final QuestionType type,
-      final String? text,
-      final String? hostHint,
-      final String? playersHint,
-      final SiqFileFileObject? questionFile,
-      final String? answerText,
-      final SiqFileFileObject? answerFile}) = _$SiqFileQuestionImpl;
+  const factory _SiqFileQuestion({
+    required final int price,
+    final QuestionType type,
+    final String? text,
+    final String? hostHint,
+    final String? playersHint,
+    final SiqFileFileObject? questionFile,
+    final String? answerText,
+    final SiqFileFileObject? answerFile,
+  }) = _$SiqFileQuestionImpl;
   const _SiqFileQuestion._() : super._();
 
   factory _SiqFileQuestion.fromJson(Map<String, dynamic> json) =

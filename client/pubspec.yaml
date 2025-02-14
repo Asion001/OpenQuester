@@ -1,11 +1,11 @@
 name: openquester
 description: "A new Flutter project."
 publish_to: "none"
-version: 0.8.9
+version: 0.8.18
 
 environment:
-  sdk: ">=3.6.1 <4.0.0"
-  flutter: 3.27.2
+  sdk: ">=3.7.0 <4.0.0"
+  flutter: 3.29.0
 
 dependencies:
   flutter:
@@ -16,32 +16,32 @@ dependencies:
   auto_route: ^9.3.0+1
   openapi:
     path: ../openapi/dart_sdk/
-  envied: ^1.1.0
-  package_info_plus: ^8.1.4
+  envied: ^1.1.1
+  package_info_plus: ^8.2.1
   logger: ^2.5.0
   flutter_native_splash: ^2.4.4
   dio: ^5.8.0+1
-  file_picker: ^8.3.1
+  file_picker: ^8.3.7
   siq_file:
     path: ./packages/siq_file/
   injectable: ^2.5.0
   get_it: ^8.0.3
   watch_it: ^1.6.2
-  shared_preferences: ^2.5.1
+  shared_preferences: ^2.5.2
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   universal_io: ^2.2.2
   socket_io_client: ^3.0.2
   easy_localization: ^3.0.7+1
   infinite_scroll_pagination: ^4.1.0
-  nb_utils: ^7.0.10
-  gap: ^3.0.1
+  nb_utils: ^7.1.1
   dio_cache_interceptor: ^3.5.1
   requests_inspector: ^4.2.1
   oauth2_client: ^3.3.0
   dio_cookie_manager: ^3.2.0
   path_provider: ^2.1.5
   cookie_jar: ^4.0.8
+  flutter_web_auth_2: ^4.1.0
 
 dependency_overrides:
   flutter_secure_storage: ^10.0.0-beta.4
@@ -52,16 +52,16 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^5.0.0
-  build_runner: ^2.4.14
-  analyzer: ^6.11.0
-  auto_route_generator: ^9.0.0
+  build_runner: ^2.4.15
+  analyzer: ^7.3.0
+  auto_route_generator: ^9.3.1
   flutter_launcher_icons: ^0.14.3
-  envied_generator: ^1.1.0
-  injectable_generator: ^2.6.2
-  freezed: ^2.5.7
-  json_serializable: ^6.9.0
-  test: ^1.25.8
-  flutter_gen_runner: ^5.8.0
+  envied_generator: ^1.1.1
+  injectable_generator: ^2.7.0
+  freezed: ^2.5.8
+  json_serializable: ^6.9.4
+  test: ^1.25.15
+  flutter_gen_runner: ^5.9.0
 
 flutter:
   uses-material-design: true

@@ -10,7 +10,8 @@ _$SiqFileThemeImpl _$$SiqFileThemeImplFromJson(Map<String, dynamic> json) =>
     _$SiqFileThemeImpl(
       name: json['name'] as String,
       comment: json['comment'] as String?,
-      questions: (json['questions'] as List<dynamic>?)
+      questions:
+          (json['questions'] as List<dynamic>?)
               ?.map((e) => SiqFileQuestion.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],

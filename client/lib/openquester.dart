@@ -48,3 +48,4 @@ export 'src/features/test/test_screen.dart';
 export 'src/model/auth_data.dart';
 export 'src/ui/fields/password_fields.dart';
 export 'src/utils/extensions.dart';
+export 'src/utils/utils.dart';

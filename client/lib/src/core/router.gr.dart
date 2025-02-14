@@ -1,3 +1,4 @@
+// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -24,20 +25,14 @@ import 'package:openquester/src/features/test/test_screen.dart' deferred as _i6;
 /// [_i1.ClickerPage]
 class ClickerRoute extends _i7.PageRouteInfo<void> {
   const ClickerRoute({List<_i7.PageRouteInfo>? children})
-      : super(
-          ClickerRoute.name,
-          initialChildren: children,
-        );
+    : super(ClickerRoute.name, initialChildren: children);
 
   static const String name = 'ClickerRoute';
 
   static _i7.PageInfo page = _i7.PageInfo(
     name,
     builder: (data) {
-      return _i7.DeferredWidget(
-        _i1.loadLibrary,
-        () => _i1.ClickerPage(),
-      );
+      return _i7.DeferredWidget(_i1.loadLibrary, () => _i1.ClickerPage());
     },
   );
 }
@@ -46,20 +41,14 @@ class ClickerRoute extends _i7.PageRouteInfo<void> {
 /// [_i2.HomeScreen]
 class HomeRoute extends _i7.PageRouteInfo<void> {
   const HomeRoute({List<_i7.PageRouteInfo>? children})
-      : super(
-          HomeRoute.name,
-          initialChildren: children,
-        );
+    : super(HomeRoute.name, initialChildren: children);
 
   static const String name = 'HomeRoute';
 
   static _i7.PageInfo page = _i7.PageInfo(
     name,
     builder: (data) {
-      return _i7.DeferredWidget(
-        _i2.loadLibrary,
-        () => _i2.HomeScreen(),
-      );
+      return _i7.DeferredWidget(_i2.loadLibrary, () => _i2.HomeScreen());
     },
   );
 }
@@ -68,20 +57,14 @@ class HomeRoute extends _i7.PageRouteInfo<void> {
 /// [_i3.HomeTabsScreen]
 class HomeTabsRoute extends _i7.PageRouteInfo<void> {
   const HomeTabsRoute({List<_i7.PageRouteInfo>? children})
-      : super(
-          HomeTabsRoute.name,
-          initialChildren: children,
-        );
+    : super(HomeTabsRoute.name, initialChildren: children);
 
   static const String name = 'HomeTabsRoute';
 
   static _i7.PageInfo page = _i7.PageInfo(
     name,
     builder: (data) {
-      return _i7.DeferredWidget(
-        _i3.loadLibrary,
-        () => _i3.HomeTabsScreen(),
-      );
+      return _i7.DeferredWidget(_i3.loadLibrary, () => _i3.HomeTabsScreen());
     },
   );
 }
@@ -90,10 +73,7 @@ class HomeTabsRoute extends _i7.PageRouteInfo<void> {
 /// [_i4.PackagesListScreen]
 class PackagesListRoute extends _i7.PageRouteInfo<void> {
   const PackagesListRoute({List<_i7.PageRouteInfo>? children})
-      : super(
-          PackagesListRoute.name,
-          initialChildren: children,
-        );
+    : super(PackagesListRoute.name, initialChildren: children);
 
   static const String name = 'PackagesListRoute';
 
@@ -112,20 +92,14 @@ class PackagesListRoute extends _i7.PageRouteInfo<void> {
 /// [_i5.ProfilePage]
 class ProfileRoute extends _i7.PageRouteInfo<void> {
   const ProfileRoute({List<_i7.PageRouteInfo>? children})
-      : super(
-          ProfileRoute.name,
-          initialChildren: children,
-        );
+    : super(ProfileRoute.name, initialChildren: children);
 
   static const String name = 'ProfileRoute';
 
   static _i7.PageInfo page = _i7.PageInfo(
     name,
     builder: (data) {
-      return _i7.DeferredWidget(
-        _i5.loadLibrary,
-        () => _i5.ProfilePage(),
-      );
+      return _i7.DeferredWidget(_i5.loadLibrary, () => _i5.ProfilePage());
     },
   );
 }
@@ -134,20 +108,14 @@ class ProfileRoute extends _i7.PageRouteInfo<void> {
 /// [_i6.TestScreen]
 class TestScreenRoute extends _i7.PageRouteInfo<void> {
   const TestScreenRoute({List<_i7.PageRouteInfo>? children})
-      : super(
-          TestScreenRoute.name,
-          initialChildren: children,
-        );
+    : super(TestScreenRoute.name, initialChildren: children);
 
   static const String name = 'TestScreenRoute';
 
   static _i7.PageInfo page = _i7.PageInfo(
     name,
     builder: (data) {
-      return _i7.DeferredWidget(
-        _i6.loadLibrary,
-        () => _i6.TestScreen(),
-      );
+      return _i7.DeferredWidget(_i6.loadLibrary, () => _i6.TestScreen());
     },
   );
 }
