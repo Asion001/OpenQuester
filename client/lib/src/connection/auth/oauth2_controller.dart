@@ -4,7 +4,7 @@ import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/interfaces.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:openquester/common_imports.dart';
-import 'package:web/web.dart' as web;
+import 'package:universal_web/web.dart' as web;
 
 @singleton
 class Oauth2Controller {
