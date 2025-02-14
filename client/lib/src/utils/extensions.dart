@@ -11,26 +11,17 @@ extension DurationX on Duration {
     List<String> out = [];
 
     if (inHours > 0) {
-      out.add([
-        inHours,
-        LocaleKeys.duration_h.tr(),
-      ].join(''));
+      out.add([inHours, LocaleKeys.duration_h.tr()].join(''));
     }
 
     final minutes = inMinutes - inHours * 60;
     if (minutes > 0) {
-      out.add([
-        minutes,
-        LocaleKeys.duration_m.tr(),
-      ].join(''));
+      out.add([minutes, LocaleKeys.duration_m.tr()].join(''));
     }
 
     final seconds = inSeconds - inMinutes * 60;
     if (withSeconds && seconds > 0) {
-      out.add([
-        seconds,
-        LocaleKeys.duration_s.tr(),
-      ].join(''));
+      out.add([seconds, LocaleKeys.duration_s.tr()].join(''));
     }
 
     return out.join(' ');
@@ -38,7 +29,8 @@ extension DurationX on Duration {
 }
 
 extension IPackageItemAgeRestrictionX on IPackageItemAgeRestriction {
-  String? translate() => {
+  String? translate() =>
+      {
         IPackageItemAgeRestriction.a12: '12+',
         IPackageItemAgeRestriction.a16: '16+',
         IPackageItemAgeRestriction.a18: '18+',

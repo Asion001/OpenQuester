@@ -27,7 +27,7 @@ class _ImgTestState extends State<ImgTest> {
                   url = Uri.tryParse(_controller.text);
                 });
               },
-            )
+            ),
           ],
         ),
         if (url != null)
@@ -36,7 +36,7 @@ class _ImgTestState extends State<ImgTest> {
             errorBuilder: (context, error, stackTrace) {
               return Text(error.toString());
             },
-          )
+          ),
       ],
     );
   }

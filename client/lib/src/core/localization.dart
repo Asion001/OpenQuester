@@ -10,6 +10,4 @@ Widget localizationWrapper(Widget child) {
   );
 }
 
-const List<Locale> supportedLocales = [
-  Locale('en', 'US'),
-];
+const List<Locale> supportedLocales = [Locale('en', 'US')];

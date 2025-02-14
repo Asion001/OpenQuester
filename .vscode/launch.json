@@ -11,6 +11,19 @@
       "type": "dart"
     },
     {
+      "name": "client (web)",
+      "cwd": "client",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "toolArgs": [
+        "-d",
+        "chrome",
+        "--web-port",
+        "10000"
+      ]
+    },
+    {
       "name": "client (profile mode)",
       "cwd": "client",
       "request": "launch",
@@ -32,7 +45,10 @@
       "preLaunchTask": "npm: build - server",
       "cwd": "${workspaceFolder}/server",
       "sourceMaps": true,
-      "skipFiles": ["<node_internals>/**", "node_moduled/**/*"],
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_moduled/**/*"
+      ],
       "envFile": "${workspaceFolder}/server/.env",
       "console": "integratedTerminal"
     },

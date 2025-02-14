@@ -12,7 +12,8 @@ part of 'siq_file_metadata.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 SiqFileMetadata _$SiqFileMetadataFromJson(Map<String, dynamic> json) {
   return _SiqFileMetadata.fromJson(json);
@@ -43,19 +44,21 @@ mixin _$SiqFileMetadata {
 /// @nodoc
 abstract class $SiqFileMetadataCopyWith<$Res> {
   factory $SiqFileMetadataCopyWith(
-          SiqFileMetadata value, $Res Function(SiqFileMetadata) then) =
-      _$SiqFileMetadataCopyWithImpl<$Res, SiqFileMetadata>;
+    SiqFileMetadata value,
+    $Res Function(SiqFileMetadata) then,
+  ) = _$SiqFileMetadataCopyWithImpl<$Res, SiqFileMetadata>;
   @useResult
-  $Res call(
-      {String? title,
-      DateTime? date,
-      String? publisher,
-      FileObject? logo,
-      List<String> tags,
-      List<String> authors,
-      String? language,
-      String? restriction,
-      String? comment});
+  $Res call({
+    String? title,
+    DateTime? date,
+    String? publisher,
+    FileObject? logo,
+    List<String> tags,
+    List<String> authors,
+    String? language,
+    String? restriction,
+    String? comment,
+  });
 
   $FileObjectCopyWith<$Res>? get logo;
 }
@@ -85,44 +88,56 @@ class _$SiqFileMetadataCopyWithImpl<$Res, $Val extends SiqFileMetadata>
     Object? restriction = freezed,
     Object? comment = freezed,
   }) {
-    return _then(_value.copyWith(
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      date: freezed == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      publisher: freezed == publisher
-          ? _value.publisher
-          : publisher // ignore: cast_nullable_to_non_nullable
-              as String?,
-      logo: freezed == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as FileObject?,
-      tags: null == tags
-          ? _value.tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      authors: null == authors
-          ? _value.authors
-          : authors // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      language: freezed == language
-          ? _value.language
-          : language // ignore: cast_nullable_to_non_nullable
-              as String?,
-      restriction: freezed == restriction
-          ? _value.restriction
-          : restriction // ignore: cast_nullable_to_non_nullable
-              as String?,
-      comment: freezed == comment
-          ? _value.comment
-          : comment // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            title:
+                freezed == title
+                    ? _value.title
+                    : title // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            date:
+                freezed == date
+                    ? _value.date
+                    : date // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            publisher:
+                freezed == publisher
+                    ? _value.publisher
+                    : publisher // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            logo:
+                freezed == logo
+                    ? _value.logo
+                    : logo // ignore: cast_nullable_to_non_nullable
+                        as FileObject?,
+            tags:
+                null == tags
+                    ? _value.tags
+                    : tags // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            authors:
+                null == authors
+                    ? _value.authors
+                    : authors // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            language:
+                freezed == language
+                    ? _value.language
+                    : language // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            restriction:
+                freezed == restriction
+                    ? _value.restriction
+                    : restriction // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            comment:
+                freezed == comment
+                    ? _value.comment
+                    : comment // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of SiqFileMetadata
@@ -143,21 +158,23 @@ class _$SiqFileMetadataCopyWithImpl<$Res, $Val extends SiqFileMetadata>
 /// @nodoc
 abstract class _$$SiqFileMetadataImplCopyWith<$Res>
     implements $SiqFileMetadataCopyWith<$Res> {
-  factory _$$SiqFileMetadataImplCopyWith(_$SiqFileMetadataImpl value,
-          $Res Function(_$SiqFileMetadataImpl) then) =
-      __$$SiqFileMetadataImplCopyWithImpl<$Res>;
+  factory _$$SiqFileMetadataImplCopyWith(
+    _$SiqFileMetadataImpl value,
+    $Res Function(_$SiqFileMetadataImpl) then,
+  ) = __$$SiqFileMetadataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? title,
-      DateTime? date,
-      String? publisher,
-      FileObject? logo,
-      List<String> tags,
-      List<String> authors,
-      String? language,
-      String? restriction,
-      String? comment});
+  $Res call({
+    String? title,
+    DateTime? date,
+    String? publisher,
+    FileObject? logo,
+    List<String> tags,
+    List<String> authors,
+    String? language,
+    String? restriction,
+    String? comment,
+  });
 
   @override
   $FileObjectCopyWith<$Res>? get logo;
@@ -168,8 +185,9 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
     extends _$SiqFileMetadataCopyWithImpl<$Res, _$SiqFileMetadataImpl>
     implements _$$SiqFileMetadataImplCopyWith<$Res> {
   __$$SiqFileMetadataImplCopyWithImpl(
-      _$SiqFileMetadataImpl _value, $Res Function(_$SiqFileMetadataImpl) _then)
-      : super(_value, _then);
+    _$SiqFileMetadataImpl _value,
+    $Res Function(_$SiqFileMetadataImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SiqFileMetadata
   /// with the given fields replaced by the non-null parameter values.
@@ -186,62 +204,73 @@ class __$$SiqFileMetadataImplCopyWithImpl<$Res>
     Object? restriction = freezed,
     Object? comment = freezed,
   }) {
-    return _then(_$SiqFileMetadataImpl(
-      title: freezed == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String?,
-      date: freezed == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      publisher: freezed == publisher
-          ? _value.publisher
-          : publisher // ignore: cast_nullable_to_non_nullable
-              as String?,
-      logo: freezed == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as FileObject?,
-      tags: null == tags
-          ? _value._tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      authors: null == authors
-          ? _value._authors
-          : authors // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      language: freezed == language
-          ? _value.language
-          : language // ignore: cast_nullable_to_non_nullable
-              as String?,
-      restriction: freezed == restriction
-          ? _value.restriction
-          : restriction // ignore: cast_nullable_to_non_nullable
-              as String?,
-      comment: freezed == comment
-          ? _value.comment
-          : comment // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$SiqFileMetadataImpl(
+        title:
+            freezed == title
+                ? _value.title
+                : title // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        date:
+            freezed == date
+                ? _value.date
+                : date // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        publisher:
+            freezed == publisher
+                ? _value.publisher
+                : publisher // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        logo:
+            freezed == logo
+                ? _value.logo
+                : logo // ignore: cast_nullable_to_non_nullable
+                    as FileObject?,
+        tags:
+            null == tags
+                ? _value._tags
+                : tags // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        authors:
+            null == authors
+                ? _value._authors
+                : authors // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        language:
+            freezed == language
+                ? _value.language
+                : language // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        restriction:
+            freezed == restriction
+                ? _value.restriction
+                : restriction // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        comment:
+            freezed == comment
+                ? _value.comment
+                : comment // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SiqFileMetadataImpl implements _SiqFileMetadata {
-  _$SiqFileMetadataImpl(
-      {this.title,
-      this.date,
-      this.publisher,
-      this.logo,
-      final List<String> tags = const [],
-      final List<String> authors = const [],
-      this.language,
-      this.restriction,
-      this.comment})
-      : _tags = tags,
-        _authors = authors;
+  _$SiqFileMetadataImpl({
+    this.title,
+    this.date,
+    this.publisher,
+    this.logo,
+    final List<String> tags = const [],
+    final List<String> authors = const [],
+    this.language,
+    this.restriction,
+    this.comment,
+  }) : _tags = tags,
+       _authors = authors;
 
   factory _$SiqFileMetadataImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileMetadataImplFromJson(json);
@@ -306,16 +335,17 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      title,
-      date,
-      publisher,
-      logo,
-      const DeepCollectionEquality().hash(_tags),
-      const DeepCollectionEquality().hash(_authors),
-      language,
-      restriction,
-      comment);
+    runtimeType,
+    title,
+    date,
+    publisher,
+    logo,
+    const DeepCollectionEquality().hash(_tags),
+    const DeepCollectionEquality().hash(_authors),
+    language,
+    restriction,
+    comment,
+  );
 
   /// Create a copy of SiqFileMetadata
   /// with the given fields replaced by the non-null parameter values.
@@ -324,27 +354,28 @@ class _$SiqFileMetadataImpl implements _SiqFileMetadata {
   @pragma('vm:prefer-inline')
   _$$SiqFileMetadataImplCopyWith<_$SiqFileMetadataImpl> get copyWith =>
       __$$SiqFileMetadataImplCopyWithImpl<_$SiqFileMetadataImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SiqFileMetadataImplToJson(
-      this,
-    );
+    return _$$SiqFileMetadataImplToJson(this);
   }
 }
 
 abstract class _SiqFileMetadata implements SiqFileMetadata {
-  factory _SiqFileMetadata(
-      {final String? title,
-      final DateTime? date,
-      final String? publisher,
-      final FileObject? logo,
-      final List<String> tags,
-      final List<String> authors,
-      final String? language,
-      final String? restriction,
-      final String? comment}) = _$SiqFileMetadataImpl;
+  factory _SiqFileMetadata({
+    final String? title,
+    final DateTime? date,
+    final String? publisher,
+    final FileObject? logo,
+    final List<String> tags,
+    final List<String> authors,
+    final String? language,
+    final String? restriction,
+    final String? comment,
+  }) = _$SiqFileMetadataImpl;
 
   factory _SiqFileMetadata.fromJson(Map<String, dynamic> json) =
       _$SiqFileMetadataImpl.fromJson;

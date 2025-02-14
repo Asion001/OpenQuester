@@ -12,7 +12,8 @@ part of 'siq_file_round.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 SiqFileRound _$SiqFileRoundFromJson(Map<String, dynamic> json) {
   return _SiqFileRound.fromJson(json);
@@ -36,8 +37,9 @@ mixin _$SiqFileRound {
 /// @nodoc
 abstract class $SiqFileRoundCopyWith<$Res> {
   factory $SiqFileRoundCopyWith(
-          SiqFileRound value, $Res Function(SiqFileRound) then) =
-      _$SiqFileRoundCopyWithImpl<$Res, SiqFileRound>;
+    SiqFileRound value,
+    $Res Function(SiqFileRound) then,
+  ) = _$SiqFileRoundCopyWithImpl<$Res, SiqFileRound>;
   @useResult
   $Res call({String name, List<SiqFileTheme> themes});
 }
@@ -56,20 +58,22 @@ class _$SiqFileRoundCopyWithImpl<$Res, $Val extends SiqFileRound>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? name = null,
-    Object? themes = null,
-  }) {
-    return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      themes: null == themes
-          ? _value.themes
-          : themes // ignore: cast_nullable_to_non_nullable
-              as List<SiqFileTheme>,
-    ) as $Val);
+  $Res call({Object? name = null, Object? themes = null}) {
+    return _then(
+      _value.copyWith(
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            themes:
+                null == themes
+                    ? _value.themes
+                    : themes // ignore: cast_nullable_to_non_nullable
+                        as List<SiqFileTheme>,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -77,8 +81,9 @@ class _$SiqFileRoundCopyWithImpl<$Res, $Val extends SiqFileRound>
 abstract class _$$SiqFileRoundImplCopyWith<$Res>
     implements $SiqFileRoundCopyWith<$Res> {
   factory _$$SiqFileRoundImplCopyWith(
-          _$SiqFileRoundImpl value, $Res Function(_$SiqFileRoundImpl) then) =
-      __$$SiqFileRoundImplCopyWithImpl<$Res>;
+    _$SiqFileRoundImpl value,
+    $Res Function(_$SiqFileRoundImpl) then,
+  ) = __$$SiqFileRoundImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String name, List<SiqFileTheme> themes});
@@ -89,36 +94,39 @@ class __$$SiqFileRoundImplCopyWithImpl<$Res>
     extends _$SiqFileRoundCopyWithImpl<$Res, _$SiqFileRoundImpl>
     implements _$$SiqFileRoundImplCopyWith<$Res> {
   __$$SiqFileRoundImplCopyWithImpl(
-      _$SiqFileRoundImpl _value, $Res Function(_$SiqFileRoundImpl) _then)
-      : super(_value, _then);
+    _$SiqFileRoundImpl _value,
+    $Res Function(_$SiqFileRoundImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SiqFileRound
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? name = null,
-    Object? themes = null,
-  }) {
-    return _then(_$SiqFileRoundImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      themes: null == themes
-          ? _value._themes
-          : themes // ignore: cast_nullable_to_non_nullable
-              as List<SiqFileTheme>,
-    ));
+  $Res call({Object? name = null, Object? themes = null}) {
+    return _then(
+      _$SiqFileRoundImpl(
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        themes:
+            null == themes
+                ? _value._themes
+                : themes // ignore: cast_nullable_to_non_nullable
+                    as List<SiqFileTheme>,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SiqFileRoundImpl implements _SiqFileRound {
-  _$SiqFileRoundImpl(
-      {required this.name, final List<SiqFileTheme> themes = const []})
-      : _themes = themes;
+  _$SiqFileRoundImpl({
+    required this.name,
+    final List<SiqFileTheme> themes = const [],
+  }) : _themes = themes;
 
   factory _$SiqFileRoundImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileRoundImplFromJson(json);
@@ -151,7 +159,10 @@ class _$SiqFileRoundImpl implements _SiqFileRound {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, name, const DeepCollectionEquality().hash(_themes));
+    runtimeType,
+    name,
+    const DeepCollectionEquality().hash(_themes),
+  );
 
   /// Create a copy of SiqFileRound
   /// with the given fields replaced by the non-null parameter values.
@@ -163,16 +174,15 @@ class _$SiqFileRoundImpl implements _SiqFileRound {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SiqFileRoundImplToJson(
-      this,
-    );
+    return _$$SiqFileRoundImplToJson(this);
   }
 }
 
 abstract class _SiqFileRound implements SiqFileRound {
-  factory _SiqFileRound(
-      {required final String name,
-      final List<SiqFileTheme> themes}) = _$SiqFileRoundImpl;
+  factory _SiqFileRound({
+    required final String name,
+    final List<SiqFileTheme> themes,
+  }) = _$SiqFileRoundImpl;
 
   factory _SiqFileRound.fromJson(Map<String, dynamic> json) =
       _$SiqFileRoundImpl.fromJson;

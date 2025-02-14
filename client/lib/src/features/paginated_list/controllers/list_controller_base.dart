@@ -61,24 +61,19 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
     pagingController.dispose();
   }
 
-  final PagingController<int, I> pagingController =
-      PagingController(firstPageKey: 0);
+  final PagingController<int, I> pagingController = PagingController(
+    firstPageKey: 0,
+  );
 }
 
 class ListRequest {
-  const ListRequest({
-    required this.offset,
-    this.limit = 20,
-  });
+  const ListRequest({required this.offset, this.limit = 20});
   final int limit;
   final int offset;
 }
 
 class ListResponse<I> {
-  const ListResponse({
-    required this.list,
-    required this.metadata,
-  });
+  const ListResponse({required this.list, required this.metadata});
   final List<I> list;
   final ListResponseMeta metadata;
 }

@@ -35,16 +35,14 @@ class AuthController extends ChangeNotifier {
         tokenSchema: accessTokenResponse.tokenType,
       );
 
-      _userData = await getIt
-          .get<Api>()
-          .api
-          .auth
-          .postV1AuthOauth2(body: inputOauthLogin);
+      _userData = await getIt.get<Api>().api.auth.postV1AuthOauth2(
+        body: inputOauthLogin,
+      );
 
       loading = false;
       return (_userData != null, 'AuthData == null');
-    } catch (e) {
-      logger.e(e);
+    } catch (e, s) {
+      logger.e(e, stackTrace: s);
       loading = false;
       return (false, e.toString());
     }

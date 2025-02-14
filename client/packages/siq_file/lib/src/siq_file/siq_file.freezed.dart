@@ -12,7 +12,8 @@ part of 'siq_file.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 SiqFile _$SiqFileFromJson(Map<String, dynamic> json) {
   return _SiqFile.fromJson(json);
@@ -56,20 +57,22 @@ class _$SiqFileCopyWithImpl<$Res, $Val extends SiqFile>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? metadata = null,
-    Object? rounds = null,
-  }) {
-    return _then(_value.copyWith(
-      metadata: null == metadata
-          ? _value.metadata
-          : metadata // ignore: cast_nullable_to_non_nullable
-              as SiqFileMetadata,
-      rounds: null == rounds
-          ? _value.rounds
-          : rounds // ignore: cast_nullable_to_non_nullable
-              as List<SiqFileRound>,
-    ) as $Val);
+  $Res call({Object? metadata = null, Object? rounds = null}) {
+    return _then(
+      _value.copyWith(
+            metadata:
+                null == metadata
+                    ? _value.metadata
+                    : metadata // ignore: cast_nullable_to_non_nullable
+                        as SiqFileMetadata,
+            rounds:
+                null == rounds
+                    ? _value.rounds
+                    : rounds // ignore: cast_nullable_to_non_nullable
+                        as List<SiqFileRound>,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of SiqFile
@@ -86,8 +89,9 @@ class _$SiqFileCopyWithImpl<$Res, $Val extends SiqFile>
 /// @nodoc
 abstract class _$$SiqFileImplCopyWith<$Res> implements $SiqFileCopyWith<$Res> {
   factory _$$SiqFileImplCopyWith(
-          _$SiqFileImpl value, $Res Function(_$SiqFileImpl) then) =
-      __$$SiqFileImplCopyWithImpl<$Res>;
+    _$SiqFileImpl value,
+    $Res Function(_$SiqFileImpl) then,
+  ) = __$$SiqFileImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({SiqFileMetadata metadata, List<SiqFileRound> rounds});
@@ -101,37 +105,40 @@ class __$$SiqFileImplCopyWithImpl<$Res>
     extends _$SiqFileCopyWithImpl<$Res, _$SiqFileImpl>
     implements _$$SiqFileImplCopyWith<$Res> {
   __$$SiqFileImplCopyWithImpl(
-      _$SiqFileImpl _value, $Res Function(_$SiqFileImpl) _then)
-      : super(_value, _then);
+    _$SiqFileImpl _value,
+    $Res Function(_$SiqFileImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SiqFile
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? metadata = null,
-    Object? rounds = null,
-  }) {
-    return _then(_$SiqFileImpl(
-      metadata: null == metadata
-          ? _value.metadata
-          : metadata // ignore: cast_nullable_to_non_nullable
-              as SiqFileMetadata,
-      rounds: null == rounds
-          ? _value._rounds
-          : rounds // ignore: cast_nullable_to_non_nullable
-              as List<SiqFileRound>,
-    ));
+  $Res call({Object? metadata = null, Object? rounds = null}) {
+    return _then(
+      _$SiqFileImpl(
+        metadata:
+            null == metadata
+                ? _value.metadata
+                : metadata // ignore: cast_nullable_to_non_nullable
+                    as SiqFileMetadata,
+        rounds:
+            null == rounds
+                ? _value._rounds
+                : rounds // ignore: cast_nullable_to_non_nullable
+                    as List<SiqFileRound>,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SiqFileImpl extends _SiqFile {
-  const _$SiqFileImpl(
-      {required this.metadata, final List<SiqFileRound> rounds = const []})
-      : _rounds = rounds,
-        super._();
+  const _$SiqFileImpl({
+    required this.metadata,
+    final List<SiqFileRound> rounds = const [],
+  }) : _rounds = rounds,
+       super._();
 
   factory _$SiqFileImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileImplFromJson(json);
@@ -165,7 +172,10 @@ class _$SiqFileImpl extends _SiqFile {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, metadata, const DeepCollectionEquality().hash(_rounds));
+    runtimeType,
+    metadata,
+    const DeepCollectionEquality().hash(_rounds),
+  );
 
   /// Create a copy of SiqFile
   /// with the given fields replaced by the non-null parameter values.
@@ -177,16 +187,15 @@ class _$SiqFileImpl extends _SiqFile {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SiqFileImplToJson(
-      this,
-    );
+    return _$$SiqFileImplToJson(this);
   }
 }
 
 abstract class _SiqFile extends SiqFile {
-  const factory _SiqFile(
-      {required final SiqFileMetadata metadata,
-      final List<SiqFileRound> rounds}) = _$SiqFileImpl;
+  const factory _SiqFile({
+    required final SiqFileMetadata metadata,
+    final List<SiqFileRound> rounds,
+  }) = _$SiqFileImpl;
   const _SiqFile._() : super._();
 
   factory _SiqFile.fromJson(Map<String, dynamic> json) = _$SiqFileImpl.fromJson;

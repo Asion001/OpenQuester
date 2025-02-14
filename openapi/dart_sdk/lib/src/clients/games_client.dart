@@ -45,4 +45,12 @@ abstract class GamesClient {
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
+
+  /// Delete game
+  @DELETE('/v1/games/{id}')
+  Future<void> deleteV1GamesId({
+    @Path('id') required String id,
+    @Extras() Map<String, dynamic>? extras,
+    @DioOptions() RequestOptions? options,
+  });
 }

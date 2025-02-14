@@ -18,7 +18,7 @@ class $AssetsLocalizationGen {
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
   static const $AssetsLocalizationGen localization = $AssetsLocalizationGen();
 }

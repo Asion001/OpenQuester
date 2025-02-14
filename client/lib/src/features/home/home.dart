@@ -7,10 +7,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GamesList().expand(),
-      ],
-    );
+    return Column(children: [GamesList().expand()]);
   }
 }

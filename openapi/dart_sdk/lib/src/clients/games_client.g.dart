@@ -137,6 +137,34 @@ class _GamesClient implements GamesClient {
     return _value;
   }
 
+  @override
+  Future<void> deleteV1GamesId({
+    required String id,
+    Map<String, dynamic>? extras,
+    RequestOptions? options,
+  }) async {
+    final _extra = <String, dynamic>{};
+    _extra.addAll(extras ?? <String, dynamic>{});
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final newOptions = newRequestOptions(options);
+    newOptions.extra.addAll(_extra);
+    newOptions.headers.addAll(_dio.options.headers);
+    newOptions.headers.addAll(_headers);
+    final _options = newOptions.copyWith(
+      method: 'DELETE',
+      baseUrl: _combineBaseUrls(
+        _dio.options.baseUrl,
+        baseUrl,
+      ),
+      queryParameters: queryParameters,
+      path: '/v1/games/${id}',
+    )..data = _data;
+    await _dio.fetch<void>(_options);
+  }
+
   RequestOptions newRequestOptions(Object? options) {
     if (options is RequestOptions) {
       return options as RequestOptions;
