@@ -6,9 +6,10 @@ class GamesListController extends ListControllerBase<GameListItem> {
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     await super.init();
-    getIt<SocketController>()
-        .general
-        .on(SocketSubscriptions.games.name, _onSocketEvent);
+    getIt<SocketController>().general.on(
+      SocketSubscriptions.games.name,
+      _onSocketEvent,
+    );
   }
 
   @override

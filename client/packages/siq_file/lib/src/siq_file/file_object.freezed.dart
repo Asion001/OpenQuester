@@ -12,7 +12,8 @@ part of 'file_object.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 FileObject _$FileObjectFromJson(Map<String, dynamic> json) {
   return _FileObject.fromJson(json);
@@ -37,8 +38,9 @@ mixin _$FileObject {
 /// @nodoc
 abstract class $FileObjectCopyWith<$Res> {
   factory $FileObjectCopyWith(
-          FileObject value, $Res Function(FileObject) then) =
-      _$FileObjectCopyWithImpl<$Res, FileObject>;
+    FileObject value,
+    $Res Function(FileObject) then,
+  ) = _$FileObjectCopyWithImpl<$Res, FileObject>;
   @useResult
   $Res call({String path, FileType type, String? sha256});
 }
@@ -62,20 +64,26 @@ class _$FileObjectCopyWithImpl<$Res, $Val extends FileObject>
     Object? type = null,
     Object? sha256 = freezed,
   }) {
-    return _then(_value.copyWith(
-      path: null == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as FileType,
-      sha256: freezed == sha256
-          ? _value.sha256
-          : sha256 // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            path:
+                null == path
+                    ? _value.path
+                    : path // ignore: cast_nullable_to_non_nullable
+                        as String,
+            type:
+                null == type
+                    ? _value.type
+                    : type // ignore: cast_nullable_to_non_nullable
+                        as FileType,
+            sha256:
+                freezed == sha256
+                    ? _value.sha256
+                    : sha256 // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -83,8 +91,9 @@ class _$FileObjectCopyWithImpl<$Res, $Val extends FileObject>
 abstract class _$$FileObjectImplCopyWith<$Res>
     implements $FileObjectCopyWith<$Res> {
   factory _$$FileObjectImplCopyWith(
-          _$FileObjectImpl value, $Res Function(_$FileObjectImpl) then) =
-      __$$FileObjectImplCopyWithImpl<$Res>;
+    _$FileObjectImpl value,
+    $Res Function(_$FileObjectImpl) then,
+  ) = __$$FileObjectImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String path, FileType type, String? sha256});
@@ -95,8 +104,9 @@ class __$$FileObjectImplCopyWithImpl<$Res>
     extends _$FileObjectCopyWithImpl<$Res, _$FileObjectImpl>
     implements _$$FileObjectImplCopyWith<$Res> {
   __$$FileObjectImplCopyWithImpl(
-      _$FileObjectImpl _value, $Res Function(_$FileObjectImpl) _then)
-      : super(_value, _then);
+    _$FileObjectImpl _value,
+    $Res Function(_$FileObjectImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of FileObject
   /// with the given fields replaced by the non-null parameter values.
@@ -107,20 +117,25 @@ class __$$FileObjectImplCopyWithImpl<$Res>
     Object? type = null,
     Object? sha256 = freezed,
   }) {
-    return _then(_$FileObjectImpl(
-      path: null == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as FileType,
-      sha256: freezed == sha256
-          ? _value.sha256
-          : sha256 // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$FileObjectImpl(
+        path:
+            null == path
+                ? _value.path
+                : path // ignore: cast_nullable_to_non_nullable
+                    as String,
+        type:
+            null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                    as FileType,
+        sha256:
+            freezed == sha256
+                ? _value.sha256
+                : sha256 // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
@@ -128,7 +143,7 @@ class __$$FileObjectImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$FileObjectImpl extends _FileObject {
   const _$FileObjectImpl({required this.path, required this.type, this.sha256})
-      : super._();
+    : super._();
 
   factory _$FileObjectImpl.fromJson(Map<String, dynamic> json) =>
       _$$FileObjectImplFromJson(json);
@@ -169,17 +184,16 @@ class _$FileObjectImpl extends _FileObject {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$FileObjectImplToJson(
-      this,
-    );
+    return _$$FileObjectImplToJson(this);
   }
 }
 
 abstract class _FileObject extends FileObject {
-  const factory _FileObject(
-      {required final String path,
-      required final FileType type,
-      final String? sha256}) = _$FileObjectImpl;
+  const factory _FileObject({
+    required final String path,
+    required final FileType type,
+    final String? sha256,
+  }) = _$FileObjectImpl;
   const _FileObject._() : super._();
 
   factory _FileObject.fromJson(Map<String, dynamic> json) =

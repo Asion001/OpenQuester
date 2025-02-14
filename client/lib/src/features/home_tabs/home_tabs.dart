@@ -9,9 +9,7 @@ class HomeTabsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isWideModeOn = UiModeUtils.wideModeOn(context);
     return Scaffold(
-      body: MaxSizeContainer(
-        child: isWideModeOn ? _wideBody() : _mobileBody(),
-      ),
+      body: MaxSizeContainer(child: isWideModeOn ? _wideBody() : _mobileBody()),
     );
   }
 
@@ -19,10 +17,7 @@ class HomeTabsScreen extends StatelessWidget {
     return Scaffold(
       appBar: homeAppBar(title: LocaleKeys.home_tabs_home.tr()),
       body: Row(
-        children: [
-          GamesList().expand(),
-          PackagesListScreen().expand(),
-        ],
+        children: [GamesList().expand(), PackagesListScreen().expand()],
       ),
     );
   }
@@ -30,14 +25,9 @@ class HomeTabsScreen extends StatelessWidget {
   Widget _mobileBody() {
     return AutoTabsScaffold(
       appBarBuilder: (context, tabsRouter) {
-        return homeAppBar(
-          title: _destionations[tabsRouter.activeIndex].label,
-        );
+        return homeAppBar(title: _destionations[tabsRouter.activeIndex].label);
       },
-      routes: const [
-        HomeRoute(),
-        PackagesListRoute(),
-      ],
+      routes: const [HomeRoute(), PackagesListRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
         return NavigationBar(
           selectedIndex: tabsRouter.activeIndex,
@@ -66,8 +56,5 @@ class HomeTabsScreen extends StatelessWidget {
 }
 
 AppBar homeAppBar({required String title}) {
-  return AppBar(
-    title: Text(title),
-    leading: ProfileBtn(),
-  );
+  return AppBar(title: Text(title), leading: ProfileBtn());
 }

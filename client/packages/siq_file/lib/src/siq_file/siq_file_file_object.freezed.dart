@@ -12,7 +12,8 @@ part of 'siq_file_file_object.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 SiqFileFileObject _$SiqFileFileObjectFromJson(Map<String, dynamic> json) {
   return _SiqFileFileObject.fromJson(json);
@@ -36,8 +37,9 @@ mixin _$SiqFileFileObject {
 /// @nodoc
 abstract class $SiqFileFileObjectCopyWith<$Res> {
   factory $SiqFileFileObjectCopyWith(
-          SiqFileFileObject value, $Res Function(SiqFileFileObject) then) =
-      _$SiqFileFileObjectCopyWithImpl<$Res, SiqFileFileObject>;
+    SiqFileFileObject value,
+    $Res Function(SiqFileFileObject) then,
+  ) = _$SiqFileFileObjectCopyWithImpl<$Res, SiqFileFileObject>;
   @useResult
   $Res call({FileObject file, Duration? displayTime});
 
@@ -58,20 +60,22 @@ class _$SiqFileFileObjectCopyWithImpl<$Res, $Val extends SiqFileFileObject>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? file = null,
-    Object? displayTime = freezed,
-  }) {
-    return _then(_value.copyWith(
-      file: null == file
-          ? _value.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as FileObject,
-      displayTime: freezed == displayTime
-          ? _value.displayTime
-          : displayTime // ignore: cast_nullable_to_non_nullable
-              as Duration?,
-    ) as $Val);
+  $Res call({Object? file = null, Object? displayTime = freezed}) {
+    return _then(
+      _value.copyWith(
+            file:
+                null == file
+                    ? _value.file
+                    : file // ignore: cast_nullable_to_non_nullable
+                        as FileObject,
+            displayTime:
+                freezed == displayTime
+                    ? _value.displayTime
+                    : displayTime // ignore: cast_nullable_to_non_nullable
+                        as Duration?,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of SiqFileFileObject
@@ -88,9 +92,10 @@ class _$SiqFileFileObjectCopyWithImpl<$Res, $Val extends SiqFileFileObject>
 /// @nodoc
 abstract class _$$SiqFileFileObjectImplCopyWith<$Res>
     implements $SiqFileFileObjectCopyWith<$Res> {
-  factory _$$SiqFileFileObjectImplCopyWith(_$SiqFileFileObjectImpl value,
-          $Res Function(_$SiqFileFileObjectImpl) then) =
-      __$$SiqFileFileObjectImplCopyWithImpl<$Res>;
+  factory _$$SiqFileFileObjectImplCopyWith(
+    _$SiqFileFileObjectImpl value,
+    $Res Function(_$SiqFileFileObjectImpl) then,
+  ) = __$$SiqFileFileObjectImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({FileObject file, Duration? displayTime});
@@ -103,28 +108,30 @@ abstract class _$$SiqFileFileObjectImplCopyWith<$Res>
 class __$$SiqFileFileObjectImplCopyWithImpl<$Res>
     extends _$SiqFileFileObjectCopyWithImpl<$Res, _$SiqFileFileObjectImpl>
     implements _$$SiqFileFileObjectImplCopyWith<$Res> {
-  __$$SiqFileFileObjectImplCopyWithImpl(_$SiqFileFileObjectImpl _value,
-      $Res Function(_$SiqFileFileObjectImpl) _then)
-      : super(_value, _then);
+  __$$SiqFileFileObjectImplCopyWithImpl(
+    _$SiqFileFileObjectImpl _value,
+    $Res Function(_$SiqFileFileObjectImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SiqFileFileObject
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? file = null,
-    Object? displayTime = freezed,
-  }) {
-    return _then(_$SiqFileFileObjectImpl(
-      file: null == file
-          ? _value.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as FileObject,
-      displayTime: freezed == displayTime
-          ? _value.displayTime
-          : displayTime // ignore: cast_nullable_to_non_nullable
-              as Duration?,
-    ));
+  $Res call({Object? file = null, Object? displayTime = freezed}) {
+    return _then(
+      _$SiqFileFileObjectImpl(
+        file:
+            null == file
+                ? _value.file
+                : file // ignore: cast_nullable_to_non_nullable
+                    as FileObject,
+        displayTime:
+            freezed == displayTime
+                ? _value.displayTime
+                : displayTime // ignore: cast_nullable_to_non_nullable
+                    as Duration?,
+      ),
+    );
   }
 }
 
@@ -167,20 +174,21 @@ class _$SiqFileFileObjectImpl implements _SiqFileFileObject {
   @pragma('vm:prefer-inline')
   _$$SiqFileFileObjectImplCopyWith<_$SiqFileFileObjectImpl> get copyWith =>
       __$$SiqFileFileObjectImplCopyWithImpl<_$SiqFileFileObjectImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SiqFileFileObjectImplToJson(
-      this,
-    );
+    return _$$SiqFileFileObjectImplToJson(this);
   }
 }
 
 abstract class _SiqFileFileObject implements SiqFileFileObject {
-  factory _SiqFileFileObject(
-      {required final FileObject file,
-      final Duration? displayTime}) = _$SiqFileFileObjectImpl;
+  factory _SiqFileFileObject({
+    required final FileObject file,
+    final Duration? displayTime,
+  }) = _$SiqFileFileObjectImpl;
 
   factory _SiqFileFileObject.fromJson(Map<String, dynamic> json) =
       _$SiqFileFileObjectImpl.fromJson;

@@ -8,3 +8,8 @@ analyzer:
     sort_pub_dependencies: ignore
     invalid_annotation_target: ignore
     unnecessary_cast: ignore
+  exclude:
+    - "**/*_generated.dart"
+    - "**/*.freezed.dart"
+    - "**/*.g.dart"
+    - "**/*.gen.dart"

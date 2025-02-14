@@ -10,9 +10,7 @@ class AppTheme {
         selectedItemColor: theme.colorScheme.onPrimary,
         unselectedItemColor: theme.colorScheme.primary,
       ),
-      appBarTheme: AppBarTheme(
-        systemOverlayStyle: systemOverlay(theme),
-      ),
+      appBarTheme: AppBarTheme(systemOverlayStyle: systemOverlay(theme)),
     );
   }
 

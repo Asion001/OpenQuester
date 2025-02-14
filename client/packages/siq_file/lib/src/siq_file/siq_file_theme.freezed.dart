@@ -12,7 +12,8 @@ part of 'siq_file_theme.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 SiqFileTheme _$SiqFileThemeFromJson(Map<String, dynamic> json) {
   return _SiqFileTheme.fromJson(json);
@@ -37,8 +38,9 @@ mixin _$SiqFileTheme {
 /// @nodoc
 abstract class $SiqFileThemeCopyWith<$Res> {
   factory $SiqFileThemeCopyWith(
-          SiqFileTheme value, $Res Function(SiqFileTheme) then) =
-      _$SiqFileThemeCopyWithImpl<$Res, SiqFileTheme>;
+    SiqFileTheme value,
+    $Res Function(SiqFileTheme) then,
+  ) = _$SiqFileThemeCopyWithImpl<$Res, SiqFileTheme>;
   @useResult
   $Res call({String name, String? comment, List<SiqFileQuestion> questions});
 }
@@ -62,20 +64,26 @@ class _$SiqFileThemeCopyWithImpl<$Res, $Val extends SiqFileTheme>
     Object? comment = freezed,
     Object? questions = null,
   }) {
-    return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      comment: freezed == comment
-          ? _value.comment
-          : comment // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questions: null == questions
-          ? _value.questions
-          : questions // ignore: cast_nullable_to_non_nullable
-              as List<SiqFileQuestion>,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            comment:
+                freezed == comment
+                    ? _value.comment
+                    : comment // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            questions:
+                null == questions
+                    ? _value.questions
+                    : questions // ignore: cast_nullable_to_non_nullable
+                        as List<SiqFileQuestion>,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -83,8 +91,9 @@ class _$SiqFileThemeCopyWithImpl<$Res, $Val extends SiqFileTheme>
 abstract class _$$SiqFileThemeImplCopyWith<$Res>
     implements $SiqFileThemeCopyWith<$Res> {
   factory _$$SiqFileThemeImplCopyWith(
-          _$SiqFileThemeImpl value, $Res Function(_$SiqFileThemeImpl) then) =
-      __$$SiqFileThemeImplCopyWithImpl<$Res>;
+    _$SiqFileThemeImpl value,
+    $Res Function(_$SiqFileThemeImpl) then,
+  ) = __$$SiqFileThemeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String name, String? comment, List<SiqFileQuestion> questions});
@@ -95,8 +104,9 @@ class __$$SiqFileThemeImplCopyWithImpl<$Res>
     extends _$SiqFileThemeCopyWithImpl<$Res, _$SiqFileThemeImpl>
     implements _$$SiqFileThemeImplCopyWith<$Res> {
   __$$SiqFileThemeImplCopyWithImpl(
-      _$SiqFileThemeImpl _value, $Res Function(_$SiqFileThemeImpl) _then)
-      : super(_value, _then);
+    _$SiqFileThemeImpl _value,
+    $Res Function(_$SiqFileThemeImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of SiqFileTheme
   /// with the given fields replaced by the non-null parameter values.
@@ -107,31 +117,36 @@ class __$$SiqFileThemeImplCopyWithImpl<$Res>
     Object? comment = freezed,
     Object? questions = null,
   }) {
-    return _then(_$SiqFileThemeImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      comment: freezed == comment
-          ? _value.comment
-          : comment // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questions: null == questions
-          ? _value._questions
-          : questions // ignore: cast_nullable_to_non_nullable
-              as List<SiqFileQuestion>,
-    ));
+    return _then(
+      _$SiqFileThemeImpl(
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        comment:
+            freezed == comment
+                ? _value.comment
+                : comment // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        questions:
+            null == questions
+                ? _value._questions
+                : questions // ignore: cast_nullable_to_non_nullable
+                    as List<SiqFileQuestion>,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$SiqFileThemeImpl implements _SiqFileTheme {
-  _$SiqFileThemeImpl(
-      {required this.name,
-      this.comment,
-      final List<SiqFileQuestion> questions = const []})
-      : _questions = questions;
+  _$SiqFileThemeImpl({
+    required this.name,
+    this.comment,
+    final List<SiqFileQuestion> questions = const [],
+  }) : _questions = questions;
 
   factory _$SiqFileThemeImpl.fromJson(Map<String, dynamic> json) =>
       _$$SiqFileThemeImplFromJson(json);
@@ -161,14 +176,20 @@ class _$SiqFileThemeImpl implements _SiqFileTheme {
             other is _$SiqFileThemeImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.comment, comment) || other.comment == comment) &&
-            const DeepCollectionEquality()
-                .equals(other._questions, _questions));
+            const DeepCollectionEquality().equals(
+              other._questions,
+              _questions,
+            ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, comment,
-      const DeepCollectionEquality().hash(_questions));
+  int get hashCode => Object.hash(
+    runtimeType,
+    name,
+    comment,
+    const DeepCollectionEquality().hash(_questions),
+  );
 
   /// Create a copy of SiqFileTheme
   /// with the given fields replaced by the non-null parameter values.
@@ -180,17 +201,16 @@ class _$SiqFileThemeImpl implements _SiqFileTheme {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SiqFileThemeImplToJson(
-      this,
-    );
+    return _$$SiqFileThemeImplToJson(this);
   }
 }
 
 abstract class _SiqFileTheme implements SiqFileTheme {
-  factory _SiqFileTheme(
-      {required final String name,
-      final String? comment,
-      final List<SiqFileQuestion> questions}) = _$SiqFileThemeImpl;
+  factory _SiqFileTheme({
+    required final String name,
+    final String? comment,
+    final List<SiqFileQuestion> questions,
+  }) = _$SiqFileThemeImpl;
 
   factory _SiqFileTheme.fromJson(Map<String, dynamic> json) =
       _$SiqFileThemeImpl.fromJson;

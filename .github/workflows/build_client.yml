@@ -1,6 +1,7 @@
 name: Build Client
 
 on:
+  pull_request:
   workflow_dispatch:
   workflow_call:
     secrets:

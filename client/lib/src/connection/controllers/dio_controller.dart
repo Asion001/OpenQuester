@@ -14,9 +14,7 @@ class DioController {
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
-    _dio = Dio(
-      baseOptions(),
-    )..interceptors.addAll(await _interceptors());
+    _dio = Dio(baseOptions())..interceptors.addAll(await _interceptors());
   }
 
   Dio get client => _dio;

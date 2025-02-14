@@ -32,8 +32,9 @@ class AppInit {
       'Api Domain': Env.apiUrl.toString(),
     };
 
-    String result =
-        parameters.entries.map((e) => '${e.key}: ${e.value}').join('\n');
+    String result = parameters.entries
+        .map((e) => '${e.key}: ${e.value}')
+        .join('\n');
     return result;
   }
 

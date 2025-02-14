@@ -33,17 +33,19 @@ class _FileOpeningState extends State<FileOpening> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.copy),
-                  onPressed: siqFile == null
-                      ? null
-                      : () async => await Clipboard.setData(
-                          ClipboardData(text: jsonEncode(siqFile?.toJson()))),
+                  onPressed:
+                      siqFile == null
+                          ? null
+                          : () async => await Clipboard.setData(
+                            ClipboardData(text: jsonEncode(siqFile?.toJson())),
+                          ),
                 ),
                 const IconButton(
                   icon: Icon(Icons.upload_file),
                   onPressed: null,
                 ),
               ],
-            )
+            ),
           ],
         ),
       ],
@@ -76,7 +78,8 @@ class _FileOpeningState extends State<FileOpening> {
     rounds: ${siqFile?.rounds.length}''';
     // ignore: avoid_print
     print(debugText);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(debugText)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(debugText)));
   }
 }
