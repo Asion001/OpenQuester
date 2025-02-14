@@ -1,14 +1,13 @@
-import { type Request, type Response, Router } from "express";
+import { type Express, type Request, type Response, Router } from "express";
 
-import { type ApiContext } from "application/context/ApiContext";
 import { TranslateService as ts } from "application/services/text/TranslateService";
 import { type UserService } from "application/services/user/UserService";
+import { USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { Permissions } from "domain/enums/Permissions";
 import { ClientError } from "domain/errors/ClientError";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
-import { StorageServiceModel } from "domain/types/file/StorageServiceModel";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
 import { UpdateUserDTO } from "domain/types/user/UpdateUserData";
 import { UpdateUserInputDTO } from "domain/types/user/UpdateUserDataInput";
@@ -33,17 +32,17 @@ import {
  * Handles all endpoints related for User CRUD
  */
 export class UserRestApiController {
-  private readonly _userService: UserService;
-
-  constructor(private readonly ctx: ApiContext) {
-    const app = this.ctx.app;
+  constructor(
+    private readonly app: Express,
+    private readonly userService: UserService,
+    private readonly userRepository: UserRepository,
+    private readonly fileRepository: FileRepository
+  ) {
     const router = Router();
     const meRouter = Router();
 
-    this._userService = this.ctx.serverServices.user;
-
-    app.use("/v1/me", meRouter);
-    app.use("/v1/users", router);
+    this.app.use("/v1/me", meRouter);
+    this.app.use("/v1/users", router);
 
     meRouter.get("/", asyncHandler(this.getUser));
 
@@ -53,25 +52,25 @@ export class UserRestApiController {
 
     router.get(
       "/",
-      checkPermission(this.ctx.db, Permissions.GET_ALL_USERS),
+      checkPermission(Permissions.GET_ALL_USERS),
       asyncHandler(this.listUsers)
     );
 
     router.get(
       "/:id",
-      checkPermissionWithId(this.ctx.db, Permissions.GET_ANOTHER_USER),
+      checkPermissionWithId(Permissions.GET_ANOTHER_USER),
       asyncHandler(this.getUser)
     );
 
     router.patch(
       "/:id",
-      checkPermissionWithId(this.ctx.db, Permissions.CHANGE_ANOTHER_USER),
+      checkPermissionWithId(Permissions.CHANGE_ANOTHER_USER),
       asyncHandler(this.updateUser)
     );
 
     router.delete(
       "/:id",
-      checkPermissionWithId(this.ctx.db, Permissions.DELETE_ANOTHER_USER),
+      checkPermissionWithId(Permissions.DELETE_ANOTHER_USER),
       asyncHandler(this.deleteUser)
     );
   }
@@ -87,12 +86,9 @@ export class UserRestApiController {
     let user: UserDTO;
 
     if (req.user && validatedData.userId === req.user.id) {
-      user = await this.mapUserToDTO(
-        req.user,
-        this.ctx.serverServices.storage.createStorageService(this.ctx, "minio")
-      );
+      user = await req.user.toDTO();
     } else {
-      user = await this._userService.get(this.ctx, validatedData.userId);
+      user = await this.userService.get(validatedData.userId);
     }
 
     if (user) {
@@ -116,10 +112,14 @@ export class UserRestApiController {
       throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
-    const user = await UserRepository.getRepository(this.ctx.db).get(
-      userInputDTO.id,
-      { select: ["id"], relations: [] }
-    );
+    const user = await this.userRepository.get(userInputDTO.id, {
+      select: USER_SELECT_FIELDS,
+      relations: ["avatar", "permissions"],
+      relationSelects: {
+        avatar: ["id", "filename"],
+        permissions: ["id", "name"],
+      },
+    });
 
     if (!user) {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
@@ -128,8 +128,9 @@ export class UserRestApiController {
     let avatarFile: File | null = null;
 
     if (userInputDTO.avatar) {
-      const fileRepo = FileRepository.getRepository(this.ctx.db);
-      avatarFile = await fileRepo.getFileByFilename(userInputDTO.avatar);
+      avatarFile = await this.fileRepository.getFileByFilename(
+        userInputDTO.avatar
+      );
 
       if (ValueUtils.isBad(avatarFile)) {
         throw new ClientError(ClientResponse.NO_AVATAR);
@@ -147,11 +148,7 @@ export class UserRestApiController {
       userUpdateDTO.avatar = avatarFile;
     }
 
-    const result = await this._userService.update(
-      this.ctx,
-      user,
-      userUpdateDTO
-    );
+    const result = await this.userService.update(user, userUpdateDTO);
 
     return res.status(HttpStatus.OK).send(result);
   };
@@ -164,7 +161,7 @@ export class UserRestApiController {
       userIdScheme()
     ).validate();
 
-    await this._userService.delete(this.ctx, validatedData.userId);
+    await this.userService.delete(validatedData.userId);
 
     return res.status(HttpStatus.NO_CONTENT).send();
   };
@@ -187,7 +184,7 @@ export class UserRestApiController {
       ],
     }).validate();
 
-    const result = await this._userService.list(this.ctx, paginationOpts);
+    const result = await this.userService.list(paginationOpts);
 
     if (result) {
       return res.status(HttpStatus.OK).send(result);
@@ -197,29 +194,6 @@ export class UserRestApiController {
       message: ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
     });
   };
-
-  // TODO: Remove when global service locator implemented - move to authMiddleware
-  private async mapUserToDTO(
-    user: User,
-    storageService: StorageServiceModel
-  ): Promise<UserDTO> {
-    const avatarLink = user.avatar
-      ? await storageService.get(user.avatar.filename)
-      : null;
-
-    return {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      birthday: user.birthday,
-      discordId: user.discord_id,
-      avatar: avatarLink,
-      permissions: user.permissions,
-      createdAt: user.created_at,
-      updatedAt: user.updated_at,
-      isDeleted: user.is_deleted,
-    };
-  }
 
   private async _getUserId(req: Request) {
     if (req.params && req.params.id) {

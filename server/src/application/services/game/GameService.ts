@@ -1,6 +1,6 @@
 import { type Request } from "express";
+import { type Server as IOServer } from "socket.io";
 
-import { ApiContext } from "application/context/ApiContext";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { SocketIOEvents } from "domain/enums/SocketIOEvents";
@@ -14,25 +14,37 @@ import { GameRepository } from "infrastructure/database/repositories/GameReposit
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 
 export class GameService {
-  private _gameRepository?: GameRepository;
-
-  public async get(
-    ctx: ApiContext,
-    gameId: string
-  ): Promise<GameListItemDTO | undefined> {
-    return this.gameRepository.getGame(ctx, gameId);
+  constructor(
+    private readonly gameRepository: GameRepository,
+    private readonly io: IOServer,
+    private readonly userRepository: UserRepository
+  ) {
+    //
   }
 
-  public async list(ctx: ApiContext, paginationOpts: PaginationOpts<GameDTO>) {
-    return this.gameRepository.getAllGames(ctx, paginationOpts);
+  public async get(gameId: string): Promise<GameListItemDTO | undefined> {
+    return this.gameRepository.getGame(gameId);
+  }
+
+  public async list(paginationOpts: PaginationOpts<GameDTO>) {
+    return this.gameRepository.getAllGames(paginationOpts);
   }
 
   public async delete(gameId: string) {
-    return this.gameRepository.deleteGame(gameId);
+    await this.gameRepository.deleteGame(gameId);
+
+    const eventDataDTO: GameEventDTO = {
+      event: GameEvent.DELETED,
+      data: {
+        id: gameId,
+      },
+    };
+
+    this.io.emit(SocketIOEvents.GAMES, eventDataDTO);
   }
 
-  public async create(ctx: ApiContext, req: Request, gameData: GameCreateDTO) {
-    const createdByUser = await UserRepository.getUserByRequest(ctx.db, req, {
+  public async create(req: Request, gameData: GameCreateDTO) {
+    const createdByUser = await this.userRepository.getUserByRequest(req, {
       select: ["id", "username"],
       relations: [],
     });
@@ -45,30 +57,21 @@ export class GameService {
     }
 
     const gameDataOutput = await this.gameRepository.createGame(
-      ctx,
       gameData,
       createdByUser
     );
 
-    this._emitSocketGameCreated(ctx, gameDataOutput);
+    this._emitSocketGameCreated(gameDataOutput);
 
     return gameDataOutput;
   }
 
-  private _emitSocketGameCreated(ctx: ApiContext, gameData: GameListItemDTO) {
+  private _emitSocketGameCreated(gameData: GameListItemDTO) {
     const eventDataDTO: GameEventDTO = {
       event: GameEvent.CREATED,
       data: gameData,
     };
 
-    ctx.io.emit(SocketIOEvents.GAMES, eventDataDTO);
-  }
-
-  private get gameRepository() {
-    if (!this._gameRepository) {
-      this._gameRepository = GameRepository.getInstance();
-    }
-
-    return this._gameRepository;
+    this.io.emit(SocketIOEvents.GAMES, eventDataDTO);
   }
 }

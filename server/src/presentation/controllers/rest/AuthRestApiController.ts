@@ -1,11 +1,12 @@
-import { Router, type Request, type Response } from "express";
+import { Router, type Express, type Request, type Response } from "express";
 import Joi from "joi";
 import https, { RequestOptions } from "node:https";
 
-import { type ApiContext } from "application/context/ApiContext";
 import { TranslateService as ts } from "application/services/text/TranslateService";
+import { getDiscordCDNLink } from "domain/constants/discord";
 import { USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
+import { FileSource } from "domain/enums/file/FileSource";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ServerResponse } from "domain/enums/ServerResponse";
 import { ClientError } from "domain/errors/ClientError";
@@ -16,19 +17,26 @@ import {
   EOauthProvider,
   Oauth2LoginDTO,
 } from "domain/types/dto/auth/Oauth2LoginDTO";
+import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
+import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { Logger } from "infrastructure/utils/Logger";
+import Redis from "ioredis";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 export class AuthRestApiController {
-  constructor(private readonly ctx: ApiContext) {
-    const app = this.ctx.app;
+  constructor(
+    private readonly app: Express,
+    private readonly redis: Redis,
+    private readonly userRepository: UserRepository,
+    private readonly fileRepository: FileRepository
+  ) {
     const router = Router();
 
-    app.use("/v1/auth", router);
+    this.app.use("/v1/auth", router);
 
     router.get("/logout", asyncHandler(this.logout));
     router.post("/oauth2", asyncHandler(this.handleOauthLogin));
@@ -44,7 +52,7 @@ export class AuthRestApiController {
       })
     ).validate();
 
-    let userData: User | null = null;
+    let userData: UserDTO | null = null;
 
     switch (authDTO.oauthProvider) {
       case "discord":
@@ -80,7 +88,7 @@ export class AuthRestApiController {
         );
       }
 
-      await this.ctx.serverServices.redis.del(`session:${sessionId}`);
+      await this.redis.del(`session:${sessionId}`);
       res.clearCookie("connect.sid");
 
       res.status(HttpStatus.OK).json({
@@ -89,7 +97,7 @@ export class AuthRestApiController {
     });
   };
 
-  private async getDiscordUser(authData: Oauth2LoginDTO): Promise<User> {
+  private async getDiscordUser(authData: Oauth2LoginDTO): Promise<UserDTO> {
     const discordUser = await new Promise<string>((resolve, reject) => {
       const options: RequestOptions = {
         hostname: "discord.com",
@@ -129,12 +137,11 @@ export class AuthRestApiController {
         id: Joi.string().required(),
         username: Joi.string().required(),
         email: Joi.string().email().allow(null),
+        avatar: Joi.string().allow(null),
       })
     ).validate();
 
-    const userRepo = UserRepository.getRepository(this.ctx.db);
-
-    let user = await userRepo.findOne(
+    let user = await this.userRepository.findOne(
       { discord_id: profile.id, is_deleted: false },
       {
         select: USER_SELECT_FIELDS,
@@ -151,13 +158,21 @@ export class AuthRestApiController {
       user.discord_id = profile.id;
       user.username = profile.username;
       user.email = profile.email ?? null;
+      if (profile.avatar) {
+        const file = await this.fileRepository.writeFile(
+          getDiscordCDNLink(profile.id, profile.avatar),
+          profile.avatar,
+          FileSource.DISCORD
+        );
+
+        user.avatar = file;
+      }
 
       const registerData: RegisterUser = await user.export();
 
-      user = await userRepo.create(this.ctx.db, registerData);
+      user = await this.userRepository.create(registerData);
     }
 
-    // TODO: Use .toDTO()
-    return user;
+    return user.toDTO();
   }
 }

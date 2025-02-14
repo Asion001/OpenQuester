@@ -1,9 +1,8 @@
-import { type Request, type Response, Router } from "express";
+import { Router, type Express, type Request, type Response } from "express";
 import fs from "fs";
 import path from "path";
 import Swagger from "swagger-ui-express";
 
-import { type ApiContext } from "application/context/ApiContext";
 import { Logger } from "infrastructure/utils/Logger";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 
@@ -13,12 +12,11 @@ export class SwaggerRestApiController {
   private _jsonPath: string;
   private _specification: { [key: string]: any };
 
-  constructor(private readonly ctx: ApiContext) {
-    const app = this.ctx.app;
+  constructor(private readonly app: Express) {
     const router = Router();
     this._jsonPath = path.join(process.cwd(), "../openapi/schema.json");
 
-    app.use("/v1/api-docs", router);
+    this.app.use("/v1/api-docs", router);
 
     this._specification = this._getSpecification();
 

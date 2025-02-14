@@ -1,7 +1,6 @@
 import { type Express } from "express";
 import { type Server as IOServer } from "socket.io";
 
-import { type ServerServices } from "application/services/ServerServices";
 import { type Environment } from "infrastructure/config/Environment";
 import { type Database } from "infrastructure/database/Database";
 
@@ -10,5 +9,4 @@ export interface ApiContextDTO {
   app: Express;
   io: IOServer;
   env: Environment;
-  serverServices: ServerServices;
 }

@@ -1,13 +1,13 @@
 import { type Request } from "express";
 import { FindOptionsWhere, In, type Repository } from "typeorm";
 
+import { Container, CONTAINER_TYPES } from "application/Container";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
 import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
 import { RegisterUser } from "domain/types/user/RegisterUser";
-import { type Database } from "infrastructure/database/Database";
 import { User } from "infrastructure/database/models/User";
 import { PaginatedResults } from "infrastructure/database/pagination/PaginatedResults";
 import { QueryBuilder } from "infrastructure/database/QueryBuilder";
@@ -15,26 +15,16 @@ import { FileUsageRepository } from "infrastructure/database/repositories/FileUs
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class UserRepository {
-  private static _instance: UserRepository;
-  private _db: Database;
-  private _repository: Repository<User>;
-
-  private constructor(db: Database) {
-    this._db = db;
-    this._repository = db.getRepository(User);
-  }
-
-  public static getRepository(db: Database) {
-    if (!this._instance) {
-      this._instance = new UserRepository(db);
-    }
-
-    return this._instance;
+  constructor(
+    private readonly repository: Repository<User>,
+    private readonly fileUsageRepository: FileUsageRepository
+  ) {
+    //
   }
 
   public async get(id: number, selectOptions: SelectOptions<User>) {
     const qb = await QueryBuilder.buildFindQuery<User>(
-      this._repository,
+      this.repository,
       { id, is_deleted: false },
       selectOptions
     );
@@ -46,7 +36,7 @@ export class UserRepository {
     selectOptions: SelectOptions<User>
   ) {
     const qb = await QueryBuilder.buildFindQuery<User>(
-      this._repository,
+      this.repository,
       where,
       selectOptions
     );
@@ -58,7 +48,7 @@ export class UserRepository {
     selectOptions: SelectOptions<User>
   ) {
     const qb = await QueryBuilder.buildFindQuery<User>(
-      this._repository,
+      this.repository,
       where,
       selectOptions
     );
@@ -69,7 +59,7 @@ export class UserRepository {
     ids: number[],
     selectOptions: SelectOptions<User>
   ): Promise<User[]> {
-    return this._repository.find({
+    return this.repository.find({
       where: { id: In(ids) },
       select: selectOptions.select,
       relations: selectOptions.relations,
@@ -80,9 +70,9 @@ export class UserRepository {
     paginationOpts: PaginationOpts<User>,
     selectOptions: SelectOptions<User>
   ) {
-    const alias = this._repository.metadata.name.toLowerCase();
+    const alias = this.repository.metadata.name.toLowerCase();
 
-    let qb = this._repository
+    let qb = this.repository
       .createQueryBuilder(alias)
       .select(selectOptions.select.map((field) => `${alias}.${field}`));
 
@@ -95,7 +85,7 @@ export class UserRepository {
     return PaginatedResults.paginateEntityAndSelect<User>(qb, paginationOpts);
   }
 
-  public async create(db: Database, data: RegisterUser) {
+  public async create(data: RegisterUser) {
     const whereOpts: FindOptionsWhere<User>[] = [{ username: data.username }];
 
     if (data.email) {
@@ -106,7 +96,7 @@ export class UserRepository {
       whereOpts.push({ discord_id: data.discord_id });
     }
 
-    const existing = await this._repository.findOne({
+    const existing = await this.repository.findOne({
       select: ["id"],
       where: whereOpts,
     });
@@ -130,11 +120,10 @@ export class UserRepository {
     });
 
     // Save new user
-    user = await this._repository.save(user);
+    user = await this.repository.save(user);
 
     if (data.avatar) {
-      const fileUsageRepo = FileUsageRepository.getRepository(db);
-      await fileUsageRepo.writeUsage(data.avatar, user);
+      await this.fileUsageRepository.writeUsage(data.avatar, user);
     }
 
     return user;
@@ -147,7 +136,7 @@ export class UserRepository {
   }
 
   public async update(user: User) {
-    return this._repository.update(
+    return this.repository.update(
       { id: user.id },
       {
         username: user.username,
@@ -159,8 +148,7 @@ export class UserRepository {
     );
   }
 
-  public static async getUserByRequest(
-    db: Database,
+  public async getUserByRequest(
     req: Request,
     selectOptions: SelectOptions<User>
   ) {
@@ -176,6 +164,9 @@ export class UserRepository {
     }
 
     const id = ValueUtils.validateId(req.session.userId);
-    return this.getRepository(db).get(id, selectOptions);
+    return Container.get<UserRepository>(CONTAINER_TYPES.UserRepository).get(
+      id,
+      selectOptions
+    );
   }
 }

@@ -1,20 +1,22 @@
 import { type NextFunction, type Request, type Response } from "express";
 
+import { Container, CONTAINER_TYPES } from "application/Container";
 import { TranslateService as ts } from "application/services/text/TranslateService";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { type Permissions } from "domain/enums/Permissions";
 import { ClientError } from "domain/errors/ClientError";
 import { ErrorController } from "domain/errors/ErrorController";
-import { type Database } from "infrastructure/database/Database";
 import { Permission } from "infrastructure/database/models/Permission";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
-export function checkPermission(db: Database, permission: Permissions) {
+export function checkPermission(permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await UserRepository.getUserByRequest(db, req, {
+      const user = await Container.get<UserRepository>(
+        CONTAINER_TYPES.UserRepository
+      ).getUserByRequest(req, {
         select: ["id"],
         relations: ["permissions"],
         relationSelects: { permissions: ["id", "name"] },
@@ -48,13 +50,15 @@ export function checkPermission(db: Database, permission: Permissions) {
  * Require some permission from user, that makes request, if he passed
  * the id in request params, which means he's doing request on another user
  */
-export function checkPermissionWithId(db: Database, permission: Permissions) {
+export function checkPermissionWithId(permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     if (req.params.id) {
       try {
         const id = ValueUtils.validateId(req.params.id);
 
-        const requestUser = await UserRepository.getUserByRequest(db, req, {
+        const requestUser = await Container.get<UserRepository>(
+          CONTAINER_TYPES.UserRepository
+        ).getUserByRequest(req, {
           select: ["id"],
           relations: ["permissions"],
           relationSelects: { permissions: ["id", "name"] },

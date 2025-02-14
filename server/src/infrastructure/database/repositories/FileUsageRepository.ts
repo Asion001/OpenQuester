@@ -1,29 +1,17 @@
 import { type Repository } from "typeorm";
 
-import { type Database } from "infrastructure/database/Database";
 import { type File } from "infrastructure/database/models/File";
 import { FileUsage } from "infrastructure/database/models/FileUsage";
 import { type Package } from "infrastructure/database/models/Package";
 import { type User } from "infrastructure/database/models/User";
 
 export class FileUsageRepository {
-  private static _instance: FileUsageRepository;
-  private _repository: Repository<FileUsage>;
-
-  private constructor(db: Database) {
-    this._repository = db.getRepository(FileUsage);
-  }
-
-  public static getRepository(db: Database) {
-    if (!this._instance) {
-      this._instance = new FileUsageRepository(db);
-    }
-
-    return this._instance;
+  constructor(private readonly repository: Repository<FileUsage>) {
+    //
   }
 
   public async getUsage(file: File) {
-    return this._repository.find({
+    return this.repository.find({
       where: { file: { id: file.id } },
       relations: ["file", "user", "user.avatar", "package", "package.author"],
     });
@@ -37,7 +25,7 @@ export class FileUsageRepository {
       package: pack,
     });
 
-    return this._repository.save(usage);
+    return this.repository.save(usage);
   }
 
   public async writeBulkUsage(filesData: {
@@ -55,7 +43,7 @@ export class FileUsageRepository {
       return usage;
     });
 
-    return this._repository.insert(fileUsages);
+    return this.repository.insert(fileUsages);
   }
 
   public async deleteUsage(file: File, user?: User, pack?: Package) {
@@ -69,6 +57,6 @@ export class FileUsageRepository {
       opts.package = { id: pack.id };
     }
 
-    return this._repository.delete(opts);
+    return this.repository.delete(opts);
   }
 }

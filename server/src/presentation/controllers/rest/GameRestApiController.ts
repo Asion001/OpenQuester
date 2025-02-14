@@ -1,14 +1,11 @@
-import { type Request, type Response, Router } from "express";
+import { Router, type Express, type Request, type Response } from "express";
 
-import { type ApiContext } from "application/context/ApiContext";
 import { type GameService } from "application/services/game/GameService";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
-import { SocketIOEvents } from "domain/enums/SocketIOEvents";
 import { ClientError } from "domain/errors/ClientError";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { GameDTO } from "domain/types/dto/game/GameDTO";
-import { GameEvent, GameEventDTO } from "domain/types/dto/game/GameEventDTO";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 import {
@@ -19,15 +16,13 @@ import { PaginationSchema } from "presentation/schemes/pagination/PaginationSche
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 export class GameRestApiController {
-  private readonly _gameService: GameService;
-
-  constructor(private readonly ctx: ApiContext) {
-    const app = this.ctx.app;
+  constructor(
+    private readonly app: Express,
+    private readonly gameService: GameService
+  ) {
     const router = Router();
 
-    this._gameService = this.ctx.serverServices.game;
-
-    app.use("/v1/games", router);
+    this.app.use("/v1/games", router);
 
     router.get(`/`, asyncHandler(this.listGames));
     router.post(`/`, asyncHandler(this.createGame));
@@ -41,15 +36,7 @@ export class GameRestApiController {
       gameIdScheme()
     ).validate();
 
-    await this._gameService.delete(validatedData.gameId);
-
-    const eventDataDTO: GameEventDTO = {
-      event: GameEvent.DELETED,
-      data: {
-        id: validatedData.gameId,
-      },
-    };
-    this.ctx.io.emit(SocketIOEvents.GAMES, eventDataDTO);
+    await this.gameService.delete(validatedData.gameId);
 
     return res.status(HttpStatus.NO_CONTENT).send();
   };
@@ -60,7 +47,7 @@ export class GameRestApiController {
       gameIdScheme()
     ).validate();
 
-    const result = await this._gameService.get(this.ctx, validatedData.gameId);
+    const result = await this.gameService.get(validatedData.gameId);
 
     return res.status(HttpStatus.OK).send(result);
   };
@@ -84,7 +71,7 @@ export class GameRestApiController {
       ],
     }).validate();
 
-    const result = await this._gameService.list(this.ctx, paginationOpts);
+    const result = await this.gameService.list(paginationOpts);
     return res.status(HttpStatus.OK).send(result);
   };
 
@@ -98,7 +85,7 @@ export class GameRestApiController {
       throw new ClientError(ClientResponse.NO_GAME_DATA);
     }
 
-    const result = await this._gameService.create(this.ctx, req, gameCreateDTO);
+    const result = await this.gameService.create(req, gameCreateDTO);
     return res.status(HttpStatus.OK).send(result);
   };
 }

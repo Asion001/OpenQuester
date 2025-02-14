@@ -7,7 +7,6 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { type Request } from "express";
 
-import { ApiContext } from "application/context/ApiContext";
 import { ContentStructureService } from "application/services/ContentStructureService";
 import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
 import {
@@ -31,7 +30,6 @@ import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
 import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
 import { UsageEntries } from "domain/types/usage/usage";
-import { type Database } from "infrastructure/database/Database";
 import { type File } from "infrastructure/database/models/File";
 import { type Package } from "infrastructure/database/models/Package";
 import { Permission } from "infrastructure/database/models/Permission";
@@ -44,34 +42,26 @@ import { DependencyService } from "infrastructure/services/dependency/Dependency
 import { StorageUtils } from "infrastructure/utils/StorageUtils";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
-export class MinioStorageService implements StorageServiceModel {
+export class S3StorageService implements StorageServiceModel {
   private _client: S3Client;
-  private _s3Context: S3Context;
-  private _contentStructureService: ContentStructureService;
-  private _db: Database;
-  private _fileRepository: FileRepository;
-  private _packageRepository: PackageRepository;
-  private _fileUsageRepository: FileUsageRepository;
-  private _userRepository: UserRepository;
 
-  constructor(private readonly ctx: ApiContext) {
-    this._s3Context = this.ctx.serverServices.storage.createFileContext("s3");
-    this._contentStructureService = this.ctx.serverServices.content;
-
-    this._db = this.ctx.db;
-    this._fileRepository = FileRepository.getRepository(this._db);
-    this._packageRepository = PackageRepository.getRepository(this._db);
-    this._fileUsageRepository = FileUsageRepository.getRepository(this._db);
-    this._userRepository = UserRepository.getRepository(this._db);
-
+  constructor(
+    private readonly s3Context: S3Context,
+    private readonly contentStructureService: ContentStructureService,
+    private readonly fileRepository: FileRepository,
+    private readonly packageRepository: PackageRepository,
+    private readonly fileUsageRepository: FileUsageRepository,
+    private readonly userRepository: UserRepository,
+    private readonly dependencyService: DependencyService
+  ) {
     this._client = new S3Client({
       credentials: {
-        accessKeyId: this._s3Context.accessKey,
-        secretAccessKey: this._s3Context.secretKey,
+        accessKeyId: this.s3Context.accessKey,
+        secretAccessKey: this.s3Context.secretKey,
       },
       forcePathStyle: true,
-      endpoint: this._s3Context.host,
-      region: this._s3Context.region,
+      endpoint: this.s3Context.host,
+      region: this.s3Context.region,
     });
   }
 
@@ -116,9 +106,9 @@ export class MinioStorageService implements StorageServiceModel {
   public async get(filename: string) {
     const filePath = StorageUtils.parseFilePath(filename);
 
-    const baseUrl = this._s3Context.host.endsWith("/")
-      ? `${this._s3Context.host}${this._s3Context.bucket}`
-      : `${this._s3Context.host}/${this._s3Context.bucket}`;
+    const baseUrl = this.s3Context.host.endsWith("/")
+      ? `${this.s3Context.host}${this.s3Context.bucket}`
+      : `${this.s3Context.host}/${this.s3Context.bucket}`;
 
     return `${baseUrl}/${filePath}`;
   }
@@ -140,17 +130,17 @@ export class MinioStorageService implements StorageServiceModel {
 
       links[filename] = await this.generatePresignedUrl(
         "PUT",
-        this._s3Context.bucket,
+        this.s3Context.bucket,
         `${file.path}${filename}`,
         expiresIn,
         filename
       );
     }
 
-    const files = (await this._fileRepository.bulkWriteFiles(filesData.files))
+    const files = (await this.fileRepository.bulkWriteFiles(filesData.files))
       .generatedMaps as File[];
 
-    await this._fileUsageRepository.writeBulkUsage({
+    await this.fileUsageRepository.writeBulkUsage({
       files,
       pack: filesData.pack,
     });
@@ -173,7 +163,7 @@ export class MinioStorageService implements StorageServiceModel {
 
     const link = await this.generatePresignedUrl(
       "PUT",
-      this._s3Context.bucket,
+      this.s3Context.bucket,
       filenameWithPath,
       expiresIn,
       filename
@@ -192,10 +182,7 @@ export class MinioStorageService implements StorageServiceModel {
   }
 
   public async delete(filename: string, req: Request) {
-    const usageRecords = await DependencyService.getFileUsage(
-      this._db,
-      filename
-    );
+    const usageRecords = await this.dependencyService.getFileUsage(filename);
 
     if (usageRecords.length < 1) {
       return;
@@ -237,13 +224,13 @@ export class MinioStorageService implements StorageServiceModel {
       throw new ClientError(ClientResponse.NO_PERMISSION, HttpStatus.FORBIDDEN);
     }
 
-    const file = await this._fileRepository.getFileByFilename(filename);
+    const file = await this.fileRepository.getFileByFilename(filename);
 
     if (!file) {
       return;
     }
 
-    const fileUsage = await this._fileUsageRepository.getUsage(file);
+    const fileUsage = await this.dependencyService.getFileUsage(file.filename);
 
     if (fileUsage.length > 0) {
       // Do not delete file if it's still used somewhere
@@ -251,10 +238,10 @@ export class MinioStorageService implements StorageServiceModel {
     }
 
     const filePath = StorageUtils.parseFilePath(filename);
-    this._fileRepository.removeFile(filename);
+    this.fileRepository.removeFile(filename);
 
     const command = new DeleteObjectCommand({
-      Bucket: this._s3Context.bucket,
+      Bucket: this.s3Context.bucket,
       Key: filePath,
     });
     this._client.send(command);
@@ -264,7 +251,7 @@ export class MinioStorageService implements StorageServiceModel {
     packId: string | number
   ): Promise<PackageListItemDTO> {
     const id = ValueUtils.validateId(packId);
-    const pack = await this._packageRepository.get(id, {
+    const pack = await this.packageRepository.get(id, {
       select: PACKAGE_SELECT_FIELDS,
       relations: ["author"],
       relationSelects: { author: ["id", "username"] },
@@ -291,7 +278,7 @@ export class MinioStorageService implements StorageServiceModel {
     paginationOpts: PaginationOpts<Package>,
     selectOptions: SelectOptions<Package>
   ): Promise<PaginatedResult<PackageListItemDTO[]>> {
-    const paginatedList = await this._packageRepository.list(
+    const paginatedList = await this.packageRepository.list(
       paginationOpts,
       selectOptions
     );
@@ -324,7 +311,7 @@ export class MinioStorageService implements StorageServiceModel {
     content: OQContentStructure,
     expiresIn: number = UPLOAD_PACKAGE_LINKS_EXPIRES_IN
   ): Promise<PackageUploadResponse> {
-    const author = await UserRepository.getUserByRequest(this._db, req, {
+    const author = await this.userRepository.getUserByRequest(req, {
       select: USER_SELECT_FIELDS,
       relations: [],
     });
@@ -333,9 +320,9 @@ export class MinioStorageService implements StorageServiceModel {
       throw new ClientError(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
     }
 
-    const pack = await this._packageRepository.create(content, author);
+    const pack = await this.packageRepository.create(content, author);
 
-    const links = await this._contentStructureService.getUploadLinksForFiles(
+    const links = await this.contentStructureService.getUploadLinksForFiles(
       content,
       this,
       pack,
@@ -352,7 +339,7 @@ export class MinioStorageService implements StorageServiceModel {
     filename: string,
     usage: UsageEntries
   ) {
-    const user = await UserRepository.getUserByRequest(this._db, req, {
+    const user = await this.userRepository.getUserByRequest(req, {
       select: ["id"],
       relations: ["permissions"],
       relationSelects: { permissions: ["id", "name"] },
@@ -385,22 +372,22 @@ export class MinioStorageService implements StorageServiceModel {
   private async _deleteUserAvatar(user: User) {
     if (user.avatar) {
       user.avatar = undefined;
-      await this._userRepository.update(user);
+      await this.userRepository.update(user);
     }
   }
 
   private async _deleteAvatarUsage(filename: string, user: User) {
-    const file = await this._fileRepository.getFileByFilename(filename);
+    const file = await this.fileRepository.getFileByFilename(filename);
     if (file) {
-      await this._fileUsageRepository.deleteUsage(file, user);
+      await this.fileUsageRepository.deleteUsage(file, user);
     }
   }
 
   private async _writeUsage(file: File, user?: User, pack?: Package) {
-    return this._fileUsageRepository.writeUsage(file, user, pack);
+    return this.fileUsageRepository.writeUsage(file, user, pack);
   }
 
   private async _writeFile(path: string, filename: string, source: FileSource) {
-    return this._fileRepository.writeFile(path, filename, source);
+    return this.fileRepository.writeFile(path, filename, source);
   }
 }

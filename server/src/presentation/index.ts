@@ -3,7 +3,6 @@ import { createServer, type Server } from "http";
 import { Server as IOServer } from "socket.io";
 
 import { ApiContext } from "application/context/ApiContext";
-import { ServerServices } from "application/services/ServerServices";
 import { ErrorController } from "domain/errors/ErrorController";
 import { Environment } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
@@ -30,7 +29,6 @@ const main = async () => {
   const context = new ApiContext({
     db: Database.getInstance(AppDataSource),
     env: Environment.instance,
-    serverServices: new ServerServices(),
     io,
     app,
   });

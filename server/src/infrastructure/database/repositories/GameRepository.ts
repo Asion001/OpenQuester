@@ -1,6 +1,5 @@
 import { type Redis } from "ioredis";
 
-import { ApiContext } from "application/context/ApiContext";
 import {
   GAME_ID_CHARACTERS,
   GAME_ID_CHARACTERS_LENGTH,
@@ -21,8 +20,6 @@ import {
   PaginationOrder,
 } from "domain/types/pagination/PaginationOpts";
 import { ShortUserInfo } from "domain/types/user/ShortUserInfo";
-import { RedisConfig } from "infrastructure/config/RedisConfig";
-import { type Database } from "infrastructure/database/Database";
 import { GameIndexManager } from "infrastructure/database/managers/game/GameIndexManager";
 import { type User } from "infrastructure/database/models/User";
 import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
@@ -30,22 +27,13 @@ import { UserRepository } from "infrastructure/database/repositories/UserReposit
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class GameRepository {
-  private static _instance: GameRepository;
-  private readonly _redisClient: Redis;
-  private _packageRepository!: PackageRepository;
-  private _userRepository!: UserRepository;
-  private readonly _gameIdxManager: GameIndexManager;
-
-  private constructor() {
-    this._redisClient = RedisConfig.getClient();
-    this._gameIdxManager = new GameIndexManager(this._redisClient);
-  }
-
-  public static getInstance(): GameRepository {
-    if (!this._instance) {
-      this._instance = new GameRepository();
-    }
-    return this._instance;
+  constructor(
+    private readonly redisClient: Redis,
+    private readonly gameIndexManager: GameIndexManager,
+    private readonly userRepository: UserRepository,
+    private readonly packageRepository: PackageRepository
+  ) {
+    //
   }
 
   public async getGameKey(gameId: string) {
@@ -54,7 +42,7 @@ export class GameRepository {
 
   public async getGameRaw(gameId: string) {
     const key = await this.getGameKey(gameId);
-    const game = this._redisClient.hgetall(key);
+    const game = this.redisClient.hgetall(key);
 
     if (!game) {
       throw new ClientError(
@@ -73,7 +61,7 @@ export class GameRepository {
     }
   }
 
-  public async getGame(ctx: ApiContext, gameId: string) {
+  public async getGame(gameId: string) {
     const gameData = await this.getGameRaw(gameId);
 
     if (!gameData) {
@@ -84,16 +72,16 @@ export class GameRepository {
       );
     }
 
-    return this._mapRedisRecordToGameItem(ctx, gameData);
+    return this._mapRedisRecordToGameItem(gameData);
   }
 
   public async getAllGamesRaw(
     paginationOpts: PaginationOpts<GameDTO>
   ): Promise<PaginatedResult<GameDTO[]>> {
-    const keys = await this._redisClient.keys(`${GAME_NAMESPACE}:*`);
+    const keys = await this.redisClient.keys(`${GAME_NAMESPACE}:*`);
 
     // Fetch all game data in one redis request
-    const pipeline = this._redisClient.pipeline();
+    const pipeline = this.redisClient.pipeline();
     keys.forEach((key) => pipeline.get(key));
     const pipelineResult = await pipeline.exec();
 
@@ -131,10 +119,9 @@ export class GameRepository {
   }
 
   public async getAllGames(
-    ctx: ApiContext,
     paginationOpts: PaginationOpts<GameDTO>
   ): Promise<PaginatedResult<GameListItemDTO[]>> {
-    const { ids, total } = await this._gameIdxManager.findGamesByIndex(
+    const { ids, total } = await this.gameIndexManager.findGamesByIndex(
       {}, // No filters for now
       paginationOpts
     );
@@ -157,13 +144,12 @@ export class GameRepository {
       userIds.add(game.createdBy);
     });
 
-    // TODO: Check if works
     const [users, packages] = await Promise.all([
-      this._getUserRepository(ctx.db).findByIds(Array.from(userIds), {
+      this.userRepository.findByIds(Array.from(userIds), {
         select: ["id", "username"],
         relations: [],
       }) as Promise<ShortUserInfo[]>,
-      this._getPackageRepository(ctx.db).findByIds(Array.from(packageIds), {
+      this.packageRepository.findByIds(Array.from(packageIds), {
         select: PACKAGE_SELECT_FIELDS,
         relations: ["author"],
         relationSelects: { author: ["id", "username"] },
@@ -211,14 +197,8 @@ export class GameRepository {
     };
   }
 
-  public async createGame(
-    ctx: ApiContext,
-    gameData: GameCreateDTO,
-    createdBy: User
-  ) {
-    const packageRepo = this._getPackageRepository(ctx.db);
-
-    const packageData = await packageRepo.get(gameData.packageId, {
+  public async createGame(gameData: GameCreateDTO, createdBy: User) {
+    const packageData = await this.packageRepository.get(gameData.packageId, {
       select: PACKAGE_SELECT_FIELDS,
       relations: ["author"],
       relationSelects: { author: ["id", "username"] },
@@ -235,7 +215,7 @@ export class GameRepository {
     const gameId = this._generateGameId();
     const key = await this.getGameKey(gameId);
 
-    if (await this._redisClient.get(key)) {
+    if (await this.redisClient.get(key)) {
       throw new ClientError(ClientResponse.BAD_GAME_CREATION);
     }
 
@@ -254,11 +234,11 @@ export class GameRepository {
       package: gameData.packageId,
     };
 
-    const pipeline = this._redisClient.pipeline();
+    const pipeline = this.redisClient.pipeline();
 
     pipeline.hset(key, this._serializeGame(gameDataRaw));
 
-    this._gameIdxManager.addGameToIndexesPipeline(
+    this.gameIndexManager.addGameToIndexesPipeline(
       pipeline,
       gameDataRaw.id,
       gameDataRaw
@@ -296,23 +276,19 @@ export class GameRepository {
       throw new ClientError(ClientResponse.GAME_NOT_FOUND);
     }
 
-    await this._gameIdxManager.removeGameFromIndexes(gameId, gameData);
-    await this._redisClient.del(key);
+    await this.gameIndexManager.removeGameFromIndexes(gameId, gameData);
+    await this.redisClient.del(key);
   }
 
   private async _mapRedisRecordToGameItem(
-    ctx: ApiContext,
     record: GameDTO
   ): Promise<GameListItemDTO | undefined> {
-    const userRepo = this._getUserRepository(ctx.db);
-    const packageRepo = this._getPackageRepository(ctx.db);
-
-    const createdBy = await userRepo.get(record.createdBy, {
+    const createdBy = await this.userRepository.get(record.createdBy, {
       select: ["id", "username"],
       relations: [],
     });
 
-    const packData = await packageRepo.get(record.package, {
+    const packData = await this.packageRepository.get(record.package, {
       select: PACKAGE_SELECT_FIELDS,
       relations: ["author"],
       relationSelects: { author: ["id", "username"] },
@@ -348,20 +324,6 @@ export class GameRepository {
         },
       },
     };
-  }
-
-  private _getPackageRepository(db: Database) {
-    if (!this._packageRepository) {
-      this._packageRepository = PackageRepository.getRepository(db);
-    }
-    return this._packageRepository;
-  }
-
-  private _getUserRepository(db: Database) {
-    if (!this._userRepository) {
-      this._userRepository = UserRepository.getRepository(db);
-    }
-    return this._userRepository;
   }
 
   private _generateGameId() {
@@ -419,7 +381,7 @@ export class GameRepository {
   }
 
   private async _fetchGameDetails(gameIds: string[]) {
-    const pipeline = this._redisClient.pipeline();
+    const pipeline = this.redisClient.pipeline();
     gameIds.forEach((id) => pipeline.hgetall(`${GAME_NAMESPACE}:${id}`));
 
     const results = await pipeline.exec();

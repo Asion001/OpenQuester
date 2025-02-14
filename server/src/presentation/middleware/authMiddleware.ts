@@ -1,6 +1,7 @@
 import { type NextFunction, type Request, type Response } from "express";
 import Joi from "joi";
 
+import { Container, CONTAINER_TYPES } from "application/Container";
 import { TranslateService as ts } from "application/services/text/TranslateService";
 import { USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
@@ -9,8 +10,6 @@ import { ServerResponse } from "domain/enums/ServerResponse";
 import { Session } from "domain/types/auth/session";
 import { SessionDTO } from "domain/types/dto/auth/SessionDTO";
 import { Environment, EnvType } from "infrastructure/config/Environment";
-import { Database } from "infrastructure/database/Database";
-import { AppDataSource } from "infrastructure/database/DataSource";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { Logger } from "infrastructure/utils/Logger";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
@@ -67,18 +66,16 @@ export const verifySession = async (
   }
 
   // TODO: Get from cache when implemented
-  const user = await UserRepository.getUserByRequest(
-    Database.getInstance(AppDataSource),
-    req,
-    {
-      select: USER_SELECT_FIELDS,
-      relations: ["avatar", "permissions"],
-      relationSelects: {
-        avatar: ["id", "filename"],
-        permissions: ["id", "name"],
-      },
-    }
-  );
+  const user = await Container.get<UserRepository>(
+    CONTAINER_TYPES.UserRepository
+  ).getUserByRequest(req, {
+    select: USER_SELECT_FIELDS,
+    relations: ["avatar", "permissions"],
+    relationSelects: {
+      avatar: ["id", "filename"],
+      permissions: ["id", "name"],
+    },
+  });
 
   if (!user) {
     return unauthorizedError(req, res);

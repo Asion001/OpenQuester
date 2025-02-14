@@ -1,13 +1,17 @@
 import cookieSignature from "cookie-signature";
 import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { type Express } from "express";
 
-import { type ApiContext } from "application/context/ApiContext";
-import { HttpStatus } from "domain/enums/HttpStatus";
+import { Environment } from "infrastructure/config/Environment";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { Logger } from "infrastructure/utils/Logger";
 
 export class DevelopmentRestApiController {
-  constructor(private readonly ctx: ApiContext) {
+  constructor(
+    private readonly app: Express,
+    private readonly userRepository: UserRepository,
+    private readonly env: Environment
+  ) {
     const dummyUser = {
       username: "dev-user",
       email: "dev@example.com",
@@ -16,11 +20,9 @@ export class DevelopmentRestApiController {
       avatar: null,
     };
 
-    this.ctx.app.post("/v1/dev/login", async (req, res) => {
+    this.app.post("/v1/dev/login", async (req, res) => {
       try {
-        const userRepo = UserRepository.getRepository(this.ctx.db);
-
-        let user = await userRepo.findOne(
+        let user = await this.userRepository.findOne(
           {
             username: dummyUser.username,
             email: dummyUser.email,
@@ -38,7 +40,7 @@ export class DevelopmentRestApiController {
         );
 
         if (!user) {
-          user = await userRepo.create(this.ctx.db, {
+          user = await this.userRepository.create({
             username: dummyUser.username,
             email: dummyUser.email,
             discord_id: dummyUser.discord_id,
@@ -55,7 +57,7 @@ export class DevelopmentRestApiController {
           // Signed session value to put it in Postman
           const signedSessionID =
             "s:" +
-            cookieSignature.sign(req.sessionID, this.ctx.env.SESSION_SECRET!);
+            cookieSignature.sign(req.sessionID, this.env.SESSION_SECRET!);
           res.json({
             success: true,
             user,
@@ -66,18 +68,6 @@ export class DevelopmentRestApiController {
         Logger.error(`DEV: Login error: ${error}`);
         res.status(500).json({ error: "Login failed" });
       }
-    });
-
-    // Dummy logout endpoint
-    this.ctx.app.post("/v1/dev/logout", (req, res) => {
-      req.session.destroy((err) => {
-        if (err) {
-          Logger.error(`DEV: Logout error: ${err}`);
-          return res.status(500).json({ error: "Logout failed" });
-        }
-        res.clearCookie("connect.sid");
-        res.status(HttpStatus.OK).json({ success: true });
-      });
     });
   }
 }

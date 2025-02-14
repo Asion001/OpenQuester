@@ -10,10 +10,12 @@ import {
   Unique,
 } from "typeorm";
 
+import { Container, CONTAINER_TYPES } from "application/Container";
 import { UserModel } from "domain/types/user/UserModel";
 import { File } from "infrastructure/database/models/File";
 import { Package } from "infrastructure/database/models/Package";
 import { Permission } from "infrastructure/database/models/Permission";
+import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 
 @Entity("user")
 @Unique(["email", "username", "discord_id"])
@@ -88,6 +90,25 @@ export class User implements UserModel {
   }
 
   public async toDTO() {
-    // TODO: Implement when global service locator implemented
+    const storage = Container.get<S3StorageService>(
+      CONTAINER_TYPES.S3StorageService
+    );
+
+    const avatarLink = this.avatar
+      ? await storage.get(this.avatar.filename)
+      : null;
+
+    return {
+      id: this.id,
+      username: this.username,
+      email: this.email,
+      birthday: this.birthday,
+      discordId: this.discord_id,
+      avatar: avatarLink,
+      permissions: this.permissions,
+      createdAt: this.created_at,
+      updatedAt: this.updated_at,
+      isDeleted: this.is_deleted,
+    };
   }
 }

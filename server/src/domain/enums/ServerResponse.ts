@@ -33,5 +33,8 @@ export enum ServerResponse {
   INVALID_ENV_TYPE = "Wrong ENV type, only [%types] allowed, but got '%type'",
   ENV_VAR_WRONG_TYPE = "Variable %var is wrong type, %expectedType expected but got variable %value of type %type",
 
+  // DI
+  DEPENDENCY_NOT_REGISTERED = `Dependency %name not registered`,
+
   INTERNAL_SERVER_ERROR = "Internal server error",
 }

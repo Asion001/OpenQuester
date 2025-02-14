@@ -1,14 +1,12 @@
-import { type Request, type Response, Router } from "express";
+import { Router, type Express, type Request, type Response } from "express";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 
-import { type ApiContext } from "application/context/ApiContext";
 import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
 import { HttpStatus } from "domain/enums/HttpStatus";
-import { StorageServiceModel } from "domain/types/file/StorageServiceModel";
 import { OQContentStructure } from "domain/types/file/structures/OQContentStructure";
 import { PackageModel } from "domain/types/package/PackageModel";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
-import { verifyContentJSONMiddleware } from "presentation/middleware/file/FileMiddleware";
+import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import {
   packIdScheme,
   uploadPackageScheme,
@@ -17,24 +15,15 @@ import { PaginationSchema } from "presentation/schemes/pagination/PaginationSche
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 export class PackageRestApiController {
-  private readonly _storageService: StorageServiceModel;
-
-  constructor(private readonly ctx: ApiContext) {
+  constructor(
+    private readonly app: Express,
+    private readonly storage: S3StorageService
+  ) {
     const router = Router();
-    const app = this.ctx.app;
 
-    this._storageService = this.ctx.serverServices.storage.createStorageService(
-      this.ctx,
-      "minio"
-    );
+    this.app.use("/v1/packages", router);
 
-    app.use("/v1/packages", router);
-
-    router.post(
-      "/",
-      verifyContentJSONMiddleware,
-      asyncHandler(this.uploadPackage)
-    );
+    router.post("/", asyncHandler(this.uploadPackage));
     router.get("/", asyncHandler(this.listPackages));
     router.get("/:id", asyncHandler(this.getPackage));
   }
@@ -44,10 +33,7 @@ export class PackageRestApiController {
       content: OQContentStructure;
     }>(req.body, uploadPackageScheme()).validate();
 
-    const data = await this._storageService.uploadPackage(
-      req,
-      validatedData.content
-    );
+    const data = await this.storage.uploadPackage(req, validatedData.content);
     return res.status(HttpStatus.OK).send(data);
   };
 
@@ -57,7 +43,7 @@ export class PackageRestApiController {
       packIdScheme()
     ).validate();
 
-    const data = await this._storageService.getPackage(validatedData.packId);
+    const data = await this.storage.getPackage(validatedData.packId);
     return res.status(HttpStatus.OK).send(data);
   };
 
@@ -72,7 +58,7 @@ export class PackageRestApiController {
       possibleSortByFields: ["id", "title", "created_at", "author"],
     }).validate();
 
-    const data = await this._storageService.listPackages(paginationOpts, {
+    const data = await this.storage.listPackages(paginationOpts, {
       select: PACKAGE_SELECT_FIELDS,
       relations: ["author"],
       relationSelects: { author: ["id", "username"] },

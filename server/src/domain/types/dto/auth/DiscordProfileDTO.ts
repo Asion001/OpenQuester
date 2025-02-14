@@ -1,5 +1,6 @@
 export interface DiscordProfileDTO {
   id: string;
   username: string;
-  email?: string | undefined;
+  email?: string | null;
+  avatar?: string | null;
 }
