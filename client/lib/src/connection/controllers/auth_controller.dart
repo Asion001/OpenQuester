@@ -44,7 +44,7 @@ class AuthController extends ChangeNotifier {
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       loading = false;
-      return (false, e.toString() + s.toString());
+      return (false, e.toString());
     }
   }
 
