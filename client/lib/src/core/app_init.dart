@@ -27,7 +27,7 @@ class AppInit {
   }
 
   static Future<String> getInitInfo() async {
-    var parameters = {
+    final parameters = {
       'Version': packageInfo.version,
       'Build number': packageInfo.buildNumber,
       'Api Domain': Env.apiUrl.toString(),
