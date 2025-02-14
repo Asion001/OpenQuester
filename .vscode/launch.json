@@ -17,6 +17,7 @@
       "type": "dart",
       "flutterMode": "debug",
       "toolArgs": [
+        "--wasm",
         "-d",
         "chrome",
         "--web-port",

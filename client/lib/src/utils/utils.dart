@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:universal_io/io.dart';
 
 final bool isDesktopPlatform =
-    Platform.isLinux || Platform.isWindows || Platform.isMacOS;
+    kIsWeb || kIsWasm
+        ? true
+        : Platform.isLinux || Platform.isWindows || Platform.isMacOS;

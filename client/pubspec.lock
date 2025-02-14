@@ -960,10 +960,11 @@ packages:
   oauth2_client:
     dependency: "direct main"
     description:
-      name: oauth2_client
-      sha256: db7e93d8097ad0dff1cb07cbe7158344fb32082f8f2ed60b32af84591fb81722
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: ad21b35dd1e942d8c399c24e4b9735609c065cb1
+      url: "https://github.com/ThexXTURBOXx/oauth2_client.git"
+    source: git
     version: "3.3.0"
   openapi:
     dependency: "direct main"
@@ -1472,6 +1473,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
+  universal_web:
+    dependency: "direct main"
+    description:
+      name: universal_web
+      sha256: fd161c6424fd78625097429b0050c2ea967304fb2b8b5ea0c0f51cd41b915053
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0+2"
   url_launcher:
     dependency: transitive
     description:
