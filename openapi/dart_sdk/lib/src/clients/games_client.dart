@@ -5,9 +5,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../models/game_create_data.dart';
+import '../models/game_list_item.dart';
 import '../models/games_sort_by.dart';
-import '../models/i_game_create_data.dart';
-import '../models/i_game_list_item.dart';
 import '../models/order_direction.dart';
 import '../models/paginated_games.dart';
 import '../models/pagination_limit.dart';
@@ -32,15 +32,15 @@ abstract class GamesClient {
 
   /// Create a new game
   @POST('/v1/games')
-  Future<IGameListItem> postV1Games({
-    @Body() required IGameCreateData body,
+  Future<GameListItem> postV1Games({
+    @Body() required GameCreateData body,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
 
   /// Get game by id
   @GET('/v1/games/{id}')
-  Future<IGameListItem> getV1GamesId({
+  Future<GameListItem> getV1GamesId({
     @Path('id') required String id,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,

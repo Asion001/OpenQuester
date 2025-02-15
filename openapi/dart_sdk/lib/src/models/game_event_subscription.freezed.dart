@@ -21,8 +21,8 @@ GameEventSubscription _$GameEventSubscriptionFromJson(
 
 /// @nodoc
 mixin _$GameEventSubscription {
-  IGameEvent get event => throw _privateConstructorUsedError;
-  IGameListItem get data => throw _privateConstructorUsedError;
+  GameEvent get event => throw _privateConstructorUsedError;
+  GameListItem get data => throw _privateConstructorUsedError;
 
   /// Serializes this GameEventSubscription to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,9 +40,9 @@ abstract class $GameEventSubscriptionCopyWith<$Res> {
           $Res Function(GameEventSubscription) then) =
       _$GameEventSubscriptionCopyWithImpl<$Res, GameEventSubscription>;
   @useResult
-  $Res call({IGameEvent event, IGameListItem data});
+  $Res call({GameEvent event, GameListItem data});
 
-  $IGameListItemCopyWith<$Res> get data;
+  $GameListItemCopyWith<$Res> get data;
 }
 
 /// @nodoc
@@ -68,11 +68,11 @@ class _$GameEventSubscriptionCopyWithImpl<$Res,
       event: null == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
-              as IGameEvent,
+              as GameEvent,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as IGameListItem,
+              as GameListItem,
     ) as $Val);
   }
 
@@ -80,8 +80,8 @@ class _$GameEventSubscriptionCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $IGameListItemCopyWith<$Res> get data {
-    return $IGameListItemCopyWith<$Res>(_value.data, (value) {
+  $GameListItemCopyWith<$Res> get data {
+    return $GameListItemCopyWith<$Res>(_value.data, (value) {
       return _then(_value.copyWith(data: value) as $Val);
     });
   }
@@ -96,10 +96,10 @@ abstract class _$$GameEventSubscriptionImplCopyWith<$Res>
       __$$GameEventSubscriptionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({IGameEvent event, IGameListItem data});
+  $Res call({GameEvent event, GameListItem data});
 
   @override
-  $IGameListItemCopyWith<$Res> get data;
+  $GameListItemCopyWith<$Res> get data;
 }
 
 /// @nodoc
@@ -123,11 +123,11 @@ class __$$GameEventSubscriptionImplCopyWithImpl<$Res>
       event: null == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
-              as IGameEvent,
+              as GameEvent,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as IGameListItem,
+              as GameListItem,
     ));
   }
 }
@@ -141,9 +141,9 @@ class _$GameEventSubscriptionImpl implements _GameEventSubscription {
       _$$GameEventSubscriptionImplFromJson(json);
 
   @override
-  final IGameEvent event;
+  final GameEvent event;
   @override
-  final IGameListItem data;
+  final GameListItem data;
 
   @override
   String toString() {
@@ -182,16 +182,16 @@ class _$GameEventSubscriptionImpl implements _GameEventSubscription {
 
 abstract class _GameEventSubscription implements GameEventSubscription {
   const factory _GameEventSubscription(
-      {required final IGameEvent event,
-      required final IGameListItem data}) = _$GameEventSubscriptionImpl;
+      {required final GameEvent event,
+      required final GameListItem data}) = _$GameEventSubscriptionImpl;
 
   factory _GameEventSubscription.fromJson(Map<String, dynamic> json) =
       _$GameEventSubscriptionImpl.fromJson;
 
   @override
-  IGameEvent get event;
+  GameEvent get event;
   @override
-  IGameListItem get data;
+  GameListItem get data;
 
   /// Create a copy of GameEventSubscription
   /// with the given fields replaced by the non-null parameter values.

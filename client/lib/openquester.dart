@@ -28,7 +28,6 @@ export 'src/core/ui/max_size_container.dart';
 export 'src/core/ui/ui_mode_utils.dart';
 export 'src/features/clicker/clicker_page.dart';
 export 'src/features/games/controllers/games_list_controller.dart';
-export 'src/features/games/data/game_item.dart';
 export 'src/features/games/view/game_list_item.dart';
 export 'src/features/games/view/games_list.dart';
 export 'src/features/home/home.dart';

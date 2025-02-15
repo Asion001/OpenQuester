@@ -1,30 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'i_game_list_item.dart';
+part of 'game_list_item.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$IGameListItemImpl _$$IGameListItemImplFromJson(Map<String, dynamic> json) =>
-    _$IGameListItemImpl(
+_$GameListItemImpl _$$GameListItemImplFromJson(Map<String, dynamic> json) =>
+    _$GameListItemImpl(
       id: json['id'] as String,
       createdBy:
-          IShortUserInfo.fromJson(json['createdBy'] as Map<String, dynamic>),
+          ShortUserInfo.fromJson(json['createdBy'] as Map<String, dynamic>),
       title: json['title'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      ageRestriction: IGameListItemAgeRestriction.fromJson(
-          json['ageRestriction'] as String),
+      ageRestriction:
+          GameListItemAgeRestriction.fromJson(json['ageRestriction'] as String),
       currentRound: (json['currentRound'] as num).toInt(),
       players: (json['players'] as num).toInt(),
       maxPlayers: (json['maxPlayers'] as num).toInt(),
-      package: IPackageItem.fromJson(json['package'] as Map<String, dynamic>),
       startedAt: json['startedAt'] == null
           ? null
           : DateTime.parse(json['startedAt'] as String),
+      package: PackageItem.fromJson(json['package'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$IGameListItemImplToJson(_$IGameListItemImpl instance) =>
+Map<String, dynamic> _$$GameListItemImplToJson(_$GameListItemImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createdBy': instance.createdBy,
@@ -34,6 +34,6 @@ Map<String, dynamic> _$$IGameListItemImplToJson(_$IGameListItemImpl instance) =>
       'currentRound': instance.currentRound,
       'players': instance.players,
       'maxPlayers': instance.maxPlayers,
-      'package': instance.package,
       'startedAt': instance.startedAt?.toIso8601String(),
+      'package': instance.package,
     };

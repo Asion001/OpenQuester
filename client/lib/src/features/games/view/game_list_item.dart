@@ -83,7 +83,7 @@ class GameListItemWidget extends WatchingWidget {
 
 class _GameListItemBadges extends StatelessWidget {
   const _GameListItemBadges(this.item);
-  final IGameListItem item;
+  final GameListItem item;
 
   @override
   Widget build(BuildContext context) {

@@ -66,8 +66,8 @@ class _GamesClient implements GamesClient {
   }
 
   @override
-  Future<IGameListItem> postV1Games({
-    required IGameCreateData body,
+  Future<GameListItem> postV1Games({
+    required GameCreateData body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -91,9 +91,9 @@ class _GamesClient implements GamesClient {
       path: '/v1/games',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late IGameListItem _value;
+    late GameListItem _value;
     try {
-      _value = IGameListItem.fromJson(_result.data!);
+      _value = GameListItem.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -102,7 +102,7 @@ class _GamesClient implements GamesClient {
   }
 
   @override
-  Future<IGameListItem> getV1GamesId({
+  Future<GameListItem> getV1GamesId({
     required String id,
     Map<String, dynamic>? extras,
     RequestOptions? options,
@@ -127,9 +127,9 @@ class _GamesClient implements GamesClient {
       path: '/v1/games/${id}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late IGameListItem _value;
+    late GameListItem _value;
     try {
-      _value = IGameListItem.fromJson(_result.data!);
+      _value = GameListItem.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

@@ -22,14 +22,14 @@ class GamesListController extends ListControllerBase<GameListItem> {
     final gameEvent = GameEventSubscription.fromJson(data);
     final game = gameEvent.data;
     switch (gameEvent.event) {
-      case IGameEvent.changed:
-      case IGameEvent.started:
+      case GameEvent.changed:
+      case GameEvent.started:
         updateItem(game);
-      case IGameEvent.created:
+      case GameEvent.created:
         addFirstItem(game);
-      case IGameEvent.deleted:
+      case GameEvent.deleted:
         deleteItem(game);
-      case IGameEvent.$unknown:
+      case GameEvent.$unknown:
         break;
     }
   }

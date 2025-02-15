@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'i_package_item.dart';
+part of 'package_item.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,60 +14,60 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-IPackageItem _$IPackageItemFromJson(Map<String, dynamic> json) {
-  return _IPackageItem.fromJson(json);
+PackageItem _$PackageItemFromJson(Map<String, dynamic> json) {
+  return _PackageItem.fromJson(json);
 }
 
 /// @nodoc
-mixin _$IPackageItem {
+mixin _$PackageItem {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  IPackageItemAgeRestriction get ageRestriction =>
+  PackageItemAgeRestriction get ageRestriction =>
       throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   int get rounds => throw _privateConstructorUsedError;
-  IShortUserInfo get author => throw _privateConstructorUsedError;
+  ShortUserInfo get author => throw _privateConstructorUsedError;
   List<String> get tags => throw _privateConstructorUsedError;
 
-  /// Serializes this IPackageItem to a JSON map.
+  /// Serializes this PackageItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of IPackageItem
+  /// Create a copy of PackageItem
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $IPackageItemCopyWith<IPackageItem> get copyWith =>
+  $PackageItemCopyWith<PackageItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $IPackageItemCopyWith<$Res> {
-  factory $IPackageItemCopyWith(
-          IPackageItem value, $Res Function(IPackageItem) then) =
-      _$IPackageItemCopyWithImpl<$Res, IPackageItem>;
+abstract class $PackageItemCopyWith<$Res> {
+  factory $PackageItemCopyWith(
+          PackageItem value, $Res Function(PackageItem) then) =
+      _$PackageItemCopyWithImpl<$Res, PackageItem>;
   @useResult
   $Res call(
       {int id,
       String title,
-      IPackageItemAgeRestriction ageRestriction,
+      PackageItemAgeRestriction ageRestriction,
       DateTime createdAt,
       int rounds,
-      IShortUserInfo author,
+      ShortUserInfo author,
       List<String> tags});
 
-  $IShortUserInfoCopyWith<$Res> get author;
+  $ShortUserInfoCopyWith<$Res> get author;
 }
 
 /// @nodoc
-class _$IPackageItemCopyWithImpl<$Res, $Val extends IPackageItem>
-    implements $IPackageItemCopyWith<$Res> {
-  _$IPackageItemCopyWithImpl(this._value, this._then);
+class _$PackageItemCopyWithImpl<$Res, $Val extends PackageItem>
+    implements $PackageItemCopyWith<$Res> {
+  _$PackageItemCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of IPackageItem
+  /// Create a copy of PackageItem
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -92,7 +92,7 @@ class _$IPackageItemCopyWithImpl<$Res, $Val extends IPackageItem>
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as IPackageItemAgeRestriction,
+              as PackageItemAgeRestriction,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -104,7 +104,7 @@ class _$IPackageItemCopyWithImpl<$Res, $Val extends IPackageItem>
       author: null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
-              as IShortUserInfo,
+              as ShortUserInfo,
       tags: null == tags
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
@@ -112,47 +112,47 @@ class _$IPackageItemCopyWithImpl<$Res, $Val extends IPackageItem>
     ) as $Val);
   }
 
-  /// Create a copy of IPackageItem
+  /// Create a copy of PackageItem
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $IShortUserInfoCopyWith<$Res> get author {
-    return $IShortUserInfoCopyWith<$Res>(_value.author, (value) {
+  $ShortUserInfoCopyWith<$Res> get author {
+    return $ShortUserInfoCopyWith<$Res>(_value.author, (value) {
       return _then(_value.copyWith(author: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$IPackageItemImplCopyWith<$Res>
-    implements $IPackageItemCopyWith<$Res> {
-  factory _$$IPackageItemImplCopyWith(
-          _$IPackageItemImpl value, $Res Function(_$IPackageItemImpl) then) =
-      __$$IPackageItemImplCopyWithImpl<$Res>;
+abstract class _$$PackageItemImplCopyWith<$Res>
+    implements $PackageItemCopyWith<$Res> {
+  factory _$$PackageItemImplCopyWith(
+          _$PackageItemImpl value, $Res Function(_$PackageItemImpl) then) =
+      __$$PackageItemImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {int id,
       String title,
-      IPackageItemAgeRestriction ageRestriction,
+      PackageItemAgeRestriction ageRestriction,
       DateTime createdAt,
       int rounds,
-      IShortUserInfo author,
+      ShortUserInfo author,
       List<String> tags});
 
   @override
-  $IShortUserInfoCopyWith<$Res> get author;
+  $ShortUserInfoCopyWith<$Res> get author;
 }
 
 /// @nodoc
-class __$$IPackageItemImplCopyWithImpl<$Res>
-    extends _$IPackageItemCopyWithImpl<$Res, _$IPackageItemImpl>
-    implements _$$IPackageItemImplCopyWith<$Res> {
-  __$$IPackageItemImplCopyWithImpl(
-      _$IPackageItemImpl _value, $Res Function(_$IPackageItemImpl) _then)
+class __$$PackageItemImplCopyWithImpl<$Res>
+    extends _$PackageItemCopyWithImpl<$Res, _$PackageItemImpl>
+    implements _$$PackageItemImplCopyWith<$Res> {
+  __$$PackageItemImplCopyWithImpl(
+      _$PackageItemImpl _value, $Res Function(_$PackageItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of IPackageItem
+  /// Create a copy of PackageItem
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -165,7 +165,7 @@ class __$$IPackageItemImplCopyWithImpl<$Res>
     Object? author = null,
     Object? tags = null,
   }) {
-    return _then(_$IPackageItemImpl(
+    return _then(_$PackageItemImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -177,7 +177,7 @@ class __$$IPackageItemImplCopyWithImpl<$Res>
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as IPackageItemAgeRestriction,
+              as PackageItemAgeRestriction,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -189,7 +189,7 @@ class __$$IPackageItemImplCopyWithImpl<$Res>
       author: null == author
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
-              as IShortUserInfo,
+              as ShortUserInfo,
       tags: null == tags
           ? _value._tags
           : tags // ignore: cast_nullable_to_non_nullable
@@ -200,8 +200,8 @@ class __$$IPackageItemImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$IPackageItemImpl implements _IPackageItem {
-  const _$IPackageItemImpl(
+class _$PackageItemImpl implements _PackageItem {
+  const _$PackageItemImpl(
       {required this.id,
       required this.title,
       required this.ageRestriction,
@@ -211,21 +211,21 @@ class _$IPackageItemImpl implements _IPackageItem {
       required final List<String> tags})
       : _tags = tags;
 
-  factory _$IPackageItemImpl.fromJson(Map<String, dynamic> json) =>
-      _$$IPackageItemImplFromJson(json);
+  factory _$PackageItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PackageItemImplFromJson(json);
 
   @override
   final int id;
   @override
   final String title;
   @override
-  final IPackageItemAgeRestriction ageRestriction;
+  final PackageItemAgeRestriction ageRestriction;
   @override
   final DateTime createdAt;
   @override
   final int rounds;
   @override
-  final IShortUserInfo author;
+  final ShortUserInfo author;
   final List<String> _tags;
   @override
   List<String> get tags {
@@ -236,14 +236,14 @@ class _$IPackageItemImpl implements _IPackageItem {
 
   @override
   String toString() {
-    return 'IPackageItem(id: $id, title: $title, ageRestriction: $ageRestriction, createdAt: $createdAt, rounds: $rounds, author: $author, tags: $tags)';
+    return 'PackageItem(id: $id, title: $title, ageRestriction: $ageRestriction, createdAt: $createdAt, rounds: $rounds, author: $author, tags: $tags)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$IPackageItemImpl &&
+            other is _$PackageItemImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.ageRestriction, ageRestriction) ||
@@ -260,54 +260,54 @@ class _$IPackageItemImpl implements _IPackageItem {
   int get hashCode => Object.hash(runtimeType, id, title, ageRestriction,
       createdAt, rounds, author, const DeepCollectionEquality().hash(_tags));
 
-  /// Create a copy of IPackageItem
+  /// Create a copy of PackageItem
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$IPackageItemImplCopyWith<_$IPackageItemImpl> get copyWith =>
-      __$$IPackageItemImplCopyWithImpl<_$IPackageItemImpl>(this, _$identity);
+  _$$PackageItemImplCopyWith<_$PackageItemImpl> get copyWith =>
+      __$$PackageItemImplCopyWithImpl<_$PackageItemImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IPackageItemImplToJson(
+    return _$$PackageItemImplToJson(
       this,
     );
   }
 }
 
-abstract class _IPackageItem implements IPackageItem {
-  const factory _IPackageItem(
+abstract class _PackageItem implements PackageItem {
+  const factory _PackageItem(
       {required final int id,
       required final String title,
-      required final IPackageItemAgeRestriction ageRestriction,
+      required final PackageItemAgeRestriction ageRestriction,
       required final DateTime createdAt,
       required final int rounds,
-      required final IShortUserInfo author,
-      required final List<String> tags}) = _$IPackageItemImpl;
+      required final ShortUserInfo author,
+      required final List<String> tags}) = _$PackageItemImpl;
 
-  factory _IPackageItem.fromJson(Map<String, dynamic> json) =
-      _$IPackageItemImpl.fromJson;
+  factory _PackageItem.fromJson(Map<String, dynamic> json) =
+      _$PackageItemImpl.fromJson;
 
   @override
   int get id;
   @override
   String get title;
   @override
-  IPackageItemAgeRestriction get ageRestriction;
+  PackageItemAgeRestriction get ageRestriction;
   @override
   DateTime get createdAt;
   @override
   int get rounds;
   @override
-  IShortUserInfo get author;
+  ShortUserInfo get author;
   @override
   List<String> get tags;
 
-  /// Create a copy of IPackageItem
+  /// Create a copy of PackageItem
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$IPackageItemImplCopyWith<_$IPackageItemImpl> get copyWith =>
+  _$$PackageItemImplCopyWith<_$PackageItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

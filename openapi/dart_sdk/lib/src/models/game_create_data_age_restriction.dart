@@ -5,7 +5,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 @JsonEnum()
-enum IPackageItemAgeRestriction {
+enum GameCreateDataAgeRestriction {
   @JsonValue('A18')
   a18('A18'),
   @JsonValue('A16')
@@ -17,9 +17,9 @@ enum IPackageItemAgeRestriction {
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 
-  const IPackageItemAgeRestriction(this.json);
+  const GameCreateDataAgeRestriction(this.json);
 
-  factory IPackageItemAgeRestriction.fromJson(String json) => values.firstWhere(
+  factory GameCreateDataAgeRestriction.fromJson(String json) => values.firstWhere(
         (e) => e.json == json,
         orElse: () => $unknown,
       );

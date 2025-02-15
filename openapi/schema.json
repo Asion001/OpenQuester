@@ -871,7 +871,7 @@
             "type": ["string", "null"],
             "description": "link on file GET",
             "examples": [
-              "https://s3.asion.dev/openquester-sample-bucket/e/ec/ec65cd3756490723f8bcc3bc432b94a7"
+              "https://s3.example.com/openquester-sample-bucket/e/ec/ec65cd3756490723f8bcc3bc432b94a7"
             ]
           },
           "created_at": {

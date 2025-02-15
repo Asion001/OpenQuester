@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'i_game_create_data.dart';
+part of 'game_create_data.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,54 +14,54 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-IGameCreateData _$IGameCreateDataFromJson(Map<String, dynamic> json) {
-  return _IGameCreateData.fromJson(json);
+GameCreateData _$GameCreateDataFromJson(Map<String, dynamic> json) {
+  return _GameCreateData.fromJson(json);
 }
 
 /// @nodoc
-mixin _$IGameCreateData {
+mixin _$GameCreateData {
   String get title => throw _privateConstructorUsedError;
   int get packageId => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
-  IGameCreateDataAgeRestriction get ageRestriction =>
+  GameCreateDataAgeRestriction get ageRestriction =>
       throw _privateConstructorUsedError;
   int get maxPlayers => throw _privateConstructorUsedError;
 
-  /// Serializes this IGameCreateData to a JSON map.
+  /// Serializes this GameCreateData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of IGameCreateData
+  /// Create a copy of GameCreateData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $IGameCreateDataCopyWith<IGameCreateData> get copyWith =>
+  $GameCreateDataCopyWith<GameCreateData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $IGameCreateDataCopyWith<$Res> {
-  factory $IGameCreateDataCopyWith(
-          IGameCreateData value, $Res Function(IGameCreateData) then) =
-      _$IGameCreateDataCopyWithImpl<$Res, IGameCreateData>;
+abstract class $GameCreateDataCopyWith<$Res> {
+  factory $GameCreateDataCopyWith(
+          GameCreateData value, $Res Function(GameCreateData) then) =
+      _$GameCreateDataCopyWithImpl<$Res, GameCreateData>;
   @useResult
   $Res call(
       {String title,
       int packageId,
       bool isPrivate,
-      IGameCreateDataAgeRestriction ageRestriction,
+      GameCreateDataAgeRestriction ageRestriction,
       int maxPlayers});
 }
 
 /// @nodoc
-class _$IGameCreateDataCopyWithImpl<$Res, $Val extends IGameCreateData>
-    implements $IGameCreateDataCopyWith<$Res> {
-  _$IGameCreateDataCopyWithImpl(this._value, this._then);
+class _$GameCreateDataCopyWithImpl<$Res, $Val extends GameCreateData>
+    implements $GameCreateDataCopyWith<$Res> {
+  _$GameCreateDataCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of IGameCreateData
+  /// Create a copy of GameCreateData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -88,7 +88,7 @@ class _$IGameCreateDataCopyWithImpl<$Res, $Val extends IGameCreateData>
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as IGameCreateDataAgeRestriction,
+              as GameCreateDataAgeRestriction,
       maxPlayers: null == maxPlayers
           ? _value.maxPlayers
           : maxPlayers // ignore: cast_nullable_to_non_nullable
@@ -98,30 +98,30 @@ class _$IGameCreateDataCopyWithImpl<$Res, $Val extends IGameCreateData>
 }
 
 /// @nodoc
-abstract class _$$IGameCreateDataImplCopyWith<$Res>
-    implements $IGameCreateDataCopyWith<$Res> {
-  factory _$$IGameCreateDataImplCopyWith(_$IGameCreateDataImpl value,
-          $Res Function(_$IGameCreateDataImpl) then) =
-      __$$IGameCreateDataImplCopyWithImpl<$Res>;
+abstract class _$$GameCreateDataImplCopyWith<$Res>
+    implements $GameCreateDataCopyWith<$Res> {
+  factory _$$GameCreateDataImplCopyWith(_$GameCreateDataImpl value,
+          $Res Function(_$GameCreateDataImpl) then) =
+      __$$GameCreateDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String title,
       int packageId,
       bool isPrivate,
-      IGameCreateDataAgeRestriction ageRestriction,
+      GameCreateDataAgeRestriction ageRestriction,
       int maxPlayers});
 }
 
 /// @nodoc
-class __$$IGameCreateDataImplCopyWithImpl<$Res>
-    extends _$IGameCreateDataCopyWithImpl<$Res, _$IGameCreateDataImpl>
-    implements _$$IGameCreateDataImplCopyWith<$Res> {
-  __$$IGameCreateDataImplCopyWithImpl(
-      _$IGameCreateDataImpl _value, $Res Function(_$IGameCreateDataImpl) _then)
+class __$$GameCreateDataImplCopyWithImpl<$Res>
+    extends _$GameCreateDataCopyWithImpl<$Res, _$GameCreateDataImpl>
+    implements _$$GameCreateDataImplCopyWith<$Res> {
+  __$$GameCreateDataImplCopyWithImpl(
+      _$GameCreateDataImpl _value, $Res Function(_$GameCreateDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of IGameCreateData
+  /// Create a copy of GameCreateData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -132,7 +132,7 @@ class __$$IGameCreateDataImplCopyWithImpl<$Res>
     Object? ageRestriction = null,
     Object? maxPlayers = null,
   }) {
-    return _then(_$IGameCreateDataImpl(
+    return _then(_$GameCreateDataImpl(
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -148,7 +148,7 @@ class __$$IGameCreateDataImplCopyWithImpl<$Res>
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as IGameCreateDataAgeRestriction,
+              as GameCreateDataAgeRestriction,
       maxPlayers: null == maxPlayers
           ? _value.maxPlayers
           : maxPlayers // ignore: cast_nullable_to_non_nullable
@@ -159,16 +159,16 @@ class __$$IGameCreateDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$IGameCreateDataImpl implements _IGameCreateData {
-  const _$IGameCreateDataImpl(
+class _$GameCreateDataImpl implements _GameCreateData {
+  const _$GameCreateDataImpl(
       {required this.title,
       required this.packageId,
       required this.isPrivate,
       required this.ageRestriction,
       required this.maxPlayers});
 
-  factory _$IGameCreateDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$IGameCreateDataImplFromJson(json);
+  factory _$GameCreateDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GameCreateDataImplFromJson(json);
 
   @override
   final String title;
@@ -177,20 +177,20 @@ class _$IGameCreateDataImpl implements _IGameCreateData {
   @override
   final bool isPrivate;
   @override
-  final IGameCreateDataAgeRestriction ageRestriction;
+  final GameCreateDataAgeRestriction ageRestriction;
   @override
   final int maxPlayers;
 
   @override
   String toString() {
-    return 'IGameCreateData(title: $title, packageId: $packageId, isPrivate: $isPrivate, ageRestriction: $ageRestriction, maxPlayers: $maxPlayers)';
+    return 'GameCreateData(title: $title, packageId: $packageId, isPrivate: $isPrivate, ageRestriction: $ageRestriction, maxPlayers: $maxPlayers)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$IGameCreateDataImpl &&
+            other is _$GameCreateDataImpl &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.packageId, packageId) ||
                 other.packageId == packageId) &&
@@ -207,33 +207,33 @@ class _$IGameCreateDataImpl implements _IGameCreateData {
   int get hashCode => Object.hash(
       runtimeType, title, packageId, isPrivate, ageRestriction, maxPlayers);
 
-  /// Create a copy of IGameCreateData
+  /// Create a copy of GameCreateData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$IGameCreateDataImplCopyWith<_$IGameCreateDataImpl> get copyWith =>
-      __$$IGameCreateDataImplCopyWithImpl<_$IGameCreateDataImpl>(
+  _$$GameCreateDataImplCopyWith<_$GameCreateDataImpl> get copyWith =>
+      __$$GameCreateDataImplCopyWithImpl<_$GameCreateDataImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IGameCreateDataImplToJson(
+    return _$$GameCreateDataImplToJson(
       this,
     );
   }
 }
 
-abstract class _IGameCreateData implements IGameCreateData {
-  const factory _IGameCreateData(
+abstract class _GameCreateData implements GameCreateData {
+  const factory _GameCreateData(
       {required final String title,
       required final int packageId,
       required final bool isPrivate,
-      required final IGameCreateDataAgeRestriction ageRestriction,
-      required final int maxPlayers}) = _$IGameCreateDataImpl;
+      required final GameCreateDataAgeRestriction ageRestriction,
+      required final int maxPlayers}) = _$GameCreateDataImpl;
 
-  factory _IGameCreateData.fromJson(Map<String, dynamic> json) =
-      _$IGameCreateDataImpl.fromJson;
+  factory _GameCreateData.fromJson(Map<String, dynamic> json) =
+      _$GameCreateDataImpl.fromJson;
 
   @override
   String get title;
@@ -242,14 +242,14 @@ abstract class _IGameCreateData implements IGameCreateData {
   @override
   bool get isPrivate;
   @override
-  IGameCreateDataAgeRestriction get ageRestriction;
+  GameCreateDataAgeRestriction get ageRestriction;
   @override
   int get maxPlayers;
 
-  /// Create a copy of IGameCreateData
+  /// Create a copy of GameCreateData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$IGameCreateDataImplCopyWith<_$IGameCreateDataImpl> get copyWith =>
+  _$$GameCreateDataImplCopyWith<_$GameCreateDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

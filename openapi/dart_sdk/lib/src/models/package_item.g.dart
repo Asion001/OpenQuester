@@ -1,24 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'i_package_item.dart';
+part of 'package_item.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$IPackageItemImpl _$$IPackageItemImplFromJson(Map<String, dynamic> json) =>
-    _$IPackageItemImpl(
+_$PackageItemImpl _$$PackageItemImplFromJson(Map<String, dynamic> json) =>
+    _$PackageItemImpl(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       ageRestriction:
-          IPackageItemAgeRestriction.fromJson(json['ageRestriction'] as String),
+          PackageItemAgeRestriction.fromJson(json['ageRestriction'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
       rounds: (json['rounds'] as num).toInt(),
-      author: IShortUserInfo.fromJson(json['author'] as Map<String, dynamic>),
+      author: ShortUserInfo.fromJson(json['author'] as Map<String, dynamic>),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$IPackageItemImplToJson(_$IPackageItemImpl instance) =>
+Map<String, dynamic> _$$PackageItemImplToJson(_$PackageItemImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
