@@ -25,13 +25,14 @@ export class MiddlewareController {
       cors({
         credentials: true,
         origin: this.ctx.env.CLIENT_URL,
+        allowedHeaders: ["Content-Type", "Authorization", "Set-Cookie"],
       })
     );
     this.ctx.app.disable("x-powered-by");
     this.ctx.app.use(logMiddleware);
 
     // Trust first proxy to enable secure cookies
-    this.ctx.app.set("trust proxy", 1);
+    this.ctx.app.set("trust proxy", "loopback, linklocal, uniquelocal");
 
     // Session
     this.ctx.app.use(
@@ -41,7 +42,7 @@ export class MiddlewareController {
         resave: false,
         saveUninitialized: false,
         cookie: {
-          secure: this.ctx.env.ENV === EnvType.PROD,
+          secure: this.ctx.env.ENV === EnvType.PROD ? true : false,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
           domain: `.${this.ctx.env.CLIENT_DOMAIN}`,
           sameSite: "none",
