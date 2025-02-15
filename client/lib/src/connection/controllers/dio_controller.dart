@@ -24,10 +24,8 @@ class DioController {
 
     return BaseOptions(
       persistentConnection: true,
-      headers: {
-        'Content-Type': 'application/json',
-        if (!kIsWeb) 'Accept-Encoding': acceptEncoding,
-      },
+      contentType: 'application/json',
+      headers: {if (!kIsWeb) 'Accept-Encoding': acceptEncoding},
     );
   }
 
