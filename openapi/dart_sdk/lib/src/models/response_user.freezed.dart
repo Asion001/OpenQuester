@@ -29,7 +29,7 @@ mixin _$ResponseUser {
   /// link on file GET
   String? get avatar => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
   bool get isDeleted => throw _privateConstructorUsedError;
   List<Permissions> get permissions => throw _privateConstructorUsedError;
 
@@ -57,7 +57,7 @@ abstract class $ResponseUserCopyWith<$Res> {
       DateTime? birthday,
       String? avatar,
       DateTime createdAt,
-      DateTime? updatedAt,
+      DateTime updatedAt,
       bool isDeleted,
       List<Permissions> permissions});
 }
@@ -84,7 +84,7 @@ class _$ResponseUserCopyWithImpl<$Res, $Val extends ResponseUser>
     Object? birthday = freezed,
     Object? avatar = freezed,
     Object? createdAt = null,
-    Object? updatedAt = freezed,
+    Object? updatedAt = null,
     Object? isDeleted = null,
     Object? permissions = null,
   }) {
@@ -117,10 +117,10 @@ class _$ResponseUserCopyWithImpl<$Res, $Val extends ResponseUser>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: freezed == updatedAt
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       isDeleted: null == isDeleted
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
@@ -149,7 +149,7 @@ abstract class _$$ResponseUserImplCopyWith<$Res>
       DateTime? birthday,
       String? avatar,
       DateTime createdAt,
-      DateTime? updatedAt,
+      DateTime updatedAt,
       bool isDeleted,
       List<Permissions> permissions});
 }
@@ -174,7 +174,7 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
     Object? birthday = freezed,
     Object? avatar = freezed,
     Object? createdAt = null,
-    Object? updatedAt = freezed,
+    Object? updatedAt = null,
     Object? isDeleted = null,
     Object? permissions = null,
   }) {
@@ -207,10 +207,10 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      updatedAt: freezed == updatedAt
+      updatedAt: null == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as DateTime,
       isDeleted: null == isDeleted
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
@@ -259,7 +259,7 @@ class _$ResponseUserImpl implements _ResponseUser {
   @override
   final DateTime createdAt;
   @override
-  final DateTime? updatedAt;
+  final DateTime updatedAt;
   @override
   final bool isDeleted;
   final List<Permissions> _permissions;
@@ -339,7 +339,7 @@ abstract class _ResponseUser implements ResponseUser {
       required final DateTime? birthday,
       required final String? avatar,
       required final DateTime createdAt,
-      required final DateTime? updatedAt,
+      required final DateTime updatedAt,
       required final bool isDeleted,
       required final List<Permissions> permissions}) = _$ResponseUserImpl;
 
@@ -363,7 +363,7 @@ abstract class _ResponseUser implements ResponseUser {
   @override
   DateTime get createdAt;
   @override
-  DateTime? get updatedAt;
+  DateTime get updatedAt;
   @override
   bool get isDeleted;
   @override

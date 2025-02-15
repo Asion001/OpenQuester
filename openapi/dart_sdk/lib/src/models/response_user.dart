@@ -21,7 +21,7 @@ class ResponseUser with _$ResponseUser {
     /// link on file GET
     required String? avatar,
     required DateTime createdAt,
-    required DateTime? updatedAt,
+    required DateTime updatedAt,
     required bool isDeleted,
     required List<Permissions> permissions,
   }) = _ResponseUser;

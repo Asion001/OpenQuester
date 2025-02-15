@@ -884,7 +884,7 @@
             "examples": ["2024-01-01T00:00:00Z"]
           },
           "updatedAt": {
-            "type": ["string", "null"],
+            "type": "string",
             "format": "date-time",
             "examples": ["2024-01-01T00:00:00Z"]
           },

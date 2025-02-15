@@ -17,9 +17,7 @@ _$ResponseUserImpl _$$ResponseUserImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['birthday'] as String),
       avatar: json['avatar'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
-          ? null
-          : DateTime.parse(json['updatedAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
       isDeleted: json['isDeleted'] as bool,
       permissions: (json['permissions'] as List<dynamic>)
           .map((e) => Permissions.fromJson(e as Map<String, dynamic>))
@@ -35,7 +33,7 @@ Map<String, dynamic> _$$ResponseUserImplToJson(_$ResponseUserImpl instance) =>
       'birthday': instance.birthday?.toIso8601String(),
       'avatar': instance.avatar,
       'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
       'isDeleted': instance.isDeleted,
       'permissions': instance.permissions,
     };
