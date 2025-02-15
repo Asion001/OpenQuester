@@ -29,6 +29,9 @@ export class MiddlewareController {
     this.ctx.app.disable("x-powered-by");
     this.ctx.app.use(logMiddleware);
 
+    // Trust first proxy to enable secure cookies
+    this.ctx.app.set("trust proxy", 1);
+
     // Session
     this.ctx.app.use(
       session({
@@ -39,6 +42,7 @@ export class MiddlewareController {
         cookie: {
           secure: this.ctx.env.ENV === EnvType.PROD,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
+          domain: `.${this.ctx.env.CLIENT_DOMAIN}`,
           sameSite: "lax",
         },
       })
