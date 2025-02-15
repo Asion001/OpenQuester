@@ -24,6 +24,13 @@ export class ErrorController {
   }> {
     error = this._formatError(error, ts.parseHeaders(headers));
 
+    if (error instanceof SyntaxError) {
+      return {
+        message: error.message,
+        code: HttpStatus.BAD_REQUEST,
+      };
+    }
+
     if (!(error instanceof OQError)) {
       let message: string = "";
 
