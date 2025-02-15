@@ -24,6 +24,7 @@ export class MiddlewareController {
     this.ctx.app.use(
       cors({
         credentials: true,
+        origin: this.ctx.env.CLIENT_URL,
       })
     );
     this.ctx.app.disable("x-powered-by");
@@ -40,7 +41,7 @@ export class MiddlewareController {
           secure: this.ctx.env.ENV === EnvType.PROD,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
           domain: `.${this.ctx.env.CLIENT_DOMAIN}`,
-          sameSite: "lax",
+          sameSite: "none",
         },
       })
     );
