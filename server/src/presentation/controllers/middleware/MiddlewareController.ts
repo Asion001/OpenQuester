@@ -42,7 +42,7 @@ export class MiddlewareController {
         cookie: {
           secure: this.ctx.env.ENV === EnvType.PROD,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
-          domain: `.${this.ctx.env.CLIENT_DOMAIN}`,
+          domain: this.ctx.env.CLIENT_DOMAIN,
           sameSite: "lax",
         },
       })
