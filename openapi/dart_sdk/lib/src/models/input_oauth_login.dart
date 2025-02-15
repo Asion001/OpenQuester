@@ -13,8 +13,8 @@ part 'input_oauth_login.g.dart';
 class InputOauthLogin with _$InputOauthLogin {
   const factory InputOauthLogin({
     required String token,
+    required String? tokenSchema,
     required InputOauthLoginOauthProvider oauthProvider,
-    String? tokenSchema,
   }) = _InputOauthLogin;
   
   factory InputOauthLogin.fromJson(Map<String, Object?> json) => _$InputOauthLoginFromJson(json);

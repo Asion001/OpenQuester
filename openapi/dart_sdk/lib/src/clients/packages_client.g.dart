@@ -22,7 +22,7 @@ class _PackagesClient implements PackagesClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<IPackageUploadResponse> postV1Packages({
+  Future<PackageUploadResponse> postV1Packages({
     required PackageCreationInput body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
@@ -47,9 +47,9 @@ class _PackagesClient implements PackagesClient {
       path: '/v1/packages',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late IPackageUploadResponse _value;
+    late PackageUploadResponse _value;
     try {
-      _value = IPackageUploadResponse.fromJson(_result.data!);
+      _value = PackageUploadResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -102,7 +102,7 @@ class _PackagesClient implements PackagesClient {
   }
 
   @override
-  Future<IPackageItem> getV1PackagesId({
+  Future<PackageItem> getV1PackagesId({
     required String id,
     Map<String, dynamic>? extras,
     RequestOptions? options,
@@ -127,9 +127,9 @@ class _PackagesClient implements PackagesClient {
       path: '/v1/packages/${id}',
     )..data = _data;
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late IPackageItem _value;
+    late PackageItem _value;
     try {
-      _value = IPackageItem.fromJson(_result.data!);
+      _value = PackageItem.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

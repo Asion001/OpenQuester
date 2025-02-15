@@ -10,10 +10,10 @@ part 'input_update_user.g.dart';
 @Freezed()
 class InputUpdateUser with _$InputUpdateUser {
   const factory InputUpdateUser({
-    String? username,
-    String? email,
-    DateTime? birthday,
-    String? avatar,
+    required String? username,
+    required String? email,
+    required DateTime? birthday,
+    required String? avatar,
   }) = _InputUpdateUser;
   
   factory InputUpdateUser.fromJson(Map<String, Object?> json) => _$InputUpdateUserFromJson(json);

@@ -1,7 +1,10 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["src/index.ts", "src/database/DataSource.ts"],
+  entry: {
+    index: "src/presentation/index.ts",
+    DataSource: "src/infrastructure/database/DataSource.ts",
+  },
   outDir: "dist",
   clean: true,
   ignore: [

@@ -481,10 +481,11 @@ packages:
   swagger_parser:
     dependency: "direct dev"
     description:
-      name: swagger_parser
-      sha256: "954571e0a7b6a98807381acb4efaa46a84c7f00629af07365385cfa25f759284"
-      url: "https://pub.dev"
-    source: hosted
+      path: swagger_parser
+      ref: HEAD
+      resolved-ref: "52478b923f9dd22684832be1ad7d0a24913cbb13"
+      url: "https://github.com/Asion001/swagger_parser.git"
+    source: git
     version: "1.21.3"
   term_glyph:
     dependency: transitive

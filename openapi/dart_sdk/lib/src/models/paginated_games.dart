@@ -4,7 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'i_game_list_item.dart';
+import 'game_list_item.dart';
 import 'page_info.dart';
 
 part 'paginated_games.freezed.dart';
@@ -13,7 +13,7 @@ part 'paginated_games.g.dart';
 @Freezed()
 class PaginatedGames with _$PaginatedGames {
   const factory PaginatedGames({
-    required List<IGameListItem> data,
+    required List<GameListItem> data,
     required PageInfo pageInfo,
   }) = _PaginatedGames;
   

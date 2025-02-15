@@ -4,7 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'i_package_item.dart';
+import 'package_item.dart';
 import 'page_info.dart';
 
 part 'paginated_packages.freezed.dart';
@@ -13,7 +13,7 @@ part 'paginated_packages.g.dart';
 @Freezed()
 class PaginatedPackages with _$PaginatedPackages {
   const factory PaginatedPackages({
-    required List<IPackageItem> data,
+    required List<PackageItem> data,
     required PageInfo pageInfo,
   }) = _PaginatedPackages;
   

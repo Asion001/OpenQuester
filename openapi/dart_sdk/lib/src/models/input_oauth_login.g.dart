@@ -10,15 +10,15 @@ _$InputOauthLoginImpl _$$InputOauthLoginImplFromJson(
         Map<String, dynamic> json) =>
     _$InputOauthLoginImpl(
       token: json['token'] as String,
+      tokenSchema: json['tokenSchema'] as String?,
       oauthProvider: InputOauthLoginOauthProvider.fromJson(
           json['oauthProvider'] as String),
-      tokenSchema: json['tokenSchema'] as String?,
     );
 
 Map<String, dynamic> _$$InputOauthLoginImplToJson(
         _$InputOauthLoginImpl instance) =>
     <String, dynamic>{
       'token': instance.token,
-      'oauthProvider': instance.oauthProvider,
       'tokenSchema': instance.tokenSchema,
+      'oauthProvider': instance.oauthProvider,
     };

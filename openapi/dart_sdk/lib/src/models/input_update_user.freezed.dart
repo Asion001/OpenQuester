@@ -141,7 +141,10 @@ class __$$InputUpdateUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$InputUpdateUserImpl implements _InputUpdateUser {
   const _$InputUpdateUserImpl(
-      {this.username, this.email, this.birthday, this.avatar});
+      {required this.username,
+      required this.email,
+      required this.birthday,
+      required this.avatar});
 
   factory _$InputUpdateUserImpl.fromJson(Map<String, dynamic> json) =>
       _$$InputUpdateUserImplFromJson(json);
@@ -197,10 +200,10 @@ class _$InputUpdateUserImpl implements _InputUpdateUser {
 
 abstract class _InputUpdateUser implements InputUpdateUser {
   const factory _InputUpdateUser(
-      {final String? username,
-      final String? email,
-      final DateTime? birthday,
-      final String? avatar}) = _$InputUpdateUserImpl;
+      {required final String? username,
+      required final String? email,
+      required final DateTime? birthday,
+      required final String? avatar}) = _$InputUpdateUserImpl;
 
   factory _InputUpdateUser.fromJson(Map<String, dynamic> json) =
       _$InputUpdateUserImpl.fromJson;
