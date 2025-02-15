@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:openquester/src/core/get_it.dart';
@@ -30,6 +31,7 @@ class AppInit {
       'Version': packageInfo.version,
       'Build number': packageInfo.buildNumber,
       'Api Domain': Env.apiUrl.toString(),
+      if (kIsWasm || kIsWeb) 'WASM': kIsWasm,
     };
 
     String result = parameters.entries
