@@ -862,6 +862,10 @@
             "type": ["string", "null"],
             "examples": ["john.doe@gmail.com"]
           },
+          "discordId": {
+            "type": ["string", "null"],
+            "examples": ["123123123123"]
+          },
           "birthday": {
             "type": ["string", "null"],
             "format": "date",
@@ -874,17 +878,17 @@
               "https://s3.example.com/openquester-sample-bucket/e/ec/ec65cd3756490723f8bcc3bc432b94a7"
             ]
           },
-          "created_at": {
+          "createdAt": {
             "type": "string",
             "format": "date-time",
             "examples": ["2024-01-01T00:00:00Z"]
           },
-          "updated_at": {
-            "type": "string",
+          "updatedAt": {
+            "type": ["string", "null"],
             "format": "date-time",
             "examples": ["2024-01-01T00:00:00Z"]
           },
-          "is_deleted": {
+          "isDeleted": {
             "type": "boolean",
             "examples": [false]
           },

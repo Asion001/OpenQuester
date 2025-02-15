@@ -15,15 +15,13 @@ class ResponseUser with _$ResponseUser {
     required int id,
     required String username,
     required String? email,
+    required String? discordId,
     required DateTime? birthday,
 
     /// link on file GET
     required String? avatar,
-    @JsonKey(name: 'created_at')
     required DateTime createdAt,
-    @JsonKey(name: 'updated_at')
-    required DateTime updatedAt,
-    @JsonKey(name: 'is_deleted')
+    required DateTime? updatedAt,
     required bool isDeleted,
     required List<Permissions> permissions,
   }) = _ResponseUser;
