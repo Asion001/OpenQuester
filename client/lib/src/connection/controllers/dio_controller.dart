@@ -1,4 +1,5 @@
 import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/browser.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
@@ -15,6 +16,11 @@ class DioController {
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     _dio = Dio(baseOptions())..interceptors.addAll(await _interceptors());
+    if (kIsWeb || kIsWasm) {
+      final adapter = BrowserHttpClientAdapter();
+      adapter.withCredentials = true;
+      _dio.httpClientAdapter = adapter;
+    }
   }
 
   Dio get client => _dio;
