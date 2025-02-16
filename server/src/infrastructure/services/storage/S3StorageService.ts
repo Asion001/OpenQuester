@@ -6,6 +6,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { type Request } from "express";
+import https from "node:https";
 
 import { ContentStructureService } from "application/services/ContentStructureService";
 import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
@@ -19,6 +20,7 @@ import { FileSource } from "domain/enums/file/FileSource";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { Permissions } from "domain/enums/Permissions";
+import { ServerResponse } from "domain/enums/ServerResponse";
 import { ClientError } from "domain/errors/ClientError";
 import { FileDTO } from "domain/types/dto/file/FileDTO";
 import { PackageListItemDTO } from "domain/types/dto/game/items/PackageIListItemDTO";
@@ -39,7 +41,9 @@ import { FileUsageRepository } from "infrastructure/database/repositories/FileUs
 import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
+import { Logger } from "infrastructure/utils/Logger";
 import { StorageUtils } from "infrastructure/utils/StorageUtils";
+import { TemplateUtils } from "infrastructure/utils/TemplateUtils";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class S3StorageService implements StorageServiceModel {
@@ -111,6 +115,64 @@ export class S3StorageService implements StorageServiceModel {
       : `${this.s3Context.host}/${this.s3Context.bucket}`;
 
     return `${baseUrl}/${filePath}`;
+  }
+
+  /**
+   * Fetches user avatar from discord's cdn and saves on out s3 bucket
+   * @param cdnLink discord's cdn link for avatar file
+   * @param filename filename which will be assigned to file in bucket and DB
+   * @returns
+   */
+  public async putFileFromDiscord(
+    cdnLink: string,
+    filename: string
+  ): Promise<any> {
+    return new Promise((resolve) => {
+      https
+        .get(cdnLink, (res) => {
+          if (res.statusCode !== 200) {
+            // Ignore errors, user should add avatar manually in this case
+            resolve(true);
+            return;
+          }
+
+          const contentLength = res.headers["content-length"]
+            ? parseInt(res.headers["content-length"], 10)
+            : undefined;
+
+          const command = new PutObjectCommand({
+            Bucket: this.s3Context.bucket,
+            Key: StorageUtils.parseFilePath(filename),
+            Body: res,
+          });
+
+          if (contentLength) {
+            command.input.ContentLength = contentLength;
+          }
+
+          this._client
+            .send(command)
+            .then((data) => resolve(data))
+            .catch((err) => {
+              Logger.error(
+                TemplateUtils.text(ServerResponse.BUCKET_UPLOAD_FAILED, {
+                  filename,
+                  err,
+                })
+              );
+              resolve(true);
+            });
+        })
+        .on("error", (err) => {
+          Logger.error(
+            TemplateUtils.text(ServerResponse.BUCKET_UPLOAD_FAILED, {
+              cdnLink,
+              err,
+            })
+          );
+          resolve(true);
+        });
+    });
   }
 
   public async upload(

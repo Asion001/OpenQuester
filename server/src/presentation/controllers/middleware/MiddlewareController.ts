@@ -46,7 +46,7 @@ export class MiddlewareController {
           secure: this.ctx.env.ENV === EnvType.PROD,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
           sameSite: "none",
-          domain: this.ctx.env.CLIENT_DOMAIN,
+          domain: this.ctx.env.API_DOMAIN,
         },
       })
     );
