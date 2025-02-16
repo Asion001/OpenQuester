@@ -14,6 +14,8 @@ export enum ServerResponse {
   UNSUPPORTED_STORAGE_NAME = "Unsupported storage name: %name",
   UNSUPPORTED_STORAGE_TYPE = "Unsupported storage type: %type",
   STORAGE_SERVICE_INIT_ERROR = "Error during storage service initialization",
+  BUCKET_UPLOAD_FAILED = "Got an error while saving a file to bucket: %filename, error: %err",
+  DISCORD_CDN_DOWNLOAD_ERROR = `Got an error while downloading file: %cdnLink, error: %err`,
 
   // S3
   BAD_S3_INIT_WITH_MESSAGE = "Error while initializing S3 context: %message",

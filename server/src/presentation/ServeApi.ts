@@ -1,23 +1,22 @@
 import { type Express } from "express";
 import { type Server as HTTPServer } from "http";
+import Redis from "ioredis";
 import { type Server as IOServer } from "socket.io";
-
-import { type ApiContext } from "application/context/ApiContext";
-import { type Database } from "infrastructure/database/Database";
 
 import { DIConfig } from "application/config/DIConfig";
 import { Container, CONTAINER_TYPES } from "application/Container";
+import { type ApiContext } from "application/context/ApiContext";
 import { GameService } from "application/services/game/GameService";
 import { UserService } from "application/services/user/UserService";
 import { SESSION_SECRET_LENGTH } from "domain/constants/session";
 import { ServerError } from "domain/errors/ServerError";
 import { EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
+import { type Database } from "infrastructure/database/Database";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
-import Redis from "ioredis";
 import { SocketIOInitializer } from "presentation/controllers/io/SocketIOInitializer";
 import { MiddlewareController } from "presentation/controllers/middleware/MiddlewareController";
 import { AuthRestApiController } from "presentation/controllers/rest/AuthRestApiController";
@@ -131,7 +130,13 @@ export class ServeApi {
 
     // REST
     new UserRestApiController(app, userService, userRepository, fileRepository);
-    new AuthRestApiController(app, redis, userRepository, fileRepository);
+    new AuthRestApiController(
+      app,
+      redis,
+      userRepository,
+      fileRepository,
+      storage
+    );
     new PackageRestApiController(app, storage);
     new FileRestApiController(app, storage);
     new GameRestApiController(app, game);

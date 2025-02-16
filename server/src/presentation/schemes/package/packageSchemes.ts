@@ -54,11 +54,8 @@ const metadata = Joi.object({
   title: Joi.string().required(),
   createdAt: Joi.date().default(new Date()),
   logo: Joi.object({
-    file: Joi.object({
-      sha256: Joi.string().required(),
-      type: Joi.string().required(),
-    }),
-  }),
+    file,
+  }).allow(null),
   tags: Joi.array().items(Joi.string()),
   ageRestriction: Joi.valid(...Object.values(AgeRestriction))
     .allow(null)
