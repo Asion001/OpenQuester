@@ -1,8 +1,6 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
+import 'package:crypto/crypto.dart';
 import 'package:openapi/openapi.dart';
 import 'package:siq_file/src/extensions.dart';
 import 'package:xml/xml.dart';
@@ -33,12 +31,8 @@ class ContentXmlParser {
     final comment = _getComment(theme);
     final questions =
         theme.getElement('questions')?.children.map(_parseQuestion).toList() ??
-            [];
-    return OQThemeStructure(
-      name: name,
-      comment: comment,
-      questions: questions,
-    );
+        [];
+    return OQThemeStructure(name: name, comment: comment, questions: questions);
   }
 
   String? _getComment(XmlElement element) {
@@ -51,19 +45,23 @@ class ContentXmlParser {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
     final params = question.getElement('params');
 
-    final questionType = OQQuestionsStructureType.values
-            .firstWhereOrNull((e) => e.name == question.getAttribute('type')) ??
+    final questionType =
+        OQQuestionsStructureType.values.firstWhereOrNull(
+          (e) => e.name == question.getAttribute('type'),
+        ) ??
         OQQuestionsStructureType.regular;
 
-    final questionParam = params?.children
-        .firstWhereOrNull((p0) => p0.getAttribute('name') == 'question');
+    final questionParam = params?.children.firstWhereOrNull(
+      (p0) => p0.getAttribute('name') == 'question',
+    );
     final questionItem = questionParam?.getElement('item');
     final questionItemType = _getFileType(questionItem);
     final text = questionItemType != null ? null : questionItem?.innerText;
     final questionFile = parseFile(questionItem);
 
-    final answerParam = params?.children
-        .firstWhereOrNull((p0) => p0.getAttribute('name') == 'answer');
+    final answerParam = params?.children.firstWhereOrNull(
+      (p0) => p0.getAttribute('name') == 'answer',
+    );
     final answerItem = answerParam?.getElement('item');
     final answerFile = parseFile(answerItem);
     final answerItemType = _getFileType(answerItem);
@@ -91,46 +89,42 @@ class ContentXmlParser {
 
   OQFile? parseFile(XmlElement? item) {
     final itemType = _getFileType(item);
-    final filePath = item?.innerText;
-    final rawFile = _archive?.files
-        .firstWhereOrNull((e) => e.name == filePath)
-        ?.readBytes();
-    final hash = rawFile == null ? '' : getFileCRC32(rawFile).toString();
-    final file = itemType == null
-        ? null
-        : OQFile(
-            file: OQFileContentStructure(
-              crc32: hash,
-              type: itemType,
-            ),
-          );
+    final folder = switch (itemType) {
+      OQFileContentStructureType.image => 'Images',
+      OQFileContentStructureType.video => 'Video',
+      OQFileContentStructureType.audio => 'Audio',
+      OQFileContentStructureType.$unknown => null,
+      null => null,
+    };
+    final filePath = [folder, item?.innerText].join('/');
+    final rawFile =
+        _archive?.files
+            .firstWhereOrNull((e) => e.name == filePath)
+            ?.readBytes();
+    final hash = rawFile == null ? '' : getFileMD5(rawFile).toString();
+    final file =
+        itemType == null
+            ? null
+            : OQFile(file: OQFileContentStructure(md5: hash, type: itemType));
 
     return file;
   }
 
-  String getFileCRC32(List<int> data) {
-    // Ensure the checksum is treated as an unsigned 32-bit value.
-    final checksum = int.parse(Crc32().convert(data).toString()) & 0xffffffff;
-
-    // Convert the checksum into a 4-byte big-endian representation.
-    final byteData = ByteData(4);
-    byteData.setUint32(0, checksum, Endian.big);
-    final checksumBytes = byteData.buffer.asUint8List();
-
-    // Base64 encode the 4-byte checksum.
-    final base64Checksum = base64Encode(checksumBytes);
-    return base64Checksum;
+  String getFileMD5(List<int> data) {
+    return md5.convert(data).toString();
   }
 
   OQFileContentStructureType? _getFileType(XmlElement? item) {
-    final itemType = OQFileContentStructureType.values
-        .firstWhereOrNull((e) => e.name == item?.getAttribute('type'));
+    final itemType = OQFileContentStructureType.values.firstWhereOrNull(
+      (e) => e.name == item?.getAttribute('type'),
+    );
     return itemType;
   }
 
   OQMetadataStructure _parseMetadata(XmlElement package) {
-    final packageAtributes =
-        package.attributes.map((e) => MapEntry(e.localName, e.value));
+    final packageAtributes = package.attributes.map(
+      (e) => MapEntry(e.localName, e.value),
+    );
     final Map<String, dynamic> json = Map.fromEntries(packageAtributes);
 
     final tagsElement = package.getElement('tags');

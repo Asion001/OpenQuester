@@ -21,7 +21,7 @@ OQFileContentStructure _$OQFileContentStructureFromJson(
 
 /// @nodoc
 mixin _$OQFileContentStructure {
-  String get crc32 => throw _privateConstructorUsedError;
+  String get md5 => throw _privateConstructorUsedError;
   OQFileContentStructureType get type => throw _privateConstructorUsedError;
 
   /// Serializes this OQFileContentStructure to a JSON map.
@@ -40,7 +40,7 @@ abstract class $OQFileContentStructureCopyWith<$Res> {
           $Res Function(OQFileContentStructure) then) =
       _$OQFileContentStructureCopyWithImpl<$Res, OQFileContentStructure>;
   @useResult
-  $Res call({String crc32, OQFileContentStructureType type});
+  $Res call({String md5, OQFileContentStructureType type});
 }
 
 /// @nodoc
@@ -59,13 +59,13 @@ class _$OQFileContentStructureCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? crc32 = null,
+    Object? md5 = null,
     Object? type = null,
   }) {
     return _then(_value.copyWith(
-      crc32: null == crc32
-          ? _value.crc32
-          : crc32 // ignore: cast_nullable_to_non_nullable
+      md5: null == md5
+          ? _value.md5
+          : md5 // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
           ? _value.type
@@ -84,7 +84,7 @@ abstract class _$$OQFileContentStructureImplCopyWith<$Res>
       __$$OQFileContentStructureImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String crc32, OQFileContentStructureType type});
+  $Res call({String md5, OQFileContentStructureType type});
 }
 
 /// @nodoc
@@ -102,13 +102,13 @@ class __$$OQFileContentStructureImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? crc32 = null,
+    Object? md5 = null,
     Object? type = null,
   }) {
     return _then(_$OQFileContentStructureImpl(
-      crc32: null == crc32
-          ? _value.crc32
-          : crc32 // ignore: cast_nullable_to_non_nullable
+      md5: null == md5
+          ? _value.md5
+          : md5 // ignore: cast_nullable_to_non_nullable
               as String,
       type: null == type
           ? _value.type
@@ -121,19 +121,19 @@ class __$$OQFileContentStructureImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$OQFileContentStructureImpl implements _OQFileContentStructure {
-  const _$OQFileContentStructureImpl({required this.crc32, required this.type});
+  const _$OQFileContentStructureImpl({required this.md5, required this.type});
 
   factory _$OQFileContentStructureImpl.fromJson(Map<String, dynamic> json) =>
       _$$OQFileContentStructureImplFromJson(json);
 
   @override
-  final String crc32;
+  final String md5;
   @override
   final OQFileContentStructureType type;
 
   @override
   String toString() {
-    return 'OQFileContentStructure(crc32: $crc32, type: $type)';
+    return 'OQFileContentStructure(md5: $md5, type: $type)';
   }
 
   @override
@@ -141,13 +141,13 @@ class _$OQFileContentStructureImpl implements _OQFileContentStructure {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$OQFileContentStructureImpl &&
-            (identical(other.crc32, crc32) || other.crc32 == crc32) &&
+            (identical(other.md5, md5) || other.md5 == md5) &&
             (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, crc32, type);
+  int get hashCode => Object.hash(runtimeType, md5, type);
 
   /// Create a copy of OQFileContentStructure
   /// with the given fields replaced by the non-null parameter values.
@@ -168,7 +168,7 @@ class _$OQFileContentStructureImpl implements _OQFileContentStructure {
 
 abstract class _OQFileContentStructure implements OQFileContentStructure {
   const factory _OQFileContentStructure(
-          {required final String crc32,
+          {required final String md5,
           required final OQFileContentStructureType type}) =
       _$OQFileContentStructureImpl;
 
@@ -176,7 +176,7 @@ abstract class _OQFileContentStructure implements OQFileContentStructure {
       _$OQFileContentStructureImpl.fromJson;
 
   @override
-  String get crc32;
+  String get md5;
   @override
   OQFileContentStructureType get type;
 

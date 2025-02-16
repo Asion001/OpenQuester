@@ -8,7 +8,8 @@
       "name": "client",
       "cwd": "client",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "program": "lib/main.dart"
     },
     {
       "name": "client (web)",
@@ -16,6 +17,7 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
+      "program": "lib/main.dart",
       "toolArgs": [
         "--wasm",
         "-d",
@@ -29,14 +31,16 @@
       "cwd": "client",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "flutterMode": "profile",
+      "program": "lib/main.dart",
     },
     {
       "name": "client (release mode)",
       "cwd": "client",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "flutterMode": "release",
+      "program": "lib/main.dart",
     },
     {
       "type": "node",

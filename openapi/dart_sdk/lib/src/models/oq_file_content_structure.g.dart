@@ -9,13 +9,13 @@ part of 'oq_file_content_structure.dart';
 _$OQFileContentStructureImpl _$$OQFileContentStructureImplFromJson(
         Map<String, dynamic> json) =>
     _$OQFileContentStructureImpl(
-      crc32: json['crc32'] as String,
+      md5: json['md5'] as String,
       type: OQFileContentStructureType.fromJson(json['type'] as String),
     );
 
 Map<String, dynamic> _$$OQFileContentStructureImplToJson(
         _$OQFileContentStructureImpl instance) =>
     <String, dynamic>{
-      'crc32': instance.crc32,
+      'md5': instance.md5,
       'type': instance.type,
     };

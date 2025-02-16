@@ -9,19 +9,23 @@ class PackageUploadController extends ChangeNotifier {
   Future<void> pickAndUpload() async {
     loading = true;
     notifyListeners();
+    try {
+      final fileResult = await FileService.pickFile();
+      final file = fileResult?.files.firstOrNull;
+      if (file == null) return;
 
-    final fileResult = await FileService.pickFile();
-    final file = fileResult?.files.firstOrNull;
-    if (file == null) return;
+      final fileStream = FileStream(
+        fileLength: file.size,
+        stream: file.readStream!,
+      );
+      final siqFile = await SiqArchiveParser(fileStream).parse();
+      final body = PackageCreationInput(content: siqFile);
 
-    final fileStream = FileStream(
-      fileLength: file.size,
-      stream: file.readStream!,
-    );
-    final siqFile = await SiqArchiveParser(fileStream).parse();
-    final body = PackageCreationInput(content: siqFile);
-
-    final result = await Api.I.api.packages.postV1Packages(body: body);
-    final links = result.uploadLinks.values.toList();
+      final result = await Api.I.api.packages.postV1Packages(body: body);
+      final links = result.uploadLinks.values.toList();
+    } catch (e) {
+      loading = false;
+      notifyListeners();
+    }
   }
 }

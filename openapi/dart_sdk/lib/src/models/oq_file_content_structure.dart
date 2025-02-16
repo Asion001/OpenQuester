@@ -12,7 +12,7 @@ part 'oq_file_content_structure.g.dart';
 @Freezed()
 class OQFileContentStructure with _$OQFileContentStructure {
   const factory OQFileContentStructure({
-    required String crc32,
+    required String md5,
     required OQFileContentStructureType type,
   }) = _OQFileContentStructure;
   
