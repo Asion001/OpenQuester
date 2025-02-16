@@ -82,8 +82,7 @@ class ContentXmlParser {
       answerFile: answerFile,
       hostHint: hostHint,
       answerText: answerText,
-      //TODO: Add playersHint
-      playersHint: '',
+      playersHint: null,
     );
   }
 
@@ -144,6 +143,7 @@ class ContentXmlParser {
       'createdAt': DateTime.now().toIso8601String(),
       'ageRestriction': 'NONE',
       'author': -1,
+      'language': 'en',
     });
 
     json.remove('logo');
