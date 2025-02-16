@@ -24,6 +24,9 @@ export class MiddlewareController {
     this.ctx.app.use(
       cors({
         credentials: true,
+        origin: [this.ctx.env.CLIENT_URL],
+        methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization", "Set-Cookie"],
       })
     );
     this.ctx.app.disable("x-powered-by");
@@ -42,8 +45,8 @@ export class MiddlewareController {
         cookie: {
           secure: this.ctx.env.ENV === EnvType.PROD,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
+          sameSite: "none",
           domain: this.ctx.env.CLIENT_DOMAIN,
-          sameSite: "lax",
         },
       })
     );
