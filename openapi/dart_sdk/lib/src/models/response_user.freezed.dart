@@ -22,16 +22,16 @@ ResponseUser _$ResponseUserFromJson(Map<String, dynamic> json) {
 mixin _$ResponseUser {
   int get id => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  @JsonKey(name: 'created_at')
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'updated_at')
-  DateTime get updatedAt => throw _privateConstructorUsedError;
-  @JsonKey(name: 'is_deleted')
-  bool get isDeleted => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
+  String? get discordId => throw _privateConstructorUsedError;
   DateTime? get birthday => throw _privateConstructorUsedError;
+
+  /// link on file GET
   String? get avatar => throw _privateConstructorUsedError;
-  List<Permissions>? get permissions => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
+  bool get isDeleted => throw _privateConstructorUsedError;
+  List<Permissions> get permissions => throw _privateConstructorUsedError;
 
   /// Serializes this ResponseUser to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -52,13 +52,14 @@ abstract class $ResponseUserCopyWith<$Res> {
   $Res call(
       {int id,
       String username,
-      @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt,
-      @JsonKey(name: 'is_deleted') bool isDeleted,
       String? email,
+      String? discordId,
       DateTime? birthday,
       String? avatar,
-      List<Permissions>? permissions});
+      DateTime createdAt,
+      DateTime updatedAt,
+      bool isDeleted,
+      List<Permissions> permissions});
 }
 
 /// @nodoc
@@ -78,13 +79,14 @@ class _$ResponseUserCopyWithImpl<$Res, $Val extends ResponseUser>
   $Res call({
     Object? id = null,
     Object? username = null,
+    Object? email = freezed,
+    Object? discordId = freezed,
+    Object? birthday = freezed,
+    Object? avatar = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? isDeleted = null,
-    Object? email = freezed,
-    Object? birthday = freezed,
-    Object? avatar = freezed,
-    Object? permissions = freezed,
+    Object? permissions = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -95,6 +97,22 @@ class _$ResponseUserCopyWithImpl<$Res, $Val extends ResponseUser>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      discordId: freezed == discordId
+          ? _value.discordId
+          : discordId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      birthday: freezed == birthday
+          ? _value.birthday
+          : birthday // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      avatar: freezed == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -107,22 +125,10 @@ class _$ResponseUserCopyWithImpl<$Res, $Val extends ResponseUser>
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
               as bool,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      birthday: freezed == birthday
-          ? _value.birthday
-          : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      avatar: freezed == avatar
-          ? _value.avatar
-          : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
-      permissions: freezed == permissions
+      permissions: null == permissions
           ? _value.permissions
           : permissions // ignore: cast_nullable_to_non_nullable
-              as List<Permissions>?,
+              as List<Permissions>,
     ) as $Val);
   }
 }
@@ -138,13 +144,14 @@ abstract class _$$ResponseUserImplCopyWith<$Res>
   $Res call(
       {int id,
       String username,
-      @JsonKey(name: 'created_at') DateTime createdAt,
-      @JsonKey(name: 'updated_at') DateTime updatedAt,
-      @JsonKey(name: 'is_deleted') bool isDeleted,
       String? email,
+      String? discordId,
       DateTime? birthday,
       String? avatar,
-      List<Permissions>? permissions});
+      DateTime createdAt,
+      DateTime updatedAt,
+      bool isDeleted,
+      List<Permissions> permissions});
 }
 
 /// @nodoc
@@ -162,13 +169,14 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? username = null,
+    Object? email = freezed,
+    Object? discordId = freezed,
+    Object? birthday = freezed,
+    Object? avatar = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
     Object? isDeleted = null,
-    Object? email = freezed,
-    Object? birthday = freezed,
-    Object? avatar = freezed,
-    Object? permissions = freezed,
+    Object? permissions = null,
   }) {
     return _then(_$ResponseUserImpl(
       id: null == id
@@ -179,6 +187,22 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      discordId: freezed == discordId
+          ? _value.discordId
+          : discordId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      birthday: freezed == birthday
+          ? _value.birthday
+          : birthday // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      avatar: freezed == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -191,22 +215,10 @@ class __$$ResponseUserImplCopyWithImpl<$Res>
           ? _value.isDeleted
           : isDeleted // ignore: cast_nullable_to_non_nullable
               as bool,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      birthday: freezed == birthday
-          ? _value.birthday
-          : birthday // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      avatar: freezed == avatar
-          ? _value.avatar
-          : avatar // ignore: cast_nullable_to_non_nullable
-              as String?,
-      permissions: freezed == permissions
+      permissions: null == permissions
           ? _value._permissions
           : permissions // ignore: cast_nullable_to_non_nullable
-              as List<Permissions>?,
+              as List<Permissions>,
     ));
   }
 }
@@ -217,13 +229,14 @@ class _$ResponseUserImpl implements _ResponseUser {
   const _$ResponseUserImpl(
       {required this.id,
       required this.username,
-      @JsonKey(name: 'created_at') required this.createdAt,
-      @JsonKey(name: 'updated_at') required this.updatedAt,
-      @JsonKey(name: 'is_deleted') required this.isDeleted,
-      this.email,
-      this.birthday,
-      this.avatar,
-      final List<Permissions>? permissions})
+      required this.email,
+      required this.discordId,
+      required this.birthday,
+      required this.avatar,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.isDeleted,
+      required final List<Permissions> permissions})
       : _permissions = permissions;
 
   factory _$ResponseUserImpl.fromJson(Map<String, dynamic> json) =>
@@ -234,33 +247,32 @@ class _$ResponseUserImpl implements _ResponseUser {
   @override
   final String username;
   @override
-  @JsonKey(name: 'created_at')
-  final DateTime createdAt;
-  @override
-  @JsonKey(name: 'updated_at')
-  final DateTime updatedAt;
-  @override
-  @JsonKey(name: 'is_deleted')
-  final bool isDeleted;
-  @override
   final String? email;
   @override
+  final String? discordId;
+  @override
   final DateTime? birthday;
+
+  /// link on file GET
   @override
   final String? avatar;
-  final List<Permissions>? _permissions;
   @override
-  List<Permissions>? get permissions {
-    final value = _permissions;
-    if (value == null) return null;
+  final DateTime createdAt;
+  @override
+  final DateTime updatedAt;
+  @override
+  final bool isDeleted;
+  final List<Permissions> _permissions;
+  @override
+  List<Permissions> get permissions {
     if (_permissions is EqualUnmodifiableListView) return _permissions;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_permissions);
   }
 
   @override
   String toString() {
-    return 'ResponseUser(id: $id, username: $username, createdAt: $createdAt, updatedAt: $updatedAt, isDeleted: $isDeleted, email: $email, birthday: $birthday, avatar: $avatar, permissions: $permissions)';
+    return 'ResponseUser(id: $id, username: $username, email: $email, discordId: $discordId, birthday: $birthday, avatar: $avatar, createdAt: $createdAt, updatedAt: $updatedAt, isDeleted: $isDeleted, permissions: $permissions)';
   }
 
   @override
@@ -271,16 +283,18 @@ class _$ResponseUserImpl implements _ResponseUser {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.username, username) ||
                 other.username == username) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.discordId, discordId) ||
+                other.discordId == discordId) &&
+            (identical(other.birthday, birthday) ||
+                other.birthday == birthday) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.isDeleted, isDeleted) ||
                 other.isDeleted == isDeleted) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.birthday, birthday) ||
-                other.birthday == birthday) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar) &&
             const DeepCollectionEquality()
                 .equals(other._permissions, _permissions));
   }
@@ -291,12 +305,13 @@ class _$ResponseUserImpl implements _ResponseUser {
       runtimeType,
       id,
       username,
+      email,
+      discordId,
+      birthday,
+      avatar,
       createdAt,
       updatedAt,
       isDeleted,
-      email,
-      birthday,
-      avatar,
       const DeepCollectionEquality().hash(_permissions));
 
   /// Create a copy of ResponseUser
@@ -319,13 +334,14 @@ abstract class _ResponseUser implements ResponseUser {
   const factory _ResponseUser(
       {required final int id,
       required final String username,
-      @JsonKey(name: 'created_at') required final DateTime createdAt,
-      @JsonKey(name: 'updated_at') required final DateTime updatedAt,
-      @JsonKey(name: 'is_deleted') required final bool isDeleted,
-      final String? email,
-      final DateTime? birthday,
-      final String? avatar,
-      final List<Permissions>? permissions}) = _$ResponseUserImpl;
+      required final String? email,
+      required final String? discordId,
+      required final DateTime? birthday,
+      required final String? avatar,
+      required final DateTime createdAt,
+      required final DateTime updatedAt,
+      required final bool isDeleted,
+      required final List<Permissions> permissions}) = _$ResponseUserImpl;
 
   factory _ResponseUser.fromJson(Map<String, dynamic> json) =
       _$ResponseUserImpl.fromJson;
@@ -335,22 +351,23 @@ abstract class _ResponseUser implements ResponseUser {
   @override
   String get username;
   @override
-  @JsonKey(name: 'created_at')
-  DateTime get createdAt;
-  @override
-  @JsonKey(name: 'updated_at')
-  DateTime get updatedAt;
-  @override
-  @JsonKey(name: 'is_deleted')
-  bool get isDeleted;
-  @override
   String? get email;
   @override
+  String? get discordId;
+  @override
   DateTime? get birthday;
+
+  /// link on file GET
   @override
   String? get avatar;
   @override
-  List<Permissions>? get permissions;
+  DateTime get createdAt;
+  @override
+  DateTime get updatedAt;
+  @override
+  bool get isDeleted;
+  @override
+  List<Permissions> get permissions;
 
   /// Create a copy of ResponseUser
   /// with the given fields replaced by the non-null parameter values.

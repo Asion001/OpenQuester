@@ -14,8 +14,8 @@ class PackagesListScreen extends StatelessWidget {
           onTap: () => PackageUploadRoute().push(context),
         ),
         PaginatedListWidget<PackagesListController, PackageListItem>(
-          itemBuilder: (context, item, index) =>
-              PackageListItemWidget(item: item),
+          itemBuilder:
+              (context, item, index) => PackageListItemWidget(item: item),
         ).expand(),
       ],
     );

@@ -20,7 +20,7 @@ PaginatedGames _$PaginatedGamesFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PaginatedGames {
-  List<IGameListItem> get data => throw _privateConstructorUsedError;
+  List<GameListItem> get data => throw _privateConstructorUsedError;
   PageInfo get pageInfo => throw _privateConstructorUsedError;
 
   /// Serializes this PaginatedGames to a JSON map.
@@ -39,7 +39,7 @@ abstract class $PaginatedGamesCopyWith<$Res> {
           PaginatedGames value, $Res Function(PaginatedGames) then) =
       _$PaginatedGamesCopyWithImpl<$Res, PaginatedGames>;
   @useResult
-  $Res call({List<IGameListItem> data, PageInfo pageInfo});
+  $Res call({List<GameListItem> data, PageInfo pageInfo});
 
   $PageInfoCopyWith<$Res> get pageInfo;
 }
@@ -66,7 +66,7 @@ class _$PaginatedGamesCopyWithImpl<$Res, $Val extends PaginatedGames>
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<IGameListItem>,
+              as List<GameListItem>,
       pageInfo: null == pageInfo
           ? _value.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
@@ -93,7 +93,7 @@ abstract class _$$PaginatedGamesImplCopyWith<$Res>
       __$$PaginatedGamesImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<IGameListItem> data, PageInfo pageInfo});
+  $Res call({List<GameListItem> data, PageInfo pageInfo});
 
   @override
   $PageInfoCopyWith<$Res> get pageInfo;
@@ -119,7 +119,7 @@ class __$$PaginatedGamesImplCopyWithImpl<$Res>
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<IGameListItem>,
+              as List<GameListItem>,
       pageInfo: null == pageInfo
           ? _value.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
@@ -132,15 +132,15 @@ class __$$PaginatedGamesImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PaginatedGamesImpl implements _PaginatedGames {
   const _$PaginatedGamesImpl(
-      {required final List<IGameListItem> data, required this.pageInfo})
+      {required final List<GameListItem> data, required this.pageInfo})
       : _data = data;
 
   factory _$PaginatedGamesImpl.fromJson(Map<String, dynamic> json) =>
       _$$PaginatedGamesImplFromJson(json);
 
-  final List<IGameListItem> _data;
+  final List<GameListItem> _data;
   @override
-  List<IGameListItem> get data {
+  List<GameListItem> get data {
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_data);
@@ -188,14 +188,14 @@ class _$PaginatedGamesImpl implements _PaginatedGames {
 
 abstract class _PaginatedGames implements PaginatedGames {
   const factory _PaginatedGames(
-      {required final List<IGameListItem> data,
+      {required final List<GameListItem> data,
       required final PageInfo pageInfo}) = _$PaginatedGamesImpl;
 
   factory _PaginatedGames.fromJson(Map<String, dynamic> json) =
       _$PaginatedGamesImpl.fromJson;
 
   @override
-  List<IGameListItem> get data;
+  List<GameListItem> get data;
   @override
   PageInfo get pageInfo;
 

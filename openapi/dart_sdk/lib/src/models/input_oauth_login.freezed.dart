@@ -21,9 +21,9 @@ InputOauthLogin _$InputOauthLoginFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$InputOauthLogin {
   String get token => throw _privateConstructorUsedError;
+  String? get tokenSchema => throw _privateConstructorUsedError;
   InputOauthLoginOauthProvider get oauthProvider =>
       throw _privateConstructorUsedError;
-  String? get tokenSchema => throw _privateConstructorUsedError;
 
   /// Serializes this InputOauthLogin to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,8 +43,8 @@ abstract class $InputOauthLoginCopyWith<$Res> {
   @useResult
   $Res call(
       {String token,
-      InputOauthLoginOauthProvider oauthProvider,
-      String? tokenSchema});
+      String? tokenSchema,
+      InputOauthLoginOauthProvider oauthProvider});
 }
 
 /// @nodoc
@@ -63,22 +63,22 @@ class _$InputOauthLoginCopyWithImpl<$Res, $Val extends InputOauthLogin>
   @override
   $Res call({
     Object? token = null,
-    Object? oauthProvider = null,
     Object? tokenSchema = freezed,
+    Object? oauthProvider = null,
   }) {
     return _then(_value.copyWith(
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      oauthProvider: null == oauthProvider
-          ? _value.oauthProvider
-          : oauthProvider // ignore: cast_nullable_to_non_nullable
-              as InputOauthLoginOauthProvider,
       tokenSchema: freezed == tokenSchema
           ? _value.tokenSchema
           : tokenSchema // ignore: cast_nullable_to_non_nullable
               as String?,
+      oauthProvider: null == oauthProvider
+          ? _value.oauthProvider
+          : oauthProvider // ignore: cast_nullable_to_non_nullable
+              as InputOauthLoginOauthProvider,
     ) as $Val);
   }
 }
@@ -93,8 +93,8 @@ abstract class _$$InputOauthLoginImplCopyWith<$Res>
   @useResult
   $Res call(
       {String token,
-      InputOauthLoginOauthProvider oauthProvider,
-      String? tokenSchema});
+      String? tokenSchema,
+      InputOauthLoginOauthProvider oauthProvider});
 }
 
 /// @nodoc
@@ -111,22 +111,22 @@ class __$$InputOauthLoginImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? token = null,
-    Object? oauthProvider = null,
     Object? tokenSchema = freezed,
+    Object? oauthProvider = null,
   }) {
     return _then(_$InputOauthLoginImpl(
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      oauthProvider: null == oauthProvider
-          ? _value.oauthProvider
-          : oauthProvider // ignore: cast_nullable_to_non_nullable
-              as InputOauthLoginOauthProvider,
       tokenSchema: freezed == tokenSchema
           ? _value.tokenSchema
           : tokenSchema // ignore: cast_nullable_to_non_nullable
               as String?,
+      oauthProvider: null == oauthProvider
+          ? _value.oauthProvider
+          : oauthProvider // ignore: cast_nullable_to_non_nullable
+              as InputOauthLoginOauthProvider,
     ));
   }
 }
@@ -135,7 +135,9 @@ class __$$InputOauthLoginImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$InputOauthLoginImpl implements _InputOauthLogin {
   const _$InputOauthLoginImpl(
-      {required this.token, required this.oauthProvider, this.tokenSchema});
+      {required this.token,
+      required this.tokenSchema,
+      required this.oauthProvider});
 
   factory _$InputOauthLoginImpl.fromJson(Map<String, dynamic> json) =>
       _$$InputOauthLoginImplFromJson(json);
@@ -143,13 +145,13 @@ class _$InputOauthLoginImpl implements _InputOauthLogin {
   @override
   final String token;
   @override
-  final InputOauthLoginOauthProvider oauthProvider;
-  @override
   final String? tokenSchema;
+  @override
+  final InputOauthLoginOauthProvider oauthProvider;
 
   @override
   String toString() {
-    return 'InputOauthLogin(token: $token, oauthProvider: $oauthProvider, tokenSchema: $tokenSchema)';
+    return 'InputOauthLogin(token: $token, tokenSchema: $tokenSchema, oauthProvider: $oauthProvider)';
   }
 
   @override
@@ -158,16 +160,16 @@ class _$InputOauthLoginImpl implements _InputOauthLogin {
         (other.runtimeType == runtimeType &&
             other is _$InputOauthLoginImpl &&
             (identical(other.token, token) || other.token == token) &&
-            (identical(other.oauthProvider, oauthProvider) ||
-                other.oauthProvider == oauthProvider) &&
             (identical(other.tokenSchema, tokenSchema) ||
-                other.tokenSchema == tokenSchema));
+                other.tokenSchema == tokenSchema) &&
+            (identical(other.oauthProvider, oauthProvider) ||
+                other.oauthProvider == oauthProvider));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, token, oauthProvider, tokenSchema);
+      Object.hash(runtimeType, token, tokenSchema, oauthProvider);
 
   /// Create a copy of InputOauthLogin
   /// with the given fields replaced by the non-null parameter values.
@@ -188,9 +190,10 @@ class _$InputOauthLoginImpl implements _InputOauthLogin {
 
 abstract class _InputOauthLogin implements InputOauthLogin {
   const factory _InputOauthLogin(
-      {required final String token,
-      required final InputOauthLoginOauthProvider oauthProvider,
-      final String? tokenSchema}) = _$InputOauthLoginImpl;
+          {required final String token,
+          required final String? tokenSchema,
+          required final InputOauthLoginOauthProvider oauthProvider}) =
+      _$InputOauthLoginImpl;
 
   factory _InputOauthLogin.fromJson(Map<String, dynamic> json) =
       _$InputOauthLoginImpl.fromJson;
@@ -198,9 +201,9 @@ abstract class _InputOauthLogin implements InputOauthLogin {
   @override
   String get token;
   @override
-  InputOauthLoginOauthProvider get oauthProvider;
-  @override
   String? get tokenSchema;
+  @override
+  InputOauthLoginOauthProvider get oauthProvider;
 
   /// Create a copy of InputOauthLogin
   /// with the given fields replaced by the non-null parameter values.

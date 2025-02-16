@@ -9,10 +9,7 @@ void main() async {
   await AppInit.init();
   runApp(
     localizationWrapper(
-      RequestsInspector(
-        hideInspectorBanner: true,
-        child: const App(),
-      ),
+      RequestsInspector(hideInspectorBanner: true, child: const App()),
     ),
   );
 }

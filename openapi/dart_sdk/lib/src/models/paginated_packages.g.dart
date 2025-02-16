@@ -10,7 +10,7 @@ _$PaginatedPackagesImpl _$$PaginatedPackagesImplFromJson(
         Map<String, dynamic> json) =>
     _$PaginatedPackagesImpl(
       data: (json['data'] as List<dynamic>)
-          .map((e) => IPackageItem.fromJson(e as Map<String, dynamic>))
+          .map((e) => PackageItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
     );

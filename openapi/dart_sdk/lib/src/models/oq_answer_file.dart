@@ -13,7 +13,7 @@ part 'oq_answer_file.g.dart';
 class OQAnswerFile with _$OQAnswerFile {
   const factory OQAnswerFile({
     required OQFileContentStructure file,
-    required int displayTime,
+    int? displayTime,
   }) = _OQAnswerFile;
   
   factory OQAnswerFile.fromJson(Map<String, Object?> json) => _$OQAnswerFileFromJson(json);

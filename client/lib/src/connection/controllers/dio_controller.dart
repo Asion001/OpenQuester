@@ -14,9 +14,7 @@ class DioController {
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
-    _dio = Dio(
-      baseOptions(),
-    )..interceptors.addAll(await _interceptors());
+    _dio = Dio(baseOptions())..interceptors.addAll(await _interceptors());
   }
 
   Dio get client => _dio;
@@ -26,10 +24,9 @@ class DioController {
 
     return BaseOptions(
       persistentConnection: true,
-      headers: {
-        'Content-Type': 'application/json',
-        if (!kIsWeb) 'Accept-Encoding': acceptEncoding,
-      },
+      contentType: 'application/json',
+      headers: {if (!kIsWeb) 'Accept-Encoding': acceptEncoding},
+      extra: {if (kIsWeb || kIsWasm) 'withCredentials': true},
     );
   }
 
@@ -53,7 +50,7 @@ class DioController {
 
   Future<List<Interceptor>> _interceptors() async {
     return [
-      CookieManager(await _getCookieJar()),
+      if (!kIsWeb) CookieManager(await _getCookieJar()),
       _dioCacheInterceptor,
       if (!kIsWeb) _timeoutInterceptor,
       RequestsInspectorInterceptor(),

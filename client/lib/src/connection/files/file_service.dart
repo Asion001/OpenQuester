@@ -5,9 +5,10 @@ export 'package:file_picker/file_picker.dart';
 
 abstract class FileService {
   static Future<FilePickerResult?> pickFile() async {
-    final conf = PlatformExtension.isMobile
-        ? PickerSettings.mobile()
-        : PickerSettings.other();
+    final conf =
+        PlatformExtension.isMobile
+            ? PickerSettings.mobile()
+            : PickerSettings.other();
 
     final result = await FilePicker.platform.pickFiles(
       type: conf.type,
@@ -29,14 +30,13 @@ class PickerSettings {
   final List<String>? allowedExtensions;
   final FileType type;
 
-  const PickerSettings({
-    this.allowedExtensions,
-    required this.type,
-  });
+  const PickerSettings({this.allowedExtensions, required this.type});
 
   factory PickerSettings.mobile() => const PickerSettings(type: FileType.any);
   factory PickerSettings.other() => const PickerSettings(
-      allowedExtensions: siqExtensions, type: FileType.custom);
+    allowedExtensions: siqExtensions,
+    type: FileType.custom,
+  );
 
   static const List<String> siqExtensions = ['siq'];
   static bool isExtensionSupported(String ext) => siqExtensions.contains(ext);

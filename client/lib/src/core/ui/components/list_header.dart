@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
 class ListHeader extends StatelessWidget {
-  const ListHeader({
-    required this.title,
-    required this.onTap,
-    super.key,
-  });
+  const ListHeader({required this.title, required this.onTap, super.key});
   final String title;
   final VoidCallback onTap;
 
@@ -15,10 +11,7 @@ class ListHeader extends StatelessWidget {
     return Row(
       children: [
         Text(title).flexible(),
-        IconButton(
-          onPressed: onTap,
-          icon: Icon(Icons.add),
-        )
+        IconButton(onPressed: onTap, icon: Icon(Icons.add)),
       ],
     );
   }

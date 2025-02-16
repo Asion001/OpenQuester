@@ -14,16 +14,16 @@ class ResponseUser with _$ResponseUser {
   const factory ResponseUser({
     required int id,
     required String username,
-    @JsonKey(name: 'created_at')
+    required String? email,
+    required String? discordId,
+    required DateTime? birthday,
+
+    /// link on file GET
+    required String? avatar,
     required DateTime createdAt,
-    @JsonKey(name: 'updated_at')
     required DateTime updatedAt,
-    @JsonKey(name: 'is_deleted')
     required bool isDeleted,
-    String? email,
-    DateTime? birthday,
-    String? avatar,
-    List<Permissions>? permissions,
+    required List<Permissions> permissions,
   }) = _ResponseUser;
   
   factory ResponseUser.fromJson(Map<String, Object?> json) => _$ResponseUserFromJson(json);

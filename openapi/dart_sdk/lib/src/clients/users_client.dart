@@ -23,8 +23,6 @@ abstract class UsersClient {
   @GET('/v1/users/{id}')
   Future<ResponseUser> getV1UsersId({
     @Path('id') required String id,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Update user by id
@@ -32,16 +30,12 @@ abstract class UsersClient {
   Future<ResponseUser> patchV1UsersId({
     @Path('id') required String id,
     @Body() required InputUpdateUser body,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Delete user by id
   @DELETE('/v1/users/{id}')
   Future<void> deleteV1UsersId({
     @Path('id') required String id,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Get all users info
@@ -51,29 +45,19 @@ abstract class UsersClient {
     @Query('order') required OrderDirection order,
     @Query('limit') required PaginationLimit limit,
     @Query('offset') required PaginationOffset offset,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Get info about current user
   @GET('/v1/me')
-  Future<ResponseUser> getV1Me({
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
-  });
+  Future<ResponseUser> getV1Me();
 
   /// Update current user
   @PATCH('/v1/me')
   Future<ResponseUser> patchV1Me({
     @Body() required InputUpdateUser body,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Delete current user
   @DELETE('/v1/me')
-  Future<void> deleteV1Me({
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
-  });
+  Future<void> deleteV1Me();
 }

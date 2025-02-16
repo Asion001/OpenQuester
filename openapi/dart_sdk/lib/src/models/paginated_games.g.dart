@@ -9,7 +9,7 @@ part of 'paginated_games.dart';
 _$PaginatedGamesImpl _$$PaginatedGamesImplFromJson(Map<String, dynamic> json) =>
     _$PaginatedGamesImpl(
       data: (json['data'] as List<dynamic>)
-          .map((e) => IGameListItem.fromJson(e as Map<String, dynamic>))
+          .map((e) => GameListItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
     );

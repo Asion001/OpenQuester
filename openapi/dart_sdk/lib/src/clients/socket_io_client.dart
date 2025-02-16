@@ -17,8 +17,5 @@ abstract class SocketIOClient {
   ///
   /// Subscribes to the 'games' event to receive updates about game changes, creations, and removals.
   @POST('/subscription/games')
-  Future<GameEventSubscription> postSubscriptionGames({
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
-  });
+  Future<GameEventSubscription> postSubscriptionGames();
 }

@@ -17,15 +17,17 @@ class PackageUploadScreen extends WatchingWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: loading
-                    ? null
-                    : getIt<PackageUploadController>().pickAndUpload,
-                icon: loading
-                    ? CircularProgressIndicator.adaptive()
-                    : Icon(Icons.upload),
+                onPressed:
+                    loading
+                        ? null
+                        : getIt<PackageUploadController>().pickAndUpload,
+                icon:
+                    loading
+                        ? CircularProgressIndicator.adaptive()
+                        : Icon(Icons.upload),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

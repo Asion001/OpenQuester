@@ -21,8 +21,8 @@ OQFile _$OQFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OQFile {
   OQFileContentStructure get file => throw _privateConstructorUsedError;
+  int get answerDelay => throw _privateConstructorUsedError;
   int? get displayTime => throw _privateConstructorUsedError;
-  int? get answerDelay => throw _privateConstructorUsedError;
 
   /// Serializes this OQFile to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +38,7 @@ abstract class $OQFileCopyWith<$Res> {
   factory $OQFileCopyWith(OQFile value, $Res Function(OQFile) then) =
       _$OQFileCopyWithImpl<$Res, OQFile>;
   @useResult
-  $Res call({OQFileContentStructure file, int? displayTime, int? answerDelay});
+  $Res call({OQFileContentStructure file, int answerDelay, int? displayTime});
 
   $OQFileContentStructureCopyWith<$Res> get file;
 }
@@ -59,21 +59,21 @@ class _$OQFileCopyWithImpl<$Res, $Val extends OQFile>
   @override
   $Res call({
     Object? file = null,
+    Object? answerDelay = null,
     Object? displayTime = freezed,
-    Object? answerDelay = freezed,
   }) {
     return _then(_value.copyWith(
       file: null == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
               as OQFileContentStructure,
+      answerDelay: null == answerDelay
+          ? _value.answerDelay
+          : answerDelay // ignore: cast_nullable_to_non_nullable
+              as int,
       displayTime: freezed == displayTime
           ? _value.displayTime
           : displayTime // ignore: cast_nullable_to_non_nullable
-              as int?,
-      answerDelay: freezed == answerDelay
-          ? _value.answerDelay
-          : answerDelay // ignore: cast_nullable_to_non_nullable
               as int?,
     ) as $Val);
   }
@@ -96,7 +96,7 @@ abstract class _$$OQFileImplCopyWith<$Res> implements $OQFileCopyWith<$Res> {
       __$$OQFileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({OQFileContentStructure file, int? displayTime, int? answerDelay});
+  $Res call({OQFileContentStructure file, int answerDelay, int? displayTime});
 
   @override
   $OQFileContentStructureCopyWith<$Res> get file;
@@ -116,21 +116,21 @@ class __$$OQFileImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? file = null,
+    Object? answerDelay = null,
     Object? displayTime = freezed,
-    Object? answerDelay = freezed,
   }) {
     return _then(_$OQFileImpl(
       file: null == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
               as OQFileContentStructure,
+      answerDelay: null == answerDelay
+          ? _value.answerDelay
+          : answerDelay // ignore: cast_nullable_to_non_nullable
+              as int,
       displayTime: freezed == displayTime
           ? _value.displayTime
           : displayTime // ignore: cast_nullable_to_non_nullable
-              as int?,
-      answerDelay: freezed == answerDelay
-          ? _value.answerDelay
-          : answerDelay // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
   }
@@ -139,7 +139,8 @@ class __$$OQFileImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$OQFileImpl implements _OQFile {
-  const _$OQFileImpl({required this.file, this.displayTime, this.answerDelay});
+  const _$OQFileImpl(
+      {required this.file, required this.answerDelay, this.displayTime});
 
   factory _$OQFileImpl.fromJson(Map<String, dynamic> json) =>
       _$$OQFileImplFromJson(json);
@@ -147,13 +148,13 @@ class _$OQFileImpl implements _OQFile {
   @override
   final OQFileContentStructure file;
   @override
-  final int? displayTime;
+  final int answerDelay;
   @override
-  final int? answerDelay;
+  final int? displayTime;
 
   @override
   String toString() {
-    return 'OQFile(file: $file, displayTime: $displayTime, answerDelay: $answerDelay)';
+    return 'OQFile(file: $file, answerDelay: $answerDelay, displayTime: $displayTime)';
   }
 
   @override
@@ -162,15 +163,15 @@ class _$OQFileImpl implements _OQFile {
         (other.runtimeType == runtimeType &&
             other is _$OQFileImpl &&
             (identical(other.file, file) || other.file == file) &&
-            (identical(other.displayTime, displayTime) ||
-                other.displayTime == displayTime) &&
             (identical(other.answerDelay, answerDelay) ||
-                other.answerDelay == answerDelay));
+                other.answerDelay == answerDelay) &&
+            (identical(other.displayTime, displayTime) ||
+                other.displayTime == displayTime));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, file, displayTime, answerDelay);
+  int get hashCode => Object.hash(runtimeType, file, answerDelay, displayTime);
 
   /// Create a copy of OQFile
   /// with the given fields replaced by the non-null parameter values.
@@ -191,17 +192,17 @@ class _$OQFileImpl implements _OQFile {
 abstract class _OQFile implements OQFile {
   const factory _OQFile(
       {required final OQFileContentStructure file,
-      final int? displayTime,
-      final int? answerDelay}) = _$OQFileImpl;
+      required final int answerDelay,
+      final int? displayTime}) = _$OQFileImpl;
 
   factory _OQFile.fromJson(Map<String, dynamic> json) = _$OQFileImpl.fromJson;
 
   @override
   OQFileContentStructure get file;
   @override
-  int? get displayTime;
+  int get answerDelay;
   @override
-  int? get answerDelay;
+  int? get displayTime;
 
   /// Create a copy of OQFile
   /// with the given fields replaced by the non-null parameter values.

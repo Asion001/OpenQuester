@@ -14,11 +14,12 @@ class TestScreen extends StatelessWidget {
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.all(45),
-        children: [
-          ('Image test', const ImgTest()),
-          ('Pack upload test', const FileOpening()),
-          ('Web socket', WsTest()),
-        ].map(_itemCover).toList(),
+        children:
+            [
+              ('Image test', const ImgTest()),
+              ('Pack upload test', const FileOpening()),
+              ('Web socket', WsTest()),
+            ].map(_itemCover).toList(),
       ),
     );
   }
@@ -28,14 +29,8 @@ class TestScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(e.$1),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: e.$2,
-          ),
+          Padding(padding: const EdgeInsets.all(8.0), child: Text(e.$1)),
+          Padding(padding: const EdgeInsets.all(16), child: e.$2),
         ],
       ),
     );

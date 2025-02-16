@@ -17,34 +17,31 @@ class GameListItemWidget extends StatelessWidget {
           children: [
             _GameListItemBadges(item),
             ListTile(
-              title: Tooltip(
-                message: LocaleKeys.game_tile_tooltips_game_title.tr(),
-                child: Text(
-                  item.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              ).shrink(),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+              title:
                   Tooltip(
-                    message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
+                    message: LocaleKeys.game_tile_tooltips_game_title.tr(),
                     child: Text(
-                      item.package.title,
+                      item.title,
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
-                  ),
-                  Text(
-                    _packInfo(),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    _gameInfo(),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ).paddingTop(4).shrink(),
+                  ).shrink(),
+              subtitle:
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Tooltip(
+                        message:
+                            LocaleKeys.game_tile_tooltips_packages_title.tr(),
+                        child: Text(
+                          item.package.title,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(_packInfo(), overflow: TextOverflow.ellipsis),
+                      Text(_gameInfo(), overflow: TextOverflow.ellipsis),
+                    ],
+                  ).paddingTop(4).shrink(),
               trailing: Icon(Icons.play_arrow),
               titleAlignment: ListTileTitleAlignment.bottom,
               contentPadding: EdgeInsets.only(right: 16, left: 4),
@@ -67,7 +64,7 @@ class GameListItemWidget extends StatelessWidget {
               .sublist(0, min(3, item.package.tags.length))
               .join(', '),
         LocaleKeys.created_by.tr(args: [item.package.author.username]),
-      ].nonNulls.join(' | ')
+      ].nonNulls.join(' | '),
     ].join('\n');
   }
 
@@ -79,14 +76,14 @@ class GameListItemWidget extends StatelessWidget {
         if (startedAt != null)
           watchIt<TimeController>().current.difference(startedAt).f(),
         LocaleKeys.hosted_by.tr(args: [item.createdBy.username]),
-      ].join(' • ')
+      ].join(' • '),
     ].join('\n');
   }
 }
 
 class _GameListItemBadges extends StatelessWidget {
   const _GameListItemBadges(this.item);
-  final IGameListItem item;
+  final GameListItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -141,10 +138,7 @@ class _Badge extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Icon(icon, size: 24),
-              Text(
-                label,
-                style: context.textTheme.labelSmall,
-              ),
+              Text(label, style: context.textTheme.labelSmall),
             ],
           ),
         ),

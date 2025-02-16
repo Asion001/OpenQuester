@@ -1,7 +1,7 @@
 #
 
 ```bash
-## Environment type ("local" | "prod" | "test")
+## Environment type ("dev" | "prod" | "test")
 ENV=
 
 ## DB variables
@@ -26,11 +26,6 @@ LOG_LEVEL=
 # "all" or boolean or "query" | "schema" | "error" | "warn" | "info" | "log" | "migration"
 # More about DB logging: https://typeorm.io/logging#logging
 DB_LOGGER=
-
-## JWT
-JWT_SCHEME=
-JWT_EXPIRES_IN=
-JWT_REFRESH_EXPIRES_IN=
 
 ## Storage
 # e.g. "s3"
