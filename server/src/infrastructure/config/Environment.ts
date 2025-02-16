@@ -32,7 +32,6 @@ export class Environment {
 
   // URLs
   public CLIENT_URL!: string;
-  public SERVER_URL!: string;
   public API_DOMAIN!: string;
 
   // DB vars
@@ -199,11 +198,6 @@ export class Environment {
 
     this.CLIENT_URL = this.getEnvVar(
       "CLIENT_URL",
-      "string",
-      "http://localhost:3000"
-    );
-    this.SERVER_URL = this.getEnvVar(
-      "SERVER_URL",
       "string",
       "http://localhost:3000"
     );
