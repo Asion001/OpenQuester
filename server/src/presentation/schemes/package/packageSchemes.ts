@@ -8,7 +8,7 @@ export const packIdScheme = () =>
   });
 
 const file = Joi.object({
-  sha256: Joi.string().required(),
+  md5: Joi.string().required(),
   type: Joi.string().required(),
 }).required();
 
@@ -17,16 +17,16 @@ const questions = Joi.array()
     Joi.object({
       price: Joi.number().required(),
       type: Joi.string().required(),
-      text: Joi.string(),
-      hostHint: Joi.string(),
-      playersHint: Joi.string(),
-      answerText: Joi.string(),
+      text: Joi.string().allow(null),
+      hostHint: Joi.string().allow(null),
+      playersHint: Joi.string().allow(null),
+      answerText: Joi.string().allow(null),
       questionFile: Joi.object({
         file,
-      }),
+      }).allow(null),
       answerFile: Joi.object({
         file,
-      }),
+      }).allow(null),
     }).required()
   )
   .required();
@@ -56,11 +56,11 @@ const metadata = Joi.object({
   logo: Joi.object({
     file,
   }).allow(null),
-  tags: Joi.array().items(Joi.string()),
+  tags: Joi.array().items(Joi.string()).allow(null),
   ageRestriction: Joi.valid(...Object.values(AgeRestriction))
     .allow(null)
     .default(AgeRestriction.NONE),
-  language: Joi.string(),
+  language: Joi.string().allow(null),
 }).required();
 
 export const uploadPackageScheme = () =>
