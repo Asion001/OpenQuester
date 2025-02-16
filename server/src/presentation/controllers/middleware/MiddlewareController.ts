@@ -24,6 +24,7 @@ export class MiddlewareController {
     this.ctx.app.use(
       cors({
         credentials: true,
+        origin: this.ctx.env.CORS_ORIGINS.split(","),
         methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization", "Set-Cookie"],
       })
