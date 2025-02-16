@@ -19,23 +19,17 @@ abstract class FilesClient {
   @GET('/v1/files/{filename}')
   Future<FileLinkResponse> getV1FilesFilename({
     @Path('filename') required String filename,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Get link to upload file on server
   @POST('/v1/files/{filename}')
   Future<FileUploadLinkResponse> postV1FilesFilename({
     @Path('filename') required String filename,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Delete file from bucket
   @DELETE('/v1/files/{filename}')
   Future<DeleteRequestResponse> deleteV1FilesFilename({
     @Path('filename') required String filename,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 }

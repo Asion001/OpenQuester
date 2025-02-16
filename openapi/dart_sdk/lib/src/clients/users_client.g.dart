@@ -22,30 +22,27 @@ class _UsersClient implements UsersClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponseUser> getV1UsersId({
-    required String id,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
+  Future<ResponseUser> getV1UsersId({required String id}) async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<ResponseUser>(Options(
       method: 'GET',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/users/${id}',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/users/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponseUser _value;
     try {
@@ -61,28 +58,27 @@ class _UsersClient implements UsersClient {
   Future<ResponseUser> patchV1UsersId({
     required String id,
     required InputUpdateUser body,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = body;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<ResponseUser>(Options(
       method: 'PATCH',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/users/${id}',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/users/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponseUser _value;
     try {
@@ -95,30 +91,27 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<void> deleteV1UsersId({
-    required String id,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
+  Future<void> deleteV1UsersId({required String id}) async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<void>(Options(
       method: 'DELETE',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/users/${id}',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/users/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     await _dio.fetch<void>(_options);
   }
 
@@ -128,33 +121,32 @@ class _UsersClient implements UsersClient {
     required OrderDirection order,
     required int limit,
     required int offset,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{
       r'sortBy': sortBy.toJson(),
       r'order': order.toJson(),
       r'limit': limit,
       r'offset': offset,
     };
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<PaginatedUsers>(Options(
       method: 'GET',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/users/',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/users/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late PaginatedUsers _value;
     try {
@@ -167,29 +159,28 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<ResponseUser> getV1Me({
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
+  Future<ResponseUser> getV1Me() async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<ResponseUser>(Options(
       method: 'GET',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/me',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/me',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponseUser _value;
     try {
@@ -202,30 +193,27 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<ResponseUser> patchV1Me({
-    required InputUpdateUser body,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
+  Future<ResponseUser> patchV1Me({required InputUpdateUser body}) async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = body;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<ResponseUser>(Options(
       method: 'PATCH',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/me',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/me',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponseUser _value;
     try {
@@ -238,55 +226,28 @@ class _UsersClient implements UsersClient {
   }
 
   @override
-  Future<void> deleteV1Me({
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
+  Future<void> deleteV1Me() async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<void>(Options(
       method: 'DELETE',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/me',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/me',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     await _dio.fetch<void>(_options);
-  }
-
-  RequestOptions newRequestOptions(Object? options) {
-    if (options is RequestOptions) {
-      return options as RequestOptions;
-    }
-    if (options is Options) {
-      return RequestOptions(
-        method: options.method,
-        sendTimeout: options.sendTimeout,
-        receiveTimeout: options.receiveTimeout,
-        extra: options.extra,
-        headers: options.headers,
-        responseType: options.responseType,
-        contentType: options.contentType.toString(),
-        validateStatus: options.validateStatus,
-        receiveDataWhenStatusError: options.receiveDataWhenStatusError,
-        followRedirects: options.followRedirects,
-        maxRedirects: options.maxRedirects,
-        requestEncoder: options.requestEncoder,
-        responseDecoder: options.responseDecoder,
-        path: '',
-      );
-    }
-    return RequestOptions(path: '');
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

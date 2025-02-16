@@ -22,30 +22,28 @@ class _PackagesClient implements PackagesClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PackageUploadResponse> postV1Packages({
-    required PackageCreationInput body,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
+  Future<PackageUploadResponse> postV1Packages(
+      {required PackageCreationInput body}) async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = body;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<PackageUploadResponse>(Options(
       method: 'POST',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/packages',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/packages',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late PackageUploadResponse _value;
     try {
@@ -63,33 +61,32 @@ class _PackagesClient implements PackagesClient {
     required OrderDirection order,
     required int limit,
     required int offset,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
   }) async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{
       r'sortBy': sortBy.toJson(),
       r'order': order.toJson(),
       r'limit': limit,
       r'offset': offset,
     };
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<PaginatedPackages>(Options(
       method: 'GET',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/packages',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/packages',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late PaginatedPackages _value;
     try {
@@ -102,30 +99,27 @@ class _PackagesClient implements PackagesClient {
   }
 
   @override
-  Future<PackageItem> getV1PackagesId({
-    required String id,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) async {
+  Future<PackageItem> getV1PackagesId({required String id}) async {
     final _extra = <String, dynamic>{};
-    _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final newOptions = newRequestOptions(options);
-    newOptions.extra.addAll(_extra);
-    newOptions.headers.addAll(_dio.options.headers);
-    newOptions.headers.addAll(_headers);
-    final _options = newOptions.copyWith(
+    final _options = _setStreamType<PackageItem>(Options(
       method: 'GET',
-      baseUrl: _combineBaseUrls(
-        _dio.options.baseUrl,
-        baseUrl,
-      ),
-      queryParameters: queryParameters,
-      path: '/v1/packages/${id}',
-    )..data = _data;
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/v1/packages/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late PackageItem _value;
     try {
@@ -135,31 +129,6 @@ class _PackagesClient implements PackagesClient {
       rethrow;
     }
     return _value;
-  }
-
-  RequestOptions newRequestOptions(Object? options) {
-    if (options is RequestOptions) {
-      return options as RequestOptions;
-    }
-    if (options is Options) {
-      return RequestOptions(
-        method: options.method,
-        sendTimeout: options.sendTimeout,
-        receiveTimeout: options.receiveTimeout,
-        extra: options.extra,
-        headers: options.headers,
-        responseType: options.responseType,
-        contentType: options.contentType.toString(),
-        validateStatus: options.validateStatus,
-        receiveDataWhenStatusError: options.receiveDataWhenStatusError,
-        followRedirects: options.followRedirects,
-        maxRedirects: options.maxRedirects,
-        requestEncoder: options.requestEncoder,
-        responseDecoder: options.responseDecoder,
-        path: '',
-      );
-    }
-    return RequestOptions(path: '');
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

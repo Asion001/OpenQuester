@@ -24,8 +24,6 @@ abstract class PackagesClient {
   @POST('/v1/packages')
   Future<PackageUploadResponse> postV1Packages({
     @Body() required PackageCreationInput body,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Get all packages
@@ -35,15 +33,11 @@ abstract class PackagesClient {
     @Query('order') required OrderDirection order,
     @Query('limit') required PaginationLimit limit,
     @Query('offset') required PaginationOffset offset,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Get package by id
   @GET('/v1/packages/{id}')
   Future<PackageItem> getV1PackagesId({
     @Path('id') required String id,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 }

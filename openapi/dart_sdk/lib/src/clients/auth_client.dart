@@ -19,14 +19,9 @@ abstract class AuthClient {
   @POST('/v1/auth/oauth2')
   Future<ResponseUser> postV1AuthOauth2({
     @Body() required InputOauthLogin body,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Logout user
   @GET('/v1/auth/logout')
-  Future<LogoutResponse> getV1AuthLogout({
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
-  });
+  Future<LogoutResponse> getV1AuthLogout();
 }

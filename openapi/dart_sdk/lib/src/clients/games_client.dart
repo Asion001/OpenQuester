@@ -26,31 +26,23 @@ abstract class GamesClient {
     @Query('order') required OrderDirection order,
     @Query('limit') required PaginationLimit limit,
     @Query('offset') required PaginationOffset offset,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Create a new game
   @POST('/v1/games')
   Future<GameListItem> postV1Games({
     @Body() required GameCreateData body,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Get game by id
   @GET('/v1/games/{id}')
   Future<GameListItem> getV1GamesId({
     @Path('id') required String id,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 
   /// Delete game
   @DELETE('/v1/games/{id}')
   Future<void> deleteV1GamesId({
     @Path('id') required String id,
-    @Extras() Map<String, dynamic>? extras,
-    @DioOptions() RequestOptions? options,
   });
 }
