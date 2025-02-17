@@ -36,7 +36,7 @@ class SocketController {
   }
 
   Future<void> _logOutgoing(String event, dynamic data) async =>
-      await _logRequest(event, data, outgoing: true);
+      _logRequest(event, data, outgoing: true);
 
   Future<void> _logRequest(
     String event,

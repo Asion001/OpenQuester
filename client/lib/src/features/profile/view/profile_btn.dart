@@ -7,8 +7,8 @@ class ProfileBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.account_circle),
-      onPressed: () => ProfileRoute().push(context),
+      icon: const Icon(Icons.account_circle),
+      onPressed: () => const ProfileRoute().push<void>(context),
     );
   }
 }

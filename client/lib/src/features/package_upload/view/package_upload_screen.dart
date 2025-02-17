@@ -23,8 +23,8 @@ class PackageUploadScreen extends WatchingWidget {
                         : getIt<PackageUploadController>().pickAndUpload,
                 icon:
                     loading
-                        ? CircularProgressIndicator.adaptive()
-                        : Icon(Icons.upload),
+                        ? const CircularProgressIndicator.adaptive()
+                        : const Icon(Icons.upload),
               ),
             ],
           ),

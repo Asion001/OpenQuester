@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:requests_inspector/requests_inspector.dart';
-import 'package:universal_io/io.dart';
 
 @Singleton(order: 0)
 class DioController {
@@ -20,7 +19,7 @@ class DioController {
   Dio get client => _dio;
 
   BaseOptions baseOptions() {
-    final acceptEncoding = 'gzip';
+    const acceptEncoding = 'gzip';
 
     return BaseOptions(
       persistentConnection: true,
@@ -39,11 +38,11 @@ class DioController {
   }
 
   Future<PersistCookieJar> _getPersistCookieJar() async {
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String appDocPath = appDocDir.path;
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final appDocPath = appDocDir.path;
     final jar = PersistCookieJar(
       ignoreExpires: true,
-      storage: FileStorage("$appDocPath/.cookies/"),
+      storage: FileStorage('$appDocPath/.cookies/'),
     );
     return jar;
   }

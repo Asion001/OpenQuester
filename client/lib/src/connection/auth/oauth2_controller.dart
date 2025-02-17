@@ -26,8 +26,8 @@ class Oauth2Controller {
   }
 
   (String scheme, String uri) _getRedirectUrls() {
-    String scheme = '';
-    String uri = '/';
+    var scheme = '';
+    var uri = '/';
 
     if (kIsWeb || kIsWasm) {
       final href = Uri.parse(web.window.location.href);
@@ -56,7 +56,7 @@ class IoWebAuth implements BaseWebAuth {
     final intentFlags =
         preferEphemeral ? ephemeralIntentFlags : defaultIntentFlags;
 
-    return await FlutterWebAuth2.authenticate(
+    return FlutterWebAuth2.authenticate(
       callbackUrlScheme: callbackUrlScheme,
       url: url,
       options: FlutterWebAuth2Options(

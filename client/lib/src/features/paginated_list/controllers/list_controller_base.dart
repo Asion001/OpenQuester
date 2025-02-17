@@ -40,8 +40,7 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
   @protected
   Future<void> addFirstItem(I item) async {
     if (pagingController.itemList == null) return;
-    final list = List<I>.from(pagingController.itemList!);
-    list.insert(0, item);
+    final list = List<I>.from(pagingController.itemList!)..insert(0, item);
     pagingController.itemList = list;
   }
 

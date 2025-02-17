@@ -1,24 +1,23 @@
-import 'package:openapi/openapi.dart';
-import 'package:universal_io/io.dart';
 import 'package:args/command_runner.dart';
-import '../../parser/content_xml_parser.dart';
-import '../../parser/siq_archive_parser.dart';
+import 'package:openapi/openapi.dart';
+import 'package:siq_file/src/parser/content_xml_parser.dart';
+import 'package:siq_file/src/parser/siq_archive_parser.dart';
+import 'package:universal_io/io.dart';
 
 abstract class FileCommand extends Command<int> {
-  Future<OQContentStructure> getFile({
-    String? xmlFilePath,
-  }) async {
+  Future<OQContentStructure> getFile({String? xmlFilePath}) async {
     if (xmlFilePath == null) {
-      return await _getFromArchive();
+      return _getFromArchive();
     }
     return _getFromXmlFile(xmlFilePath);
   }
 
-  OQContentStructure _getFromXmlFile(String xmlFilePath) {
+  Future<OQContentStructure> _getFromXmlFile(String xmlFilePath) async {
     final xmlFile = File(xmlFilePath);
     final contentFile = xmlFile.readAsStringSync();
-    final contentXml = ContentXmlParser(contentFile, null);
-    return contentXml.siqFile;
+    final contentXmlParser = ContentXmlParser(null);
+    await contentXmlParser.parse(contentFile);
+    return contentXmlParser.siqFile;
   }
 
   Future<OQContentStructure> _getFromArchive() async {
@@ -31,11 +30,7 @@ abstract class FileCommand extends Command<int> {
 
     final target = argResults!.rest[0];
     final targetFile = File(target);
-    final targetStream = FileStream(
-      stream: targetFile.openRead(),
-      fileLength: await targetFile.length(),
-    );
-    final siqArchive = SiqArchiveParser(targetStream);
+    final siqArchive = SiqArchiveParser(await targetFile.readAsBytes());
     final siqFile = await siqArchive.parse();
 
     return siqFile;

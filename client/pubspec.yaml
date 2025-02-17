@@ -41,9 +41,9 @@ dependencies:
   dio_cookie_manager: ^3.2.0
   path_provider: ^2.1.5
   cookie_jar: ^4.0.8
-  background_downloader: ^8.9.4
   flutter_web_auth_2: ^4.1.0
   universal_web: ^1.1.0+2
+  cross_file: ^0.3.0
 
 dependency_overrides:
   flutter_secure_storage: ^10.0.0-beta.4
@@ -66,6 +66,7 @@ dev_dependencies:
   json_serializable: ^6.9.4
   test: ^1.25.15
   flutter_gen_runner: ^5.9.0
+  very_good_analysis: ^7.0.0
 
 flutter:
   uses-material-design: true

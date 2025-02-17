@@ -1,6 +1,6 @@
 import 'package:openapi/openapi.dart';
 
-extension MapExtension on Map {
+extension MapExtension on Map<String, dynamic> {
   void renameKey(String from, String to) {
     final value = remove(from);
     this[to] = value;
@@ -13,25 +13,25 @@ extension ListExtension<T> on List<T> {
 
 extension PackageX on OQContentStructure {
   OQContentStructure copyWithFiles(OQFile? Function(OQFile? file) setSiqFiles) {
-    setFiles<T>(List<T> list, T Function(T) handler) {
+    void setFiles<T>(List<T> list, T Function(T) handler) {
       for (var i = 0; i < list.length; i++) {
         list[i] = handler(list[i]);
       }
     }
 
-    setQuestions(OQQuestionsStructure question) {
+    OQQuestionsStructure setQuestions(OQQuestionsStructure question) {
       final files = question.files.modifiable;
       setFiles(files, setSiqFiles);
       return question.withFiles(files);
     }
 
-    setThemes(OQThemeStructure theme) {
+    OQThemeStructure setThemes(OQThemeStructure theme) {
       final questions = theme.questions.modifiable;
       setFiles(questions, setQuestions);
       return theme.copyWith(questions: questions);
     }
 
-    setRounds(OQRoundStructure round) {
+    OQRoundStructure setRounds(OQRoundStructure round) {
       final themes = round.themes.modifiable;
       setFiles(themes, setThemes);
       return round.copyWith(themes: themes);

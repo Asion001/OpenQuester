@@ -2,30 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
 @RoutePage()
-class HomeTabsScreen extends StatelessWidget {
+class HomeTabsScreen extends WatchingWidget {
   const HomeTabsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isWideModeOn = UiModeUtils.wideModeOn(context);
-    return Scaffold(
-      body: MaxSizeContainer(child: isWideModeOn ? _wideBody() : _mobileBody()),
-    );
-  }
 
-  Widget _wideBody() {
     return Scaffold(
-      appBar: homeAppBar(title: LocaleKeys.home_tabs_home.tr()),
-      body: Row(
-        children: [GamesList().expand(), PackagesListScreen().expand()],
+      body: MaxSizeContainer(
+        child: isWideModeOn ? const _WideHome() : const _MobileHome(),
       ),
     );
   }
+}
 
-  Widget _mobileBody() {
+AppBar _homeAppBar({
+  required BuildContext context,
+  required String title,
+  required bool authorized,
+}) {
+  return AppBar(
+    title: Text(title),
+    leading: const ProfileBtn(),
+    actions: [
+      if (authorized)
+        IconButton(
+          onPressed: () => const PackageUploadRoute().push<void>(context),
+          icon: const Icon(Icons.upload),
+        ),
+    ],
+  );
+}
+
+class _MobileHome extends WatchingWidget {
+  const _MobileHome();
+
+  @override
+  Widget build(BuildContext context) {
+    final authorized = watchIt<AuthController>().autorized;
+
     return AutoTabsScaffold(
       appBarBuilder: (context, tabsRouter) {
-        return homeAppBar(title: _destionations[tabsRouter.activeIndex].label);
+        return _homeAppBar(
+          title: _destionations[tabsRouter.activeIndex].label,
+          context: context,
+          authorized: authorized,
+        );
       },
       routes: const [HomeRoute(), PackagesListRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -43,18 +66,36 @@ class HomeTabsScreen extends StatelessWidget {
     return [
       NavigationDestination(
         label: LocaleKeys.home_tabs_home.tr(),
-        icon: Icon(Icons.star_outline_rounded),
-        selectedIcon: Icon(Icons.star_rounded),
+        icon: const Icon(Icons.star_outline_rounded),
+        selectedIcon: const Icon(Icons.star_rounded),
       ),
       NavigationDestination(
         label: LocaleKeys.home_tabs_packages.tr(),
-        icon: Icon(Icons.folder_outlined),
-        selectedIcon: Icon(Icons.folder),
+        icon: const Icon(Icons.folder_outlined),
+        selectedIcon: const Icon(Icons.folder),
       ),
     ];
   }
 }
 
-AppBar homeAppBar({required String title}) {
-  return AppBar(title: Text(title), leading: ProfileBtn());
+class _WideHome extends WatchingWidget {
+  const _WideHome();
+
+  @override
+  Widget build(BuildContext context) {
+    final authorized = watchIt<AuthController>().autorized;
+    return Scaffold(
+      appBar: _homeAppBar(
+        title: LocaleKeys.home_tabs_home.tr(),
+        context: context,
+        authorized: authorized,
+      ),
+      body: Row(
+        children: [
+          const GamesList().expand(),
+          const PackagesListScreen().expand(),
+        ],
+      ),
+    );
+  }
 }

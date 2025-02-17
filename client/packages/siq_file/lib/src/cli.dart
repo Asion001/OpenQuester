@@ -1,17 +1,14 @@
+import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
 import 'package:mason_logger/mason_logger.dart';
-import 'package:args/args.dart';
-
-import 'commands/commands.dart';
-import 'version.dart';
+import 'package:siq_file/src/commands/commands.dart';
+import 'package:siq_file/src/version.dart';
 
 class SiqFileCommandRunner extends CompletionCommandRunner<int> {
-  SiqFileCommandRunner({
-    Logger? logger,
-    Map<String, String>? environment,
-  })  : _logger = logger ?? Logger(),
-        super('siq_file', '🦄 A sigame file parser') {
+  SiqFileCommandRunner({Logger? logger})
+    : _logger = logger ?? Logger(),
+      super('siq_file', '🦄 A sigame file parser') {
     argParser
       ..addFlag('version', help: 'Print the current version.', abbr: 'v')
       ..addFlag(

@@ -18,7 +18,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) return Material();
+    if (loading) return const Material();
     return MaterialApp.router(
       title: 'OpenQuester',
       theme: AppTheme.light,

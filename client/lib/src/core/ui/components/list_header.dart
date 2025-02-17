@@ -11,7 +11,7 @@ class ListHeader extends StatelessWidget {
     return Row(
       children: [
         Text(title).flexible(),
-        IconButton(onPressed: onTap, icon: Icon(Icons.add)),
+        IconButton(onPressed: onTap, icon: const Icon(Icons.add)),
       ],
     );
   }

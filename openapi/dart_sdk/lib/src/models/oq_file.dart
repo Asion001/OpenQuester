@@ -16,6 +16,6 @@ class OQFile with _$OQFile {
     int? displayTime,
     int? answerDelay,
   }) = _OQFile;
-  
+
   factory OQFile.fromJson(Map<String, Object?> json) => _$OQFileFromJson(json);
 }

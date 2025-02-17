@@ -35,7 +35,7 @@ class _FileOpeningState extends State<FileOpening> {
                   onPressed:
                       siqFile == null
                           ? null
-                          : () async => await Clipboard.setData(
+                          : () async => Clipboard.setData(
                             ClipboardData(text: jsonEncode(siqFile?.toJson())),
                           ),
                 ),
@@ -52,7 +52,7 @@ class _FileOpeningState extends State<FileOpening> {
   }
 
   Future<void> _openFile() async {
-    DateTime now = DateTime.now();
+    var now = DateTime.now();
 
     final pickedTime = DateTime.now().difference(now);
     now = DateTime.now();
@@ -61,11 +61,7 @@ class _FileOpeningState extends State<FileOpening> {
     final file = result?.files.first;
     if (file == null) return;
 
-    final fileStream = FileStream(
-      fileLength: file.size,
-      stream: file.readStream!,
-    );
-    siqFile = await SiqArchiveParser(fileStream).parse();
+    siqFile = await SiqArchiveParser(await file.xFile.readAsBytes()).parse();
     setState(() {});
 
     final parseTime = DateTime.now().difference(now);
@@ -74,8 +70,7 @@ class _FileOpeningState extends State<FileOpening> {
     parseTime: $parseTime;
     pickedTime: $pickedTime;
     rounds: ${siqFile?.rounds.length}''';
-    // ignore: avoid_print
-    print(debugText);
+
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(debugText)));

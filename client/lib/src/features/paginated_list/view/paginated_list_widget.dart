@@ -18,7 +18,7 @@ class PaginatedListWidget<
         onRefresh: () async => getIt<_Controller>().pagingController.refresh(),
         child: PagedListView<int, ListItem>(
           pagingController: getIt<_Controller>().pagingController,
-          padding: EdgeInsets.only(bottom: 8),
+          padding: const EdgeInsets.only(bottom: 8),
           builderDelegate: PagedChildBuilderDelegate<ListItem>(
             animateTransitions: true,
             itemBuilder: itemBuilder,

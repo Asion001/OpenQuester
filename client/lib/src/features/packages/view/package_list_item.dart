@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
 class PackageListItemWidget extends StatelessWidget {
-  const PackageListItemWidget({super.key, required this.item});
+  const PackageListItemWidget({required this.item, super.key});
   final PackageListItem item;
 
   @override
@@ -33,7 +33,7 @@ class PackageListItemWidget extends StatelessWidget {
                 ),
               ).paddingTop(4).shrink(),
           titleAlignment: ListTileTitleAlignment.bottom,
-          contentPadding: EdgeInsets.only(right: 16, left: 4),
+          contentPadding: const EdgeInsets.only(right: 16, left: 4),
           mouseCursor: MouseCursor.defer,
         ).paddingSymmetric(horizontal: 2),
       ),
@@ -41,7 +41,7 @@ class PackageListItemWidget extends StatelessWidget {
   }
 
   String _packInfo() {
-    var ageRestriction = item.ageRestriction.translate();
+    final ageRestriction = item.ageRestriction.translate();
     return [
       [
         ageRestriction,

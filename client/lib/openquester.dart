@@ -1,10 +1,9 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-library;
 
 export 'common_imports.dart';
 export 'generated/assets.gen.dart';
-export 'main.dart';
+
 export 'src/connection/api/api.dart';
 export 'src/connection/auth/oauth2_controller.dart';
 export 'src/connection/controllers/auth_controller.dart';

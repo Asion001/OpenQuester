@@ -1,19 +1,19 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
-import 'package:openquester/src/utils/extensions.dart';
+import 'package:flutter/foundation.dart';
 
 export 'package:file_picker/file_picker.dart';
 
 abstract class FileService {
   static Future<FilePickerResult?> pickFile() async {
-    final conf =
-        PlatformExtension.isMobile
-            ? PickerSettings.mobile()
-            : PickerSettings.other();
+    final conf = PickerSettings.other();
 
     final result = await FilePicker.platform.pickFiles(
       type: conf.type,
       allowedExtensions: conf.allowedExtensions,
-      withReadStream: true,
+      allowCompression: false,
+      withReadStream: !(kIsWasm || kIsWeb || Platform.isMacOS),
     );
 
     final ext = result?.files.firstOrNull?.extension;
@@ -27,16 +27,16 @@ abstract class FileService {
 }
 
 class PickerSettings {
-  final List<String>? allowedExtensions;
-  final FileType type;
 
-  const PickerSettings({this.allowedExtensions, required this.type});
+  const PickerSettings({required this.type, this.allowedExtensions});
 
   factory PickerSettings.mobile() => const PickerSettings(type: FileType.any);
   factory PickerSettings.other() => const PickerSettings(
     allowedExtensions: siqExtensions,
     type: FileType.custom,
   );
+  final List<String>? allowedExtensions;
+  final FileType type;
 
   static const List<String> siqExtensions = ['siq'];
   static bool isExtensionSupported(String ext) => siqExtensions.contains(ext);
