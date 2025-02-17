@@ -42,7 +42,7 @@ export class ContentStructureService {
       const current = stack.pop()!;
 
       if (this._hasFile(current)) {
-        const filename = current.file.sha256;
+        const filename = current.file.md5;
 
         filesToUpload.push({
           filename,
@@ -69,6 +69,6 @@ export class ContentStructureService {
   }
 
   private _hasFile(obj: object): obj is { file: OQFileContentStructure } {
-    return "file" in obj && typeof (obj as any).file?.sha256 === "string";
+    return "file" in obj && typeof (obj as any).file?.md5 === "string";
   }
 }

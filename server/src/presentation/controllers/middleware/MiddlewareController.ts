@@ -19,11 +19,15 @@ export class MiddlewareController {
   }
 
   public async initialize() {
-    this.ctx.app.use(express.json());
+    this.ctx.app.use(express.json({ limit: "800kb" }));
+    this.ctx.app.use(express.urlencoded({ limit: "800kb" }));
     this.ctx.app.use(helmet());
     this.ctx.app.use(
       cors({
         credentials: true,
+        origin: this.ctx.env.CORS_ORIGINS.split(","),
+        methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization", "Set-Cookie"],
       })
     );
     this.ctx.app.disable("x-powered-by");
@@ -42,8 +46,8 @@ export class MiddlewareController {
         cookie: {
           secure: this.ctx.env.ENV === EnvType.PROD,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
-          domain: this.ctx.env.CLIENT_DOMAIN,
-          sameSite: "lax",
+          sameSite: "none",
+          domain: this.ctx.env.API_DOMAIN,
         },
       })
     );

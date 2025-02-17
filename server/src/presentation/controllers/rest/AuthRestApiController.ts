@@ -1,4 +1,5 @@
 import { Router, type Express, type Request, type Response } from "express";
+import Redis from "ioredis";
 import Joi from "joi";
 import https, { RequestOptions } from "node:https";
 
@@ -22,8 +23,8 @@ import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
+import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
-import Redis from "ioredis";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
@@ -32,7 +33,8 @@ export class AuthRestApiController {
     private readonly app: Express,
     private readonly redis: Redis,
     private readonly userRepository: UserRepository,
-    private readonly fileRepository: FileRepository
+    private readonly fileRepository: FileRepository,
+    private readonly storage: S3StorageService
   ) {
     const router = Router();
 
@@ -166,6 +168,10 @@ export class AuthRestApiController {
         );
 
         user.avatar = file;
+        await this.storage.putFileFromDiscord(
+          getDiscordCDNLink(profile.id, profile.avatar),
+          file.filename
+        );
       }
 
       const registerData: RegisterUser = await user.export();

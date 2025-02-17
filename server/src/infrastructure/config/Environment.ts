@@ -32,8 +32,8 @@ export class Environment {
 
   // URLs
   public CLIENT_URL!: string;
-  public SERVER_URL!: string;
-  public CLIENT_DOMAIN!: string;
+  public CORS_ORIGINS!: string;
+  public API_DOMAIN!: string;
 
   // DB vars
   public DB_TYPE!: string;
@@ -202,12 +202,12 @@ export class Environment {
       "string",
       "http://localhost:3000"
     );
-    this.SERVER_URL = this.getEnvVar(
-      "SERVER_URL",
+    this.API_DOMAIN = this.getEnvVar("API_DOMAIN", "string", "localhost");
+    this.CORS_ORIGINS = this.getEnvVar(
+      "CORS_ORIGINS",
       "string",
-      "http://localhost:3000"
+      this.CLIENT_URL
     );
-    this.CLIENT_DOMAIN = this.getEnvVar("CLIENT_DOMAIN", "string", "localhost");
   }
 
   private loadRedis() {
