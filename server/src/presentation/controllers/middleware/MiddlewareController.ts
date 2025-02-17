@@ -20,7 +20,7 @@ export class MiddlewareController {
 
   public async initialize() {
     this.ctx.app.use(express.json({ limit: "800kb" }));
-    this.ctx.app.use(express.urlencoded({ limit: "800kb" }));
+    this.ctx.app.use(express.urlencoded({ limit: "800kb", extended: true }));
     this.ctx.app.use(helmet());
     this.ctx.app.use(
       cors({

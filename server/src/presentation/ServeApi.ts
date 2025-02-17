@@ -7,6 +7,7 @@ import { DIConfig } from "application/config/DIConfig";
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { type ApiContext } from "application/context/ApiContext";
 import { GameService } from "application/services/game/GameService";
+import { PackageService } from "application/services/package/PackageService";
 import { UserService } from "application/services/user/UserService";
 import { SESSION_SECRET_LENGTH } from "domain/constants/session";
 import { ServerError } from "domain/errors/ServerError";
@@ -113,6 +114,9 @@ export class ServeApi {
 
     // Services
     const userService = Container.get<UserService>(CONTAINER_TYPES.UserService);
+    const packageService = Container.get<PackageService>(
+      CONTAINER_TYPES.PackageService
+    );
     const storage = Container.get<S3StorageService>(
       CONTAINER_TYPES.S3StorageService
     );
@@ -137,7 +141,7 @@ export class ServeApi {
       fileRepository,
       storage
     );
-    new PackageRestApiController(app, storage);
+    new PackageRestApiController(app, packageService);
     new FileRestApiController(app, storage);
     new GameRestApiController(app, game);
     new SwaggerRestApiController(app);

@@ -5,6 +5,7 @@ import { Container, CONTAINER_TYPES } from "application/Container";
 import { StorageContextBuilder } from "application/context/storage/StorageContextBuilder";
 import { ContentStructureService } from "application/services/ContentStructureService";
 import { GameService } from "application/services/game/GameService";
+import { PackageService } from "application/services/package/PackageService";
 import { TranslateService } from "application/services/text/TranslateService";
 import { UserService } from "application/services/user/UserService";
 import { Database } from "infrastructure/database/Database";
@@ -136,11 +137,7 @@ export class DIConfig {
       CONTAINER_TYPES.S3StorageService,
       new S3StorageService(
         StorageContextBuilder.buildS3Context(),
-        Container.get<ContentStructureService>(
-          CONTAINER_TYPES.ContentStructureService
-        ),
         Container.get<FileRepository>(CONTAINER_TYPES.FileRepository),
-        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
         Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository),
         Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
         Container.get<DependencyService>(CONTAINER_TYPES.DependencyService)
@@ -157,6 +154,19 @@ export class DIConfig {
     Container.register(
       CONTAINER_TYPES.RedisService,
       new RedisService(),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.PackageService,
+      new PackageService(
+        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
+        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
+        Container.get<ContentStructureService>(
+          CONTAINER_TYPES.ContentStructureService
+        ),
+        Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
+      ),
       "service"
     );
   }

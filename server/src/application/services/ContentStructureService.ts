@@ -2,13 +2,13 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { FileSource } from "domain/enums/file/FileSource";
 import { ClientError } from "domain/errors/ClientError";
 import { FileDTO } from "domain/types/dto/file/FileDTO";
-import { StorageServiceModel } from "domain/types/file/StorageServiceModel";
 import { OQContentStructure } from "domain/types/file/structures/OQContentStructure";
 import { OQFileContentStructure } from "domain/types/file/structures/OQFileContentStructure";
 import { OQQuestionsStructure } from "domain/types/file/structures/OQQuestionsStructure";
 import { OQRoundStructure } from "domain/types/file/structures/OQRoundStructure";
 import { OQThemeStructure } from "domain/types/file/structures/OQThemeStructure";
 import { Package } from "infrastructure/database/models/Package";
+import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { StorageUtils } from "infrastructure/utils/StorageUtils";
 
 type TraversableObject =
@@ -22,11 +22,11 @@ type TraversableObject =
  * Class that manages all actions related to content.json file and it's structure
  */
 export class ContentStructureService {
-  private _storage!: StorageServiceModel;
+  private _storage!: S3StorageService;
 
   public async getUploadLinksForFiles(
     content: OQContentStructure,
-    storage: StorageServiceModel,
+    storage: S3StorageService,
     pack: Package,
     expiresIn: number
   ): Promise<Record<string, string>> {
