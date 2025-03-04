@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
@@ -39,7 +41,7 @@ class ContentXmlParser {
     final comment = await _getComment(theme);
     final questions =
         theme.getElement('questions')?.children.map(_parseQuestion).toList() ??
-        [];
+            [];
     return OQThemeStructure(
       name: name,
       comment: comment,
@@ -55,17 +57,24 @@ class ContentXmlParser {
 
   Future<OQQuestionsStructure> _parseQuestion(XmlNode question) async {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
-    final params = question.getElement('params');
+    final params =
+        question.getElement('params') ?? question.getElement('scenario');
+    final isScenario = params?.localName == 'scenario';
 
-    final questionType =
-        OQQuestionsStructureType.values.firstWhereOrNull(
+    final questionType = OQQuestionsStructureType.values.firstWhereOrNull(
           (e) => e.name == question.getAttribute('type'),
         ) ??
         OQQuestionsStructureType.regular;
 
-    final questionParam = params?.children.firstWhereOrNull(
-      (p0) => p0.getAttribute('name') == 'question',
-    );
+    final questionParam = isScenario
+        ? params
+        : params?.children.firstWhereOrNull(
+            (p0) {
+              final nameAtr =
+                  (p0 is XmlElement) ? p0.localName : p0.getAttribute('name');
+              return ['question'].contains(nameAtr);
+            },
+          );
     final questionItem = _getFileItem(questionParam);
     final questionItemType = _getFileType(questionItem);
     final text = questionItemType != null ? null : questionItem?.innerText;
@@ -117,9 +126,9 @@ class ContentXmlParser {
       return null;
     }
 
-    final filePath = [folder, item.innerText].join('/');
+    final filePath = [folder, item.innerText.replaceFirst('@', '')].join('/');
     final archiveFile = _archive?.files.firstWhereOrNull(
-      (e) => e.name.replaceAll('%20', ' ') == filePath,
+      (e) => Uri.decodeFull(e.name) == filePath,
     );
 
     final rawFile = archiveFile?.readBytes();
@@ -133,10 +142,9 @@ class ContentXmlParser {
     // Save archive file to map for re-use
     filesHash[hash] = archiveFile!;
 
-    final file =
-        itemType == null
-            ? null
-            : OQFile(file: OQFileContentStructure(md5: hash, type: itemType));
+    final file = itemType == null
+        ? null
+        : OQFile(file: OQFileContentStructure(md5: hash, type: itemType));
 
     return file;
   }
@@ -190,10 +198,9 @@ class ContentXmlParser {
   void _convertObjects(Map<String, dynamic> json) {
     json['date'] = _nullPass(
       json['date'],
-      (value) =>
-          const DateTimeConverter()
-              .fromJson(value.toString())
-              .toIso8601String(),
+      (value) => const DateTimeConverter()
+          .fromJson(value.toString())
+          .toIso8601String(),
     );
     json.renameKey('name', 'title');
   }
