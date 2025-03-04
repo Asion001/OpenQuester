@@ -12,8 +12,7 @@ part of 'auth_data.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 AuthData _$AuthDataFromJson(Map<String, dynamic> json) {
   return _AuthData.fromJson(json);
@@ -56,22 +55,20 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? accessToken = null, Object? refreshToken = null}) {
-    return _then(
-      _value.copyWith(
-            accessToken:
-                null == accessToken
-                    ? _value.accessToken
-                    : accessToken // ignore: cast_nullable_to_non_nullable
-                        as String,
-            refreshToken:
-                null == refreshToken
-                    ? _value.refreshToken
-                    : refreshToken // ignore: cast_nullable_to_non_nullable
-                        as String,
-          )
-          as $Val,
-    );
+  $Res call({
+    Object? accessToken = null,
+    Object? refreshToken = null,
+  }) {
+    return _then(_value.copyWith(
+      accessToken: null == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
   }
 }
 
@@ -79,9 +76,8 @@ class _$AuthDataCopyWithImpl<$Res, $Val extends AuthData>
 abstract class _$$AuthDataImplCopyWith<$Res>
     implements $AuthDataCopyWith<$Res> {
   factory _$$AuthDataImplCopyWith(
-    _$AuthDataImpl value,
-    $Res Function(_$AuthDataImpl) then,
-  ) = __$$AuthDataImplCopyWithImpl<$Res>;
+          _$AuthDataImpl value, $Res Function(_$AuthDataImpl) then) =
+      __$$AuthDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String accessToken, String refreshToken});
@@ -92,29 +88,27 @@ class __$$AuthDataImplCopyWithImpl<$Res>
     extends _$AuthDataCopyWithImpl<$Res, _$AuthDataImpl>
     implements _$$AuthDataImplCopyWith<$Res> {
   __$$AuthDataImplCopyWithImpl(
-    _$AuthDataImpl _value,
-    $Res Function(_$AuthDataImpl) _then,
-  ) : super(_value, _then);
+      _$AuthDataImpl _value, $Res Function(_$AuthDataImpl) _then)
+      : super(_value, _then);
 
   /// Create a copy of AuthData
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? accessToken = null, Object? refreshToken = null}) {
-    return _then(
-      _$AuthDataImpl(
-        accessToken:
-            null == accessToken
-                ? _value.accessToken
-                : accessToken // ignore: cast_nullable_to_non_nullable
-                    as String,
-        refreshToken:
-            null == refreshToken
-                ? _value.refreshToken
-                : refreshToken // ignore: cast_nullable_to_non_nullable
-                    as String,
-      ),
-    );
+  $Res call({
+    Object? accessToken = null,
+    Object? refreshToken = null,
+  }) {
+    return _then(_$AuthDataImpl(
+      accessToken: null == accessToken
+          ? _value.accessToken
+          : accessToken // ignore: cast_nullable_to_non_nullable
+              as String,
+      refreshToken: null == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
@@ -122,7 +116,7 @@ class __$$AuthDataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AuthDataImpl extends _AuthData {
   _$AuthDataImpl({required this.accessToken, required this.refreshToken})
-    : super._();
+      : super._();
 
   factory _$AuthDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthDataImplFromJson(json);
@@ -162,15 +156,16 @@ class _$AuthDataImpl extends _AuthData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AuthDataImplToJson(this);
+    return _$$AuthDataImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _AuthData extends AuthData {
-  factory _AuthData({
-    required final String accessToken,
-    required final String refreshToken,
-  }) = _$AuthDataImpl;
+  factory _AuthData(
+      {required final String accessToken,
+      required final String refreshToken}) = _$AuthDataImpl;
   _AuthData._() : super._();
 
   factory _AuthData.fromJson(Map<String, dynamic> json) =

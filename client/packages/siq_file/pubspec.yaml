@@ -15,7 +15,7 @@ dependencies:
   mason_logger: ^0.3.2
   universal_io: ^2.2.2
   path: ^1.9.1
-  archive: ^4.0.2
+  archive: ^4.0.4
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   xml: ^6.5.0

@@ -37,29 +37,27 @@ class ProfilePage extends WatchingWidget {
     final loading = watchPropertyValue((AuthController m) => m.loading);
 
     return IconButton(
-      onPressed:
-          loading
-              ? null
-              : () async {
-                final result = await getIt.get<AuthController>().loginUser();
-                if (!result.$1 && context.mounted) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(result.$2 ?? '-')));
-                }
-              },
-      icon:
-          loading
-              ? Container(
-                width: 24,
-                height: 24,
-                padding: const EdgeInsets.all(2),
-                child: const CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ),
-              )
-              : const Icon(Icons.discord),
+      onPressed: loading
+          ? null
+          : () async {
+              final result = await getIt.get<AuthController>().loginUser();
+              if (!result.$1 && context.mounted) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(result.$2 ?? '-')));
+              }
+            },
+      icon: loading
+          ? Container(
+              width: 24,
+              height: 24,
+              padding: const EdgeInsets.all(2),
+              child: const CircularProgressIndicator(
+                color: Colors.white,
+                strokeWidth: 2,
+              ),
+            )
+          : const Icon(Icons.discord),
     );
   }
 }

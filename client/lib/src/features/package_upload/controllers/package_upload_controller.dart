@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
-import 'package:openquester/src/features/package_upload/controllers/upload_isolate.dart';
 import 'package:siq_file/siq_file.dart';
 
 @singleton
@@ -66,15 +65,15 @@ class PackageUploadController extends ChangeNotifier {
   ) async {
     logger.d('Uploading ${links.length} files...');
     Dio client() => Dio(
-      BaseOptions(
-        persistentConnection: true,
-        validateStatus: (status) {
-          if (status == 412) return true;
-          return status != null && status >= 200 && status < 300;
-        },
-      ),
-    );
-    
+          BaseOptions(
+            persistentConnection: true,
+            validateStatus: (status) {
+              if (status == 412) return true;
+              return status != null && status >= 200 && status < 300;
+            },
+          ),
+        );
+
     for (final link in links) {
       final archiveFile = parser.filesHash[link.key];
       final file = archiveFile?.readBytes();

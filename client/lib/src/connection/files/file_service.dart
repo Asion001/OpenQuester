@@ -27,14 +27,13 @@ abstract class FileService {
 }
 
 class PickerSettings {
-
   const PickerSettings({required this.type, this.allowedExtensions});
 
   factory PickerSettings.mobile() => const PickerSettings(type: FileType.any);
   factory PickerSettings.other() => const PickerSettings(
-    allowedExtensions: siqExtensions,
-    type: FileType.custom,
-  );
+        allowedExtensions: siqExtensions,
+        type: FileType.custom,
+      );
   final List<String>? allowedExtensions;
   final FileType type;
 

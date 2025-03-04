@@ -1,9 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+library;
 
 export 'common_imports.dart';
 export 'generated/assets.gen.dart';
-
+export 'main.dart';
 export 'src/connection/api/api.dart';
 export 'src/connection/auth/oauth2_controller.dart';
 export 'src/connection/controllers/auth_controller.dart';
@@ -34,6 +35,7 @@ export 'src/features/games/view/games_list.dart';
 export 'src/features/home/home.dart';
 export 'src/features/home_tabs/home_tabs.dart';
 export 'src/features/package_upload/controllers/package_upload_controller.dart';
+export 'src/features/package_upload/controllers/upload_isolate.dart';
 export 'src/features/package_upload/view/package_upload_screen.dart';
 export 'src/features/packages/controllers/packages_list_controller.dart';
 export 'src/features/packages/data/package_item.dart';

@@ -17,31 +17,28 @@ class GameListItemWidget extends StatelessWidget {
           children: [
             _GameListItemBadges(item),
             ListTile(
-              title:
+              title: Tooltip(
+                message: LocaleKeys.game_tile_tooltips_game_title.tr(),
+                child: Text(
+                  item.title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+              ).shrink(),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Tooltip(
-                    message: LocaleKeys.game_tile_tooltips_game_title.tr(),
+                    message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
                     child: Text(
-                      item.title,
+                      item.package.title,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
                     ),
-                  ).shrink(),
-              subtitle:
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Tooltip(
-                        message:
-                            LocaleKeys.game_tile_tooltips_packages_title.tr(),
-                        child: Text(
-                          item.package.title,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Text(_packInfo(), overflow: TextOverflow.ellipsis),
-                      Text(_gameInfo(), overflow: TextOverflow.ellipsis),
-                    ],
-                  ).paddingTop(4).shrink(),
+                  ),
+                  Text(_packInfo(), overflow: TextOverflow.ellipsis),
+                  Text(_gameInfo(), overflow: TextOverflow.ellipsis),
+                ],
+              ).paddingTop(4).shrink(),
               trailing: const Icon(Icons.play_arrow),
               titleAlignment: ListTileTitleAlignment.bottom,
               contentPadding: const EdgeInsets.only(right: 16, left: 4),

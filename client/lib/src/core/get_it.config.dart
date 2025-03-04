@@ -28,41 +28,59 @@ import 'controllers/time_controller.dart' as _i697;
 import 'router.dart' as _i216;
 
 extension GetItInjectableX on _i174.GetIt {
-  // initializes the registration of main-scope dependencies inside of GetIt
+// initializes the registration of main-scope dependencies inside of GetIt
   Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
-    final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    await gh.singletonAsync<_i895.DioController>(() {
-      final i = _i895.DioController();
-      return i.init().then((_) => i);
-    }, preResolve: true);
-    gh.singleton<_i741.Storage>(() => _i741.Storage());
-    gh.singleton<_i419.Oauth2Controller>(() => _i419.Oauth2Controller());
+    final gh = _i526.GetItHelper(
+      this,
+      environment,
+      environmentFilter,
+    );
+    gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
     gh.singleton<_i697.TimeController>(() => _i697.TimeController()..init());
     gh.singleton<_i676.LoadController>(() => _i676.LoadController());
-    gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
-    gh.singleton<_i905.PackageUploadController>(
-      () => _i905.PackageUploadController(),
+    gh.singleton<_i419.Oauth2Controller>(() => _i419.Oauth2Controller());
+    gh.singleton<_i741.Storage>(() => _i741.Storage());
+    await gh.singletonAsync<_i895.DioController>(
+      () {
+        final i = _i895.DioController();
+        return i.init().then((_) => i);
+      },
+      preResolve: true,
     );
+    gh.singleton<_i905.PackageUploadController>(
+        () => _i905.PackageUploadController());
     gh.singleton<_i149.Api>(() => _i149.Api());
-    await gh.singletonAsync<_i785.AuthController>(() {
-      final i = _i785.AuthController();
-      return i.init().then((_) => i);
-    }, preResolve: true);
-    await gh.singletonAsync<_i496.SocketController>(() {
-      final i = _i496.SocketController();
-      return i.init().then((_) => i);
-    }, preResolve: true);
-    await gh.singletonAsync<_i747.GamesListController>(() {
-      final i = _i747.GamesListController();
-      return i.init().then((_) => i);
-    }, preResolve: true);
-    await gh.singletonAsync<_i793.PackagesListController>(() {
-      final i = _i793.PackagesListController();
-      return i.init().then((_) => i);
-    }, preResolve: true);
+    await gh.singletonAsync<_i785.AuthController>(
+      () {
+        final i = _i785.AuthController();
+        return i.init().then((_) => i);
+      },
+      preResolve: true,
+    );
+    await gh.singletonAsync<_i496.SocketController>(
+      () {
+        final i = _i496.SocketController();
+        return i.init().then((_) => i);
+      },
+      preResolve: true,
+    );
+    await gh.singletonAsync<_i793.PackagesListController>(
+      () {
+        final i = _i793.PackagesListController();
+        return i.init().then((_) => i);
+      },
+      preResolve: true,
+    );
+    await gh.singletonAsync<_i747.GamesListController>(
+      () {
+        final i = _i747.GamesListController();
+        return i.init().then((_) => i);
+      },
+      preResolve: true,
+    );
     return this;
   }
 }

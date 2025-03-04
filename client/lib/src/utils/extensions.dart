@@ -24,8 +24,7 @@ extension DurationX on Duration {
 }
 
 extension IPackageItemAgeRestrictionX on PackageItemAgeRestriction {
-  String? translate() =>
-      {
+  String? translate() => {
         PackageItemAgeRestriction.a12: '12+',
         PackageItemAgeRestriction.a16: '16+',
         PackageItemAgeRestriction.a18: '18+',

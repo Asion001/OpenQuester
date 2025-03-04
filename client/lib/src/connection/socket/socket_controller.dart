@@ -15,22 +15,20 @@ class SocketController {
   }
 
   Future<Socket> createConnection({String? path}) async {
-    final optionsBuilder =
-        OptionBuilder()
-          ..setTransports(['websocket'])
-          ..enableForceNewConnection()
-          ..disableAutoConnect();
+    final optionsBuilder = OptionBuilder()
+      ..setTransports(['websocket'])
+      ..enableForceNewConnection()
+      ..disableAutoConnect();
     final options = optionsBuilder.build();
     final url = socketUri.toString() + (path ?? '');
-    final socket =
-        io(url, options)
-          ..onAny(_logRequest)
-          ..onAnyOutgoing(_logOutgoing)
-          ..onConnect((_) => _log('onConnect'))
-          ..onDisconnect((_) => _log('onDisconnect'))
-          ..onError((e) => _log('onError', e))
-          ..onReconnectError((e) => _log('onReconnectError', e))
-          ..onConnectError((e) => _log('onConnectError', e));
+    final socket = io(url, options)
+      ..onAny(_logRequest)
+      ..onAnyOutgoing(_logOutgoing)
+      ..onConnect((_) => _log('onConnect'))
+      ..onDisconnect((_) => _log('onDisconnect'))
+      ..onError((e) => _log('onError', e))
+      ..onReconnectError((e) => _log('onReconnectError', e))
+      ..onConnectError((e) => _log('onConnectError', e));
 
     return socket;
   }

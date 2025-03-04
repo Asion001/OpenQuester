@@ -32,10 +32,9 @@ class _FileOpeningState extends State<FileOpening> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.copy),
-                  onPressed:
-                      siqFile == null
-                          ? null
-                          : () async => Clipboard.setData(
+                  onPressed: siqFile == null
+                      ? null
+                      : () async => Clipboard.setData(
                             ClipboardData(text: jsonEncode(siqFile?.toJson())),
                           ),
                 ),

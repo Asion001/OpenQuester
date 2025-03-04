@@ -14,12 +14,11 @@ class TestScreen extends StatelessWidget {
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.all(45),
-        children:
-            [
-              ('Image test', const ImgTest()),
-              ('Pack upload test', const FileOpening()),
-              ('Web socket', const WsTest()),
-            ].map(_itemCover).toList(),
+        children: [
+          ('Image test', const ImgTest()),
+          ('Pack upload test', const FileOpening()),
+          ('Web socket', const WsTest()),
+        ].map(_itemCover).toList(),
       ),
     );
   }
