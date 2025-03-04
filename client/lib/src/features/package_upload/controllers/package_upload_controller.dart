@@ -33,30 +33,33 @@ class PackageUploadController extends ChangeNotifier {
   }
 
   Future<void> _upload(List<int> fileData) async {
-    final rawBody = await compute<List<int>, String>(
-      isolatedParseSiqFile,
-      fileData,
-    );
+    final worker = ParseSiqFileWorker();
+    try {
+      final rawBody = await worker.compute(fileData);
 
-    final response = jsonDecode(rawBody) as Map<String, dynamic>;
-    final body = PackageCreationInput.fromJson(
-      response['body'] as Map<String, Object?>,
-    );
+      final response = jsonDecode(rawBody) as Map<String, dynamic>;
+      final body = PackageCreationInput.fromJson(
+        response['body'] as Map<String, Object?>,
+      );
 
-    final result = await Api.I.api.packages.postV1Packages(body: body);
-    final links = result.uploadLinks.entries.toList();
+      final result = await Api.I.api.packages.postV1Packages(body: body);
+      final links = result.uploadLinks.entries.toList();
 
-    final parser = SiqArchiveParser(fileData);
-    await parser.load();
-    final filesHash = response['files'] as Map<String, dynamic>;
-    parser.filesHash.addAll(
-      filesHash.map((a, b) {
-        final archiveFile = parser.archive!.firstWhere((e) => e.name == b);
-        return MapEntry(a, archiveFile);
-      }),
-    );
-    await _uploadFiles(links, parser);
-    await parser.dispose();
+      final parser = SiqArchiveParser(fileData);
+      await parser.load();
+      final filesHash = response['files'] as Map<String, dynamic>;
+      parser.filesHash.addAll(
+        filesHash.map((a, b) {
+          final archiveFile = parser.archive!.firstWhere((e) => e.name == b);
+          return MapEntry(a, archiveFile);
+        }),
+      );
+      await _uploadFiles(links, parser);
+      await parser.dispose();
+    } catch (e) {
+      worker.stop();
+      rethrow;
+    }
   }
 
   Future<void> _uploadFiles(

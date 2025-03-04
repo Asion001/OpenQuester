@@ -27,6 +27,20 @@
       ]
     },
     {
+      "name": "client (web - no wasm)",
+      "cwd": "client",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "-d",
+        "chrome",
+        "--web-port",
+        "10000"
+      ]
+    },
+    {
       "name": "client (profile mode)",
       "cwd": "client",
       "request": "launch",

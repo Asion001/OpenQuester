@@ -12,7 +12,6 @@ abstract class FileService {
     final result = await FilePicker.platform.pickFiles(
       type: conf.type,
       allowedExtensions: conf.allowedExtensions,
-      allowCompression: false,
       withReadStream: !(kIsWasm || kIsWeb || Platform.isMacOS),
     );
 
