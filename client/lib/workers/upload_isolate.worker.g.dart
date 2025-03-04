@@ -15,7 +15,7 @@ base class _$ParseSiqFileWorkerService extends ParseSiqFile
   @override
   late final Map<int, CommandHandler> operations =
       Map.unmodifiable(<int, CommandHandler>{
-    _$computeId: ($) => compute(_$X.$impl.$dsr1($.args[0])),
+    _$computeId: ($) => compute(_$X.$impl.$dsr0($.args[0])),
   });
 
   static const int _$computeId = 1;
@@ -45,9 +45,9 @@ base class ParseSiqFileWorker extends Worker implements ParseSiqFile {
       : super($ParseSiqFileActivator(SquadronPlatformType.wasm));
 
   @override
-  Future<String> compute(List<int> fileData) =>
+  Future<String> compute(Uint8List fileData) =>
       send(_$ParseSiqFileWorkerService._$computeId,
-          args: [_$X.$impl.$sr2(fileData)]).then(_$X.$impl.$dsr3);
+          args: [_$X.$impl.$sr1(fileData)]).then(_$X.$impl.$dsr2);
 }
 
 /// Worker pool for ParseSiqFile
@@ -94,7 +94,7 @@ base class ParseSiqFileWorkerPool extends WorkerPool<ParseSiqFileWorker>
         );
 
   @override
-  Future<String> compute(List<int> fileData) =>
+  Future<String> compute(Uint8List fileData) =>
       execute((w) => w.compute(fileData));
 }
 
@@ -111,8 +111,8 @@ final class _$X {
     return _impl!;
   }
 
-  late final $dsr0 = Squadron.converter.value<int>();
-  late final $dsr1 = Squadron.converter.list<int>($dsr0);
-  late final $sr2 = Squadron.converter.list();
-  late final $dsr3 = Squadron.converter.value<String>();
+  late final $dsr0 =
+      (($) => (const TypedDataMarshaler<Uint8List>()).unmarshal($));
+  late final $sr1 = (($) => (const TypedDataMarshaler<Uint8List>()).marshal($));
+  late final $dsr2 = Squadron.converter.value<String>();
 }

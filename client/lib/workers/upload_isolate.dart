@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data' show Uint8List;
 
-import 'package:openapi/openapi.dart' show PackageCreationInput;
+import 'package:openapi/openapi.dart'
+    show OQContentStructure, PackageCreationInput;
 import 'package:siq_file/siq_file.dart';
 import 'package:squadron/squadron.dart';
 
@@ -13,10 +15,15 @@ part 'upload_isolate.worker.g.dart';
 @SquadronService(baseUrl: '~/workers')
 base class ParseSiqFile {
   @SquadronMethod()
-  Future<String> compute(List<int> fileData) async {
+  Future<String> compute(Uint8List fileData) async {
     final parser = SiqArchiveParser();
+    late OQContentStructure siqFile;
     await parser.load(fileData);
-    final siqFile = await parser.parse();
+    try {
+      siqFile = await parser.parse();
+    } finally {
+      await parser.dispose();
+    }
     final body = PackageCreationInput(content: siqFile).toJson();
     final files = parser.filesHash.map((a, b) => MapEntry(a, b.name));
     final result = {'body': body, 'files': files};

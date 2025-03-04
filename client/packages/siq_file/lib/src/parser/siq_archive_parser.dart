@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
@@ -42,7 +43,7 @@ class SiqArchiveParser {
   }
 
   Future<void> _parseContentFile(ArchiveFile file, Archive archive) async {
-    final contentFile = utf8.decode(file.content as List<int>);
+    final contentFile = utf8.decode(file.content as Uint8List);
     file.clear();
 
     final contentXml = ContentXmlParser(archive);

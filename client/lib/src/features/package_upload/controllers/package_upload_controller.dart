@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:typed_data' show Uint8List;
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:openquester/common_imports.dart';
 import 'package:siq_file/siq_file.dart';
 
@@ -28,12 +29,13 @@ class PackageUploadController extends ChangeNotifier {
   }
 
   Future<void> upload(PlatformFile file) async {
-    final fileData = (await file.xFile.readAsBytes()).toList();
+    final fileData = await file.xFile.readAsBytes();
     await _upload(fileData);
   }
 
-  Future<void> _upload(List<int> fileData) async {
+  Future<void> _upload(Uint8List fileData) async {
     final worker = ParseSiqFileWorker();
+    final parser = SiqArchiveParser();
     try {
       final rawBody = await worker.compute(fileData);
 
@@ -45,7 +47,6 @@ class PackageUploadController extends ChangeNotifier {
       final result = await Api.I.api.packages.postV1Packages(body: body);
       final links = result.uploadLinks.entries.toList();
 
-      final parser = SiqArchiveParser();
       await parser.load(fileData);
       final filesHash = response['files'] as Map<String, dynamic>;
       parser.filesHash.addAll(
@@ -55,10 +56,11 @@ class PackageUploadController extends ChangeNotifier {
         }),
       );
       await _uploadFiles(links, parser);
+    } finally {
+      worker
+        ..stop()
+        ..release();
       await parser.dispose();
-    } catch (e) {
-      worker.stop();
-      rethrow;
     }
   }
 
@@ -93,8 +95,6 @@ class PackageUploadController extends ChangeNotifier {
           ),
         );
       }
-    } catch (e) {
-      rethrow;
     } finally {
       await parser.dispose();
     }

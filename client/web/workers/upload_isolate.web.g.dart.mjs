@@ -97,10 +97,12 @@ class CompiledApp {
       _13: x0 => x0.length,
       _15: (x0,x1) => x0[x1],
       _19: (x0,x1,x2) => new DataView(x0,x1,x2),
+      _21: x0 => new Int8Array(x0),
       _22: (x0,x1,x2) => new Uint8Array(x0,x1,x2),
       _23: x0 => new Uint8Array(x0),
       _31: x0 => new Int32Array(x0),
       _33: x0 => new Uint32Array(x0),
+      _35: x0 => new Float32Array(x0),
       _38: (o, t) => typeof o === t,
       _39: (o, c) => o instanceof c,
       _67: (o) => !!o,
@@ -126,7 +128,6 @@ class CompiledApp {
       _116: (s, p, i) => s.indexOf(p, i),
       _120: s => s.toUpperCase(),
       _122: (a, i) => a.push(i),
-      _130: (a, s, e) => a.slice(s, e),
       _133: a => a.length,
       _135: (a, i) => a[i],
       _136: (a, i, v) => a[i] = v,
@@ -145,6 +146,7 @@ class CompiledApp {
       _148: (o, start, length) => new Float32Array(o.buffer, o.byteOffset + start, length),
       _149: (o, start, length) => new Float64Array(o.buffer, o.byteOffset + start, length),
       _152: (o) => new DataView(o.buffer, o.byteOffset, o.byteLength),
+      _153: o => o.byteLength,
       _154: o => o.buffer,
       _155: o => o.byteOffset,
       _156: Function.prototype.call.bind(Object.getOwnPropertyDescriptor(DataView.prototype, 'byteLength').get),
@@ -162,6 +164,10 @@ class CompiledApp {
       _168: Function.prototype.call.bind(DataView.prototype.setUint32),
       _169: Function.prototype.call.bind(DataView.prototype.getInt32),
       _170: Function.prototype.call.bind(DataView.prototype.setInt32),
+      _171: Function.prototype.call.bind(DataView.prototype.getBigUint64),
+      _172: Function.prototype.call.bind(DataView.prototype.setBigUint64),
+      _173: Function.prototype.call.bind(DataView.prototype.getBigInt64),
+      _174: Function.prototype.call.bind(DataView.prototype.setBigInt64),
       _175: Function.prototype.call.bind(DataView.prototype.getFloat32),
       _177: Function.prototype.call.bind(DataView.prototype.getFloat64),
       _207: o => Object.keys(o),
@@ -284,6 +290,12 @@ class CompiledApp {
           jsArray[jsArrayOffset + i] = getValue(wasmArray, wasmArrayOffset + i);
         }
       },
+      _392: (jsArray, jsArrayOffset, wasmArray, wasmArrayOffset, length) => {
+        const getValue = dartInstance.exports.$wasmF32ArrayGet;
+        for (let i = 0; i < length; i++) {
+          jsArray[jsArrayOffset + i] = getValue(wasmArray, wasmArrayOffset + i);
+        }
+      },
       _399: x0 => x0.index,
       _404: x0 => x0.flags,
       _405: x0 => x0.multiline,
@@ -296,6 +308,7 @@ class CompiledApp {
       _415: x0 => x0.random(),
       _419: () => globalThis.Math,
       _421: Function.prototype.call.bind(Number.prototype.toString),
+      _422: (d, digits) => d.toFixed(digits),
       _2835: x0 => x0.port1,
       _2836: x0 => x0.port2,
       _2842: (x0,x1) => x0.onmessage = x1,
