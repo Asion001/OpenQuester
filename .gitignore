@@ -12,3 +12,4 @@ content.xml
 
 # Server
 .secret*
+.DS_Store
