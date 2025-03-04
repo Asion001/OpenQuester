@@ -4,6 +4,7 @@ import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/interfaces.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:openquester/common_imports.dart';
+import 'package:universal_io/io.dart';
 import 'package:universal_web/web.dart' as web;
 
 @singleton
@@ -34,8 +35,8 @@ class Oauth2Controller {
       scheme = href.scheme;
       uri = href.replace(path: '/auth.html').toString();
     } else if (isDesktopPlatform) {
-      scheme = 'http://localhost:10000';
-      uri = scheme;
+      uri = 'http://localhost:10000';
+      scheme = Platform.isMacOS ? 'http' : uri;
     } else {
       scheme = 'com.asion.openquester';
       uri = '$scheme:/';

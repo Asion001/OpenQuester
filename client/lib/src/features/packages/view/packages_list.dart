@@ -9,6 +9,6 @@ class PackagesListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return PaginatedListWidget<PackagesListController, PackageListItem>(
       itemBuilder: (context, item, index) => PackageListItemWidget(item: item),
-    ).expand();
+    );
   }
 }
