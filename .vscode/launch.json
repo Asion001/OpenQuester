@@ -16,7 +16,7 @@
       "cwd": "client",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "debug",
+      "flutterMode": "release",
       "program": "lib/main.dart",
       "toolArgs": [
         "--wasm",

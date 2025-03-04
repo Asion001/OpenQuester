@@ -14,7 +14,8 @@ part 'upload_isolate.worker.g.dart';
 base class ParseSiqFile {
   @SquadronMethod()
   Future<String> compute(List<int> fileData) async {
-    final parser = SiqArchiveParser(fileData);
+    final parser = SiqArchiveParser();
+    await parser.load(fileData);
     final siqFile = await parser.parse();
     final body = PackageCreationInput(content: siqFile).toJson();
     final files = parser.filesHash.map((a, b) => MapEntry(a, b.name));

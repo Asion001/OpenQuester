@@ -128,14 +128,13 @@ class ContentXmlParser {
     final archiveFile = _archive?.files.firstWhereOrNull(
       (e) => Uri.decodeFull(e.name) == filePath,
     );
-
-    final rawFile = archiveFile?.readBytes();
-    await archiveFile?.close();
+    final rawFile = archiveFile?.content;
+    archiveFile?.clear();
     if (rawFile == null) {
       throw Exception('$filePath not found in archive! (Question $item)');
     }
 
-    final hash = await getFileMD5(rawFile);
+    final hash = await getFileMD5(rawFile as List<int>);
 
     // Save archive file to map for re-use
     filesHash[hash] = archiveFile!;

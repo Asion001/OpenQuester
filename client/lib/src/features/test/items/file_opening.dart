@@ -60,7 +60,9 @@ class _FileOpeningState extends State<FileOpening> {
     final file = result?.files.first;
     if (file == null) return;
 
-    siqFile = await SiqArchiveParser(await file.xFile.readAsBytes()).parse();
+    final parser = SiqArchiveParser();
+    await parser.load(await file.xFile.readAsBytes());
+    siqFile = await parser.parse();
     setState(() {});
 
     final parseTime = DateTime.now().difference(now);

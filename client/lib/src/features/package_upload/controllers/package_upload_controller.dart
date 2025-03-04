@@ -45,8 +45,8 @@ class PackageUploadController extends ChangeNotifier {
       final result = await Api.I.api.packages.postV1Packages(body: body);
       final links = result.uploadLinks.entries.toList();
 
-      final parser = SiqArchiveParser(fileData);
-      await parser.load();
+      final parser = SiqArchiveParser();
+      await parser.load(fileData);
       final filesHash = response['files'] as Map<String, dynamic>;
       parser.filesHash.addAll(
         filesHash.map((a, b) {
@@ -77,20 +77,26 @@ class PackageUploadController extends ChangeNotifier {
           ),
         );
 
-    for (final link in links) {
-      final archiveFile = parser.filesHash[link.key];
-      final file = archiveFile?.readBytes();
-      await archiveFile?.close();
-      if (file == null) continue;
-      final fileHeaders = _fileHeaders(link.key);
-      await client().put<void>(
-        link.value,
-        data: file,
-        options: Options(
-          headers: {...fileHeaders},
-          contentType: 'application/octet-stream',
-        ),
-      );
+    try {
+      for (final link in links) {
+        final archiveFile = parser.filesHash[link.key];
+        final file = archiveFile?.content;
+        await archiveFile?.close();
+        if (file == null) continue;
+        final fileHeaders = _fileHeaders(link.key);
+        await client().put<void>(
+          link.value,
+          data: file,
+          options: Options(
+            headers: {...fileHeaders},
+            contentType: 'application/octet-stream',
+          ),
+        );
+      }
+    } catch (e) {
+      rethrow;
+    } finally {
+      await parser.dispose();
     }
   }
 

@@ -126,9 +126,15 @@ class CompiledApp {
       _116: (s, p, i) => s.indexOf(p, i),
       _120: s => s.toUpperCase(),
       _122: (a, i) => a.push(i),
+      _130: (a, s, e) => a.slice(s, e),
       _133: a => a.length,
       _135: (a, i) => a[i],
       _136: (a, i, v) => a[i] = v,
+      _138: (o, offsetInBytes, lengthInBytes) => {
+        var dst = new ArrayBuffer(lengthInBytes);
+        new Uint8Array(dst).set(new Uint8Array(o, offsetInBytes, lengthInBytes));
+        return new DataView(dst);
+      },
       _139: (o, start, length) => new Uint8Array(o.buffer, o.byteOffset + start, length),
       _140: (o, start, length) => new Int8Array(o.buffer, o.byteOffset + start, length),
       _141: (o, start, length) => new Uint8ClampedArray(o.buffer, o.byteOffset + start, length),
@@ -157,9 +163,7 @@ class CompiledApp {
       _169: Function.prototype.call.bind(DataView.prototype.getInt32),
       _170: Function.prototype.call.bind(DataView.prototype.setInt32),
       _175: Function.prototype.call.bind(DataView.prototype.getFloat32),
-      _176: Function.prototype.call.bind(DataView.prototype.setFloat32),
       _177: Function.prototype.call.bind(DataView.prototype.getFloat64),
-      _178: Function.prototype.call.bind(DataView.prototype.setFloat64),
       _207: o => Object.keys(o),
       _212: (c) =>
       queueMicrotask(() => dartInstance.exports.$invokeCallback(c)),
