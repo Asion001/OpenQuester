@@ -3,7 +3,9 @@ import 'dart:typed_data' show Uint8List;
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show ChangeNotifier;
-import 'package:openquester/common_imports.dart';
+import 'package:openquester/common_imports.dart' hide ParseSiqFileWorker;
+import 'package:openquester/workers/upload_isolate.dart'
+    deferred as upload_isolate show ParseSiqFileWorker;
 import 'package:siq_file/siq_file.dart';
 
 @singleton
@@ -34,7 +36,8 @@ class PackageUploadController extends ChangeNotifier {
   }
 
   Future<void> _upload(Uint8List fileData) async {
-    final worker = ParseSiqFileWorker();
+    await upload_isolate.loadLibrary();
+    final worker = upload_isolate.ParseSiqFileWorker();
     final parser = SiqArchiveParser();
     try {
       final rawBody = await worker.compute(fileData);
