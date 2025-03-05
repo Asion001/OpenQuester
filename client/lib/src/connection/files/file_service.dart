@@ -1,15 +1,14 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:universal_io/io.dart';
 
 export 'package:file_picker/file_picker.dart';
 
 abstract class FileService {
   static Future<FilePickerResult?> pickFile() async {
-    final conf = Platform.isAndroid || Platform.isIOS
-        ? PickerSettings.mobile()
-        : PickerSettings.other();
+    final conf = kIsWeb || kIsWasm || !(Platform.isAndroid || Platform.isIOS)
+        ? PickerSettings.other()
+        : PickerSettings.mobile();
 
     final result = await FilePicker.platform.pickFiles(
       type: conf.type,
