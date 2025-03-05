@@ -51,6 +51,8 @@ jobs:
     defaults:
       run:
         working-directory: ./client
+    env:
+      DONT_USE_PURO: true
     steps:
       - uses: actions/checkout@v4
       - name: Setup Flutter SDK
