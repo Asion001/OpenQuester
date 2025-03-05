@@ -24,12 +24,12 @@ base class ParseSiqFile {
     await parser.load(fileData);
     try {
       siqFile = await parser.parse();
+      final body = PackageCreationInput(content: siqFile).toJson();
+      final files = parser.filesHash.map((a, b) => MapEntry(a, b.name));
+      final result = {'body': body, 'files': files};
+      return jsonEncode(result);
     } finally {
       await parser.dispose();
     }
-    final body = PackageCreationInput(content: siqFile).toJson();
-    final files = parser.filesHash.map((a, b) => MapEntry(a, b.name));
-    final result = {'body': body, 'files': files};
-    return jsonEncode(result);
   }
 }

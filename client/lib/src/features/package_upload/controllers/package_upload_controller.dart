@@ -73,32 +73,37 @@ class PackageUploadController extends ChangeNotifier {
     SiqArchiveParser parser,
   ) async {
     logger.d('Uploading ${links.length} files...');
-    Dio client() => Dio(
-          BaseOptions(
-            persistentConnection: true,
-            validateStatus: (status) {
-              if (status == 412) return true;
-              return status != null && status >= 200 && status < 300;
-            },
-          ),
-        );
+    final client = Dio(
+      BaseOptions(
+        persistentConnection: false,
+        validateStatus: (status) {
+          if (status == 412) return true;
+          return status != null && status >= 200 && status < 300;
+        },
+      ),
+    );
 
     try {
       for (final link in links) {
         final archiveFile = parser.filesHash[link.key];
-        final file = archiveFile?.content;
+        final file = archiveFile?.content as Uint8List?;
         await archiveFile?.close();
         if (file == null) continue;
         final fileHeaders = _fileHeaders(link.key);
-        await client().put<void>(
+
+        await client.put<void>(
           link.value,
-          data: file,
+          data: MultipartFile.fromBytes(file),
           options: Options(
             headers: {...fileHeaders},
             contentType: 'application/octet-stream',
           ),
         );
       }
+      logger.d('All files uploaded!');
+    } catch (e, s) {
+      logger.e(e, stackTrace: s);
+      rethrow;
     } finally {
       await parser.dispose();
     }
