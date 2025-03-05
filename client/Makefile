@@ -5,7 +5,9 @@ else
 PURO_CMD = puro
 endif
 
-pre_build: gen_workers gen_files gen_packages_files gen_indexes gen_api gen_locale format 
+pre_build: pre_run gen_packages_files gen_indexes gen_api format 
+
+pre_run: gen_workers gen_files gen_locale 
 
 gen_locale:
 	$(PURO_CMD) dart run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/localization/
