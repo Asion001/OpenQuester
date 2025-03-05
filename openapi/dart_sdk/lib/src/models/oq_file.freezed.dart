@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'oq_question_file.dart';
+part of 'oq_file.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,73 +14,71 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-OQQuestionFile _$OQQuestionFileFromJson(Map<String, dynamic> json) {
-  return _OQQuestionFile.fromJson(json);
+OQFile _$OQFileFromJson(Map<String, dynamic> json) {
+  return _OQFile.fromJson(json);
 }
 
 /// @nodoc
-mixin _$OQQuestionFile {
+mixin _$OQFile {
   OQFileContentStructure get file => throw _privateConstructorUsedError;
-  int get displayTime => throw _privateConstructorUsedError;
-  int get answerDelay => throw _privateConstructorUsedError;
+  int? get displayTime => throw _privateConstructorUsedError;
+  int? get answerDelay => throw _privateConstructorUsedError;
 
-  /// Serializes this OQQuestionFile to a JSON map.
+  /// Serializes this OQFile to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of OQQuestionFile
+  /// Create a copy of OQFile
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $OQQuestionFileCopyWith<OQQuestionFile> get copyWith =>
-      throw _privateConstructorUsedError;
+  $OQFileCopyWith<OQFile> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $OQQuestionFileCopyWith<$Res> {
-  factory $OQQuestionFileCopyWith(
-          OQQuestionFile value, $Res Function(OQQuestionFile) then) =
-      _$OQQuestionFileCopyWithImpl<$Res, OQQuestionFile>;
+abstract class $OQFileCopyWith<$Res> {
+  factory $OQFileCopyWith(OQFile value, $Res Function(OQFile) then) =
+      _$OQFileCopyWithImpl<$Res, OQFile>;
   @useResult
-  $Res call({OQFileContentStructure file, int displayTime, int answerDelay});
+  $Res call({OQFileContentStructure file, int? displayTime, int? answerDelay});
 
   $OQFileContentStructureCopyWith<$Res> get file;
 }
 
 /// @nodoc
-class _$OQQuestionFileCopyWithImpl<$Res, $Val extends OQQuestionFile>
-    implements $OQQuestionFileCopyWith<$Res> {
-  _$OQQuestionFileCopyWithImpl(this._value, this._then);
+class _$OQFileCopyWithImpl<$Res, $Val extends OQFile>
+    implements $OQFileCopyWith<$Res> {
+  _$OQFileCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of OQQuestionFile
+  /// Create a copy of OQFile
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? file = null,
-    Object? displayTime = null,
-    Object? answerDelay = null,
+    Object? displayTime = freezed,
+    Object? answerDelay = freezed,
   }) {
     return _then(_value.copyWith(
       file: null == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
               as OQFileContentStructure,
-      displayTime: null == displayTime
+      displayTime: freezed == displayTime
           ? _value.displayTime
           : displayTime // ignore: cast_nullable_to_non_nullable
-              as int,
-      answerDelay: null == answerDelay
+              as int?,
+      answerDelay: freezed == answerDelay
           ? _value.answerDelay
           : answerDelay // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ) as $Val);
   }
 
-  /// Create a copy of OQQuestionFile
+  /// Create a copy of OQFile
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -92,81 +90,77 @@ class _$OQQuestionFileCopyWithImpl<$Res, $Val extends OQQuestionFile>
 }
 
 /// @nodoc
-abstract class _$$OQQuestionFileImplCopyWith<$Res>
-    implements $OQQuestionFileCopyWith<$Res> {
-  factory _$$OQQuestionFileImplCopyWith(_$OQQuestionFileImpl value,
-          $Res Function(_$OQQuestionFileImpl) then) =
-      __$$OQQuestionFileImplCopyWithImpl<$Res>;
+abstract class _$$OQFileImplCopyWith<$Res> implements $OQFileCopyWith<$Res> {
+  factory _$$OQFileImplCopyWith(
+          _$OQFileImpl value, $Res Function(_$OQFileImpl) then) =
+      __$$OQFileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({OQFileContentStructure file, int displayTime, int answerDelay});
+  $Res call({OQFileContentStructure file, int? displayTime, int? answerDelay});
 
   @override
   $OQFileContentStructureCopyWith<$Res> get file;
 }
 
 /// @nodoc
-class __$$OQQuestionFileImplCopyWithImpl<$Res>
-    extends _$OQQuestionFileCopyWithImpl<$Res, _$OQQuestionFileImpl>
-    implements _$$OQQuestionFileImplCopyWith<$Res> {
-  __$$OQQuestionFileImplCopyWithImpl(
-      _$OQQuestionFileImpl _value, $Res Function(_$OQQuestionFileImpl) _then)
+class __$$OQFileImplCopyWithImpl<$Res>
+    extends _$OQFileCopyWithImpl<$Res, _$OQFileImpl>
+    implements _$$OQFileImplCopyWith<$Res> {
+  __$$OQFileImplCopyWithImpl(
+      _$OQFileImpl _value, $Res Function(_$OQFileImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of OQQuestionFile
+  /// Create a copy of OQFile
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? file = null,
-    Object? displayTime = null,
-    Object? answerDelay = null,
+    Object? displayTime = freezed,
+    Object? answerDelay = freezed,
   }) {
-    return _then(_$OQQuestionFileImpl(
+    return _then(_$OQFileImpl(
       file: null == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
               as OQFileContentStructure,
-      displayTime: null == displayTime
+      displayTime: freezed == displayTime
           ? _value.displayTime
           : displayTime // ignore: cast_nullable_to_non_nullable
-              as int,
-      answerDelay: null == answerDelay
+              as int?,
+      answerDelay: freezed == answerDelay
           ? _value.answerDelay
           : answerDelay // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$OQQuestionFileImpl implements _OQQuestionFile {
-  const _$OQQuestionFileImpl(
-      {required this.file,
-      required this.displayTime,
-      required this.answerDelay});
+class _$OQFileImpl implements _OQFile {
+  const _$OQFileImpl({required this.file, this.displayTime, this.answerDelay});
 
-  factory _$OQQuestionFileImpl.fromJson(Map<String, dynamic> json) =>
-      _$$OQQuestionFileImplFromJson(json);
+  factory _$OQFileImpl.fromJson(Map<String, dynamic> json) =>
+      _$$OQFileImplFromJson(json);
 
   @override
   final OQFileContentStructure file;
   @override
-  final int displayTime;
+  final int? displayTime;
   @override
-  final int answerDelay;
+  final int? answerDelay;
 
   @override
   String toString() {
-    return 'OQQuestionFile(file: $file, displayTime: $displayTime, answerDelay: $answerDelay)';
+    return 'OQFile(file: $file, displayTime: $displayTime, answerDelay: $answerDelay)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OQQuestionFileImpl &&
+            other is _$OQFileImpl &&
             (identical(other.file, file) || other.file == file) &&
             (identical(other.displayTime, displayTime) ||
                 other.displayTime == displayTime) &&
@@ -178,43 +172,41 @@ class _$OQQuestionFileImpl implements _OQQuestionFile {
   @override
   int get hashCode => Object.hash(runtimeType, file, displayTime, answerDelay);
 
-  /// Create a copy of OQQuestionFile
+  /// Create a copy of OQFile
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$OQQuestionFileImplCopyWith<_$OQQuestionFileImpl> get copyWith =>
-      __$$OQQuestionFileImplCopyWithImpl<_$OQQuestionFileImpl>(
-          this, _$identity);
+  _$$OQFileImplCopyWith<_$OQFileImpl> get copyWith =>
+      __$$OQFileImplCopyWithImpl<_$OQFileImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$OQQuestionFileImplToJson(
+    return _$$OQFileImplToJson(
       this,
     );
   }
 }
 
-abstract class _OQQuestionFile implements OQQuestionFile {
-  const factory _OQQuestionFile(
+abstract class _OQFile implements OQFile {
+  const factory _OQFile(
       {required final OQFileContentStructure file,
-      required final int displayTime,
-      required final int answerDelay}) = _$OQQuestionFileImpl;
+      final int? displayTime,
+      final int? answerDelay}) = _$OQFileImpl;
 
-  factory _OQQuestionFile.fromJson(Map<String, dynamic> json) =
-      _$OQQuestionFileImpl.fromJson;
+  factory _OQFile.fromJson(Map<String, dynamic> json) = _$OQFileImpl.fromJson;
 
   @override
   OQFileContentStructure get file;
   @override
-  int get displayTime;
+  int? get displayTime;
   @override
-  int get answerDelay;
+  int? get answerDelay;
 
-  /// Create a copy of OQQuestionFile
+  /// Create a copy of OQFile
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OQQuestionFileImplCopyWith<_$OQQuestionFileImpl> get copyWith =>
+  _$$OQFileImplCopyWith<_$OQFileImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

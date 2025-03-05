@@ -5,7 +5,9 @@ else
 PURO_CMD = puro
 endif
 
-pre_build: gen_files gen_packages_files gen_indexes gen_api gen_locale format 
+pre_build: pre_run gen_packages_files gen_indexes gen_api format 
+
+pre_run: gen_files gen_workers gen_locale 
 
 gen_locale:
 	$(PURO_CMD) dart run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/localization/
@@ -27,3 +29,26 @@ fix:
 
 gen_api:
 	(cd ../openapi/dart_sdk/ && make build)
+
+# List of files (without the '.g.dart' suffix)
+FILES := upload_isolate.web
+
+# Directories for source and output
+SRC_DIR := ./lib/workers
+OUT_DIR := ./web/workers
+
+# Generate output file names based on the source file name
+JS_FILES := $(FILES:%=$(OUT_DIR)/%.g.dart.js)
+WASM_FILES := $(FILES:%=$(OUT_DIR)/%.g.dart.wasm)
+
+# Rule to compile Dart to JS
+$(OUT_DIR)/%.g.dart.js: $(SRC_DIR)/%.g.dart
+	@echo "Compiling $< to JavaScript..."
+	$(PURO_CMD) dart compile js "$<" -o "$@"
+
+# Rule to compile Dart to WASM
+$(OUT_DIR)/%.g.dart.wasm: $(SRC_DIR)/%.g.dart
+	@echo "Compiling $< to WebAssembly..."
+	$(PURO_CMD) dart compile wasm "$<" -o "$@"
+
+gen_workers:  $(JS_FILES) $(WASM_FILES)

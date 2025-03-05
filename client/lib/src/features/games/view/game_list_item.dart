@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
-class GameListItemWidget extends WatchingWidget {
-  const GameListItemWidget({super.key, required this.item});
+class GameListItemWidget extends StatelessWidget {
+  const GameListItemWidget({required this.item, super.key});
   final GameListItem item;
 
   @override
@@ -17,34 +17,31 @@ class GameListItemWidget extends WatchingWidget {
           children: [
             _GameListItemBadges(item),
             ListTile(
-              title:
+              title: Tooltip(
+                message: LocaleKeys.game_tile_tooltips_game_title.tr(),
+                child: Text(
+                  item.title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+              ).shrink(),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Tooltip(
-                    message: LocaleKeys.game_tile_tooltips_game_title.tr(),
+                    message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
                     child: Text(
-                      item.title,
+                      item.package.title,
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
                     ),
-                  ).shrink(),
-              subtitle:
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Tooltip(
-                        message:
-                            LocaleKeys.game_tile_tooltips_packages_title.tr(),
-                        child: Text(
-                          item.package.title,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Text(_packInfo(), overflow: TextOverflow.ellipsis),
-                      Text(_gameInfo(), overflow: TextOverflow.ellipsis),
-                    ],
-                  ).paddingTop(4).shrink(),
-              trailing: Icon(Icons.play_arrow),
+                  ),
+                  Text(_packInfo(), overflow: TextOverflow.ellipsis),
+                  Text(_gameInfo(), overflow: TextOverflow.ellipsis),
+                ],
+              ).paddingTop(4).shrink(),
+              trailing: const Icon(Icons.play_arrow),
               titleAlignment: ListTileTitleAlignment.bottom,
-              contentPadding: EdgeInsets.only(right: 16, left: 4),
+              contentPadding: const EdgeInsets.only(right: 16, left: 4),
               mouseCursor: MouseCursor.defer,
             ).expand(),
           ],
@@ -54,7 +51,7 @@ class GameListItemWidget extends WatchingWidget {
   }
 
   String _packInfo() {
-    var ageRestriction = item.package.ageRestriction.translate();
+    final ageRestriction = item.package.ageRestriction.translate();
     return [
       [
         ageRestriction,
@@ -69,7 +66,7 @@ class GameListItemWidget extends WatchingWidget {
   }
 
   String _gameInfo() {
-    var startedAt = item.startedAt;
+    final startedAt = item.startedAt;
     return [
       [
         LocaleKeys.game_status_started.tr(),
@@ -88,8 +85,8 @@ class _GameListItemBadges extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(6),
-      margin: EdgeInsets.all(4),
+      padding: const EdgeInsets.all(6),
+      margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: context.theme.colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(18),
@@ -132,9 +129,8 @@ class _Badge extends StatelessWidget {
         backgroundColor: context.theme.colorScheme.onPrimary,
         textColor: context.theme.colorScheme.onSurface,
         label: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: 48),
+          constraints: const BoxConstraints(minWidth: 48),
           child: Row(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Icon(icon, size: 24),

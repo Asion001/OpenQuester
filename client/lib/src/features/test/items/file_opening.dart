@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:openquester/common_imports.dart';
 import 'package:siq_file/siq_file.dart';
-
-import '../../../connection/files/file_service.dart';
 
 class FileOpening extends StatefulWidget {
   const FileOpening({super.key});
@@ -14,7 +13,7 @@ class FileOpening extends StatefulWidget {
 }
 
 class _FileOpeningState extends State<FileOpening> {
-  SiqFile? siqFile;
+  OQContentStructure? siqFile;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +32,9 @@ class _FileOpeningState extends State<FileOpening> {
                 ),
                 IconButton(
                   icon: const Icon(Icons.copy),
-                  onPressed:
-                      siqFile == null
-                          ? null
-                          : () async => await Clipboard.setData(
+                  onPressed: siqFile == null
+                      ? null
+                      : () async => Clipboard.setData(
                             ClipboardData(text: jsonEncode(siqFile?.toJson())),
                           ),
                 ),
@@ -53,21 +51,18 @@ class _FileOpeningState extends State<FileOpening> {
   }
 
   Future<void> _openFile() async {
-    DateTime now = DateTime.now();
-
-    final result = await FileService.pickFile();
+    var now = DateTime.now();
 
     final pickedTime = DateTime.now().difference(now);
     now = DateTime.now();
 
+    final result = await FileService.pickFile();
     final file = result?.files.first;
     if (file == null) return;
 
-    final fileStream = FileStream(
-      fileLength: file.size,
-      stream: file.readStream!,
-    );
-    siqFile = await SiqArchiveParser(fileStream).parse(hashFiles: true);
+    final parser = SiqArchiveParser();
+    await parser.load(await file.xFile.readAsBytes());
+    siqFile = await parser.parse();
     setState(() {});
 
     final parseTime = DateTime.now().difference(now);
@@ -76,8 +71,7 @@ class _FileOpeningState extends State<FileOpening> {
     parseTime: $parseTime;
     pickedTime: $pickedTime;
     rounds: ${siqFile?.rounds.length}''';
-    // ignore: avoid_print
-    print(debugText);
+
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(debugText)));

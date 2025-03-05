@@ -1,0 +1,3 @@
+{
+  "paths": ["lib/src/core/router.gr.dart", "lib/generated/locale_keys.g.dart"]
+}

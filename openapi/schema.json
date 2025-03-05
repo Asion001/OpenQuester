@@ -991,6 +991,7 @@
             "examples": ["2024-01-01T00:00:00Z"]
           },
           "logo": {
+            "nullable": true,
             "$ref": "#/components/schemas/OQLogoFile"
           },
           "ageRestriction": {
@@ -1021,6 +1022,7 @@
       },
       "OQLogoFile": {
         "type": "object",
+        "nullable": true,
         "properties": {
           "file": {
             "type": "object",
@@ -1028,7 +1030,7 @@
           }
         }
       },
-      "OQQuestionFile": {
+      "OQFile": {
         "type": "object",
         "properties": {
           "file": {
@@ -1037,31 +1039,20 @@
           },
           "displayTime": {
             "type": "integer",
-            "examples": [5000]
+            "examples": [5000],
+            "nullable": true
           },
           "answerDelay": {
             "type": "integer",
-            "examples": [2500]
-          }
-        }
-      },
-      "OQAnswerFile": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "object",
-            "$ref": "#/components/schemas/OQFileContentStructure"
-          },
-          "displayTime": {
-            "type": "integer",
-            "examples": [5000]
+            "examples": [2500],
+            "nullable": true
           }
         }
       },
       "OQFileContentStructure": {
         "type": "object",
         "properties": {
-          "sha256": {
+          "md5": {
             "type": "string",
             "examples": [
               "f611efcb4eb3716cebddec66d4c220438b89830e4d2bb0825d3953cbf8ae3b77"
@@ -1069,7 +1060,8 @@
           },
           "type": {
             "type": "string",
-            "examples": ["image"]
+            "examples": ["image"],
+            "enum": ["image", "video", "audio"]
           }
         }
       },
@@ -1097,7 +1089,8 @@
           },
           "comment": {
             "type": "string",
-            "examples": ["Theme comment"]
+            "examples": ["Theme comment"],
+            "nullable": true
           },
           "questions": {
             "type": "array",
@@ -1116,11 +1109,13 @@
           },
           "type": {
             "type": "string",
-            "examples": ["regular"]
+            "examples": ["regular"],
+            "enum": ["regular", "stake", "noRisk"]
           },
           "text": {
             "type": "string",
-            "examples": ["Question text"]
+            "examples": ["Question text"],
+            "nullable": true
           },
           "hostHint": {
             "type": "string",
@@ -1128,19 +1123,23 @@
           },
           "playersHint": {
             "type": "string",
-            "examples": ["Question comment for players"]
+            "examples": ["Question comment for players"],
+            "nullable": true
           },
           "answerText": {
             "type": "string",
-            "examples": ["Actual answer"]
+            "examples": ["Actual answer"],
+            "nullable": true
           },
           "questionFile": {
             "type": "object",
-            "$ref": "#/components/schemas/OQQuestionFile"
+            "$ref": "#/components/schemas/OQFile",
+            "nullable": true
           },
           "answerFile": {
             "type": "object",
-            "$ref": "#/components/schemas/OQAnswerFile"
+            "$ref": "#/components/schemas/OQFile",
+            "nullable": true
           }
         }
       },

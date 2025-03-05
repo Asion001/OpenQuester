@@ -16,12 +16,12 @@ class OQMetadataStructure with _$OQMetadataStructure {
     required String id,
     required String title,
     required DateTime createdAt,
-    required OQLogoFile logo,
     required OQMetadataStructureAgeRestriction ageRestriction,
     required List<String> tags,
     required int author,
     required String? language,
     required String? comment,
+    OQLogoFile? logo,
   }) = _OQMetadataStructure;
   
   factory OQMetadataStructure.fromJson(Map<String, Object?> json) => _$OQMetadataStructureFromJson(json);

@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
-class PackageListItemWidget extends WatchingWidget {
-  const PackageListItemWidget({super.key, required this.item});
+class PackageListItemWidget extends StatelessWidget {
+  const PackageListItemWidget({required this.item, super.key});
   final PackageListItem item;
 
   @override
@@ -14,26 +14,24 @@ class PackageListItemWidget extends WatchingWidget {
       borderRadius: BorderRadius.circular(16),
       child: Card(
         child: ListTile(
-          title:
-              Tooltip(
-                message: LocaleKeys.game_tile_tooltips_game_title.tr(),
-                child: Text(
-                  item.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              ).shrink(),
-          subtitle:
-              Tooltip(
-                message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
-                child: Text(
-                  _packInfo(),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              ).paddingTop(4).shrink(),
+          title: Tooltip(
+            message: LocaleKeys.game_tile_tooltips_game_title.tr(),
+            child: Text(
+              item.title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
+          ).shrink(),
+          subtitle: Tooltip(
+            message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
+            child: Text(
+              _packInfo(),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+            ),
+          ).paddingTop(4).shrink(),
           titleAlignment: ListTileTitleAlignment.bottom,
-          contentPadding: EdgeInsets.only(right: 16, left: 4),
+          contentPadding: const EdgeInsets.only(right: 16, left: 4),
           mouseCursor: MouseCursor.defer,
         ).paddingSymmetric(horizontal: 2),
       ),
@@ -41,7 +39,7 @@ class PackageListItemWidget extends WatchingWidget {
   }
 
   String _packInfo() {
-    var ageRestriction = item.ageRestriction.translate();
+    final ageRestriction = item.ageRestriction.translate();
     return [
       [
         ageRestriction,

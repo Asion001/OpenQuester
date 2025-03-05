@@ -13,3 +13,4 @@ targets:
           #
           # The default value for each is listed.
           include_if_null: false
+          explicit_to_json: true

@@ -11,6 +11,16 @@ class AppTheme {
         unselectedItemColor: theme.colorScheme.primary,
       ),
       appBarTheme: AppBarTheme(systemOverlayStyle: systemOverlay(theme)),
+      pageTransitionsTheme: pageTransitionsTheme,
+    );
+  }
+
+  static PageTransitionsTheme get pageTransitionsTheme {
+    return const PageTransitionsTheme(
+      builders: <TargetPlatform, PageTransitionsBuilder>{
+        // Set the predictive back transitions for Android.
+        TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+      },
     );
   }
 

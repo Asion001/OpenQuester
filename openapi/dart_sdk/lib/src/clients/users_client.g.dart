@@ -180,7 +180,6 @@ class _UsersClient implements UsersClient {
           _dio.options.baseUrl,
           baseUrl,
         )));
-
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
     late ResponseUser _value;
     try {

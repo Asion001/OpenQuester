@@ -6,53 +6,46 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
   @protected
   Future<ListResponse<I>> getPage(ListRequest request);
 
-  Future<void> init() async {
-    pagingController.addPageRequestListener(_fetchPage);
-  }
+  Future<void> init() async {}
 
-  Future<void> _fetchPage(int pageKey) async {
+  Future<List<I>> _fetchPage(int pageKey) async {
     try {
       final listRequest = ListRequest(offset: pageKey);
       final newItems = await getPage(listRequest);
-      final isLastPage = newItems.list.length < listRequest.limit;
-      if (isLastPage) {
-        pagingController.appendLastPage(newItems.list);
-      } else {
-        final nextPageKey = pageKey + newItems.list.length;
-        pagingController.appendPage(newItems.list, nextPageKey);
-      }
+      return newItems.list;
     } catch (e, s) {
-      pagingController.error = e;
       logger.e(e, stackTrace: s);
+      rethrow;
     }
   }
 
   @protected
   Future<void> deleteItem(I item) async {
-    if (pagingController.itemList == null) return;
-    final list = List<I>.from(pagingController.itemList!);
-    final gameIndex = list.indexWhere((e) => e.id == item.id);
-    if (gameIndex < 0) return;
-    list.removeAt(gameIndex);
-    pagingController.itemList = list;
+    // TODO: Migrate to new version
+    // final items = pagingController.items;
+    // if (items == null) return;
+    // final list = List<I>.from(items);
+    // final gameIndex = list.indexWhere((e) => e.id == item.id);
+    // if (gameIndex < 0) return;
+    // list.removeAt(gameIndex);
+    // pagingController.value = pagingController.items = ;
   }
 
   @protected
   Future<void> addFirstItem(I item) async {
-    if (pagingController.itemList == null) return;
-    final list = List<I>.from(pagingController.itemList!);
-    list.insert(0, item);
-    pagingController.itemList = list;
+    // if (pagingController.itemList == null) return;
+    // final list = List<I>.from(pagingController.itemList!)..insert(0, item);
+    // pagingController.itemList = list;
   }
 
   @protected
   Future<void> updateItem(I game) async {
-    if (pagingController.itemList == null) return;
-    final list = List<I>.from(pagingController.itemList!);
-    final gameIndex = list.indexWhere((e) => e.id == game.id);
-    if (gameIndex < 0) return;
-    list[gameIndex] = game;
-    pagingController.itemList = list;
+    // if (pagingController.itemList == null) return;
+    // final list = List<I>.from(pagingController.itemList!);
+    // final gameIndex = list.indexWhere((e) => e.id == game.id);
+    // if (gameIndex < 0) return;
+    // list[gameIndex] = game;
+    // pagingController.itemList = list;
   }
 
   @override
@@ -61,8 +54,9 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
     pagingController.dispose();
   }
 
-  final PagingController<int, I> pagingController = PagingController(
-    firstPageKey: 0,
+  late final PagingController<int, I> pagingController = PagingController(
+    getNextPageKey: (state) => (state.keys?.last ?? 0) + 1,
+    fetchPage: _fetchPage,
   );
 }
 

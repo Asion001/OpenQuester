@@ -9,13 +9,13 @@ part of 'oq_file_content_structure.dart';
 _$OQFileContentStructureImpl _$$OQFileContentStructureImplFromJson(
         Map<String, dynamic> json) =>
     _$OQFileContentStructureImpl(
-      sha256: json['sha256'] as String,
-      type: json['type'] as String,
+      md5: json['md5'] as String,
+      type: OQFileContentStructureType.fromJson(json['type'] as String),
     );
 
 Map<String, dynamic> _$$OQFileContentStructureImplToJson(
         _$OQFileContentStructureImpl instance) =>
     <String, dynamic>{
-      'sha256': instance.sha256,
+      'md5': instance.md5,
       'type': instance.type,
     };

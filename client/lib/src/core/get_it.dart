@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import 'get_it.config.dart';
+import 'package:openquester/src/core/get_it.config.dart';
 
 final getIt = GetIt.instance;
 

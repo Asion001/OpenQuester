@@ -21,9 +21,9 @@ OQThemeStructure _$OQThemeStructureFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$OQThemeStructure {
   String get name => throw _privateConstructorUsedError;
-  String get comment => throw _privateConstructorUsedError;
   List<OQQuestionsStructure> get questions =>
       throw _privateConstructorUsedError;
+  String? get comment => throw _privateConstructorUsedError;
 
   /// Serializes this OQThemeStructure to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $OQThemeStructureCopyWith<$Res> {
       _$OQThemeStructureCopyWithImpl<$Res, OQThemeStructure>;
   @useResult
   $Res call(
-      {String name, String comment, List<OQQuestionsStructure> questions});
+      {String name, List<OQQuestionsStructure> questions, String? comment});
 }
 
 /// @nodoc
@@ -61,22 +61,22 @@ class _$OQThemeStructureCopyWithImpl<$Res, $Val extends OQThemeStructure>
   @override
   $Res call({
     Object? name = null,
-    Object? comment = null,
     Object? questions = null,
+    Object? comment = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      comment: null == comment
-          ? _value.comment
-          : comment // ignore: cast_nullable_to_non_nullable
-              as String,
       questions: null == questions
           ? _value.questions
           : questions // ignore: cast_nullable_to_non_nullable
               as List<OQQuestionsStructure>,
+      comment: freezed == comment
+          ? _value.comment
+          : comment // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -90,7 +90,7 @@ abstract class _$$OQThemeStructureImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String name, String comment, List<OQQuestionsStructure> questions});
+      {String name, List<OQQuestionsStructure> questions, String? comment});
 }
 
 /// @nodoc
@@ -107,22 +107,22 @@ class __$$OQThemeStructureImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
-    Object? comment = null,
     Object? questions = null,
+    Object? comment = freezed,
   }) {
     return _then(_$OQThemeStructureImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      comment: null == comment
-          ? _value.comment
-          : comment // ignore: cast_nullable_to_non_nullable
-              as String,
       questions: null == questions
           ? _value._questions
           : questions // ignore: cast_nullable_to_non_nullable
               as List<OQQuestionsStructure>,
+      comment: freezed == comment
+          ? _value.comment
+          : comment // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -132,8 +132,8 @@ class __$$OQThemeStructureImplCopyWithImpl<$Res>
 class _$OQThemeStructureImpl implements _OQThemeStructure {
   const _$OQThemeStructureImpl(
       {required this.name,
-      required this.comment,
-      required final List<OQQuestionsStructure> questions})
+      required final List<OQQuestionsStructure> questions,
+      this.comment})
       : _questions = questions;
 
   factory _$OQThemeStructureImpl.fromJson(Map<String, dynamic> json) =>
@@ -141,8 +141,6 @@ class _$OQThemeStructureImpl implements _OQThemeStructure {
 
   @override
   final String name;
-  @override
-  final String comment;
   final List<OQQuestionsStructure> _questions;
   @override
   List<OQQuestionsStructure> get questions {
@@ -152,8 +150,11 @@ class _$OQThemeStructureImpl implements _OQThemeStructure {
   }
 
   @override
+  final String? comment;
+
+  @override
   String toString() {
-    return 'OQThemeStructure(name: $name, comment: $comment, questions: $questions)';
+    return 'OQThemeStructure(name: $name, questions: $questions, comment: $comment)';
   }
 
   @override
@@ -162,15 +163,15 @@ class _$OQThemeStructureImpl implements _OQThemeStructure {
         (other.runtimeType == runtimeType &&
             other is _$OQThemeStructureImpl &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.comment, comment) || other.comment == comment) &&
             const DeepCollectionEquality()
-                .equals(other._questions, _questions));
+                .equals(other._questions, _questions) &&
+            (identical(other.comment, comment) || other.comment == comment));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, comment,
-      const DeepCollectionEquality().hash(_questions));
+  int get hashCode => Object.hash(runtimeType, name,
+      const DeepCollectionEquality().hash(_questions), comment);
 
   /// Create a copy of OQThemeStructure
   /// with the given fields replaced by the non-null parameter values.
@@ -191,10 +192,9 @@ class _$OQThemeStructureImpl implements _OQThemeStructure {
 
 abstract class _OQThemeStructure implements OQThemeStructure {
   const factory _OQThemeStructure(
-          {required final String name,
-          required final String comment,
-          required final List<OQQuestionsStructure> questions}) =
-      _$OQThemeStructureImpl;
+      {required final String name,
+      required final List<OQQuestionsStructure> questions,
+      final String? comment}) = _$OQThemeStructureImpl;
 
   factory _OQThemeStructure.fromJson(Map<String, dynamic> json) =
       _$OQThemeStructureImpl.fromJson;
@@ -202,9 +202,9 @@ abstract class _OQThemeStructure implements OQThemeStructure {
   @override
   String get name;
   @override
-  String get comment;
-  @override
   List<OQQuestionsStructure> get questions;
+  @override
+  String? get comment;
 
   /// Create a copy of OQThemeStructure
   /// with the given fields replaced by the non-null parameter values.

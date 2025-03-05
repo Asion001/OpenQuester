@@ -4,8 +4,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'oq_answer_file.dart';
-import 'oq_question_file.dart';
+import 'oq_file.dart';
+import 'oq_questions_structure_type.dart';
 
 part 'oq_questions_structure.freezed.dart';
 part 'oq_questions_structure.g.dart';
@@ -14,13 +14,13 @@ part 'oq_questions_structure.g.dart';
 class OQQuestionsStructure with _$OQQuestionsStructure {
   const factory OQQuestionsStructure({
     required int price,
-    required String type,
-    required String text,
+    required OQQuestionsStructureType type,
     required String hostHint,
-    required String playersHint,
-    required String answerText,
-    required OQQuestionFile questionFile,
-    required OQAnswerFile answerFile,
+    String? text,
+    String? playersHint,
+    String? answerText,
+    OQFile? questionFile,
+    OQFile? answerFile,
   }) = _OQQuestionsStructure;
   
   factory OQQuestionsStructure.fromJson(Map<String, Object?> json) => _$OQQuestionsStructureFromJson(json);
