@@ -40,6 +40,7 @@ class PackageUploadController extends ChangeNotifier {
     final worker = upload_isolate.ParseSiqFileWorker();
     final parser = SiqArchiveParser();
     try {
+      await worker.start();
       final rawBody = await worker.compute(fileData);
 
       final response = jsonDecode(rawBody) as Map<String, dynamic>;

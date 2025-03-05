@@ -7,7 +7,7 @@ endif
 
 pre_build: pre_run gen_packages_files gen_indexes gen_api format 
 
-pre_run: gen_workers gen_files gen_locale 
+pre_run: gen_files gen_workers gen_locale 
 
 gen_locale:
 	$(PURO_CMD) dart run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/localization/
@@ -44,7 +44,7 @@ WASM_FILES := $(FILES:%=$(OUT_DIR)/%.g.dart.wasm)
 # Rule to compile Dart to JS
 $(OUT_DIR)/%.g.dart.js: $(SRC_DIR)/%.g.dart
 	@echo "Compiling $< to JavaScript..."
-	$(PURO_CMD) dart compile js -O2 "$<" -o "$@"
+	$(PURO_CMD) dart compile js "$<" -o "$@"
 
 # Rule to compile Dart to WASM
 $(OUT_DIR)/%.g.dart.wasm: $(SRC_DIR)/%.g.dart

@@ -12,7 +12,10 @@ import 'upload_isolate.activator.g.dart';
 
 part 'upload_isolate.worker.g.dart';
 
-@SquadronService(baseUrl: '~/workers')
+@SquadronService(
+  baseUrl: '~/workers',
+  targetPlatform: TargetPlatform.js | TargetPlatform.vm,
+)
 base class ParseSiqFile {
   @SquadronMethod()
   Future<String> compute(Uint8List fileData) async {
