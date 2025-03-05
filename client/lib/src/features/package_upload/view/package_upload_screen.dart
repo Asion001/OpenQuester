@@ -19,7 +19,17 @@ class PackageUploadScreen extends WatchingWidget {
               IconButton(
                 onPressed: loading
                     ? null
-                    : getIt<PackageUploadController>().pickAndUpload,
+                    : () async {
+                        try {
+                          await getIt<PackageUploadController>()
+                              .pickAndUpload();
+                        } catch (e) {
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(e.toString())),
+                          );
+                        }
+                      },
                 icon: loading
                     ? const CircularProgressIndicator.adaptive()
                     : const Icon(Icons.upload),

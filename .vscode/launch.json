@@ -9,7 +9,10 @@
       "cwd": "client",
       "request": "launch",
       "type": "dart",
-      "program": "lib/main.dart"
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--no-enable-impeller"
+      ]
     },
     {
       "name": "client (web)",

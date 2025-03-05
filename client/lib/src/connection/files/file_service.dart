@@ -7,7 +7,9 @@ export 'package:file_picker/file_picker.dart';
 
 abstract class FileService {
   static Future<FilePickerResult?> pickFile() async {
-    final conf = PickerSettings.other();
+    final conf = Platform.isAndroid || Platform.isIOS
+        ? PickerSettings.mobile()
+        : PickerSettings.other();
 
     final result = await FilePicker.platform.pickFiles(
       type: conf.type,
