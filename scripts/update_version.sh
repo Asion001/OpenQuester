@@ -23,7 +23,7 @@ PUBSPEC_FILE="client/pubspec.yaml"
 if grep -q "^version: $VERSION" "$PUBSPEC_FILE"; then
   echo "Version in $PUBSPEC_FILE is already up to date."
 else
-  sed -i "s/^version:.*/version: $VERSION/" "$PUBSPEC_FILE"
+  sed -i '' "s/^version:.*/version: $VERSION/" "$PUBSPEC_FILE"
   echo "Updated version in $PUBSPEC_FILE to $VERSION"
 fi
 
@@ -32,7 +32,7 @@ PACKAGE_JSON_FILE="server/package.json"
 if grep -q "\"version\": \"$VERSION\"" "$PACKAGE_JSON_FILE"; then
   echo "Version in $PACKAGE_JSON_FILE is already up to date."
 else
-  sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" "$PACKAGE_JSON_FILE"
+  sed -i '' "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" "$PACKAGE_JSON_FILE"
   echo "Updated version in $PACKAGE_JSON_FILE to $VERSION"
 fi
 
@@ -41,7 +41,7 @@ SCHEMA_JSON_FILE="openapi/schema.json"
 if grep -q "\"version\": \"$VERSION\"" "$SCHEMA_JSON_FILE"; then
   echo "Version in $SCHEMA_JSON_FILE is already up to date."
 else
-  sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" "$SCHEMA_JSON_FILE"
+  sed -i '' "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" "$SCHEMA_JSON_FILE"
   echo "Updated version in $SCHEMA_JSON_FILE to $VERSION"
 fi
 
