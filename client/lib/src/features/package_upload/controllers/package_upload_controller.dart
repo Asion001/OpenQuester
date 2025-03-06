@@ -93,7 +93,7 @@ class PackageUploadController extends ChangeNotifier {
 
         await client.put<void>(
           link.value,
-          data: MultipartFile.fromBytes(file),
+          data: file,
           options: Options(
             headers: {...fileHeaders},
             contentType: 'application/octet-stream',

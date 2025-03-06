@@ -40,6 +40,10 @@ base class ParseSiqFileWorker extends Worker implements ParseSiqFile {
       : super($ParseSiqFileActivator(SquadronPlatformType.js),
             threadHook: threadHook, exceptionManager: exceptionManager);
 
+  ParseSiqFileWorker.wasm(
+      {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})
+      : super($ParseSiqFileActivator(SquadronPlatformType.wasm));
+
   @override
   Future<String> compute(Uint8List fileData) =>
       send(_$ParseSiqFileWorkerService._$computeId,
@@ -75,6 +79,16 @@ base class ParseSiqFileWorkerPool extends WorkerPool<ParseSiqFileWorker>
       ExceptionManager? exceptionManager})
       : super(
           (ExceptionManager exceptionManager) => ParseSiqFileWorker.js(
+              threadHook: threadHook, exceptionManager: exceptionManager),
+          concurrencySettings: concurrencySettings,
+        );
+
+  ParseSiqFileWorkerPool.wasm(
+      {ConcurrencySettings? concurrencySettings,
+      PlatformThreadHook? threadHook,
+      ExceptionManager? exceptionManager})
+      : super(
+          (ExceptionManager exceptionManager) => ParseSiqFileWorker.wasm(
               threadHook: threadHook, exceptionManager: exceptionManager),
           concurrencySettings: concurrencySettings,
         );
