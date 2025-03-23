@@ -44,7 +44,7 @@ WASM_FILES := $(FILES:%=$(OUT_DIR)/%.g.dart.wasm)
 # Rule to compile Dart to JS
 $(OUT_DIR)/%.g.dart.js: $(SRC_DIR)/%.g.dart
 	@echo "Compiling $< to JavaScript..."
-	$(PURO_CMD) dart compile js "$<" -o "$@"
+	$(PURO_CMD) dart compile js -O2 "$<" -o "$@"
 
 # Rule to compile Dart to WASM
 $(OUT_DIR)/%.g.dart.wasm: $(SRC_DIR)/%.g.dart

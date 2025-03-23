@@ -59,7 +59,7 @@ jobs:
         run: echo "${{ vars.ENV_FILE_CONTENT }}" > .env
       - run: make pre_run
       - name: Build web
-        run: flutter build web --wasm --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER
+        run: flutter build web --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER
       - name: Publish Web Artifacts
         uses: actions/upload-artifact@v4
         with:

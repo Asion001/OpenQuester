@@ -77,7 +77,7 @@ class PackageUploadController extends ChangeNotifier {
       BaseOptions(
         persistentConnection: false,
         validateStatus: (status) {
-          if (status == 412) return true;
+          if ({520, 412}.contains(status)) return true;
           return status != null && status >= 200 && status < 300;
         },
       ),
@@ -93,9 +93,12 @@ class PackageUploadController extends ChangeNotifier {
 
         await client.put<void>(
           link.value,
-          data: MultipartFile.fromBytes(file),
+          data: file,
           options: Options(
-            headers: {...fileHeaders},
+            headers: {
+              ...fileHeaders,
+              'Content-Length': file.lengthInBytes.toString(),
+            },
             contentType: 'application/octet-stream',
           ),
         );
