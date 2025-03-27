@@ -7,7 +7,10 @@ class GamesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PaginatedListWidget<GamesListController, GameListItem>(
-      itemBuilder: (context, item, index) => GameListItemWidget(item: item),
+      itemBuilder: (context, item, index) => GameListItemWidget(
+        item: item,
+        onTap: () => GamePreviewRoute(item: item).push<void>(context),
+      ),
     );
   }
 }

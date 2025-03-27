@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
 @AutoRouterConfig(deferredLoading: true)
@@ -26,10 +27,20 @@ class AppRouter extends RootStackRouter {
           path: '/upload-package',
           fullscreenDialog: true,
         ),
+        CustomRoute<void>(
+          page: GamePreviewRoute.page,
+          path: '/game-preview',
+          fullscreenDialog: true,
+          opaque: false,
+          barrierColor: Colors.black.withValues(alpha: .3),
+        ),
       ];
 
   List<AutoRoute> get homeTabs => [
-        AutoRoute(page: HomeRoute.page, path: 'home'),
+        AutoRoute(
+          page: HomeRoute.page,
+          path: 'home',
+        ),
         AutoRoute(page: PackagesListRoute.page, path: 'packages'),
       ];
 
