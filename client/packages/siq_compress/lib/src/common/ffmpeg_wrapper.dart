@@ -1,19 +1,8 @@
-/* 
-ffmpeg -i input.mp4 \
-  -map 0:v:0 -map 0:a:0 \
-  -c:v libsvtav1 -crf 52 -fpsmax 25 -threads 8 -preset 4 -pix_fmt yuv420p \
-  -color_range mpeg \
-  -c:a libopus -b:a 96k -vbr on -ar 48000 -sample_fmt s16 \
-  -vf "scale='if(gt(a,1280/720),1280,-2)':'if(gt(a,1280/720),-2,720)'" \
-  -t 10 -map_metadata -1 \
-  output.webm 
-  */
-
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:cross_file/cross_file.dart';
 import 'package:siq_compress/src/models/ffprobe_output.dart';
+import 'package:universal_io/io.dart';
 
 class FFmpegWrapper {
   Future<FfprobeOutput?> metadata(XFile file) async {
@@ -27,9 +16,85 @@ class FFmpegWrapper {
     ];
     const executable = 'ffprobe';
 
-    final result = await Process.run(executable, [...arguments, file.path]);
+    final result = await _run(executable, [...arguments, file.path]);
+
     return FfprobeOutput.fromJson(
-      jsonDecode(result.stdout.toString()) as Map<String, dynamic>,
+      jsonDecode(result!) as Map<String, dynamic>,
     );
+  }
+
+  Future<XFile> encode({
+    required XFile inputFile,
+    required XFile outputFile,
+    required CodecType codecType,
+  }) async {
+    // Map only first chanels
+    const mapArgs = ['-map', '0:v:0', '-map', '0:a:0', '-c:v'];
+    const videoArgs = [
+      'libsvtav1',
+      '-crf',
+      '40',
+      '-fpsmax',
+      '20',
+      '-preset',
+      '8',
+      '-f',
+      'webm', // Video container
+    ];
+    const videoFormatArgs = ['-pix_fmt', 'yuv420p', '-color_range', 'mpeg'];
+    const audioArgs = [
+      '-c:a',
+      'libopus',
+      '-b:a',
+      '64k',
+      '-vbr',
+      'on',
+      '-ar',
+      '48000',
+      '-sample_fmt',
+      's16',
+    ];
+    const videoFilters = [
+      '-vf',
+      "scale='if(gt(a,1280/720),1280,-2)':'if(gt(a,1280/720),-2,720)'",
+      '-t', // Cut first 10 seconds
+      '10',
+      '-map_metadata', // Remove all metadata like geo data from video
+      '-1',
+    ];
+    const otherArgs = ['-progress', '-'];
+    const arguments = [
+      ...mapArgs,
+      ...videoArgs,
+      ...videoFormatArgs,
+      ...audioArgs,
+      ...videoFilters,
+      ...otherArgs,
+    ];
+
+    final notConstantArguments = [
+      '-threads',
+      '${Platform.numberOfProcessors}',
+      '-i', // Input file
+      inputFile.path,
+      ...arguments,
+      outputFile.path, // Output file
+    ];
+
+    const executable = 'ffmpeg';
+
+    await _run(executable, notConstantArguments);
+    return outputFile;
+  }
+
+  Future<String?> _run(
+    String executable,
+    List<String> arguments,
+  ) async {
+    final result = await Process.run(executable, arguments);
+    if (result.exitCode != 0) {
+      throw Exception(result.stderr.toString());
+    }
+    return result.stdout.toString();
   }
 }

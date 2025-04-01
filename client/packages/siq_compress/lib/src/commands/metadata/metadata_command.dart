@@ -12,12 +12,12 @@ class EncodeCommand extends FileCommand {
 
   @override
   Future<int> run() async {
-    final file = await getFile();
+    final file = await getInputFile();
     logger.info('Processing file: ${file.path.split('/').last}');
 
     final metadata = await fileEncoder.getMetadata(file);
     logger.success(metadata.toString());
-    
+
     return ExitCode.success.code;
   }
 }

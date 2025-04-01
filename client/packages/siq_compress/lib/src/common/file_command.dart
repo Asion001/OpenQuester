@@ -7,15 +7,15 @@ abstract class FileCommand extends Command<int> {
   FileCommand({required this.logger});
   final Logger logger;
 
-  Future<XFile> getFile() async {
+  Future<XFile> getInputFile() async => _getFile(0);
+  Future<XFile> getOutputFile() async => _getFile(1);
+
+  XFile _getFile(int index) {
     if (argResults!.rest.isEmpty) {
       usageException('Provide file path');
     }
-    if (argResults!.rest.length > 1) {
-      usageException('Too many arguments');
-    }
 
-    final target = argResults!.rest[0];
+    final target = argResults!.rest[index];
     final targetFile = XFile(target);
 
     return targetFile;
