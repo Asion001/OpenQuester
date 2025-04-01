@@ -710,10 +710,10 @@ mixin _$FormatData {
   String get filename => throw _privateConstructorUsedError;
   String get formatName => throw _privateConstructorUsedError;
   String get formatLongName => throw _privateConstructorUsedError;
-  String get startTime => throw _privateConstructorUsedError;
-  String get duration => throw _privateConstructorUsedError;
   String get size => throw _privateConstructorUsedError;
-  String get bitRate => throw _privateConstructorUsedError;
+  String? get bitRate => throw _privateConstructorUsedError;
+  String? get duration => throw _privateConstructorUsedError;
+  String? get startTime => throw _privateConstructorUsedError;
 
   /// Serializes this FormatData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -735,10 +735,10 @@ abstract class $FormatDataCopyWith<$Res> {
       {String filename,
       String formatName,
       String formatLongName,
-      String startTime,
-      String duration,
       String size,
-      String bitRate});
+      String? bitRate,
+      String? duration,
+      String? startTime});
 }
 
 /// @nodoc
@@ -759,10 +759,10 @@ class _$FormatDataCopyWithImpl<$Res, $Val extends FormatData>
     Object? filename = null,
     Object? formatName = null,
     Object? formatLongName = null,
-    Object? startTime = null,
-    Object? duration = null,
     Object? size = null,
-    Object? bitRate = null,
+    Object? bitRate = freezed,
+    Object? duration = freezed,
+    Object? startTime = freezed,
   }) {
     return _then(_value.copyWith(
       filename: null == filename
@@ -777,22 +777,22 @@ class _$FormatDataCopyWithImpl<$Res, $Val extends FormatData>
           ? _value.formatLongName
           : formatLongName // ignore: cast_nullable_to_non_nullable
               as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as String,
       size: null == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as String,
-      bitRate: null == bitRate
+      bitRate: freezed == bitRate
           ? _value.bitRate
           : bitRate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      duration: freezed == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startTime: freezed == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -809,10 +809,10 @@ abstract class _$$FormatDataImplCopyWith<$Res>
       {String filename,
       String formatName,
       String formatLongName,
-      String startTime,
-      String duration,
       String size,
-      String bitRate});
+      String? bitRate,
+      String? duration,
+      String? startTime});
 }
 
 /// @nodoc
@@ -831,10 +831,10 @@ class __$$FormatDataImplCopyWithImpl<$Res>
     Object? filename = null,
     Object? formatName = null,
     Object? formatLongName = null,
-    Object? startTime = null,
-    Object? duration = null,
     Object? size = null,
-    Object? bitRate = null,
+    Object? bitRate = freezed,
+    Object? duration = freezed,
+    Object? startTime = freezed,
   }) {
     return _then(_$FormatDataImpl(
       filename: null == filename
@@ -849,22 +849,22 @@ class __$$FormatDataImplCopyWithImpl<$Res>
           ? _value.formatLongName
           : formatLongName // ignore: cast_nullable_to_non_nullable
               as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as String,
-      duration: null == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as String,
       size: null == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as String,
-      bitRate: null == bitRate
+      bitRate: freezed == bitRate
           ? _value.bitRate
           : bitRate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      duration: freezed == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startTime: freezed == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -877,10 +877,10 @@ class _$FormatDataImpl implements _FormatData {
       {required this.filename,
       required this.formatName,
       required this.formatLongName,
-      required this.startTime,
-      required this.duration,
       required this.size,
-      required this.bitRate});
+      this.bitRate,
+      this.duration,
+      this.startTime});
 
   factory _$FormatDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$FormatDataImplFromJson(json);
@@ -892,17 +892,17 @@ class _$FormatDataImpl implements _FormatData {
   @override
   final String formatLongName;
   @override
-  final String startTime;
-  @override
-  final String duration;
-  @override
   final String size;
   @override
-  final String bitRate;
+  final String? bitRate;
+  @override
+  final String? duration;
+  @override
+  final String? startTime;
 
   @override
   String toString() {
-    return 'FormatData(filename: $filename, formatName: $formatName, formatLongName: $formatLongName, startTime: $startTime, duration: $duration, size: $size, bitRate: $bitRate)';
+    return 'FormatData(filename: $filename, formatName: $formatName, formatLongName: $formatLongName, size: $size, bitRate: $bitRate, duration: $duration, startTime: $startTime)';
   }
 
   @override
@@ -916,18 +916,18 @@ class _$FormatDataImpl implements _FormatData {
                 other.formatName == formatName) &&
             (identical(other.formatLongName, formatLongName) ||
                 other.formatLongName == formatLongName) &&
-            (identical(other.startTime, startTime) ||
-                other.startTime == startTime) &&
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.bitRate, bitRate) || other.bitRate == bitRate) &&
             (identical(other.duration, duration) ||
                 other.duration == duration) &&
-            (identical(other.size, size) || other.size == size) &&
-            (identical(other.bitRate, bitRate) || other.bitRate == bitRate));
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, filename, formatName,
-      formatLongName, startTime, duration, size, bitRate);
+      formatLongName, size, bitRate, duration, startTime);
 
   /// Create a copy of FormatData
   /// with the given fields replaced by the non-null parameter values.
@@ -950,10 +950,10 @@ abstract class _FormatData implements FormatData {
       {required final String filename,
       required final String formatName,
       required final String formatLongName,
-      required final String startTime,
-      required final String duration,
       required final String size,
-      required final String bitRate}) = _$FormatDataImpl;
+      final String? bitRate,
+      final String? duration,
+      final String? startTime}) = _$FormatDataImpl;
 
   factory _FormatData.fromJson(Map<String, dynamic> json) =
       _$FormatDataImpl.fromJson;
@@ -965,13 +965,13 @@ abstract class _FormatData implements FormatData {
   @override
   String get formatLongName;
   @override
-  String get startTime;
-  @override
-  String get duration;
-  @override
   String get size;
   @override
-  String get bitRate;
+  String? get bitRate;
+  @override
+  String? get duration;
+  @override
+  String? get startTime;
 
   /// Create a copy of FormatData
   /// with the given fields replaced by the non-null parameter values.

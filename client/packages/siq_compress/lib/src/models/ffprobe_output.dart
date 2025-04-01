@@ -6,6 +6,7 @@ part 'ffprobe_output.g.dart';
 enum CodecType {
   video,
   audio,
+  image,
 }
 
 enum SampleFormat {
@@ -62,10 +63,10 @@ abstract class FormatData with _$FormatData {
     required String filename,
     required String formatName,
     required String formatLongName,
-    required String startTime,
-    required String duration,
     required String size,
-    required String bitRate,
+    String? bitRate,
+    String? duration,
+    String? startTime,
   }) = _FormatData;
 
   factory FormatData.fromJson(Map<String, dynamic> json) =>

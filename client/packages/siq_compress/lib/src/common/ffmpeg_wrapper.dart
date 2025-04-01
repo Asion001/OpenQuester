@@ -29,17 +29,14 @@ class FFmpegWrapper {
     required CodecType codecType,
   }) async {
     // Map only first chanels
-    const mapArgs = ['-map', '0:v:0', '-map', '0:a:0', '-c:v'];
+    const mapArgs = ['-map', '0:v:0', '-map', '0:a:0'];
     const videoArgs = [
-      'libsvtav1',
       '-crf',
       '40',
       '-fpsmax',
       '20',
       '-preset',
       '8',
-      '-f',
-      'webm', // Video container
     ];
     const videoFormatArgs = ['-pix_fmt', 'yuv420p', '-color_range', 'mpeg'];
     const audioArgs = [
@@ -62,14 +59,31 @@ class FFmpegWrapper {
       '-map_metadata', // Remove all metadata like geo data from video
       '-1',
     ];
-    const otherArgs = ['-progress', '-'];
-    const arguments = [
-      ...mapArgs,
-      ...videoArgs,
-      ...videoFormatArgs,
+    const otherArgs = [
+      '-progress',
+      '-',
+    ];
+    const general = [
       ...audioArgs,
       ...videoFilters,
+      ...videoArgs,
       ...otherArgs,
+    ];
+    const mediaTypeArgs = [
+      ...videoFormatArgs,
+      ...mapArgs,
+      '-f',
+      'webm',
+      '-c:v',
+      'libsvtav1',
+    ];
+    final imageTypeArgs = [
+      '-f',
+      'avif',
+      '-c:v',
+      'libaom-av1',
+      '-pix_fmt',
+      'yuv420p10le',
     ];
 
     final notConstantArguments = [
@@ -77,7 +91,8 @@ class FFmpegWrapper {
       '${Platform.numberOfProcessors}',
       '-i', // Input file
       inputFile.path,
-      ...arguments,
+      if (codecType != CodecType.image) ...mediaTypeArgs else ...imageTypeArgs,
+      ...general,
       outputFile.path, // Output file
     ];
 

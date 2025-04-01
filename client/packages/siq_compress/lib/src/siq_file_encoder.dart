@@ -54,6 +54,7 @@ class SiqFileEncoder {
     final withAudio = metadata.streams
         .firstWhereOrNull((e) => e.codecType == CodecType.audio);
     if (withVideo != null && withAudio?.codecName != 'mjpeg') {
+      if (metadata.streams.length == 1) return CodecType.image;
       return CodecType.video;
     }
     if (withAudio != null) return CodecType.audio;

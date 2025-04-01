@@ -74,10 +74,10 @@ _$FormatDataImpl _$$FormatDataImplFromJson(Map<String, dynamic> json) =>
       filename: json['filename'] as String,
       formatName: json['format_name'] as String,
       formatLongName: json['format_long_name'] as String,
-      startTime: json['start_time'] as String,
-      duration: json['duration'] as String,
       size: json['size'] as String,
-      bitRate: json['bit_rate'] as String,
+      bitRate: json['bit_rate'] as String?,
+      duration: json['duration'] as String?,
+      startTime: json['start_time'] as String?,
     );
 
 Map<String, dynamic> _$$FormatDataImplToJson(_$FormatDataImpl instance) =>
@@ -85,8 +85,8 @@ Map<String, dynamic> _$$FormatDataImplToJson(_$FormatDataImpl instance) =>
       'filename': instance.filename,
       'format_name': instance.formatName,
       'format_long_name': instance.formatLongName,
-      'start_time': instance.startTime,
-      'duration': instance.duration,
       'size': instance.size,
-      'bit_rate': instance.bitRate,
+      if (instance.bitRate case final value?) 'bit_rate': value,
+      if (instance.duration case final value?) 'duration': value,
+      if (instance.startTime case final value?) 'start_time': value,
     };
