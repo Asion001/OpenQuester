@@ -29,7 +29,12 @@ class FFmpegWrapper {
     required CodecType codecType,
   }) async {
     // Map only first chanels
-    const mapArgs = ['-map', '0:v:0', '-map', '0:a:0'];
+    const mapArgs = [
+      '-map',
+      '0:v:0',
+      '-map',
+      '0:a:0',
+    ];
     const videoArgs = [
       '-crf',
       '40',
@@ -72,7 +77,6 @@ class FFmpegWrapper {
     ];
     const mediaTypeArgs = [
       ...videoFormatArgs,
-      ...mapArgs,
       '-f',
       'webm',
       '-c:v',
@@ -93,6 +97,7 @@ class FFmpegWrapper {
       '-i', // Input file
       inputFile.path,
       if (codecType != CodecType.image) ...mediaTypeArgs else ...imageTypeArgs,
+      if (![CodecType.audio, CodecType.image].contains(codecType)) ...mapArgs,
       ...general,
       outputFile.path, // Output file
     ];
