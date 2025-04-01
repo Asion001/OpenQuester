@@ -56,12 +56,13 @@ class FFmpegWrapper {
       "scale='if(gt(a,1280/720),1280,-2)':'if(gt(a,1280/720),-2,720)'",
       '-t', // Cut first 10 seconds
       '10',
-      '-map_metadata', // Remove all metadata like geo data from video
-      '-1',
     ];
     const otherArgs = [
       '-progress',
       '-',
+      '-map_metadata', // Remove all metadata like geo data from video
+      '-1',
+      '-y', // Force overwrite
     ];
     const general = [
       ...audioArgs,
