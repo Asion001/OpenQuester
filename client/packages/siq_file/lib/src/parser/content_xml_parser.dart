@@ -1,5 +1,3 @@
-import 'dart:typed_data' show Uint8List;
-
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
@@ -130,7 +128,7 @@ class ContentXmlParser {
     final archiveFile = _archive?.files.firstWhereOrNull(
       (e) => Uri.decodeFull(e.name) == filePath,
     );
-    final rawFile = archiveFile?.content as Uint8List?;
+    final rawFile = archiveFile?.content;
     archiveFile?.clear();
     if (rawFile == null) {
       throw Exception('$filePath not found in archive! (Question $item)');

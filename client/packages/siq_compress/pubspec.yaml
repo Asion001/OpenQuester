@@ -1,5 +1,5 @@
-name: siq_file
-description: A sigame file parser
+name: siq_compress
+description: A openquester media file compresser 
 version: 0.0.1
 # repository: https://github.com/my_org/my_repo
 topics: [cli]
@@ -15,16 +15,10 @@ dependencies:
   mason_logger: ^0.3.3
   universal_io: ^2.2.2
   path: ^1.9.1
-  archive: ^4.0.5
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
-  xml: ^6.5.0
   collection: ^1.19.1
-  logger: ^2.5.0
-  crypto: ^3.0.6
-  convert: ^3.1.2
-  openapi:
-    path: ../../../openapi/dart_sdk/
+  cross_file: ^0.3.4+2
 
 dev_dependencies:
   lints: ^5.1.1
@@ -36,4 +30,4 @@ dev_dependencies:
   very_good_analysis: ^7.0.0
 
 executables:
-  siq_file:
+  siq_compress:

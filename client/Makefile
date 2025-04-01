@@ -17,6 +17,7 @@ gen_files:
 
 gen_packages_files:
 	(cd packages/siq_file/ && make gen_files)
+	(cd packages/siq_compress/ && make gen_files)
 
 gen_indexes:
 	$(PURO_CMD) flutter pub global run index_generator
