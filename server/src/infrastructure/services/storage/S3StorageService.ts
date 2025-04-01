@@ -19,7 +19,7 @@ import { FileDTO } from "domain/types/dto/file/FileDTO";
 import { S3Context } from "domain/types/file/S3Context";
 import { UsageEntries } from "domain/types/usage/usage";
 import { type File } from "infrastructure/database/models/File";
-import { type Package } from "infrastructure/database/models/Package";
+import { type Package } from "infrastructure/database/models/package/Package";
 import { Permission } from "infrastructure/database/models/Permission";
 import { type User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
@@ -165,12 +165,12 @@ export class S3StorageService {
     return this.performFileUpload(filename, expiresIn);
   }
 
-  public async performBulkFilesUpload(
-    filesData: { files: FileDTO[]; user?: User; pack?: Package },
-    expiresIn: number
-  ): Promise<Record<string, string>> {
+  public async generatePresignedUrls(
+    files: FileDTO[],
+    expiresIn: number = UPLOAD_FILE_LINK_EXPIRES_IN
+  ) {
     const links: Record<string, string> = {};
-    for (const file of filesData.files) {
+    for (const file of files) {
       const filename = ValueUtils.getRawFilename(file.filename.toLowerCase());
 
       links[filename] = await this.generatePresignedUrl(
@@ -181,14 +181,6 @@ export class S3StorageService {
         filename
       );
     }
-
-    const files = (await this.fileRepository.bulkWriteFiles(filesData.files))
-      .generatedMaps as File[];
-
-    await this.fileUsageRepository.writeBulkUsage({
-      files,
-      pack: filesData.pack,
-    });
 
     return links;
   }
@@ -253,9 +245,7 @@ export class S3StorageService {
     const result = { removed: false };
 
     if (usedInPackages && !usedByUsers) {
-      const packages = usage.packages
-        .map((p) => p.content?.metadata?.title)
-        .join(", ");
+      const packages = usage.packages.map((p) => p.title).join(", ");
       throw new ClientError(ClientResponse.DELETE_FROM_PACKAGE, 400, {
         packages,
       });

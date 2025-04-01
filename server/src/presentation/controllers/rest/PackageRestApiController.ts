@@ -3,9 +3,9 @@ import { Router, type Express, type Request, type Response } from "express";
 import { PackageService } from "application/services/package/PackageService";
 import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
 import { HttpStatus } from "domain/enums/HttpStatus";
-import { OQContentStructure } from "domain/types/file/structures/OQContentStructure";
-import { PackageModel } from "domain/types/package/PackageModel";
+import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
+import { Package } from "infrastructure/database/models/package/Package";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 import {
   packIdScheme,
@@ -29,8 +29,9 @@ export class PackageRestApiController {
   }
 
   private uploadPackage = async (req: Request, res: Response) => {
+    // Validate and get data that can be safely saved in DB
     const validatedData = await new RequestDataValidator<{
-      content: OQContentStructure;
+      content: PackageDTO;
     }>(req.body, uploadPackageScheme()).validate();
 
     const data = await this.packageService.uploadPackage(
@@ -51,9 +52,9 @@ export class PackageRestApiController {
   };
 
   private listPackages = async (req: Request, res: Response) => {
-    const paginationOpts = await new PaginationSchema<PackageModel>({
+    const paginationOpts = await new PaginationSchema<Package>({
       data: {
-        sortBy: req.query.sortBy as keyof PackageModel,
+        sortBy: req.query.sortBy as keyof Package,
         order: req.query.order as PaginationOrder,
         limit: Number(req.query.limit),
         offset: Number(req.query.offset),

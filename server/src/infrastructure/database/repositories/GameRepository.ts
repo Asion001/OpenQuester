@@ -168,23 +168,11 @@ export class GameRepository {
           return null;
         }
 
-        const packMeta = packData.content.metadata;
-
+        // TODO: Temp
         return {
           ...game,
           createdBy,
-          package: {
-            id: packData.id,
-            createdAt: packData.created_at,
-            rounds: packData.content.rounds.length,
-            tags: packMeta.tags,
-            title: packMeta.title,
-            ageRestriction: packMeta.ageRestriction ?? AgeRestriction.NONE,
-            author: {
-              id: packData.author.id,
-              username: packData.author.username,
-            },
-          },
+          package: packData,
         };
       })
       .filter((g): g is GameListItemDTO => g !== null);
@@ -250,19 +238,7 @@ export class GameRepository {
     const gameDataOutput: GameListItemDTO = {
       ...gameDataRaw,
       createdBy: { id: createdBy.id, username: createdBy.username },
-      package: {
-        id: gameData.packageId,
-        title: packageData.title,
-        // TODO: Get age restriction after new pack model implemented
-        ageRestriction: AgeRestriction.NONE,
-        createdAt: packageData.created_at,
-        rounds: packageData.content.rounds.length,
-        tags: packageData.content.metadata.tags,
-        author: {
-          id: packageData.author.id,
-          username: packageData.author.username,
-        },
-      },
+      package: packageData,
     };
 
     return gameDataOutput;
@@ -306,23 +282,10 @@ export class GameRepository {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
-    const packMeta = packData.content.metadata;
-
     return {
       ...record,
       createdBy,
-      package: {
-        id: packData.id,
-        createdAt: packData.created_at,
-        rounds: packData.content.rounds.length,
-        tags: packMeta.tags,
-        title: packMeta.title,
-        ageRestriction: packMeta.ageRestriction ?? AgeRestriction.NONE,
-        author: {
-          id: packData.author.id,
-          username: packData.author.username,
-        },
-      },
+      package: packData,
     };
   }
 

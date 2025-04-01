@@ -1,5 +1,5 @@
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
-import { PackageListItemDTO } from "domain/types/dto/game/items/PackageIListItemDTO";
+// import { PackageListItemDTO } from "domain/types/dto/game/items/PackageIListItemDTO";
 import { ShortUserInfo } from "domain/types/user/ShortUserInfo";
 
 export interface GameListItemDTO {
@@ -13,5 +13,6 @@ export interface GameListItemDTO {
   players: number;
   maxPlayers: number;
   startedAt: Date | null;
-  package: PackageListItemDTO;
+  // TODO: Temp
+  package: any;
 }

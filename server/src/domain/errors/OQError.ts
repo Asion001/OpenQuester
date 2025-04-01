@@ -1,4 +1,4 @@
-export abstract class OQError extends Error {
+export abstract class BaseError extends Error {
   /** Error code */
   public code: number;
   /** String literal arguments replacement */

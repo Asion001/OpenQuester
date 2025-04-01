@@ -1,6 +1,6 @@
-import { OQError } from "domain/errors/OQError";
+import { BaseError } from "domain/errors/OQError";
 
-export class ClientError extends OQError {
+export class ClientError extends BaseError {
   constructor(
     message?: string,
     code?: number,
