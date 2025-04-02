@@ -67,6 +67,7 @@ Map<String, dynamic> _$$StreamDataImplToJson(_$StreamDataImpl instance) =>
 const _$CodecTypeEnumMap = {
   CodecType.video: 'video',
   CodecType.audio: 'audio',
+  CodecType.image: 'image',
 };
 
 _$FormatDataImpl _$$FormatDataImplFromJson(Map<String, dynamic> json) =>
