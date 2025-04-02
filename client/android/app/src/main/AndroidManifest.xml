@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="openquester"
-        android:name="${applicationName}"
+        android:label="OpenQuester"
+        android:name="OpenQuester"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
