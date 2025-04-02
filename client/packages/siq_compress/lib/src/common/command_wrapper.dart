@@ -4,7 +4,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:siq_compress/src/models/ffprobe_output.dart';
 import 'package:universal_io/io.dart';
 
-class FFmpegWrapper {
+class CommandWrapper {
   Future<FfprobeOutput?> metadata(XFile file) async {
     const arguments = [
       '-v',
@@ -23,6 +23,8 @@ class FFmpegWrapper {
     );
   }
 
+  /// Encode any format such as Audio, Video, Photo
+  /// to efficent codec with lenght and size limits
   Future<XFile> encode({
     required XFile inputFile,
     required XFile outputFile,
@@ -57,13 +59,13 @@ class FFmpegWrapper {
       's16',
     ];
     const videoFilters = [
-      '-vf',
+      '-vf', // Filter size to max 1280x720
       "scale='if(gt(a,1280/720),1280,-2)':'if(gt(a,1280/720),-2,720)'",
       '-t', // Cut first 10 seconds
       '10',
     ];
     const otherArgs = [
-      '-progress',
+      '-progress', // Formats output for later parsing
       '-',
       '-map_metadata', // Remove all metadata like geo data from video
       '-1',
@@ -77,20 +79,19 @@ class FFmpegWrapper {
     ];
     const mediaTypeArgs = [
       ...videoFormatArgs,
-      '-f',
+      '-f', // Set webm format for media
       'webm',
       '-c:v',
       'libsvtav1',
     ];
     final imageTypeArgs = [
-      '-f',
+      '-f', // Set webm format for image
       'avif',
       '-c:v',
       'libaom-av1',
       '-pix_fmt',
       'yuv420p10le',
     ];
-
     final notConstantArguments = [
       '-threads',
       '${Platform.numberOfProcessors}',

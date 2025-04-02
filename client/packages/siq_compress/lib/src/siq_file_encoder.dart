@@ -3,14 +3,14 @@ import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:cross_file/cross_file.dart';
-import 'package:siq_compress/src/common/ffmpeg_wrapper.dart';
+import 'package:siq_compress/src/common/command_wrapper.dart';
 import 'package:siq_compress/src/models/ffprobe_output.dart';
 
 class SiqFileEncoder {
   Future<FfprobeOutput> getMetadata(XFile file) async {
     final result = await processWithTmpFile(
       file: file,
-      command: (file) async => FFmpegWrapper().metadata(file),
+      command: (file) async => CommandWrapper().metadata(file),
     );
     return result!;
   }
@@ -22,7 +22,7 @@ class SiqFileEncoder {
   }) async {
     final result = await processWithTmpFile(
       file: inputFile,
-      command: (file) async => FFmpegWrapper().encode(
+      command: (file) async => CommandWrapper().encode(
         inputFile: inputFile,
         outputFile: outputFile,
         codecType: codecType,
@@ -33,6 +33,11 @@ class SiqFileEncoder {
 
   Future<Uint8List> fileToBytes(XFile file) async => file.readAsBytes();
 
+  /// Run [command] with temp file for use,
+  /// so in process input file can be removed.
+  ///
+  /// After running remove temp folder
+  ///
   Future<R> processWithTmpFile<R>({
     required XFile file,
     required Future<R> Function(XFile file) command,

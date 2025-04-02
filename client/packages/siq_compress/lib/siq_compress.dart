@@ -2,7 +2,7 @@
 
 library;
 
-export 'src/common/ffmpeg_wrapper.dart';
+export 'src/common/command_wrapper.dart';
 export 'src/common/file_command.dart';
 export 'src/models/ffprobe_output.dart';
 export 'src/siq_file_encoder.dart';

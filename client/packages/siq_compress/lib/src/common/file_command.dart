@@ -11,6 +11,7 @@ abstract class FileCommand extends Command<int> {
   Future<XFile> getOutputFile() async => _getFile(1);
 
   XFile _getFile(int index) {
+    // TODO: Add exect parametrs count validation
     if (argResults!.rest.isEmpty) {
       usageException('Provide file path');
     }
