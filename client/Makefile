@@ -24,13 +24,13 @@ gen_locale:
 pre_build_packages:
 	@for pkg in packages/* ; do \
 		echo "Running pre_build in $$pkg" ; \
-		$(MAKE) -C $$pkg -f ../../MakeFile pre_build DART_PACKAGE=true || true; \
+		$(MAKE) -C $$pkg -f ../../Makefile pre_build DART_PACKAGE=true || true; \
 	done
 
 gen_files_packages:
 	@for pkg in packages/* ; do \
 		echo "Running gen_files in $$pkg" ; \
-		$(MAKE) -C $$pkg -f ../../MakeFile gen_files DART_PACKAGE=true || true ; \
+		$(MAKE) -C $$pkg -f ../../Makefile gen_files DART_PACKAGE=true || true ; \
 	done
 endif
 

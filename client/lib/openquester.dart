@@ -49,7 +49,6 @@ export 'src/features/test/items/file_opening.dart';
 export 'src/features/test/items/img_opening.dart';
 export 'src/features/test/items/ws_test.dart';
 export 'src/features/test/test_screen.dart';
-export 'src/model/auth_data.dart';
 export 'src/ui/fields/password_fields.dart';
 export 'src/utils/extensions.dart';
 export 'src/utils/utils.dart';
