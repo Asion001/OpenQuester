@@ -21,17 +21,24 @@ else
 gen_locale:
 	$(PURO_CMD) dart run easy_localization:generate -f keys -o locale_keys.g.dart -S assets/localization/
 
+
+API_PATH := ../openapi/dart_sdk/
+
 pre_build_packages:
 	@for pkg in packages/* ; do \
 		echo "Running pre_build in $$pkg" ; \
 		$(MAKE) -C $$pkg -f ../../Makefile pre_build DART_PACKAGE=true || true; \
 	done
+	echo "Running gen_files in $(API_PATH)" 	
+	$(MAKE) -C $(API_PATH) -f ../../client/Makefile  gen_files DART_PACKAGE=true || true
 
 gen_files_packages:
 	@for pkg in packages/* ; do \
 		echo "Running gen_files in $$pkg" ; \
 		$(MAKE) -C $$pkg -f ../../Makefile gen_files DART_PACKAGE=true || true ; \
 	done
+	echo "Running gen_files in $(API_PATH)";
+	$(MAKE) -C $(API_PATH) -f ../../client/Makefile gen_files DART_PACKAGE=true || true;
 endif
 
 gen_files:
