@@ -1,7 +1,8 @@
+import { type Repository } from "typeorm";
+
 import { FileSource } from "domain/enums/file/FileSource";
 import { FileDTO } from "domain/types/dto/file/FileDTO";
 import { File } from "infrastructure/database/models/File";
-import { type Repository } from "typeorm";
 
 export class FileRepository {
   constructor(private readonly repository: Repository<File>) {

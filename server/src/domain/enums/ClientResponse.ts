@@ -31,6 +31,7 @@ export enum ClientResponse {
   CANNOT_SAVE_CONTENT = "cannot_save_content",
   PACKAGE_AUTHOR_NOT_FOUND = "package_author_not_found",
   PACKAGE_NOT_FOUND = "package_not_found",
+  PACKAGE_CORRUPTED = "package_corrupted",
 
   // File
   FILENAME_REQUIRED = "filename_required",

@@ -31,4 +31,13 @@ export class File implements FileModel {
     this.source = data.source;
     this.created_at = data.created_at;
   }
+
+  public toDTO(): FileDTO {
+    return {
+      created_at: this.created_at,
+      filename: this.filename,
+      path: this.path,
+      source: this.source,
+    };
+  }
 }

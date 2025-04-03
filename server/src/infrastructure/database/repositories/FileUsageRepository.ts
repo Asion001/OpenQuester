@@ -2,7 +2,7 @@ import { type Repository } from "typeorm";
 
 import { type File } from "infrastructure/database/models/File";
 import { FileUsage } from "infrastructure/database/models/FileUsage";
-import { type Package } from "infrastructure/database/models/Package";
+import { type Package } from "infrastructure/database/models/package/Package";
 import { type User } from "infrastructure/database/models/User";
 
 export class FileUsageRepository {

@@ -5,7 +5,10 @@ import { Container, CONTAINER_TYPES } from "application/Container";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
+import {
+  PaginationOpts,
+  PaginationOrder,
+} from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
 import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
@@ -80,6 +83,14 @@ export class UserRepository {
       qb,
       selectOptions.relations,
       selectOptions.relationSelects
+    );
+
+    const { order = PaginationOrder.ASC, sortBy = "created_at" } =
+      paginationOpts;
+
+    qb.orderBy(
+      `${qb.alias}.${String(sortBy)}`,
+      order.toUpperCase() as "ASC" | "DESC"
     );
 
     return PaginatedResults.paginateEntityAndSelect<User>(qb, paginationOpts);

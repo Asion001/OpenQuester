@@ -14,4 +14,6 @@ type pickFields =
 export interface GameDTO extends Pick<GameListItemDTO, pickFields> {
   createdBy: number;
   package: number;
+  roundsCount?: number;
+  questionsCount?: number;
 }

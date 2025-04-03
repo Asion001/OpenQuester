@@ -1,11 +1,11 @@
 import { type NextFunction, type Request, type Response } from "express";
 
+import { BaseError } from "domain/errors/BaseError";
 import { ErrorController } from "domain/errors/ErrorController";
-import { OQError } from "domain/errors/OQError";
 import { Logger } from "infrastructure/utils/Logger";
 
 export const errorMiddleware = async (
-  err: Error | OQError,
+  err: Error | BaseError,
   req: Request,
   res: Response,
   next: NextFunction

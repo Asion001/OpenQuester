@@ -13,7 +13,7 @@ import {
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { UserModel } from "domain/types/user/UserModel";
 import { File } from "infrastructure/database/models/File";
-import { Package } from "infrastructure/database/models/Package";
+import { Package } from "infrastructure/database/models/package/Package";
 import { Permission } from "infrastructure/database/models/Permission";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 

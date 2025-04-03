@@ -26,8 +26,8 @@ export class GameRestApiController {
 
     router.get(`/`, asyncHandler(this.listGames));
     router.post(`/`, asyncHandler(this.createGame));
-    router.get(`/:id`, asyncHandler(this.getGame));
-    router.delete(`/:id`, asyncHandler(this.deleteGame));
+    router.get(`/:gameId`, asyncHandler(this.getGame));
+    router.delete(`/:gameId`, asyncHandler(this.deleteGame));
   }
 
   private deleteGame = async (req: Request, res: Response) => {
