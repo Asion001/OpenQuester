@@ -11,8 +11,7 @@ _$GameCreateDataImpl _$$GameCreateDataImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       packageId: (json['packageId'] as num).toInt(),
       isPrivate: json['isPrivate'] as bool,
-      ageRestriction: GameCreateDataAgeRestriction.fromJson(
-          json['ageRestriction'] as String),
+      ageRestriction: AgeRestriction.fromJson(json['ageRestriction'] as String),
       maxPlayers: (json['maxPlayers'] as num).toInt(),
     );
 

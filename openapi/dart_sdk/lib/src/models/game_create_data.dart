@@ -4,7 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'game_create_data_age_restriction.dart';
+import 'age_restriction.dart';
 
 part 'game_create_data.freezed.dart';
 part 'game_create_data.g.dart';
@@ -15,7 +15,7 @@ class GameCreateData with _$GameCreateData {
     required String title,
     required int packageId,
     required bool isPrivate,
-    required GameCreateDataAgeRestriction ageRestriction,
+    required AgeRestriction ageRestriction,
     required int maxPlayers,
   }) = _GameCreateData;
   

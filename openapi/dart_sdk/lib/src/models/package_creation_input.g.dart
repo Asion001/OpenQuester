@@ -9,8 +9,8 @@ part of 'package_creation_input.dart';
 _$PackageCreationInputImpl _$$PackageCreationInputImplFromJson(
         Map<String, dynamic> json) =>
     _$PackageCreationInputImpl(
-      content:
-          OQContentStructure.fromJson(json['content'] as Map<String, dynamic>),
+      content: PackageCreateInputData.fromJson(
+          json['content'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$PackageCreationInputImplToJson(

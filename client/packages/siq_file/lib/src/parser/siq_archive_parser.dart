@@ -8,8 +8,8 @@ import 'package:siq_file/src/parser/content_xml_parser.dart';
 class SiqArchiveParser {
   SiqArchiveParser();
 
-  OQContentStructure? _siqFile;
-  OQContentStructure get file => _siqFile!;
+  PackageCreateInputData? _siqFile;
+  PackageCreateInputData get file => _siqFile!;
 
   Archive? archive;
   InputFileStream? targetStream;
@@ -25,7 +25,7 @@ class SiqArchiveParser {
     await archive?.clear();
   }
 
-  Future<OQContentStructure> parse() async {
+  Future<PackageCreateInputData> parse() async {
     await _getContentFile(archive!);
     return _siqFile!;
   }

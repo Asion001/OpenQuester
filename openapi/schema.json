@@ -1462,7 +1462,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
+            "type": ["integer", "null"],
             "examples": [727]
           },
           "md5": {
@@ -1474,7 +1474,7 @@
             "$ref": "#/components/schemas/PackageFileType"
           },
           "link": {
-            "type": "string",
+            "type": ["string", "null"],
             "description": "GET link for file",
             "examples": ["https://example.com/file123"]
           }
@@ -1489,7 +1489,6 @@
             "$ref": "#/components/schemas/FileInput"
           }
         },
-        "required": ["file"],
         "description": "Logo file structure for package creation. Only images acceptable"
       },
       "PackageLogoFileItem": {
@@ -1506,7 +1505,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
+            "type": ["integer", "null"],
             "examples": [69]
           },
           "file": {
@@ -1526,7 +1525,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
+            "type": ["integer", "null"],
             "examples": [1337]
           },
           "file": {
@@ -1546,7 +1545,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
+            "type": ["integer", "null"],
             "examples": [187]
           },
           "price": {
@@ -1576,7 +1575,7 @@
             "examples": ["In Ukraine"]
           },
           "answerDelay": {
-            "type": ["number", "null"],
+            "type": ["integer", "null"],
             "description": "Delay in milliseconds before being able to answer, if applicable",
             "default": 4000,
             "examples": [7000]
@@ -1644,7 +1643,7 @@
               "type": { "type": "string", "enum": ["choice"] },
               "subType": { "const": "simple" },
               "showDelay": {
-                "type": "number",
+                "type": "integer",
                 "description": "Delay before showing options in milliseconds",
                 "examples": [3000]
               },
@@ -1720,7 +1719,7 @@
               },
               "allowedPrices": {
                 "type": ["array", "null"],
-                "items": { "type": "number" },
+                "items": { "type": "integer" },
                 "minItems": 2,
                 "maxItems": 5,
                 "examples": [
@@ -1750,7 +1749,7 @@
           {
             "type": "object",
             "properties": {
-              "type": { "type": "string", "enum": ["moRisk"] },
+              "type": { "type": "string", "enum": ["noRisk"] },
               "subType": {
                 "type": "string",
                 "enum": ["simple", "forEveryone"],
@@ -1796,7 +1795,7 @@
                 "examples": ["simple"]
               },
               "maxPrice": {
-                "type": "number",
+                "type": ["integer", "null"],
                 "description": "Maximum price for the stake question, most useful when type is forEveryone - Does not allow top players to go all-in and win. Typically maxPrice can be 2x or 3x of nominal price",
                 "examples": [1000]
               }
@@ -1843,7 +1842,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
+            "type": ["integer", "null"],
             "examples": [92]
           },
           "name": {
@@ -1873,7 +1872,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
+            "type": ["integer", "null"],
             "examples": [17]
           },
           "name": {
@@ -1918,7 +1917,10 @@
             "description": "Age restriction"
           },
           "logo": {
-            "$ref": "#/components/schemas/PackageLogoFileInput",
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageLogoFileInput" },
+              { "type": "null" }
+            ],
             "description": "Logo file for the package"
           },
           "tags": {
