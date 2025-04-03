@@ -92,7 +92,8 @@ class ContentXmlParser {
         question.getElement(key)?.children.map((e) => e.innerText).toSet() ??
         {};
 
-    final answerText = getAnswers('right').join(' / ');
+    final rightAnswers = getAnswers('right');
+    final answerText = rightAnswers.join(' / ');
     final wrongAnswers = getAnswers('wrong').join(' / ');
     final hostHint =
         wrongAnswers.isEmpty ? null : 'Wrong answers: $wrongAnswers';
@@ -162,18 +163,22 @@ class ContentXmlParser {
           answerText: answerText,
           answerHint: hostHint,
           answerFiles: packageAnswerFiles,
+          isHidden: true,
           id: null,
         ),
-      QuestionType.choice => PackageQuestionUnion.hidden(
+      QuestionType.choice => PackageQuestionUnion.choice(
           price: price,
           text: answerText,
-          type: HiddenQuestionType.hidden,
+          type: ChoiceQuestionType.choice,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
           answerText: answerText,
           answerHint: hostHint,
           answerFiles: packageAnswerFiles,
+          showDelay: 3000,
+          answers: rightAnswers.map((e) => Answers(id: null, text: e)).toList(),
           id: null,
+          subType: null,
         ),
       QuestionType.$unknown => throw Exception('QuestionType.unknown'),
     };

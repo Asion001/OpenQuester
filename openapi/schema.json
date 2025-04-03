@@ -1659,7 +1659,7 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "integer",
+                      "type": ["integer", "null"],
                       "examples": [99]
                     },
                     "text": {

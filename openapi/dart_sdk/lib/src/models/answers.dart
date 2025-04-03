@@ -14,7 +14,7 @@ part 'answers.g.dart';
 @Freezed()
 class Answers with _$Answers {
   const factory Answers({
-    required int id,
+    required int? id,
 
     /// Text of the answer option
     required String? text,

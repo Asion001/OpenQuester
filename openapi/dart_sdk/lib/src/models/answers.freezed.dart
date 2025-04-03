@@ -20,7 +20,7 @@ Answers _$AnswersFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Answers {
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
 
   /// Text of the answer option
   String? get text => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $AnswersCopyWith<$Res> {
   factory $AnswersCopyWith(Answers value, $Res Function(Answers) then) =
       _$AnswersCopyWithImpl<$Res, Answers>;
   @useResult
-  $Res call({int id, String? text, FileItem? file});
+  $Res call({int? id, String? text, FileItem? file});
 
   $FileItemCopyWith<$Res>? get file;
 }
@@ -62,15 +62,15 @@ class _$AnswersCopyWithImpl<$Res, $Val extends Answers>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? text = freezed,
     Object? file = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -104,7 +104,7 @@ abstract class _$$AnswersImplCopyWith<$Res> implements $AnswersCopyWith<$Res> {
       __$$AnswersImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String? text, FileItem? file});
+  $Res call({int? id, String? text, FileItem? file});
 
   @override
   $FileItemCopyWith<$Res>? get file;
@@ -123,15 +123,15 @@ class __$$AnswersImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? text = freezed,
     Object? file = freezed,
   }) {
     return _then(_$AnswersImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -153,7 +153,7 @@ class _$AnswersImpl implements _Answers {
       _$$AnswersImplFromJson(json);
 
   @override
-  final int id;
+  final int? id;
 
   /// Text of the answer option
   @override
@@ -200,14 +200,14 @@ class _$AnswersImpl implements _Answers {
 
 abstract class _Answers implements Answers {
   const factory _Answers(
-      {required final int id,
+      {required final int? id,
       required final String? text,
       final FileItem? file}) = _$AnswersImpl;
 
   factory _Answers.fromJson(Map<String, dynamic> json) = _$AnswersImpl.fromJson;
 
   @override
-  int get id;
+  int? get id;
 
   /// Text of the answer option
   @override

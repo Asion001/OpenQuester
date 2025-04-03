@@ -8,7 +8,7 @@ part of 'answers.dart';
 
 _$AnswersImpl _$$AnswersImplFromJson(Map<String, dynamic> json) =>
     _$AnswersImpl(
-      id: (json['id'] as num).toInt(),
+      id: (json['id'] as num?)?.toInt(),
       text: json['text'] as String?,
       file: json['file'] == null
           ? null
