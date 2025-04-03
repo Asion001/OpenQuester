@@ -20,7 +20,7 @@ PaginatedPackages _$PaginatedPackagesFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PaginatedPackages {
-  List<PackageItem> get data => throw _privateConstructorUsedError;
+  List<PackageResponse> get data => throw _privateConstructorUsedError;
   PageInfo get pageInfo => throw _privateConstructorUsedError;
 
   /// Serializes this PaginatedPackages to a JSON map.
@@ -39,7 +39,7 @@ abstract class $PaginatedPackagesCopyWith<$Res> {
           PaginatedPackages value, $Res Function(PaginatedPackages) then) =
       _$PaginatedPackagesCopyWithImpl<$Res, PaginatedPackages>;
   @useResult
-  $Res call({List<PackageItem> data, PageInfo pageInfo});
+  $Res call({List<PackageResponse> data, PageInfo pageInfo});
 
   $PageInfoCopyWith<$Res> get pageInfo;
 }
@@ -66,7 +66,7 @@ class _$PaginatedPackagesCopyWithImpl<$Res, $Val extends PaginatedPackages>
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<PackageItem>,
+              as List<PackageResponse>,
       pageInfo: null == pageInfo
           ? _value.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
@@ -93,7 +93,7 @@ abstract class _$$PaginatedPackagesImplCopyWith<$Res>
       __$$PaginatedPackagesImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<PackageItem> data, PageInfo pageInfo});
+  $Res call({List<PackageResponse> data, PageInfo pageInfo});
 
   @override
   $PageInfoCopyWith<$Res> get pageInfo;
@@ -119,7 +119,7 @@ class __$$PaginatedPackagesImplCopyWithImpl<$Res>
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<PackageItem>,
+              as List<PackageResponse>,
       pageInfo: null == pageInfo
           ? _value.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
@@ -132,15 +132,15 @@ class __$$PaginatedPackagesImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PaginatedPackagesImpl implements _PaginatedPackages {
   const _$PaginatedPackagesImpl(
-      {required final List<PackageItem> data, required this.pageInfo})
+      {required final List<PackageResponse> data, required this.pageInfo})
       : _data = data;
 
   factory _$PaginatedPackagesImpl.fromJson(Map<String, dynamic> json) =>
       _$$PaginatedPackagesImplFromJson(json);
 
-  final List<PackageItem> _data;
+  final List<PackageResponse> _data;
   @override
-  List<PackageItem> get data {
+  List<PackageResponse> get data {
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_data);
@@ -188,14 +188,14 @@ class _$PaginatedPackagesImpl implements _PaginatedPackages {
 
 abstract class _PaginatedPackages implements PaginatedPackages {
   const factory _PaginatedPackages(
-      {required final List<PackageItem> data,
+      {required final List<PackageResponse> data,
       required final PageInfo pageInfo}) = _$PaginatedPackagesImpl;
 
   factory _PaginatedPackages.fromJson(Map<String, dynamic> json) =
       _$PaginatedPackagesImpl.fromJson;
 
   @override
-  List<PackageItem> get data;
+  List<PackageResponse> get data;
   @override
   PageInfo get pageInfo;
 

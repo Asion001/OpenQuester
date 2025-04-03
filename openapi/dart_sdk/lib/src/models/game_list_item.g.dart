@@ -13,8 +13,8 @@ _$GameListItemImpl _$$GameListItemImplFromJson(Map<String, dynamic> json) =>
           ShortUserInfo.fromJson(json['createdBy'] as Map<String, dynamic>),
       title: json['title'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      ageRestriction:
-          GameListItemAgeRestriction.fromJson(json['ageRestriction'] as String),
+      ageRestriction: AgeRestriction.fromJson(json['ageRestriction'] as String),
+      isPrivate: json['isPrivate'] as bool,
       currentRound: (json['currentRound'] as num).toInt(),
       players: (json['players'] as num).toInt(),
       maxPlayers: (json['maxPlayers'] as num).toInt(),
@@ -31,6 +31,7 @@ Map<String, dynamic> _$$GameListItemImplToJson(_$GameListItemImpl instance) =>
       'title': instance.title,
       'createdAt': instance.createdAt.toIso8601String(),
       'ageRestriction': instance.ageRestriction,
+      'isPrivate': instance.isPrivate,
       'currentRound': instance.currentRound,
       'players': instance.players,
       'maxPlayers': instance.maxPlayers,

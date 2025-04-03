@@ -24,8 +24,8 @@ mixin _$GameListItem {
   ShortUserInfo get createdBy => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  GameListItemAgeRestriction get ageRestriction =>
-      throw _privateConstructorUsedError;
+  AgeRestriction get ageRestriction => throw _privateConstructorUsedError;
+  bool get isPrivate => throw _privateConstructorUsedError;
   int get currentRound => throw _privateConstructorUsedError;
   int get players => throw _privateConstructorUsedError;
   int get maxPlayers => throw _privateConstructorUsedError;
@@ -53,7 +53,8 @@ abstract class $GameListItemCopyWith<$Res> {
       ShortUserInfo createdBy,
       String title,
       DateTime createdAt,
-      GameListItemAgeRestriction ageRestriction,
+      AgeRestriction ageRestriction,
+      bool isPrivate,
       int currentRound,
       int players,
       int maxPlayers,
@@ -84,6 +85,7 @@ class _$GameListItemCopyWithImpl<$Res, $Val extends GameListItem>
     Object? title = null,
     Object? createdAt = null,
     Object? ageRestriction = null,
+    Object? isPrivate = null,
     Object? currentRound = null,
     Object? players = null,
     Object? maxPlayers = null,
@@ -110,7 +112,11 @@ class _$GameListItemCopyWithImpl<$Res, $Val extends GameListItem>
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as GameListItemAgeRestriction,
+              as AgeRestriction,
+      isPrivate: null == isPrivate
+          ? _value.isPrivate
+          : isPrivate // ignore: cast_nullable_to_non_nullable
+              as bool,
       currentRound: null == currentRound
           ? _value.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
@@ -168,7 +174,8 @@ abstract class _$$GameListItemImplCopyWith<$Res>
       ShortUserInfo createdBy,
       String title,
       DateTime createdAt,
-      GameListItemAgeRestriction ageRestriction,
+      AgeRestriction ageRestriction,
+      bool isPrivate,
       int currentRound,
       int players,
       int maxPlayers,
@@ -199,6 +206,7 @@ class __$$GameListItemImplCopyWithImpl<$Res>
     Object? title = null,
     Object? createdAt = null,
     Object? ageRestriction = null,
+    Object? isPrivate = null,
     Object? currentRound = null,
     Object? players = null,
     Object? maxPlayers = null,
@@ -225,7 +233,11 @@ class __$$GameListItemImplCopyWithImpl<$Res>
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as GameListItemAgeRestriction,
+              as AgeRestriction,
+      isPrivate: null == isPrivate
+          ? _value.isPrivate
+          : isPrivate // ignore: cast_nullable_to_non_nullable
+              as bool,
       currentRound: null == currentRound
           ? _value.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
@@ -259,6 +271,7 @@ class _$GameListItemImpl implements _GameListItem {
       required this.title,
       required this.createdAt,
       required this.ageRestriction,
+      required this.isPrivate,
       required this.currentRound,
       required this.players,
       required this.maxPlayers,
@@ -277,7 +290,9 @@ class _$GameListItemImpl implements _GameListItem {
   @override
   final DateTime createdAt;
   @override
-  final GameListItemAgeRestriction ageRestriction;
+  final AgeRestriction ageRestriction;
+  @override
+  final bool isPrivate;
   @override
   final int currentRound;
   @override
@@ -291,7 +306,7 @@ class _$GameListItemImpl implements _GameListItem {
 
   @override
   String toString() {
-    return 'GameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, currentRound: $currentRound, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, package: $package)';
+    return 'GameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, isPrivate: $isPrivate, currentRound: $currentRound, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, package: $package)';
   }
 
   @override
@@ -307,6 +322,8 @@ class _$GameListItemImpl implements _GameListItem {
                 other.createdAt == createdAt) &&
             (identical(other.ageRestriction, ageRestriction) ||
                 other.ageRestriction == ageRestriction) &&
+            (identical(other.isPrivate, isPrivate) ||
+                other.isPrivate == isPrivate) &&
             (identical(other.currentRound, currentRound) ||
                 other.currentRound == currentRound) &&
             (identical(other.players, players) || other.players == players) &&
@@ -319,8 +336,19 @@ class _$GameListItemImpl implements _GameListItem {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createdBy, title, createdAt,
-      ageRestriction, currentRound, players, maxPlayers, startedAt, package);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      createdBy,
+      title,
+      createdAt,
+      ageRestriction,
+      isPrivate,
+      currentRound,
+      players,
+      maxPlayers,
+      startedAt,
+      package);
 
   /// Create a copy of GameListItem
   /// with the given fields replaced by the non-null parameter values.
@@ -344,7 +372,8 @@ abstract class _GameListItem implements GameListItem {
       required final ShortUserInfo createdBy,
       required final String title,
       required final DateTime createdAt,
-      required final GameListItemAgeRestriction ageRestriction,
+      required final AgeRestriction ageRestriction,
+      required final bool isPrivate,
       required final int currentRound,
       required final int players,
       required final int maxPlayers,
@@ -363,7 +392,9 @@ abstract class _GameListItem implements GameListItem {
   @override
   DateTime get createdAt;
   @override
-  GameListItemAgeRestriction get ageRestriction;
+  AgeRestriction get ageRestriction;
+  @override
+  bool get isPrivate;
   @override
   int get currentRound;
   @override

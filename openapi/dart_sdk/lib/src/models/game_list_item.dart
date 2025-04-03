@@ -4,7 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'game_list_item_age_restriction.dart';
+import 'age_restriction.dart';
 import 'package_item.dart';
 import 'short_user_info.dart';
 
@@ -18,7 +18,8 @@ class GameListItem with _$GameListItem {
     required ShortUserInfo createdBy,
     required String title,
     required DateTime createdAt,
-    required GameListItemAgeRestriction ageRestriction,
+    required AgeRestriction ageRestriction,
+    required bool isPrivate,
     required int currentRound,
     required int players,
     required int maxPlayers,

@@ -2,8 +2,6 @@ import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:openapi/openapi.dart';
-import 'package:siq_file/src/converters/time_converter.dart';
-import 'package:siq_file/src/extensions.dart';
 import 'package:xml/xml.dart';
 
 class ContentXmlParser {
@@ -18,32 +16,35 @@ class ContentXmlParser {
     final roundsXml = package.getElement('rounds')!;
     final rounds = roundsXml.children.map(_parseRound).toList();
 
-    siqFile = OQContentStructure(
-      metadata: metadata,
+    siqFile = metadata.copyWith(
       rounds: await Future.wait(rounds),
     );
   }
 
-  Future<OQRoundStructure> _parseRound(XmlNode round) async {
+  Future<PackageRound> _parseRound(XmlNode round) async {
     final name = round.getAttribute('name') ?? '-';
+    final description = round.getAttribute('description');
     final themesXml = round.getElement('themes');
     final themes = themesXml?.childElements.map(_parseTheme).toList();
-    return OQRoundStructure(
+    return PackageRound(
+      id: null,
       name: name,
       themes: await Future.wait(themes ?? []),
+      description: description,
     );
   }
 
-  Future<OQThemeStructure> _parseTheme(XmlElement theme) async {
+  Future<PackageTheme> _parseTheme(XmlElement theme) async {
     final name = theme.getAttribute('name') ?? '-';
     final comment = await _getComment(theme);
     final questions =
         theme.getElement('questions')?.children.map(_parseQuestion).toList() ??
             [];
-    return OQThemeStructure(
+    return PackageTheme(
       name: name,
-      comment: comment,
+      description: comment,
       questions: await Future.wait(questions),
+      id: null,
     );
   }
 
@@ -53,16 +54,16 @@ class ContentXmlParser {
     return comment;
   }
 
-  Future<OQQuestionsStructure> _parseQuestion(XmlNode question) async {
+  Future<PackageQuestionUnion> _parseQuestion(XmlNode question) async {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
     final params =
         question.getElement('params') ?? question.getElement('scenario');
     final isScenario = params?.localName == 'scenario';
 
-    final questionType = OQQuestionsStructureType.values.firstWhereOrNull(
+    final questionType = QuestionType.values.firstWhereOrNull(
           (e) => e.name == question.getAttribute('type'),
         ) ??
-        OQQuestionsStructureType.regular;
+        QuestionType.simple;
 
     final questionParam = isScenario
         ? params
@@ -73,51 +74,131 @@ class ContentXmlParser {
               return ['question'].contains(nameAtr);
             },
           );
-    final questionItem = _getFileItem(questionParam);
-    final questionItemType = _getFileType(questionItem);
-    final text = questionItemType != null ? null : questionItem?.innerText;
-    final questionFile = await parseFile(questionItem);
+    final questionItems = _getFileItems(questionParam);
+    final questionFiles =
+        (await Future.wait(questionItems.map(parseFile))).nonNulls;
+    final questionComment = questionItems
+        .firstWhereOrNull((e) => e.getAttribute('type') == 'say')
+        ?.value;
 
     final answerParam = params?.children.firstWhereOrNull(
       (p0) => p0.getAttribute('name') == 'answer',
     );
-    final answerItem = _getFileItem(answerParam);
-    final answerFile = await parseFile(answerItem);
-    final answerItemType = _getFileType(answerItem);
+    final answerItems = _getFileItems(answerParam);
+    final answerFiles =
+        (await Future.wait(answerItems.map(parseFile))).nonNulls;
 
     Set<String> getAnswers(String key) =>
         question.getElement(key)?.children.map((e) => e.innerText).toSet() ??
         {};
 
-    final right = getAnswers('right');
-    final hostHint = right.join(' / ');
-    final answerText = answerItemType != null ? null : answerItem?.innerText;
+    final rightAnswers = getAnswers('right');
+    final answerText = rightAnswers.join(' / ');
+    final wrongAnswers = getAnswers('wrong').join(' / ');
+    final hostHint =
+        wrongAnswers.isEmpty ? null : 'Wrong answers: $wrongAnswers';
 
-    return OQQuestionsStructure(
-      price: price,
-      text: text,
-      type: questionType,
-      questionFile: questionFile,
-      answerFile: answerFile,
-      hostHint: hostHint,
-      answerText: answerText,
-    );
+    final packageQuestionFiles = questionFiles
+        .map((e) => PackageQuestionFile(id: null, file: e))
+        .toList();
+    final packageAnswerFiles =
+        answerFiles.map((e) => PackageAnswerFile(id: null, file: e)).toList();
+
+    return switch (questionType) {
+      QuestionType.simple => PackageQuestionUnion.simple(
+          price: price,
+          text: answerText,
+          type: SimpleQuestionType.simple,
+          questionComment: questionComment,
+          questionFiles: packageQuestionFiles,
+          answerText: answerText,
+          answerHint: hostHint,
+          answerFiles: packageAnswerFiles,
+          id: null,
+        ),
+      QuestionType.stake => PackageQuestionUnion.stake(
+          price: price,
+          text: answerText,
+          type: StakeQuestionType.stake,
+          questionComment: questionComment,
+          questionFiles: packageQuestionFiles,
+          answerText: answerText,
+          answerHint: hostHint,
+          answerFiles: packageAnswerFiles,
+          id: null,
+          maxPrice: null,
+        ),
+      QuestionType.secret => PackageQuestionUnion.secret(
+          price: price,
+          text: answerText,
+          type: SecretQuestionType.secret,
+          questionComment: questionComment,
+          questionFiles: packageQuestionFiles,
+          answerText: answerText,
+          answerHint: hostHint,
+          answerFiles: packageAnswerFiles,
+          id: null,
+          subType: SecretQuestionSubType.simple,
+          allowedPrices: null,
+          transferType: PackageQuestionTransferType.any,
+        ),
+      QuestionType.noRisk => PackageQuestionUnion.noRisk(
+          price: price,
+          text: answerText,
+          type: NoRiskQuestionType.noRisk,
+          questionComment: questionComment,
+          questionFiles: packageQuestionFiles,
+          answerText: answerText,
+          answerHint: hostHint,
+          answerFiles: packageAnswerFiles,
+          id: null,
+          subType: NoRiskQuestionSubType.simple,
+        ),
+      QuestionType.hidden => PackageQuestionUnion.hidden(
+          price: price,
+          text: answerText,
+          type: HiddenQuestionType.hidden,
+          questionComment: questionComment,
+          questionFiles: packageQuestionFiles,
+          answerText: answerText,
+          answerHint: hostHint,
+          answerFiles: packageAnswerFiles,
+          isHidden: true,
+          id: null,
+        ),
+      QuestionType.choice => PackageQuestionUnion.choice(
+          price: price,
+          text: answerText,
+          type: ChoiceQuestionType.choice,
+          questionComment: questionComment,
+          questionFiles: packageQuestionFiles,
+          answerText: answerText,
+          answerHint: hostHint,
+          answerFiles: packageAnswerFiles,
+          showDelay: 3000,
+          answers: rightAnswers.map((e) => Answers(id: null, text: e)).toList(),
+          id: null,
+          subType: null,
+        ),
+      QuestionType.$unknown => throw Exception('QuestionType.unknown'),
+    };
   }
 
-  XmlElement? _getFileItem(XmlNode? node) {
-    return node?.childElements.firstWhereOrNull((e) {
-      final attribute = e.getAttribute('type');
-      return attribute != null;
-    });
+  List<XmlElement> _getFileItems(XmlNode? node) {
+    return node?.childElements.where((e) {
+          final attribute = e.getAttribute('type');
+          return attribute != null;
+        }).toList() ??
+        [];
   }
 
-  Future<OQFile?> parseFile(XmlElement? item) async {
+  Future<FileItem?> parseFile(XmlElement? item) async {
     final itemType = _getFileType(item);
     final folder = switch (itemType) {
-      OQFileContentStructureType.image => 'Images',
-      OQFileContentStructureType.video => 'Video',
-      OQFileContentStructureType.audio => 'Audio',
-      OQFileContentStructureType.$unknown => null,
+      PackageFileType.image => 'Images',
+      PackageFileType.video => 'Video',
+      PackageFileType.audio => 'Audio',
+      PackageFileType.$unknown => null,
       null => null,
     };
     if (folder == null || item == null) {
@@ -134,80 +215,54 @@ class ContentXmlParser {
       throw Exception('$filePath not found in archive! (Question $item)');
     }
 
-    final hash = await getFileMD5(rawFile);
+    final md5 = await getFileMD5(rawFile);
 
     // Save archive file to map for re-use
-    filesHash[hash] = archiveFile!;
+    filesMD5[md5] = archiveFile!;
 
     final file = itemType == null
         ? null
-        : OQFile(file: OQFileContentStructure(md5: hash, type: itemType));
+        : FileItem(
+            id: null,
+            link: null,
+            md5: md5,
+            type: itemType,
+          );
 
     return file;
   }
 
-  Future<String> getFileMD5(List<int> data) async {
-    return md5.convert(data).toString();
-  }
+  Future<String> getFileMD5(List<int> data) async =>
+      md5.convert(data).toString();
 
-  OQFileContentStructureType? _getFileType(XmlElement? item) {
-    final itemType = OQFileContentStructureType.values.firstWhereOrNull(
-      (e) => e.name == item?.getAttribute('type'),
+  PackageFileType? _getFileType(XmlElement? item) {
+    final type = item?.getAttribute('type');
+    if (type == 'voice') return PackageFileType.audio;
+    final itemType = PackageFileType.values.firstWhereOrNull(
+      (e) => e.name == type,
     );
     return itemType;
   }
 
-  Future<OQMetadataStructure> _parseMetadata(XmlElement package) async {
-    final packageAtributes = package.attributes.map(
-      (e) => MapEntry(e.localName, e.value),
+  Future<PackageCreateInputData> _parseMetadata(XmlElement package) async {
+    final json = Map<String, dynamic>.fromEntries(
+      package.attributes.map(
+        (e) => MapEntry(e.localName, e.value),
+      ),
     );
-    final json = Map<String, dynamic>.fromEntries(packageAtributes);
 
-    final tagsElement = package.getElement('tags');
-    final tags =
-        tagsElement?.children.map((e) => e.innerText.trim()).toSet() ?? {};
-
-    final infoElement = package.getElement('info')?.getElement('authors');
-    final authors =
-        infoElement?.children.map((e) => e.innerText.trim()).toSet() ?? {};
-    final comment = await _getComment(package);
-
-    json
-      ..addAll({
-        'tags': tags.toList(),
-        'authors': authors.toList(),
-        'comment': comment,
-        'id': '',
-        'createdAt': DateTime.now().toIso8601String(),
-        'ageRestriction': 'NONE',
-        'author': -1,
-        'language': 'en',
-      })
-      ..remove('logo');
-
-    // Convert objects
-    _convertObjects(json);
-
-    final metadata = OQMetadataStructure.fromJson(json);
+    final metadata = PackageCreateInputData(
+      title: json['name']?.toString() ?? '',
+      description: json['description']?.toString(),
+      language: json['language']?.toString(),
+      ageRestriction: AgeRestriction.none,
+      rounds: [],
+      tags: [],
+    );
     return metadata;
   }
 
-  void _convertObjects(Map<String, dynamic> json) {
-    json['date'] = _nullPass(
-      json['date'],
-      (value) => const DateTimeConverter()
-          .fromJson(value.toString())
-          .toIso8601String(),
-    );
-    json.renameKey('name', 'title');
-  }
-
-  dynamic _nullPass(dynamic value, dynamic Function(dynamic value) converter) {
-    if (value == null) return null;
-    return converter(value);
-  }
-
-  late OQContentStructure siqFile;
+  late PackageCreateInputData siqFile;
   Archive? _archive;
-  Map<String, ArchiveFile> filesHash = {};
+  Map<String, ArchiveFile> filesMD5 = {};
 }

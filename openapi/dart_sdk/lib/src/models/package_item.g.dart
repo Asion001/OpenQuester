@@ -10,21 +10,30 @@ _$PackageItemImpl _$$PackageItemImplFromJson(Map<String, dynamic> json) =>
     _$PackageItemImpl(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
-      ageRestriction:
-          PackageItemAgeRestriction.fromJson(json['ageRestriction'] as String),
+      description: json['description'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      rounds: (json['rounds'] as num).toInt(),
       author: ShortUserInfo.fromJson(json['author'] as Map<String, dynamic>),
+      ageRestriction: AgeRestriction.fromJson(json['ageRestriction'] as String),
+      language: json['language'] as String,
+      roundsCount: (json['roundsCount'] as num).toInt(),
+      questionsCount: (json['questionsCount'] as num).toInt(),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      logo: json['logo'] == null
+          ? null
+          : PackageLogoFileItem.fromJson(json['logo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$PackageItemImplToJson(_$PackageItemImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'ageRestriction': instance.ageRestriction,
+      'description': instance.description,
       'createdAt': instance.createdAt.toIso8601String(),
-      'rounds': instance.rounds,
       'author': instance.author,
+      'ageRestriction': instance.ageRestriction,
+      'language': instance.language,
+      'roundsCount': instance.roundsCount,
+      'questionsCount': instance.questionsCount,
       'tags': instance.tags,
+      'logo': instance.logo,
     };

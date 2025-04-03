@@ -5,14 +5,14 @@ import 'package:siq_file/src/parser/siq_archive_parser.dart';
 import 'package:universal_io/io.dart';
 
 abstract class FileCommand extends Command<int> {
-  Future<OQContentStructure> getFile({String? xmlFilePath}) async {
+  Future<PackageCreateInputData> getFile({String? xmlFilePath}) async {
     if (xmlFilePath == null) {
       return _getFromArchive();
     }
     return _getFromXmlFile(xmlFilePath);
   }
 
-  Future<OQContentStructure> _getFromXmlFile(String xmlFilePath) async {
+  Future<PackageCreateInputData> _getFromXmlFile(String xmlFilePath) async {
     final xmlFile = File(xmlFilePath);
     final contentFile = xmlFile.readAsStringSync();
     final contentXmlParser = ContentXmlParser(null);
@@ -20,7 +20,7 @@ abstract class FileCommand extends Command<int> {
     return contentXmlParser.siqFile;
   }
 
-  Future<OQContentStructure> _getFromArchive() async {
+  Future<PackageCreateInputData> _getFromArchive() async {
     if (argResults!.rest.isEmpty) {
       usageException('Provide file path');
     }

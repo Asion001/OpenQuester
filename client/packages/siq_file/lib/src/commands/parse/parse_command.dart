@@ -16,7 +16,7 @@ class ParseCommand extends FileCommand {
   @override
   Future<int> run() async {
     final siqFile = await getFile();
-    _logger.success('Package title: ${siqFile.metadata.title}');
+    _logger.success('Package title: ${siqFile.title}');
 
     return ExitCode.success.code;
   }

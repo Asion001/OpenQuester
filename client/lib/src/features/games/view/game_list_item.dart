@@ -123,7 +123,7 @@ class _GameListItemBadges extends StatelessWidget {
           _Badge(
             icon: Icons.check,
             tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
-            label: [item.currentRound, item.package.rounds].join('/'),
+            label: [item.currentRound, item.package.roundsCount].join('/'),
           ),
         ],
       ),
