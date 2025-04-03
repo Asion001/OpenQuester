@@ -92,6 +92,24 @@ export class ChangePermissionValidation_0_3_0_1729181792142
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    // Remove foreign keys
+    const table = await queryRunner.getTable("user_permissions");
+    const foreignKey1 = table?.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf("user_id") !== -1
+    );
+    const foreignKey2 = table?.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf("permission_id") !== -1
+    );
+
+    if (foreignKey1) {
+      await queryRunner.dropForeignKey("user_permissions", foreignKey1);
+    }
+
+    if (foreignKey2) {
+      await queryRunner.dropForeignKey("user_permissions", foreignKey2);
+    }
+
+    await queryRunner.dropTable("user_permissions");
     await queryRunner.dropTable("permission");
     await queryRunner.createTable(
       new Table({

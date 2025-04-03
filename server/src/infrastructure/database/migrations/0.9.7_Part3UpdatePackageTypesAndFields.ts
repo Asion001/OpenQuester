@@ -35,10 +35,6 @@ export class UpdatePackageTypesAndFields_1742727260372
       `CREATE TYPE ${this.PACKAGE_FILE_TYPE_ENUM} AS ENUM ('video', 'audio', 'image')`
     );
 
-    // Alter package.logo_file_type (previously used package_logo_file_type_enum)
-    await queryRunner.query(
-      `ALTER TABLE package ALTER COLUMN logo_file_type TYPE ${this.PACKAGE_FILE_TYPE_ENUM} USING logo_file_type::text::${this.PACKAGE_FILE_TYPE_ENUM}`
-    );
     // Alter package_question_file.type
     await queryRunner.query(
       `ALTER TABLE package_question_file ALTER COLUMN type TYPE ${this.PACKAGE_FILE_TYPE_ENUM} USING type::text::${this.PACKAGE_FILE_TYPE_ENUM}`
@@ -148,9 +144,6 @@ export class UpdatePackageTypesAndFields_1742727260372
     );
 
     // Revert columns to their original enum types
-    await queryRunner.query(
-      `ALTER TABLE package ALTER COLUMN logo_file_type TYPE ${this.OLD_PACKAGE_LOGO_FILE_TYPE_ENUM} USING logo_file_type::text::${this.OLD_PACKAGE_LOGO_FILE_TYPE_ENUM}`
-    );
     await queryRunner.query(
       `ALTER TABLE package_question_file ALTER COLUMN type TYPE ${this.OLD_PACKAGE_QUESTION_FILE_TYPE_ENUM} USING type::text::${this.OLD_PACKAGE_QUESTION_FILE_TYPE_ENUM}`
     );

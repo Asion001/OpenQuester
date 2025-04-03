@@ -22,6 +22,6 @@ export class AddTypeColumnForChoiceFile_1743660505666
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumn("package", "package_question_choice_answer");
+    await queryRunner.dropColumn("package_question_choice_answer", "type");
   }
 }

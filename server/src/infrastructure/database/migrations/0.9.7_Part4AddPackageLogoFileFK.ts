@@ -7,22 +7,21 @@ export class AddPackageLogoFileForeignKey_1743338225856
 {
   name = "AddPackageLogoFileForeignKey_1743338225856";
 
+  private readonly fk = new TableForeignKey({
+    columnNames: ["logo_file"],
+    referencedTableName: "file",
+    referencedColumnNames: ["id"],
+    onDelete: "CASCADE",
+  });
+
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.createForeignKey(
-      "package",
-      new TableForeignKey({
-        columnNames: ["logo_file"],
-        referencedTableName: "file",
-        referencedColumnNames: ["id"],
-        onDelete: "CASCADE",
-      })
-    );
+    await queryRunner.createForeignKey("package", this.fk);
 
     Logger.logMigrationComplete("0.9.7-4");
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     // Remove the foreign key
-    await queryRunner.dropForeignKey("package", "FK_PACKAGE_LOGO_FILE");
+    await queryRunner.dropForeignKey("package", this.fk);
   }
 }
