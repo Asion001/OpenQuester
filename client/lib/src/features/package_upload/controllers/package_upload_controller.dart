@@ -86,7 +86,7 @@ class PackageUploadController extends ChangeNotifier {
     try {
       for (final link in links) {
         final archiveFile = parser.filesHash[link.key];
-        final file = archiveFile?.content as Uint8List?;
+        final file = archiveFile?.content;
         await archiveFile?.close();
         if (file == null) continue;
         final fileHeaders = _fileHeaders(link.key);

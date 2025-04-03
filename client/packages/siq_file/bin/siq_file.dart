@@ -1,4 +1,4 @@
-import 'package:siq_file/src/cli.dart';
+import 'package:siq_file/src/commands/cli.dart';
 import 'package:universal_io/io.dart';
 
 Future<void> main(List<String> args) async {
