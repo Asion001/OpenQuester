@@ -1103,7 +1103,7 @@
             "examples": ["Package Title"]
           },
           "description": {
-            "type": "string",
+            "type": ["string", "null"],
             "examples": [
               "Package description, should be longer than title, probably"
             ]
@@ -1121,11 +1121,14 @@
             "description": "Package age restriction"
           },
           "language": {
-            "type": "string",
+            "type": ["string", "null"],
             "examples": ["en"]
           },
           "logo": {
-            "$ref": "#/components/schemas/PackageLogoFileItem",
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageLogoFileItem" },
+              { "type": "null" }
+            ],
             "description": "Logo file for the package"
           },
           "rounds": {
@@ -1189,7 +1192,10 @@
             "examples": ["en"]
           },
           "logo": {
-            "$ref": "#/components/schemas/PackageLogoFileItem",
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageLogoFileItem" },
+              { "type": "null" }
+            ],
             "description": "Logo file for the package"
           },
           "roundsCount": {

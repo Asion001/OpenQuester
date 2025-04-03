@@ -15,10 +15,12 @@ _$PackageItemImpl _$$PackageItemImplFromJson(Map<String, dynamic> json) =>
       author: ShortUserInfo.fromJson(json['author'] as Map<String, dynamic>),
       ageRestriction: AgeRestriction.fromJson(json['ageRestriction'] as String),
       language: json['language'] as String,
-      logo: PackageLogoFileItem.fromJson(json['logo'] as Map<String, dynamic>),
       roundsCount: (json['roundsCount'] as num).toInt(),
       questionsCount: (json['questionsCount'] as num).toInt(),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      logo: json['logo'] == null
+          ? null
+          : PackageLogoFileItem.fromJson(json['logo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$PackageItemImplToJson(_$PackageItemImpl instance) =>
@@ -30,8 +32,8 @@ Map<String, dynamic> _$$PackageItemImplToJson(_$PackageItemImpl instance) =>
       'author': instance.author,
       'ageRestriction': instance.ageRestriction,
       'language': instance.language,
-      'logo': instance.logo,
       'roundsCount': instance.roundsCount,
       'questionsCount': instance.questionsCount,
       'tags': instance.tags,
+      'logo': instance.logo,
     };

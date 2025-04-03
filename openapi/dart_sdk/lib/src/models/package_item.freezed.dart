@@ -29,12 +29,12 @@ mixin _$PackageItem {
   /// Package age restriction
   AgeRestriction get ageRestriction => throw _privateConstructorUsedError;
   String get language => throw _privateConstructorUsedError;
-
-  /// Logo file for the package
-  PackageLogoFileItem get logo => throw _privateConstructorUsedError;
   int get roundsCount => throw _privateConstructorUsedError;
   int get questionsCount => throw _privateConstructorUsedError;
   List<String> get tags => throw _privateConstructorUsedError;
+
+  /// Logo file for the package
+  PackageLogoFileItem? get logo => throw _privateConstructorUsedError;
 
   /// Serializes this PackageItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,13 +60,13 @@ abstract class $PackageItemCopyWith<$Res> {
       ShortUserInfo author,
       AgeRestriction ageRestriction,
       String language,
-      PackageLogoFileItem logo,
       int roundsCount,
       int questionsCount,
-      List<String> tags});
+      List<String> tags,
+      PackageLogoFileItem? logo});
 
   $ShortUserInfoCopyWith<$Res> get author;
-  $PackageLogoFileItemCopyWith<$Res> get logo;
+  $PackageLogoFileItemCopyWith<$Res>? get logo;
 }
 
 /// @nodoc
@@ -91,10 +91,10 @@ class _$PackageItemCopyWithImpl<$Res, $Val extends PackageItem>
     Object? author = null,
     Object? ageRestriction = null,
     Object? language = null,
-    Object? logo = null,
     Object? roundsCount = null,
     Object? questionsCount = null,
     Object? tags = null,
+    Object? logo = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -125,10 +125,6 @@ class _$PackageItemCopyWithImpl<$Res, $Val extends PackageItem>
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
               as String,
-      logo: null == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as PackageLogoFileItem,
       roundsCount: null == roundsCount
           ? _value.roundsCount
           : roundsCount // ignore: cast_nullable_to_non_nullable
@@ -141,6 +137,10 @@ class _$PackageItemCopyWithImpl<$Res, $Val extends PackageItem>
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      logo: freezed == logo
+          ? _value.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as PackageLogoFileItem?,
     ) as $Val);
   }
 
@@ -158,8 +158,12 @@ class _$PackageItemCopyWithImpl<$Res, $Val extends PackageItem>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PackageLogoFileItemCopyWith<$Res> get logo {
-    return $PackageLogoFileItemCopyWith<$Res>(_value.logo, (value) {
+  $PackageLogoFileItemCopyWith<$Res>? get logo {
+    if (_value.logo == null) {
+      return null;
+    }
+
+    return $PackageLogoFileItemCopyWith<$Res>(_value.logo!, (value) {
       return _then(_value.copyWith(logo: value) as $Val);
     });
   }
@@ -181,15 +185,15 @@ abstract class _$$PackageItemImplCopyWith<$Res>
       ShortUserInfo author,
       AgeRestriction ageRestriction,
       String language,
-      PackageLogoFileItem logo,
       int roundsCount,
       int questionsCount,
-      List<String> tags});
+      List<String> tags,
+      PackageLogoFileItem? logo});
 
   @override
   $ShortUserInfoCopyWith<$Res> get author;
   @override
-  $PackageLogoFileItemCopyWith<$Res> get logo;
+  $PackageLogoFileItemCopyWith<$Res>? get logo;
 }
 
 /// @nodoc
@@ -212,10 +216,10 @@ class __$$PackageItemImplCopyWithImpl<$Res>
     Object? author = null,
     Object? ageRestriction = null,
     Object? language = null,
-    Object? logo = null,
     Object? roundsCount = null,
     Object? questionsCount = null,
     Object? tags = null,
+    Object? logo = freezed,
   }) {
     return _then(_$PackageItemImpl(
       id: null == id
@@ -246,10 +250,6 @@ class __$$PackageItemImplCopyWithImpl<$Res>
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
               as String,
-      logo: null == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as PackageLogoFileItem,
       roundsCount: null == roundsCount
           ? _value.roundsCount
           : roundsCount // ignore: cast_nullable_to_non_nullable
@@ -262,6 +262,10 @@ class __$$PackageItemImplCopyWithImpl<$Res>
           ? _value._tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      logo: freezed == logo
+          ? _value.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as PackageLogoFileItem?,
     ));
   }
 }
@@ -277,10 +281,10 @@ class _$PackageItemImpl implements _PackageItem {
       required this.author,
       required this.ageRestriction,
       required this.language,
-      required this.logo,
       required this.roundsCount,
       required this.questionsCount,
-      required final List<String> tags})
+      required final List<String> tags,
+      this.logo})
       : _tags = tags;
 
   factory _$PackageItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -302,10 +306,6 @@ class _$PackageItemImpl implements _PackageItem {
   final AgeRestriction ageRestriction;
   @override
   final String language;
-
-  /// Logo file for the package
-  @override
-  final PackageLogoFileItem logo;
   @override
   final int roundsCount;
   @override
@@ -318,9 +318,13 @@ class _$PackageItemImpl implements _PackageItem {
     return EqualUnmodifiableListView(_tags);
   }
 
+  /// Logo file for the package
+  @override
+  final PackageLogoFileItem? logo;
+
   @override
   String toString() {
-    return 'PackageItem(id: $id, title: $title, description: $description, createdAt: $createdAt, author: $author, ageRestriction: $ageRestriction, language: $language, logo: $logo, roundsCount: $roundsCount, questionsCount: $questionsCount, tags: $tags)';
+    return 'PackageItem(id: $id, title: $title, description: $description, createdAt: $createdAt, author: $author, ageRestriction: $ageRestriction, language: $language, roundsCount: $roundsCount, questionsCount: $questionsCount, tags: $tags, logo: $logo)';
   }
 
   @override
@@ -339,12 +343,12 @@ class _$PackageItemImpl implements _PackageItem {
                 other.ageRestriction == ageRestriction) &&
             (identical(other.language, language) ||
                 other.language == language) &&
-            (identical(other.logo, logo) || other.logo == logo) &&
             (identical(other.roundsCount, roundsCount) ||
                 other.roundsCount == roundsCount) &&
             (identical(other.questionsCount, questionsCount) ||
                 other.questionsCount == questionsCount) &&
-            const DeepCollectionEquality().equals(other._tags, _tags));
+            const DeepCollectionEquality().equals(other._tags, _tags) &&
+            (identical(other.logo, logo) || other.logo == logo));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -358,10 +362,10 @@ class _$PackageItemImpl implements _PackageItem {
       author,
       ageRestriction,
       language,
-      logo,
       roundsCount,
       questionsCount,
-      const DeepCollectionEquality().hash(_tags));
+      const DeepCollectionEquality().hash(_tags),
+      logo);
 
   /// Create a copy of PackageItem
   /// with the given fields replaced by the non-null parameter values.
@@ -388,10 +392,10 @@ abstract class _PackageItem implements PackageItem {
       required final ShortUserInfo author,
       required final AgeRestriction ageRestriction,
       required final String language,
-      required final PackageLogoFileItem logo,
       required final int roundsCount,
       required final int questionsCount,
-      required final List<String> tags}) = _$PackageItemImpl;
+      required final List<String> tags,
+      final PackageLogoFileItem? logo}) = _$PackageItemImpl;
 
   factory _PackageItem.fromJson(Map<String, dynamic> json) =
       _$PackageItemImpl.fromJson;
@@ -412,16 +416,16 @@ abstract class _PackageItem implements PackageItem {
   AgeRestriction get ageRestriction;
   @override
   String get language;
-
-  /// Logo file for the package
-  @override
-  PackageLogoFileItem get logo;
   @override
   int get roundsCount;
   @override
   int get questionsCount;
   @override
   List<String> get tags;
+
+  /// Logo file for the package
+  @override
+  PackageLogoFileItem? get logo;
 
   /// Create a copy of PackageItem
   /// with the given fields replaced by the non-null parameter values.

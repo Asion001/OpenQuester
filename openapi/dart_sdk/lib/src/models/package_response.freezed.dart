@@ -22,22 +22,22 @@ PackageResponse _$PackageResponseFromJson(Map<String, dynamic> json) {
 mixin _$PackageResponse {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   ShortUserInfo get author => throw _privateConstructorUsedError;
 
   /// Package age restriction
   AgeRestriction get ageRestriction => throw _privateConstructorUsedError;
-  String get language => throw _privateConstructorUsedError;
-
-  /// Logo file for the package
-  PackageLogoFileItem get logo => throw _privateConstructorUsedError;
+  String? get language => throw _privateConstructorUsedError;
 
   /// Rounds in the package
   List<PackageRound> get rounds => throw _privateConstructorUsedError;
 
   /// Tags for the package. Can be null or an array of tag objects
   List<PackageTag>? get tags => throw _privateConstructorUsedError;
+
+  /// Logo file for the package
+  PackageLogoFileItem? get logo => throw _privateConstructorUsedError;
 
   /// Serializes this PackageResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -58,17 +58,17 @@ abstract class $PackageResponseCopyWith<$Res> {
   $Res call(
       {int id,
       String title,
-      String description,
+      String? description,
       DateTime createdAt,
       ShortUserInfo author,
       AgeRestriction ageRestriction,
-      String language,
-      PackageLogoFileItem logo,
+      String? language,
       List<PackageRound> rounds,
-      List<PackageTag>? tags});
+      List<PackageTag>? tags,
+      PackageLogoFileItem? logo});
 
   $ShortUserInfoCopyWith<$Res> get author;
-  $PackageLogoFileItemCopyWith<$Res> get logo;
+  $PackageLogoFileItemCopyWith<$Res>? get logo;
 }
 
 /// @nodoc
@@ -88,14 +88,14 @@ class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? createdAt = null,
     Object? author = null,
     Object? ageRestriction = null,
-    Object? language = null,
-    Object? logo = null,
+    Object? language = freezed,
     Object? rounds = null,
     Object? tags = freezed,
+    Object? logo = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -106,10 +106,10 @@ class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -122,14 +122,10 @@ class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
               as AgeRestriction,
-      language: null == language
+      language: freezed == language
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
-              as String,
-      logo: null == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as PackageLogoFileItem,
+              as String?,
       rounds: null == rounds
           ? _value.rounds
           : rounds // ignore: cast_nullable_to_non_nullable
@@ -138,6 +134,10 @@ class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<PackageTag>?,
+      logo: freezed == logo
+          ? _value.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as PackageLogoFileItem?,
     ) as $Val);
   }
 
@@ -155,8 +155,12 @@ class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PackageLogoFileItemCopyWith<$Res> get logo {
-    return $PackageLogoFileItemCopyWith<$Res>(_value.logo, (value) {
+  $PackageLogoFileItemCopyWith<$Res>? get logo {
+    if (_value.logo == null) {
+      return null;
+    }
+
+    return $PackageLogoFileItemCopyWith<$Res>(_value.logo!, (value) {
       return _then(_value.copyWith(logo: value) as $Val);
     });
   }
@@ -173,19 +177,19 @@ abstract class _$$PackageResponseImplCopyWith<$Res>
   $Res call(
       {int id,
       String title,
-      String description,
+      String? description,
       DateTime createdAt,
       ShortUserInfo author,
       AgeRestriction ageRestriction,
-      String language,
-      PackageLogoFileItem logo,
+      String? language,
       List<PackageRound> rounds,
-      List<PackageTag>? tags});
+      List<PackageTag>? tags,
+      PackageLogoFileItem? logo});
 
   @override
   $ShortUserInfoCopyWith<$Res> get author;
   @override
-  $PackageLogoFileItemCopyWith<$Res> get logo;
+  $PackageLogoFileItemCopyWith<$Res>? get logo;
 }
 
 /// @nodoc
@@ -203,14 +207,14 @@ class __$$PackageResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? createdAt = null,
     Object? author = null,
     Object? ageRestriction = null,
-    Object? language = null,
-    Object? logo = null,
+    Object? language = freezed,
     Object? rounds = null,
     Object? tags = freezed,
+    Object? logo = freezed,
   }) {
     return _then(_$PackageResponseImpl(
       id: null == id
@@ -221,10 +225,10 @@ class __$$PackageResponseImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -237,14 +241,10 @@ class __$$PackageResponseImplCopyWithImpl<$Res>
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
               as AgeRestriction,
-      language: null == language
+      language: freezed == language
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
-              as String,
-      logo: null == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as PackageLogoFileItem,
+              as String?,
       rounds: null == rounds
           ? _value._rounds
           : rounds // ignore: cast_nullable_to_non_nullable
@@ -253,6 +253,10 @@ class __$$PackageResponseImplCopyWithImpl<$Res>
           ? _value._tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<PackageTag>?,
+      logo: freezed == logo
+          ? _value.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as PackageLogoFileItem?,
     ));
   }
 }
@@ -268,9 +272,9 @@ class _$PackageResponseImpl implements _PackageResponse {
       required this.author,
       required this.ageRestriction,
       required this.language,
-      required this.logo,
       required final List<PackageRound> rounds,
-      required final List<PackageTag>? tags})
+      required final List<PackageTag>? tags,
+      this.logo})
       : _rounds = rounds,
         _tags = tags;
 
@@ -282,7 +286,7 @@ class _$PackageResponseImpl implements _PackageResponse {
   @override
   final String title;
   @override
-  final String description;
+  final String? description;
   @override
   final DateTime createdAt;
   @override
@@ -292,11 +296,7 @@ class _$PackageResponseImpl implements _PackageResponse {
   @override
   final AgeRestriction ageRestriction;
   @override
-  final String language;
-
-  /// Logo file for the package
-  @override
-  final PackageLogoFileItem logo;
+  final String? language;
 
   /// Rounds in the package
   final List<PackageRound> _rounds;
@@ -322,9 +322,13 @@ class _$PackageResponseImpl implements _PackageResponse {
     return EqualUnmodifiableListView(value);
   }
 
+  /// Logo file for the package
+  @override
+  final PackageLogoFileItem? logo;
+
   @override
   String toString() {
-    return 'PackageResponse(id: $id, title: $title, description: $description, createdAt: $createdAt, author: $author, ageRestriction: $ageRestriction, language: $language, logo: $logo, rounds: $rounds, tags: $tags)';
+    return 'PackageResponse(id: $id, title: $title, description: $description, createdAt: $createdAt, author: $author, ageRestriction: $ageRestriction, language: $language, rounds: $rounds, tags: $tags, logo: $logo)';
   }
 
   @override
@@ -343,9 +347,9 @@ class _$PackageResponseImpl implements _PackageResponse {
                 other.ageRestriction == ageRestriction) &&
             (identical(other.language, language) ||
                 other.language == language) &&
-            (identical(other.logo, logo) || other.logo == logo) &&
             const DeepCollectionEquality().equals(other._rounds, _rounds) &&
-            const DeepCollectionEquality().equals(other._tags, _tags));
+            const DeepCollectionEquality().equals(other._tags, _tags) &&
+            (identical(other.logo, logo) || other.logo == logo));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -359,9 +363,9 @@ class _$PackageResponseImpl implements _PackageResponse {
       author,
       ageRestriction,
       language,
-      logo,
       const DeepCollectionEquality().hash(_rounds),
-      const DeepCollectionEquality().hash(_tags));
+      const DeepCollectionEquality().hash(_tags),
+      logo);
 
   /// Create a copy of PackageResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -384,14 +388,14 @@ abstract class _PackageResponse implements PackageResponse {
   const factory _PackageResponse(
       {required final int id,
       required final String title,
-      required final String description,
+      required final String? description,
       required final DateTime createdAt,
       required final ShortUserInfo author,
       required final AgeRestriction ageRestriction,
-      required final String language,
-      required final PackageLogoFileItem logo,
+      required final String? language,
       required final List<PackageRound> rounds,
-      required final List<PackageTag>? tags}) = _$PackageResponseImpl;
+      required final List<PackageTag>? tags,
+      final PackageLogoFileItem? logo}) = _$PackageResponseImpl;
 
   factory _PackageResponse.fromJson(Map<String, dynamic> json) =
       _$PackageResponseImpl.fromJson;
@@ -401,7 +405,7 @@ abstract class _PackageResponse implements PackageResponse {
   @override
   String get title;
   @override
-  String get description;
+  String? get description;
   @override
   DateTime get createdAt;
   @override
@@ -411,11 +415,7 @@ abstract class _PackageResponse implements PackageResponse {
   @override
   AgeRestriction get ageRestriction;
   @override
-  String get language;
-
-  /// Logo file for the package
-  @override
-  PackageLogoFileItem get logo;
+  String? get language;
 
   /// Rounds in the package
   @override
@@ -424,6 +424,10 @@ abstract class _PackageResponse implements PackageResponse {
   /// Tags for the package. Can be null or an array of tag objects
   @override
   List<PackageTag>? get tags;
+
+  /// Logo file for the package
+  @override
+  PackageLogoFileItem? get logo;
 
   /// Create a copy of PackageResponse
   /// with the given fields replaced by the non-null parameter values.
