@@ -51,7 +51,7 @@ class SiqArchiveParser {
     final contentXml = ContentXmlParser(archive);
     await contentXml.parse(contentFile);
     _siqFile = contentXml.siqFile;
-    filesHash = contentXml.filesHash;
+    filesHash = contentXml.filesMD5;
   }
 }
 

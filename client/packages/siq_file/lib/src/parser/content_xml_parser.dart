@@ -210,26 +210,25 @@ class ContentXmlParser {
       throw Exception('$filePath not found in archive! (Question $item)');
     }
 
-    final hash = await getFileMD5(rawFile);
+    final md5 = await getFileMD5(rawFile);
 
     // Save archive file to map for re-use
-    filesHash[hash] = archiveFile!;
+    filesMD5[md5] = archiveFile!;
 
     final file = itemType == null
         ? null
         : FileItem(
             id: null,
             link: null,
-            md5: hash,
+            md5: md5,
             type: itemType,
           );
 
     return file;
   }
 
-  Future<String> getFileMD5(List<int> data) async {
-    return md5.convert(data).toString();
-  }
+  Future<String> getFileMD5(List<int> data) async =>
+      md5.convert(data).toString();
 
   PackageFileType? _getFileType(XmlElement? item) {
     final type = item?.getAttribute('type');
@@ -260,5 +259,5 @@ class ContentXmlParser {
 
   late PackageCreateInputData siqFile;
   Archive? _archive;
-  Map<String, ArchiveFile> filesHash = {};
+  Map<String, ArchiveFile> filesMD5 = {};
 }
