@@ -990,9 +990,7 @@
             "examples": ["2024-01-01T00:00:00Z"]
           },
           "ageRestriction": {
-            "type": "string",
-            "enum": ["A18", "A16", "A12", "NONE"],
-            "examples": ["A18"]
+            "$ref": "#/components/schemas/AgeRestriction"
           },
           "isPrivate": {
             "type": "boolean",
@@ -1037,9 +1035,7 @@
             "examples": [false]
           },
           "ageRestriction": {
-            "type": "string",
-            "enum": ["A18", "A16", "A12", "NONE"],
-            "examples": ["A18"]
+            "$ref": "#/components/schemas/AgeRestriction"
           },
           "maxPlayers": {
             "type": "integer",
@@ -1426,7 +1422,7 @@
         "type": ["string", "null"],
         "enum": ["A18", "A16", "A12", "NONE"],
         "default": "NONE",
-        "description": "Age restriction for the package",
+        "description": "Age restriction",
         "examples": ["A18"]
       },
       "PackageFileType": {
