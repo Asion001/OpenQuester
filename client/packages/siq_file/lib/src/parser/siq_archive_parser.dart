@@ -1,83 +1,62 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
-
-import '../siq_file/siq_file.dart';
-import 'content_xml_parser.dart';
+import 'package:openapi/openapi.dart';
+import 'package:siq_file/src/parser/content_xml_parser.dart';
 
 class SiqArchiveParser {
-  SiqArchiveParser(this._file);
+  SiqArchiveParser();
 
-  final FileStream _file;
-  SiqFile? _siqFile;
-  SiqFile get file => _siqFile!;
+  OQContentStructure? _siqFile;
+  OQContentStructure get file => _siqFile!;
 
-  Future<SiqFile> parse({bool hashFiles = false}) async {
-    final targetStream = await InputFileStream.asRamFile(
-      _file.stream.map(Uint8List.fromList),
-      _file.fileLength,
-    );
-    final archive = ZipDecoder().decodeStream(
-      targetStream,
-      verify: false, //TODO: add option to verify
-    );
+  Archive? archive;
+  InputFileStream? targetStream;
+  Map<String, ArchiveFile> filesHash = {};
 
-    _getContentFile(archive);
-    if (hashFiles) _hashFiles(archive);
+  Future<void> dispose() async {
+    await targetStream?.close();
+    for (final e in filesHash.values) {
+      e.closeSync();
+    }
+    filesHash.clear();
+    _siqFile = null;
+    await archive?.clear();
+  }
 
-    targetStream.closeSync();
-
+  Future<OQContentStructure> parse() async {
+    await _getContentFile(archive!);
     return _siqFile!;
   }
 
-  void _getContentFile(Archive archive) {
-    for (var file in archive.files) {
-      if (!file.isFile) continue;
-      if (file.name == 'content.xml') {
-        _parseContentFile(file);
-        break;
-      }
-    }
+  Future<void> load(List<int> bytes, {bool verify = false}) async {
+    final decoder = ZipDecoder();
+    archive = decoder.decodeBytes(bytes, verify: verify);
   }
 
-  void _hashFiles(Archive archive) {
-    if (_siqFile == null) return;
-    _siqFile = _siqFile?.copyWithFiles((file) {
-      if (file == null) return file;
-
-      final archiveFile =
-          archive.firstWhereOrNull((e) => e.name == file.file.fullPath);
-      if (archiveFile == null) return file;
-
-      //TODO: make this more memory efficient
-      final content = archiveFile.content;
-      final fileWithHash = file.file.copyWithHash(content);
-
-      return file.copyWith(file: fileWithHash);
+  Future<void> _getContentFile(Archive archive) async {
+    final contentFile = archive.firstWhereOrNull((file) {
+      return file.isFile && file.name == 'content.xml';
     });
+
+    if (contentFile == null) throw Exception('No content.xml file!');
+    await _parseContentFile(contentFile, archive);
   }
 
-  void _parseContentFile(ArchiveFile file) {
-    final output =
-        OutputFileStream.toRamFile(RamFileHandle.asWritableRamBuffer());
-    file.writeContent(output);
+  Future<void> _parseContentFile(ArchiveFile file, Archive archive) async {
+    final contentFile = utf8.decode(file.content);
+    file.clear();
 
-    final contentFile = utf8.decode(output.getBytes());
-    output.clear();
-
-    final contentXml = ContentXmlParser(contentFile);
-
+    final contentXml = ContentXmlParser(archive);
+    await contentXml.parse(contentFile);
     _siqFile = contentXml.siqFile;
+    filesHash = contentXml.filesHash;
   }
 }
 
 class FileStream {
-  const FileStream({
-    required this.fileLength,
-    required this.stream,
-  });
+  const FileStream({required this.fileLength, required this.stream});
   final int fileLength;
   final Stream<List<int>> stream;
 }

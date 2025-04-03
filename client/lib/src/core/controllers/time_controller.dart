@@ -10,7 +10,7 @@ class TimeController extends ChangeNotifier {
 
   @postConstruct
   void init() {
-    timer = Timer.periodic(Duration(seconds: 1), _tick);
+    timer = Timer.periodic(const Duration(seconds: 1), _tick);
   }
 
   void _tick(Timer timer) {

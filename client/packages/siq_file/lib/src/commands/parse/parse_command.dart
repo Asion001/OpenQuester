@@ -1,6 +1,6 @@
 import 'package:mason_logger/mason_logger.dart';
 
-import '../common/file_command.dart';
+import 'package:siq_file/src/commands/common/file_command.dart';
 
 class ParseCommand extends FileCommand {
   ParseCommand({Logger? logger}) : _logger = logger ?? Logger();

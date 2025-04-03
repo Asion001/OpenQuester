@@ -1,4 +1,4 @@
-include: package:flutter_lints/flutter.yaml
+include: package:very_good_analysis/analysis_options.7.0.0.yaml
 
 linter:
   rules:
@@ -8,6 +8,11 @@ analyzer:
   errors:
     no_default_cases: ignore
     sort_pub_dependencies: ignore
+    public_member_api_docs: ignore
+    avoid_catches_without_on_clauses: ignore
+    flutter_style_todos: ignore
+    document_ignores: ignore
+    unnecessary_library_directive: ignore
   exclude:
     - "**/*_generated.dart"
     - "**/*.freezed.dart"

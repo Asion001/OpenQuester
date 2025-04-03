@@ -13,8 +13,8 @@ part 'oq_theme_structure.g.dart';
 class OQThemeStructure with _$OQThemeStructure {
   const factory OQThemeStructure({
     required String name,
-    required String comment,
     required List<OQQuestionsStructure> questions,
+    String? comment,
   }) = _OQThemeStructure;
   
   factory OQThemeStructure.fromJson(Map<String, Object?> json) => _$OQThemeStructureFromJson(json);

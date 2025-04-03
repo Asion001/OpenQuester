@@ -23,13 +23,13 @@ mixin _$OQMetadataStructure {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  OQLogoFile get logo => throw _privateConstructorUsedError;
   OQMetadataStructureAgeRestriction get ageRestriction =>
       throw _privateConstructorUsedError;
   List<String> get tags => throw _privateConstructorUsedError;
   int get author => throw _privateConstructorUsedError;
   String? get language => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
+  OQLogoFile? get logo => throw _privateConstructorUsedError;
 
   /// Serializes this OQMetadataStructure to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,14 +51,14 @@ abstract class $OQMetadataStructureCopyWith<$Res> {
       {String id,
       String title,
       DateTime createdAt,
-      OQLogoFile logo,
       OQMetadataStructureAgeRestriction ageRestriction,
       List<String> tags,
       int author,
       String? language,
-      String? comment});
+      String? comment,
+      OQLogoFile? logo});
 
-  $OQLogoFileCopyWith<$Res> get logo;
+  $OQLogoFileCopyWith<$Res>? get logo;
 }
 
 /// @nodoc
@@ -79,12 +79,12 @@ class _$OQMetadataStructureCopyWithImpl<$Res, $Val extends OQMetadataStructure>
     Object? id = null,
     Object? title = null,
     Object? createdAt = null,
-    Object? logo = null,
     Object? ageRestriction = null,
     Object? tags = null,
     Object? author = null,
     Object? language = freezed,
     Object? comment = freezed,
+    Object? logo = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -99,10 +99,6 @@ class _$OQMetadataStructureCopyWithImpl<$Res, $Val extends OQMetadataStructure>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      logo: null == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as OQLogoFile,
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
@@ -123,6 +119,10 @@ class _$OQMetadataStructureCopyWithImpl<$Res, $Val extends OQMetadataStructure>
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
+      logo: freezed == logo
+          ? _value.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as OQLogoFile?,
     ) as $Val);
   }
 
@@ -130,8 +130,12 @@ class _$OQMetadataStructureCopyWithImpl<$Res, $Val extends OQMetadataStructure>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $OQLogoFileCopyWith<$Res> get logo {
-    return $OQLogoFileCopyWith<$Res>(_value.logo, (value) {
+  $OQLogoFileCopyWith<$Res>? get logo {
+    if (_value.logo == null) {
+      return null;
+    }
+
+    return $OQLogoFileCopyWith<$Res>(_value.logo!, (value) {
       return _then(_value.copyWith(logo: value) as $Val);
     });
   }
@@ -149,15 +153,15 @@ abstract class _$$OQMetadataStructureImplCopyWith<$Res>
       {String id,
       String title,
       DateTime createdAt,
-      OQLogoFile logo,
       OQMetadataStructureAgeRestriction ageRestriction,
       List<String> tags,
       int author,
       String? language,
-      String? comment});
+      String? comment,
+      OQLogoFile? logo});
 
   @override
-  $OQLogoFileCopyWith<$Res> get logo;
+  $OQLogoFileCopyWith<$Res>? get logo;
 }
 
 /// @nodoc
@@ -176,12 +180,12 @@ class __$$OQMetadataStructureImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? createdAt = null,
-    Object? logo = null,
     Object? ageRestriction = null,
     Object? tags = null,
     Object? author = null,
     Object? language = freezed,
     Object? comment = freezed,
+    Object? logo = freezed,
   }) {
     return _then(_$OQMetadataStructureImpl(
       id: null == id
@@ -196,10 +200,6 @@ class __$$OQMetadataStructureImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      logo: null == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as OQLogoFile,
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
@@ -220,6 +220,10 @@ class __$$OQMetadataStructureImplCopyWithImpl<$Res>
           ? _value.comment
           : comment // ignore: cast_nullable_to_non_nullable
               as String?,
+      logo: freezed == logo
+          ? _value.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as OQLogoFile?,
     ));
   }
 }
@@ -231,12 +235,12 @@ class _$OQMetadataStructureImpl implements _OQMetadataStructure {
       {required this.id,
       required this.title,
       required this.createdAt,
-      required this.logo,
       required this.ageRestriction,
       required final List<String> tags,
       required this.author,
       required this.language,
-      required this.comment})
+      required this.comment,
+      this.logo})
       : _tags = tags;
 
   factory _$OQMetadataStructureImpl.fromJson(Map<String, dynamic> json) =>
@@ -248,8 +252,6 @@ class _$OQMetadataStructureImpl implements _OQMetadataStructure {
   final String title;
   @override
   final DateTime createdAt;
-  @override
-  final OQLogoFile logo;
   @override
   final OQMetadataStructureAgeRestriction ageRestriction;
   final List<String> _tags;
@@ -266,10 +268,12 @@ class _$OQMetadataStructureImpl implements _OQMetadataStructure {
   final String? language;
   @override
   final String? comment;
+  @override
+  final OQLogoFile? logo;
 
   @override
   String toString() {
-    return 'OQMetadataStructure(id: $id, title: $title, createdAt: $createdAt, logo: $logo, ageRestriction: $ageRestriction, tags: $tags, author: $author, language: $language, comment: $comment)';
+    return 'OQMetadataStructure(id: $id, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, tags: $tags, author: $author, language: $language, comment: $comment, logo: $logo)';
   }
 
   @override
@@ -281,14 +285,14 @@ class _$OQMetadataStructureImpl implements _OQMetadataStructure {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.logo, logo) || other.logo == logo) &&
             (identical(other.ageRestriction, ageRestriction) ||
                 other.ageRestriction == ageRestriction) &&
             const DeepCollectionEquality().equals(other._tags, _tags) &&
             (identical(other.author, author) || other.author == author) &&
             (identical(other.language, language) ||
                 other.language == language) &&
-            (identical(other.comment, comment) || other.comment == comment));
+            (identical(other.comment, comment) || other.comment == comment) &&
+            (identical(other.logo, logo) || other.logo == logo));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -298,12 +302,12 @@ class _$OQMetadataStructureImpl implements _OQMetadataStructure {
       id,
       title,
       createdAt,
-      logo,
       ageRestriction,
       const DeepCollectionEquality().hash(_tags),
       author,
       language,
-      comment);
+      comment,
+      logo);
 
   /// Create a copy of OQMetadataStructure
   /// with the given fields replaced by the non-null parameter values.
@@ -327,12 +331,12 @@ abstract class _OQMetadataStructure implements OQMetadataStructure {
       {required final String id,
       required final String title,
       required final DateTime createdAt,
-      required final OQLogoFile logo,
       required final OQMetadataStructureAgeRestriction ageRestriction,
       required final List<String> tags,
       required final int author,
       required final String? language,
-      required final String? comment}) = _$OQMetadataStructureImpl;
+      required final String? comment,
+      final OQLogoFile? logo}) = _$OQMetadataStructureImpl;
 
   factory _OQMetadataStructure.fromJson(Map<String, dynamic> json) =
       _$OQMetadataStructureImpl.fromJson;
@@ -344,8 +348,6 @@ abstract class _OQMetadataStructure implements OQMetadataStructure {
   @override
   DateTime get createdAt;
   @override
-  OQLogoFile get logo;
-  @override
   OQMetadataStructureAgeRestriction get ageRestriction;
   @override
   List<String> get tags;
@@ -355,6 +357,8 @@ abstract class _OQMetadataStructure implements OQMetadataStructure {
   String? get language;
   @override
   String? get comment;
+  @override
+  OQLogoFile? get logo;
 
   /// Create a copy of OQMetadataStructure
   /// with the given fields replaced by the non-null parameter values.

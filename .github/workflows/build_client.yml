@@ -39,6 +39,8 @@ jobs:
     defaults:
       run:
         working-directory: ./client
+    env:
+      DONT_USE_PURO: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -55,9 +57,9 @@ jobs:
       - run: flutter pub get
       - name: Write env file
         run: echo "${{ vars.ENV_FILE_CONTENT }}" > .env
-      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: make pre_run
       - name: Build web
-        run: flutter build web --wasm --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER
+        run: flutter build web --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER
       - name: Publish Web Artifacts
         uses: actions/upload-artifact@v4
         with:

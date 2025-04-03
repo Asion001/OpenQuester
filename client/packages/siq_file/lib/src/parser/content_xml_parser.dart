@@ -1,71 +1,88 @@
+import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
-import 'package:siq_file/src/converters/file_converter.dart';
+import 'package:crypto/crypto.dart';
+import 'package:openapi/openapi.dart';
+import 'package:siq_file/src/converters/time_converter.dart';
 import 'package:siq_file/src/extensions.dart';
-import 'package:siq_file/src/siq_file/siq_file_theme.dart';
 import 'package:xml/xml.dart';
 
-import '../converters/time_converter.dart';
-import '../siq_file/file_object.dart';
-import '../siq_file/siq_file.dart';
-import '../siq_file/siq_file_file_object.dart';
-import '../siq_file/siq_file_question.dart';
-
 class ContentXmlParser {
-  ContentXmlParser(String rawFile) {
+  ContentXmlParser(Archive? archive) {
+    _archive = archive;
+  }
+
+  Future<void> parse(String rawFile) async {
     final document = XmlDocument.parse(rawFile);
     final package = document.getElement('package')!;
-    final metadata = _parseMetadata(package);
+    final metadata = await _parseMetadata(package);
     final roundsXml = package.getElement('rounds')!;
     final rounds = roundsXml.children.map(_parseRound).toList();
 
-    _siqFile = SiqFile(metadata: metadata, rounds: rounds);
-  }
-
-  SiqFileRound _parseRound(XmlNode round) {
-    final name = round.getAttribute('name') ?? '-';
-    final themes =
-        round.children.map((e) => _parseTheme(e.getElement('theme')!)).toList();
-    return SiqFileRound(name: name, themes: themes);
-  }
-
-  SiqFileTheme _parseTheme(XmlElement theme) {
-    final name = theme.getAttribute('name') ?? '-';
-    final comment = _getComment(theme);
-    final questions =
-        theme.getElement('questions')?.children.map(_parseQuestion).toList() ??
-            [];
-    return SiqFileTheme(
-      name: name,
-      comment: comment,
-      questions: questions,
+    siqFile = OQContentStructure(
+      metadata: metadata,
+      rounds: await Future.wait(rounds),
     );
   }
 
-  String? _getComment(XmlElement element) {
+  Future<OQRoundStructure> _parseRound(XmlNode round) async {
+    final name = round.getAttribute('name') ?? '-';
+    final themesXml = round.getElement('themes');
+    final themes = themesXml?.childElements.map(_parseTheme).toList();
+    return OQRoundStructure(
+      name: name,
+      themes: await Future.wait(themes ?? []),
+    );
+  }
+
+  Future<OQThemeStructure> _parseTheme(XmlElement theme) async {
+    final name = theme.getAttribute('name') ?? '-';
+    final comment = await _getComment(theme);
+    final questions =
+        theme.getElement('questions')?.children.map(_parseQuestion).toList() ??
+            [];
+    return OQThemeStructure(
+      name: name,
+      comment: comment,
+      questions: await Future.wait(questions),
+    );
+  }
+
+  Future<String?> _getComment(XmlElement element) async {
     final comment =
         element.getElement('info')?.getElement('comments')?.innerText;
     return comment;
   }
 
-  SiqFileQuestion _parseQuestion(XmlNode question) {
+  Future<OQQuestionsStructure> _parseQuestion(XmlNode question) async {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
-    final params = question.getElement('params');
+    final params =
+        question.getElement('params') ?? question.getElement('scenario');
+    final isScenario = params?.localName == 'scenario';
 
-    final questionType = QuestionType.values
-            .firstWhereOrNull((e) => e.name == question.getAttribute('type')) ??
-        QuestionType.regular;
+    final questionType = OQQuestionsStructureType.values.firstWhereOrNull(
+          (e) => e.name == question.getAttribute('type'),
+        ) ??
+        OQQuestionsStructureType.regular;
 
-    final questionParam = params?.children
-        .firstWhereOrNull((p0) => p0.getAttribute('name') == 'question');
-    final questionItem = questionParam?.getElement('item');
+    final questionParam = isScenario
+        ? params
+        : params?.children.firstWhereOrNull(
+            (p0) {
+              final nameAtr =
+                  (p0 is XmlElement) ? p0.localName : p0.getAttribute('name');
+              return ['question'].contains(nameAtr);
+            },
+          );
+    final questionItem = _getFileItem(questionParam);
     final questionItemType = _getFileType(questionItem);
     final text = questionItemType != null ? null : questionItem?.innerText;
-    final questionFile = parseFile(questionItem);
+    final questionFile = await parseFile(questionItem);
 
-    final answerParam = params?.children
-        .firstWhereOrNull((p0) => p0.getAttribute('name') == 'answer');
-    final answerItem = answerParam?.getElement('item');
-    final answerFile = parseFile(answerItem);
+    final answerParam = params?.children.firstWhereOrNull(
+      (p0) => p0.getAttribute('name') == 'answer',
+    );
+    final answerItem = _getFileItem(answerParam);
+    final answerFile = await parseFile(answerItem);
     final answerItemType = _getFileType(answerItem);
 
     Set<String> getAnswers(String key) =>
@@ -76,7 +93,7 @@ class ContentXmlParser {
     final hostHint = right.join(' / ');
     final answerText = answerItemType != null ? null : answerItem?.innerText;
 
-    return SiqFileQuestion(
+    return OQQuestionsStructure(
       price: price,
       text: text,
       type: questionType,
@@ -87,27 +104,64 @@ class ContentXmlParser {
     );
   }
 
-  SiqFileFileObject? parseFile(XmlElement? item) {
+  XmlElement? _getFileItem(XmlNode? node) {
+    return node?.childElements.firstWhereOrNull((e) {
+      final attribute = e.getAttribute('type');
+      return attribute != null;
+    });
+  }
+
+  Future<OQFile?> parseFile(XmlElement? item) async {
     final itemType = _getFileType(item);
+    final folder = switch (itemType) {
+      OQFileContentStructureType.image => 'Images',
+      OQFileContentStructureType.video => 'Video',
+      OQFileContentStructureType.audio => 'Audio',
+      OQFileContentStructureType.$unknown => null,
+      null => null,
+    };
+    if (folder == null || item == null) {
+      return null;
+    }
+
+    final filePath = [folder, item.innerText.replaceFirst('@', '')].join('/');
+    final archiveFile = _archive?.files.firstWhereOrNull(
+      (e) => Uri.decodeFull(e.name) == filePath,
+    );
+    final rawFile = archiveFile?.content;
+    archiveFile?.clear();
+    if (rawFile == null) {
+      throw Exception('$filePath not found in archive! (Question $item)');
+    }
+
+    final hash = await getFileMD5(rawFile);
+
+    // Save archive file to map for re-use
+    filesHash[hash] = archiveFile!;
 
     final file = itemType == null
         ? null
-        : SiqFileFileObject(
-            file: FileObject(path: item!.innerText, type: itemType));
+        : OQFile(file: OQFileContentStructure(md5: hash, type: itemType));
 
     return file;
   }
 
-  FileType? _getFileType(XmlElement? item) {
-    final itemType = FileType.values
-        .firstWhereOrNull((e) => e.name == item?.getAttribute('type'));
+  Future<String> getFileMD5(List<int> data) async {
+    return md5.convert(data).toString();
+  }
+
+  OQFileContentStructureType? _getFileType(XmlElement? item) {
+    final itemType = OQFileContentStructureType.values.firstWhereOrNull(
+      (e) => e.name == item?.getAttribute('type'),
+    );
     return itemType;
   }
 
-  SiqFileMetadata _parseMetadata(XmlElement package) {
-    final packageAtributes =
-        package.attributes.map((e) => MapEntry(e.localName, e.value));
-    final Map<String, dynamic> json = Map.fromEntries(packageAtributes);
+  Future<OQMetadataStructure> _parseMetadata(XmlElement package) async {
+    final packageAtributes = package.attributes.map(
+      (e) => MapEntry(e.localName, e.value),
+    );
+    final json = Map<String, dynamic>.fromEntries(packageAtributes);
 
     final tagsElement = package.getElement('tags');
     final tags =
@@ -116,29 +170,34 @@ class ContentXmlParser {
     final infoElement = package.getElement('info')?.getElement('authors');
     final authors =
         infoElement?.children.map((e) => e.innerText.trim()).toSet() ?? {};
-    final comment = _getComment(package);
+    final comment = await _getComment(package);
 
-    json.addAll({
-      'tags': tags.toList(),
-      'authors': authors.toList(),
-      'comment': comment,
-    });
+    json
+      ..addAll({
+        'tags': tags.toList(),
+        'authors': authors.toList(),
+        'comment': comment,
+        'id': '',
+        'createdAt': DateTime.now().toIso8601String(),
+        'ageRestriction': 'NONE',
+        'author': -1,
+        'language': 'en',
+      })
+      ..remove('logo');
 
     // Convert objects
     _convertObjects(json);
 
-    final metadata = SiqFileMetadata.fromJson(json);
+    final metadata = OQMetadataStructure.fromJson(json);
     return metadata;
   }
 
   void _convertObjects(Map<String, dynamic> json) {
-    json['logo'] = _nullPass(
-      json['logo'],
-      (value) => ImageFileConverter().fromJson(value).toJson(),
-    );
     json['date'] = _nullPass(
       json['date'],
-      (value) => DateTimeConverter().fromJson(value).toIso8601String(),
+      (value) => const DateTimeConverter()
+          .fromJson(value.toString())
+          .toIso8601String(),
     );
     json.renameKey('name', 'title');
   }
@@ -148,6 +207,7 @@ class ContentXmlParser {
     return converter(value);
   }
 
-  SiqFile? _siqFile;
-  SiqFile get siqFile => _siqFile!;
+  late OQContentStructure siqFile;
+  Archive? _archive;
+  Map<String, ArchiveFile> filesHash = {};
 }

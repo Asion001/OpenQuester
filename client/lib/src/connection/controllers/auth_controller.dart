@@ -36,8 +36,8 @@ class AuthController extends ChangeNotifier {
       );
 
       _userData = await getIt.get<Api>().api.auth.postV1AuthOauth2(
-        body: inputOauthLogin,
-      );
+            body: inputOauthLogin,
+          );
 
       loading = false;
       return (_userData != null, 'AuthData == null');

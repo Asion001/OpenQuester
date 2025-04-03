@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class VisibilityBuilder extends StatefulWidget {
-  const VisibilityBuilder({super.key, required this.builder});
+  const VisibilityBuilder({required this.builder, super.key});
   final Widget Function(
     BuildContext context,
+    // ignore: avoid_positional_boolean_parameters
     bool showPassword,
     Widget hideButton,
-  )
-  builder;
+  ) builder;
 
   @override
   State<VisibilityBuilder> createState() => _VisibilityBuilderState();
@@ -21,10 +21,9 @@ class _VisibilityBuilderState extends State<VisibilityBuilder> {
       context,
       showPassword,
       IconButton(
-        onPressed:
-            () => setState(() {
-              showPassword = !showPassword;
-            }),
+        onPressed: () => setState(() {
+          showPassword = !showPassword;
+        }),
         icon: Icon(showPassword ? Icons.visibility : Icons.visibility_off),
       ),
     );

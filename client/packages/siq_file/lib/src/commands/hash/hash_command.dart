@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:mason_logger/mason_logger.dart';
 
-import '../common/file_command.dart';
+import 'package:siq_file/src/commands/common/file_command.dart';
 
 class HashCommand extends FileCommand {
   HashCommand({Logger? logger}) : _logger = logger ?? Logger();
@@ -17,7 +17,7 @@ class HashCommand extends FileCommand {
 
   @override
   Future<int> run() async {
-    final siqFile = await getFile(hashFiles: true);
+    final siqFile = await getFile();
     _logger.write(jsonEncode(siqFile.toJson()));
 
     return ExitCode.success.code;

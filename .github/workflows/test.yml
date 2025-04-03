@@ -51,6 +51,8 @@ jobs:
     defaults:
       run:
         working-directory: ./client
+    env:
+      DONT_USE_PURO: true
     steps:
       - uses: actions/checkout@v4
       - name: Setup Flutter SDK
@@ -61,7 +63,8 @@ jobs:
           cache: true
       - run: echo "${{ vars.ENV_FILE_CONTENT }}" > .env
       - run: flutter pub get
-      - run: dart run build_runner build --delete-conflicting-outputs
-      - run: dart analyze --fatal-infos
+      - run: make pre_run
+      - run: dart analyze --fatal-infos lib/
+      - run: dart run scripts/run_format_exception.dart
       - run: dart format lib --set-exit-if-changed
       - run: dart test

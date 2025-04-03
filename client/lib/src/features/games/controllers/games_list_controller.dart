@@ -7,9 +7,9 @@ class GamesListController extends ListControllerBase<GameListItem> {
   Future<void> init() async {
     await super.init();
     getIt<SocketController>().general.on(
-      SocketSubscriptions.games.name,
-      _onSocketEvent,
-    );
+          SocketSubscriptions.games.name,
+          _onSocketEvent,
+        );
   }
 
   @override
@@ -19,23 +19,25 @@ class GamesListController extends ListControllerBase<GameListItem> {
   }
 
   Future<void> _onSocketEvent(dynamic data) async {
-    final gameEvent = GameEventSubscription.fromJson(data);
+    final gameEvent = GameEventSubscription.fromJson(
+      data as Map<String, Object?>,
+    );
     final game = gameEvent.data;
     switch (gameEvent.event) {
       case GameEvent.changed:
       case GameEvent.started:
-        updateItem(game);
+        await updateItem(game);
       case GameEvent.created:
-        addFirstItem(game);
+        await addFirstItem(game);
       case GameEvent.deleted:
-        deleteItem(game);
+        await deleteItem(game);
       case GameEvent.$unknown:
         break;
     }
   }
 
   @override
-  Future<ListResponse<GameListItem>> getPage(request) async {
+  Future<ListResponse<GameListItem>> getPage(ListRequest request) async {
     final list = await Api.I.api.games.getV1Games(
       limit: request.limit,
       offset: request.offset,

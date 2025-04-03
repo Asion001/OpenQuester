@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
 class MaxSizeContainer extends StatelessWidget {
-  const MaxSizeContainer({super.key, required this.child});
+  const MaxSizeContainer({required this.child, super.key});
   final Widget child;
 
   @override
@@ -11,7 +11,7 @@ class MaxSizeContainer extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: UiModeUtils.maximumWidth),
+          constraints: const BoxConstraints(maxWidth: UiModeUtils.maximumWidth),
           child: child,
         ).flexible(),
       ],

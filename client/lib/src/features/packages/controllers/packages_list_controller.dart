@@ -35,7 +35,7 @@ class PackagesListController extends ListControllerBase<PackageListItem> {
   // }
 
   @override
-  Future<ListResponse<PackageListItem>> getPage(request) async {
+  Future<ListResponse<PackageListItem>> getPage(ListRequest request) async {
     final list = await Api.I.api.packages.getV1Packages(
       limit: request.limit,
       offset: request.offset,
