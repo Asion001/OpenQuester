@@ -6,16 +6,28 @@ import helmet from "helmet";
 import Redis from "ioredis";
 
 import { ApiContext } from "application/context/ApiContext";
+import { ClientError } from "domain/errors/ClientError";
 import { EnvType } from "infrastructure/config/Environment";
+import { Logger } from "infrastructure/utils/Logger";
 import { verifySession } from "presentation/middleware/authMiddleware";
 import { logMiddleware } from "presentation/middleware/log/debugLogMiddleware";
 
 export class MiddlewareController {
+  private readonly allowedHosts: string[];
+  private readonly allOriginsAllowed: boolean = false;
+
   constructor(
     private readonly ctx: ApiContext,
     private readonly redisClient: Redis
   ) {
-    //
+    this.allowedHosts = this.ctx.env.ALLOWED_HOSTS;
+    Logger.gray(
+      `Allowed CORS origins for current instance: [${this.allowedHosts}]`
+    );
+    if (this.allowedHosts.some((host) => host === "*")) {
+      this.allOriginsAllowed = true;
+      Logger.warn("Current instance's CORS allows all origins !!");
+    }
   }
 
   public async initialize() {
@@ -25,9 +37,34 @@ export class MiddlewareController {
     this.ctx.app.use(
       cors({
         credentials: true,
-        origin: this.ctx.env.CORS_ORIGINS.split(","),
+        origin: (origin, callback) => {
+          if (this.allOriginsAllowed || !origin) {
+            return callback(null, true);
+          }
+
+          try {
+            const domain = new URL(origin).hostname;
+
+            const isOriginAllowed = this.allowedHosts.some(
+              (allowedHost) =>
+                domain === allowedHost || domain.endsWith(`.${allowedHost}`)
+            );
+
+            if (isOriginAllowed) {
+              return callback(null, origin);
+            }
+
+            return callback(
+              new ClientError(`CORS policy: Origin '${origin}' is not allowed`)
+            );
+          } catch {
+            return callback(
+              new ClientError("CORS policy: Invalid origin provided")
+            );
+          }
+        },
         methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization", "Set-Cookie"],
+        allowedHeaders: ["Content-Type", "Authorization"],
       })
     );
     this.ctx.app.disable("x-powered-by");

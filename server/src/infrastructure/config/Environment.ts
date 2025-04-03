@@ -34,6 +34,7 @@ export class Environment {
   public CLIENT_URL!: string;
   public CORS_ORIGINS!: string;
   public API_DOMAIN!: string;
+  public ALLOWED_HOSTS!: string[];
 
   // DB vars
   public DB_TYPE!: string;
@@ -207,6 +208,9 @@ export class Environment {
       "CORS_ORIGINS",
       "string",
       this.CLIENT_URL
+    );
+    this.ALLOWED_HOSTS = this.getEnvVar("ALLOWED_HOSTS", "string", "*").split(
+      ","
     );
   }
 
