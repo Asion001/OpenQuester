@@ -73,7 +73,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: pages deploy web/ --project-name=openquester
-          environment: production
 
       - name: Purge Cloudflare cache
         uses: jakejarvis/cloudflare-purge-action@master

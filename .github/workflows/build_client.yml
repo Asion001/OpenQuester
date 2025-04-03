@@ -97,5 +97,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy ./client/build/web/ --project-name=openquester
-          environment: preview
+          command: pages deploy ./client/build/web/ --project-name=openquester-dev --branch ${{ github.ref_name }}
