@@ -1419,7 +1419,7 @@
         }
       },
       "AgeRestriction": {
-        "type": ["string", "null"],
+        "type": "string",
         "enum": ["A18", "A16", "A12", "NONE"],
         "default": "NONE",
         "description": "Age restriction",

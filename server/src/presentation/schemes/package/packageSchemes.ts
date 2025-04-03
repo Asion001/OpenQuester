@@ -147,8 +147,7 @@ export const uploadPackageScheme = () =>
       language: Joi.string().allow(null),
       ageRestriction: Joi.string()
         .valid(...Object.values(AgeRestriction))
-        .allow(null)
-        .default(AgeRestriction.NONE),
+        .required(),
       logo: Joi.object({
         file: fileSchema.required(),
       }).allow(null),
