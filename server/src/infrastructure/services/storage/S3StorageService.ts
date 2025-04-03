@@ -8,37 +8,22 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { type Request } from "express";
 import https from "node:https";
 
-import { ContentStructureService } from "application/services/ContentStructureService";
-import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
-import {
-  UPLOAD_FILE_LINK_EXPIRES_IN,
-  UPLOAD_PACKAGE_LINKS_EXPIRES_IN,
-} from "domain/constants/storage";
-import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { UPLOAD_FILE_LINK_EXPIRES_IN } from "domain/constants/storage";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { FileSource } from "domain/enums/file/FileSource";
-import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { Permissions } from "domain/enums/Permissions";
 import { ServerResponse } from "domain/enums/ServerResponse";
 import { ClientError } from "domain/errors/ClientError";
 import { FileDTO } from "domain/types/dto/file/FileDTO";
-import { PackageListItemDTO } from "domain/types/dto/game/items/PackageIListItemDTO";
 import { S3Context } from "domain/types/file/S3Context";
-import { StorageServiceModel } from "domain/types/file/StorageServiceModel";
-import { OQContentStructure } from "domain/types/file/structures/OQContentStructure";
-import { PackageUploadResponse } from "domain/types/package/PackageUploadResponse";
-import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
-import { SelectOptions } from "domain/types/SelectOptions";
 import { UsageEntries } from "domain/types/usage/usage";
 import { type File } from "infrastructure/database/models/File";
-import { type Package } from "infrastructure/database/models/Package";
+import { type Package } from "infrastructure/database/models/package/Package";
 import { Permission } from "infrastructure/database/models/Permission";
 import { type User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { FileUsageRepository } from "infrastructure/database/repositories/FileUsageRepository";
-import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
 import { Logger } from "infrastructure/utils/Logger";
@@ -46,14 +31,12 @@ import { StorageUtils } from "infrastructure/utils/StorageUtils";
 import { TemplateUtils } from "infrastructure/utils/TemplateUtils";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
-export class S3StorageService implements StorageServiceModel {
+export class S3StorageService {
   private _client: S3Client;
 
   constructor(
     private readonly s3Context: S3Context,
-    private readonly contentStructureService: ContentStructureService,
     private readonly fileRepository: FileRepository,
-    private readonly packageRepository: PackageRepository,
     private readonly fileUsageRepository: FileUsageRepository,
     private readonly userRepository: UserRepository,
     private readonly dependencyService: DependencyService
@@ -88,6 +71,7 @@ export class S3StorageService implements StorageServiceModel {
           IfNoneMatch: "*",
         });
 
+        // Unhoistable means headers that cannot be ignored
         opts = {
           expiresIn: expiresInSeconds,
           unhoistableHeaders: new Set(["Content-MD5", "If-None-Match"]),
@@ -182,12 +166,12 @@ export class S3StorageService implements StorageServiceModel {
     return this.performFileUpload(filename, expiresIn);
   }
 
-  public async performBulkFilesUpload(
-    filesData: { files: FileDTO[]; user?: User; pack?: Package },
-    expiresIn: number
-  ): Promise<Record<string, string>> {
+  public async generatePresignedUrls(
+    files: FileDTO[],
+    expiresIn: number = UPLOAD_FILE_LINK_EXPIRES_IN
+  ) {
     const links: Record<string, string> = {};
-    for (const file of filesData.files) {
+    for (const file of files) {
       const filename = ValueUtils.getRawFilename(file.filename.toLowerCase());
 
       links[filename] = await this.generatePresignedUrl(
@@ -198,14 +182,6 @@ export class S3StorageService implements StorageServiceModel {
         filename
       );
     }
-
-    const files = (await this.fileRepository.bulkWriteFiles(filesData.files))
-      .generatedMaps as File[];
-
-    await this.fileUsageRepository.writeBulkUsage({
-      files,
-      pack: filesData.pack,
-    });
 
     return links;
   }
@@ -270,9 +246,7 @@ export class S3StorageService implements StorageServiceModel {
     const result = { removed: false };
 
     if (usedInPackages && !usedByUsers) {
-      const packages = usage.packages
-        .map((p) => p.content?.metadata?.title)
-        .join(", ");
+      const packages = usage.packages.map((p) => p.title).join(", ");
       throw new ClientError(ClientResponse.DELETE_FROM_PACKAGE, 400, {
         packages,
       });
@@ -307,93 +281,6 @@ export class S3StorageService implements StorageServiceModel {
       Key: filePath,
     });
     this._client.send(command);
-  }
-
-  public async getPackage(
-    packId: string | number
-  ): Promise<PackageListItemDTO> {
-    const id = ValueUtils.validateId(packId);
-    const pack = await this.packageRepository.get(id, {
-      select: PACKAGE_SELECT_FIELDS,
-      relations: ["author"],
-      relationSelects: { author: ["id", "username"] },
-    });
-    if (!pack) {
-      throw new ClientError(ClientResponse.PACKAGE_NOT_FOUND);
-    }
-    // TODO: This will be reworked after moving to better package model
-    return {
-      id: pack.id,
-      ageRestriction: AgeRestriction.NONE,
-      createdAt: pack?.created_at,
-      rounds: pack.content.rounds.length,
-      tags: pack.content.metadata.tags,
-      title: pack.title,
-      author: {
-        id: pack.author.id,
-        username: pack.author.username,
-      },
-    };
-  }
-
-  public async listPackages(
-    paginationOpts: PaginationOpts<Package>,
-    selectOptions: SelectOptions<Package>
-  ): Promise<PaginatedResult<PackageListItemDTO[]>> {
-    const paginatedList = await this.packageRepository.list(
-      paginationOpts,
-      selectOptions
-    );
-
-    const packageListItems = paginatedList.data.map(
-      (pack): PackageListItemDTO => {
-        return {
-          id: pack.id,
-          ageRestriction: AgeRestriction.NONE,
-          createdAt: pack.created_at,
-          rounds: pack.content.rounds.length,
-          tags: pack.content.metadata.tags,
-          title: pack.title,
-          author: {
-            id: pack.author.id,
-            username: pack.author.username,
-          },
-        };
-      }
-    );
-
-    return {
-      data: packageListItems,
-      pageInfo: { ...paginatedList.pageInfo },
-    };
-  }
-
-  public async uploadPackage(
-    req: Request,
-    content: OQContentStructure,
-    expiresIn: number = UPLOAD_PACKAGE_LINKS_EXPIRES_IN
-  ): Promise<PackageUploadResponse> {
-    const author = await this.userRepository.getUserByRequest(req, {
-      select: USER_SELECT_FIELDS,
-      relations: [],
-    });
-
-    if (!author || !author.id) {
-      throw new ClientError(ClientResponse.PACKAGE_AUTHOR_NOT_FOUND);
-    }
-
-    const pack = await this.packageRepository.create(content, author);
-
-    const links = await this.contentStructureService.getUploadLinksForFiles(
-      content,
-      this,
-      pack,
-      expiresIn
-    );
-    return {
-      id: pack.id,
-      uploadLinks: links,
-    };
   }
 
   private async _handleAvatarRemove(

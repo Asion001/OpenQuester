@@ -7,8 +7,10 @@ import { DIConfig } from "application/config/DIConfig";
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { type ApiContext } from "application/context/ApiContext";
 import { GameService } from "application/services/game/GameService";
+import { PackageService } from "application/services/package/PackageService";
 import { UserService } from "application/services/user/UserService";
 import { SESSION_SECRET_LENGTH } from "domain/constants/session";
+import { BaseError } from "domain/errors/BaseError";
 import { ServerError } from "domain/errors/ServerError";
 import { EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
@@ -17,6 +19,7 @@ import { FileRepository } from "infrastructure/database/repositories/FileReposit
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
+import { TemplateUtils } from "infrastructure/utils/TemplateUtils";
 import { SocketIOInitializer } from "presentation/controllers/io/SocketIOInitializer";
 import { MiddlewareController } from "presentation/controllers/middleware/MiddlewareController";
 import { AuthRestApiController } from "presentation/controllers/rest/AuthRestApiController";
@@ -84,7 +87,9 @@ export class ServeApi {
       this._app.use(errorMiddleware);
     } catch (err: unknown) {
       let message = "unknown error";
-      if (err instanceof Error) {
+      if (err instanceof BaseError) {
+        message = TemplateUtils.text(err.message, err.textArgs ?? {});
+      } else if (err instanceof Error) {
         message = err.message;
       }
       throw new ServerError(`Serve API error -> ${message}`);
@@ -113,6 +118,9 @@ export class ServeApi {
 
     // Services
     const userService = Container.get<UserService>(CONTAINER_TYPES.UserService);
+    const packageService = Container.get<PackageService>(
+      CONTAINER_TYPES.PackageService
+    );
     const storage = Container.get<S3StorageService>(
       CONTAINER_TYPES.S3StorageService
     );
@@ -137,13 +145,18 @@ export class ServeApi {
       fileRepository,
       storage
     );
-    new PackageRestApiController(app, storage);
+    new PackageRestApiController(app, packageService);
     new FileRestApiController(app, storage);
     new GameRestApiController(app, game);
     new SwaggerRestApiController(app);
 
     if (this._context.env.ENV === EnvType.DEV) {
-      new DevelopmentRestApiController(app, userRepository, this._context.env);
+      new DevelopmentRestApiController(
+        app,
+        userRepository,
+        this._context.env,
+        game
+      );
     }
 
     // Socket

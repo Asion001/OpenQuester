@@ -3,8 +3,8 @@ import { IncomingHttpHeaders } from "http";
 import { TranslateService as ts } from "application/services/text/TranslateService";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ServerResponse } from "domain/enums/ServerResponse";
+import { BaseError } from "domain/errors/BaseError";
 import { ClientError } from "domain/errors/ClientError";
-import { OQError } from "domain/errors/OQError";
 import { ServerError } from "domain/errors/ServerError";
 import { Language } from "domain/types/text/translation";
 import { Logger } from "infrastructure/utils/Logger";
@@ -31,7 +31,7 @@ export class ErrorController {
       };
     }
 
-    if (!(error instanceof OQError)) {
+    if (!(error instanceof BaseError)) {
       let message: string = "";
 
       if (error instanceof Error) {
@@ -64,7 +64,7 @@ export class ErrorController {
   }
 
   private static _formatError<T>(error: T, lang?: Language): T {
-    if (!(error instanceof OQError)) {
+    if (!(error instanceof BaseError)) {
       return error;
     }
     const args = error.textArgs;

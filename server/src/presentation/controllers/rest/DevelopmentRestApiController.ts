@@ -1,5 +1,13 @@
+import { GameService } from "application/services/game/GameService";
 import cookieSignature from "cookie-signature";
+import {
+  GAME_MAX_PLAYERS,
+  GAME_TITLE_MAX_CHARS,
+  GAME_TITLE_MIN_CHARS,
+} from "domain/constants/game";
 import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { AgeRestriction } from "domain/enums/game/AgeRestriction";
+import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { type Express } from "express";
 
 import { Environment } from "infrastructure/config/Environment";
@@ -10,7 +18,8 @@ export class DevelopmentRestApiController {
   constructor(
     private readonly app: Express,
     private readonly userRepository: UserRepository,
-    private readonly env: Environment
+    private readonly env: Environment,
+    private readonly gameService: GameService
   ) {
     const dummyUser = {
       username: "dev-user",
@@ -69,5 +78,78 @@ export class DevelopmentRestApiController {
         res.status(500).json({ error: "Login failed" });
       }
     });
+
+    this.app.get("/v1/dev/generate-games", async (req, res) => {
+      try {
+        // Ensure the user is authenticated
+        if (!req.session.userId) {
+          return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        // Parse count from query parameter, default to 50
+        const count = parseInt(req.query.count as string) || 50;
+
+        if (count < 1 || count > 1000) {
+          return res
+            .status(400)
+            .json({ error: "Count must be between 1 and 1000" });
+        }
+
+        const games = [];
+        for (let i = 0; i < count; i++) {
+          const gameData = this.generateRandomGameData();
+          const game = await this.gameService.create(req, gameData);
+          games.push(game);
+        }
+
+        res.json({ success: true, games });
+      } catch (error) {
+        Logger.error(`DEV: Generate games error: ${error}`);
+        res.status(500).json({ error: "Failed to generate games" });
+      }
+    });
+  }
+
+  /**
+   * Generates random game data conforming to the createGameScheme constraints.
+   * @returns {GameCreateDTO} Random game data object
+   */
+  private generateRandomGameData(): GameCreateDTO {
+    // Random title length between min and max
+    const titleLength =
+      Math.floor(
+        Math.random() * (GAME_TITLE_MAX_CHARS - GAME_TITLE_MIN_CHARS + 1)
+      ) + GAME_TITLE_MIN_CHARS;
+    const title = this.generateRandomString(titleLength);
+
+    const packageId = 29874;
+
+    const isPrivate = Math.random() < 0.5;
+
+    const ageRestrictions = Object.values(AgeRestriction);
+    const ageRestriction =
+      ageRestrictions[Math.floor(Math.random() * ageRestrictions.length)];
+
+    const maxPlayers = Math.floor(Math.random() * GAME_MAX_PLAYERS) + 1;
+
+    return {
+      title,
+      packageId,
+      isPrivate,
+      ageRestriction,
+      maxPlayers,
+    };
+  }
+
+  private generateRandomString(length: number): string {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
   }
 }

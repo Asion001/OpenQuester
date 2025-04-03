@@ -54,6 +54,7 @@ export class TranslateService {
       if (fs.existsSync(filePath)) {
         const translation = JSON.parse(fs.readFileSync(filePath, "utf8"));
         this._translationsMap.set(language, translation);
+        Logger.gray(`Translation loading for '${language}' is completed`);
         return translation;
       }
     } catch (error) {

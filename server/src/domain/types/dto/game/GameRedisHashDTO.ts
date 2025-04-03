@@ -10,4 +10,6 @@ export interface GameRedisHashDTO {
   maxPlayers: string;
   startedAt: string; // Empty string if null
   package: string;
+  roundsCount: number;
+  questionsCount: number;
 }

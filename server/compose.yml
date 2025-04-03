@@ -3,6 +3,7 @@
 services:
   postgres:
     image: postgres:16.3-alpine
+    restart: unless-stopped
     container_name: postgres
     env_file: ./.env.pg
     ports:
@@ -14,6 +15,7 @@ services:
   # Url: http://localhost:5050/
   pgadmin:
     image: dpage/pgadmin4
+    restart: unless-stopped
     container_name: pgadmin
     env_file: ./.env.pg.admin
     ports:
@@ -24,6 +26,7 @@ services:
   # Url: http://localhost:9000/ and console on http://localhost:9001/
   minio:
     image: quay.io/minio/minio
+    restart: unless-stopped
     container_name: minio
     ports:
       - "9000:9000"
@@ -40,6 +43,7 @@ services:
   # sudo chown -R 1001:1001 ./data/redis && sudo chmod -R 775 ./data/redis
   oq-redis:
     container_name: oq-redis
+    restart: unless-stopped
     image: bitnami/redis
     ports:
       - "127.0.0.1:6380:6379"
