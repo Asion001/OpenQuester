@@ -21,36 +21,30 @@ dependencies:
   logger: ^2.5.0
   flutter_native_splash: ^2.4.4
   dio: ^5.8.0+1
-  file_picker: ^9.0.2
+  file_picker: ^10.0.0
   siq_file:
     path: ./packages/siq_file/
   injectable: ^2.5.0
   get_it: ^8.0.3
-  watch_it: ^1.6.4
-  shared_preferences: ^2.5.2
+  watch_it: ^1.6.5
+  shared_preferences: ^2.5.3
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   universal_io: ^2.2.2
-  socket_io_client: ^3.0.2
+  socket_io_client: ^3.1.1
   easy_localization: ^3.0.7+1
   infinite_scroll_pagination: ^5.0.0
   nb_utils: ^7.1.2
-  dio_cache_interceptor: ^3.5.1
+  dio_cache_interceptor: ^4.0.2
   requests_inspector: ^4.2.1
-  oauth2_client: ^3.3.0
+  oauth2_client: ^4.1.0
   dio_cookie_manager: ^3.2.0
   path_provider: ^2.1.5
   cookie_jar: ^4.0.8
-  flutter_web_auth_2: ^4.1.0
+  flutter_web_auth_2: ^5.0.0-alpha.1
   universal_web: ^1.1.0+2
   cross_file: ^0.3.4+2
-  squadron: ^6.2.0
-
-dependency_overrides:
-  flutter_secure_storage: ^10.0.0-beta.4
-  oauth2_client:
-    git:
-      url: https://github.com/ThexXTURBOXx/oauth2_client.git
+  squadron: ^7.1.1
 
 dev_dependencies:
   flutter_test:
@@ -68,7 +62,7 @@ dev_dependencies:
   test: ^1.25.15
   flutter_gen_runner: ^5.10.0
   very_good_analysis: ^7.0.0
-  squadron_builder: ^6.2.0
+  squadron_builder: ^7.1.0
 
 flutter:
   uses-material-design: true

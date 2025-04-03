@@ -65,19 +65,18 @@ jobs:
           #TODO: body_path: misc/release/notes.tmpl
           files: |
             *.apk
-
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@1
+      # Deploy to Cloudflare Pages with production environment when not on main branch.
+      - name: Publish to Cloudflare Pages (Production)
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: openquester
-          directory: web/
-          branch: main
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy web/ --project-name=openquester
 
       - name: Purge Cloudflare cache
-        uses: jakejarvis/cloudflare-purge-action@master
-        env:
-          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
-          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data "{  \"purge_everything\": true }"
