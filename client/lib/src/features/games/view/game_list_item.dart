@@ -4,50 +4,70 @@ import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
 class GameListItemWidget extends StatelessWidget {
-  const GameListItemWidget({required this.item, super.key});
+  const GameListItemWidget({
+    required this.item,
+    required this.onTap,
+    super.key,
+    this.expanded = false,
+  });
   final GameListItem item;
+  final VoidCallback? onTap;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      borderRadius: BorderRadius.circular(16),
-      child: Card(
-        child: Row(
-          children: [
-            _GameListItemBadges(item),
-            ListTile(
-              title: Tooltip(
-                message: LocaleKeys.game_tile_tooltips_game_title.tr(),
-                child: Text(
-                  item.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              ).shrink(),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Tooltip(
-                    message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
-                    child: Text(
-                      item.package.title,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Text(_packInfo(), overflow: TextOverflow.ellipsis),
-                  Text(_gameInfo(), overflow: TextOverflow.ellipsis),
-                ],
-              ).paddingTop(4).shrink(),
-              trailing: const Icon(Icons.play_arrow),
-              titleAlignment: ListTileTitleAlignment.bottom,
-              contentPadding: const EdgeInsets.only(right: 16, left: 4),
-              mouseCursor: MouseCursor.defer,
-            ).expand(),
-          ],
-        ).paddingSymmetric(horizontal: 2),
+    return Hero(
+      tag: item,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(16),
+          child: Card(
+            child: Column(
+              mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    _GameListItemBadges(item),
+                    ListTile(
+                      title: Tooltip(
+                        message: LocaleKeys.game_tile_tooltips_game_title.tr(),
+                        child: Text(
+                          item.title,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ).shrink(),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Tooltip(
+                            message: LocaleKeys
+                                .game_tile_tooltips_packages_title
+                                .tr(),
+                            child: Text(
+                              item.package.title,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Text(_packInfo(), overflow: TextOverflow.ellipsis),
+                          Text(_gameInfo(), overflow: TextOverflow.ellipsis),
+                        ],
+                      ).paddingTop(4).shrink(),
+                      trailing: const Icon(Icons.play_arrow),
+                      titleAlignment: ListTileTitleAlignment.bottom,
+                      contentPadding: const EdgeInsets.only(right: 16, left: 4),
+                      mouseCursor: MouseCursor.defer,
+                    ).expand(),
+                  ],
+                ).paddingSymmetric(horizontal: 2),
+              ],
+            ),
+          ),
+        ).paddingSymmetric(horizontal: 6),
       ),
-    ).paddingSymmetric(horizontal: 6);
+    );
   }
 
   String _packInfo() {

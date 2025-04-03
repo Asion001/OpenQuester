@@ -22,6 +22,7 @@ jobs:
               - 'server/**'
             client:
               - 'client/**'
+              - 'openapi/**'
       - name: Check if we should force jobs to run
         id: should_force
         run: echo "should_force=${{ github.event_name == 'workflow_dispatch' || github.workflow == 'Release'}}" >> "$GITHUB_OUTPUT"
@@ -53,6 +54,7 @@ jobs:
         working-directory: ./client
     env:
       DONT_USE_PURO: true
+    environment: "${{ github.event_name == 'workflow_call' && 'openquester (Production)' || 'openquester (Preview)' }}"
     steps:
       - uses: actions/checkout@v4
       - name: Setup Flutter SDK
