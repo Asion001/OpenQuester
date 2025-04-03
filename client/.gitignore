@@ -47,7 +47,7 @@ app.*.map.json
 /android/app/.cxx
 
 # Generated environment file
-/lib/src/application/env.g.dart
+/lib/src/core/env.g.dart
 
 # FVM Version Cache
 .fvm/
