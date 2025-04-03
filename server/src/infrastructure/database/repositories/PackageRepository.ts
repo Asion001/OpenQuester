@@ -1,10 +1,17 @@
 import { In, Repository } from "typeorm";
 
+import {
+  PACKAGE_SELECT_FIELDS,
+  PACKAGE_SELECT_RELATIONS,
+} from "domain/constants/package";
 import { FileSource } from "domain/enums/file/FileSource";
 import { FileDTO } from "domain/types/dto/file/FileDTO";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
+import {
+  PaginationOpts,
+  PaginationOrder,
+} from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
 import { Database } from "infrastructure/database/Database";
 import { File } from "infrastructure/database/models/File";
@@ -18,8 +25,6 @@ import { PackageRound } from "infrastructure/database/models/package/PackageRoun
 import { PackageTag } from "infrastructure/database/models/package/PackageTag";
 import { PackageTheme } from "infrastructure/database/models/package/PackageTheme";
 import { User } from "infrastructure/database/models/User";
-import { PaginatedResults } from "infrastructure/database/pagination/PaginatedResults";
-import { QueryBuilder } from "infrastructure/database/QueryBuilder";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { PackageTagRepository } from "infrastructure/database/repositories/TagRepository";
 import { StorageUtils } from "infrastructure/utils/StorageUtils";
@@ -34,38 +39,41 @@ export class PackageRepository {
     //
   }
 
-  public async get(id: number, selectOptions: SelectOptions<Package>) {
-    const qb = await QueryBuilder.buildFindQuery<Package>(
-      this.repository,
-      { id },
-      selectOptions
-    );
-
-    return qb.getOne();
+  public async get(
+    id: number,
+    select: (keyof Package)[] = PACKAGE_SELECT_FIELDS,
+    relations: string[]
+  ) {
+    return this.repository.findOne({
+      where: { id },
+      select,
+      relations,
+    });
   }
 
   public async list(
-    paginationOpts: PaginationOpts<Package>,
-    selectOptions: SelectOptions<Package>
+    paginationOpts: PaginationOpts<Package>
   ): Promise<PaginatedResult<Package[]>> {
-    const alias = this.repository.metadata.name.toLowerCase();
+    const {
+      order = PaginationOrder.ASC,
+      sortBy = "created_at",
+      offset,
+      limit,
+    } = paginationOpts;
 
-    let qb = this.repository
-      .createQueryBuilder(alias)
-      .select(selectOptions.select.map((field) => `${alias}.${field}`));
+    const [data, total] = await this.repository.findAndCount({
+      relations: PACKAGE_SELECT_RELATIONS,
+      select: PACKAGE_SELECT_FIELDS,
+      order: { [sortBy]: order.toUpperCase() },
+      skip: offset,
+      take: limit,
+    });
 
-    qb = await QueryBuilder.buildRelationsSelect(
-      qb,
-      selectOptions.relations,
-      selectOptions.relationSelects
-    );
-
-    return PaginatedResults.paginateEntityAndSelect<Package>(
-      qb,
-      paginationOpts
-    );
+    return {
+      data,
+      pageInfo: { total },
+    };
   }
-
   public findByIds(
     ids: number[],
     selectOptions: SelectOptions<Package>
@@ -74,6 +82,32 @@ export class PackageRepository {
       where: { id: In(ids) },
       relations: selectOptions.relations,
     });
+  }
+
+  public async getCountsForPackage(
+    packageId: number
+  ): Promise<{ roundsCount: number; questionsCount: number }> {
+    const result = await this.repository
+      .createQueryBuilder("package")
+      .select("COUNT(DISTINCT round.id)", "roundCount")
+      .addSelect("COUNT(question.id)", "questionCount")
+      .leftJoin("package.rounds", "round")
+      .leftJoin("round.themes", "theme")
+      .leftJoin("theme.questions", "question")
+      .where("package.id = :packageId", { packageId })
+      .getRawOne();
+
+    if (!result) {
+      return {
+        roundsCount: 0,
+        questionsCount: 0,
+      };
+    }
+
+    return {
+      roundsCount: Number(result.roundCount),
+      questionsCount: Number(result.questionCount),
+    };
   }
 
   // TODO: Implement better errors handling
@@ -296,10 +330,11 @@ export class PackageRepository {
                 files.push(file.toDTO());
               }
 
+              const type = answerData.file?.type;
               answer.import({
                 question: question,
                 text: answerData.text,
-                file: file,
+                fileData: file && type ? { file, type } : null,
               });
 
               answersToSave.push(answer);

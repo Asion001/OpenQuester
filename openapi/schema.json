@@ -128,7 +128,7 @@
         "summary": "Get upload links for every file in `content.json`",
         "tags": ["Packages"],
         "requestBody": {
-          "description": "Data from `content.json` file",
+          "description": "Data for package creation",
           "required": true,
           "content": {
             "application/json": {
@@ -150,11 +150,11 @@
             }
           },
           "400": {
-            "description": "Content is empty!",
+            "description": "Package is corrupted!",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmptyContentResponse"
+                  "$ref": "#/components/schemas/PackageCorruptedResponse"
                 }
               }
             }
@@ -242,7 +242,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PackageItem"
+                  "$ref": "#/components/schemas/PackageResponse"
                 }
               }
             }
@@ -609,6 +609,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ResponseUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscordAuthFailedResponse"
                 }
               }
             }
@@ -984,6 +994,10 @@
             "enum": ["A18", "A16", "A12", "NONE"],
             "examples": ["A18"]
           },
+          "isPrivate": {
+            "type": "boolean",
+            "examples": [false]
+          },
           "currentRound": {
             "type": "integer",
             "examples": [0]
@@ -1035,28 +1049,6 @@
           }
         }
       },
-      "Player": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "integer",
-            "examples": [1]
-          },
-          "score": {
-            "type": "integer",
-            "examples": [100]
-          },
-          "role": {
-            "type": "string",
-            "enum": ["player", "showman", "spectator"],
-            "examples": ["player"]
-          },
-          "connected": {
-            "type": "boolean",
-            "examples": [true]
-          }
-        }
-      },
       "ShortUserInfo": {
         "type": "object",
         "properties": {
@@ -1070,6 +1062,22 @@
           }
         }
       },
+      "PackageTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [15]
+          },
+          "tag": {
+            "type": "string",
+            "description": "A single tag for the package",
+            "examples": ["anime"]
+          }
+        },
+        "required": ["tag"],
+        "description": "Individual tag object"
+      },
       "GameEvent": {
         "type": "string",
         "enum": ["created", "changed", "deleted", "started"],
@@ -1081,10 +1089,74 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PackageItem"
+              "$ref": "#/components/schemas/PackageResponse"
             }
           },
           "pageInfo": { "$ref": "#/components/schemas/PageInfo" }
+        }
+      },
+      "PackageResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [1]
+          },
+          "title": {
+            "type": "string",
+            "examples": ["Package Title"]
+          },
+          "description": {
+            "type": "string",
+            "examples": [
+              "Package description, should be longer than title, probably"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2024-01-01T00:00:00Z"]
+          },
+          "author": {
+            "$ref": "#/components/schemas/ShortUserInfo"
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestriction",
+            "description": "Package age restriction"
+          },
+          "language": {
+            "type": "string",
+            "examples": ["en"]
+          },
+          "logo": {
+            "$ref": "#/components/schemas/PackageLogoFileItem",
+            "description": "Logo file for the package"
+          },
+          "rounds": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PackageRound" },
+            "description": "Rounds in the package"
+          },
+          "tags": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/PackageTag"
+            },
+            "description": "Tags for the package. Can be null or an array of tag objects",
+            "examples": [
+              [
+                { "id": 18, "tag": "anime" },
+                { "id": 19, "tag": "movie" },
+                { "id": 20, "tag": "general" },
+                { "id": 21, "tag": "games" }
+              ],
+              [
+                { "id": 22, "tag": "trivia" },
+                { "id": 23, "tag": "fun" }
+              ],
+              null
+            ]
+          }
         }
       },
       "PackageItem": {
@@ -1098,28 +1170,45 @@
             "type": "string",
             "examples": ["Package Title"]
           },
-          "ageRestriction": {
+          "description": {
             "type": "string",
-            "enum": ["A18", "A16", "A12", "NONE"],
-            "examples": ["A18"]
+            "examples": [
+              "Package description, should be longer than title, probably"
+            ]
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
             "examples": ["2024-01-01T00:00:00Z"]
           },
-          "rounds": {
+          "author": {
+            "$ref": "#/components/schemas/ShortUserInfo"
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestriction",
+            "description": "Package age restriction"
+          },
+          "language": {
+            "type": "string",
+            "examples": ["en"]
+          },
+          "logo": {
+            "$ref": "#/components/schemas/PackageLogoFileItem",
+            "description": "Logo file for the package"
+          },
+          "roundsCount": {
             "type": "integer",
             "examples": [5]
           },
-          "author": {
-            "$ref": "#/components/schemas/ShortUserInfo"
+          "questionsCount": {
+            "type": "integer",
+            "examples": [183]
           },
           "tags": {
             "type": "array",
             "items": {
               "type": "string",
-              "examples": ["Anime"]
+              "examples": ["Anime", "General"]
             }
           }
         }
@@ -1250,12 +1339,12 @@
           }
         }
       },
-      "EmptyContentResponse": {
+      "PackageCorruptedResponse": {
         "type": "object",
         "properties": {
           "error": {
             "type": "string",
-            "examples": ["Content is empty!"]
+            "examples": ["Package is corrupted!"]
           }
         }
       },
@@ -1341,7 +1430,7 @@
         "examples": ["A18"]
       },
       "PackageFileType": {
-        "type": "string",
+        "type": ["string", "null"],
         "enum": ["video", "audio", "image"],
         "description": "Type of media file for package-related files"
       },
@@ -1367,14 +1456,35 @@
             "examples": ["d41d8cd98f00b204e9800998ecf8427e"]
           },
           "type": {
-            "type": "string",
-            "description": "Media type of the file",
-            "enum": ["video", "audio", "image"],
-            "examples": ["image"]
+            "$ref": "#/components/schemas/PackageFileType"
           }
         },
         "required": ["md5", "type"],
         "description": "Basic file metadata for upload, used in place of full File model for input"
+      },
+      "FileItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [727]
+          },
+          "md5": {
+            "type": "string",
+            "description": "MD5 hash of the file",
+            "examples": ["d41d8cd98f00b204e9800998ecf8427e"]
+          },
+          "type": {
+            "$ref": "#/components/schemas/PackageFileType"
+          },
+          "link": {
+            "type": "string",
+            "description": "GET link for file",
+            "examples": ["https://example.com/file123"]
+          }
+        },
+        "required": ["md5"],
+        "description": "Basic file metadata"
       },
       "PackageLogoFileInput": {
         "type": ["object", "null"],
@@ -1386,11 +1496,25 @@
         "required": ["file"],
         "description": "Logo file structure for package creation. Only images acceptable"
       },
-      "PackageQuestionFileInput": {
-        "type": "object",
+      "PackageLogoFileItem": {
+        "type": ["object", "null"],
         "properties": {
           "file": {
-            "$ref": "#/components/schemas/FileInput"
+            "$ref": "#/components/schemas/FileItem"
+          }
+        },
+        "required": ["file"],
+        "description": "Logo file structure for package creation. Only images acceptable"
+      },
+      "PackageQuestionFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [69]
+          },
+          "file": {
+            "$ref": "#/components/schemas/FileItem"
           },
           "displayTime": {
             "type": "integer",
@@ -1402,11 +1526,15 @@
         "required": ["file", "displayTime"],
         "description": "Question media file structure for package creation"
       },
-      "PackageAnswerFileInput": {
+      "PackageAnswerFile": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [1337]
+          },
           "file": {
-            "$ref": "#/components/schemas/FileInput"
+            "$ref": "#/components/schemas/FileItem"
           },
           "displayTime": {
             "type": "integer",
@@ -1418,9 +1546,13 @@
         "required": ["file", "displayTime"],
         "description": "Answer media file structure for package creation"
       },
-      "PackageQuestionInput": {
+      "PackageQuestion": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [187]
+          },
           "price": {
             "type": "integer",
             "description": "Point value of the question",
@@ -1464,22 +1596,26 @@
           "questionFiles": {
             "type": ["array", "null"],
             "items": {
-              "$ref": "#/components/schemas/PackageQuestionFileInput"
+              "$ref": "#/components/schemas/PackageQuestionFile"
             },
             "description": "Media files for the question",
             "examples": [
               {
+                "id": 727,
                 "file": {
                   "md5": "b11d8c12300b204as800998ecf84266",
                   "type": "image"
                 },
+                "link": "https://example.com/file123",
                 "displayTime": 3000
               },
               {
+                "id": 999,
                 "file": {
                   "md5": "c90d8c12300b204as182904ecf84266",
                   "type": "image"
                 },
+                "link": "https://example.com/file546",
                 "displayTime": 3000
               }
             ]
@@ -1487,15 +1623,17 @@
           "answerFiles": {
             "type": ["array", "null"],
             "items": {
-              "$ref": "#/components/schemas/PackageAnswerFileInput"
+              "$ref": "#/components/schemas/PackageAnswerFile"
             },
             "description": "Media files for the answer",
             "examples": [
               {
+                "id": 1001,
                 "file": {
                   "md5": "b12d8c12300b204as800998ecf84266",
                   "type": "image"
                 },
+                "link": "https://example.com/file1001",
                 "displayTime": 5000
               }
             ]
@@ -1504,9 +1642,9 @@
         "required": ["price", "type"],
         "description": "Base properties for all question types"
       },
-      "ChoiceQuestionInput": {
+      "ChoiceQuestion": {
         "allOf": [
-          { "$ref": "#/components/schemas/PackageQuestionInput" },
+          { "$ref": "#/components/schemas/PackageQuestion" },
           {
             "type": "object",
             "properties": {
@@ -1522,13 +1660,17 @@
                 "items": {
                   "type": "object",
                   "properties": {
+                    "id": {
+                      "type": "integer",
+                      "examples": [99]
+                    },
                     "text": {
                       "type": ["string", "null"],
                       "description": "Text of the answer option"
                     },
                     "file": {
                       "oneOf": [
-                        { "$ref": "#/components/schemas/FileInput" },
+                        { "$ref": "#/components/schemas/FileItem" },
                         { "type": "null" }
                       ],
                       "description": "File associated with the answer option"
@@ -1551,8 +1693,10 @@
                     {
                       "text": "Option 3 with image",
                       "file": {
+                        "id": 227,
                         "md5": "f99d8c12300b204as800998ecf90777",
-                        "type": "image"
+                        "type": "image",
+                        "link": "https://example.com/file123"
                       }
                     },
                     {
@@ -1568,9 +1712,9 @@
           }
         ]
       },
-      "SecretQuestionInput": {
+      "SecretQuestion": {
         "allOf": [
-          { "$ref": "#/components/schemas/PackageQuestionInput" },
+          { "$ref": "#/components/schemas/PackageQuestion" },
           {
             "type": "object",
             "properties": {
@@ -1607,9 +1751,9 @@
           }
         ]
       },
-      "NoRiskQuestionInput": {
+      "NoRiskQuestion": {
         "allOf": [
-          { "$ref": "#/components/schemas/PackageQuestionInput" },
+          { "$ref": "#/components/schemas/PackageQuestion" },
           {
             "type": "object",
             "properties": {
@@ -1632,9 +1776,9 @@
           }
         ]
       },
-      "SimpleQuestionInput": {
+      "SimpleQuestion": {
         "allOf": [
-          { "$ref": "#/components/schemas/PackageQuestionInput" },
+          { "$ref": "#/components/schemas/PackageQuestion" },
           {
             "type": "object",
             "properties": {
@@ -1644,9 +1788,9 @@
           }
         ]
       },
-      "StakeQuestionInput": {
+      "StakeQuestion": {
         "allOf": [
-          { "$ref": "#/components/schemas/PackageQuestionInput" },
+          { "$ref": "#/components/schemas/PackageQuestion" },
           {
             "type": "object",
             "properties": {
@@ -1668,9 +1812,9 @@
           }
         ]
       },
-      "HiddenQuestionInput": {
+      "HiddenQuestion": {
         "allOf": [
-          { "$ref": "#/components/schemas/PackageQuestionInput" },
+          { "$ref": "#/components/schemas/PackageQuestion" },
           {
             "type": "object",
             "properties": {
@@ -1681,31 +1825,35 @@
           }
         ]
       },
-      "PackageQuestionInputUnion": {
+      "PackageQuestionUnion": {
         "oneOf": [
-          { "$ref": "#/components/schemas/SimpleQuestionInput" },
-          { "$ref": "#/components/schemas/StakeQuestionInput" },
-          { "$ref": "#/components/schemas/SecretQuestionInput" },
-          { "$ref": "#/components/schemas/NoRiskQuestionInput" },
-          { "$ref": "#/components/schemas/ChoiceQuestionInput" },
-          { "$ref": "#/components/schemas/HiddenQuestionInput" }
+          { "$ref": "#/components/schemas/SimpleQuestion" },
+          { "$ref": "#/components/schemas/StakeQuestion" },
+          { "$ref": "#/components/schemas/SecretQuestion" },
+          { "$ref": "#/components/schemas/NoRiskQuestion" },
+          { "$ref": "#/components/schemas/ChoiceQuestion" },
+          { "$ref": "#/components/schemas/HiddenQuestion" }
         ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
-            "simple": "#/components/schemas/SimpleQuestionInput",
-            "stake": "#/components/schemas/StakeQuestionInput",
-            "secret": "#/components/schemas/SecretQuestionInput",
-            "noRisk": "#/components/schemas/NoRiskQuestionInput",
-            "choice": "#/components/schemas/ChoiceQuestionInput",
-            "hidden": "#/components/schemas/HiddenQuestionInput"
+            "simple": "#/components/schemas/SimpleQuestion",
+            "stake": "#/components/schemas/StakeQuestion",
+            "secret": "#/components/schemas/SecretQuestion",
+            "noRisk": "#/components/schemas/NoRiskQuestion",
+            "choice": "#/components/schemas/ChoiceQuestion",
+            "hidden": "#/components/schemas/HiddenQuestion"
           }
         },
-        "description": "Polymorphic question input union for all question types"
+        "description": "Polymorphic question union for all question types"
       },
-      "PackageThemeInput": {
+      "PackageTheme": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [92]
+          },
           "name": {
             "type": "string",
             "description": "Name of the theme",
@@ -1721,17 +1869,21 @@
           "questions": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PackageQuestionInputUnion"
+              "$ref": "#/components/schemas/PackageQuestionUnion"
             },
             "description": "Questions in the theme"
           }
         },
         "required": ["name", "questions"],
-        "description": "Theme structure for package creation"
+        "description": "Theme structure for package"
       },
-      "PackageRoundInput": {
+      "PackageRound": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [17]
+          },
           "name": {
             "type": "string",
             "description": "Name of the round",
@@ -1744,12 +1896,12 @@
           },
           "themes": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/PackageThemeInput" },
+            "items": { "$ref": "#/components/schemas/PackageTheme" },
             "description": "Themes in the round"
           }
         },
         "required": ["name", "themes"],
-        "description": "Round structure for package creation"
+        "description": "Round structure for package"
       },
       "PackageCreateInputData": {
         "type": "object",
@@ -1780,32 +1932,26 @@
           "tags": {
             "type": ["array", "null"],
             "items": {
-              "type": "object",
-              "properties": {
-                "tag": {
-                  "type": "string",
-                  "description": "A single tag for the package",
-                  "examples": ["anime"]
-                }
-              },
-              "required": ["tag"],
-              "description": "Individual tag object"
+              "$ref": "#/components/schemas/PackageTag"
             },
             "description": "Tags for the package. Can be null or an array of tag objects",
             "examples": [
               [
-                { "tag": "anime" },
-                { "tag": "movie" },
-                { "tag": "general" },
-                { "tag": "games" }
+                { "id": 18, "tag": "anime" },
+                { "id": 19, "tag": "movie" },
+                { "id": 20, "tag": "general" },
+                { "id": 21, "tag": "games" }
               ],
-              [{ "tag": "trivia" }, { "tag": "fun" }],
+              [
+                { "id": 22, "tag": "trivia" },
+                { "id": 23, "tag": "fun" }
+              ],
               null
             ]
           },
           "rounds": {
             "type": "array",
-            "items": { "$ref": "#/components/schemas/PackageRoundInput" },
+            "items": { "$ref": "#/components/schemas/PackageRound" },
             "description": "Rounds in the package"
           }
         },

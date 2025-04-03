@@ -36,14 +36,12 @@ export class DIConfig {
   }
 
   public async initialize() {
-    // Infrastructure
     Container.register(CONTAINER_TYPES.Database, this.db, "repository");
     Container.register(CONTAINER_TYPES.Redis, this.redisClient, "repository");
     Container.register(CONTAINER_TYPES.IO, this.io, "repository");
 
     const db = Container.get<Database>(CONTAINER_TYPES.Database);
 
-    // Repositories
     Container.register(
       CONTAINER_TYPES.FileUsageRepository,
       new FileUsageRepository(db.getRepository(FileUsage)),
@@ -85,44 +83,6 @@ export class DIConfig {
     );
 
     Container.register(
-      CONTAINER_TYPES.GameRepository,
-      new GameRepository(
-        Container.get<Redis>(CONTAINER_TYPES.Redis),
-        new GameIndexManager(Container.get(CONTAINER_TYPES.Redis)),
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
-        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository)
-      ),
-      "repository"
-    );
-
-    Container.register(
-      CONTAINER_TYPES.PermissionRepository,
-      new PermissionRepository(db.getRepository(Permission)),
-      "repository"
-    );
-
-    // Services
-
-    Container.register(
-      CONTAINER_TYPES.GameService,
-      new GameService(
-        Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
-        Container.get<IOServer>(CONTAINER_TYPES.IO),
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository)
-      ),
-      "service"
-    );
-
-    Container.register(
-      CONTAINER_TYPES.UserService,
-      new UserService(
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
-        Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository)
-      ),
-      "service"
-    );
-
-    Container.register(
       CONTAINER_TYPES.DependencyService,
       new DependencyService(
         Container.get<FileRepository>(CONTAINER_TYPES.FileRepository),
@@ -139,6 +99,43 @@ export class DIConfig {
         Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository),
         Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
         Container.get<DependencyService>(CONTAINER_TYPES.DependencyService)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.GameRepository,
+      new GameRepository(
+        Container.get<Redis>(CONTAINER_TYPES.Redis),
+        new GameIndexManager(Container.get(CONTAINER_TYPES.Redis)),
+        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
+        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
+        Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
+      ),
+      "repository"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.PermissionRepository,
+      new PermissionRepository(db.getRepository(Permission)),
+      "repository"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.GameService,
+      new GameService(
+        Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
+        Container.get<IOServer>(CONTAINER_TYPES.IO),
+        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.UserService,
+      new UserService(
+        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
+        Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository)
       ),
       "service"
     );

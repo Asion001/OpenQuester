@@ -6,10 +6,10 @@ import { User } from "infrastructure/database/models/User";
 export interface PackageImport {
   title: string;
   createdAt: Date;
-  language: string | null;
-  description: string;
+  language?: string | null;
+  description?: string | null;
   ageRestriction: AgeRestriction;
   author: User;
-  logo: File | null;
+  logo?: File | null;
   tags: PackageTag[];
 }

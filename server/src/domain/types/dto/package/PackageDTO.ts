@@ -6,12 +6,12 @@ import { User } from "infrastructure/database/models/User";
 
 export interface PackageDTO {
   title: string;
-  description: string;
+  description?: string | null;
   createdAt: Date;
   author: User;
   ageRestriction: AgeRestriction;
-  language: string | null;
-  logo: { file: PackageFileDTO } | null;
+  language?: string | null;
+  logo?: { file: PackageFileDTO } | null;
   rounds: PackageRoundDTO[];
   tags: PackageTagDTO[];
 }

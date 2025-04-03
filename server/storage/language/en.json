@@ -22,6 +22,7 @@
   "wrong_content": "Wrong 'content' argument type, it should be a valid JSON object!",
   "empty_content": "Content is empty!",
   "package_not_found": "Package not found",
+  "package_corrupted": "Package %id is corrupted - No %missing",
   "cannot_save_content": "Cannot save content to the Database, probably it is incorrect or empty",
   "package_failed_to_upload": "Package is failed to upload: %error",
   "package_author_not_found": "User that upload package not found, upload aborted",

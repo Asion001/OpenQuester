@@ -1,7 +1,6 @@
 import { Router, type Express, type Request, type Response } from "express";
 
 import { PackageService } from "application/services/package/PackageService";
-import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
@@ -62,11 +61,7 @@ export class PackageRestApiController {
       possibleSortByFields: ["id", "title", "created_at", "author"],
     }).validate();
 
-    const data = await this.packageService.listPackages(paginationOpts, {
-      select: PACKAGE_SELECT_FIELDS,
-      relations: ["author"],
-      relationSelects: { author: ["id", "username"] },
-    });
+    const data = await this.packageService.listPackages(paginationOpts);
 
     return res.status(HttpStatus.OK).send(data);
   };

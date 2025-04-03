@@ -71,6 +71,7 @@ export class S3StorageService {
           IfNoneMatch: "*",
         });
 
+        // Unhoistable means headers that cannot be ignored
         opts = {
           expiresIn: expiresInSeconds,
           unhoistableHeaders: new Set(["Content-MD5", "If-None-Match"]),

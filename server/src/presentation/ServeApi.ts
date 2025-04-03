@@ -10,7 +10,7 @@ import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
 import { UserService } from "application/services/user/UserService";
 import { SESSION_SECRET_LENGTH } from "domain/constants/session";
-import { BaseError } from "domain/errors/OQError";
+import { BaseError } from "domain/errors/BaseError";
 import { ServerError } from "domain/errors/ServerError";
 import { EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
@@ -151,7 +151,12 @@ export class ServeApi {
     new SwaggerRestApiController(app);
 
     if (this._context.env.ENV === EnvType.DEV) {
-      new DevelopmentRestApiController(app, userRepository, this._context.env);
+      new DevelopmentRestApiController(
+        app,
+        userRepository,
+        this._context.env,
+        game
+      );
     }
 
     // Socket

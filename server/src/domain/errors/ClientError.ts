@@ -1,4 +1,4 @@
-import { BaseError } from "domain/errors/OQError";
+import { BaseError } from "domain/errors/BaseError";
 
 export class ClientError extends BaseError {
   constructor(

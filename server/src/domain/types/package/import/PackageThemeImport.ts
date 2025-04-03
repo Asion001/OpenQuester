@@ -2,6 +2,6 @@ import { PackageRound } from "infrastructure/database/models/package/PackageRoun
 
 export interface PackageThemeImport {
   name: string;
-  description: string | null;
+  description?: string | null;
   round: PackageRound;
 }

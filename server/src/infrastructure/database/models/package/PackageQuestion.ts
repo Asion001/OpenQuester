@@ -8,12 +8,15 @@ import {
 } from "typeorm";
 
 import { PackageQuestionType } from "domain/enums/package/QuestionType";
+import { PackageQuestionSubType } from "domain/types/dto/package/PackageQuestionDTO";
+import { PackageQuestionResponseDTO } from "domain/types/dto/package/response/PackageQuestionResponseDTO";
 import { PackageQuestionImport } from "domain/types/package/import/PackageQuestionImport";
 import { PackageQuestionTransferType } from "domain/types/package/PackageQuestionTransferType";
 import { PackageAnswerFile } from "infrastructure/database/models/package/PackageAnswerFile";
 import { PackageQuestionChoiceAnswer } from "infrastructure/database/models/package/PackageQuestionChoiceAnswer";
 import { PackageQuestionFile } from "infrastructure/database/models/package/PackageQuestionFile";
 import { PackageTheme } from "infrastructure/database/models/package/PackageTheme";
+import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 
 @Entity("package_question")
 export class PackageQuestion {
@@ -66,7 +69,7 @@ export class PackageQuestion {
   answerFiles?: PackageAnswerFile[] | null;
 
   @Column({ type: "varchar", nullable: true })
-  sub_type?: string | null;
+  sub_type?: PackageQuestionSubType | null;
 
   @Column({ type: "int", nullable: true })
   max_price?: number | null;
@@ -105,5 +108,47 @@ export class PackageQuestion {
     this.transfer_type = data.transferType;
     this.price_multiplier = data.priceMultiplier;
     this.showDelay = data.showDelay;
+  }
+
+  public async toDTO(
+    storage: S3StorageService
+  ): Promise<PackageQuestionResponseDTO> {
+    const questionFilesDTO =
+      this.questionFiles && this.questionFiles.length > 0
+        ? await Promise.all(
+            this.questionFiles.map((file) => file.toDTO(storage))
+          )
+        : null;
+
+    const answerFilesDTO =
+      this.answerFiles && this.answerFiles.length > 0
+        ? await Promise.all(this.answerFiles.map((file) => file.toDTO(storage)))
+        : null;
+
+    const answersDTO =
+      this.answers && this.answers.length > 0
+        ? await Promise.all(this.answers.map((answer) => answer.toDTO(storage)))
+        : null;
+
+    return {
+      id: this.id,
+      type: this.type,
+      price: this.price,
+      isHidden: this.isHidden,
+      text: this.text,
+      answerHint: this.answer_hint,
+      answerText: this.answer_text,
+      answerDelay: this.answer_delay ?? 5000,
+      questionComment: this.question_comment,
+      questionFiles: questionFilesDTO,
+      answerFiles: answerFilesDTO,
+      subType: this.sub_type ?? "simple",
+      maxPrice: this.max_price,
+      allowedPrices: this.allowed_prices,
+      transferType: this.transfer_type,
+      priceMultiplier: this.price_multiplier,
+      showDelay: this.showDelay,
+      answers: answersDTO,
+    };
   }
 }

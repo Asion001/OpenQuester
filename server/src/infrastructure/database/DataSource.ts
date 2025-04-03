@@ -35,6 +35,7 @@ import { ChangePackageModel_0_9_7_1739806266677 as changePackageModel } from "in
 import { MakeAuthorNullable_1742725198044 as MakeAuthorNullable } from "infrastructure/database/migrations/0.9.7_Part2MakeAuthorNullable";
 import { UpdatePackageTypesAndFields_1742727260372 as UpdatePackageTypesAndFields } from "infrastructure/database/migrations/0.9.7_Part3UpdatePackageTypesAndFields";
 import { AddPackageLogoFileForeignKey_1743338225856 as AddPackageLogoFK } from "infrastructure/database/migrations/0.9.7_Part4AddPackageLogoFileFK";
+import { AddTypeColumnForChoiceFile_1743660505666 as AddTypeColumnForChoiceFile } from "infrastructure/database/migrations/0.9.7_Part5AddTypeColumnForChoiceFile";
 
 // Init env
 const env = Environment.instance;
@@ -91,6 +92,7 @@ export const AppDataSource = new DataSource({
     MakeAuthorNullable,
     UpdatePackageTypesAndFields,
     AddPackageLogoFK,
+    AddTypeColumnForChoiceFile,
   ],
   poolSize: 25,
   migrationsRun: true,
