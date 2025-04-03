@@ -32,9 +32,8 @@ export class Environment {
 
   // URLs
   public CLIENT_URL!: string;
-  public CORS_ORIGINS!: string;
   public API_DOMAIN!: string;
-  public ALLOWED_HOSTS!: string[];
+  public CORS_ORIGINS!: string[];
 
   // DB vars
   public DB_TYPE!: string;
@@ -204,12 +203,7 @@ export class Environment {
       "http://localhost:3000"
     );
     this.API_DOMAIN = this.getEnvVar("API_DOMAIN", "string", "localhost");
-    this.CORS_ORIGINS = this.getEnvVar(
-      "CORS_ORIGINS",
-      "string",
-      this.CLIENT_URL
-    );
-    this.ALLOWED_HOSTS = this.getEnvVar("ALLOWED_HOSTS", "string", "*").split(
+    this.CORS_ORIGINS = this.getEnvVar("CORS_ORIGINS", "string", "*").split(
       ","
     );
   }

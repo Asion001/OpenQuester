@@ -20,7 +20,7 @@ export class MiddlewareController {
     private readonly ctx: ApiContext,
     private readonly redisClient: Redis
   ) {
-    this.allowedHosts = this.ctx.env.ALLOWED_HOSTS;
+    this.allowedHosts = this.ctx.env.CORS_ORIGINS;
     Logger.gray(
       `Allowed CORS origins for current instance: [${this.allowedHosts}]`
     );

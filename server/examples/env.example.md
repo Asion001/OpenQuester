@@ -6,7 +6,7 @@ ENV=
 
 # "*" will allow all origins. To set specific origin domain use this: "localhost,some-host,another-host"
 # Important for custom hosts - Do not set leading dot ".", type only domain itself.
-ALLOWED_HOSTS=*
+CORS_ORIGINS=
 
 ## DB variables
 DB_TYPE=
