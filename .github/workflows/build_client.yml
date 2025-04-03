@@ -44,7 +44,7 @@ jobs:
         working-directory: ./client
     env:
       DONT_USE_PURO: true
-    environment: "${{ github.ref == 'refs/heads/main' && 'openquester (Preview)' || 'openquester (Production)' }}"
+    environment: "${{ github.event_name == 'workflow_call' && 'openquester (Production)' || 'openquester (Preview)' }}"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
