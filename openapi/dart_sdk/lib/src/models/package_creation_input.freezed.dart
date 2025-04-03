@@ -20,7 +20,7 @@ PackageCreationInput _$PackageCreationInputFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PackageCreationInput {
-  OQContentStructure get content => throw _privateConstructorUsedError;
+  PackageCreateInputData get content => throw _privateConstructorUsedError;
 
   /// Serializes this PackageCreationInput to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,9 +38,9 @@ abstract class $PackageCreationInputCopyWith<$Res> {
           $Res Function(PackageCreationInput) then) =
       _$PackageCreationInputCopyWithImpl<$Res, PackageCreationInput>;
   @useResult
-  $Res call({OQContentStructure content});
+  $Res call({PackageCreateInputData content});
 
-  $OQContentStructureCopyWith<$Res> get content;
+  $PackageCreateInputDataCopyWith<$Res> get content;
 }
 
 /// @nodoc
@@ -65,7 +65,7 @@ class _$PackageCreationInputCopyWithImpl<$Res,
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
-              as OQContentStructure,
+              as PackageCreateInputData,
     ) as $Val);
   }
 
@@ -73,8 +73,8 @@ class _$PackageCreationInputCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $OQContentStructureCopyWith<$Res> get content {
-    return $OQContentStructureCopyWith<$Res>(_value.content, (value) {
+  $PackageCreateInputDataCopyWith<$Res> get content {
+    return $PackageCreateInputDataCopyWith<$Res>(_value.content, (value) {
       return _then(_value.copyWith(content: value) as $Val);
     });
   }
@@ -88,10 +88,10 @@ abstract class _$$PackageCreationInputImplCopyWith<$Res>
       __$$PackageCreationInputImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({OQContentStructure content});
+  $Res call({PackageCreateInputData content});
 
   @override
-  $OQContentStructureCopyWith<$Res> get content;
+  $PackageCreateInputDataCopyWith<$Res> get content;
 }
 
 /// @nodoc
@@ -113,7 +113,7 @@ class __$$PackageCreationInputImplCopyWithImpl<$Res>
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
-              as OQContentStructure,
+              as PackageCreateInputData,
     ));
   }
 }
@@ -127,7 +127,7 @@ class _$PackageCreationInputImpl implements _PackageCreationInput {
       _$$PackageCreationInputImplFromJson(json);
 
   @override
-  final OQContentStructure content;
+  final PackageCreateInputData content;
 
   @override
   String toString() {
@@ -166,13 +166,14 @@ class _$PackageCreationInputImpl implements _PackageCreationInput {
 
 abstract class _PackageCreationInput implements PackageCreationInput {
   const factory _PackageCreationInput(
-      {required final OQContentStructure content}) = _$PackageCreationInputImpl;
+          {required final PackageCreateInputData content}) =
+      _$PackageCreationInputImpl;
 
   factory _PackageCreationInput.fromJson(Map<String, dynamic> json) =
       _$PackageCreationInputImpl.fromJson;
 
   @override
-  OQContentStructure get content;
+  PackageCreateInputData get content;
 
   /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.

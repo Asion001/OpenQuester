@@ -15,7 +15,7 @@ part 'auth_client.g.dart';
 abstract class AuthClient {
   factory AuthClient(Dio dio, {String? baseUrl}) = _AuthClient;
 
-  /// Logout user
+  /// Validate oauth2 token
   @POST('/v1/auth/oauth2')
   Future<ResponseUser> postV1AuthOauth2({
     @Body() required InputOauthLogin body,

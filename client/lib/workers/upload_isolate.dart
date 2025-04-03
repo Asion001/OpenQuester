@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:openapi/openapi.dart'
-    show OQContentStructure, PackageCreationInput;
+    show PackageCreateInputData, PackageCreationInput;
 import 'package:siq_file/siq_file.dart';
 import 'package:squadron/squadron.dart';
 
@@ -17,7 +17,7 @@ base class ParseSiqFile {
   @SquadronMethod()
   Future<String> compute(Uint8List fileData) async {
     final parser = SiqArchiveParser();
-    late OQContentStructure siqFile;
+    late PackageCreateInputData siqFile;
     await parser.load(fileData);
     try {
       siqFile = await parser.parse();

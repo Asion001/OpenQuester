@@ -23,8 +23,7 @@ mixin _$GameCreateData {
   String get title => throw _privateConstructorUsedError;
   int get packageId => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
-  GameCreateDataAgeRestriction get ageRestriction =>
-      throw _privateConstructorUsedError;
+  AgeRestriction get ageRestriction => throw _privateConstructorUsedError;
   int get maxPlayers => throw _privateConstructorUsedError;
 
   /// Serializes this GameCreateData to a JSON map.
@@ -47,7 +46,7 @@ abstract class $GameCreateDataCopyWith<$Res> {
       {String title,
       int packageId,
       bool isPrivate,
-      GameCreateDataAgeRestriction ageRestriction,
+      AgeRestriction ageRestriction,
       int maxPlayers});
 }
 
@@ -88,7 +87,7 @@ class _$GameCreateDataCopyWithImpl<$Res, $Val extends GameCreateData>
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as GameCreateDataAgeRestriction,
+              as AgeRestriction,
       maxPlayers: null == maxPlayers
           ? _value.maxPlayers
           : maxPlayers // ignore: cast_nullable_to_non_nullable
@@ -109,7 +108,7 @@ abstract class _$$GameCreateDataImplCopyWith<$Res>
       {String title,
       int packageId,
       bool isPrivate,
-      GameCreateDataAgeRestriction ageRestriction,
+      AgeRestriction ageRestriction,
       int maxPlayers});
 }
 
@@ -148,7 +147,7 @@ class __$$GameCreateDataImplCopyWithImpl<$Res>
       ageRestriction: null == ageRestriction
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as GameCreateDataAgeRestriction,
+              as AgeRestriction,
       maxPlayers: null == maxPlayers
           ? _value.maxPlayers
           : maxPlayers // ignore: cast_nullable_to_non_nullable
@@ -177,7 +176,7 @@ class _$GameCreateDataImpl implements _GameCreateData {
   @override
   final bool isPrivate;
   @override
-  final GameCreateDataAgeRestriction ageRestriction;
+  final AgeRestriction ageRestriction;
   @override
   final int maxPlayers;
 
@@ -229,7 +228,7 @@ abstract class _GameCreateData implements GameCreateData {
       {required final String title,
       required final int packageId,
       required final bool isPrivate,
-      required final GameCreateDataAgeRestriction ageRestriction,
+      required final AgeRestriction ageRestriction,
       required final int maxPlayers}) = _$GameCreateDataImpl;
 
   factory _GameCreateData.fromJson(Map<String, dynamic> json) =
@@ -242,7 +241,7 @@ abstract class _GameCreateData implements GameCreateData {
   @override
   bool get isPrivate;
   @override
-  GameCreateDataAgeRestriction get ageRestriction;
+  AgeRestriction get ageRestriction;
   @override
   int get maxPlayers;
 

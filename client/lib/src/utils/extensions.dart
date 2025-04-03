@@ -23,11 +23,11 @@ extension DurationX on Duration {
   }
 }
 
-extension IPackageItemAgeRestrictionX on PackageItemAgeRestriction {
+extension IPackageItemAgeRestrictionX on AgeRestriction {
   String? translate() => {
-        PackageItemAgeRestriction.a12: '12+',
-        PackageItemAgeRestriction.a16: '16+',
-        PackageItemAgeRestriction.a18: '18+',
+        AgeRestriction.a12: '12+',
+        AgeRestriction.a16: '16+',
+        AgeRestriction.a18: '18+',
       }[this];
 }
 
