@@ -105,7 +105,12 @@ export class CreatePermissionTable_0_1_2_1723128633623
     }
 
     // Drop tables
-    await queryRunner.dropTable("user_permissions");
-    await queryRunner.dropTable("permission");
+    if (table) {
+      await queryRunner.dropTable("user_permissions");
+    }
+
+    if (await queryRunner.getTable("permission")) {
+      await queryRunner.dropTable("permission");
+    }
   }
 }
