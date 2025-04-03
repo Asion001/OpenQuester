@@ -11,6 +11,9 @@ on:
         required: true
       ANDROID_KEYSTORE_BASE64:
         required: true
+  push:
+    branches:
+      - main
 
 jobs:
   pre_job:
@@ -84,3 +87,14 @@ jobs:
         with:
           name: android-app
           path: ./client/build/app/outputs/flutter-apk/*.apk
+
+      # Deploy to Cloudflare Pages with preview environment when pushing to main branch.
+      - name: Publish to Cloudflare Pages (Preview)
+        if: github.event_name != 'workflow_call'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy ./client/build/web/ --project-name=openquester
+          environment: preview
