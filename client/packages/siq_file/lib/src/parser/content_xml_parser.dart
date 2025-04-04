@@ -2,6 +2,7 @@ import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:openapi/openapi.dart';
+import 'package:siq_file/src/extensions.dart';
 import 'package:xml/xml.dart';
 
 class ContentXmlParser {
@@ -23,7 +24,7 @@ class ContentXmlParser {
 
   Future<PackageRound> _parseRound(XmlNode round) async {
     final name = round.getAttribute('name') ?? '-';
-    final description = round.getAttribute('description');
+    final description = round.getAttribute('description').nullOnEmpty;
     final themesXml = round.getElement('themes');
     final themes = themesXml?.childElements.map(_parseTheme).toList();
     return PackageRound(
@@ -42,7 +43,7 @@ class ContentXmlParser {
             [];
     return PackageTheme(
       name: name,
-      description: comment,
+      description: comment.nullOnEmpty,
       questions: await Future.wait(questions),
       id: null,
     );
@@ -93,10 +94,10 @@ class ContentXmlParser {
         {};
 
     final rightAnswers = getAnswers('right');
-    final answerText = rightAnswers.join(' / ');
-    final wrongAnswers = getAnswers('wrong').join(' / ');
+    final answerText = rightAnswers.join(' / ').nullOnEmpty;
+    final wrongAnswers = getAnswers('wrong').join(' / ').nullOnEmpty;
     final hostHint =
-        wrongAnswers.isEmpty ? null : 'Wrong answers: $wrongAnswers';
+        wrongAnswers.isEmptyOrNull ? null : 'Wrong answers: $wrongAnswers';
 
     final packageQuestionFiles = questionFiles
         .map((e) => PackageQuestionFile(id: null, file: e))
@@ -253,8 +254,8 @@ class ContentXmlParser {
 
     final metadata = PackageCreateInputData(
       title: json['name']?.toString() ?? '',
-      description: json['description']?.toString(),
-      language: json['language']?.toString(),
+      description: json['description']?.toString().nullOnEmpty,
+      language: json['language']?.toString().nullOnEmpty,
       ageRestriction: AgeRestriction.none,
       rounds: [],
       tags: [],
