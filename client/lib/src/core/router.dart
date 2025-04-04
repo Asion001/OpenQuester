@@ -9,33 +9,13 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(page: HomeTabsRoute.page, initial: true, children: homeTabs),
-        AutoRoute(
-          page: ClickerRoute.page,
-          path: '/clicker',
-          fullscreenDialog: true,
-        ),
-        AutoRoute(
-          page: ProfileRoute.page,
-          path: '/profile',
-          fullscreenDialog: true,
-        ),
-        AutoRoute(
-          page: TestScreenRoute.page,
-          path: '/test',
-          fullscreenDialog: true,
-        ),
-        AutoRoute(
-          page: PackageUploadRoute.page,
-          path: '/upload-package',
-          fullscreenDialog: true,
-        ),
-        CustomRoute<void>(
+        AutoRoute(page: ClickerRoute.page, path: '/clicker'),
+        AutoRoute(page: ProfileRoute.page, path: '/profile'),
+        AutoRoute(page: TestScreenRoute.page, path: '/test'),
+        AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
+        BlurDialogRoute<void>(
           page: GamePreviewRoute.page,
           path: '/game-preview',
-          fullscreenDialog: true,
-          opaque: false,
-          transitionsBuilder: blurIn,
-          barrierColor: Colors.black.withValues(alpha: .3),
         ),
       ];
 
@@ -45,6 +25,38 @@ class AppRouter extends RootStackRouter {
       ];
 
   static AppRouter get I => getIt<AppRouter>();
+
+  @override
+  RouteType get defaultRouteType =>
+      const RouteType.adaptive(enablePredictiveBackGesture: true);
+}
+
+class BlurDialogRoute<R> extends CustomRoute<R> {
+  BlurDialogRoute({
+    required super.page,
+    super.path,
+    super.children,
+    super.allowSnapshotting,
+    super.barrierDismissible,
+    super.barrierLabel,
+    super.customRouteBuilder,
+    super.duration,
+    super.fullMatch,
+    super.guards,
+    super.initial,
+    super.keepHistory,
+    super.maintainState,
+    super.meta,
+    super.restorationId,
+    super.reverseDuration,
+    super.title,
+    super.usesPathAsKey,
+  }) : super(
+          transitionsBuilder: blurIn,
+          barrierColor: Colors.black.withValues(alpha: .3),
+          opaque: false,
+          fullscreenDialog: true,
+        );
 
   static Widget blurIn(
     BuildContext context,
