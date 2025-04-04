@@ -13,6 +13,7 @@ class GamePreviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final future = getIt<PackageController>().getPackage(item.package.id);
     return SafeArea(
       minimum: 8.all,
       child: MaxSizeContainer(
@@ -26,7 +27,7 @@ class GamePreviewScreen extends StatelessWidget {
             GameListItemWidget(
               item: item,
               onTap: null,
-              bottom: _GamePreviewBottom(item: item),
+              bottom: _GamePreviewBottom(future: future),
             ).flexible(),
           ],
         ),
@@ -35,19 +36,12 @@ class GamePreviewScreen extends StatelessWidget {
   }
 }
 
-class _GamePreviewBottom extends StatefulWidget {
+class _GamePreviewBottom extends StatelessWidget {
   const _GamePreviewBottom({
-    required this.item,
+    required this.future,
   });
-  final GameListItem item;
+  final Future<PackageResponse> future;
 
-  @override
-  State<_GamePreviewBottom> createState() => _GamePreviewBottomState();
-}
-
-class _GamePreviewBottomState extends State<_GamePreviewBottom> {
-  late final future =
-      getIt<PackageController>().getPackage(widget.item.package.id);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(

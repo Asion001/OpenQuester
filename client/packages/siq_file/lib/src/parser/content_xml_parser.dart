@@ -81,6 +81,7 @@ class ContentXmlParser {
     final questionComment = questionItems
         .firstWhereOrNull((e) => e.getAttribute('type') == 'say')
         ?.value;
+    const String? questionText = null;
 
     final answerParam = params?.children.firstWhereOrNull(
       (p0) => p0.getAttribute('name') == 'answer',
@@ -108,7 +109,7 @@ class ContentXmlParser {
     return switch (questionType) {
       QuestionType.simple => PackageQuestionUnion.simple(
           price: price,
-          text: answerText,
+          text: questionText,
           type: SimpleQuestionType.simple,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -119,7 +120,7 @@ class ContentXmlParser {
         ),
       QuestionType.stake => PackageQuestionUnion.stake(
           price: price,
-          text: answerText,
+          text: questionText,
           type: StakeQuestionType.stake,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -131,7 +132,7 @@ class ContentXmlParser {
         ),
       QuestionType.secret => PackageQuestionUnion.secret(
           price: price,
-          text: answerText,
+          text: questionText,
           type: SecretQuestionType.secret,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -145,7 +146,7 @@ class ContentXmlParser {
         ),
       QuestionType.noRisk => PackageQuestionUnion.noRisk(
           price: price,
-          text: answerText,
+          text: questionText,
           type: NoRiskQuestionType.noRisk,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -157,7 +158,7 @@ class ContentXmlParser {
         ),
       QuestionType.hidden => PackageQuestionUnion.hidden(
           price: price,
-          text: answerText,
+          text: questionText,
           type: HiddenQuestionType.hidden,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -169,7 +170,7 @@ class ContentXmlParser {
         ),
       QuestionType.choice => PackageQuestionUnion.choice(
           price: price,
-          text: answerText,
+          text: questionText,
           type: ChoiceQuestionType.choice,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
