@@ -63,6 +63,7 @@ jobs:
       - name: Write env file
         run: echo "${{ vars.ENV_FILE_CONTENT }}" > .env
       - run: make pre_run
+
       - name: Build web
         run: flutter build web --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER
       - name: Publish Web Artifacts
@@ -70,25 +71,6 @@ jobs:
         with:
           name: web-app
           path: ./client/build/web/
-      - name: Decode and setup keystore
-        env:
-          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-        run: |
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
-      - name: Build android
-        env:
-          ANDROID_KEYSTORE_PATH: ${{ vars.ANDROID_KEYSTORE_PATH }}
-          ANDROID_KEY_ALIAS_NAME: ${{ vars.ANDROID_KEY_ALIAS_NAME }}
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: |
-          flutter build apk --release --build-number $GITHUB_RUN_NUMBER
-          flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64,android-x64 --build-number $GITHUB_RUN_NUMBER
-      - name: Publish Android Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-app
-          path: ./client/build/app/outputs/flutter-apk/*.apk
 
       # Deploy to Cloudflare Pages with preview environment when pushing to main branch.
       - name: Publish to Cloudflare Pages (Preview)
@@ -106,3 +88,25 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
             -H "Content-Type: application/json" \
             --data "{  \"purge_everything\": true }"
+
+      - name: Decode and setup keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+
+      - name: Build android
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ vars.ANDROID_KEYSTORE_PATH }}
+          ANDROID_KEY_ALIAS_NAME: ${{ vars.ANDROID_KEY_ALIAS_NAME }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          flutter build apk --release --build-number $GITHUB_RUN_NUMBER
+          flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64,android-x64 --build-number $GITHUB_RUN_NUMBER
+
+      - name: Publish Android Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-app
+          path: ./client/build/app/outputs/flutter-apk/*.apk
