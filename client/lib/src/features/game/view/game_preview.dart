@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
-import 'package:openquester/src/features/packages/controllers/package_controller.dart';
 
-@RoutePage()
+@RoutePage(
+  deferredLoading: false, // Removes loader on first game opening
+)
 class GamePreviewScreen extends StatelessWidget {
   const GamePreviewScreen({
     required this.item,

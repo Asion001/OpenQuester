@@ -14,8 +14,7 @@ import 'package:flutter/material.dart' as _i11;
 import 'package:openquester/openquester.dart' as _i10;
 import 'package:openquester/src/features/clicker/clicker_page.dart'
     deferred as _i1;
-import 'package:openquester/src/features/game/view/game_preview.dart'
-    deferred as _i2;
+import 'package:openquester/src/features/game/view/game_preview.dart' as _i2;
 import 'package:openquester/src/features/games/view/games_list.dart'
     deferred as _i3;
 import 'package:openquester/src/features/home_tabs/home_tabs.dart'
@@ -63,10 +62,7 @@ class GamePreviewRoute extends _i9.PageRouteInfo<GamePreviewRouteArgs> {
     name,
     builder: (data) {
       final args = data.argsAs<GamePreviewRouteArgs>();
-      return _i9.DeferredWidget(
-        _i2.loadLibrary,
-        () => _i2.GamePreviewScreen(item: args.item, key: args.key),
-      );
+      return _i2.GamePreviewScreen(item: args.item, key: args.key);
     },
   );
 }
