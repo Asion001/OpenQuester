@@ -38,6 +38,6 @@ abstract class PackagesClient {
   /// Get package by id
   @GET('/v1/packages/{id}')
   Future<PackageResponse> getV1PackagesId({
-    @Path('id') required String id,
+    @Path('id') required int id,
   });
 }

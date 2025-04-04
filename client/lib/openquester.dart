@@ -37,6 +37,7 @@ export 'src/features/home_tabs/home_tabs.dart';
 export 'src/features/package_upload/controllers/package_upload_controller.dart';
 export 'src/features/package_upload/data/package_upload_cart.dart';
 export 'src/features/package_upload/view/package_upload_screen.dart';
+export 'src/features/packages/controllers/package_controller.dart';
 export 'src/features/packages/controllers/packages_list_controller.dart';
 export 'src/features/packages/data/package_item.dart';
 export 'src/features/packages/view/package_list_item.dart';

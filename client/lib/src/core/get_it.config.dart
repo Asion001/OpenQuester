@@ -21,6 +21,7 @@ import '../connection/storage/storage.dart' as _i741;
 import '../features/games/controllers/games_list_controller.dart' as _i747;
 import '../features/package_upload/controllers/package_upload_controller.dart'
     as _i905;
+import '../features/packages/controllers/package_controller.dart' as _i573;
 import '../features/packages/controllers/packages_list_controller.dart'
     as _i793;
 import 'controllers/load_controller.dart' as _i676;
@@ -81,6 +82,7 @@ extension GetItInjectableX on _i174.GetIt {
       },
       preResolve: true,
     );
+    gh.singleton<_i573.PackageController>(() => _i573.PackageController());
     return this;
   }
 }

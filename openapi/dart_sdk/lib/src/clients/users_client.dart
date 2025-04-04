@@ -22,7 +22,7 @@ abstract class UsersClient {
   /// Get user info by id
   @GET('/v1/users/{id}')
   Future<ResponseUser> getV1UsersId({
-    @Path('id') required String id,
+    @Path('id') required int id,
   });
 
   /// Update user by id

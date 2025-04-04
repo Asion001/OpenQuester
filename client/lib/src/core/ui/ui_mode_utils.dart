@@ -8,4 +8,5 @@ class UiModeUtils {
 
   static const double maximumWidth = wideModeWidth;
   static const double wideModeWidth = 1200;
+  static const double maximumDialogWidth = 600;
 }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
@@ -32,6 +34,7 @@ class AppRouter extends RootStackRouter {
           path: '/game-preview',
           fullscreenDialog: true,
           opaque: false,
+          transitionsBuilder: blurIn,
           barrierColor: Colors.black.withValues(alpha: .3),
         ),
       ];
@@ -42,4 +45,23 @@ class AppRouter extends RootStackRouter {
       ];
 
   static AppRouter get I => getIt<AppRouter>();
+
+  static Widget blurIn(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return AnimatedBuilder(
+      animation: animation,
+      child: child,
+      builder: (context, child) {
+        final sigma = animation.value * 2;
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
+          child: child,
+        );
+      },
+    );
+  }
 }

@@ -28,5 +28,6 @@
   "game_status": {
     "started": "Started"
   },
-  "hosted_by": "hosted by {}"
+  "hosted_by": "hosted by {}",
+  "close": "Close"
 }

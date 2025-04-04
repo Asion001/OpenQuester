@@ -10,11 +10,11 @@ _$PackageItemImpl _$$PackageItemImplFromJson(Map<String, dynamic> json) =>
     _$PackageItemImpl(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
-      description: json['description'] as String,
+      description: json['description'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       author: ShortUserInfo.fromJson(json['author'] as Map<String, dynamic>),
       ageRestriction: AgeRestriction.fromJson(json['ageRestriction'] as String),
-      language: json['language'] as String,
+      language: json['language'] as String?,
       roundsCount: (json['roundsCount'] as num).toInt(),
       questionsCount: (json['questionsCount'] as num).toInt(),
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
