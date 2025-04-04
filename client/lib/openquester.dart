@@ -33,7 +33,6 @@ export 'src/features/game/view/game_preview.dart';
 export 'src/features/games/controllers/games_list_controller.dart';
 export 'src/features/games/view/game_list_item.dart';
 export 'src/features/games/view/games_list.dart';
-export 'src/features/home/home.dart';
 export 'src/features/home_tabs/home_tabs.dart';
 export 'src/features/package_upload/controllers/package_upload_controller.dart';
 export 'src/features/package_upload/data/package_upload_cart.dart';

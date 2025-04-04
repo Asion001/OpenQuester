@@ -16,7 +16,8 @@ import 'package:openquester/src/features/clicker/clicker_page.dart'
     deferred as _i1;
 import 'package:openquester/src/features/game/view/game_preview.dart'
     deferred as _i2;
-import 'package:openquester/src/features/home/home.dart' deferred as _i3;
+import 'package:openquester/src/features/games/view/games_list.dart'
+    deferred as _i3;
 import 'package:openquester/src/features/home_tabs/home_tabs.dart'
     deferred as _i4;
 import 'package:openquester/src/features/package_upload/view/package_upload_screen.dart'
@@ -84,17 +85,17 @@ class GamePreviewRouteArgs {
 }
 
 /// generated route for
-/// [_i3.HomeScreen]
-class HomeRoute extends _i9.PageRouteInfo<void> {
-  const HomeRoute({List<_i9.PageRouteInfo>? children})
-      : super(HomeRoute.name, initialChildren: children);
+/// [_i3.GamesListScreen]
+class GamesListRoute extends _i9.PageRouteInfo<void> {
+  const GamesListRoute({List<_i9.PageRouteInfo>? children})
+      : super(GamesListRoute.name, initialChildren: children);
 
-  static const String name = 'HomeRoute';
+  static const String name = 'GamesListRoute';
 
   static _i9.PageInfo page = _i9.PageInfo(
     name,
     builder: (data) {
-      return _i9.DeferredWidget(_i3.loadLibrary, () => _i3.HomeScreen());
+      return _i9.DeferredWidget(_i3.loadLibrary, () => _i3.GamesListScreen());
     },
   );
 }

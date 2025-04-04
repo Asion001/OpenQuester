@@ -37,10 +37,7 @@ class AppRouter extends RootStackRouter {
       ];
 
   List<AutoRoute> get homeTabs => [
-        AutoRoute(
-          page: HomeRoute.page,
-          path: 'home',
-        ),
+        AutoRoute(page: GamesListRoute.page, path: 'games'),
         AutoRoute(page: PackagesListRoute.page, path: 'packages'),
       ];
 

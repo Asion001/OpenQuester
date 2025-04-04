@@ -50,7 +50,7 @@ class _MobileHome extends WatchingWidget {
           authorized: authorized,
         );
       },
-      routes: const [HomeRoute(), PackagesListRoute()],
+      routes: const [GamesListRoute(), PackagesListRoute()],
       bottomNavigationBuilder: (_, tabsRouter) {
         return NavigationBar(
           selectedIndex: tabsRouter.activeIndex,
@@ -92,7 +92,7 @@ class _WideHome extends WatchingWidget {
       ),
       body: Row(
         children: [
-          const GamesList().expand(),
+          const GamesListScreen().expand(),
           const PackagesListScreen().expand(),
         ],
       ),
