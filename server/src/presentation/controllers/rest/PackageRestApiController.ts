@@ -1,12 +1,11 @@
 import { Router, type Express, type Request, type Response } from "express";
-import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 
-import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
+import { PackageService } from "application/services/package/PackageService";
 import { HttpStatus } from "domain/enums/HttpStatus";
-import { OQContentStructure } from "domain/types/file/structures/OQContentStructure";
-import { PackageModel } from "domain/types/package/PackageModel";
+import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
-import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
+import { Package } from "infrastructure/database/models/package/Package";
+import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 import {
   packIdScheme,
   uploadPackageScheme,
@@ -17,7 +16,7 @@ import { RequestDataValidator } from "presentation/schemes/RequestDataValidator"
 export class PackageRestApiController {
   constructor(
     private readonly app: Express,
-    private readonly storage: S3StorageService
+    private readonly packageService: PackageService
   ) {
     const router = Router();
 
@@ -29,11 +28,15 @@ export class PackageRestApiController {
   }
 
   private uploadPackage = async (req: Request, res: Response) => {
+    // Validate and get data that can be safely saved in DB
     const validatedData = await new RequestDataValidator<{
-      content: OQContentStructure;
+      content: PackageDTO;
     }>(req.body, uploadPackageScheme()).validate();
 
-    const data = await this.storage.uploadPackage(req, validatedData.content);
+    const data = await this.packageService.uploadPackage(
+      req,
+      validatedData.content
+    );
     return res.status(HttpStatus.OK).send(data);
   };
 
@@ -43,14 +46,14 @@ export class PackageRestApiController {
       packIdScheme()
     ).validate();
 
-    const data = await this.storage.getPackage(validatedData.packId);
+    const data = await this.packageService.getPackage(validatedData.packId);
     return res.status(HttpStatus.OK).send(data);
   };
 
   private listPackages = async (req: Request, res: Response) => {
-    const paginationOpts = await new PaginationSchema<PackageModel>({
+    const paginationOpts = await new PaginationSchema<Package>({
       data: {
-        sortBy: req.query.sortBy as keyof PackageModel,
+        sortBy: req.query.sortBy as keyof Package,
         order: req.query.order as PaginationOrder,
         limit: Number(req.query.limit),
         offset: Number(req.query.offset),
@@ -58,11 +61,7 @@ export class PackageRestApiController {
       possibleSortByFields: ["id", "title", "created_at", "author"],
     }).validate();
 
-    const data = await this.storage.listPackages(paginationOpts, {
-      select: PACKAGE_SELECT_FIELDS,
-      relations: ["author"],
-      relationSelects: { author: ["id", "username"] },
-    });
+    const data = await this.packageService.listPackages(paginationOpts);
 
     return res.status(HttpStatus.OK).send(data);
   };

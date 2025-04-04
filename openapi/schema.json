@@ -128,7 +128,7 @@
         "summary": "Get upload links for every file in `content.json`",
         "tags": ["Packages"],
         "requestBody": {
-          "description": "Data from `content.json` file",
+          "description": "Data for package creation",
           "required": true,
           "content": {
             "application/json": {
@@ -150,11 +150,11 @@
             }
           },
           "400": {
-            "description": "Content is empty!",
+            "description": "Package is corrupted!",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EmptyContentResponse"
+                  "$ref": "#/components/schemas/PackageCorruptedResponse"
                 }
               }
             }
@@ -242,7 +242,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PackageItem"
+                  "$ref": "#/components/schemas/PackageResponse"
                 }
               }
             }
@@ -590,7 +590,7 @@
     },
     "/v1/auth/oauth2": {
       "post": {
-        "summary": "Logout user",
+        "summary": "Validate oauth2 token",
         "tags": ["Auth"],
         "requestBody": {
           "required": true,
@@ -609,6 +609,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ResponseUser"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscordAuthFailedResponse"
                 }
               }
             }
@@ -842,7 +852,7 @@
         "type": "object",
         "properties": {
           "content": {
-            "$ref": "#/components/schemas/OQContentStructure"
+            "$ref": "#/components/schemas/PackageCreateInputData"
           }
         },
         "required": ["content"]
@@ -960,189 +970,6 @@
           }
         }
       },
-      "OQContentStructure": {
-        "type": "object",
-        "properties": {
-          "metadata": {
-            "$ref": "#/components/schemas/OQMetadataStructure"
-          },
-          "rounds": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OQRoundStructure"
-            }
-          }
-        }
-      },
-      "OQMetadataStructure": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "examples": ["ha1_ju-156random-string_asd-12f"]
-          },
-          "title": {
-            "type": "string",
-            "examples": ["Package title"]
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "examples": ["2024-01-01T00:00:00Z"]
-          },
-          "logo": {
-            "nullable": true,
-            "$ref": "#/components/schemas/OQLogoFile"
-          },
-          "ageRestriction": {
-            "type": "string",
-            "enum": ["A18", "A16", "A12", "NONE"],
-            "examples": ["A18"]
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "examples": ["Anime"]
-            }
-          },
-          "author": {
-            "type": "integer",
-            "examples": [6]
-          },
-          "language": {
-            "type": ["string", "null"],
-            "examples": ["EN"]
-          },
-          "comment": {
-            "type": ["string", "null"],
-            "examples": ["Package comment"]
-          }
-        }
-      },
-      "OQLogoFile": {
-        "type": "object",
-        "nullable": true,
-        "properties": {
-          "file": {
-            "type": "object",
-            "$ref": "#/components/schemas/OQFileContentStructure"
-          }
-        }
-      },
-      "OQFile": {
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "object",
-            "$ref": "#/components/schemas/OQFileContentStructure"
-          },
-          "displayTime": {
-            "type": "integer",
-            "examples": [5000],
-            "nullable": true
-          },
-          "answerDelay": {
-            "type": "integer",
-            "examples": [2500],
-            "nullable": true
-          }
-        }
-      },
-      "OQFileContentStructure": {
-        "type": "object",
-        "properties": {
-          "md5": {
-            "type": "string",
-            "examples": [
-              "f611efcb4eb3716cebddec66d4c220438b89830e4d2bb0825d3953cbf8ae3b77"
-            ]
-          },
-          "type": {
-            "type": "string",
-            "examples": ["image"],
-            "enum": ["image", "video", "audio"]
-          }
-        }
-      },
-      "OQRoundStructure": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "examples": ["Round name"]
-          },
-          "themes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OQThemeStructure"
-            }
-          }
-        }
-      },
-      "OQThemeStructure": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "examples": ["Theme name"]
-          },
-          "comment": {
-            "type": "string",
-            "examples": ["Theme comment"],
-            "nullable": true
-          },
-          "questions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OQQuestionsStructure"
-            }
-          }
-        }
-      },
-      "OQQuestionsStructure": {
-        "type": "object",
-        "properties": {
-          "price": {
-            "type": "integer",
-            "examples": [200]
-          },
-          "type": {
-            "type": "string",
-            "examples": ["regular"],
-            "enum": ["regular", "stake", "noRisk"]
-          },
-          "text": {
-            "type": "string",
-            "examples": ["Question text"],
-            "nullable": true
-          },
-          "hostHint": {
-            "type": "string",
-            "examples": ["Host hints about the answer"]
-          },
-          "playersHint": {
-            "type": "string",
-            "examples": ["Question comment for players"],
-            "nullable": true
-          },
-          "answerText": {
-            "type": "string",
-            "examples": ["Actual answer"],
-            "nullable": true
-          },
-          "questionFile": {
-            "type": "object",
-            "$ref": "#/components/schemas/OQFile",
-            "nullable": true
-          },
-          "answerFile": {
-            "type": "object",
-            "$ref": "#/components/schemas/OQFile",
-            "nullable": true
-          }
-        }
-      },
       "GameListItem": {
         "type": "object",
         "properties": {
@@ -1163,9 +990,11 @@
             "examples": ["2024-01-01T00:00:00Z"]
           },
           "ageRestriction": {
-            "type": "string",
-            "enum": ["A18", "A16", "A12", "NONE"],
-            "examples": ["A18"]
+            "$ref": "#/components/schemas/AgeRestriction"
+          },
+          "isPrivate": {
+            "type": "boolean",
+            "examples": [false]
           },
           "currentRound": {
             "type": "integer",
@@ -1206,37 +1035,13 @@
             "examples": [false]
           },
           "ageRestriction": {
-            "type": "string",
-            "enum": ["A18", "A16", "A12", "NONE"],
-            "examples": ["A18"]
+            "$ref": "#/components/schemas/AgeRestriction"
           },
           "maxPlayers": {
             "type": "integer",
             "minimum": 2,
             "maximum": 15,
             "examples": [10]
-          }
-        }
-      },
-      "Player": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "integer",
-            "examples": [1]
-          },
-          "score": {
-            "type": "integer",
-            "examples": [100]
-          },
-          "role": {
-            "type": "string",
-            "enum": ["player", "showman", "spectator"],
-            "examples": ["player"]
-          },
-          "connected": {
-            "type": "boolean",
-            "examples": [true]
           }
         }
       },
@@ -1253,6 +1058,22 @@
           }
         }
       },
+      "PackageTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [15]
+          },
+          "tag": {
+            "type": "string",
+            "description": "A single tag for the package",
+            "examples": ["anime"]
+          }
+        },
+        "required": ["tag"],
+        "description": "Individual tag object"
+      },
       "GameEvent": {
         "type": "string",
         "enum": ["created", "changed", "deleted", "started"],
@@ -1264,10 +1085,77 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PackageItem"
+              "$ref": "#/components/schemas/PackageResponse"
             }
           },
           "pageInfo": { "$ref": "#/components/schemas/PageInfo" }
+        }
+      },
+      "PackageResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [1]
+          },
+          "title": {
+            "type": "string",
+            "examples": ["Package Title"]
+          },
+          "description": {
+            "type": ["string", "null"],
+            "examples": [
+              "Package description, should be longer than title, probably"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2024-01-01T00:00:00Z"]
+          },
+          "author": {
+            "$ref": "#/components/schemas/ShortUserInfo"
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestriction",
+            "description": "Package age restriction"
+          },
+          "language": {
+            "type": ["string", "null"],
+            "examples": ["en"]
+          },
+          "logo": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageLogoFileItem" },
+              { "type": "null" }
+            ],
+            "description": "Logo file for the package"
+          },
+          "rounds": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PackageRound" },
+            "description": "Rounds in the package"
+          },
+          "tags": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/PackageTag"
+            },
+            "description": "Tags for the package. Can be null or an array of tag objects",
+            "examples": [
+              [
+                { "id": 18, "tag": "anime" },
+                { "id": 19, "tag": "movie" },
+                { "id": 20, "tag": "general" },
+                { "id": 21, "tag": "games" }
+              ],
+              [
+                { "id": 22, "tag": "trivia" },
+                { "id": 23, "tag": "fun" }
+              ],
+              null
+            ]
+          }
         }
       },
       "PackageItem": {
@@ -1281,28 +1169,48 @@
             "type": "string",
             "examples": ["Package Title"]
           },
-          "ageRestriction": {
+          "description": {
             "type": "string",
-            "enum": ["A18", "A16", "A12", "NONE"],
-            "examples": ["A18"]
+            "examples": [
+              "Package description, should be longer than title, probably"
+            ]
           },
           "createdAt": {
             "type": "string",
             "format": "date-time",
             "examples": ["2024-01-01T00:00:00Z"]
           },
-          "rounds": {
+          "author": {
+            "$ref": "#/components/schemas/ShortUserInfo"
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestriction",
+            "description": "Package age restriction"
+          },
+          "language": {
+            "type": "string",
+            "examples": ["en"]
+          },
+          "logo": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageLogoFileItem" },
+              { "type": "null" }
+            ],
+            "description": "Logo file for the package"
+          },
+          "roundsCount": {
             "type": "integer",
             "examples": [5]
           },
-          "author": {
-            "$ref": "#/components/schemas/ShortUserInfo"
+          "questionsCount": {
+            "type": "integer",
+            "examples": [183]
           },
           "tags": {
             "type": "array",
             "items": {
               "type": "string",
-              "examples": ["Anime"]
+              "examples": ["Anime", "General"]
             }
           }
         }
@@ -1433,12 +1341,12 @@
           }
         }
       },
-      "EmptyContentResponse": {
+      "PackageCorruptedResponse": {
         "type": "object",
         "properties": {
           "error": {
             "type": "string",
-            "examples": ["Content is empty!"]
+            "examples": ["Package is corrupted!"]
           }
         }
       },
@@ -1515,6 +1423,540 @@
             "$ref": "#/components/schemas/GameListItem"
           }
         }
+      },
+      "AgeRestriction": {
+        "type": "string",
+        "enum": ["A18", "A16", "A12", "NONE"],
+        "default": "NONE",
+        "description": "Age restriction",
+        "examples": ["A18"]
+      },
+      "PackageFileType": {
+        "type": ["string", "null"],
+        "enum": ["video", "audio", "image"],
+        "description": "Type of media file for package-related files"
+      },
+      "QuestionType": {
+        "type": "string",
+        "enum": ["simple", "stake", "secret", "noRisk", "hidden", "choice"],
+        "default": "simple",
+        "description": "Type of question within a package"
+      },
+      "PackageQuestionTransferType": {
+        "type": "string",
+        "enum": ["any", "exceptCurrent"],
+        "default": "any",
+        "description": "Transfer type for secret questions",
+        "examples": ["any"]
+      },
+      "FileInput": {
+        "type": "object",
+        "properties": {
+          "md5": {
+            "type": "string",
+            "description": "MD5 hash of the file",
+            "examples": ["d41d8cd98f00b204e9800998ecf8427e"]
+          },
+          "type": {
+            "$ref": "#/components/schemas/PackageFileType"
+          }
+        },
+        "required": ["md5", "type"],
+        "description": "Basic file metadata for upload, used in place of full File model for input"
+      },
+      "FileItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [727]
+          },
+          "md5": {
+            "type": "string",
+            "description": "MD5 hash of the file",
+            "examples": ["d41d8cd98f00b204e9800998ecf8427e"]
+          },
+          "type": {
+            "$ref": "#/components/schemas/PackageFileType"
+          },
+          "link": {
+            "type": ["string", "null"],
+            "description": "GET link for file",
+            "examples": ["https://example.com/file123"]
+          }
+        },
+        "required": ["md5"],
+        "description": "Basic file metadata"
+      },
+      "PackageLogoFileInput": {
+        "type": ["object", "null"],
+        "properties": {
+          "file": {
+            "$ref": "#/components/schemas/FileInput"
+          }
+        },
+        "description": "Logo file structure for package creation. Only images acceptable"
+      },
+      "PackageLogoFileItem": {
+        "type": ["object", "null"],
+        "properties": {
+          "file": {
+            "$ref": "#/components/schemas/FileItem"
+          }
+        },
+        "required": ["file"],
+        "description": "Logo file structure for package creation. Only images acceptable"
+      },
+      "PackageQuestionFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [69]
+          },
+          "file": {
+            "$ref": "#/components/schemas/FileItem"
+          },
+          "displayTime": {
+            "type": "integer",
+            "description": "Display duration in milliseconds",
+            "default": 5000,
+            "examples": [5000]
+          }
+        },
+        "required": ["file", "displayTime"],
+        "description": "Question media file structure for package creation"
+      },
+      "PackageAnswerFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [1337]
+          },
+          "file": {
+            "$ref": "#/components/schemas/FileItem"
+          },
+          "displayTime": {
+            "type": "integer",
+            "description": "Display duration in milliseconds",
+            "default": 5000,
+            "examples": [5000]
+          }
+        },
+        "required": ["file", "displayTime"],
+        "description": "Answer media file structure for package creation"
+      },
+      "PackageQuestion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [187]
+          },
+          "price": {
+            "type": "integer",
+            "description": "Point value of the question",
+            "examples": [200, 400, 500]
+          },
+          "isHidden": {
+            "type": ["boolean", "null"],
+            "default": false,
+            "description": "Whether the question is hidden",
+            "examples": [false]
+          },
+          "text": {
+            "type": ["string", "null"],
+            "description": "Question text",
+            "examples": ["Where is Kyiv located?"]
+          },
+          "answerHint": {
+            "type": ["string", "null"],
+            "description": "Hint for the answer",
+            "examples": ["It's in Europe"]
+          },
+          "answerText": {
+            "type": ["string", "null"],
+            "description": "Correct answer text",
+            "examples": ["In Ukraine"]
+          },
+          "answerDelay": {
+            "type": ["integer", "null"],
+            "description": "Delay in milliseconds before being able to answer, if applicable",
+            "default": 4000,
+            "examples": [7000]
+          },
+          "questionComment": {
+            "type": ["string", "null"],
+            "description": "Comment or note about the question",
+            "examples": ["You have to say full country name"]
+          },
+          "questionFiles": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/PackageQuestionFile"
+            },
+            "description": "Media files for the question",
+            "examples": [
+              {
+                "id": 727,
+                "file": {
+                  "md5": "b11d8c12300b204as800998ecf84266",
+                  "type": "image"
+                },
+                "link": "https://example.com/file123",
+                "displayTime": 3000
+              },
+              {
+                "id": 999,
+                "file": {
+                  "md5": "c90d8c12300b204as182904ecf84266",
+                  "type": "image"
+                },
+                "link": "https://example.com/file546",
+                "displayTime": 3000
+              }
+            ]
+          },
+          "answerFiles": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/PackageAnswerFile"
+            },
+            "description": "Media files for the answer",
+            "examples": [
+              {
+                "id": 1001,
+                "file": {
+                  "md5": "b12d8c12300b204as800998ecf84266",
+                  "type": "image"
+                },
+                "link": "https://example.com/file1001",
+                "displayTime": 5000
+              }
+            ]
+          }
+        },
+        "required": ["price", "type"],
+        "description": "Base properties for all question types"
+      },
+      "ChoiceQuestion": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PackageQuestion" },
+          {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["choice"] },
+              "subType": { "const": "simple" },
+              "showDelay": {
+                "type": "integer",
+                "description": "Delay before showing options in milliseconds",
+                "examples": [3000]
+              },
+              "answers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": ["integer", "null"],
+                      "examples": [99]
+                    },
+                    "text": {
+                      "type": ["string", "null"],
+                      "description": "Text of the answer option"
+                    },
+                    "file": {
+                      "oneOf": [
+                        { "$ref": "#/components/schemas/FileItem" },
+                        { "type": "null" }
+                      ],
+                      "description": "File associated with the answer option"
+                    }
+                  }
+                },
+                "minItems": 2,
+                "maxItems": 8,
+                "description": "Multiple choice options; minimum 2, maximum 8 answers",
+                "examples": [
+                  [
+                    {
+                      "text": "Option 1",
+                      "file": null
+                    },
+                    {
+                      "text": "Option 2",
+                      "file": null
+                    },
+                    {
+                      "text": "Option 3 with image",
+                      "file": {
+                        "id": 227,
+                        "md5": "f99d8c12300b204as800998ecf90777",
+                        "type": "image",
+                        "link": "https://example.com/file123"
+                      }
+                    },
+                    {
+                      "text": "Option 4",
+                      "file": null
+                    }
+                  ]
+                ]
+              }
+            },
+            "required": ["showDelay", "answers"],
+            "description": "Choice question type"
+          }
+        ]
+      },
+      "SecretQuestion": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PackageQuestion" },
+          {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["secret"] },
+              "subType": {
+                "type": "string",
+                "enum": ["simple", "customPrice"],
+                "description": "Subtype of the secret question. customPrice means player can choose cost of question",
+                "examples": ["customPrice"]
+              },
+              "allowedPrices": {
+                "type": ["array", "null"],
+                "items": { "type": "integer" },
+                "minItems": 2,
+                "maxItems": 5,
+                "examples": [
+                  [200, 1000],
+                  [100, 500, 1000]
+                ],
+                "description": "Allowed price options for customPrice subtype. Maximum 5 prices to choose"
+              },
+              "transferType": {
+                "$ref": "#/components/schemas/PackageQuestionTransferType"
+              }
+            },
+            "required": ["subType", "transferType"],
+            "if": {
+              "properties": { "subType": { "const": "customPrice" } }
+            },
+            "then": {
+              "required": ["allowedPrices"]
+            },
+            "description": "Secret question type. allowedPrices required only if subType is customPrice"
+          }
+        ]
+      },
+      "NoRiskQuestion": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PackageQuestion" },
+          {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["noRisk"] },
+              "subType": {
+                "type": "string",
+                "enum": ["simple", "forEveryone"],
+                "description": "Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player",
+                "examples": ["forEveryone"]
+              },
+              "priceMultiplier": {
+                "type": "number",
+                "description": "Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct",
+                "default": 1.5,
+                "examples": [0.5, 1.25, 1.5, 2]
+              }
+            },
+            "required": ["subType", "priceMultiplier"],
+            "description": "No-risk question type"
+          }
+        ]
+      },
+      "SimpleQuestion": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PackageQuestion" },
+          {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["simple"] }
+            },
+            "description": "Simple question type"
+          }
+        ]
+      },
+      "StakeQuestion": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PackageQuestion" },
+          {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["stake"] },
+              "subType": {
+                "type": "string",
+                "enum": ["simple", "forEveryone"],
+                "description": "Subtype of the stake question. simple is basically auction. forEveryone means everyone place some amount of money and write answer",
+                "default": "simple",
+                "examples": ["simple"]
+              },
+              "maxPrice": {
+                "type": ["integer", "null"],
+                "description": "Maximum price for the stake question, most useful when type is forEveryone - Does not allow top players to go all-in and win. Typically maxPrice can be 2x or 3x of nominal price",
+                "examples": [1000]
+              }
+            },
+            "required": ["subType", "maxPrice"]
+          }
+        ]
+      },
+      "HiddenQuestion": {
+        "allOf": [
+          { "$ref": "#/components/schemas/PackageQuestion" },
+          {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "enum": ["hidden"] }
+            },
+            "description": "Hidden question type"
+          }
+        ]
+      },
+      "PackageQuestionUnion": {
+        "oneOf": [
+          { "$ref": "#/components/schemas/SimpleQuestion" },
+          { "$ref": "#/components/schemas/StakeQuestion" },
+          { "$ref": "#/components/schemas/SecretQuestion" },
+          { "$ref": "#/components/schemas/NoRiskQuestion" },
+          { "$ref": "#/components/schemas/ChoiceQuestion" },
+          { "$ref": "#/components/schemas/HiddenQuestion" }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "simple": "#/components/schemas/SimpleQuestion",
+            "stake": "#/components/schemas/StakeQuestion",
+            "secret": "#/components/schemas/SecretQuestion",
+            "noRisk": "#/components/schemas/NoRiskQuestion",
+            "choice": "#/components/schemas/ChoiceQuestion",
+            "hidden": "#/components/schemas/HiddenQuestion"
+          }
+        },
+        "description": "Polymorphic question union for all question types"
+      },
+      "PackageTheme": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [92]
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the theme",
+            "examples": ["Opening", "Ending", "Science"]
+          },
+          "description": {
+            "type": ["string", "null"],
+            "description": "Description of the theme",
+            "examples": [
+              "In this theme you have to guess anime by it's opening song"
+            ]
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PackageQuestionUnion"
+            },
+            "description": "Questions in the theme"
+          }
+        },
+        "required": ["name", "questions"],
+        "description": "Theme structure for package"
+      },
+      "PackageRound": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [17]
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the round",
+            "examples": ["Round 1 - Beginners round", "Round of music"]
+          },
+          "description": {
+            "type": ["string", "null"],
+            "description": "Description of the round",
+            "examples": ["This round contains simple questions"]
+          },
+          "themes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PackageTheme" },
+            "description": "Themes in the round"
+          }
+        },
+        "required": ["name", "themes"],
+        "description": "Round structure for package"
+      },
+      "PackageCreateInputData": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the package",
+            "examples": ["Trivia Night", "Anime pack 2025"]
+          },
+          "description": {
+            "type": ["string", "null"],
+            "description": "Description of the package",
+            "examples": ["This is package description"]
+          },
+          "language": {
+            "type": ["string", "null"],
+            "description": "Language of the package",
+            "examples": ["en", "ua"]
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestriction",
+            "description": "Age restriction"
+          },
+          "logo": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageLogoFileInput" },
+              { "type": "null" }
+            ],
+            "description": "Logo file for the package"
+          },
+          "tags": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/PackageTag"
+            },
+            "description": "Tags for the package. Can be null or an array of tag objects",
+            "examples": [
+              [
+                { "id": 18, "tag": "anime" },
+                { "id": 19, "tag": "movie" },
+                { "id": 20, "tag": "general" },
+                { "id": 21, "tag": "games" }
+              ],
+              [
+                { "id": 22, "tag": "trivia" },
+                { "id": 23, "tag": "fun" }
+              ],
+              null
+            ]
+          },
+          "rounds": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PackageRound" },
+            "description": "Rounds in the package"
+          }
+        },
+        "required": ["title", "rounds"],
+        "description": "Input for creating a new package; author is set via authentication"
       }
     }
   }

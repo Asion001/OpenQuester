@@ -21,17 +21,19 @@ import {
 } from "domain/types/pagination/PaginationOpts";
 import { ShortUserInfo } from "domain/types/user/ShortUserInfo";
 import { GameIndexManager } from "infrastructure/database/managers/game/GameIndexManager";
+import { Package } from "infrastructure/database/models/package/Package";
 import { type User } from "infrastructure/database/models/User";
 import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
-import { ValueUtils } from "infrastructure/utils/ValueUtils";
+import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 
 export class GameRepository {
   constructor(
     private readonly redisClient: Redis,
     private readonly gameIndexManager: GameIndexManager,
     private readonly userRepository: UserRepository,
-    private readonly packageRepository: PackageRepository
+    private readonly packageRepository: PackageRepository,
+    private readonly storage: S3StorageService
   ) {
     //
   }
@@ -42,7 +44,7 @@ export class GameRepository {
 
   public async getGameRaw(gameId: string) {
     const key = await this.getGameKey(gameId);
-    const game = this.redisClient.hgetall(key);
+    const game = await this.redisClient.hgetall(key);
 
     if (!game) {
       throw new ClientError(
@@ -73,49 +75,6 @@ export class GameRepository {
     }
 
     return this._mapRedisRecordToGameItem(gameData);
-  }
-
-  public async getAllGamesRaw(
-    paginationOpts: PaginationOpts<GameDTO>
-  ): Promise<PaginatedResult<GameDTO[]>> {
-    const keys = await this.redisClient.keys(`${GAME_NAMESPACE}:*`);
-
-    // Fetch all game data in one redis request
-    const pipeline = this.redisClient.pipeline();
-    keys.forEach((key) => pipeline.get(key));
-    const pipelineResult = await pipeline.exec();
-
-    if (!pipelineResult?.length) {
-      return { data: [], pageInfo: { total: 0 } };
-    }
-
-    // Parse and filter valid games
-    const games: (GameDTO | undefined)[] = await Promise.all(
-      pipelineResult.map(async ([err, raw]) => {
-        try {
-          return err ? undefined : JSON.parse(raw as string);
-        } catch {
-          // Ignore invalid games
-        }
-      })
-    );
-    const validGames = games.filter((g): g is GameDTO => !ValueUtils.isBad(g));
-
-    const totalCount = validGames.length;
-
-    // Sorting
-    const { sortBy = "createdAt", order = PaginationOrder.ASC } =
-      paginationOpts;
-    validGames.sort((a, b) => this._compareGames(a, b, sortBy, order));
-
-    // Pagination
-    const { offset, limit } = paginationOpts;
-    const paginatedGames = validGames.slice(offset, offset + limit);
-
-    return {
-      data: paginatedGames,
-      pageInfo: { total: totalCount },
-    };
   }
 
   public async getAllGames(
@@ -151,43 +110,27 @@ export class GameRepository {
       }) as Promise<ShortUserInfo[]>,
       this.packageRepository.findByIds(Array.from(packageIds), {
         select: PACKAGE_SELECT_FIELDS,
-        relations: ["author"],
-        relationSelects: { author: ["id", "username"] },
+        relations: ["author", "logo", "tags"],
       }),
     ]);
 
     const userMap = new Map(users.map((u) => [u.id, u]));
     const packageMap = new Map(packages.map((p) => [p.id, p]));
 
-    const gamesItems = games
-      .map((game) => {
-        const createdBy = userMap.get(game.createdBy);
-        const packData = packageMap.get(game.package);
+    const gamesItems: GameListItemDTO[] = (
+      await Promise.all(
+        games.map(async (game) => {
+          const createdBy = userMap.get(game.createdBy);
+          const packData = packageMap.get(game.package);
 
-        if (!packData || !packData.author) {
-          return null;
-        }
+          if (!packData || !packData.author || !createdBy) {
+            return null;
+          }
 
-        const packMeta = packData.content.metadata;
-
-        return {
-          ...game,
-          createdBy,
-          package: {
-            id: packData.id,
-            createdAt: packData.created_at,
-            rounds: packData.content.rounds.length,
-            tags: packMeta.tags,
-            title: packMeta.title,
-            ageRestriction: packMeta.ageRestriction ?? AgeRestriction.NONE,
-            author: {
-              id: packData.author.id,
-              username: packData.author.username,
-            },
-          },
-        };
-      })
-      .filter((g): g is GameListItemDTO => g !== null);
+          return await this._gameListItemDTO(game, createdBy, packData);
+        })
+      )
+    ).filter((g): g is GameListItemDTO => g !== null);
 
     return {
       data: gamesItems,
@@ -198,11 +141,11 @@ export class GameRepository {
   }
 
   public async createGame(gameData: GameCreateDTO, createdBy: User) {
-    const packageData = await this.packageRepository.get(gameData.packageId, {
-      select: PACKAGE_SELECT_FIELDS,
-      relations: ["author"],
-      relationSelects: { author: ["id", "username"] },
-    });
+    const packageData = await this.packageRepository.get(
+      gameData.packageId,
+      PACKAGE_SELECT_FIELDS,
+      ["author"]
+    );
 
     if (!packageData) {
       throw new ClientError(ClientResponse.PACKAGE_NOT_FOUND);
@@ -219,6 +162,10 @@ export class GameRepository {
       throw new ClientError(ClientResponse.BAD_GAME_CREATION);
     }
 
+    const counts = await this.packageRepository.getCountsForPackage(
+      gameData.packageId
+    );
+
     // Redis entity
     const gameDataRaw: GameDTO = {
       id: gameId,
@@ -232,6 +179,8 @@ export class GameRepository {
       maxPlayers: gameData.maxPlayers,
       startedAt: null,
       package: gameData.packageId,
+      roundsCount: counts.roundsCount,
+      questionsCount: counts.questionsCount,
     };
 
     const pipeline = this.redisClient.pipeline();
@@ -246,26 +195,7 @@ export class GameRepository {
 
     await pipeline.exec();
 
-    // List item returned to client
-    const gameDataOutput: GameListItemDTO = {
-      ...gameDataRaw,
-      createdBy: { id: createdBy.id, username: createdBy.username },
-      package: {
-        id: gameData.packageId,
-        title: packageData.title,
-        // TODO: Get age restriction after new pack model implemented
-        ageRestriction: AgeRestriction.NONE,
-        createdAt: packageData.created_at,
-        rounds: packageData.content.rounds.length,
-        tags: packageData.content.metadata.tags,
-        author: {
-          id: packageData.author.id,
-          username: packageData.author.username,
-        },
-      },
-    };
-
-    return gameDataOutput;
+    return this._gameListItemDTO(gameDataRaw, createdBy, packageData);
   }
 
   public async deleteGame(gameId: string) {
@@ -288,11 +218,11 @@ export class GameRepository {
       relations: [],
     });
 
-    const packData = await this.packageRepository.get(record.package, {
-      select: PACKAGE_SELECT_FIELDS,
-      relations: ["author"],
-      relationSelects: { author: ["id", "username"] },
-    });
+    const packData = await this.packageRepository.get(
+      record.package,
+      PACKAGE_SELECT_FIELDS,
+      ["author", "tags", "logo"]
+    );
 
     if (!packData) {
       return;
@@ -306,22 +236,40 @@ export class GameRepository {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
-    const packMeta = packData.content.metadata;
+    return this._gameListItemDTO(record, createdBy, packData);
+  }
 
+  private async _gameListItemDTO(
+    record: GameDTO,
+    createdBy: ShortUserInfo,
+    packData: Package
+  ): Promise<GameListItemDTO> {
     return {
-      ...record,
+      id: record.id,
+      title: record.title,
+      ageRestriction: record.ageRestriction,
+      isPrivate: record.isPrivate,
+      maxPlayers: record.maxPlayers,
+      players: record.players,
       createdBy,
+      startedAt: record.startedAt,
+      createdAt: record.createdAt,
+      currentRound: record.currentRound,
       package: {
         id: packData.id,
-        createdAt: packData.created_at,
-        rounds: packData.content.rounds.length,
-        tags: packMeta.tags,
-        title: packMeta.title,
-        ageRestriction: packMeta.ageRestriction ?? AgeRestriction.NONE,
+        title: packData.title,
+        description: packData.description,
+        ageRestriction: packData.age_restriction,
         author: {
           id: packData.author.id,
           username: packData.author.username,
         },
+        createdAt: packData.created_at,
+        language: packData.language,
+        logo: await packData.logoDTO(this.storage),
+        roundsCount: record.roundsCount ?? 0,
+        questionsCount: record.questionsCount ?? 0,
+        tags: packData.tags?.map((tag) => tag.tag) ?? [],
       },
     };
   }
@@ -347,8 +295,14 @@ export class GameRepository {
     const fieldB = b[sortBy];
 
     if (fieldA === fieldB) return 0;
-    if (fieldA === null) return order === "asc" ? -1 : 1;
-    if (fieldB === null) return order === "asc" ? 1 : -1;
+
+    if (fieldA === null || fieldA === undefined) {
+      return order === "asc" ? -1 : 1;
+    }
+
+    if (fieldB === null || fieldB === undefined) {
+      return order === "asc" ? 1 : -1;
+    }
 
     if (order === "asc") {
       return fieldA > fieldB ? 1 : -1;
@@ -373,6 +327,8 @@ export class GameRepository {
       "maxPlayers",
       "startedAt",
       "package",
+      "roundsCount",
+      "questionsCount",
     ];
 
     return requiredKeys.every(
@@ -405,6 +361,8 @@ export class GameRepository {
       maxPlayers: game.maxPlayers.toString(),
       package: game.package.toString(),
       startedAt: game.startedAt?.getTime().toString() ?? "",
+      roundsCount: game.roundsCount ?? 0,
+      questionsCount: game.questionsCount ?? 0,
     };
   }
 
@@ -421,6 +379,8 @@ export class GameRepository {
       maxPlayers: parseInt(data.maxPlayers),
       package: parseInt(data.package),
       startedAt: data.startedAt ? new Date(parseInt(data.startedAt)) : null,
+      roundsCount: Number(data.roundsCount),
+      questionsCount: Number(data.questionsCount),
     };
   }
 }

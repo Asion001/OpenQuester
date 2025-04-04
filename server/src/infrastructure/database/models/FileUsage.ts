@@ -3,7 +3,7 @@ import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { FileUsageDTO } from "domain/types/dto/file/FileUsageDTO";
 import { FileUsageModel } from "domain/types/file/FileUsageModel";
 import { File } from "infrastructure/database/models/File";
-import { Package } from "infrastructure/database/models/Package";
+import { Package } from "infrastructure/database/models/package/Package";
 import { User } from "infrastructure/database/models/User";
 
 @Entity("file_usage")

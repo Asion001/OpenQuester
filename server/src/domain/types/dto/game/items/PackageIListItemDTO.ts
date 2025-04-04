@@ -1,12 +1,17 @@
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
+import { PackageFileDTO } from "domain/types/dto/package/PackageFileDTO";
 import { ShortUserInfo } from "domain/types/user/ShortUserInfo";
 
 export interface PackageListItemDTO {
   id: number;
   title: string;
-  ageRestriction: AgeRestriction;
+  description?: string | null;
   createdAt: Date;
-  rounds: number;
-  tags: string[];
   author: ShortUserInfo;
+  ageRestriction: AgeRestriction;
+  language?: string | null;
+  logo?: { file: PackageFileDTO } | null;
+  roundsCount: number;
+  questionsCount: number;
+  tags: string[];
 }

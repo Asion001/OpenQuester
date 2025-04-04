@@ -4,7 +4,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package_item_age_restriction.dart';
+import 'age_restriction.dart';
+import 'package_logo_file_item.dart';
 import 'short_user_info.dart';
 
 part 'package_item.freezed.dart';
@@ -15,11 +16,19 @@ class PackageItem with _$PackageItem {
   const factory PackageItem({
     required int id,
     required String title,
-    required PackageItemAgeRestriction ageRestriction,
+    required String description,
     required DateTime createdAt,
-    required int rounds,
     required ShortUserInfo author,
+
+    /// Package age restriction
+    required AgeRestriction ageRestriction,
+    required String language,
+    required int roundsCount,
+    required int questionsCount,
     required List<String> tags,
+
+    /// Logo file for the package
+    PackageLogoFileItem? logo,
   }) = _PackageItem;
   
   factory PackageItem.fromJson(Map<String, Object?> json) => _$PackageItemFromJson(json);

@@ -4,6 +4,13 @@
 ## Environment type ("dev" | "prod" | "test")
 ENV=
 
+# "*" will allow all origins. To set specific origin domain use this: "localhost,some-host,another-host"
+# Important for custom hosts - Do not set leading dot ".", type only domain itself.
+CORS_ORIGINS=
+
+# Domain (full) to which cookie will be assigned
+API_DOMAIN=
+
 ## DB variables
 DB_TYPE=
 DB_NAME=

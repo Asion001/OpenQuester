@@ -13,7 +13,7 @@ class FileOpening extends StatefulWidget {
 }
 
 class _FileOpeningState extends State<FileOpening> {
-  OQContentStructure? siqFile;
+  PackageCreateInputData? siqFile;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class _FileOpeningState extends State<FileOpening> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: Text('Pack name: ${siqFile?.metadata.title}')),
+            Expanded(child: Text('Pack name: ${siqFile?.title}')),
             Row(
               children: [
                 IconButton(
