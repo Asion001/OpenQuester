@@ -7,7 +7,7 @@
    version="1.1"
    id="svg10"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="icon_square.png"
+   inkscape:export-filename="../../client/assets/icon/icon_ios_splash.png"
    inkscape:export-xdpi="375"
    inkscape:export-ydpi="375"
    inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
@@ -25,54 +25,63 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="0.41075283"
-     inkscape:cx="629.33224"
-     inkscape:cy="679.2406"
+     inkscape:cx="533.16736"
+     inkscape:cy="684.10971"
      inkscape:window-width="1472"
      inkscape:window-height="891"
-     inkscape:window-x="1274"
-     inkscape:window-y="1117"
+     inkscape:window-x="0"
+     inkscape:window-y="37"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg10" />
+     inkscape:current-layer="svg10"
+     inkscape:export-bgcolor="#000000ff" />
   <g
-     id="g13"
-     style="display:inline">
-    <rect
-       width="1024"
-       height="1024"
-       fill="#000000"
-       id="rect1"
-       x="0"
-       y="0"
-       style="display:inline" />
-    <circle
-       cx="512"
-       cy="512"
-       r="512"
-       fill="#000000"
-       id="circle1"
-       style="display:inline" />
-  </g>
-  <g
-     id="g12"
-     style="display:inline">
-    <path
-       fill-rule="evenodd"
-       clip-rule="evenodd"
-       d="M 512,887 C 719.107,887 887,719.107 887,512 887,304.893 719.107,137 512,137 304.893,137 137,304.893 137,512 c 0,207.107 167.893,375 375,375 z m 0.5,-75 C 678.462,812 813,677.462 813,511.5 813,345.538 678.462,211 512.5,211 346.538,211 212,345.538 212,511.5 212,677.462 346.538,812 512.5,812 Z"
-       fill="url(#paint0_linear_415_3898)"
-       id="path1" />
-    <circle
-       cx="512.5"
-       cy="638.5"
-       r="50.5"
-       fill="url(#paint1_linear_415_3898)"
-       id="circle2" />
-    <path
-       fill-rule="evenodd"
-       clip-rule="evenodd"
-       d="m 497,537.464 v 41.681 h 82.349 c 0,0 76.861,-15.69 67.936,-163.247 C 638.36,268.34 375.506,294.33 377.006,415.897 378.506,537.464 497,537.464 497,537.464 Z M 512.006,533 c 34.794,0 63,-28.206 63,-63 0,-34.794 -28.206,-63 -63,-63 -34.794,0 -63,28.206 -63,63 0,34.794 28.206,63 63,63 z"
-       fill="url(#paint2_linear_415_3898)"
-       id="path2" />
+     id="g1"
+     inkscape:label="g1"
+     transform="matrix(0.22402142,0,0,0.22402142,397.30103,397.30103)">
+    <g
+       id="g13"
+       style="display:inline">
+      <rect
+         width="1024"
+         height="1024"
+         fill="#000000"
+         id="rect1"
+         x="0"
+         y="0"
+         style="display:none" />
+      <circle
+         cx="512"
+         cy="512"
+         r="512"
+         fill="#000000"
+         id="circle1"
+         style="display:inline" />
+    </g>
+    <g
+       id="g12"
+       style="display:inline">
+      <path
+         fill-rule="evenodd"
+         clip-rule="evenodd"
+         d="M 512,887 C 719.107,887 887,719.107 887,512 887,304.893 719.107,137 512,137 304.893,137 137,304.893 137,512 c 0,207.107 167.893,375 375,375 z m 0.5,-75 C 678.462,812 813,677.462 813,511.5 813,345.538 678.462,211 512.5,211 346.538,211 212,345.538 212,511.5 212,677.462 346.538,812 512.5,812 Z"
+         fill="url(#paint0_linear_415_3898)"
+         id="path1"
+         style="fill:url(#paint0_linear_415_3898)" />
+      <circle
+         cx="512.5"
+         cy="638.5"
+         r="50.5"
+         fill="url(#paint1_linear_415_3898)"
+         id="circle2"
+         style="fill:url(#paint1_linear_415_3898)" />
+      <path
+         fill-rule="evenodd"
+         clip-rule="evenodd"
+         d="m 497,537.464 v 41.681 h 82.349 c 0,0 76.861,-15.69 67.936,-163.247 C 638.36,268.34 375.506,294.33 377.006,415.897 378.506,537.464 497,537.464 497,537.464 Z M 512.006,533 c 34.794,0 63,-28.206 63,-63 0,-34.794 -28.206,-63 -63,-63 -34.794,0 -63,28.206 -63,63 0,34.794 28.206,63 63,63 z"
+         fill="url(#paint2_linear_415_3898)"
+         id="path2"
+         style="fill:url(#paint2_linear_415_3898)" />
+    </g>
   </g>
   <defs
      id="defs10">

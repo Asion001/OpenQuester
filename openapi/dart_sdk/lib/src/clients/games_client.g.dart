@@ -82,7 +82,7 @@ class _GamesClient implements GamesClient {
   }
 
   @override
-  Future<GameListItem> getV1GamesId({required String id}) async {
+  Future<GameListItem> getV1GamesGameId({required String gameId}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -91,7 +91,7 @@ class _GamesClient implements GamesClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/v1/games/${id}',
+            '/v1/games/${gameId}',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -109,7 +109,7 @@ class _GamesClient implements GamesClient {
   }
 
   @override
-  Future<void> deleteV1GamesId({required String id}) async {
+  Future<void> deleteV1GamesGameId({required String id}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -118,7 +118,7 @@ class _GamesClient implements GamesClient {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/v1/games/${id}',
+            '/v1/games/{gameId}',
             queryParameters: queryParameters,
             data: _data,
           )

@@ -1,19 +1,9 @@
 # To generate run `dart run flutter_launcher_icons`
 flutter_launcher_icons:
-  android: "launcher_icon"
-  adaptive_icon_foreground: "../assets/icon/icon_foreground.png"
+  android: "ic_launcher"
   adaptive_icon_background: "#000000"
-  ios: true
-  image_path: "../assets/icon/icon.png"
-  min_sdk_android: 24 # android min sdk min:16, default 21
+  adaptive_icon_foreground: assets/icon/icon_foreground.png
+  adaptive_icon_monochrome: assets/icon/icon_foreground.png
+  image_path: assets/icon/icon_square.png
+  min_sdk_android: 23
   remove_alpha_ios: true
-  web:
-    generate: true
-    background_color: "#000000"
-    theme_color: "#65558F"
-    image_path: "../assets/icon/icon.png"
-  windows:
-    generate: true
-    icon_size: 48 # min:48, max:256, default: 48
-  macos:
-    generate: true

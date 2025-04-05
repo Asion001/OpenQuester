@@ -84,7 +84,7 @@ class _PackagesClient implements PackagesClient {
   }
 
   @override
-  Future<PackageResponse> getV1PackagesId({required String id}) async {
+  Future<PackageResponse> getV1PackagesId({required int id}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

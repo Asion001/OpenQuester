@@ -35,3 +35,14 @@ extension WidgetX on Widget {
   Widget shrink() =>
       Row(mainAxisSize: MainAxisSize.min, children: [flexible()]);
 }
+
+extension NumberPaddings on num {
+  EdgeInsets get all => EdgeInsets.all(toDouble());
+  EdgeInsets get left => EdgeInsets.only(left: toDouble());
+  EdgeInsets get right => EdgeInsets.only(right: toDouble());
+  EdgeInsets get top => EdgeInsets.only(top: toDouble());
+  EdgeInsets get bottom => EdgeInsets.only(bottom: toDouble());
+  EdgeInsets get vertical => EdgeInsets.symmetric(vertical: toDouble());
+  EdgeInsets get horizontal => EdgeInsets.symmetric(horizontal: toDouble());
+  BorderRadius get circular => BorderRadius.circular(toDouble());
+}

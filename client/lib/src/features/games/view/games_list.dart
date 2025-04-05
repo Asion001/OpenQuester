@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
-class GamesList extends StatelessWidget {
-  const GamesList({super.key});
+@RoutePage()
+class GamesListScreen extends StatelessWidget {
+  const GamesListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -232,7 +232,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
@@ -270,7 +270,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
@@ -742,13 +742,13 @@
         }
       }
     },
-    "/v1/games/{id}": {
+    "/v1/games/{gameId}": {
       "get": {
-        "summary": "Get game by id",
+        "summary": "Get game by gameId",
         "tags": ["Games"],
         "parameters": [
           {
-            "name": "id",
+            "name": "gameId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1170,7 +1170,7 @@
             "examples": ["Package Title"]
           },
           "description": {
-            "type": "string",
+            "type": ["string", "null"],
             "examples": [
               "Package description, should be longer than title, probably"
             ]
@@ -1188,7 +1188,7 @@
             "description": "Package age restriction"
           },
           "language": {
-            "type": "string",
+            "type": ["string", "null"],
             "examples": ["en"]
           },
           "logo": {

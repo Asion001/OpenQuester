@@ -16,13 +16,13 @@ class PackageItem with _$PackageItem {
   const factory PackageItem({
     required int id,
     required String title,
-    required String description,
+    required String? description,
     required DateTime createdAt,
     required ShortUserInfo author,
 
     /// Package age restriction
     required AgeRestriction ageRestriction,
-    required String language,
+    required String? language,
     required int roundsCount,
     required int questionsCount,
     required List<String> tags,

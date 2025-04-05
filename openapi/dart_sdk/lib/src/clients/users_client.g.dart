@@ -18,7 +18,7 @@ class _UsersClient implements UsersClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<ResponseUser> getV1UsersId({required String id}) async {
+  Future<ResponseUser> getV1UsersId({required int id}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

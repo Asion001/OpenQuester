@@ -9,13 +9,49 @@ class GameListItemWidget extends StatelessWidget {
     required this.onTap,
     super.key,
     this.expanded = false,
+    this.bottom,
+    this.trailing,
   });
   final GameListItem item;
   final VoidCallback? onTap;
   final bool expanded;
+  final Widget? bottom;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
+    final children = [
+      _GameListItemBadges(item),
+      ListTile(
+        title: Tooltip(
+          message: LocaleKeys.game_tile_tooltips_game_title.tr(),
+          child: Text(
+            item.title,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+          ),
+        ).shrink(),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Tooltip(
+              message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
+              child: Text(
+                item.package.title,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Text(_packInfo(), overflow: TextOverflow.ellipsis),
+            Text(_gameInfo(), overflow: TextOverflow.ellipsis),
+          ],
+        ).paddingTop(4).shrink(),
+        trailing: trailing,
+        titleAlignment: ListTileTitleAlignment.bottom,
+        contentPadding: const EdgeInsets.only(right: 16, left: 4),
+        mouseCursor: MouseCursor.defer,
+      ).expand(),
+    ];
+
     return Hero(
       tag: item,
       child: Material(
@@ -28,40 +64,9 @@ class GameListItemWidget extends StatelessWidget {
               mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
               children: [
                 Row(
-                  children: [
-                    _GameListItemBadges(item),
-                    ListTile(
-                      title: Tooltip(
-                        message: LocaleKeys.game_tile_tooltips_game_title.tr(),
-                        child: Text(
-                          item.title,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                      ).shrink(),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Tooltip(
-                            message: LocaleKeys
-                                .game_tile_tooltips_packages_title
-                                .tr(),
-                            child: Text(
-                              item.package.title,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          Text(_packInfo(), overflow: TextOverflow.ellipsis),
-                          Text(_gameInfo(), overflow: TextOverflow.ellipsis),
-                        ],
-                      ).paddingTop(4).shrink(),
-                      trailing: const Icon(Icons.play_arrow),
-                      titleAlignment: ListTileTitleAlignment.bottom,
-                      contentPadding: const EdgeInsets.only(right: 16, left: 4),
-                      mouseCursor: MouseCursor.defer,
-                    ).expand(),
-                  ],
+                  children: children,
                 ).paddingSymmetric(horizontal: 2),
+                if (bottom != null) bottom!.flexible(),
               ],
             ),
           ),

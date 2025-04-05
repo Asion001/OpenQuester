@@ -34,15 +34,15 @@ abstract class GamesClient {
     @Body() required GameCreateData body,
   });
 
-  /// Get game by id
-  @GET('/v1/games/{id}')
-  Future<GameListItem> getV1GamesId({
-    @Path('id') required String id,
+  /// Get game by gameId
+  @GET('/v1/games/{gameId}')
+  Future<GameListItem> getV1GamesGameId({
+    @Path('gameId') required String gameId,
   });
 
   /// Delete game
-  @DELETE('/v1/games/{id}')
-  Future<void> deleteV1GamesId({
+  @DELETE('/v1/games/{gameId}')
+  Future<void> deleteV1GamesGameId({
     @Path('id') required String id,
   });
 }

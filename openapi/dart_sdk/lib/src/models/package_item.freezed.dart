@@ -22,13 +22,13 @@ PackageItem _$PackageItemFromJson(Map<String, dynamic> json) {
 mixin _$PackageItem {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   ShortUserInfo get author => throw _privateConstructorUsedError;
 
   /// Package age restriction
   AgeRestriction get ageRestriction => throw _privateConstructorUsedError;
-  String get language => throw _privateConstructorUsedError;
+  String? get language => throw _privateConstructorUsedError;
   int get roundsCount => throw _privateConstructorUsedError;
   int get questionsCount => throw _privateConstructorUsedError;
   List<String> get tags => throw _privateConstructorUsedError;
@@ -55,11 +55,11 @@ abstract class $PackageItemCopyWith<$Res> {
   $Res call(
       {int id,
       String title,
-      String description,
+      String? description,
       DateTime createdAt,
       ShortUserInfo author,
       AgeRestriction ageRestriction,
-      String language,
+      String? language,
       int roundsCount,
       int questionsCount,
       List<String> tags,
@@ -86,11 +86,11 @@ class _$PackageItemCopyWithImpl<$Res, $Val extends PackageItem>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? createdAt = null,
     Object? author = null,
     Object? ageRestriction = null,
-    Object? language = null,
+    Object? language = freezed,
     Object? roundsCount = null,
     Object? questionsCount = null,
     Object? tags = null,
@@ -105,10 +105,10 @@ class _$PackageItemCopyWithImpl<$Res, $Val extends PackageItem>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -121,10 +121,10 @@ class _$PackageItemCopyWithImpl<$Res, $Val extends PackageItem>
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
               as AgeRestriction,
-      language: null == language
+      language: freezed == language
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       roundsCount: null == roundsCount
           ? _value.roundsCount
           : roundsCount // ignore: cast_nullable_to_non_nullable
@@ -180,11 +180,11 @@ abstract class _$$PackageItemImplCopyWith<$Res>
   $Res call(
       {int id,
       String title,
-      String description,
+      String? description,
       DateTime createdAt,
       ShortUserInfo author,
       AgeRestriction ageRestriction,
-      String language,
+      String? language,
       int roundsCount,
       int questionsCount,
       List<String> tags,
@@ -211,11 +211,11 @@ class __$$PackageItemImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
-    Object? description = null,
+    Object? description = freezed,
     Object? createdAt = null,
     Object? author = null,
     Object? ageRestriction = null,
-    Object? language = null,
+    Object? language = freezed,
     Object? roundsCount = null,
     Object? questionsCount = null,
     Object? tags = null,
@@ -230,10 +230,10 @@ class __$$PackageItemImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
-      description: null == description
+      description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -246,10 +246,10 @@ class __$$PackageItemImplCopyWithImpl<$Res>
           ? _value.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
               as AgeRestriction,
-      language: null == language
+      language: freezed == language
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       roundsCount: null == roundsCount
           ? _value.roundsCount
           : roundsCount // ignore: cast_nullable_to_non_nullable
@@ -295,7 +295,7 @@ class _$PackageItemImpl implements _PackageItem {
   @override
   final String title;
   @override
-  final String description;
+  final String? description;
   @override
   final DateTime createdAt;
   @override
@@ -305,7 +305,7 @@ class _$PackageItemImpl implements _PackageItem {
   @override
   final AgeRestriction ageRestriction;
   @override
-  final String language;
+  final String? language;
   @override
   final int roundsCount;
   @override
@@ -387,11 +387,11 @@ abstract class _PackageItem implements PackageItem {
   const factory _PackageItem(
       {required final int id,
       required final String title,
-      required final String description,
+      required final String? description,
       required final DateTime createdAt,
       required final ShortUserInfo author,
       required final AgeRestriction ageRestriction,
-      required final String language,
+      required final String? language,
       required final int roundsCount,
       required final int questionsCount,
       required final List<String> tags,
@@ -405,7 +405,7 @@ abstract class _PackageItem implements PackageItem {
   @override
   String get title;
   @override
-  String get description;
+  String? get description;
   @override
   DateTime get createdAt;
   @override
@@ -415,7 +415,7 @@ abstract class _PackageItem implements PackageItem {
   @override
   AgeRestriction get ageRestriction;
   @override
-  String get language;
+  String? get language;
   @override
   int get roundsCount;
   @override

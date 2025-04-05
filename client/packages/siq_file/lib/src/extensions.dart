@@ -8,3 +8,12 @@ extension MapExtension on Map<String, dynamic> {
 extension ListExtension<T> on List<T> {
   List<T> get modifiable => [...this];
 }
+
+extension StringX on String? {
+  String? get nullOnEmpty => (this?.trim()).isEmptyOrNull ? null : this;
+
+  bool get isEmptyOrNull =>
+      this == null ||
+      (this != null && this!.isEmpty) ||
+      (this != null && this! == 'null');
+}

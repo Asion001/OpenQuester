@@ -2,6 +2,7 @@ import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:openapi/openapi.dart';
+import 'package:siq_file/src/extensions.dart';
 import 'package:xml/xml.dart';
 
 class ContentXmlParser {
@@ -23,7 +24,7 @@ class ContentXmlParser {
 
   Future<PackageRound> _parseRound(XmlNode round) async {
     final name = round.getAttribute('name') ?? '-';
-    final description = round.getAttribute('description');
+    final description = round.getAttribute('description').nullOnEmpty;
     final themesXml = round.getElement('themes');
     final themes = themesXml?.childElements.map(_parseTheme).toList();
     return PackageRound(
@@ -42,7 +43,7 @@ class ContentXmlParser {
             [];
     return PackageTheme(
       name: name,
-      description: comment,
+      description: comment.nullOnEmpty,
       questions: await Future.wait(questions),
       id: null,
     );
@@ -80,6 +81,7 @@ class ContentXmlParser {
     final questionComment = questionItems
         .firstWhereOrNull((e) => e.getAttribute('type') == 'say')
         ?.value;
+    const String? questionText = null;
 
     final answerParam = params?.children.firstWhereOrNull(
       (p0) => p0.getAttribute('name') == 'answer',
@@ -93,10 +95,10 @@ class ContentXmlParser {
         {};
 
     final rightAnswers = getAnswers('right');
-    final answerText = rightAnswers.join(' / ');
-    final wrongAnswers = getAnswers('wrong').join(' / ');
+    final answerText = rightAnswers.join(' / ').nullOnEmpty;
+    final wrongAnswers = getAnswers('wrong').join(' / ').nullOnEmpty;
     final hostHint =
-        wrongAnswers.isEmpty ? null : 'Wrong answers: $wrongAnswers';
+        wrongAnswers.isEmptyOrNull ? null : 'Wrong answers: $wrongAnswers';
 
     final packageQuestionFiles = questionFiles
         .map((e) => PackageQuestionFile(id: null, file: e))
@@ -107,7 +109,7 @@ class ContentXmlParser {
     return switch (questionType) {
       QuestionType.simple => PackageQuestionUnion.simple(
           price: price,
-          text: answerText,
+          text: questionText,
           type: SimpleQuestionType.simple,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -118,7 +120,7 @@ class ContentXmlParser {
         ),
       QuestionType.stake => PackageQuestionUnion.stake(
           price: price,
-          text: answerText,
+          text: questionText,
           type: StakeQuestionType.stake,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -130,7 +132,7 @@ class ContentXmlParser {
         ),
       QuestionType.secret => PackageQuestionUnion.secret(
           price: price,
-          text: answerText,
+          text: questionText,
           type: SecretQuestionType.secret,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -144,7 +146,7 @@ class ContentXmlParser {
         ),
       QuestionType.noRisk => PackageQuestionUnion.noRisk(
           price: price,
-          text: answerText,
+          text: questionText,
           type: NoRiskQuestionType.noRisk,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -156,7 +158,7 @@ class ContentXmlParser {
         ),
       QuestionType.hidden => PackageQuestionUnion.hidden(
           price: price,
-          text: answerText,
+          text: questionText,
           type: HiddenQuestionType.hidden,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -168,7 +170,7 @@ class ContentXmlParser {
         ),
       QuestionType.choice => PackageQuestionUnion.choice(
           price: price,
-          text: answerText,
+          text: questionText,
           type: ChoiceQuestionType.choice,
           questionComment: questionComment,
           questionFiles: packageQuestionFiles,
@@ -253,8 +255,8 @@ class ContentXmlParser {
 
     final metadata = PackageCreateInputData(
       title: json['name']?.toString() ?? '',
-      description: json['description']?.toString(),
-      language: json['language']?.toString(),
+      description: json['description']?.toString().nullOnEmpty,
+      language: json['language']?.toString().nullOnEmpty,
       ageRestriction: AgeRestriction.none,
       rounds: [],
       tags: [],
