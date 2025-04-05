@@ -10,17 +10,14 @@ class GamePreviewBottom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final animationConfiguration = AnimationConfigurationClass.of(context)!;
     return FutureBuilder(
       future: getIt<PackageController>().getPackage(packageId),
       builder: (context, snapshot) {
         final pack = snapshot.data;
-        return AnimatedCrossFade(
-          duration: getIt<GamePreviewController>().animationDuration,
-          crossFadeState: pack == null
-              ? CrossFadeState.showFirst
-              : CrossFadeState.showSecond,
-          firstChild: const Row(),
-          secondChild: ListView(
+        return AnimatedSize(
+          duration: animationConfiguration.duration,
+          child: ListView(
             shrinkWrap: true,
             children: [
               for (final round in pack?.rounds ?? <PackageRound>[])

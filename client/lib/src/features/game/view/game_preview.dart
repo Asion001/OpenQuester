@@ -39,27 +39,28 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      minimum: 8.all,
-      child: MaxSizeContainer(
-        maxWidth: UiModeUtils.maximumDialogWidth,
-        child: Column(
-          children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [CloseButton()],
-            ),
-            GameListItemWidget(
-              item: widget.item,
-              onTap: null,
-              bottom: !showList
-                  ? null
-                  : GamePreviewBottom(packageId: widget.item.package.id),
-              trailingBuilder: !showList
-                  ? null
-                  : (icon) => GamePreviewPlayButton(icon: icon),
-            ).flexible(),
-          ],
+    return AnimationConfigurationClass.synchronized(
+      duration: getIt<GamePreviewController>().animationDuration,
+      child: SafeArea(
+        minimum: 8.all,
+        child: MaxSizeContainer(
+          maxWidth: UiModeUtils.maximumDialogWidth,
+          child: Column(
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [CloseButton()],
+              ),
+              GameListItemWidget(
+                item: widget.item,
+                onTap: null,
+                bottom: !showList
+                    ? null
+                    : GamePreviewBottom(packageId: widget.item.package.id),
+                trailing: !showList ? null : const GamePreviewPlayButton(),
+              ).flexible(),
+            ],
+          ),
         ),
       ),
     );
