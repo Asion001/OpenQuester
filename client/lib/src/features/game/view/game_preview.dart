@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
 @RoutePage(
-  deferredLoading: false, // Removes loader on first game opening
+  deferredLoading: false, // Removes loader on first game opening on web
 )
-class GamePreviewScreen extends StatelessWidget {
+class GamePreviewScreen extends StatefulWidget {
   const GamePreviewScreen({
     required this.item,
     super.key,
@@ -12,8 +12,33 @@ class GamePreviewScreen extends StatelessWidget {
   final GameListItem item;
 
   @override
+  State<GamePreviewScreen> createState() => _GamePreviewScreenState();
+}
+
+class _GamePreviewScreenState extends State<GamePreviewScreen> {
+  bool showList = false;
+  @override
+  void initState() {
+    getIt<GamePreviewController>().init(widget.item);
+
+    // Fixes rebuilds in during animation
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => Future.delayed(
+        getIt<GamePreviewController>().animationDuration,
+        () => setState(() => showList = true),
+      ),
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    getIt<GamePreviewController>().clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final future = getIt<PackageController>().getPackage(item.package.id);
     return SafeArea(
       minimum: 8.all,
       child: MaxSizeContainer(
@@ -25,48 +50,18 @@ class GamePreviewScreen extends StatelessWidget {
               children: [CloseButton()],
             ),
             GameListItemWidget(
-              item: item,
+              item: widget.item,
               onTap: null,
-              bottom: _GamePreviewBottom(future: future),
+              bottom: !showList
+                  ? null
+                  : GamePreviewBottom(packageId: widget.item.package.id),
+              trailingBuilder: !showList
+                  ? null
+                  : (icon) => GamePreviewPlayButton(icon: icon),
             ).flexible(),
           ],
         ),
       ),
-    );
-  }
-}
-
-class _GamePreviewBottom extends StatelessWidget {
-  const _GamePreviewBottom({
-    required this.future,
-  });
-  final Future<PackageResponse> future;
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: future,
-      builder: (context, snapshot) {
-        final pack = snapshot.data;
-
-        return AnimatedCrossFade(
-          duration: Durations.medium2,
-          crossFadeState: pack == null
-              ? CrossFadeState.showFirst
-              : CrossFadeState.showSecond,
-          firstChild: const Row(),
-          secondChild: ListView(
-            shrinkWrap: true,
-            children: [
-              for (final round in pack?.rounds ?? <PackageRound>[])
-                ListTile(
-                  title: Text(round.name),
-                  subtitle: Text(round.themes.map((e) => e.name).join('\n')),
-                ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

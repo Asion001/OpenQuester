@@ -18,6 +18,7 @@ import '../connection/controllers/auth_controller.dart' as _i785;
 import '../connection/controllers/dio_controller.dart' as _i895;
 import '../connection/socket/socket_controller.dart' as _i496;
 import '../connection/storage/storage.dart' as _i741;
+import '../features/game/controllers/game_preview_controller.dart' as _i386;
 import '../features/games/controllers/games_list_controller.dart' as _i747;
 import '../features/package_upload/controllers/package_upload_controller.dart'
     as _i905;
@@ -53,6 +54,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i905.PackageUploadController>(
         () => _i905.PackageUploadController());
+    gh.singleton<_i386.GamePreviewController>(
+        () => _i386.GamePreviewController());
     gh.singleton<_i149.Api>(() => _i149.Api());
     await gh.singletonAsync<_i785.AuthController>(
       () {

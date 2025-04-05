@@ -10,14 +10,18 @@ class GameListItemWidget extends StatelessWidget {
     super.key,
     this.expanded = false,
     this.bottom,
+    this.trailingBuilder,
   });
   final GameListItem item;
   final VoidCallback? onTap;
   final bool expanded;
   final Widget? bottom;
+  final Widget Function(Widget icon)? trailingBuilder;
 
   @override
   Widget build(BuildContext context) {
+    const playIcon = Icon(Icons.play_arrow);
+
     final children = [
       _GameListItemBadges(item),
       ListTile(
@@ -43,7 +47,7 @@ class GameListItemWidget extends StatelessWidget {
             Text(_gameInfo(), overflow: TextOverflow.ellipsis),
           ],
         ).paddingTop(4).shrink(),
-        trailing: const Icon(Icons.play_arrow),
+        trailing: trailingBuilder?.call(playIcon) ?? playIcon,
         titleAlignment: ListTileTitleAlignment.bottom,
         contentPadding: const EdgeInsets.only(right: 16, left: 4),
         mouseCursor: MouseCursor.defer,
