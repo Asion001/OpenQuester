@@ -10,6 +10,13 @@ class SocketController {
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
+    await _connectGeneral();
+
+    // Reconnect on auth change
+    getIt<AuthController>().addListener(reconnect);
+  }
+
+  Future<void> _connectGeneral() async {
     general = await createConnection();
     general.connect();
   }
@@ -20,17 +27,22 @@ class SocketController {
       ..enableForceNewConnection()
       ..disableAutoConnect();
     final options = optionsBuilder.build();
-    final url = socketUri.toString() + (path ?? '');
+    final url = socketUri.replace(path: path ?? '').toString();
     final socket = io(url, options)
       ..onAny(_logRequest)
       ..onAnyOutgoing(_logOutgoing)
-      ..onConnect((_) => _log('onConnect'))
+      ..onConnect(_onConnect)
       ..onDisconnect((_) => _log('onDisconnect'))
       ..onError((e) => _log('onError', e))
       ..onReconnectError((e) => _log('onReconnectError', e))
       ..onConnectError((e) => _log('onConnectError', e));
 
     return socket;
+  }
+
+  void _onConnect(void _) {
+    logger.d('SocketController.general.id: ${general.id}');
+    _log('onConnect');
   }
 
   Future<void> _logOutgoing(String event, dynamic data) async =>
@@ -47,5 +59,12 @@ class SocketController {
 
   void _log(String event, [dynamic data = '']) {
     logger.d('SocketController.$event $data');
+  }
+
+  Future<void> reconnect() async {
+    general
+      ..disconnect()
+      ..dispose();
+    await _connectGeneral();
   }
 }

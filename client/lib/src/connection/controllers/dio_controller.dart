@@ -10,9 +10,11 @@ import 'package:requests_inspector/requests_inspector.dart';
 @Singleton(order: 0)
 class DioController {
   late Dio _dio;
+  late CookieJar _cookieJar;
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
+    _cookieJar = await _getCookieJar();
     _dio = Dio(baseOptions())..interceptors.addAll(await _interceptors());
   }
 
@@ -49,7 +51,7 @@ class DioController {
 
   Future<List<Interceptor>> _interceptors() async {
     return [
-      if (!kIsWeb) CookieManager(await _getCookieJar()),
+      if (!kIsWeb) CookieManager(_cookieJar),
       _dioCacheInterceptor,
       if (!kIsWeb) _timeoutInterceptor,
       RequestsInspectorInterceptor(),

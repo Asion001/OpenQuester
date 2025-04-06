@@ -40,7 +40,7 @@ class _MobileHome extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authorized = watchIt<AuthController>().autorized;
+    final authorized = watchIt<AuthController>().authorized;
 
     return AutoTabsScaffold(
       appBarBuilder: (context, tabsRouter) {
@@ -83,7 +83,7 @@ class _WideHome extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authorized = watchIt<AuthController>().autorized;
+    final authorized = watchIt<AuthController>().authorized;
     return Scaffold(
       appBar: _homeAppBar(
         title: LocaleKeys.home_tabs_home.tr(),

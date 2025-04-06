@@ -10,7 +10,7 @@ class ProfilePage extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final autorized = watchPropertyValue((AuthController m) => m.autorized);
+    final autorized = watchPropertyValue((AuthController m) => m.authorized);
 
     return Scaffold(
       appBar: AppBar(),
@@ -34,10 +34,10 @@ class ProfilePage extends WatchingWidget {
   }
 
   Widget _loginField(BuildContext context) {
-    final loading = watchPropertyValue((AuthController m) => m.loading);
+    final loading = watch(getIt<AuthController>().loading);
 
     return IconButton(
-      onPressed: loading
+      onPressed: loading.value
           ? null
           : () async {
               final result = await getIt.get<AuthController>().loginUser();
@@ -47,7 +47,7 @@ class ProfilePage extends WatchingWidget {
                 ).showSnackBar(SnackBar(content: Text(result.$2 ?? '-')));
               }
             },
-      icon: loading
+      icon: loading.value
           ? Container(
               width: 24,
               height: 24,

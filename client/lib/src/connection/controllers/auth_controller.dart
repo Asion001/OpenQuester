@@ -6,14 +6,9 @@ import 'package:openquester/common_imports.dart';
 @Singleton(order: 2)
 class AuthController extends ChangeNotifier {
   ResponseUser? _userData;
-  bool get autorized => _userData != null;
+  bool get authorized => _userData != null;
 
-  bool _loading = false;
-  bool get loading => _loading;
-  set loading(bool value) {
-    _loading = value;
-    notifyListeners();
-  }
+  ValueNotifier<bool> loading = ValueNotifier(false);
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
@@ -26,7 +21,7 @@ class AuthController extends ChangeNotifier {
 
   Future<(bool, String?)> loginUser() async {
     try {
-      loading = true;
+      loading.value = true;
 
       final accessTokenResponse = await getIt<Oauth2Controller>().auth();
       final inputOauthLogin = InputOauthLogin(
@@ -39,12 +34,13 @@ class AuthController extends ChangeNotifier {
             body: inputOauthLogin,
           );
 
-      loading = false;
+      notifyListeners();
       return (_userData != null, 'AuthData == null');
     } catch (e, s) {
       logger.e(e, stackTrace: s);
-      loading = false;
       return (false, e.toString());
+    } finally {
+      loading.value = false;
     }
   }
 
