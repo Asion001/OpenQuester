@@ -1,3 +1,4 @@
+import { instrument } from "@socket.io/admin-ui";
 import express from "express";
 import { createServer, type Server } from "http";
 import { Server as IOServer } from "socket.io";
@@ -18,12 +19,18 @@ const main = async () => {
   const app = express();
   const io = new IOServer(createServer(app), {
     cors: {
-      origin: "*",
+      origin: "https://admin.socket.io",
       methods: ["GET", "POST"],
       credentials: true,
     },
+    cookie: true,
     connectTimeout: 45000,
     transports: ["websocket", "polling"],
+  });
+
+  instrument(io, {
+    auth: false,
+    mode: "development",
   });
 
   const context = new ApiContext({

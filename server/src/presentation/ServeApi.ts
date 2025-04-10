@@ -17,6 +17,7 @@ import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { type Database } from "infrastructure/database/Database";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
+import { SocketRedisService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { TemplateUtils } from "infrastructure/utils/TemplateUtils";
@@ -118,6 +119,7 @@ export class ServeApi {
 
     // Services
     const userService = Container.get<UserService>(CONTAINER_TYPES.UserService);
+    const gameService = Container.get<GameService>(CONTAINER_TYPES.GameService);
     const packageService = Container.get<PackageService>(
       CONTAINER_TYPES.PackageService
     );
@@ -129,6 +131,9 @@ export class ServeApi {
 
     // Repositories
     const redis = Container.get<Redis>(CONTAINER_TYPES.Redis);
+    const socketRedisService = Container.get<SocketRedisService>(
+      CONTAINER_TYPES.SocketRedisService
+    );
     const userRepository = Container.get<UserRepository>(
       CONTAINER_TYPES.UserRepository
     );
@@ -143,7 +148,8 @@ export class ServeApi {
       redis,
       userRepository,
       fileRepository,
-      storage
+      storage,
+      socketRedisService
     );
     new PackageRestApiController(app, packageService);
     new FileRestApiController(app, storage);
@@ -160,6 +166,6 @@ export class ServeApi {
     }
 
     // Socket
-    new SocketIOInitializer(io);
+    new SocketIOInitializer(io, userService, gameService, socketRedisService);
   }
 }

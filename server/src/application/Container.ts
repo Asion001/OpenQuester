@@ -63,5 +63,6 @@ export const CONTAINER_TYPES = {
   DependencyService: Symbol("DependencyService"),
   S3StorageService: Symbol("S3StorageService"),
   RedisService: Symbol("RedisService"),
+  SocketRedisService: Symbol("SocketRedisService"),
   PackageService: Symbol("PackageService"),
 };

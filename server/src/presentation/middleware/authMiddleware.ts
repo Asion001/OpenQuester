@@ -3,7 +3,7 @@ import Joi from "joi";
 
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { TranslateService as ts } from "application/services/text/TranslateService";
-import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ServerResponse } from "domain/enums/ServerResponse";
@@ -16,7 +16,7 @@ import { ValueUtils } from "infrastructure/utils/ValueUtils";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 const isPublicEndpoint = (url: string, method: string): boolean => {
-  const publicEndpoints = ["v1/auth", "v1/api-docs", "v1/users", "v1/files"];
+  const publicEndpoints = ["v1/api-docs", "v1/users", "v1/files"];
 
   if (Environment.instance.ENV === EnvType.DEV) {
     publicEndpoints.push("v1/dev");
@@ -25,6 +25,8 @@ const isPublicEndpoint = (url: string, method: string): boolean => {
   const conditionalEndpoints = [
     { url: "v1/packages", method: "GET" },
     { url: "v1/games", method: "GET" },
+    { url: "v1/auth/logout", method: "GET" },
+    { url: "v1/auth/oauth2", method: "POST" },
   ];
 
   return (
@@ -70,7 +72,7 @@ export const verifySession = async (
     CONTAINER_TYPES.UserRepository
   ).getUserByRequest(req, {
     select: USER_SELECT_FIELDS,
-    relations: ["avatar", "permissions"],
+    relations: USER_RELATIONS,
     relationSelects: {
       avatar: ["id", "filename"],
       permissions: ["id", "name"],
