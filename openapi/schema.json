@@ -2008,7 +2008,28 @@
           "role": {
             "type": "string",
             "enum": ["showman", "player", "spectator"],
-            "examples": ["Q31XAD"]
+            "examples": ["player"]
+          }
+        }
+      },
+      "IOGameChatMessage": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "integer",
+            "examples": [13, 31]
+          },
+          "username": {
+            "type": "string",
+            "examples": ["BustaRhymes"]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "message": {
+            "type": "string",
+            "examples": ["Whats up?", ":)"]
           }
         }
       }

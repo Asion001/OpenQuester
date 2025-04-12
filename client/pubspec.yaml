@@ -19,9 +19,9 @@ dependencies:
   envied: ^1.1.1
   package_info_plus: ^8.3.0
   logger: ^2.5.0
-  flutter_native_splash: ^2.4.5
+  flutter_native_splash: ^2.4.6
   dio: ^5.8.0+1
-  file_picker: ^10.0.0
+  file_picker: ^10.1.2
   siq_file:
     path: ./packages/siq_file/
   injectable: ^2.5.0
@@ -46,6 +46,8 @@ dependencies:
   cross_file: ^0.3.4+2
   squadron: ^7.1.1
   collection: ^1.19.1
+  flutter_chat_ui: ^1.6.15
+  flutter_chat_types: ^3.6.2
 
 dev_dependencies:
   flutter_test:
@@ -63,7 +65,7 @@ dev_dependencies:
   test: ^1.25.15
   flutter_gen_runner: ^5.10.0
   very_good_analysis: ^7.0.0
-  squadron_builder: ^7.1.0
+  squadron_builder: ^7.1.1
 
 flutter:
   uses-material-design: true

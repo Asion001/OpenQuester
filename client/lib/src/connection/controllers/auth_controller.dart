@@ -6,6 +6,7 @@ import 'package:openquester/common_imports.dart';
 @Singleton(order: 2)
 class AuthController extends ChangeNotifier {
   ResponseUser? _userData;
+  ResponseUser? get user => _userData;
   bool get authorized => _userData != null;
 
   ValueNotifier<bool> loading = ValueNotifier(false);

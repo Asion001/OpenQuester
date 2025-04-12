@@ -58,7 +58,7 @@ class SocketController {
   }
 
   void _log(String event, [dynamic data = '']) {
-    logger.d('SocketController.$event $data');
+    logger.t('SocketController.$event $data');
   }
 
   Future<void> reconnect() async {

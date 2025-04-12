@@ -69,6 +69,7 @@ export 'models/package_round.dart';
 export 'models/package_create_input_data.dart';
 export 'models/input_socket_auth.dart';
 export 'models/io_game_join_input.dart';
+export 'models/io_game_chat_message.dart';
 export 'models/permissions.dart';
 export 'models/answers.dart';
 export 'models/input_oauth_login_oauth_provider.dart';
