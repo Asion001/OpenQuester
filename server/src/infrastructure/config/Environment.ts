@@ -4,7 +4,7 @@ import type Redis from "ioredis";
 import path from "path";
 import { type LoggerOptions } from "typeorm";
 
-import { SESSION_SECRET_REDIS_KEY } from "domain/constants/session";
+import { SESSION_SECRET_REDIS_NSP } from "domain/constants/session";
 import { ServerResponse } from "domain/enums/ServerResponse";
 import { ServerError } from "domain/errors/ServerError";
 import { EnvVar } from "domain/types/env/env";
@@ -146,12 +146,12 @@ export class Environment {
   }
 
   public async loadSessionConfig(length: number, redisClient: Redis) {
-    const secret = await redisClient.get(SESSION_SECRET_REDIS_KEY);
+    const secret = await redisClient.get(SESSION_SECRET_REDIS_NSP);
     if (secret) {
       this.SESSION_SECRET = secret;
     } else {
       this.SESSION_SECRET = await SessionUtils.generateSecret(length);
-      await redisClient.set(SESSION_SECRET_REDIS_KEY, this.SESSION_SECRET);
+      await redisClient.set(SESSION_SECRET_REDIS_NSP, this.SESSION_SECRET);
     }
 
     this.SESSION_MAX_AGE = this.getEnvVar(

@@ -2,7 +2,7 @@ import { type Express, type Request, type Response, Router } from "express";
 
 import { TranslateService as ts } from "application/services/text/TranslateService";
 import { type UserService } from "application/services/user/UserService";
-import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { Permissions } from "domain/enums/Permissions";
@@ -114,7 +114,7 @@ export class UserRestApiController {
 
     const user = await this.userRepository.get(userInputDTO.id, {
       select: USER_SELECT_FIELDS,
-      relations: ["avatar", "permissions"],
+      relations: USER_RELATIONS,
       relationSelects: {
         avatar: ["id", "filename"],
         permissions: ["id", "name"],

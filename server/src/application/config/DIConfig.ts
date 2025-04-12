@@ -24,6 +24,7 @@ import { PackageTagRepository } from "infrastructure/database/repositories/TagRe
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
 import { RedisService } from "infrastructure/services/RedisService";
+import { SocketRedisService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 
 export class DIConfig {
@@ -149,6 +150,14 @@ export class DIConfig {
     Container.register(
       CONTAINER_TYPES.RedisService,
       new RedisService(),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.SocketRedisService,
+      new SocketRedisService(
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService)
+      ),
       "service"
     );
 

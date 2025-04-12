@@ -7,6 +7,8 @@ ENV=
 # "*" will allow all origins. To set specific origin domain use this: "localhost,some-host,another-host"
 # Important for custom hosts - Do not set leading dot ".", type only domain itself.
 CORS_ORIGINS=
+# Optional, by default will use CORS_ORIGINS
+SOCKET_IO_CORS_ORIGINS=
 
 # Domain (full) to which cookie will be assigned
 API_DOMAIN=

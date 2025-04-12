@@ -68,7 +68,7 @@ const questionSchema = baseQuestionSchema.keys({
   }),
   maxPrice: Joi.when("type", {
     is: "stake",
-    then: Joi.number().required(),
+    then: Joi.number().allow(null).required(),
     otherwise: Joi.forbidden(),
   }),
   allowedPrices: Joi.when("type", {
@@ -76,9 +76,9 @@ const questionSchema = baseQuestionSchema.keys({
     then: Joi.when("subType", {
       is: "customPrice",
       then: Joi.array().items(Joi.number()).min(2).max(5).required(),
-      otherwise: Joi.forbidden(),
+      otherwise: Joi.optional().valid(null),
     }),
-    otherwise: Joi.forbidden(),
+    otherwise: Joi.optional().valid(null),
   }),
   transferType: Joi.when("type", {
     is: "secret",

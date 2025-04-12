@@ -12,6 +12,8 @@ import { Logger } from "infrastructure/utils/Logger";
 import { verifySession } from "presentation/middleware/authMiddleware";
 import { logMiddleware } from "presentation/middleware/log/debugLogMiddleware";
 
+const CORS_PREFIX = "[CORS]: ";
+
 export class MiddlewareController {
   private readonly allowedHosts: string[];
   private readonly allOriginsAllowed: boolean = false;
@@ -22,11 +24,12 @@ export class MiddlewareController {
   ) {
     this.allowedHosts = this.ctx.env.CORS_ORIGINS;
     Logger.gray(
-      `Allowed CORS origins for current instance: [${this.allowedHosts}]`
+      `Allowed CORS origins for current instance: [${this.allowedHosts}]`,
+      CORS_PREFIX
     );
     if (this.allowedHosts.some((host) => host === "*")) {
       this.allOriginsAllowed = true;
-      Logger.warn("Current instance's CORS allows all origins !!");
+      Logger.warn("Current instance's CORS allows all origins !!", CORS_PREFIX);
     }
   }
 
@@ -47,7 +50,9 @@ export class MiddlewareController {
 
             const isOriginAllowed = this.allowedHosts.some(
               (allowedHost) =>
-                domain === allowedHost || domain.endsWith(`.${allowedHost}`)
+                domain === allowedHost ||
+                domain.endsWith(`.${allowedHost}`) ||
+                origin === allowedHost
             );
 
             if (isOriginAllowed) {
@@ -73,6 +78,7 @@ export class MiddlewareController {
     // Trust first proxy to enable secure cookies
     this.ctx.app.set("trust proxy", 1);
 
+    const isProd = this.ctx.env.ENV === EnvType.PROD;
     // Session
     this.ctx.app.use(
       session({
@@ -81,9 +87,9 @@ export class MiddlewareController {
         resave: false,
         saveUninitialized: false,
         cookie: {
-          secure: this.ctx.env.ENV === EnvType.PROD,
+          secure: isProd,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
-          sameSite: "none",
+          sameSite: isProd ? "none" : "lax",
           domain: this.ctx.env.API_DOMAIN,
         },
       })

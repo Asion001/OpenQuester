@@ -1,10 +1,11 @@
-import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
 import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
+import { SelectOptions } from "domain/types/SelectOptions";
 import { UpdateUserDTO } from "domain/types/user/UpdateUserData";
 import { User } from "infrastructure/database/models/User";
 import { FileUsageRepository } from "infrastructure/database/repositories/FileUsageRepository";
@@ -26,7 +27,7 @@ export class UserService {
   ): Promise<PaginatedResult<UserDTO[]>> {
     const usersListPaginated = await this.userRepository.list(paginationOpts, {
       select: USER_SELECT_FIELDS,
-      relations: ["avatar", "permissions"],
+      relations: USER_RELATIONS,
       relationSelects: {
         avatar: ["id", "filename"],
         permissions: ["id", "name"],
@@ -43,11 +44,14 @@ export class UserService {
   /**
    * Retrieve one user
    */
-  public async get(userId: number) {
+  public async get(
+    userId: number,
+    selectOptions?: SelectOptions<User>
+  ): Promise<UserDTO> {
     const user = await this.userRepository.get(userId, {
-      select: USER_SELECT_FIELDS,
-      relations: ["avatar", "permissions"],
-      relationSelects: {
+      select: selectOptions?.select ?? USER_SELECT_FIELDS,
+      relations: selectOptions?.relations ?? USER_RELATIONS,
+      relationSelects: selectOptions?.relationSelects ?? {
         avatar: ["id", "filename"],
         permissions: ["id", "name"],
       },
