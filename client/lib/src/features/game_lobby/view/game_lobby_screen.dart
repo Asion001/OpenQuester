@@ -16,6 +16,7 @@ class GameLobbyScreen extends StatelessWidget {
         title: Text(gameId),
       ),
       body: const MaxSizeContainer(
+        maxWidth: UiModeUtils.maximumDialogWidth,
         child: ChatScreen(),
       ),
     );

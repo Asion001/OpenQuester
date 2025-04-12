@@ -34,6 +34,7 @@ class SocketChatController extends ChangeNotifier {
       id: UniqueKey().toString(),
       author: user,
       text: message.text,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
     );
     messages.insert(0, textMessage);
     notifyListeners();
@@ -41,13 +42,13 @@ class SocketChatController extends ChangeNotifier {
 
   void _onChatMessage(dynamic data) {
     final message = IOGameChatMessage.fromJson(
-      jsonDecode(data.toString()) as Map<String, dynamic>,
+      data as Map<String, dynamic>,
     );
     final textMessage = TextMessage(
       id: UniqueKey().toString(),
       author: User(id: message.user.toString(), firstName: message.username),
       text: message.message,
-      createdAt: message.timestamp.millisecondsSinceEpoch,
+      createdAt: message.timestamp,
     );
     messages.insert(0, textMessage);
     notifyListeners();

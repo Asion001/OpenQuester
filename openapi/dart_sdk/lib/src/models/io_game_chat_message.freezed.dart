@@ -22,7 +22,7 @@ IOGameChatMessage _$IOGameChatMessageFromJson(Map<String, dynamic> json) {
 mixin _$IOGameChatMessage {
   int get user => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  DateTime get timestamp => throw _privateConstructorUsedError;
+  int get timestamp => throw _privateConstructorUsedError;
   String get message => throw _privateConstructorUsedError;
 
   /// Serializes this IOGameChatMessage to a JSON map.
@@ -41,7 +41,7 @@ abstract class $IOGameChatMessageCopyWith<$Res> {
           IOGameChatMessage value, $Res Function(IOGameChatMessage) then) =
       _$IOGameChatMessageCopyWithImpl<$Res, IOGameChatMessage>;
   @useResult
-  $Res call({int user, String username, DateTime timestamp, String message});
+  $Res call({int user, String username, int timestamp, String message});
 }
 
 /// @nodoc
@@ -76,7 +76,7 @@ class _$IOGameChatMessageCopyWithImpl<$Res, $Val extends IOGameChatMessage>
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -93,7 +93,7 @@ abstract class _$$IOGameChatMessageImplCopyWith<$Res>
       __$$IOGameChatMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int user, String username, DateTime timestamp, String message});
+  $Res call({int user, String username, int timestamp, String message});
 }
 
 /// @nodoc
@@ -126,7 +126,7 @@ class __$$IOGameChatMessageImplCopyWithImpl<$Res>
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as int,
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -152,7 +152,7 @@ class _$IOGameChatMessageImpl implements _IOGameChatMessage {
   @override
   final String username;
   @override
-  final DateTime timestamp;
+  final int timestamp;
   @override
   final String message;
 
@@ -200,7 +200,7 @@ abstract class _IOGameChatMessage implements IOGameChatMessage {
   const factory _IOGameChatMessage(
       {required final int user,
       required final String username,
-      required final DateTime timestamp,
+      required final int timestamp,
       required final String message}) = _$IOGameChatMessageImpl;
 
   factory _IOGameChatMessage.fromJson(Map<String, dynamic> json) =
@@ -211,7 +211,7 @@ abstract class _IOGameChatMessage implements IOGameChatMessage {
   @override
   String get username;
   @override
-  DateTime get timestamp;
+  int get timestamp;
   @override
   String get message;
 

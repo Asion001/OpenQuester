@@ -2024,8 +2024,7 @@
             "examples": ["BustaRhymes"]
           },
           "timestamp": {
-            "type": "string",
-            "format": "date-time"
+            "type": "integer"
           },
           "message": {
             "type": "string",

@@ -11,7 +11,7 @@ _$IOGameChatMessageImpl _$$IOGameChatMessageImplFromJson(
     _$IOGameChatMessageImpl(
       user: (json['user'] as num).toInt(),
       username: json['username'] as String,
-      timestamp: DateTime.parse(json['timestamp'] as String),
+      timestamp: (json['timestamp'] as num).toInt(),
       message: json['message'] as String,
     );
 
@@ -20,6 +20,6 @@ Map<String, dynamic> _$$IOGameChatMessageImplToJson(
     <String, dynamic>{
       'user': instance.user,
       'username': instance.username,
-      'timestamp': instance.timestamp.toIso8601String(),
+      'timestamp': instance.timestamp,
       'message': instance.message,
     };

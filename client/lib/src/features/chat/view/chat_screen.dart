@@ -13,6 +13,7 @@ class ChatScreen extends WatchingWidget {
       messages: controller.messages,
       user: controller.user,
       theme: AppTheme.chatTheme(context),
+      showUserNames: true,
     );
   }
 }

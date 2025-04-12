@@ -12,7 +12,7 @@ class IOGameChatMessage with _$IOGameChatMessage {
   const factory IOGameChatMessage({
     required int user,
     required String username,
-    required DateTime timestamp,
+    required int timestamp,
     required String message,
   }) = _IOGameChatMessage;
   

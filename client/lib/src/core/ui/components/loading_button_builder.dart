@@ -29,7 +29,7 @@ class LoadingButtonBuilder extends StatelessWidget {
       try {
         await onPressed();
       } finally {
-        setState(() => loading = false);
+        if (context.mounted) setState(() => loading = false);
       }
     }
 
