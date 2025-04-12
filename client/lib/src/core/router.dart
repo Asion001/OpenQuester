@@ -8,7 +8,7 @@ import 'package:openquester/common_imports.dart';
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(page: HomeTabsRoute.page, initial: true, children: homeTabs),
+        AutoRoute(page: HomeTabsRoute.page, children: homeTabs, path: '/'),
         AutoRoute(page: ClickerRoute.page, path: '/clicker'),
         AutoRoute(page: ProfileRoute.page, path: '/profile'),
         AutoRoute(page: TestScreenRoute.page, path: '/test'),
