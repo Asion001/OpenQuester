@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'discord_auth_failed_response.dart';
+part of 'general_error_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DiscordAuthFailedResponseImpl _$$DiscordAuthFailedResponseImplFromJson(
+_$GeneralErrorResponseImpl _$$GeneralErrorResponseImplFromJson(
         Map<String, dynamic> json) =>
-    _$DiscordAuthFailedResponseImpl(
+    _$GeneralErrorResponseImpl(
       error: json['error'] as String,
     );
 
-Map<String, dynamic> _$$DiscordAuthFailedResponseImplToJson(
-        _$DiscordAuthFailedResponseImpl instance) =>
+Map<String, dynamic> _$$GeneralErrorResponseImplToJson(
+        _$GeneralErrorResponseImpl instance) =>
     <String, dynamic>{
       'error': instance.error,
     };

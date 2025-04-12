@@ -43,7 +43,7 @@ export 'models/package_not_found_response.dart';
 export 'models/invalid_session_response.dart';
 export 'models/user_not_found_response.dart';
 export 'models/permission_denied_response.dart';
-export 'models/discord_auth_failed_response.dart';
+export 'models/general_error_response.dart';
 export 'models/game_not_found_response.dart';
 export 'models/game_event_subscription.dart';
 export 'models/age_restriction.dart';
@@ -67,6 +67,8 @@ export 'models/package_question_union.dart';
 export 'models/package_theme.dart';
 export 'models/package_round.dart';
 export 'models/package_create_input_data.dart';
+export 'models/input_socket_auth.dart';
+export 'models/io_game_join_input.dart';
 export 'models/permissions.dart';
 export 'models/answers.dart';
 export 'models/input_oauth_login_oauth_provider.dart';
@@ -79,6 +81,7 @@ export 'models/simple_question_type.dart';
 export 'models/stake_question_type.dart';
 export 'models/stake_question_sub_type.dart';
 export 'models/hidden_question_type.dart';
+export 'models/io_game_join_input_role.dart';
 // Root client
 export 'rest_client.dart';
 
