@@ -34,7 +34,14 @@ class GameLobbyController {
   void clear() {
     try {
       gameId = null;
+      socket?.destroy();
       socket?.dispose();
+      socket = null;
     } catch (_) {}
+  }
+
+  Future<void> leave() async {
+    socket?.emit('leave');
+    clear();
   }
 }

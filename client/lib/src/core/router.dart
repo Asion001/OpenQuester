@@ -17,7 +17,7 @@ class AppRouter extends RootStackRouter {
           page: GamePreviewRoute.page,
           path: '/game-preview',
         ),
-        AutoRoute(page: GameLobbyRoute.page, path: '/game/:gameId'),
+        AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId'),
       ];
 
   List<AutoRoute> get homeTabs => [
