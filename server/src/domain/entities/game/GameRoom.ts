@@ -55,6 +55,7 @@ export class GameRoom {
     const playerData = this._users.get(user.id)?.playerData;
 
     if (playerData) {
+      playerData.gameStatus = PlayerGameStatus.IN_GAME;
       return playerData;
     }
 
@@ -73,7 +74,9 @@ export class GameRoom {
     });
 
     this._scores.set(user.id, 0);
-    this._slots[await this._getFirstFreeSlotIndex()] = user.id;
+    if (role !== PlayerRole.SPECTATOR) {
+      this._slots[await this._getFirstFreeSlotIndex()] = user.id;
+    }
 
     return this._users.get(user.id)!.playerData;
   }
@@ -92,7 +95,7 @@ export class GameRoom {
     }
   }
 
-  public async checkFreeSlot() {
+  public checkFreeSlot() {
     return this._slots.some((slot) => slot === null);
   }
 

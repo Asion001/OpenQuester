@@ -50,7 +50,9 @@ export class MiddlewareController {
 
             const isOriginAllowed = this.allowedHosts.some(
               (allowedHost) =>
-                domain === allowedHost || domain.endsWith(`.${allowedHost}`)
+                domain === allowedHost ||
+                domain.endsWith(`.${allowedHost}`) ||
+                origin === allowedHost
             );
 
             if (isOriginAllowed) {
@@ -76,6 +78,7 @@ export class MiddlewareController {
     // Trust first proxy to enable secure cookies
     this.ctx.app.set("trust proxy", 1);
 
+    const isProd = this.ctx.env.ENV === EnvType.PROD;
     // Session
     this.ctx.app.use(
       session({
@@ -84,9 +87,9 @@ export class MiddlewareController {
         resave: false,
         saveUninitialized: false,
         cookie: {
-          secure: this.ctx.env.ENV === EnvType.PROD,
+          secure: isProd,
           maxAge: this.ctx.env.SESSION_MAX_AGE,
-          sameSite: "none",
+          sameSite: isProd ? "none" : "lax",
           domain: this.ctx.env.API_DOMAIN,
         },
       })

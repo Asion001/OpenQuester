@@ -77,6 +77,9 @@ export class SocketIOGameController {
 
   private _emitChatMessage(message: string) {
     this.socket.to(this._gameId).emit(SocketIOEvents.CHAT_MESSAGE, {
+      user: this._user!.id,
+      username: this._user!.username,
+      timestamp: new Date().getTime(),
       message,
     });
   }
@@ -94,7 +97,11 @@ export class SocketIOGameController {
       return;
     }
 
-    if (this._room.isInitialized && !this._room.checkFreeSlot()) {
+    if (
+      this._room.isInitialized &&
+      this._playerRole !== PlayerRole.SPECTATOR &&
+      !this._room.checkFreeSlot()
+    ) {
       return this._emitError(SocketClientResponse.GAME_IS_FULL);
     }
 
@@ -164,11 +171,10 @@ export class SocketIOGameController {
 
   private _handleLeave() {
     if (!this._user || !this._room?.hasPlayer(this._user.id)) {
-      this._emitError(SocketClientResponse.NOT_IN_GAME);
       return;
     }
 
-    this.socket.to(this._gameId).emit("leave", {
+    this.socket.to(this._gameId).emit("userLeave", {
       user: this._user.id,
     });
     this._room.removeUser(this._user.id);

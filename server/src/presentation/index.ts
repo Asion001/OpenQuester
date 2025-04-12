@@ -17,11 +17,48 @@ const main = async () => {
 
   // Initialize api context
   const app = express();
+
+  const origins =
+    process.env.SOCKET_IO_CORS_ORIGINS ?? process.env.CORS_ORIGINS;
+
+  const allowedHosts = origins ? origins.split(",") : [];
+  let allOriginsAllowed = allowedHosts.includes("*");
+
+  Logger.gray(
+    `Allowed CORS origins for socket.io: [${allowedHosts}]`,
+    "[IO CORS]: "
+  );
+  if (allowedHosts.some((host) => host === "*")) {
+    allOriginsAllowed = true;
+    Logger.warn("Current socket.io CORS allows all origins !!", "[IO CORS]: ");
+  }
+
   const io = new IOServer(createServer(app), {
     cors: {
-      origin: "https://admin.socket.io",
-      methods: ["GET", "POST"],
-      credentials: true,
+      origin: (origin, callback) => {
+        if (allOriginsAllowed || !origin) {
+          return callback(null, true);
+        }
+
+        try {
+          const domain = new URL(origin).hostname;
+          const isOriginAllowed = allowedHosts.some(
+            (allowedHost) =>
+              domain === allowedHost ||
+              domain.endsWith(`.${allowedHost}`) ||
+              origin === allowedHost
+          );
+
+          if (isOriginAllowed) {
+            return callback(null, origin);
+          }
+          return callback(
+            new Error(`CORS policy: Origin '${origin}' is not allowed`)
+          );
+        } catch {
+          return callback(new Error("CORS policy: Invalid origin provided"));
+        }
+      },
     },
     cookie: true,
     connectTimeout: 45000,
