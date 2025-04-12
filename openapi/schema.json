@@ -614,11 +614,11 @@
             }
           },
           "400": {
-            "description": "User logged in successfully",
+            "description": "User have error during logging",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DiscordAuthFailedResponse"
+                  "$ref": "#/components/schemas/GeneralErrorResponse"
                 }
               }
             }
@@ -637,6 +637,37 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/socket": {
+      "post": {
+        "summary": "Authorize socket.io connection",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InputSocketAuth"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully"
+          },
+          "400": {
+            "description": "User have error during logging",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralErrorResponse"
                 }
               }
             }
@@ -1395,12 +1426,12 @@
           }
         }
       },
-      "DiscordAuthFailedResponse": {
+      "GeneralErrorResponse": {
         "type": "object",
         "properties": {
           "error": {
             "type": "string",
-            "examples": ["Discord authentication is failed, please try again"]
+            "examples": ["Authentication is failed, please try again"]
           }
         }
       },
@@ -1957,6 +1988,29 @@
         },
         "required": ["title", "rounds"],
         "description": "Input for creating a new package; author is set via authentication"
+      },
+      "InputSocketAuth": {
+        "type": "object",
+        "properties": {
+          "socketId": {
+            "type": "string",
+            "examples": ["Q04nceF-7noEw52hAAAD"]
+          }
+        }
+      },
+      "IOGameJoinInput": {
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "examples": ["Q31XAD"]
+          },
+          "role": {
+            "type": "string",
+            "enum": ["showman", "player", "spectator"],
+            "examples": ["Q31XAD"]
+          }
+        }
       }
     }
   }
