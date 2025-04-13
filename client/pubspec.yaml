@@ -36,7 +36,6 @@ dependencies:
   infinite_scroll_pagination: ^5.0.0
   nb_utils: ^7.1.2
   dio_cache_interceptor: ^4.0.3
-  requests_inspector: ^4.2.1
   oauth2_client: ^4.1.0
   dio_cookie_manager: ^3.2.0
   path_provider: ^2.1.5

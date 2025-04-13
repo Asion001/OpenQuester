@@ -35,44 +35,53 @@ AppBar _homeAppBar({
   );
 }
 
-class _MobileHome extends WatchingWidget {
+class _MobileHome extends WatchingStatefulWidget {
   const _MobileHome();
+
+  @override
+  State<_MobileHome> createState() => _MobileHomeState();
+}
+
+class _MobileHomeState extends State<_MobileHome> {
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
     final authorized = watchIt<AuthController>().authorized;
 
-    return AutoTabsScaffold(
-      appBarBuilder: (context, tabsRouter) {
-        return _homeAppBar(
-          title: _destionations[tabsRouter.activeIndex].label,
-          context: context,
-          authorized: authorized,
-        );
-      },
-      routes: const [GamesListRoute(), PackagesListRoute()],
-      bottomNavigationBuilder: (_, tabsRouter) {
-        return NavigationBar(
-          selectedIndex: tabsRouter.activeIndex,
-          onDestinationSelected: tabsRouter.setActiveIndex,
-          destinations: _destionations,
-          height: 60,
-        );
-      },
+    return Scaffold(
+      appBar: _homeAppBar(
+        title: _destionations[index].$2.label,
+        context: context,
+        authorized: authorized,
+      ),
+      body: _destionations[index].$1,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: index,
+        onDestinationSelected: (newIndex) => setState(() => index = newIndex),
+        destinations: _destionations.map((e) => e.$2).toList(),
+        height: 60,
+      ),
     );
   }
 
-  List<NavigationDestination> get _destionations {
+  List<(Widget, NavigationDestination)> get _destionations {
     return [
-      NavigationDestination(
-        label: LocaleKeys.home_tabs_games.tr(),
-        icon: const Icon(Icons.games_outlined),
-        selectedIcon: const Icon(Icons.games),
+      (
+        const GamesListScreen(),
+        NavigationDestination(
+          label: LocaleKeys.home_tabs_games.tr(),
+          icon: const Icon(Icons.games_outlined),
+          selectedIcon: const Icon(Icons.games),
+        ),
       ),
-      NavigationDestination(
-        label: LocaleKeys.home_tabs_packages.tr(),
-        icon: const Icon(Icons.folder_outlined),
-        selectedIcon: const Icon(Icons.folder),
+      (
+        const PackagesListScreen(),
+        NavigationDestination(
+          label: LocaleKeys.home_tabs_packages.tr(),
+          icon: const Icon(Icons.folder_outlined),
+          selectedIcon: const Icon(Icons.folder),
+        ),
       ),
     ];
   }

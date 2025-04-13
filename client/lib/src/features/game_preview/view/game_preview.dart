@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
@@ -34,14 +36,15 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
     super.initState();
   }
 
-  Future<void> _init() async {
+  FutureOr<void> _init() async {
     if (widget.item == null) {
       await getIt<GamePreviewController>().initWithId(widget.gameId);
+      setState(() {});
     } else {
       loading = true;
-      await getIt<GamePreviewController>().init(widget.item!);
+      getIt<GamePreviewController>().init(widget.item!);
     }
-    if (mounted) setState(() => loading = false);
+    if (mounted && loading) setState(() => loading = false);
   }
 
   @override

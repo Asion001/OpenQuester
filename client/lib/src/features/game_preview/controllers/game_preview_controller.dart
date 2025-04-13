@@ -10,10 +10,10 @@ class GamePreviewController {
 
   Future<void> initWithId(String gameId) async {
     final item = await getIt<Api>().api.games.getV1GamesGameId(gameId: gameId);
-    await init(item);
+    init(item);
   }
 
-  Future<void> init(GameListItem item) async {
+  void init(GameListItem item) {
     game = item;
     // Warmup cache during animation
     unawaited(getIt<PackageController>().getPackage(item.package.id));

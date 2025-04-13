@@ -9,23 +9,21 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes {
     return [
-      AutoRoute(page: HomeTabsRoute.page, children: homeTabs, path: '/'),
-      AutoRoute(page: ClickerRoute.page, path: '/clicker'),
+      AutoRoute(
+        page: HomeTabsRoute.page,
+        path: '/',
+        initial: true,
+      ),
       BlurDialogRoute<void>(page: ProfileRoute.page, path: '/profile'),
-      AutoRoute(page: TestScreenRoute.page, path: '/test'),
-      AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
       BlurDialogRoute<void>(
         page: GamePreviewRoute.page,
-        path: '/games/:gameId/preview',
+        path: '/games/:gameId',
       ),
-      AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId'),
-    ];
-  }
-
-  List<AutoRoute> get homeTabs {
-    return [
-      AutoRoute(page: GamesListRoute.page, path: 'games'),
-      AutoRoute(page: PackagesListRoute.page, path: 'packages'),
+      AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId/lobby'),
+      AutoRoute(page: PackagesListRoute.page, path: '/packs'),
+      AutoRoute(page: ClickerRoute.page, path: '/clicker'),
+      AutoRoute(page: TestScreenRoute.page, path: '/test'),
+      AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
     ];
   }
 
@@ -34,6 +32,15 @@ class AppRouter extends RootStackRouter {
   @override
   RouteType get defaultRouteType =>
       const RouteType.adaptive(enablePredictiveBackGesture: true);
+
+  Future<Uri> deepLinkTransformer(Uri uri) async {
+    // Make home screen behind any page from deep link
+    Future.delayed(
+      Duration.zero,
+      () => getIt<AppRouter>().pushPath(uri.path),
+    );
+    return Uri(path: '/');
+  }
 }
 
 class BlurDialogRoute<R> extends CustomRoute<R> {

@@ -478,14 +478,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.10.0"
-  flutter_hooks:
-    dependency: transitive
-    description:
-      name: flutter_hooks
-      sha256: cde36b12f7188c85286fba9b38cc5a902e7279f36dd676967106c041dc9dde70
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.20.5"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -685,78 +677,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.3"
-  gql:
-    dependency: transitive
-    description:
-      name: gql
-      sha256: "650e79ed60c21579ca3bd17ebae8a8c8d22cde267b03a19bf3b35996baaa843a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1-alpha+1730759315362"
-  gql_dedupe_link:
-    dependency: transitive
-    description:
-      name: gql_dedupe_link
-      sha256: "10bee0564d67c24e0c8bd08bd56e0682b64a135e58afabbeed30d85d5e9fea96"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.4-alpha+1715521079596"
-  gql_error_link:
-    dependency: transitive
-    description:
-      name: gql_error_link
-      sha256: "93901458f3c050e33386dedb0ca7173e08cebd7078e4e0deca4bf23ab7a71f63"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0+1"
-  gql_exec:
-    dependency: transitive
-    description:
-      name: gql_exec
-      sha256: "394944626fae900f1d34343ecf2d62e44eb984826189c8979d305f0ae5846e38"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.1-alpha+1699813812660"
-  gql_http_link:
-    dependency: transitive
-    description:
-      name: gql_http_link
-      sha256: ef6ad24d31beb5a30113e9b919eec20876903cc4b0ee0d31550047aaaba7d5dd
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
-  gql_link:
-    dependency: transitive
-    description:
-      name: gql_link
-      sha256: c2b0adb2f6a60c2599b9128fb095316db5feb99ce444c86fb141a6964acedfa4
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1-alpha+1730759315378"
-  gql_transform_link:
-    dependency: transitive
-    description:
-      name: gql_transform_link
-      sha256: "0645fdd874ca1be695fd327271fdfb24c0cd6fa40774a64b946062f321a59709"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
-  graphql:
-    dependency: transitive
-    description:
-      name: graphql
-      sha256: b67471ddb954fd538c5930f989c5072e038a9fc910afc85a8a926a7f9b8c56d3
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.2.0"
-  graphql_flutter:
-    dependency: transitive
-    description:
-      name: graphql_flutter
-      sha256: fad0c3bad7e4aeec9a2eee11de8e4d305e0fbce260a24351b6c688911aea5fc8
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.2.0-beta.8"
   graphs:
     dependency: transitive
     description:
@@ -773,14 +693,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-  hive:
-    dependency: transitive
-    description:
-      name: hive
-      sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.3"
   html:
     dependency: transitive
     description:
@@ -1005,14 +917,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.1.2"
-  nested:
-    dependency: transitive
-    description:
-      name: nested
-      sha256: "03bac4c528c64c95c722ec99280375a6f2fc708eec17c7b3f07253b626cd2a20"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   nm:
     dependency: transitive
     description:
@@ -1029,14 +933,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
-  normalize:
-    dependency: transitive
-    description:
-      name: normalize
-      sha256: f78bf0552b9640c76369253f0b8fdabad4f3fbfc06bdae9359e71bee9a5b071b
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.1"
   oauth2_client:
     dependency: "direct main"
     description:
@@ -1188,14 +1084,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.1"
-  provider:
-    dependency: transitive
-    description:
-      name: provider
-      sha256: "489024f942069c2920c844ee18bb3d467c69e48955a4f32d1677f71be103e310"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.4"
   pub_semver:
     dependency: transitive
     description:
@@ -1228,14 +1116,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
-  requests_inspector:
-    dependency: "direct main"
-    description:
-      name: requests_inspector
-      sha256: "300f53d3ec5d02db6145edd5ca4f6d5319402d148733673e7302151dcf6c5893"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.1"
   retrofit:
     dependency: transitive
     description:
@@ -1244,14 +1124,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.4.2"
-  rxdart:
-    dependency: transitive
-    description:
-      name: rxdart
-      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.28.0"
   scroll_to_index:
     dependency: transitive
     description:
@@ -1260,38 +1132,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  sensors_plus:
-    dependency: transitive
-    description:
-      name: sensors_plus
-      sha256: "905282c917c6bb731c242f928665c2ea15445aa491249dea9d98d7c79dc8fd39"
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.1.1"
-  sensors_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: sensors_plus_platform_interface
-      sha256: "58815d2f5e46c0c41c40fb39375d3f127306f7742efe3b891c0b1c87e2b5cd5d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
-  share_plus:
-    dependency: transitive
-    description:
-      name: share_plus
-      sha256: fce43200aa03ea87b91ce4c3ac79f0cecd52e2a7a56c7a4185023c271fbfa6da
-      url: "https://pub.dev"
-    source: hosted
-    version: "10.1.4"
-  share_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: share_plus_platform_interface
-      sha256: cc012a23fc2d479854e6c80150696c4a5f5bb62cb89af4de1c505cf78d0a5d0b
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.2"
   shared_preferences:
     dependency: "direct main"
     description:
