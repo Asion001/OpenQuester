@@ -29,36 +29,15 @@ class SocketController {
     final options = optionsBuilder.build();
     final url = socketUri.replace(path: path ?? '').toString();
     final socket = io(url, options)
-      ..onAny(_logRequest)
-      ..onAnyOutgoing(_logOutgoing)
-      ..onConnect(_onConnect)
-      ..onDisconnect((_) => _log('onDisconnect'))
-      ..onError((e) => _log('onError', e))
-      ..onReconnectError((e) => _log('onReconnectError', e))
-      ..onConnectError((e) => _log('onConnectError', e));
+      ..onAny(logRequest)
+      ..onAnyOutgoing(logOutgoing)
+      ..onConnect(onConnect)
+      ..onDisconnect((_) => log('onDisconnect'))
+      ..onError((e) => log('onError', e))
+      ..onReconnectError((e) => log('onReconnectError', e))
+      ..onConnectError((e) => log('onConnectError', e));
 
     return socket;
-  }
-
-  void _onConnect(void _) {
-    logger.d('SocketController.general.id: ${general.id}');
-    _log('onConnect');
-  }
-
-  Future<void> _logOutgoing(String event, dynamic data) async =>
-      _logRequest(event, data, outgoing: true);
-
-  Future<void> _logRequest(
-    String event,
-    dynamic data, {
-    bool outgoing = false,
-  }) async {
-    final logData = data is Map ? jsonEncode(data) : data.toString();
-    _log('event', [event, logData].join('\n'));
-  }
-
-  void _log(String event, [dynamic data = '']) {
-    logger.t('SocketController.$event $data');
   }
 
   Future<void> reconnect() async {
@@ -66,5 +45,25 @@ class SocketController {
       ..disconnect()
       ..dispose();
     await _connectGeneral();
+  }
+
+  static void onConnect(dynamic data) {
+    log('onConnect: $data');
+  }
+
+  static Future<void> logOutgoing(String event, [dynamic data]) async =>
+      logRequest(event, data, outgoing: true);
+
+  static Future<void> logRequest(
+    String event,
+    dynamic data, {
+    bool outgoing = false,
+  }) async {
+    final logData = data is Map ? jsonEncode(data) : data.toString();
+    log('event', [event, logData].join('\n'));
+  }
+
+  static void log(String event, [dynamic data = '']) {
+    logger.t('SocketController.$event $data');
   }
 }
