@@ -9,30 +9,38 @@ import 'package:socket_io_client/socket_io_client.dart';
 class SocketChatController extends ChangeNotifier {
   List<Message> messages = [];
 
-  late User user;
-  late Socket _socket;
+  User? user;
+  Socket? _socket;
 
   static const _eventKey = 'chat-message';
 
+  void clear() {
+    _socket?.destroy();
+    _socket = null;
+    user = null;
+    messages.clear();
+    notifyListeners();
+  }
+
   Future<void> init({required Socket socket}) async {
+    clear();
     final restUser = getIt<AuthController>().user!;
     _socket = socket;
-    _socket.on(_eventKey, _onChatMessage);
+    _socket?.on(_eventKey, _onChatMessage);
     user = User(
       id: restUser.id.toString(),
       firstName: restUser.username,
       imageUrl: restUser.avatar,
       role: Role.user,
     );
-    messages.clear();
     notifyListeners();
   }
 
   void onSendPressed(PartialText message) {
-    _socket.emit(_eventKey, jsonEncode({'message': message.text}));
+    _socket?.emit(_eventKey, jsonEncode({'message': message.text}));
     final textMessage = TextMessage(
       id: UniqueKey().toString(),
-      author: user,
+      author: user!,
       text: message.text,
       createdAt: DateTime.now().millisecondsSinceEpoch,
     );

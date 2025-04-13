@@ -11,7 +11,7 @@ class ChatScreen extends WatchingWidget {
     return Chat(
       onSendPressed: controller.onSendPressed,
       messages: controller.messages,
-      user: controller.user,
+      user: controller.user!,
       theme: AppTheme.chatTheme(context),
       showUserNames: true,
     );

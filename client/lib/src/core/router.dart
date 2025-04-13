@@ -7,23 +7,27 @@ import 'package:openquester/common_imports.dart';
 @singleton
 class AppRouter extends RootStackRouter {
   @override
-  List<AutoRoute> get routes => [
-        AutoRoute(page: HomeTabsRoute.page, children: homeTabs, path: '/'),
-        AutoRoute(page: ClickerRoute.page, path: '/clicker'),
-        AutoRoute(page: ProfileRoute.page, path: '/profile'),
-        AutoRoute(page: TestScreenRoute.page, path: '/test'),
-        AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
-        BlurDialogRoute<void>(
-          page: GamePreviewRoute.page,
-          path: '/game-preview',
-        ),
-        AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId'),
-      ];
+  List<AutoRoute> get routes {
+    return [
+      AutoRoute(page: HomeTabsRoute.page, children: homeTabs, path: '/'),
+      AutoRoute(page: ClickerRoute.page, path: '/clicker'),
+      BlurDialogRoute<void>(page: ProfileRoute.page, path: '/profile'),
+      AutoRoute(page: TestScreenRoute.page, path: '/test'),
+      AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
+      BlurDialogRoute<void>(
+        page: GamePreviewRoute.page,
+        path: '/games/:gameId/preview',
+      ),
+      AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId'),
+    ];
+  }
 
-  List<AutoRoute> get homeTabs => [
-        AutoRoute(page: GamesListRoute.page, path: 'games'),
-        AutoRoute(page: PackagesListRoute.page, path: 'packages'),
-      ];
+  List<AutoRoute> get homeTabs {
+    return [
+      AutoRoute(page: GamesListRoute.page, path: 'games'),
+      AutoRoute(page: PackagesListRoute.page, path: 'packages'),
+    ];
+  }
 
   static AppRouter get I => getIt<AppRouter>();
 

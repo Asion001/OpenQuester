@@ -95,12 +95,14 @@ class GameLobbyRouteArgs {
 /// [_i3.GamePreviewScreen]
 class GamePreviewRoute extends _i10.PageRouteInfo<GamePreviewRouteArgs> {
   GamePreviewRoute({
-    required _i12.GameListItem item,
+    required String gameId,
+    _i12.GameListItem? item,
     _i11.Key? key,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           GamePreviewRoute.name,
-          args: GamePreviewRouteArgs(item: item, key: key),
+          args: GamePreviewRouteArgs(gameId: gameId, item: item, key: key),
+          rawPathParams: {'gameId': gameId},
           initialChildren: children,
         );
 
@@ -109,22 +111,32 @@ class GamePreviewRoute extends _i10.PageRouteInfo<GamePreviewRouteArgs> {
   static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<GamePreviewRouteArgs>();
-      return _i3.GamePreviewScreen(item: args.item, key: args.key);
+      final pathParams = data.inheritedPathParams;
+      final args = data.argsAs<GamePreviewRouteArgs>(
+        orElse: () =>
+            GamePreviewRouteArgs(gameId: pathParams.getString('gameId')),
+      );
+      return _i3.GamePreviewScreen(
+        gameId: args.gameId,
+        item: args.item,
+        key: args.key,
+      );
     },
   );
 }
 
 class GamePreviewRouteArgs {
-  const GamePreviewRouteArgs({required this.item, this.key});
+  const GamePreviewRouteArgs({required this.gameId, this.item, this.key});
 
-  final _i12.GameListItem item;
+  final String gameId;
+
+  final _i12.GameListItem? item;
 
   final _i11.Key? key;
 
   @override
   String toString() {
-    return 'GamePreviewRouteArgs{item: $item, key: $key}';
+    return 'GamePreviewRouteArgs{gameId: $gameId, item: $item, key: $key}';
   }
 }
 
@@ -199,7 +211,7 @@ class PackagesListRoute extends _i10.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i8.ProfilePage]
+/// [_i8.ProfileScreen]
 class ProfileRoute extends _i10.PageRouteInfo<void> {
   const ProfileRoute({List<_i10.PageRouteInfo>? children})
       : super(ProfileRoute.name, initialChildren: children);
@@ -209,7 +221,7 @@ class ProfileRoute extends _i10.PageRouteInfo<void> {
   static _i10.PageInfo page = _i10.PageInfo(
     name,
     builder: (data) {
-      return _i10.DeferredWidget(_i8.loadLibrary, () => _i8.ProfilePage());
+      return _i10.DeferredWidget(_i8.loadLibrary, () => _i8.ProfileScreen());
     },
   );
 }

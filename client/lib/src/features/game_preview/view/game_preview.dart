@@ -6,10 +6,12 @@ import 'package:openquester/openquester.dart';
 )
 class GamePreviewScreen extends StatefulWidget {
   const GamePreviewScreen({
-    required this.item,
+    @PathParam() required this.gameId,
+    this.item,
     super.key,
   });
-  final GameListItem item;
+  final GameListItem? item;
+  final String gameId;
 
   @override
   State<GamePreviewScreen> createState() => _GamePreviewScreenState();
@@ -17,10 +19,11 @@ class GamePreviewScreen extends StatefulWidget {
 
 class _GamePreviewScreenState extends State<GamePreviewScreen> {
   bool showList = false;
+  bool loading = false;
+
   @override
   void initState() {
-    getIt<GamePreviewController>().init(widget.item);
-
+    _init();
     // Fixes rebuilds in during animation
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => Future.delayed(
@@ -31,6 +34,16 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
     super.initState();
   }
 
+  Future<void> _init() async {
+    if (widget.item == null) {
+      await getIt<GamePreviewController>().initWithId(widget.gameId);
+    } else {
+      loading = true;
+      await getIt<GamePreviewController>().init(widget.item!);
+    }
+    if (mounted) setState(() => loading = false);
+  }
+
   @override
   void dispose() {
     getIt<GamePreviewController>().clear();
@@ -39,6 +52,7 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final game = getIt<GamePreviewController>().game;
     return AnimationConfigurationClass.synchronized(
       duration: getIt<GamePreviewController>().animationDuration,
       child: SafeArea(
@@ -51,14 +65,17 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [CloseButton()],
               ),
-              GameListItemWidget(
-                item: widget.item,
-                onTap: null,
-                bottom: !showList
-                    ? null
-                    : GamePreviewBottom(packageId: widget.item.package.id),
-                trailing: !showList ? null : const GamePreviewPlayButton(),
-              ).flexible(),
+              if (loading || game == null)
+                const CircularProgressIndicator.adaptive().center()
+              else
+                GameListItemWidget(
+                  item: game,
+                  onTap: null,
+                  bottom: !showList
+                      ? null
+                      : GamePreviewBottom(packageId: game.package.id),
+                  trailing: !showList ? null : const GamePreviewPlayButton(),
+                ).flexible(),
             ],
           ),
         ),

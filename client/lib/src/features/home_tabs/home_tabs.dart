@@ -65,9 +65,9 @@ class _MobileHome extends WatchingWidget {
   List<NavigationDestination> get _destionations {
     return [
       NavigationDestination(
-        label: LocaleKeys.home_tabs_home.tr(),
-        icon: const Icon(Icons.star_outline_rounded),
-        selectedIcon: const Icon(Icons.star_rounded),
+        label: LocaleKeys.home_tabs_games.tr(),
+        icon: const Icon(Icons.games_outlined),
+        selectedIcon: const Icon(Icons.games),
       ),
       NavigationDestination(
         label: LocaleKeys.home_tabs_packages.tr(),
@@ -86,7 +86,7 @@ class _WideHome extends WatchingWidget {
     final authorized = watchIt<AuthController>().authorized;
     return Scaffold(
       appBar: _homeAppBar(
-        title: LocaleKeys.home_tabs_home.tr(),
+        title: LocaleKeys.home_tabs_games.tr(),
         context: context,
         authorized: authorized,
       ),

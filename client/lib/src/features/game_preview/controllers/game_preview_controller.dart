@@ -6,20 +6,25 @@ import 'package:openquester/openquester.dart';
 @singleton
 class GamePreviewController {
   final animationDuration = Durations.short2;
-  GameListItem? _game;
+  GameListItem? game;
+
+  Future<void> initWithId(String gameId) async {
+    final item = await getIt<Api>().api.games.getV1GamesGameId(gameId: gameId);
+    await init(item);
+  }
 
   Future<void> init(GameListItem item) async {
-    _game = item;
+    game = item;
     // Warmup cache during animation
     unawaited(getIt<PackageController>().getPackage(item.package.id));
   }
 
   void clear() {
-    _game = null;
+    game = null;
   }
 
   Future<void> onPressPlay() async {
-    if (_game == null) throw Exception('_game == null');
-    await getIt<AppRouter>().popAndPush(GameLobbyRoute(gameId: _game!.id));
+    if (game == null) throw Exception('game == null');
+    await getIt<AppRouter>().popAndPush(GameLobbyRoute(gameId: game!.id));
   }
 }

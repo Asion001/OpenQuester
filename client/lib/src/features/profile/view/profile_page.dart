@@ -5,8 +5,8 @@ import 'package:openquester/src/core/get_it.dart';
 import 'package:watch_it/watch_it.dart';
 
 @RoutePage()
-class ProfilePage extends WatchingWidget {
-  const ProfilePage({super.key});
+class ProfileScreen extends WatchingWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class LocaleKeys {
-  static const home_tabs_home = 'home_tabs.home';
+  static const home_tabs_games = 'home_tabs.games';
   static const home_tabs_packages = 'home_tabs.packages';
   static const home_tabs = 'home_tabs';
   static const home_start_game = 'home.start_game';

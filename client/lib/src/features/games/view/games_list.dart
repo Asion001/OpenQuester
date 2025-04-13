@@ -10,7 +10,8 @@ class GamesListScreen extends StatelessWidget {
     return PaginatedListWidget<GamesListController, GameListItem>(
       itemBuilder: (context, item, index) => GameListItemWidget(
         item: item,
-        onTap: () => GamePreviewRoute(item: item).push<void>(context),
+        onTap: () =>
+            GamePreviewRoute(item: item, gameId: item.id).push<void>(context),
       ),
     );
   }
