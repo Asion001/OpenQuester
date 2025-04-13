@@ -8,6 +8,10 @@ class ChatScreen extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final controller = watchIt<SocketChatController>();
+    if (controller.user == null) {
+      return const CircularProgressIndicator.adaptive().center();
+    }
+
     return Chat(
       onSendPressed: controller.onSendPressed,
       messages: controller.messages,

@@ -23,16 +23,24 @@ class SocketChatController extends ChangeNotifier {
   }
 
   Future<void> init({required Socket socket}) async {
+    // Clear before connect
     clear();
-    final restUser = getIt<AuthController>().user!;
-    _socket = socket;
-    _socket?.on(_eventKey, _onChatMessage);
+
+    final restUser = getIt<AuthController>().user;
+    if (restUser == null) throw UserError(LocaleKeys.user_unauthorized.tr());
+
+    // Set chat user
     user = User(
       id: restUser.id.toString(),
       firstName: restUser.username,
       imageUrl: restUser.avatar,
       role: Role.user,
     );
+
+    // Setup socket
+    _socket = socket;
+    _socket?.on(_eventKey, _onChatMessage);
+
     notifyListeners();
   }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:openquester/openquester.dart';
 
 class LoadingButtonBuilder extends StatelessWidget {
   const LoadingButtonBuilder({
@@ -21,6 +22,7 @@ class LoadingButtonBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     var loading = false;
     const loader = CircularProgressIndicator.adaptive();
+
     Future<void> onPressed(
       void Function(void Function()) setState,
       Future<void> Function() onPressed,
@@ -28,6 +30,10 @@ class LoadingButtonBuilder extends StatelessWidget {
       setState(() => loading = true);
       try {
         await onPressed();
+      } catch (e) {
+        if (context.mounted) {
+          await getIt<ToastController>().show(e, context: context);
+        }
       } finally {
         if (context.mounted) setState(() => loading = false);
       }

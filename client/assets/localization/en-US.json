@@ -29,5 +29,6 @@
     "started": "Started"
   },
   "hosted_by": "hosted by {}",
-  "close": "Close"
+  "close": "Close",
+  "user_unauthorized": "User unauthorized"
 }

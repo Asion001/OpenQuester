@@ -27,4 +27,5 @@ abstract class LocaleKeys {
   static const game_status = 'game_status';
   static const hosted_by = 'hosted_by';
   static const close = 'close';
+  static const user_unauthorized = 'user_unauthorized';
 }

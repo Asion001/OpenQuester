@@ -15,12 +15,6 @@ class GameLobbyScreen extends StatefulWidget {
 
 class _GameLobbyScreenState extends State<GameLobbyScreen> {
   @override
-  void initState() {
-    getIt<GameLobbyController>().join(gameId: widget.gameId);
-    super.initState();
-  }
-
-  @override
   void dispose() {
     getIt<GameLobbyController>().leave();
     super.dispose();
@@ -31,6 +25,10 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.gameId),
+        leading: IconButton(
+          onPressed: Navigator.of(context).pop,
+          icon: const Icon(Icons.exit_to_app),
+        ),
       ),
       body: const MaxSizeContainer(
         maxWidth: UiModeUtils.maximumDialogWidth,

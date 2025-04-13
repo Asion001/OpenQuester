@@ -10,12 +10,19 @@ class GameLobbyController {
 
   Future<void> join({required String gameId}) async {
     clear();
-    this.gameId = gameId;
-    socket = await getIt<SocketController>().createConnection(path: '/games');
-    await getIt<SocketChatController>().init(socket: socket!);
-    socket!
-      ..onConnect((_) => _onConnect())
-      ..connect();
+    try {
+      this.gameId = gameId;
+      socket = await getIt<SocketController>().createConnection(path: '/games');
+      await getIt<SocketChatController>().init(socket: socket!);
+      socket!
+        ..onConnect((_) => _onConnect())
+        ..onDisconnect((_) => clear())
+        ..connect();
+    } catch (e, s) {
+      logger.e(e, stackTrace: s);
+      clear();
+      rethrow;
+    }
   }
 
   Future<void> _onConnect() async {
@@ -23,7 +30,6 @@ class GameLobbyController {
         .api
         .auth
         .postV1AuthSocket(body: InputSocketAuth(socketId: socket!.id!));
-
     final ioGameJoinInput = IOGameJoinInput(
       gameId: gameId!,
       role: IOGameJoinInputRole.spectator,
@@ -42,6 +48,6 @@ class GameLobbyController {
 
   Future<void> leave() async {
     socket?.emit('leave');
-    clear();
+    socket?.destroy();
   }
 }

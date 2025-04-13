@@ -25,6 +25,8 @@ class GamePreviewController {
 
   Future<void> onPressPlay() async {
     if (game == null) throw Exception('game == null');
-    await getIt<AppRouter>().popAndPush(GameLobbyRoute(gameId: game!.id));
+    final gameId = game!.id;
+    await getIt<GameLobbyController>().join(gameId: gameId);
+    await getIt<AppRouter>().popAndPush(GameLobbyRoute(gameId: gameId));
   }
 }

@@ -62,24 +62,31 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
         minimum: 8.all,
         child: MaxSizeContainer(
           maxWidth: UiModeUtils.maximumDialogWidth,
-          child: Column(
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [CloseButton()],
+          child: ScaffoldMessenger(
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                actions: const [CloseButton()],
+                automaticallyImplyLeading: false,
+                backgroundColor: Colors.transparent,
               ),
-              if (loading || game == null)
-                const CircularProgressIndicator.adaptive().center()
-              else
-                GameListItemWidget(
-                  item: game,
-                  onTap: null,
-                  bottom: !showList
-                      ? null
-                      : GamePreviewBottom(packageId: game.package.id),
-                  trailing: !showList ? null : const GamePreviewPlayButton(),
-                ).flexible(),
-            ],
+              body: Column(
+                children: [
+                  if (loading || game == null)
+                    const CircularProgressIndicator.adaptive().center()
+                  else
+                    GameListItemWidget(
+                      item: game,
+                      onTap: null,
+                      bottom: !showList
+                          ? null
+                          : GamePreviewBottom(packageId: game.package.id),
+                      trailing:
+                          !showList ? null : const GamePreviewPlayButton(),
+                    ).flexible(),
+                ],
+              ),
+            ),
           ),
         ),
       ),

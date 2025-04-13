@@ -9,18 +9,13 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes {
     return [
-      AutoRoute(
-        page: HomeTabsRoute.page,
-        path: '/',
-        initial: true,
-      ),
+      AutoRoute(page: HomeTabsRoute.page, path: '/', initial: true),
       BlurDialogRoute<void>(page: ProfileRoute.page, path: '/profile'),
       BlurDialogRoute<void>(
         page: GamePreviewRoute.page,
         path: '/games/:gameId',
       ),
       AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId/lobby'),
-      AutoRoute(page: PackagesListRoute.page, path: '/packs'),
       AutoRoute(page: ClickerRoute.page, path: '/clicker'),
       AutoRoute(page: TestScreenRoute.page, path: '/test'),
       AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
