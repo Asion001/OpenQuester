@@ -9,6 +9,7 @@ class GameLobbyController {
   String? gameId;
 
   Future<void> join({required String gameId}) async {
+    if (this.gameId == gameId) return; // Check if already joined
     clear();
     try {
       this.gameId = gameId;

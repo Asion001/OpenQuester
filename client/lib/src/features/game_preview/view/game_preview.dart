@@ -69,6 +69,7 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
                 actions: const [CloseButton()],
                 automaticallyImplyLeading: false,
                 backgroundColor: Colors.transparent,
+                toolbarOpacity: 0,
               ),
               body: Column(
                 children: [
