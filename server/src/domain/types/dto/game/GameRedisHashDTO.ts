@@ -6,10 +6,10 @@ export interface GameRedisHashDTO {
   isPrivate: string; // '0' | '1'
   ageRestriction: string;
   currentRound: string;
-  players: string;
+  players: string; // JSON string of Player[]
   maxPlayers: string;
   startedAt: string; // Empty string if null
   package: string;
-  roundsCount: number;
-  questionsCount: number;
+  roundsCount: string;
+  questionsCount: string;
 }

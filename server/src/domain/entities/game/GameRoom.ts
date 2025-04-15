@@ -1,5 +1,6 @@
 import { Player } from "domain/entities/game/Player";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
+import { GameRoomCreateDTO } from "domain/types/dto/game/room/GameRoomCreateDTO";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
@@ -10,19 +11,30 @@ import { Logger } from "infrastructure/utils/Logger";
  * players state (mute, ban, restrict, kick etc..)
  */
 export class GameRoom {
-  private _users: Map<number, { playerData: Player }> = new Map();
-  private _scores: Map<number, number> = new Map();
+  private _players: Player[];
+  private _scores: Map<number, number>;
 
   private _slots: Array<number | null> = [];
-  private _gameData?: GameListItemDTO;
+  private _gameData: GameListItemDTO;
   private _gameDataInitialized = false;
 
-  constructor() {
-    //
+  constructor(gameRoomData: GameRoomCreateDTO) {
+    this._players = gameRoomData.players;
+    this._scores = gameRoomData.scores;
+    this._slots = gameRoomData.slots;
+    this._gameData = gameRoomData.gameData;
   }
 
   public get gameData() {
     return this._gameData;
+  }
+
+  public get scores() {
+    return this._scores;
+  }
+
+  public get slots() {
+    return this._slots;
   }
 
   public get isInitialized() {
@@ -44,54 +56,57 @@ export class GameRoom {
   }
 
   public hasPlayer(userId: number): boolean {
-    const player = this._users.get(userId);
-
-    return (
-      !!player && player.playerData.gameStatus === PlayerGameStatus.IN_GAME
-    );
+    return !!this._players.find((p) => {
+      return p.meta.id === userId && p.gameStatus === PlayerGameStatus.IN_GAME;
+    });
   }
 
   public async addUser(user: UserDTO, role: PlayerRole): Promise<Player> {
-    const playerData = this._users.get(user.id)?.playerData;
+    const playerData = this._players.find((p) => p.meta.id === user.id);
+
+    const slotIdx = await this._getFirstFreeSlotIndex();
+
+    if (role === PlayerRole.PLAYER) {
+      this._slots[slotIdx] = user.id;
+    }
 
     if (playerData) {
       playerData.gameStatus = PlayerGameStatus.IN_GAME;
+      playerData.role = role;
       return playerData;
     }
 
-    this._users.set(user.id, {
-      playerData: new Player(
-        user,
-        role,
-        {
-          muted: false,
-          restricted: false,
-          banned: false,
-        },
-        0,
-        PlayerGameStatus.IN_GAME
-      ),
-    });
+    const player = new Player(
+      user,
+      role,
+      slotIdx,
+      0,
+      PlayerGameStatus.IN_GAME,
+      {
+        muted: false,
+        restricted: false,
+        banned: false,
+      }
+    );
 
-    this._scores.set(user.id, 0);
-    if (role !== PlayerRole.SPECTATOR) {
-      this._slots[await this._getFirstFreeSlotIndex()] = user.id;
-    }
+    this._scores.set(user.id, player.getBalance());
+    this._players.push(player);
 
-    return this._users.get(user.id)!.playerData;
+    return player;
   }
 
   public getPlayers() {
-    return Object.fromEntries(this._users ?? {});
+    return this._players;
   }
 
   public removeUser(userId: number): void {
-    const user = this._users.get(userId);
-    if (user) {
+    const idx = this._players.findIndex((p) => p.meta.id === userId);
+    if (idx >= 0) {
+      const player = this._players[idx];
       const slot = this._slots.indexOf(userId);
       this._slots[slot] = null;
 
-      user.playerData.gameStatus = PlayerGameStatus.DISCONNECTED;
+      player.gameStatus = PlayerGameStatus.DISCONNECTED;
     }
   }
 

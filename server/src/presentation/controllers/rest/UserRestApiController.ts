@@ -7,10 +7,11 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { Permissions } from "domain/enums/Permissions";
 import { ClientError } from "domain/errors/ClientError";
+import { UpdateUserDTO } from "domain/types/dto/user/UpdateUserDTO";
+import { UpdateUserInputDTO } from "domain/types/dto/user/UpdateUserInputDTO";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
+import { UserInputDTO } from "domain/types/dto/user/UserInputDTO";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
-import { UpdateUserDTO } from "domain/types/user/UpdateUserData";
-import { UpdateUserInputDTO } from "domain/types/user/UpdateUserDataInput";
 import { File } from "infrastructure/database/models/File";
 import { User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
@@ -78,7 +79,7 @@ export class UserRestApiController {
   private getUser = async (req: Request, res: Response) => {
     const id: number = await this._getUserId(req);
 
-    const validatedData = await new RequestDataValidator<{ userId: number }>(
+    const validatedData = await new RequestDataValidator<UserInputDTO>(
       { userId: id },
       userIdScheme()
     ).validate();
@@ -156,7 +157,7 @@ export class UserRestApiController {
   private deleteUser = async (req: Request, res: Response) => {
     const id: number = await this._getUserId(req);
 
-    const validatedData = await new RequestDataValidator<{ userId: number }>(
+    const validatedData = await new RequestDataValidator<UserInputDTO>(
       { userId: id },
       userIdScheme()
     ).validate();

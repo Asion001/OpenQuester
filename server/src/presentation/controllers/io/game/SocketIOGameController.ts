@@ -1,192 +1,147 @@
-import { Socket } from "socket.io";
-
-import { GameService } from "application/services/game/GameService";
-import { UserService } from "application/services/user/UserService";
-import { GameRoom } from "domain/entities/game/GameRoom";
+import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { GameValidator } from "domain/entities/game/GameValidator";
-import { Player } from "domain/entities/game/Player";
-import { SocketClientResponse } from "domain/enums/SocketClientResponse";
+import { ClientResponse } from "domain/enums/ClientResponse";
 import {
   SocketIOEvents,
   SocketIOGameEvents,
 } from "domain/enums/SocketIOEvents";
-import { ErrorController } from "domain/errors/ErrorController";
-import { UserDTO } from "domain/types/dto/user/UserDTO";
-import { PlayerRole } from "domain/types/game/PlayerRole";
-import { SocketRedisUserData } from "domain/types/user/SocketRedisUserData";
-import { SocketRedisService } from "infrastructure/services/socket/SocketRedisService";
+import { ClientError } from "domain/errors/ClientError";
+import { ChatMessageInputData } from "domain/types/socket/ChatMessageInputData";
+import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
+import { ChatMessageEventPayload } from "domain/types/socket/events/ChatMessageEventPayload";
+import { GameJoinEventPayload } from "domain/types/socket/events/game/GameJoinEventPayload";
+import { GameLeaveEventPayload } from "domain/types/socket/events/game/GameLeaveEventPayload";
+import { PlayerJoinEventPayload } from "domain/types/socket/events/game/PlayerJoinEventPayload";
+import { GameJoinData } from "domain/types/socket/game/GameJoinData";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
+import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
+import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
+import { Socket } from "socket.io";
 
-export interface GameJoinData {
-  gameId: string;
-  role: PlayerRole;
-}
-
-export interface ChatMessageData {
-  message: string;
-}
-
-/**
- * Controller of game actions for each player. Handles all player emitted events
- */
 export class SocketIOGameController {
-  private _gameId: string = "";
-
-  private _playerData?: Player;
-  private _playerRole?: PlayerRole;
-  private _user?: UserDTO;
-  private _room?: GameRoom;
-
   constructor(
     private readonly socket: Socket,
-    private readonly socketRedisService: SocketRedisService,
-    private readonly gameRooms: Map<string, GameRoom>,
-    private readonly gameService: GameService,
-    private readonly userService: UserService,
+    private readonly eventEmitter: SocketIOEventEmitter,
+    private readonly socketUserDataService: SocketUserDataService,
+    private readonly socketIOGameService: SocketIOGameService,
     private readonly gameValidator: GameValidator
   ) {
-    this.socket.on(SocketIOGameEvents.JOIN, async (data: string) => {
-      try {
-        const gameData = await this._parseEventData<GameJoinData>(data);
-
-        await this._handleJoinLobby(gameData);
-      } catch (err: unknown) {
-        const error = await ErrorController.resolveError(err);
-        this._emitError(`Invalid game join input: ${error.message}`);
-      }
-    });
-
-    // Handle player leave
-    this.socket.on(SocketIOEvents.DISCONNECT, () => {
-      this._handleLeave();
-      this.socketRedisService.remove(this.socket.id);
-    });
-    this.socket.on(SocketIOGameEvents.LEAVE, () => this._handleLeave());
-
-    this.socket.on(SocketIOEvents.CHAT_MESSAGE, async (data: string) => {
-      try {
-        const chatData = await this._parseEventData<ChatMessageData>(data);
-
-        const dto = await this.gameValidator.validateChatMessage(chatData);
-        this._emitChatMessage(dto.message);
-      } catch (err: any) {
-        this._emitError(`Invalid game join input: ${err.message}`);
-      }
-    });
+    this.socket.on(
+      SocketIOGameEvents.JOIN,
+      SocketWrapper.catchErrors<string>(
+        this.eventEmitter,
+        async (data: string) => await this.handleJoinLobby(data)
+      )
+    );
+    this.socket.on(
+      SocketIOEvents.DISCONNECT,
+      SocketWrapper.catchErrors(
+        this.eventEmitter,
+        async () => await this.handleSocketDisconnect()
+      )
+    );
+    this.socket.on(
+      SocketIOGameEvents.LEAVE,
+      SocketWrapper.catchErrors(
+        this.eventEmitter,
+        async () => await this.handleRoomLeave()
+      )
+    );
+    this.socket.on(
+      SocketIOEvents.CHAT_MESSAGE,
+      SocketWrapper.catchErrors<string>(
+        this.eventEmitter,
+        async (data: string) => await this.handleChatMessage(data)
+      )
+    );
   }
 
-  private _emitChatMessage(message: string) {
-    this.socket.to(this._gameId).emit(SocketIOEvents.CHAT_MESSAGE, {
-      user: this._user!.id,
-      username: this._user!.username,
-      timestamp: new Date().getTime(),
-      message,
+  private async handleJoinLobby(data: string) {
+    const gameData = await this._parseEventData<GameJoinData>(data);
+    const dto = await this.gameValidator.validateJoinInput(gameData);
+
+    const result = await this.socketIOGameService.joinUser(dto, this.socket.id);
+    const { player, game } = result;
+
+    const joinData: PlayerJoinEventPayload = {
+      userId: player.meta.id,
+      avatar: player.meta.avatar,
+      username: player.meta.username,
+      balance: player.getScore(),
+      restrictions: { muted: player.isMuted, restricted: player.isRestricted },
+      role: player.role,
+      slot: player.gameSlot,
+    };
+
+    this.eventEmitter.emit<PlayerJoinEventPayload>(
+      SocketIOGameEvents.JOIN,
+      joinData,
+      {
+        emitter: SocketEventEmitter.IO,
+        roomId: dto.gameId,
+      }
+    );
+
+    this.eventEmitter.emit<GameJoinEventPayload>(SocketIOGameEvents.GAME_DATA, {
+      players: game.players,
+      gameState: await this.socketIOGameService.gameToListItem(game),
     });
+
+    this.socket.join(dto.gameId);
   }
 
-  private async _handleJoinLobby(data: GameJoinData) {
-    const dto = await this.gameValidator.validateJoinInput(data);
-    this._gameId = dto.gameId;
-    this._playerRole = dto.role;
+  private async handleSocketDisconnect() {
+    await this.handleRoomLeave();
+    await this.socketUserDataService.remove(this.socket.id);
+  }
 
-    this._setRoom();
-    await this._initUser();
+  private async handleRoomLeave() {
+    const userData = await this._fetchUserData();
+    const gameId = userData?.gameId;
+    if (!gameId) throw new ClientError(ClientResponse.NOT_IN_GAME);
 
-    // If error emitted and data is not initialized
-    if (!this._user?.id || !this._room) {
-      return;
+    const result = await this.socketIOGameService.leaveRoom(
+      this.socket.id,
+      userData.id,
+      gameId
+    );
+    if (result.emit) {
+      this.eventEmitter.emit<GameLeaveEventPayload>(
+        SocketIOGameEvents.LEAVE,
+        { user: userData.id },
+        {
+          emitter: SocketEventEmitter.IO,
+          roomId: gameId,
+        }
+      );
+      this.socket.leave(gameId);
     }
+  }
 
-    if (
-      this._room.isInitialized &&
-      this._playerRole !== PlayerRole.SPECTATOR &&
-      !this._room.checkFreeSlot()
-    ) {
-      return this._emitError(SocketClientResponse.GAME_IS_FULL);
-    }
+  private async handleChatMessage(data: string) {
+    const chatData = await this._parseEventData<ChatMessageInputData>(data);
+    const dto = await this.gameValidator.validateChatMessage(chatData);
+    const userData = await this._fetchUserData();
+    if (!userData || !userData.gameId)
+      throw new ClientError(ClientResponse.NOT_IN_GAME);
 
-    const gameData = await this.gameService.get(this._gameId);
-    if (!gameData) {
-      this.gameRooms.delete(this._gameId);
-      return this._emitError(SocketClientResponse.GAME_DOES_NOT_EXISTS);
-    }
-    await this._room?.init(gameData);
-
-    this._playerData = await this._room.addUser(this._user, this._playerRole);
-
-    this.socket.to(this._gameId).emit(SocketIOGameEvents.JOIN, {
-      userId: this._user.id,
-      username: this._user.username,
-      role: this._playerRole,
-      restrictions: {
-        muted: this._playerData.isMuted,
-        restricted: this._playerData.isRestricted,
+    this.eventEmitter.emit<ChatMessageEventPayload>(
+      SocketIOEvents.CHAT_MESSAGE,
+      {
+        user: userData.id,
+        timestamp: new Date(),
+        message: dto.message,
       },
-      balance: this._playerData.getBalance(),
-    });
-
-    this.socket.emit(SocketIOGameEvents.GAME_DATA, {
-      players: this._room.getPlayers(),
-      gameState: this._room.gameData,
-    });
-
-    this.socket.join(this._gameId);
-  }
-
-  private _setRoom() {
-    if (!this.gameRooms.has(this._gameId)) {
-      this.gameRooms.set(this._gameId, new GameRoom());
-    }
-    this._room = this.gameRooms.get(this._gameId);
-  }
-
-  private async _initUser() {
-    try {
-      const userData = await this.socketRedisService.get(this.socket.id);
-
-      // TODO: Implement SocketClientResponse
-      if (!userData) {
-        return this._emitError(SocketClientResponse.USER_NOT_AUTHENTICATED);
+      {
+        emitter: SocketEventEmitter.IO,
+        roomId: userData.gameId,
       }
-
-      const userParsed: SocketRedisUserData = JSON.parse(userData);
-
-      // Check if user not in room to avoid DB call
-      if (this._room!.hasPlayer(userParsed.id)) {
-        return this._emitError(SocketClientResponse.USER_ALREADY_IN_GAME);
-      }
-
-      // TODO: Fetch only fields that is required
-      const user = await this.userService.get(userParsed.id);
-
-      if (!user) {
-        return this._emitError(SocketClientResponse.USER_NOT_FOUND);
-      }
-
-      this._user = user;
-    } catch {
-      return this._emitError(SocketClientResponse.USER_DATA_CORRUPTED);
-    }
+    );
   }
 
-  private _handleLeave() {
-    if (!this._user || !this._room?.hasPlayer(this._user.id)) {
-      return;
-    }
-
-    this.socket.to(this._gameId).emit("userLeave", {
-      user: this._user.id,
-    });
-    this._room.removeUser(this._user.id);
-    this.socket.leave(this._gameId);
-  }
-
-  private _emitError(error: string) {
-    // TODO: Translate error
-    this.socket.emit("error", {
-      message: error,
-    });
-    return;
+  private async _fetchUserData() {
+    return this.socketUserDataService.getSocketData(this.socket.id);
   }
 
   private _parseEventData<T>(data: string): Promise<T> {

@@ -63,6 +63,8 @@ export const CONTAINER_TYPES = {
   DependencyService: Symbol("DependencyService"),
   S3StorageService: Symbol("S3StorageService"),
   RedisService: Symbol("RedisService"),
-  SocketRedisService: Symbol("SocketRedisService"),
+  SocketUserDataService: Symbol("SocketUserDataService"),
+  SocketIOGameService: Symbol("SocketIOGameService"),
+  SocketIOGameRoomRepository: Symbol("SocketIOGameRoomRepository"),
   PackageService: Symbol("PackageService"),
 };

@@ -15,14 +15,14 @@ import { UserRepository } from "infrastructure/database/repositories/UserReposit
 
 export class GameService {
   constructor(
-    private readonly gameRepository: GameRepository,
     private readonly io: IOServer,
+    private readonly gameRepository: GameRepository,
     private readonly userRepository: UserRepository
   ) {
     //
   }
 
-  public async get(gameId: string): Promise<GameListItemDTO | undefined> {
+  public async get(gameId: string): Promise<GameListItemDTO> {
     return this.gameRepository.getGame(gameId);
   }
 

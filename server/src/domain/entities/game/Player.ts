@@ -1,70 +1,107 @@
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
+import { PlayerMeta } from "domain/types/socket/game/PlayerMeta";
 
-/**
- * Player entity that helps handle player-related data or action (in future)
- */
 export class Player {
-  private muted: boolean;
-  private restricted: boolean;
-  private banned: boolean;
+  private readonly _user: UserDTO;
+  private _slot: number | null;
+  private _role: PlayerRole;
+  private _status: PlayerGameStatus;
+  private _restrictionData: {
+    muted: boolean;
+    restricted: boolean;
+    banned: boolean;
+  };
+  private _score: number = 0;
 
-  constructor(
-    private readonly user: UserDTO,
-    private readonly role: PlayerRole,
-    private readonly restrictionData: {
+  constructor(data: {
+    user: UserDTO;
+    playerRole: PlayerRole;
+    slot: number | null;
+    status: PlayerGameStatus;
+    restrictionData: {
       muted: boolean;
       restricted: boolean;
       banned: boolean;
-    },
-    private balance: number,
-    private status: PlayerGameStatus
-  ) {
-    this.muted = restrictionData.muted;
-    this.restricted = restrictionData.restricted;
-    this.banned = restrictionData.banned;
+    };
+    score: number;
+  }) {
+    this._user = data.user;
+    this._slot = data.slot;
+    this._role = data.playerRole;
+    this._status = data.status;
+    this._restrictionData = data.restrictionData;
+    this._score = data.score;
   }
 
+  // Metadata
+  public get meta(): PlayerMeta {
+    return {
+      id: this._user.id,
+      username: this._user.username,
+      avatar: this._user.avatar ?? null,
+    };
+  }
+
+  // Role
+  public get role() {
+    return this._role;
+  }
+
+  public set role(role: PlayerRole) {
+    this._role = role;
+  }
+
+  // Slot
+  public get gameSlot() {
+    return this._slot;
+  }
+
+  public set gameSlot(slot: number | null) {
+    this._slot = slot;
+  }
+
+  // Status
   public get gameStatus() {
-    return this.status;
+    return this._status;
   }
 
   public set gameStatus(status: PlayerGameStatus) {
-    this.status = status;
+    this._status = status;
   }
 
-  // Balance data getter and setters
-  public getBalance(): number {
-    return this.balance;
+  // Score
+  public getScore(): number {
+    return this._score;
   }
 
-  public updateBalance(amount: number): void {
-    this.balance += amount;
+  public updateScore(amount: number): void {
+    this._score += amount;
   }
 
-  // Restriction data getters and setters
+  // Restrictions
   public get isMuted(): boolean {
-    return this.muted;
+    return this._restrictionData.muted;
   }
 
   public set isMuted(value: boolean) {
-    this.muted = value;
+    this._restrictionData.muted = value;
   }
 
   public get isRestricted(): boolean {
-    return this.restricted;
+    return this._restrictionData.restricted;
   }
 
   public set isRestricted(value: boolean) {
-    this.restricted = value;
+    this._restrictionData.restricted = value;
   }
 
   public get isBanned(): boolean {
-    return this.banned;
+    return this._restrictionData.banned;
   }
 
   public set isBanned(value: boolean) {
-    this.restricted = value;
+    this._restrictionData.banned = value;
   }
 }

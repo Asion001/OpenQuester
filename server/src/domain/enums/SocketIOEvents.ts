@@ -1,4 +1,5 @@
 export enum SocketIOEvents {
+  ERROR = "error",
   DISCONNECT = "disconnect",
   CONNECTION = "connection",
   GAMES = "games",
@@ -7,6 +8,6 @@ export enum SocketIOEvents {
 
 export enum SocketIOGameEvents {
   JOIN = "join",
-  LEAVE = "leave",
+  LEAVE = "userLeave",
   GAME_DATA = "gameData",
 }
