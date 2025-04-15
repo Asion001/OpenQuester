@@ -92,7 +92,7 @@ class GameLobbyRouteArgs {
 class GamePreviewRoute extends _i8.PageRouteInfo<GamePreviewRouteArgs> {
   GamePreviewRoute({
     required String gameId,
-    _i10.GameListItem? item,
+    (_i10.GameListItem, _i9.Size)? item,
     _i9.Key? key,
     List<_i8.PageRouteInfo>? children,
   }) : super(
@@ -126,7 +126,7 @@ class GamePreviewRouteArgs {
 
   final String gameId;
 
-  final _i10.GameListItem? item;
+  final (_i10.GameListItem, _i9.Size)? item;
 
   final _i9.Key? key;
 

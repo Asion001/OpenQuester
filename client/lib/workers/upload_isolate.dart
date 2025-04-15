@@ -4,11 +4,9 @@ import 'dart:typed_data' show Uint8List;
 
 import 'package:openapi/openapi.dart'
     show PackageCreateInputData, PackageCreationInput;
+import 'package:openquester/workers/upload_isolate.activator.g.dart';
 import 'package:siq_file/siq_file.dart';
 import 'package:squadron/squadron.dart';
-
-// ignore: always_use_package_imports
-import 'upload_isolate.activator.g.dart';
 
 part 'upload_isolate.worker.g.dart';
 

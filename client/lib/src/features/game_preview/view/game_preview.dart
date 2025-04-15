@@ -12,7 +12,7 @@ class GamePreviewScreen extends StatefulWidget {
     this.item,
     super.key,
   });
-  final GameListItem? item;
+  final (GameListItem, Size)? item;
   final String gameId;
 
   @override
@@ -42,7 +42,7 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
       setState(() {});
     } else {
       loading = true;
-      getIt<GamePreviewController>().init(widget.item!);
+      getIt<GamePreviewController>().init(widget.item!.$1);
     }
     if (mounted && loading) setState(() => loading = false);
   }
@@ -77,14 +77,21 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
                   if (loading || game == null)
                     const CircularProgressIndicator.adaptive().center()
                   else
-                    GameListItemWidget(
-                      item: game,
-                      onTap: null,
-                      bottom: !showList
-                          ? null
-                          : GamePreviewBottom(packageId: game.package.id),
-                      trailing:
-                          !showList ? null : const GamePreviewPlayButton(),
+                    AnimatedContainer(
+                      // Fixes overflow when width changes
+                      width: showList
+                          ? MediaQuery.sizeOf(context).width
+                          : widget.item!.$2.width,
+                      duration: Durations.medium1,
+                      child: GameListItemWidget(
+                        item: game,
+                        onTap: null,
+                        bottom: !showList
+                            ? null
+                            : GamePreviewBottom(packageId: game.package.id),
+                        trailing:
+                            !showList ? null : const GamePreviewPlayButton(),
+                      ),
                     ).flexible(),
                 ],
               ),
