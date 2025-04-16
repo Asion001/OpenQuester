@@ -91,10 +91,10 @@ export class DevelopmentRestApiController {
         const count = parseInt(req.query.count as string) || 50;
         const packageId = parseInt(req.body.packageId);
 
-        if (count < 1 || count > 1000) {
+        if (count < 1 || count > 250) {
           return res
             .status(400)
-            .json({ error: "Count must be between 1 and 1000" });
+            .json({ error: "Count must be between 1 and 250" });
         }
 
         const games = [];

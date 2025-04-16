@@ -22,8 +22,11 @@ export class GameService {
     //
   }
 
-  public async get(gameId: string): Promise<GameListItemDTO> {
-    return this.gameRepository.getGame(gameId);
+  public async get(
+    gameId: string,
+    updatedTtl?: number
+  ): Promise<GameListItemDTO> {
+    return this.gameRepository.getGame(gameId, updatedTtl);
   }
 
   public async list(paginationOpts: PaginationOpts<GameDTO>) {

@@ -101,6 +101,7 @@ export class ServeApi {
       this._attachControllers();
       this._app.use(errorMiddleware);
     } catch (err: unknown) {
+      // TODO: Translate errors from first level of nesting (initialization errors)
       let message = "unknown error";
       if (err instanceof BaseError) {
         message = TemplateUtils.text(err.message, err.textArgs ?? {});

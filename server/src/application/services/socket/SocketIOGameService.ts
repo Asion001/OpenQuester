@@ -1,4 +1,5 @@
 import { UserService } from "application/services/user/UserService";
+import { GAME_TTL } from "domain/constants/game";
 import { Game } from "domain/entities/game/Game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
@@ -22,13 +23,23 @@ export class SocketIOGameService {
     socketId: string
   ): Promise<GameJoinResult> {
     const user = await this._fetchUser(socketId);
-    const game = await this.gameRepository.getGameEntity(data.gameId);
+    const game = await this.gameRepository.getGameEntity(data.gameId, GAME_TTL);
 
-    if (data.role !== PlayerRole.SPECTATOR && !game.checkFreeSlot()) {
+    if (data.role === PlayerRole.PLAYER && !game.checkFreeSlot()) {
       throw new ClientError(ClientResponse.GAME_IS_FULL);
     }
 
+    if (data.role === PlayerRole.SHOWMAN && !game.checkShowmanSlot()) {
+      throw new ClientError(ClientResponse.SHOWMAN_IS_TAKEN);
+    }
+
     const player = await game.addUser(user, data.role);
+
+    if (player.isRestricted && data.role !== PlayerRole.SPECTATOR) {
+      game.removePlayer(player.meta.id);
+      await this.gameRepository.updateGame(game);
+      throw new ClientError(ClientResponse.YOU_ARE_RESTRICTED);
+    }
 
     if (player.isBanned) {
       game.removePlayer(player.meta.id);
@@ -50,7 +61,7 @@ export class SocketIOGameService {
     userId: number,
     gameId: string
   ): Promise<GameRoomLeaveData> {
-    const game = await this.gameRepository.getGameEntity(gameId);
+    const game = await this.gameRepository.getGameEntity(gameId, GAME_TTL);
     if (!game.hasPlayer(userId)) return { emit: false };
 
     game.removePlayer(userId);
@@ -66,6 +77,10 @@ export class SocketIOGameService {
 
   public async gameToListItem(game: Game) {
     return this.gameRepository.gameToListItemDTO(game);
+  }
+
+  public async isPlayerMuted(gameId: string, playerId: number) {
+    return this.gameRepository.isPlayerMuted(gameId, playerId);
   }
 
   private async _fetchUser(socketId: string) {

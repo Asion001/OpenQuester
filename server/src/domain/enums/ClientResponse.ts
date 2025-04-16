@@ -49,8 +49,11 @@ export enum ClientResponse {
   USER_ALREADY_IN_GAME = "user_already_in_game",
   NOT_IN_GAME = "not_in_game",
   GAME_IS_FULL = "game_is_full",
+  SHOWMAN_IS_TAKEN = "showman_is_taken",
   GAME_DOES_NOT_EXISTS = "game_does_not_exists",
   YOU_ARE_BANNED = "you_are_banned",
+  YOU_ARE_RESTRICTED = "you_are_restricted",
+  YOU_ARE_MUTED = "you_are_muted",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

@@ -1,3 +1,5 @@
+import { Socket } from "socket.io";
+
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { GameValidator } from "domain/entities/game/GameValidator";
 import { ClientResponse } from "domain/enums/ClientResponse";
@@ -17,7 +19,6 @@ import { SocketUserDataService } from "infrastructure/services/socket/SocketRedi
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
-import { Socket } from "socket.io";
 
 export class SocketIOGameController {
   constructor(
@@ -83,6 +84,7 @@ export class SocketIOGameController {
       }
     );
 
+    // TODO: Add chat history
     this.eventEmitter.emit<GameJoinEventPayload>(SocketIOGameEvents.GAME_DATA, {
       players: game.players,
       gameState: await this.socketIOGameService.gameToListItem(game),
@@ -123,8 +125,19 @@ export class SocketIOGameController {
     const chatData = await this._parseEventData<ChatMessageInputData>(data);
     const dto = await this.gameValidator.validateChatMessage(chatData);
     const userData = await this._fetchUserData();
-    if (!userData || !userData.gameId)
+
+    if (!userData || !userData.gameId) {
       throw new ClientError(ClientResponse.NOT_IN_GAME);
+    }
+
+    const isMuted = await this.socketIOGameService.isPlayerMuted(
+      userData.gameId,
+      userData.id
+    );
+
+    if (isMuted) {
+      throw new ClientError(ClientResponse.YOU_ARE_MUTED);
+    }
 
     this.eventEmitter.emit<ChatMessageEventPayload>(
       SocketIOEvents.CHAT_MESSAGE,

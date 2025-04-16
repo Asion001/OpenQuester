@@ -42,5 +42,8 @@
   "not_in_game": "You are not currently in this game",
   "game_is_full": "This game is full! You can join only as spectator",
   "game_does_not_exists": "Game with this ID does not exists",
-  "you_are_banned": "You are banned in this game!"
+  "you_are_banned": "You are banned in this game!",
+  "you_are_restricted": "You are restricted from this game and can only join as spectator",
+  "you_are_muted": "You are muted in this chat",
+  "showman_is_taken": "Showman role for this game is already taken"
 }

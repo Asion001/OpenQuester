@@ -2,6 +2,7 @@ import Redis from "ioredis";
 
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { Logger } from "infrastructure/utils/Logger";
+import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class RedisService {
   private _client: Redis;
@@ -78,35 +79,76 @@ export class RedisService {
     }
   }
 
+  public async hgetall(
+    key: string,
+    updateTtl?: number
+  ): Promise<Record<string, string>> {
+    const values = await this._client.hgetall(key);
+    if (updateTtl && values !== null && !ValueUtils.isEmpty(values)) {
+      await this.expire(key, updateTtl);
+    }
+    return values;
+  }
+
+  public async hget(
+    key: string,
+    field: string,
+    updateTtl?: number
+  ): Promise<string | null> {
+    const value = await this._client.hget(key, field);
+    if (updateTtl && value !== null && !ValueUtils.isEmpty(value)) {
+      await this.expire(key, updateTtl);
+    }
+    return value;
+  }
+
+  public async get(key: string, updateTtl?: number): Promise<string | null> {
+    const value = await this._client.get(key);
+    if (updateTtl && value !== null && !ValueUtils.isEmpty(value)) {
+      await this.expire(key, updateTtl);
+    }
+    return value;
+  }
+
+  public async hset(
+    key: string,
+    fields: any,
+    expire?: number
+  ): Promise<number> {
+    if (expire) {
+      const pipeline = this._client.pipeline();
+      pipeline.hset(key, fields);
+      pipeline.expire(key, expire);
+      const results = await pipeline.exec();
+
+      if (!results) {
+        return -1;
+      }
+
+      for (const [err] of results) {
+        if (err) {
+          throw err;
+        }
+      }
+
+      return results[0][1] as number;
+    } else {
+      return this._client.hset(key, fields);
+    }
+  }
+
+  /**
+   * Set a key's time to live in seconds
+   */
+  public async expire(key: string, ttl: number): Promise<number> {
+    return this._client.expire(key, ttl);
+  }
+
   public pipeline() {
     return this._client.pipeline();
   }
 
-  public async hgetall(key: string) {
-    return this._client.hgetall(key);
-  }
-
-  public async hget(key: string, field: string) {
-    return this._client.hget(key, field);
-  }
-
-  public async hset(key: string, fields: any) {
-    return this._client.hset(key, fields);
-  }
-
-  public async hmset(key: string, field: object) {
-    return this._client.hmset(key, field);
-  }
-
-  public async get(key: string): Promise<string | null> {
-    return this._client.get(key);
-  }
-
   public async del(key: string): Promise<number> {
     return this._client.del(key);
-  }
-
-  public async exists(key: string): Promise<number> {
-    return this._client.exists(key);
   }
 }

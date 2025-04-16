@@ -1,4 +1,7 @@
-import { SOCKET_USER_REDIS_NSP } from "domain/constants/socket";
+import {
+  SOCKET_GAME_AUTH_TTL,
+  SOCKET_USER_REDIS_NSP,
+} from "domain/constants/socket";
 import { SocketRedisUserUpdateDTO } from "domain/types/dto/user/SocketRedisUserUpdateDTO";
 import { SocketRedisUserData } from "domain/types/user/SocketRedisUserData";
 import { RedisService } from "infrastructure/services/RedisService";
@@ -24,13 +27,17 @@ export class SocketUserDataService {
   }
 
   public async set(socketId: string, userId: number) {
-    this.redisService.hset(this._getKey(socketId), {
-      id: userId,
-    });
+    this.redisService.hset(
+      this._getKey(socketId),
+      {
+        id: userId,
+      },
+      SOCKET_GAME_AUTH_TTL
+    );
   }
 
   public async update(socketId: string, data: SocketRedisUserUpdateDTO) {
-    this.redisService.hset(this._getKey(socketId), data);
+    this.redisService.hset(this._getKey(socketId), data, SOCKET_GAME_AUTH_TTL);
   }
 
   public async remove(socketId: string) {

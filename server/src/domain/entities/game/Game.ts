@@ -131,7 +131,7 @@ export class Game {
 
     const player = new Player({
       user: user,
-      playerRole: role,
+      role,
       restrictionData: {
         banned: false,
         muted: false,
@@ -155,14 +155,33 @@ export class Game {
 
   public checkFreeSlot(): boolean {
     const occupiedSlots = this._players.filter(
-      (p) => p.role === PlayerRole.PLAYER && p.gameSlot !== null
+      (p) =>
+        p.role === PlayerRole.PLAYER &&
+        p.gameSlot !== null &&
+        p.gameStatus === PlayerGameStatus.IN_GAME
     ).length;
     return occupiedSlots < this._maxPlayers;
   }
 
+  /**
+   * @returns Whether showman slot is free
+   */
+  public checkShowmanSlot(): boolean {
+    return !this._players.find(
+      (p) =>
+        p.role === PlayerRole.SHOWMAN &&
+        p.gameStatus === PlayerGameStatus.IN_GAME
+    );
+  }
+
   private _getFirstFreeSlotIndex(): number {
     const occupiedSlots = this._players
-      .filter((p) => p.role === PlayerRole.PLAYER && p.gameSlot !== null)
+      .filter(
+        (p) =>
+          p.role === PlayerRole.PLAYER &&
+          p.gameSlot !== null &&
+          p.gameStatus === PlayerGameStatus.IN_GAME
+      )
       .map((p) => p.gameSlot);
 
     for (let i = 0; i < this._maxPlayers; i++) {
@@ -177,8 +196,7 @@ export class Game {
     return -1;
   }
 
-  // Serialization for Redis
-  public toRedisHash(): GameRedisHashDTO {
+  public serializeGameToHash(): GameRedisHashDTO {
     return {
       id: this._id,
       createdBy: this._createdBy.toString(),
@@ -192,12 +210,11 @@ export class Game {
       startedAt: this._startedAt ? this._startedAt.getTime().toString() : "",
       roundsCount: this._roundsCount.toString(),
       questionsCount: this._questionsCount.toString(),
-      players: JSON.stringify(this._players),
+      players: JSON.stringify(this._players.map((p) => p.toDTO())),
     };
   }
 
-  // Deserialization from Redis
-  public static fromRedisHash(data: GameRedisHashDTO): Game {
+  public static deserializeGameHash(data: GameRedisHashDTO): Game {
     return new Game({
       id: data.id,
       title: data.title,

@@ -1,3 +1,4 @@
+import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
@@ -15,21 +16,10 @@ export class Player {
   };
   private _score: number = 0;
 
-  constructor(data: {
-    user: UserDTO;
-    playerRole: PlayerRole;
-    slot: number | null;
-    status: PlayerGameStatus;
-    restrictionData: {
-      muted: boolean;
-      restricted: boolean;
-      banned: boolean;
-    };
-    score: number;
-  }) {
+  constructor(data: PlayerDTO) {
     this._user = data.user;
     this._slot = data.slot;
-    this._role = data.playerRole;
+    this._role = data.role;
     this._status = data.status;
     this._restrictionData = data.restrictionData;
     this._score = data.score;
@@ -41,6 +31,17 @@ export class Player {
       id: this._user.id,
       username: this._user.username,
       avatar: this._user.avatar ?? null,
+    };
+  }
+
+  public toDTO(): PlayerDTO {
+    return {
+      user: this._user,
+      role: this._role,
+      status: this._status,
+      score: this._score,
+      slot: this._slot,
+      restrictionData: this._restrictionData,
     };
   }
 
