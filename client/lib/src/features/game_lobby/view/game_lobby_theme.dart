@@ -7,7 +7,7 @@ class GameLobbyTheme extends StatelessWidget {
     super.key,
   });
   final LobbyTheme theme;
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,6 +21,7 @@ class GameLobbyTheme extends StatelessWidget {
         const Divider(),
         Wrap(
           spacing: 8,
+          runSpacing: 8,
           children: [
             for (final question in theme.questions)
               GameQuestion(question: question),

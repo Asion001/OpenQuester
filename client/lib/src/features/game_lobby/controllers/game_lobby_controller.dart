@@ -9,8 +9,11 @@ import 'package:socket_io_client/socket_io_client.dart';
 class GameLobbyController {
   Socket? socket;
   String? gameId;
-  PersistentBottomSheetController? bottomSheetController;
+
   final round = ValueNotifier<LobbyRound?>(null);
+
+  PersistentBottomSheetController? bottomSheetController;
+  final showDesktopChat = ValueNotifier<bool>(true);
 
   Future<void> join({required String gameId}) async {
     if (this.gameId == gameId) return; // Check if already joined
@@ -51,6 +54,7 @@ class GameLobbyController {
       socket = null;
       bottomSheetController?.close();
       bottomSheetController = null;
+      round.value = null;
     } catch (_) {}
   }
 
@@ -62,6 +66,10 @@ class GameLobbyController {
   void closeChatSheet() {
     bottomSheetController?.close();
     bottomSheetController = null;
+  }
+
+  void toggleDesktopChat() {
+    showDesktopChat.value = !showDesktopChat.value;
   }
 }
 

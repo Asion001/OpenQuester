@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
 @RoutePage()
-class GameLobbyScreen extends WatchingStatefulWidget {
+class GameLobbyScreen extends WatchingWidget {
   const GameLobbyScreen({
     @PathParam() required this.gameId,
     super.key,
@@ -10,56 +10,46 @@ class GameLobbyScreen extends WatchingStatefulWidget {
   final String gameId;
 
   @override
-  State<GameLobbyScreen> createState() => _GameLobbyScreenState();
-}
-
-class _GameLobbyScreenState extends State<GameLobbyScreen> {
-  @override
-  void initState() {
-    getIt<GameLobbyController>().join(gameId: widget.gameId);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    getIt<GameLobbyController>().leave();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    callOnce(
+      (_) => getIt<GameLobbyController>().join(gameId: gameId),
+      dispose: () => getIt<GameLobbyController>().leave(),
+    );
+
+    final showChat = watchValue((GameLobbyController e) => e.showDesktopChat);
+
     return LayoutBuilder(
       builder: (context, constrains) {
         // Closes chat sheet on window resize
         getIt<GameLobbyController>().closeChatSheet();
 
         final wideModeOn = UiModeUtils.wideModeOn(context);
+
         final round = getIt<GameLobbyController>().round.value!;
-        final themes =
-            round.themes.map((theme) => GameLobbyTheme(theme: theme)).toList();
+        final themes = round.themes
+            .map((theme) => GameLobbyTheme(theme: theme).paddingBottom(16))
+            .toList();
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(widget.gameId),
+            title: Text(gameId),
             leading: IconButton(
               onPressed: Navigator.of(context).pop,
               icon: const Icon(Icons.exit_to_app),
             ),
-            actions: [
-              if (!wideModeOn) const _ChatButton(),
-            ],
+            actions: [_ChatButton(toggleChat: wideModeOn)],
           ),
           body: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SingleChildScrollView(
-                child: Wrap(
-                  spacing: 8,
-                  runSpacing: 16,
-                  children: themes,
-                ),
-              ).flexible(flex: 3),
-              if (wideModeOn) const ChatScreen().expand(),
+              ListView.builder(
+                itemCount: themes.length,
+                itemBuilder: (context, index) => themes[index],
+              ).expand(),
+              Visibility(
+                visible: wideModeOn && showChat,
+                child: const _Chat(),
+              ),
             ],
           ),
         );
@@ -68,23 +58,42 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
   }
 }
 
+class _Chat extends StatelessWidget {
+  const _Chat();
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints:
+          const BoxConstraints.tightFor(width: UiModeUtils.wideModeWidth / 2),
+      child: const ChatScreen(),
+    );
+  }
+}
+
 class _ChatButton extends StatelessWidget {
-  const _ChatButton();
+  const _ChatButton({required this.toggleChat});
+  final bool toggleChat;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        final gameBottomSheet =
-            getIt<GameLobbyController>().bottomSheetController;
+        final controller = getIt<GameLobbyController>();
 
-        // Close if pressed twice
-        if (gameBottomSheet != null) {
-          getIt<GameLobbyController>().closeChatSheet();
+        if (toggleChat) {
+          controller.toggleDesktopChat();
           return;
         }
 
-        getIt<GameLobbyController>().bottomSheetController = showBottomSheet(
+        // Close if pressed twice
+        final gameBottomSheet = controller.bottomSheetController;
+        if (gameBottomSheet != null) {
+          controller.closeChatSheet();
+          return;
+        }
+
+        controller.bottomSheetController = showBottomSheet(
           context: context,
           builder: (context) => const _ChatBottomSheet(),
         );
