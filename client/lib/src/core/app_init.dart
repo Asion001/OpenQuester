@@ -1,11 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:openquester/src/core/env.dart';
-import 'package:openquester/src/core/get_it.dart';
-import 'package:openquester/src/core/logger.dart';
+import 'package:openquester/common_imports.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppInit {
@@ -26,6 +23,7 @@ class AppInit {
 
   static Future<void> buildInit() async {
     await configureDependencies();
+
     FlutterNativeSplash.remove();
   }
 

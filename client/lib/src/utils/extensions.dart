@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
+import 'package:socket_io_client/socket_io_client.dart' show Socket;
 
 extension DurationX on Duration {
   String f({bool withSeconds = false}) {
@@ -45,4 +46,11 @@ extension NumberPaddings on num {
   EdgeInsets get vertical => EdgeInsets.symmetric(vertical: toDouble());
   EdgeInsets get horizontal => EdgeInsets.symmetric(horizontal: toDouble());
   BorderRadius get circular => BorderRadius.circular(toDouble());
+}
+
+extension SocketX on Socket {
+  void reconnect() {
+    disconnect();
+    connect();
+  }
 }

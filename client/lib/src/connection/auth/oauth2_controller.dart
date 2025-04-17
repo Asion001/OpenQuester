@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/interfaces.dart';
@@ -18,12 +19,16 @@ class Oauth2Controller {
       customUriScheme: redirectUri.$1,
       redirectUri: redirectUri.$2,
     );
-    final result = await client.getTokenWithAuthCodeFlow(
-      clientId: Env.discordAuthClientId,
-      scopes: ['identify', 'email'],
-      webAuthClient: isDesktopPlatform ? IoWebAuth() : null,
-    );
-    return result;
+    try {
+      final result = await client.getTokenWithAuthCodeFlow(
+        clientId: Env.discordAuthClientId,
+        scopes: ['identify', 'email'],
+        webAuthClient: isDesktopPlatform ? IoWebAuth() : null,
+      );
+      return result;
+    } on PlatformException catch (e) {
+      throw UserError(e.message ?? e.code);
+    }
   }
 
   (String scheme, String uri) _getRedirectUrls() {

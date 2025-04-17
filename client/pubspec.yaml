@@ -5,7 +5,7 @@ version: 0.10.0
 
 environment:
   sdk: ">=3.6.0 <4.0.0"
-  flutter: 3.29.2
+  flutter: 3.29.3
 
 dependencies:
   flutter:
@@ -19,9 +19,9 @@ dependencies:
   envied: ^1.1.1
   package_info_plus: ^8.3.0
   logger: ^2.5.0
-  flutter_native_splash: ^2.4.5
+  flutter_native_splash: ^2.4.6
   dio: ^5.8.0+1
-  file_picker: ^10.0.0
+  file_picker: ^10.1.2
   siq_file:
     path: ./packages/siq_file/
   injectable: ^2.5.0
@@ -36,7 +36,6 @@ dependencies:
   infinite_scroll_pagination: ^5.0.0
   nb_utils: ^7.1.2
   dio_cache_interceptor: ^4.0.3
-  requests_inspector: ^4.2.1
   oauth2_client: ^4.1.0
   dio_cookie_manager: ^3.2.0
   path_provider: ^2.1.5
@@ -46,6 +45,9 @@ dependencies:
   cross_file: ^0.3.4+2
   squadron: ^7.1.1
   collection: ^1.19.1
+  flutter_chat_ui: ^1.6.15
+  flutter_chat_types: ^3.6.2
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -53,7 +55,7 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
-  analyzer: ^7.3.0
+  analyzer: 7.3.0
   auto_route_generator: ^10.0.1
   flutter_launcher_icons: ^0.14.3
   envied_generator: ^1.1.1
@@ -63,7 +65,7 @@ dev_dependencies:
   test: ^1.25.15
   flutter_gen_runner: ^5.10.0
   very_good_analysis: ^7.0.0
-  squadron_builder: ^7.1.0
+  squadron_builder: ^7.1.1
 
 flutter:
   uses-material-design: true

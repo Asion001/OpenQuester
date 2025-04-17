@@ -10,6 +10,13 @@ class SocketController {
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
+    await _connectGeneral();
+
+    // Reconnect on auth change
+    getIt<AuthController>().addListener(reconnect);
+  }
+
+  Future<void> _connectGeneral() async {
     general = await createConnection();
     general.connect();
   }
@@ -20,32 +27,43 @@ class SocketController {
       ..enableForceNewConnection()
       ..disableAutoConnect();
     final options = optionsBuilder.build();
-    final url = socketUri.toString() + (path ?? '');
+    final url = socketUri.replace(path: path ?? '').toString();
     final socket = io(url, options)
-      ..onAny(_logRequest)
-      ..onAnyOutgoing(_logOutgoing)
-      ..onConnect((_) => _log('onConnect'))
-      ..onDisconnect((_) => _log('onDisconnect'))
-      ..onError((e) => _log('onError', e))
-      ..onReconnectError((e) => _log('onReconnectError', e))
-      ..onConnectError((e) => _log('onConnectError', e));
+      ..onAny(logRequest)
+      ..onAnyOutgoing(logOutgoing)
+      ..onConnect(onConnect)
+      ..onDisconnect((_) => log('onDisconnect'))
+      ..onError((e) => log('onError', e))
+      ..onReconnectError((e) => log('onReconnectError', e))
+      ..onConnectError((e) => log('onConnectError', e));
 
     return socket;
   }
 
-  Future<void> _logOutgoing(String event, dynamic data) async =>
-      _logRequest(event, data, outgoing: true);
+  Future<void> reconnect() async {
+    general
+      ..disconnect()
+      ..dispose();
+    await _connectGeneral();
+  }
 
-  Future<void> _logRequest(
+  static void onConnect(dynamic data) {
+    log('onConnect: $data');
+  }
+
+  static Future<void> logOutgoing(String event, [dynamic data]) async =>
+      logRequest(event, data, outgoing: true);
+
+  static Future<void> logRequest(
     String event,
     dynamic data, {
     bool outgoing = false,
   }) async {
     final logData = data is Map ? jsonEncode(data) : data.toString();
-    _log('event', [event, logData].join('\n'));
+    log('event', [event, logData].join('\n'));
   }
 
-  void _log(String event, [dynamic data = '']) {
-    logger.d('SocketController.$event $data');
+  static void log(String event, [dynamic data = '']) {
+    logger.t('SocketController.$event $data');
   }
 }

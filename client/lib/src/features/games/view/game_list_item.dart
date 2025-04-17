@@ -119,6 +119,7 @@ class _GameListItemBadges extends StatelessWidget {
       child: Column(
         spacing: 24,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.min,
         children: [
           _Badge(
             icon: Icons.person_outline,
