@@ -29,5 +29,6 @@ abstract class  LocaleKeys {
   static const user_unauthorized = 'user_unauthorized';
   static const authorization_canceled = 'authorization_canceled';
   static const login_with_discord = 'login_with_discord';
+  static const logout = 'logout';
 
 }

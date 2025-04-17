@@ -32,5 +32,6 @@
   "close": "Close",
   "user_unauthorized": "User unauthorized",
   "authorization_canceled": "Authorization canceled",
-  "login_with_discord": "Login with Discord"
+  "login_with_discord": "Login with Discord",
+  "logout": "Logout"
 }

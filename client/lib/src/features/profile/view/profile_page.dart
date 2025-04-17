@@ -37,7 +37,7 @@ class ProfileScreen extends WatchingWidget {
         ).paddingBottom(24),
         FilledButton(
           onPressed: getIt.get<AuthController>().logOut,
-          child: const Text('Logout'),
+          child: Text(LocaleKeys.logout.tr()),
         ),
       ],
     );
