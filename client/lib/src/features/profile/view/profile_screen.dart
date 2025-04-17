@@ -26,11 +26,11 @@ class ProfileScreen extends WatchingWidget {
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        if (user.avatar != null)
-          CircleAvatar(
-            radius: 36,
-            foregroundImage: NetworkImageProvider(user.avatar!),
-          ),
+        CircleAvatar(
+          radius: 36,
+          foregroundImage:
+              user.avatar != null ? NetworkImageProvider(user.avatar!) : null,
+        ),
         Text(
           user.username,
           style: context.textTheme.bodyLarge,
