@@ -18,7 +18,7 @@ class AuthController extends ChangeNotifier {
     }
   }
 
-  Future<(bool, String?)> loginUser() async {
+  Future<void> loginUser() async {
     try {
       final accessTokenResponse = await getIt<Oauth2Controller>().auth();
       final token = accessTokenResponse.accessToken;
@@ -38,10 +38,13 @@ class AuthController extends ChangeNotifier {
           );
 
       notifyListeners();
-      return (_userData != null, LocaleKeys.authorization_canceled.tr());
+
+      if (_userData == null) {
+        throw UserError(LocaleKeys.authorization_canceled.tr());
+      }
     } catch (e, s) {
-      logger.e(e, stackTrace: s);
-      return (false, e.toString());
+      logger.w(e, stackTrace: s);
+      rethrow;
     }
   }
 

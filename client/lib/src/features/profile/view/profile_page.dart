@@ -60,9 +60,10 @@ class ProfileScreen extends WatchingWidget {
           ),
           LoadingButtonBuilder(
             onPressed: () async {
-              final result = await getIt.get<AuthController>().loginUser();
-              if (!result.$1) {
-                await getIt<ToastController>().show(result.$2 ?? '-');
+              try {
+                await getIt.get<AuthController>().loginUser();
+              } catch (e) {
+                await getIt<ToastController>().show(e.toString());
               }
             },
             child: const Icon(Icons.discord),
