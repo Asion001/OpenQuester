@@ -5,7 +5,7 @@ version: 0.10.0
 
 environment:
   sdk: ">=3.6.0 <4.0.0"
-  flutter: 3.29.2
+  flutter: 3.29.3
 
 dependencies:
   flutter:
@@ -47,6 +47,7 @@ dependencies:
   collection: ^1.19.1
   flutter_chat_ui: ^1.6.15
   flutter_chat_types: ^3.6.2
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +55,7 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
-  analyzer: ^7.3.0
+  analyzer: ^7.4.1
   auto_route_generator: ^10.0.1
   flutter_launcher_icons: ^0.14.3
   envied_generator: ^1.1.1

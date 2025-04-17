@@ -29,7 +29,7 @@ class ProfileScreen extends WatchingWidget {
         if (user.avatar != null)
           CircleAvatar(
             radius: 36,
-            foregroundImage: NetworkImage(user.avatar!),
+            foregroundImage: NetworkImageProvider(user.avatar!),
           ),
         Text(
           user.username,

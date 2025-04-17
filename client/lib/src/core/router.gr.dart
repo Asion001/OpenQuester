@@ -22,7 +22,7 @@ import 'package:openquester/src/features/home_tabs/home_tabs.dart'
     deferred as _i4;
 import 'package:openquester/src/features/package_upload/view/package_upload_screen.dart'
     deferred as _i5;
-import 'package:openquester/src/features/profile/view/profile_page.dart'
+import 'package:openquester/src/features/profile/view/profile_screen.dart'
     deferred as _i6;
 import 'package:openquester/src/features/test/test_screen.dart' deferred as _i7;
 
