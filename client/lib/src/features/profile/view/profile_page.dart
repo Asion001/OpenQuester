@@ -47,7 +47,7 @@ class ProfileScreen extends WatchingWidget {
     return Container(
       padding: 16.all,
       decoration: BoxDecoration(
-        color: context.theme.colorScheme.secondaryContainer,
+        color: context.theme.colorScheme.surfaceContainer,
         borderRadius: 16.circular,
       ),
       child: Column(
