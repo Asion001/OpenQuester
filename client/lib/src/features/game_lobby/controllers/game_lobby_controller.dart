@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' show PersistentBottomSheetController;
 import 'package:openquester/openquester.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -7,6 +9,8 @@ import 'package:socket_io_client/socket_io_client.dart';
 class GameLobbyController {
   Socket? socket;
   String? gameId;
+  PersistentBottomSheetController? bottomSheetController;
+  final round = ValueNotifier<LobbyRound?>(null);
 
   Future<void> join({required String gameId}) async {
     if (this.gameId == gameId) return; // Check if already joined
@@ -19,6 +23,8 @@ class GameLobbyController {
         ..onConnect((_) => _onConnect())
         ..onDisconnect((_) => clear())
         ..connect();
+
+      round.value = testRound;
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -43,6 +49,8 @@ class GameLobbyController {
       gameId = null;
       socket?.dispose();
       socket = null;
+      bottomSheetController?.close();
+      bottomSheetController = null;
     } catch (_) {}
   }
 
@@ -50,4 +58,51 @@ class GameLobbyController {
     socket?.emit('leave');
     socket?.disconnect();
   }
+
+  void closeChatSheet() {
+    bottomSheetController?.close();
+    bottomSheetController = null;
+  }
 }
+
+const testRound = LobbyRound(
+  name: 'name',
+  themes: [
+    LobbyTheme(
+      name: 'Random',
+      questions: [
+        LobbyQuestion(price: 100),
+        LobbyQuestion(price: 200),
+        LobbyQuestion(price: 300),
+      ],
+    ),
+    LobbyTheme(
+      name: 'Anime',
+      questions: [
+        LobbyQuestion(price: 100),
+        LobbyQuestion(price: 200),
+        LobbyQuestion(price: 300),
+        LobbyQuestion(price: 100),
+        LobbyQuestion(price: 200),
+        LobbyQuestion(price: 200),
+        LobbyQuestion(price: 300),
+      ],
+    ),
+    LobbyTheme(
+      name: 'Games',
+      questions: [
+        LobbyQuestion(price: 100),
+        LobbyQuestion(price: 200),
+        LobbyQuestion(price: 300),
+      ],
+    ),
+    LobbyTheme(
+      name: 'Games',
+      questions: [
+        LobbyQuestion(price: 100),
+        LobbyQuestion(price: 200),
+        LobbyQuestion(price: 300),
+      ],
+    ),
+  ],
+);

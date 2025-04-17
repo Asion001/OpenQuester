@@ -36,6 +36,9 @@ class AppTheme {
     final theme = Theme.of(context);
     return DefaultChatTheme(
       backgroundColor: theme.colorScheme.surface,
+      messageInsetsVertical: 8,
+      messageInsetsHorizontal: 8,
+      messageBorderRadius: 8,
     );
   }
 
