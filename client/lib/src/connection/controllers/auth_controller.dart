@@ -9,8 +9,6 @@ class AuthController extends ChangeNotifier {
   ResponseUser? get user => _userData;
   bool get authorized => _userData != null;
 
-  ValueNotifier<bool> loading = ValueNotifier(false);
-
   @PostConstruct(preResolve: true)
   Future<void> init() async {
     try {
@@ -22,11 +20,15 @@ class AuthController extends ChangeNotifier {
 
   Future<(bool, String?)> loginUser() async {
     try {
-      loading.value = true;
-
       final accessTokenResponse = await getIt<Oauth2Controller>().auth();
+      final token = accessTokenResponse.accessToken;
+
+      if (token == null) {
+        throw UserError(LocaleKeys.authorization_canceled.tr());
+      }
+
       final inputOauthLogin = InputOauthLogin(
-        token: accessTokenResponse.accessToken!,
+        token: token,
         oauthProvider: InputOauthLoginOauthProvider.discord,
         tokenSchema: accessTokenResponse.tokenType,
       );
@@ -36,12 +38,10 @@ class AuthController extends ChangeNotifier {
           );
 
       notifyListeners();
-      return (_userData != null, 'AuthData == null');
+      return (_userData != null, LocaleKeys.authorization_canceled.tr());
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       return (false, e.toString());
-    } finally {
-      loading.value = false;
     }
   }
 

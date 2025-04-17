@@ -30,5 +30,7 @@
   },
   "hosted_by": "hosted by {}",
   "close": "Close",
-  "user_unauthorized": "User unauthorized"
+  "user_unauthorized": "User unauthorized",
+  "authorization_canceled": "Authorization canceled",
+  "login_with_discord": "Login with Discord"
 }

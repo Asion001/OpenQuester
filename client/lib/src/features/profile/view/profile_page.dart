@@ -1,8 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:openquester/src/connection/controllers/auth_controller.dart';
-import 'package:openquester/src/core/get_it.dart';
-import 'package:watch_it/watch_it.dart';
+import 'package:openquester/openquester.dart';
 
 @RoutePage()
 class ProfileScreen extends WatchingWidget {
@@ -10,22 +7,35 @@ class ProfileScreen extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final autorized = watchPropertyValue((AuthController m) => m.authorized);
+    final user = watchPropertyValue((AuthController m) => m.user);
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(LocaleKeys.profile.tr()),
+      ),
       body: Center(
-        child: !autorized ? _loginField(context) : _authorizedProfile(),
+        child: user == null
+            ? _loginField(context)
+            : _authorizedProfile(context, user),
       ),
     );
   }
 
-  Widget _authorizedProfile() {
+  Widget _authorizedProfile(BuildContext context, ResponseUser user) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      spacing: 8,
       children: [
-        const Text('Authorized'),
-        TextButton(
+        if (user.avatar != null)
+          CircleAvatar(
+            radius: 36,
+            foregroundImage: NetworkImage(user.avatar!),
+          ),
+        Text(
+          user.username,
+          style: context.textTheme.bodyLarge,
+        ).paddingBottom(24),
+        FilledButton(
           onPressed: getIt.get<AuthController>().logOut,
           child: const Text('Logout'),
         ),
@@ -34,30 +44,37 @@ class ProfileScreen extends WatchingWidget {
   }
 
   Widget _loginField(BuildContext context) {
-    final loading = watch(getIt<AuthController>().loading);
-
-    return IconButton(
-      onPressed: loading.value
-          ? null
-          : () async {
+    return Container(
+      padding: 16.all,
+      decoration: BoxDecoration(
+        color: context.theme.colorScheme.secondaryContainer,
+        borderRadius: 16.circular,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        spacing: 8,
+        children: [
+          Text(
+            LocaleKeys.login_with_discord.tr(),
+            style: context.textTheme.titleLarge,
+          ),
+          LoadingButtonBuilder(
+            onPressed: () async {
               final result = await getIt.get<AuthController>().loginUser();
-              if (!result.$1 && context.mounted) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(result.$2 ?? '-')));
+              if (!result.$1) {
+                await getIt<ToastController>().show(result.$2 ?? '-');
               }
             },
-      icon: loading.value
-          ? Container(
-              width: 24,
-              height: 24,
-              padding: const EdgeInsets.all(2),
-              child: const CircularProgressIndicator(
-                color: Colors.white,
-                strokeWidth: 2,
-              ),
-            )
-          : const Icon(Icons.discord),
+            child: const Icon(Icons.discord),
+            builder: (context, child, onPressed) {
+              return IconButton(
+                onPressed: onPressed,
+                icon: child,
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

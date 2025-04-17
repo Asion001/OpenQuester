@@ -11,7 +11,7 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes {
     return [
       AutoRoute(page: HomeTabsRoute.page, path: '/', initial: true),
-      BlurDialogRoute<void>(page: ProfileRoute.page, path: '/profile'),
+      AutoRoute(page: ProfileRoute.page, path: '/profile'),
       BlurDialogRoute<void>(
         page: GamePreviewRoute.page,
         path: '/games/:gameId',
