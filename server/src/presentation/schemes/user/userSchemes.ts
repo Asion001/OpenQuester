@@ -4,7 +4,7 @@ import {
   USER_NAME_MAX_CHARS,
   USER_NAME_MIN_CHARS,
 } from "domain/constants/user";
-import { UpdateUserInputDTO } from "domain/types/user/UpdateUserDataInput";
+import { UpdateUserInputDTO } from "domain/types/dto/user/UpdateUserInputDTO";
 
 export const userIdScheme = () =>
   Joi.object({

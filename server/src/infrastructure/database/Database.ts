@@ -52,7 +52,6 @@ export class Database {
       }
       this._connected = true;
       Logger.info("Connection to DB established", DB_PREFIX);
-      Logger.info(`API version: ${process.env.npm_package_version}`);
     } catch (err: unknown) {
       let message = "unknown error";
       if (err instanceof Error) {

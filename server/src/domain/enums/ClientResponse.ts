@@ -3,11 +3,13 @@
  */
 export enum ClientResponse {
   // User
+  SOCKET_USER_NOT_AUTHENTICATED = "socket_user_not_authenticated",
   USER_NOT_FOUND = "user_not_found",
   ALREADY_LOGGED_IN = "user_logged_in",
   USER_ALREADY_EXISTS = "user_already_exists",
   NO_USER_DATA = "no_user_data",
   BAD_DATE_FORMAT = "bad_date_format",
+  USER_DATA_CORRUPTED = "user_data_corrupted",
 
   // Auth
   NO_REFRESH = "no_refresh",
@@ -43,6 +45,15 @@ export enum ClientResponse {
   NO_GAME_DATA = "no_game_data",
   BAD_GAME_CREATION = "bad_game_creation",
   GAME_NOT_FOUND = "game_not_found",
+  GAME_DATA_IS_CORRUPTED = "game_data_corrupted",
+  USER_ALREADY_IN_GAME = "user_already_in_game",
+  NOT_IN_GAME = "not_in_game",
+  GAME_IS_FULL = "game_is_full",
+  SHOWMAN_IS_TAKEN = "showman_is_taken",
+  GAME_DOES_NOT_EXISTS = "game_does_not_exists",
+  YOU_ARE_BANNED = "you_are_banned",
+  YOU_ARE_RESTRICTED = "you_are_restricted",
+  YOU_ARE_MUTED = "you_are_muted",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

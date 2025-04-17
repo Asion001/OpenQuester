@@ -18,15 +18,17 @@ import {
   EOauthProvider,
   Oauth2LoginDTO,
 } from "domain/types/dto/auth/Oauth2LoginDTO";
+import { SocketAuthDTO } from "domain/types/dto/auth/SocketAuthDTO";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
-import { SocketRedisService } from "infrastructure/services/socket/SocketRedisService";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
+import { socketAuthScheme } from "presentation/schemes/auth/authSchemes";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 export class AuthRestApiController {
@@ -36,7 +38,7 @@ export class AuthRestApiController {
     private readonly userRepository: UserRepository,
     private readonly fileRepository: FileRepository,
     private readonly storage: S3StorageService,
-    private readonly socketRedisService: SocketRedisService
+    private readonly socketUserDataService: SocketUserDataService
   ) {
     const router = Router();
 
@@ -48,14 +50,12 @@ export class AuthRestApiController {
   }
 
   private socketAuth = async (req: Request, res: Response) => {
-    const authDTO = await new RequestDataValidator<{ socketId: string }>(
+    const authDTO = await new RequestDataValidator<SocketAuthDTO>(
       req.body,
-      Joi.object({
-        socketId: Joi.string().required(),
-      })
+      socketAuthScheme
     ).validate();
 
-    const existingData = await this.socketRedisService.getIfExists(
+    const existingData = await this.socketUserDataService.getSocketData(
       authDTO.socketId
     );
 
@@ -63,7 +63,7 @@ export class AuthRestApiController {
       throw new ClientError("Socket already logged in");
     }
 
-    await this.socketRedisService.set(
+    await this.socketUserDataService.set(
       authDTO.socketId,
       req.user!.id // Null safety approved by auth middleware
     );

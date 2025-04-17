@@ -1,7 +1,7 @@
 import Redis, { ChainableCommander } from "ioredis";
 
 import { GAME_NAMESPACE } from "domain/constants/game";
-import { GameDTO } from "domain/types/dto/game/GameDTO";
+import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
 import {
   PaginationOpts,
   PaginationOrder,
@@ -18,38 +18,40 @@ export class GameIndexManager {
 
   public addGameToIndexesPipeline(
     pipeline: ChainableCommander,
-    gameId: string,
-    gameData: GameDTO
+    gameData: GameIndexesInputDTO
   ): ChainableCommander {
     // Add all index operations to the same pipeline
     pipeline.zadd(
       this._createdAtIndexKey,
       gameData.createdAt.getTime(),
-      gameId
+      gameData.id
     );
 
     if (gameData.isPrivate) {
-      pipeline.sadd(this._privacyIndexKey(true), gameId);
+      pipeline.sadd(this._privacyIndexKey(true), gameData.id);
     }
 
     pipeline.zadd(
       this._titleIndexKey,
       0,
-      `${gameData.title.toLowerCase()}:${gameId}`
+      `${gameData.title.toLowerCase()}:${gameData.id}`
     );
 
     return pipeline;
   }
 
-  public async addGameToIndexes(gameId: string, gameData: GameDTO) {
+  public async addGameToIndexes(gameId: string, gameData: GameIndexesInputDTO) {
     return Promise.all([
-      this._addToCreatedAtIndex(gameId, gameData),
-      this._addToPrivacyIndex(gameId, gameData),
-      this._addToTitleIndex(gameId, gameData),
+      this._addToCreatedAtIndex(gameId, gameData.createdAt),
+      this._addToPrivacyIndex(gameId, gameData.isPrivate),
+      this._addToTitleIndex(gameId, gameData.title),
     ]);
   }
 
-  public async removeGameFromIndexes(gameId: string, gameData: GameDTO) {
+  public async removeGameFromIndexes(
+    gameId: string,
+    gameData: GameIndexesInputDTO
+  ) {
     return Promise.all([
       this.redis.zrem(this._createdAtIndexKey, gameId),
       this.redis.srem(this._privacyIndexKey(gameData.isPrivate), gameId),
@@ -186,25 +188,25 @@ export class GameIndexManager {
     return { ids, total };
   }
 
-  private async _addToCreatedAtIndex(gameId: string, gameData: GameDTO) {
+  private async _addToCreatedAtIndex(gameId: string, createdAt: Date) {
     return this.redis.zadd(
       this._createdAtIndexKey,
-      gameData.createdAt.getTime(),
+      createdAt.getTime(),
       gameId
     );
   }
 
-  private async _addToPrivacyIndex(gameId: string, gameData: GameDTO) {
-    if (gameData.isPrivate) {
+  private async _addToPrivacyIndex(gameId: string, isPrivate: boolean) {
+    if (isPrivate) {
       await this.redis.sadd(this._privacyIndexKey(true), gameId);
     }
   }
 
-  private async _addToTitleIndex(gameId: string, gameData: GameDTO) {
+  private async _addToTitleIndex(gameId: string, title: string) {
     await this.redis.zadd(
       this._titleIndexKey,
       0,
-      `${gameData.title.toLowerCase()}:${gameId}`
+      `${title.toLowerCase()}:${gameId}`
     );
   }
 

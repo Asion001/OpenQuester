@@ -3,6 +3,7 @@ import { Router, type Express, type Request, type Response } from "express";
 import { PackageService } from "application/services/package/PackageService";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
+import { PackageInputDTO } from "domain/types/dto/package/PackageInputDTO";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
 import { Package } from "infrastructure/database/models/package/Package";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
@@ -41,12 +42,12 @@ export class PackageRestApiController {
   };
 
   private getPackage = async (req: Request, res: Response) => {
-    const validatedData = await new RequestDataValidator<{ packId: number }>(
-      { packId: Number(req.params.id) },
+    const validatedData = await new RequestDataValidator<PackageInputDTO>(
+      { packageId: Number(req.params.id) },
       packIdScheme()
     ).validate();
 
-    const data = await this.packageService.getPackage(validatedData.packId);
+    const data = await this.packageService.getPackage(validatedData.packageId);
     return res.status(HttpStatus.OK).send(data);
   };
 

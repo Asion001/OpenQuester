@@ -14,6 +14,7 @@ import { ServeApi } from "presentation/ServeApi";
 
 const main = async () => {
   Logger.info(`Initializing API Context`);
+  Logger.info(`API version: ${process.env.npm_package_version}`);
 
   // Initialize api context
   const app = express();

@@ -1,34 +1,30 @@
-import { Server as IOServer, Socket } from "socket.io";
+import { Server as IOServer, Namespace, Socket } from "socket.io";
 
-import { GameService } from "application/services/game/GameService";
-import { UserService } from "application/services/user/UserService";
-import { GameRoom } from "domain/entities/game/GameRoom";
+import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { GameValidator } from "domain/entities/game/GameValidator";
-import { SocketRedisService } from "infrastructure/services/socket/SocketRedisService";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { SocketIOGameController } from "presentation/controllers/io/game/SocketIOGameController";
+import { SocketIOEventEmitter } from "./SocketIOEventEmitter";
 
 export class SocketIOInitializer {
-  private _gameRooms: Map<string, GameRoom> = new Map();
   constructor(
     private readonly io: IOServer,
-    private readonly userService: UserService,
-    private readonly gameService: GameService,
-    private readonly socketRedisService: SocketRedisService
+    private readonly socketIOGameService: SocketIOGameService,
+    private readonly socketUserDataService: SocketUserDataService
   ) {
     const gameNamespace = this.io.of("/games");
 
     gameNamespace.on("connection", (socket: Socket) => {
-      this._initializeGameControllers(socket);
+      this._initializeGameControllers(socket, gameNamespace);
     });
   }
 
-  private async _initializeGameControllers(socket: Socket) {
+  private async _initializeGameControllers(socket: Socket, nsp: Namespace) {
     new SocketIOGameController(
       socket,
-      this.socketRedisService,
-      this._gameRooms,
-      this.gameService,
-      this.userService,
+      new SocketIOEventEmitter(nsp, socket),
+      this.socketUserDataService,
+      this.socketIOGameService,
       new GameValidator()
     );
   }
