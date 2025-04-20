@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'io_game_join_input.dart';
+part of 'socket_io_game_join_input.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,45 +14,47 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-IOGameJoinInput _$IOGameJoinInputFromJson(Map<String, dynamic> json) {
-  return _IOGameJoinInput.fromJson(json);
+SocketIOGameJoinInput _$SocketIOGameJoinInputFromJson(
+    Map<String, dynamic> json) {
+  return _SocketIOGameJoinInput.fromJson(json);
 }
 
 /// @nodoc
-mixin _$IOGameJoinInput {
+mixin _$SocketIOGameJoinInput {
   String get gameId => throw _privateConstructorUsedError;
-  IOGameJoinInputRole get role => throw _privateConstructorUsedError;
+  SocketIOGameJoinInputRole get role => throw _privateConstructorUsedError;
 
-  /// Serializes this IOGameJoinInput to a JSON map.
+  /// Serializes this SocketIOGameJoinInput to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of IOGameJoinInput
+  /// Create a copy of SocketIOGameJoinInput
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $IOGameJoinInputCopyWith<IOGameJoinInput> get copyWith =>
+  $SocketIOGameJoinInputCopyWith<SocketIOGameJoinInput> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $IOGameJoinInputCopyWith<$Res> {
-  factory $IOGameJoinInputCopyWith(
-          IOGameJoinInput value, $Res Function(IOGameJoinInput) then) =
-      _$IOGameJoinInputCopyWithImpl<$Res, IOGameJoinInput>;
+abstract class $SocketIOGameJoinInputCopyWith<$Res> {
+  factory $SocketIOGameJoinInputCopyWith(SocketIOGameJoinInput value,
+          $Res Function(SocketIOGameJoinInput) then) =
+      _$SocketIOGameJoinInputCopyWithImpl<$Res, SocketIOGameJoinInput>;
   @useResult
-  $Res call({String gameId, IOGameJoinInputRole role});
+  $Res call({String gameId, SocketIOGameJoinInputRole role});
 }
 
 /// @nodoc
-class _$IOGameJoinInputCopyWithImpl<$Res, $Val extends IOGameJoinInput>
-    implements $IOGameJoinInputCopyWith<$Res> {
-  _$IOGameJoinInputCopyWithImpl(this._value, this._then);
+class _$SocketIOGameJoinInputCopyWithImpl<$Res,
+        $Val extends SocketIOGameJoinInput>
+    implements $SocketIOGameJoinInputCopyWith<$Res> {
+  _$SocketIOGameJoinInputCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of IOGameJoinInput
+  /// Create a copy of SocketIOGameJoinInput
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -68,31 +70,33 @@ class _$IOGameJoinInputCopyWithImpl<$Res, $Val extends IOGameJoinInput>
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
-              as IOGameJoinInputRole,
+              as SocketIOGameJoinInputRole,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$IOGameJoinInputImplCopyWith<$Res>
-    implements $IOGameJoinInputCopyWith<$Res> {
-  factory _$$IOGameJoinInputImplCopyWith(_$IOGameJoinInputImpl value,
-          $Res Function(_$IOGameJoinInputImpl) then) =
-      __$$IOGameJoinInputImplCopyWithImpl<$Res>;
+abstract class _$$SocketIOGameJoinInputImplCopyWith<$Res>
+    implements $SocketIOGameJoinInputCopyWith<$Res> {
+  factory _$$SocketIOGameJoinInputImplCopyWith(
+          _$SocketIOGameJoinInputImpl value,
+          $Res Function(_$SocketIOGameJoinInputImpl) then) =
+      __$$SocketIOGameJoinInputImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String gameId, IOGameJoinInputRole role});
+  $Res call({String gameId, SocketIOGameJoinInputRole role});
 }
 
 /// @nodoc
-class __$$IOGameJoinInputImplCopyWithImpl<$Res>
-    extends _$IOGameJoinInputCopyWithImpl<$Res, _$IOGameJoinInputImpl>
-    implements _$$IOGameJoinInputImplCopyWith<$Res> {
-  __$$IOGameJoinInputImplCopyWithImpl(
-      _$IOGameJoinInputImpl _value, $Res Function(_$IOGameJoinInputImpl) _then)
+class __$$SocketIOGameJoinInputImplCopyWithImpl<$Res>
+    extends _$SocketIOGameJoinInputCopyWithImpl<$Res,
+        _$SocketIOGameJoinInputImpl>
+    implements _$$SocketIOGameJoinInputImplCopyWith<$Res> {
+  __$$SocketIOGameJoinInputImplCopyWithImpl(_$SocketIOGameJoinInputImpl _value,
+      $Res Function(_$SocketIOGameJoinInputImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of IOGameJoinInput
+  /// Create a copy of SocketIOGameJoinInput
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -100,7 +104,7 @@ class __$$IOGameJoinInputImplCopyWithImpl<$Res>
     Object? gameId = null,
     Object? role = null,
   }) {
-    return _then(_$IOGameJoinInputImpl(
+    return _then(_$SocketIOGameJoinInputImpl(
       gameId: null == gameId
           ? _value.gameId
           : gameId // ignore: cast_nullable_to_non_nullable
@@ -108,34 +112,34 @@ class __$$IOGameJoinInputImplCopyWithImpl<$Res>
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
-              as IOGameJoinInputRole,
+              as SocketIOGameJoinInputRole,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$IOGameJoinInputImpl implements _IOGameJoinInput {
-  const _$IOGameJoinInputImpl({required this.gameId, required this.role});
+class _$SocketIOGameJoinInputImpl implements _SocketIOGameJoinInput {
+  const _$SocketIOGameJoinInputImpl({required this.gameId, required this.role});
 
-  factory _$IOGameJoinInputImpl.fromJson(Map<String, dynamic> json) =>
-      _$$IOGameJoinInputImplFromJson(json);
+  factory _$SocketIOGameJoinInputImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SocketIOGameJoinInputImplFromJson(json);
 
   @override
   final String gameId;
   @override
-  final IOGameJoinInputRole role;
+  final SocketIOGameJoinInputRole role;
 
   @override
   String toString() {
-    return 'IOGameJoinInput(gameId: $gameId, role: $role)';
+    return 'SocketIOGameJoinInput(gameId: $gameId, role: $role)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$IOGameJoinInputImpl &&
+            other is _$SocketIOGameJoinInputImpl &&
             (identical(other.gameId, gameId) || other.gameId == gameId) &&
             (identical(other.role, role) || other.role == role));
   }
@@ -144,40 +148,41 @@ class _$IOGameJoinInputImpl implements _IOGameJoinInput {
   @override
   int get hashCode => Object.hash(runtimeType, gameId, role);
 
-  /// Create a copy of IOGameJoinInput
+  /// Create a copy of SocketIOGameJoinInput
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$IOGameJoinInputImplCopyWith<_$IOGameJoinInputImpl> get copyWith =>
-      __$$IOGameJoinInputImplCopyWithImpl<_$IOGameJoinInputImpl>(
-          this, _$identity);
+  _$$SocketIOGameJoinInputImplCopyWith<_$SocketIOGameJoinInputImpl>
+      get copyWith => __$$SocketIOGameJoinInputImplCopyWithImpl<
+          _$SocketIOGameJoinInputImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$IOGameJoinInputImplToJson(
+    return _$$SocketIOGameJoinInputImplToJson(
       this,
     );
   }
 }
 
-abstract class _IOGameJoinInput implements IOGameJoinInput {
-  const factory _IOGameJoinInput(
-      {required final String gameId,
-      required final IOGameJoinInputRole role}) = _$IOGameJoinInputImpl;
+abstract class _SocketIOGameJoinInput implements SocketIOGameJoinInput {
+  const factory _SocketIOGameJoinInput(
+          {required final String gameId,
+          required final SocketIOGameJoinInputRole role}) =
+      _$SocketIOGameJoinInputImpl;
 
-  factory _IOGameJoinInput.fromJson(Map<String, dynamic> json) =
-      _$IOGameJoinInputImpl.fromJson;
+  factory _SocketIOGameJoinInput.fromJson(Map<String, dynamic> json) =
+      _$SocketIOGameJoinInputImpl.fromJson;
 
   @override
   String get gameId;
   @override
-  IOGameJoinInputRole get role;
+  SocketIOGameJoinInputRole get role;
 
-  /// Create a copy of IOGameJoinInput
+  /// Create a copy of SocketIOGameJoinInput
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$IOGameJoinInputImplCopyWith<_$IOGameJoinInputImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$SocketIOGameJoinInputImplCopyWith<_$SocketIOGameJoinInputImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

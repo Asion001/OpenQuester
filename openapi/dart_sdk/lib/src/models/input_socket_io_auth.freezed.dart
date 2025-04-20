@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'input_socket_auth.dart';
+part of 'input_socket_io_auth.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,44 +14,44 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-InputSocketAuth _$InputSocketAuthFromJson(Map<String, dynamic> json) {
-  return _InputSocketAuth.fromJson(json);
+InputSocketIOAuth _$InputSocketIOAuthFromJson(Map<String, dynamic> json) {
+  return _InputSocketIOAuth.fromJson(json);
 }
 
 /// @nodoc
-mixin _$InputSocketAuth {
+mixin _$InputSocketIOAuth {
   String get socketId => throw _privateConstructorUsedError;
 
-  /// Serializes this InputSocketAuth to a JSON map.
+  /// Serializes this InputSocketIOAuth to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of InputSocketAuth
+  /// Create a copy of InputSocketIOAuth
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $InputSocketAuthCopyWith<InputSocketAuth> get copyWith =>
+  $InputSocketIOAuthCopyWith<InputSocketIOAuth> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $InputSocketAuthCopyWith<$Res> {
-  factory $InputSocketAuthCopyWith(
-          InputSocketAuth value, $Res Function(InputSocketAuth) then) =
-      _$InputSocketAuthCopyWithImpl<$Res, InputSocketAuth>;
+abstract class $InputSocketIOAuthCopyWith<$Res> {
+  factory $InputSocketIOAuthCopyWith(
+          InputSocketIOAuth value, $Res Function(InputSocketIOAuth) then) =
+      _$InputSocketIOAuthCopyWithImpl<$Res, InputSocketIOAuth>;
   @useResult
   $Res call({String socketId});
 }
 
 /// @nodoc
-class _$InputSocketAuthCopyWithImpl<$Res, $Val extends InputSocketAuth>
-    implements $InputSocketAuthCopyWith<$Res> {
-  _$InputSocketAuthCopyWithImpl(this._value, this._then);
+class _$InputSocketIOAuthCopyWithImpl<$Res, $Val extends InputSocketIOAuth>
+    implements $InputSocketIOAuthCopyWith<$Res> {
+  _$InputSocketIOAuthCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of InputSocketAuth
+  /// Create a copy of InputSocketIOAuth
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -68,32 +68,32 @@ class _$InputSocketAuthCopyWithImpl<$Res, $Val extends InputSocketAuth>
 }
 
 /// @nodoc
-abstract class _$$InputSocketAuthImplCopyWith<$Res>
-    implements $InputSocketAuthCopyWith<$Res> {
-  factory _$$InputSocketAuthImplCopyWith(_$InputSocketAuthImpl value,
-          $Res Function(_$InputSocketAuthImpl) then) =
-      __$$InputSocketAuthImplCopyWithImpl<$Res>;
+abstract class _$$InputSocketIOAuthImplCopyWith<$Res>
+    implements $InputSocketIOAuthCopyWith<$Res> {
+  factory _$$InputSocketIOAuthImplCopyWith(_$InputSocketIOAuthImpl value,
+          $Res Function(_$InputSocketIOAuthImpl) then) =
+      __$$InputSocketIOAuthImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String socketId});
 }
 
 /// @nodoc
-class __$$InputSocketAuthImplCopyWithImpl<$Res>
-    extends _$InputSocketAuthCopyWithImpl<$Res, _$InputSocketAuthImpl>
-    implements _$$InputSocketAuthImplCopyWith<$Res> {
-  __$$InputSocketAuthImplCopyWithImpl(
-      _$InputSocketAuthImpl _value, $Res Function(_$InputSocketAuthImpl) _then)
+class __$$InputSocketIOAuthImplCopyWithImpl<$Res>
+    extends _$InputSocketIOAuthCopyWithImpl<$Res, _$InputSocketIOAuthImpl>
+    implements _$$InputSocketIOAuthImplCopyWith<$Res> {
+  __$$InputSocketIOAuthImplCopyWithImpl(_$InputSocketIOAuthImpl _value,
+      $Res Function(_$InputSocketIOAuthImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InputSocketAuth
+  /// Create a copy of InputSocketIOAuth
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? socketId = null,
   }) {
-    return _then(_$InputSocketAuthImpl(
+    return _then(_$InputSocketIOAuthImpl(
       socketId: null == socketId
           ? _value.socketId
           : socketId // ignore: cast_nullable_to_non_nullable
@@ -104,25 +104,25 @@ class __$$InputSocketAuthImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$InputSocketAuthImpl implements _InputSocketAuth {
-  const _$InputSocketAuthImpl({required this.socketId});
+class _$InputSocketIOAuthImpl implements _InputSocketIOAuth {
+  const _$InputSocketIOAuthImpl({required this.socketId});
 
-  factory _$InputSocketAuthImpl.fromJson(Map<String, dynamic> json) =>
-      _$$InputSocketAuthImplFromJson(json);
+  factory _$InputSocketIOAuthImpl.fromJson(Map<String, dynamic> json) =>
+      _$$InputSocketIOAuthImplFromJson(json);
 
   @override
   final String socketId;
 
   @override
   String toString() {
-    return 'InputSocketAuth(socketId: $socketId)';
+    return 'InputSocketIOAuth(socketId: $socketId)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InputSocketAuthImpl &&
+            other is _$InputSocketIOAuthImpl &&
             (identical(other.socketId, socketId) ||
                 other.socketId == socketId));
   }
@@ -131,37 +131,37 @@ class _$InputSocketAuthImpl implements _InputSocketAuth {
   @override
   int get hashCode => Object.hash(runtimeType, socketId);
 
-  /// Create a copy of InputSocketAuth
+  /// Create a copy of InputSocketIOAuth
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$InputSocketAuthImplCopyWith<_$InputSocketAuthImpl> get copyWith =>
-      __$$InputSocketAuthImplCopyWithImpl<_$InputSocketAuthImpl>(
+  _$$InputSocketIOAuthImplCopyWith<_$InputSocketIOAuthImpl> get copyWith =>
+      __$$InputSocketIOAuthImplCopyWithImpl<_$InputSocketIOAuthImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$InputSocketAuthImplToJson(
+    return _$$InputSocketIOAuthImplToJson(
       this,
     );
   }
 }
 
-abstract class _InputSocketAuth implements InputSocketAuth {
-  const factory _InputSocketAuth({required final String socketId}) =
-      _$InputSocketAuthImpl;
+abstract class _InputSocketIOAuth implements InputSocketIOAuth {
+  const factory _InputSocketIOAuth({required final String socketId}) =
+      _$InputSocketIOAuthImpl;
 
-  factory _InputSocketAuth.fromJson(Map<String, dynamic> json) =
-      _$InputSocketAuthImpl.fromJson;
+  factory _InputSocketIOAuth.fromJson(Map<String, dynamic> json) =
+      _$InputSocketIOAuthImpl.fromJson;
 
   @override
   String get socketId;
 
-  /// Create a copy of InputSocketAuth
+  /// Create a copy of InputSocketIOAuth
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InputSocketAuthImplCopyWith<_$InputSocketAuthImpl> get copyWith =>
+  _$$InputSocketIOAuthImplCopyWith<_$InputSocketIOAuthImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

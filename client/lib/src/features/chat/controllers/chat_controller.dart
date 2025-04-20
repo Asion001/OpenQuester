@@ -12,8 +12,6 @@ class SocketChatController extends ChangeNotifier {
   User? user;
   Socket? _socket;
 
-  static const _eventKey = 'chat-message';
-
   void clear() {
     _socket?.destroy();
     _socket = null;
@@ -39,13 +37,18 @@ class SocketChatController extends ChangeNotifier {
 
     // Setup socket
     _socket = socket;
-    _socket?.on(_eventKey, _onChatMessage);
+    _socket?.on(SocketIOEvents.chatMessage.name, _onChatMessage);
 
     notifyListeners();
   }
 
   void onSendPressed(PartialText message) {
-    _socket?.emit(_eventKey, jsonEncode({'message': message.text}));
+    _socket?.emit(
+      SocketIOEvents.chatMessage.name,
+      jsonEncode(
+        InputSocketIOChatMessage(message: message.text).toJson(),
+      ),
+    );
     final textMessage = TextMessage(
       id: UniqueKey().toString(),
       author: user!,

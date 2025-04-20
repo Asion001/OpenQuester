@@ -5,7 +5,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 @JsonEnum()
-enum IOGameJoinInputRole {
+enum PlayerRole {
   @JsonValue('showman')
   showman('showman'),
   @JsonValue('player')
@@ -15,9 +15,9 @@ enum IOGameJoinInputRole {
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 
-  const IOGameJoinInputRole(this.json);
+  const PlayerRole(this.json);
 
-  factory IOGameJoinInputRole.fromJson(String json) => values.firstWhere(
+  factory PlayerRole.fromJson(String json) => values.firstWhere(
         (e) => e.json == json,
         orElse: () => $unknown,
       );

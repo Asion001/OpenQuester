@@ -39,12 +39,12 @@ class GameLobbyController {
     await getIt<Api>()
         .api
         .auth
-        .postV1AuthSocket(body: InputSocketAuth(socketId: socket!.id!));
-    final ioGameJoinInput = IOGameJoinInput(
+        .postV1AuthSocket(body: InputSocketIOAuth(socketId: socket!.id!));
+    final ioGameJoinInput = SocketIOGameJoinInput(
       gameId: gameId!,
-      role: IOGameJoinInputRole.spectator,
+      role: SocketIOGameJoinInputRole.spectator,
     );
-    socket?.emit('join', jsonEncode(ioGameJoinInput.toJson()));
+    socket?.emit(SocketIOGameEvents.join.name, jsonEncode(ioGameJoinInput.toJson()));
   }
 
   void clear() {
@@ -59,7 +59,7 @@ class GameLobbyController {
   }
 
   Future<void> leave() async {
-    socket?.emit('leave');
+    socket?.emit(SocketIOGameEvents.userLeave.name);
     socket?.disconnect();
   }
 

@@ -72,7 +72,7 @@ class _AuthClient implements AuthClient {
   }
 
   @override
-  Future<void> postV1AuthSocket({required InputSocketAuth body}) async {
+  Future<void> postV1AuthSocket({required InputSocketIOAuth body}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
