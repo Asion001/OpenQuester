@@ -4,6 +4,7 @@ import { Game } from "domain/entities/game/Game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
+import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { GameRoomLeaveData } from "domain/types/game/GameRoomLeaveData";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
@@ -33,7 +34,14 @@ export class SocketIOGameService {
       throw new ClientError(ClientResponse.SHOWMAN_IS_TAKEN);
     }
 
-    const player = await game.addUser(user, data.role);
+    const player = await game.addUser(
+      {
+        id: user.id,
+        username: user.username,
+        avatar: user.avatar ?? null,
+      },
+      data.role
+    );
 
     if (player.isRestricted && data.role !== PlayerRole.SPECTATOR) {
       game.removePlayer(player.meta.id);
@@ -83,7 +91,7 @@ export class SocketIOGameService {
     return this.gameRepository.isPlayerMuted(gameId, playerId);
   }
 
-  private async _fetchUser(socketId: string) {
+  private async _fetchUser(socketId: string): Promise<UserDTO> {
     const userData = await this.socketUserDataService.getSocketData(socketId);
     if (!userData) {
       throw new ClientError(ClientResponse.SOCKET_USER_NOT_AUTHENTICATED);

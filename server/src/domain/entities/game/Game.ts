@@ -2,9 +2,9 @@ import { Player } from "domain/entities/game/Player";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
 import { GameRedisHashDTO } from "domain/types/dto/game/GameRedisHashDTO";
-import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
+import { PlayerMeta } from "domain/types/socket/game/PlayerMeta";
 import { Logger } from "infrastructure/utils/Logger";
 
 export class Game {
@@ -116,8 +116,8 @@ export class Game {
     );
   }
 
-  public async addUser(user: UserDTO, role: PlayerRole): Promise<Player> {
-    const playerData = this._players.find((p) => p.meta.id === user.id);
+  public async addUser(meta: PlayerMeta, role: PlayerRole): Promise<Player> {
+    const playerData = this._players.find((p) => p.meta.id === meta.id);
 
     const slotIdx =
       role === PlayerRole.PLAYER ? this._getFirstFreeSlotIndex() : null;
@@ -130,7 +130,7 @@ export class Game {
     }
 
     const player = new Player({
-      user: user,
+      meta: meta,
       role,
       restrictionData: {
         banned: false,

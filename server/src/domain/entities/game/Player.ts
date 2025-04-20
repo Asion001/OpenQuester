@@ -1,11 +1,10 @@
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
-import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { PlayerMeta } from "domain/types/socket/game/PlayerMeta";
 
 export class Player {
-  private readonly _user: UserDTO;
+  private readonly _meta: PlayerMeta;
   private _slot: number | null;
   private _role: PlayerRole;
   private _status: PlayerGameStatus;
@@ -17,7 +16,7 @@ export class Player {
   private _score: number = 0;
 
   constructor(data: PlayerDTO) {
-    this._user = data.user;
+    this._meta = data.meta;
     this._slot = data.slot;
     this._role = data.role;
     this._status = data.status;
@@ -28,15 +27,15 @@ export class Player {
   // Metadata
   public get meta(): PlayerMeta {
     return {
-      id: this._user.id,
-      username: this._user.username,
-      avatar: this._user.avatar ?? null,
+      id: this._meta.id,
+      username: this._meta.username,
+      avatar: this._meta.avatar ?? null,
     };
   }
 
   public toDTO(): PlayerDTO {
     return {
-      user: this._user,
+      meta: this._meta,
       role: this._role,
       status: this._status,
       score: this._score,

@@ -340,7 +340,8 @@ export class GameRepository {
    * Cleans up all active games from Redis on server start.
    */
   public async cleanupAllGames(): Promise<void> {
-    console.time("Games update");
+    const startTime = Date.now();
+
     const keys = await this.redisService.scan(this.getGameKey("*"));
     let gamesCounter = 0;
     for (const key of keys) {
@@ -363,7 +364,8 @@ export class GameRepository {
       }
     }
 
-    Logger.info(`Games updated: ${gamesCounter}`);
-    console.timeEnd("Games update");
+    Logger.info(
+      `Games updated: ${gamesCounter}, in ${Date.now() - startTime} ms`
+    );
   }
 }
