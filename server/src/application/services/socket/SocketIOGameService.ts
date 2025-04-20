@@ -17,7 +17,9 @@ export class SocketIOGameService {
     private readonly socketUserDataService: SocketUserDataService,
     private readonly gameRepository: GameRepository,
     private readonly userService: UserService
-  ) {}
+  ) {
+    //
+  }
 
   public async joinUser(
     data: GameJoinData,
