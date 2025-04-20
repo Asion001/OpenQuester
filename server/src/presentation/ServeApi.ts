@@ -37,7 +37,7 @@ import { errorMiddleware } from "presentation/middleware/errorMiddleware";
 const APP_PREFIX = "[APP]: ";
 
 /**
- * Servers all api endpoints in one place.
+ * Serves all api controllers and dependencies.
  */
 export class ServeApi {
   /** Express app */

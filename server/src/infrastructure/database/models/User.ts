@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 
 import { Container, CONTAINER_TYPES } from "application/Container";
+import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { UserModel } from "domain/types/user/UserModel";
 import { File } from "infrastructure/database/models/File";
 import { Package } from "infrastructure/database/models/package/Package";
@@ -75,21 +76,7 @@ export class User implements UserModel {
     this.permissions = data.permissions ?? this.permissions ?? [];
   }
 
-  public async export() {
-    return {
-      id: this.id,
-      username: this.username,
-      email: this.email,
-      discord_id: this.discord_id,
-      birthday: this.birthday,
-      avatar: this.avatar,
-      created_at: this.created_at,
-      updated_at: this.updated_at,
-      permissions: this.permissions,
-    } as User;
-  }
-
-  public async toDTO() {
+  public async toDTO(): Promise<UserDTO> {
     const storage = Container.get<S3StorageService>(
       CONTAINER_TYPES.S3StorageService
     );

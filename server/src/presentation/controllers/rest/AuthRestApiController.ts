@@ -201,7 +201,13 @@ export class AuthRestApiController {
         );
       }
 
-      const registerData: RegisterUser = await user.export();
+      const registerData: RegisterUser = {
+        username: user.username,
+        email: user.email,
+        discord_id: user.discord_id,
+        birthday: user.birthday,
+        avatar: user.avatar,
+      };
 
       user = await this.userRepository.create(registerData);
     }

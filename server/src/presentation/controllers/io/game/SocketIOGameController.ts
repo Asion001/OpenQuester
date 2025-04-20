@@ -8,12 +8,12 @@ import {
   SocketIOGameEvents,
 } from "domain/enums/SocketIOEvents";
 import { ClientError } from "domain/errors/ClientError";
+import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 import { ChatMessageInputData } from "domain/types/socket/ChatMessageInputData";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { ChatMessageEventPayload } from "domain/types/socket/events/ChatMessageEventPayload";
 import { GameJoinEventPayload } from "domain/types/socket/events/game/GameJoinEventPayload";
 import { GameLeaveEventPayload } from "domain/types/socket/events/game/GameLeaveEventPayload";
-import { PlayerJoinEventPayload } from "domain/types/socket/events/game/PlayerJoinEventPayload";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
 import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
@@ -28,6 +28,7 @@ export class SocketIOGameController {
     private readonly socketIOGameService: SocketIOGameService,
     private readonly gameValidator: GameValidator
   ) {
+    // TODO: Update schema with input/output DTOs
     this.socket.on(
       SocketIOGameEvents.JOIN,
       SocketWrapper.catchErrors<string>(
@@ -65,28 +66,14 @@ export class SocketIOGameController {
     const result = await this.socketIOGameService.joinUser(dto, this.socket.id);
     const { player, game } = result;
 
-    const joinData: PlayerJoinEventPayload = {
-      userId: player.meta.id,
-      avatar: player.meta.avatar,
-      username: player.meta.username,
-      balance: player.getScore(),
-      restrictions: { muted: player.isMuted, restricted: player.isRestricted },
-      role: player.role,
-      slot: player.gameSlot,
-    };
-
-    this.eventEmitter.emit<PlayerJoinEventPayload>(
-      SocketIOGameEvents.JOIN,
-      joinData,
-      {
-        emitter: SocketEventEmitter.IO,
-        roomId: dto.gameId,
-      }
-    );
+    this.eventEmitter.emit<PlayerDTO>(SocketIOGameEvents.JOIN, player.toDTO(), {
+      emitter: SocketEventEmitter.IO,
+      roomId: dto.gameId,
+    });
 
     // TODO: Add chat history
     this.eventEmitter.emit<GameJoinEventPayload>(SocketIOGameEvents.GAME_DATA, {
-      players: game.players,
+      players: game.players.map((player) => player.toDTO()),
       gameState: await this.socketIOGameService.gameToListItem(game),
     });
 

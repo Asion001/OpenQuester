@@ -1,7 +1,7 @@
-import { Player } from "domain/entities/game/Player";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
+import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 
 export interface GameJoinEventPayload {
-  players: Player[];
+  players: PlayerDTO[];
   gameState: GameListItemDTO; // TODO: Change to game state later
 }
