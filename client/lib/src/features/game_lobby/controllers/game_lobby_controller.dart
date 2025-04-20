@@ -44,7 +44,10 @@ class GameLobbyController {
       gameId: gameId!,
       role: SocketIOGameJoinInputRole.spectator,
     );
-    socket?.emit(SocketIOGameEvents.join.name, jsonEncode(ioGameJoinInput.toJson()));
+    socket?.emit(
+      SocketIOGameEvents.join.name,
+      jsonEncode(ioGameJoinInput.toJson()),
+    );
   }
 
   void clear() {
