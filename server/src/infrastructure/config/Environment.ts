@@ -54,6 +54,11 @@ export class Environment {
   public SESSION_SECRET!: string;
   public SESSION_MAX_AGE!: number;
 
+  // Socket.IO
+  public SOCKET_IO_ADMIN_UI_ENABLE!: boolean;
+  public SOCKET_IO_ADMIN_UI_USERNAME!: string;
+  public SOCKET_IO_ADMIN_UI_PASSWORD!: string;
+
   // Logs
   public LOG_LEVEL!: LogLevel;
 
@@ -199,6 +204,21 @@ export class Environment {
     this.API_DOMAIN = this.getEnvVar("API_DOMAIN", "string", "localhost");
     this.CORS_ORIGINS = this.getEnvVar("CORS_ORIGINS", "string", "*").split(
       ","
+    );
+    this.SOCKET_IO_ADMIN_UI_ENABLE = this.getEnvVar(
+      "SOCKET_IO_ADMIN_UI_ENABLE",
+      "boolean",
+      false
+    );
+    this.SOCKET_IO_ADMIN_UI_USERNAME = this.getEnvVar(
+      "SOCKET_IO_ADMIN_UI_USERNAME",
+      "string",
+      "admin"
+    );
+    this.SOCKET_IO_ADMIN_UI_PASSWORD = this.getEnvVar(
+      "SOCKET_IO_ADMIN_UI_PASSWORD",
+      "string",
+      "admin"
     );
   }
 
