@@ -59,14 +59,14 @@ jobs:
           echo "LATEST_TAG=$LATEST_TAG"
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
 
-      - name: Create draft release
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           tag_name: ${{ env.LATEST_TAG }}
-          #TODO: body_path: misc/release/notes.tmpl
           files: |
             *.apk
+
       # Deploy to Cloudflare Pages with production environment when not on main branch.
       - name: Publish to Cloudflare Pages (Production)
         uses: cloudflare/wrangler-action@v3
@@ -74,7 +74,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy web/ --project-name=openquester
+          command: pages deploy web/ --project-name=openquester --branch main
 
       - name: Purge Cloudflare cache
         run: |
