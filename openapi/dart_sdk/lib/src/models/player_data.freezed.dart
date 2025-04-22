@@ -22,11 +22,13 @@ PlayerData _$PlayerDataFromJson(Map<String, dynamic> json) {
 mixin _$PlayerData {
   PlayerMeta get meta => throw _privateConstructorUsedError;
   PlayerRole get role => throw _privateConstructorUsedError;
-  RestrictionsEventData get restrictions => throw _privateConstructorUsedError;
-  num get balance => throw _privateConstructorUsedError;
+  RestrictionsEventData get restrictionData =>
+      throw _privateConstructorUsedError;
+  num get score => throw _privateConstructorUsedError;
 
   /// Slot null has only showman and spectators
   num? get slot => throw _privateConstructorUsedError;
+  PlayerDataStatus get status => throw _privateConstructorUsedError;
 
   /// Serializes this PlayerData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,12 +49,13 @@ abstract class $PlayerDataCopyWith<$Res> {
   $Res call(
       {PlayerMeta meta,
       PlayerRole role,
-      RestrictionsEventData restrictions,
-      num balance,
-      num? slot});
+      RestrictionsEventData restrictionData,
+      num score,
+      num? slot,
+      PlayerDataStatus status});
 
   $PlayerMetaCopyWith<$Res> get meta;
-  $RestrictionsEventDataCopyWith<$Res> get restrictions;
+  $RestrictionsEventDataCopyWith<$Res> get restrictionData;
 }
 
 /// @nodoc
@@ -72,9 +75,10 @@ class _$PlayerDataCopyWithImpl<$Res, $Val extends PlayerData>
   $Res call({
     Object? meta = null,
     Object? role = null,
-    Object? restrictions = null,
-    Object? balance = null,
+    Object? restrictionData = null,
+    Object? score = null,
     Object? slot = freezed,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       meta: null == meta
@@ -85,18 +89,22 @@ class _$PlayerDataCopyWithImpl<$Res, $Val extends PlayerData>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as PlayerRole,
-      restrictions: null == restrictions
-          ? _value.restrictions
-          : restrictions // ignore: cast_nullable_to_non_nullable
+      restrictionData: null == restrictionData
+          ? _value.restrictionData
+          : restrictionData // ignore: cast_nullable_to_non_nullable
               as RestrictionsEventData,
-      balance: null == balance
-          ? _value.balance
-          : balance // ignore: cast_nullable_to_non_nullable
+      score: null == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
               as num,
       slot: freezed == slot
           ? _value.slot
           : slot // ignore: cast_nullable_to_non_nullable
               as num?,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as PlayerDataStatus,
     ) as $Val);
   }
 
@@ -114,9 +122,10 @@ class _$PlayerDataCopyWithImpl<$Res, $Val extends PlayerData>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $RestrictionsEventDataCopyWith<$Res> get restrictions {
-    return $RestrictionsEventDataCopyWith<$Res>(_value.restrictions, (value) {
-      return _then(_value.copyWith(restrictions: value) as $Val);
+  $RestrictionsEventDataCopyWith<$Res> get restrictionData {
+    return $RestrictionsEventDataCopyWith<$Res>(_value.restrictionData,
+        (value) {
+      return _then(_value.copyWith(restrictionData: value) as $Val);
     });
   }
 }
@@ -132,14 +141,15 @@ abstract class _$$PlayerDataImplCopyWith<$Res>
   $Res call(
       {PlayerMeta meta,
       PlayerRole role,
-      RestrictionsEventData restrictions,
-      num balance,
-      num? slot});
+      RestrictionsEventData restrictionData,
+      num score,
+      num? slot,
+      PlayerDataStatus status});
 
   @override
   $PlayerMetaCopyWith<$Res> get meta;
   @override
-  $RestrictionsEventDataCopyWith<$Res> get restrictions;
+  $RestrictionsEventDataCopyWith<$Res> get restrictionData;
 }
 
 /// @nodoc
@@ -157,9 +167,10 @@ class __$$PlayerDataImplCopyWithImpl<$Res>
   $Res call({
     Object? meta = null,
     Object? role = null,
-    Object? restrictions = null,
-    Object? balance = null,
+    Object? restrictionData = null,
+    Object? score = null,
     Object? slot = freezed,
+    Object? status = null,
   }) {
     return _then(_$PlayerDataImpl(
       meta: null == meta
@@ -170,18 +181,22 @@ class __$$PlayerDataImplCopyWithImpl<$Res>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as PlayerRole,
-      restrictions: null == restrictions
-          ? _value.restrictions
-          : restrictions // ignore: cast_nullable_to_non_nullable
+      restrictionData: null == restrictionData
+          ? _value.restrictionData
+          : restrictionData // ignore: cast_nullable_to_non_nullable
               as RestrictionsEventData,
-      balance: null == balance
-          ? _value.balance
-          : balance // ignore: cast_nullable_to_non_nullable
+      score: null == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
               as num,
       slot: freezed == slot
           ? _value.slot
           : slot // ignore: cast_nullable_to_non_nullable
               as num?,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as PlayerDataStatus,
     ));
   }
 }
@@ -192,9 +207,10 @@ class _$PlayerDataImpl implements _PlayerData {
   const _$PlayerDataImpl(
       {required this.meta,
       required this.role,
-      required this.restrictions,
-      required this.balance,
-      required this.slot});
+      required this.restrictionData,
+      required this.score,
+      required this.slot,
+      required this.status});
 
   factory _$PlayerDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$PlayerDataImplFromJson(json);
@@ -204,17 +220,19 @@ class _$PlayerDataImpl implements _PlayerData {
   @override
   final PlayerRole role;
   @override
-  final RestrictionsEventData restrictions;
+  final RestrictionsEventData restrictionData;
   @override
-  final num balance;
+  final num score;
 
   /// Slot null has only showman and spectators
   @override
   final num? slot;
+  @override
+  final PlayerDataStatus status;
 
   @override
   String toString() {
-    return 'PlayerData(meta: $meta, role: $role, restrictions: $restrictions, balance: $balance, slot: $slot)';
+    return 'PlayerData(meta: $meta, role: $role, restrictionData: $restrictionData, score: $score, slot: $slot, status: $status)';
   }
 
   @override
@@ -224,16 +242,17 @@ class _$PlayerDataImpl implements _PlayerData {
             other is _$PlayerDataImpl &&
             (identical(other.meta, meta) || other.meta == meta) &&
             (identical(other.role, role) || other.role == role) &&
-            (identical(other.restrictions, restrictions) ||
-                other.restrictions == restrictions) &&
-            (identical(other.balance, balance) || other.balance == balance) &&
-            (identical(other.slot, slot) || other.slot == slot));
+            (identical(other.restrictionData, restrictionData) ||
+                other.restrictionData == restrictionData) &&
+            (identical(other.score, score) || other.score == score) &&
+            (identical(other.slot, slot) || other.slot == slot) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, meta, role, restrictions, balance, slot);
+  int get hashCode => Object.hash(
+      runtimeType, meta, role, restrictionData, score, slot, status);
 
   /// Create a copy of PlayerData
   /// with the given fields replaced by the non-null parameter values.
@@ -255,9 +274,10 @@ abstract class _PlayerData implements PlayerData {
   const factory _PlayerData(
       {required final PlayerMeta meta,
       required final PlayerRole role,
-      required final RestrictionsEventData restrictions,
-      required final num balance,
-      required final num? slot}) = _$PlayerDataImpl;
+      required final RestrictionsEventData restrictionData,
+      required final num score,
+      required final num? slot,
+      required final PlayerDataStatus status}) = _$PlayerDataImpl;
 
   factory _PlayerData.fromJson(Map<String, dynamic> json) =
       _$PlayerDataImpl.fromJson;
@@ -267,13 +287,15 @@ abstract class _PlayerData implements PlayerData {
   @override
   PlayerRole get role;
   @override
-  RestrictionsEventData get restrictions;
+  RestrictionsEventData get restrictionData;
   @override
-  num get balance;
+  num get score;
 
   /// Slot null has only showman and spectators
   @override
   num? get slot;
+  @override
+  PlayerDataStatus get status;
 
   /// Create a copy of PlayerData
   /// with the given fields replaced by the non-null parameter values.

@@ -10,17 +10,19 @@ _$PlayerDataImpl _$$PlayerDataImplFromJson(Map<String, dynamic> json) =>
     _$PlayerDataImpl(
       meta: PlayerMeta.fromJson(json['meta'] as Map<String, dynamic>),
       role: PlayerRole.fromJson(json['role'] as String),
-      restrictions: RestrictionsEventData.fromJson(
-          json['restrictions'] as Map<String, dynamic>),
-      balance: json['balance'] as num,
+      restrictionData: RestrictionsEventData.fromJson(
+          json['restrictionData'] as Map<String, dynamic>),
+      score: json['score'] as num,
       slot: json['slot'] as num?,
+      status: PlayerDataStatus.fromJson(json['status'] as String),
     );
 
 Map<String, dynamic> _$$PlayerDataImplToJson(_$PlayerDataImpl instance) =>
     <String, dynamic>{
       'meta': instance.meta,
       'role': instance.role,
-      'restrictions': instance.restrictions,
-      'balance': instance.balance,
+      'restrictionData': instance.restrictionData,
+      'score': instance.score,
       'slot': instance.slot,
+      'status': instance.status,
     };

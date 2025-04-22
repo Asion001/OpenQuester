@@ -2025,10 +2025,10 @@
           "role": {
             "$ref": "#/components/schemas/PlayerRole"
           },
-          "restrictions": {
+          "restrictionData": {
             "$ref": "#/components/schemas/RestrictionsEventData"
           },
-          "balance": {
+          "score": {
             "type": "number",
             "examples": [200, 500, 1250]
           },
@@ -2036,6 +2036,10 @@
             "type": ["number", "null"],
             "examples": [0, 1, 2, null],
             "description": "Slot null has only showman and spectators"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["in-game", "disconnected"]
           }
         }
       },

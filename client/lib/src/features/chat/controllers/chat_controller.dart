@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:openquester/openquester.dart';
@@ -11,22 +9,19 @@ class SocketChatController extends ChangeNotifier {
 
   User? user;
   Socket? _socket;
-  List<User>? users;
+  List<User>? _users;
 
   void clear() {
     _socket?.destroy();
     _socket = null;
     user = null;
     messages.clear();
-    users?.clear();
-    users = null;
+    _users?.clear();
+    _users = null;
     notifyListeners();
   }
 
-  Future<void> init({
-    required Socket socket,
-    required List<User> users,
-  }) async {
+  Future<void> init({required Socket socket}) async {
     // Clear before connect
     clear();
 
@@ -43,33 +38,29 @@ class SocketChatController extends ChangeNotifier {
 
     // Setup socket
     _socket = socket;
-    _socket?.on(SocketIOEvents.chatMessage.name, _onChatMessage);
+    _socket?.on(SocketIOEvents.chatMessage.json!, _onChatMessage);
 
+    notifyListeners();
+  }
+
+  /// Set chat users
+  void setUsers(List<User> users) {
+    _users = users;
     notifyListeners();
   }
 
   void onSendPressed(PartialText message) {
     _socket?.emit(
-      SocketIOEvents.chatMessage.name,
-      jsonEncode(
-        SocketIOChatMessageContent(message: message.text).toJson(),
-      ),
+      SocketIOEvents.chatMessage.json!,
+      SocketIOChatMessageContent(message: message.text).toJson(),
     );
-    final textMessage = TextMessage(
-      id: UniqueKey().toString(),
-      author: user!,
-      text: message.text,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-    );
-    messages.insert(0, textMessage);
-    notifyListeners();
   }
 
   void _onChatMessage(dynamic data) {
     final message = SocketIOChatMessageEventPayload.fromJson(
       data as Map<String, dynamic>,
     );
-    final user = users?.firstWhereOrNull(
+    final user = _users?.firstWhereOrNull(
       (e) => e.id == message.user.toString(),
     );
     final textMessage = TextMessage(

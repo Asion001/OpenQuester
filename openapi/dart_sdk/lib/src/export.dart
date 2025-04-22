@@ -90,6 +90,7 @@ export 'models/simple_question_type.dart';
 export 'models/stake_question_type.dart';
 export 'models/stake_question_sub_type.dart';
 export 'models/hidden_question_type.dart';
+export 'models/player_data_status.dart';
 export 'models/socket_io_game_join_input_role.dart';
 // Root client
 export 'rest_client.dart';

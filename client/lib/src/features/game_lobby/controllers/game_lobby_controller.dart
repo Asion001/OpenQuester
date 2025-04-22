@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show PersistentBottomSheetController;
 import 'package:openquester/openquester.dart';
-import 'package:openquester/src/features/chat/data/chat_user_extensions.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 @singleton
@@ -26,7 +23,7 @@ class GameLobbyController {
       socket!
         ..onConnect((_) => _onConnect())
         ..onDisconnect((_) => clear())
-        ..on(SocketIOGameEvents.gameData.name, _onGameData)
+        ..on(SocketIOGameEvents.gameData.json!, _onGameData)
         ..connect();
 
       round.value = testRound;
@@ -48,9 +45,12 @@ class GameLobbyController {
         role: SocketIOGameJoinInputRole.spectator,
       );
       socket?.emit(
-        SocketIOGameEvents.join.name,
-        jsonEncode(ioGameJoinInput.toJson()),
+        SocketIOGameEvents.join.json!,
+        ioGameJoinInput.toJson(),
       );
+
+      // Init chat controller
+      await getIt<SocketChatController>().init(socket: socket!);
     } catch (e, s) {
       logger.e(e, stackTrace: s);
     }
@@ -69,7 +69,7 @@ class GameLobbyController {
   }
 
   Future<void> leave() async {
-    socket?.emit(SocketIOGameEvents.userLeave.name);
+    socket?.emit(SocketIOGameEvents.userLeave.json!);
     socket?.disconnect();
   }
 
@@ -87,11 +87,9 @@ class GameLobbyController {
     gameData.value =
         SocketIOGameJoinEventPayload.fromJson(data as Map<String, dynamic>);
 
-    // Get chat users
+    // Set chat users
     final users = gameData.value!.players.map(UserX.fromPlayerData).toList();
-
-    // Init chat controller
-    await getIt<SocketChatController>().init(socket: socket!, users: users);
+    getIt<SocketChatController>().setUsers(users);
   }
 }
 

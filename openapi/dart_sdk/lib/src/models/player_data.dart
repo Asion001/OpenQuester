@@ -4,6 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'player_data_status.dart';
 import 'player_meta.dart';
 import 'player_role.dart';
 import 'restrictions_event_data.dart';
@@ -17,11 +18,12 @@ class PlayerData with _$PlayerData {
   const factory PlayerData({
     required PlayerMeta meta,
     required PlayerRole role,
-    required RestrictionsEventData restrictions,
-    required num balance,
+    required RestrictionsEventData restrictionData,
+    required num score,
 
     /// Slot null has only showman and spectators
     required num? slot,
+    required PlayerDataStatus status,
   }) = _PlayerData;
   
   factory PlayerData.fromJson(Map<String, Object?> json) => _$PlayerDataFromJson(json);
