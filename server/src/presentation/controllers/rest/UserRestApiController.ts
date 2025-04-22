@@ -2,15 +2,16 @@ import { type Express, type Request, type Response, Router } from "express";
 
 import { TranslateService as ts } from "application/services/text/TranslateService";
 import { type UserService } from "application/services/user/UserService";
-import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { Permissions } from "domain/enums/Permissions";
 import { ClientError } from "domain/errors/ClientError";
+import { UpdateUserDTO } from "domain/types/dto/user/UpdateUserDTO";
+import { UpdateUserInputDTO } from "domain/types/dto/user/UpdateUserInputDTO";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
+import { UserInputDTO } from "domain/types/dto/user/UserInputDTO";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
-import { UpdateUserDTO } from "domain/types/user/UpdateUserData";
-import { UpdateUserInputDTO } from "domain/types/user/UpdateUserDataInput";
 import { File } from "infrastructure/database/models/File";
 import { User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
@@ -78,7 +79,7 @@ export class UserRestApiController {
   private getUser = async (req: Request, res: Response) => {
     const id: number = await this._getUserId(req);
 
-    const validatedData = await new RequestDataValidator<{ userId: number }>(
+    const validatedData = await new RequestDataValidator<UserInputDTO>(
       { userId: id },
       userIdScheme()
     ).validate();
@@ -114,7 +115,7 @@ export class UserRestApiController {
 
     const user = await this.userRepository.get(userInputDTO.id, {
       select: USER_SELECT_FIELDS,
-      relations: ["avatar", "permissions"],
+      relations: USER_RELATIONS,
       relationSelects: {
         avatar: ["id", "filename"],
         permissions: ["id", "name"],
@@ -156,7 +157,7 @@ export class UserRestApiController {
   private deleteUser = async (req: Request, res: Response) => {
     const id: number = await this._getUserId(req);
 
-    const validatedData = await new RequestDataValidator<{ userId: number }>(
+    const validatedData = await new RequestDataValidator<UserInputDTO>(
       { userId: id },
       userIdScheme()
     ).validate();

@@ -1,16 +1,31 @@
-import { Server as IOServer, Socket } from "socket.io";
+import { Server as IOServer, Namespace, Socket } from "socket.io";
 
-import { SocketIOEvents } from "domain/enums/SocketIOEvents";
+import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
+import { GameValidator } from "domain/entities/game/GameValidator";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { SocketIOGameController } from "presentation/controllers/io/game/SocketIOGameController";
+import { SocketIOEventEmitter } from "./SocketIOEventEmitter";
 
 export class SocketIOInitializer {
-  constructor(private readonly io: IOServer) {
-    this.io.on(SocketIOEvents.CONNECTION, (socket: Socket) => {
-      this._initializeControllers(socket);
+  constructor(
+    private readonly io: IOServer,
+    private readonly socketIOGameService: SocketIOGameService,
+    private readonly socketUserDataService: SocketUserDataService
+  ) {
+    const gameNamespace = this.io.of("/games");
+
+    gameNamespace.on("connection", (socket: Socket) => {
+      this._initializeGameControllers(socket, gameNamespace);
     });
   }
 
-  private _initializeControllers(socket: Socket) {
-    new SocketIOGameController(socket);
+  private async _initializeGameControllers(socket: Socket, nsp: Namespace) {
+    new SocketIOGameController(
+      socket,
+      new SocketIOEventEmitter(nsp, socket),
+      this.socketUserDataService,
+      this.socketIOGameService,
+      new GameValidator()
+    );
   }
 }

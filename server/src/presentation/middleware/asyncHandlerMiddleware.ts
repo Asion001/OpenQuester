@@ -10,7 +10,7 @@ import { type NextFunction, type Request, type Response } from "express";
  *   next(err)
  * }
  * ```
- * This wrapper automatically parse all errors that were caught during execution
+ * This wrapper automatically pass all errors that were caught during execution
  * into errorMiddleware
  */
 export const asyncHandler =

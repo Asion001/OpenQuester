@@ -4,7 +4,7 @@ import type Redis from "ioredis";
 import path from "path";
 import { type LoggerOptions } from "typeorm";
 
-import { SESSION_SECRET_REDIS_KEY } from "domain/constants/session";
+import { SESSION_SECRET_REDIS_NSP } from "domain/constants/session";
 import { ServerResponse } from "domain/enums/ServerResponse";
 import { ServerError } from "domain/errors/ServerError";
 import { EnvVar } from "domain/types/env/env";
@@ -53,6 +53,11 @@ export class Environment {
   // Session
   public SESSION_SECRET!: string;
   public SESSION_MAX_AGE!: number;
+
+  // Socket.IO
+  public SOCKET_IO_ADMIN_UI_ENABLE!: boolean;
+  public SOCKET_IO_ADMIN_UI_USERNAME!: string;
+  public SOCKET_IO_ADMIN_UI_PASSWORD!: string;
 
   // Logs
   public LOG_LEVEL!: LogLevel;
@@ -146,12 +151,12 @@ export class Environment {
   }
 
   public async loadSessionConfig(length: number, redisClient: Redis) {
-    const secret = await redisClient.get(SESSION_SECRET_REDIS_KEY);
+    const secret = await redisClient.get(SESSION_SECRET_REDIS_NSP);
     if (secret) {
       this.SESSION_SECRET = secret;
     } else {
       this.SESSION_SECRET = await SessionUtils.generateSecret(length);
-      await redisClient.set(SESSION_SECRET_REDIS_KEY, this.SESSION_SECRET);
+      await redisClient.set(SESSION_SECRET_REDIS_NSP, this.SESSION_SECRET);
     }
 
     this.SESSION_MAX_AGE = this.getEnvVar(
@@ -199,6 +204,21 @@ export class Environment {
     this.API_DOMAIN = this.getEnvVar("API_DOMAIN", "string", "localhost");
     this.CORS_ORIGINS = this.getEnvVar("CORS_ORIGINS", "string", "*").split(
       ","
+    );
+    this.SOCKET_IO_ADMIN_UI_ENABLE = this.getEnvVar(
+      "SOCKET_IO_ADMIN_UI_ENABLE",
+      "boolean",
+      false
+    );
+    this.SOCKET_IO_ADMIN_UI_USERNAME = this.getEnvVar(
+      "SOCKET_IO_ADMIN_UI_USERNAME",
+      "string",
+      "admin"
+    );
+    this.SOCKET_IO_ADMIN_UI_PASSWORD = this.getEnvVar(
+      "SOCKET_IO_ADMIN_UI_PASSWORD",
+      "string",
+      "admin"
     );
   }
 

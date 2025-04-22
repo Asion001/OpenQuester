@@ -18,16 +18,22 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) return const Material();
     return MaterialApp.router(
       title: 'OpenQuester',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      routerConfig: getIt<AppRouter>().config(),
+      routerConfig: getIt<AppRouter>().config(
+        deepLinkTransformer: getIt<AppRouter>().deepLinkTransformer,
+      ),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        const loader = Material();
+        if (loading) return loader;
+        return child ?? loader;
+      },
     );
   }
 }

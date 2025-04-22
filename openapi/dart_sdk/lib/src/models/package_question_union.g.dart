@@ -148,7 +148,7 @@ _$PackageQuestionUnionNoRiskImpl _$$PackageQuestionUnionNoRiskImplFromJson(
       subType: NoRiskQuestionSubType.fromJson(json['subType'] as String),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
-      priceMultiplier: json['priceMultiplier'] as num? ?? 1.5,
+      priceMultiplier: (json['priceMultiplier'] as num?)?.toDouble() ?? 1.5,
     );
 
 Map<String, dynamic> _$$PackageQuestionUnionNoRiskImplToJson(

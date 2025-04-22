@@ -15,15 +15,18 @@ import { UserRepository } from "infrastructure/database/repositories/UserReposit
 
 export class GameService {
   constructor(
-    private readonly gameRepository: GameRepository,
     private readonly io: IOServer,
+    private readonly gameRepository: GameRepository,
     private readonly userRepository: UserRepository
   ) {
     //
   }
 
-  public async get(gameId: string): Promise<GameListItemDTO | undefined> {
-    return this.gameRepository.getGame(gameId);
+  public async get(
+    gameId: string,
+    updatedTtl?: number
+  ): Promise<GameListItemDTO> {
+    return this.gameRepository.getGame(gameId, updatedTtl);
   }
 
   public async list(paginationOpts: PaginationOpts<GameDTO>) {

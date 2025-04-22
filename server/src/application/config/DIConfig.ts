@@ -5,6 +5,7 @@ import { Container, CONTAINER_TYPES } from "application/Container";
 import { StorageContextBuilder } from "application/context/storage/StorageContextBuilder";
 import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
+import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { TranslateService } from "application/services/text/TranslateService";
 import { UserService } from "application/services/user/UserService";
 import { Database } from "infrastructure/database/Database";
@@ -24,6 +25,7 @@ import { PackageTagRepository } from "infrastructure/database/repositories/TagRe
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
 import { RedisService } from "infrastructure/services/RedisService";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 
 export class DIConfig {
@@ -104,31 +106,9 @@ export class DIConfig {
     );
 
     Container.register(
-      CONTAINER_TYPES.GameRepository,
-      new GameRepository(
-        Container.get<Redis>(CONTAINER_TYPES.Redis),
-        new GameIndexManager(Container.get(CONTAINER_TYPES.Redis)),
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
-        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
-        Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
-      ),
-      "repository"
-    );
-
-    Container.register(
       CONTAINER_TYPES.PermissionRepository,
       new PermissionRepository(db.getRepository(Permission)),
       "repository"
-    );
-
-    Container.register(
-      CONTAINER_TYPES.GameService,
-      new GameService(
-        Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
-        Container.get<IOServer>(CONTAINER_TYPES.IO),
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository)
-      ),
-      "service"
     );
 
     Container.register(
@@ -149,6 +129,48 @@ export class DIConfig {
     Container.register(
       CONTAINER_TYPES.RedisService,
       new RedisService(),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.GameRepository,
+      new GameRepository(
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService),
+        new GameIndexManager(Container.get(CONTAINER_TYPES.Redis)),
+        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
+        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
+        Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
+      ),
+      "repository"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.GameService,
+      new GameService(
+        Container.get<IOServer>(CONTAINER_TYPES.IO),
+        Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
+        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.SocketUserDataService,
+      new SocketUserDataService(
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.SocketIOGameService,
+      new SocketIOGameService(
+        Container.get<SocketUserDataService>(
+          CONTAINER_TYPES.SocketUserDataService
+        ),
+        Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
+        Container.get<UserService>(CONTAINER_TYPES.UserService)
+      ),
       "service"
     );
 

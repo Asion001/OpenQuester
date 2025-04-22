@@ -614,11 +614,11 @@
             }
           },
           "400": {
-            "description": "User logged in successfully",
+            "description": "User have error during logging",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DiscordAuthFailedResponse"
+                  "$ref": "#/components/schemas/GeneralErrorResponse"
                 }
               }
             }
@@ -637,6 +637,37 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/socket": {
+      "post": {
+        "summary": "Authorize socket.io connection",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InputSocketIOAuth"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully"
+          },
+          "400": {
+            "description": "User have error during logging",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneralErrorResponse"
                 }
               }
             }
@@ -784,7 +815,7 @@
         "tags": ["Games"],
         "parameters": [
           {
-            "name": "id",
+            "name": "gameId",
             "in": "path",
             "required": true,
             "schema": {
@@ -802,25 +833,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/GameNotFoundResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/subscription/games": {
-      "post": {
-        "summary": "Subscribe to games events",
-        "tags": ["Socket.IO"],
-        "description": "Subscribes to the 'games' event to receive updates about game changes, creations, and removals.",
-        "responses": {
-          "200": {
-            "description": "Subscribed to game events",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GameEventSubscription"
                 }
               }
             }
@@ -1395,12 +1407,12 @@
           }
         }
       },
-      "DiscordAuthFailedResponse": {
+      "GeneralErrorResponse": {
         "type": "object",
         "properties": {
           "error": {
             "type": "string",
-            "examples": ["Discord authentication is failed, please try again"]
+            "examples": ["Authentication is failed, please try again"]
           }
         }
       },
@@ -1764,6 +1776,7 @@
               },
               "priceMultiplier": {
                 "type": "number",
+                "format": "float",
                 "description": "Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct",
                 "default": 1.5,
                 "examples": [0.5, 1.25, 1.5, 2]
@@ -1957,6 +1970,161 @@
         },
         "required": ["title", "rounds"],
         "description": "Input for creating a new package; author is set via authentication"
+      },
+      "InputSocketIOAuth": {
+        "type": "object",
+        "properties": {
+          "socketId": {
+            "type": "string",
+            "examples": ["Q04nceF-7noEw52hAAAD"]
+          }
+        }
+      },
+      "PlayerRole": {
+        "type": "string",
+        "enum": ["showman", "player", "spectator"]
+      },
+      "RestrictionsEventData": {
+        "type": "object",
+        "properties": {
+          "muted": {
+            "type": "boolean",
+            "examples": [false],
+            "description": "If true - player muted in in-game chat"
+          },
+          "restricted": {
+            "type": "boolean",
+            "examples": [false],
+            "description": "Restricted players can only join as spectators"
+          }
+        }
+      },
+      "PlayerMeta": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [200]
+          },
+          "username": {
+            "type": "string",
+            "examples": ["Asion001"]
+          },
+          "avatar": {
+            "type": ["string", "null"],
+            "examples": ["https://example.image.com", null]
+          }
+        }
+      },
+      "PlayerData": {
+        "type": "object",
+        "description": "Player DTO. This is also sent to everyone when player joins game",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/PlayerMeta"
+          },
+          "role": {
+            "$ref": "#/components/schemas/PlayerRole"
+          },
+          "restrictionData": {
+            "$ref": "#/components/schemas/RestrictionsEventData"
+          },
+          "score": {
+            "type": "integer",
+            "examples": [200, 500, 1250]
+          },
+          "slot": {
+            "type": ["integer", "null"],
+            "examples": [0, 1, 2, null],
+            "description": "Slot null has only showman and spectators"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["in-game", "disconnected"]
+          }
+        }
+      },
+      "SocketIOGameJoinInput": {
+        "type": "object",
+        "properties": {
+          "gameId": {
+            "type": "string",
+            "examples": ["Q31X"]
+          },
+          "role": {
+            "type": "string",
+            "enum": ["showman", "player", "spectator"],
+            "examples": ["player"]
+          }
+        }
+      },
+      "SocketIOGameLeaveEventPayload": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "integer",
+            "examples": [5],
+            "description": "Emitted to everyone in game, including sender. ID of the user who left the game"
+          }
+        }
+      },
+      "SocketIOChatMessageEventPayload": {
+        "description": "Emitted to everyone in game, including sender. Data that sent to all players in room on chat message",
+        "allOf": [
+          { "$ref": "#/components/schemas/SocketIOChatMessageContent" },
+          {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "integer",
+                "examples": [5],
+                "description": "ID of the user who sent the message"
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "examples": ["2024-01-01T00:00:00Z"]
+              }
+            }
+          }
+        ]
+      },
+      "SocketIOGameJoinEventPayload": {
+        "type": "object",
+        "description": "This data sent to player when he joins game",
+        "properties": {
+          "players": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayerData"
+            },
+            "description": "Players in the game"
+          },
+          "gameState": {
+            "description": "!!! Work in progress, will be changed with actual game state component",
+            "$ref": "#/components/schemas/GameListItem"
+          }
+        }
+      },
+      "SocketIOEvents": {
+        "type": "string",
+        "enum": ["error", "disconnect", "connection", "games", "chat-message"],
+        "examples": ["error"]
+      },
+      "SocketIOGameEvents": {
+        "type": "string",
+        "enum": ["join", "user-leave", "game-data"],
+        "examples": ["join"]
+      },
+      "SocketIOChatMessageContent": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "examples": ["Hello guys!"],
+            "maxLength": 255
+          }
+        }
       }
     }
   }

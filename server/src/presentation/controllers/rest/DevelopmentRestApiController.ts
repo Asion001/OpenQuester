@@ -5,7 +5,7 @@ import {
   GAME_TITLE_MAX_CHARS,
   GAME_TITLE_MIN_CHARS,
 } from "domain/constants/game";
-import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { type Express } from "express";
@@ -29,18 +29,19 @@ export class DevelopmentRestApiController {
       avatar: null,
     };
 
-    this.app.post("/v1/dev/login", async (req, res) => {
+    this.app.post("/v1/dev/login/:num", async (req, res) => {
       try {
+        const num = req.params.num ? `-${req.params.num}` : "";
         let user = await this.userRepository.findOne(
           {
-            username: dummyUser.username,
-            email: dummyUser.email,
-            discord_id: dummyUser.discord_id,
+            username: dummyUser.username + num,
+            email: dummyUser.email + num,
+            discord_id: dummyUser.discord_id + num,
             is_deleted: false,
           },
           {
             select: USER_SELECT_FIELDS,
-            relations: ["avatar", "permissions"],
+            relations: USER_RELATIONS,
             relationSelects: {
               avatar: ["id", "filename"],
               permissions: ["id", "name"],
@@ -50,9 +51,9 @@ export class DevelopmentRestApiController {
 
         if (!user) {
           user = await this.userRepository.create({
-            username: dummyUser.username,
-            email: dummyUser.email,
-            discord_id: dummyUser.discord_id,
+            username: dummyUser.username + num,
+            email: dummyUser.email + num,
+            discord_id: dummyUser.discord_id + num,
             birthday: null,
             avatar: null,
           });
@@ -88,24 +89,25 @@ export class DevelopmentRestApiController {
 
         // Parse count from query parameter, default to 50
         const count = parseInt(req.query.count as string) || 50;
+        const packageId = parseInt(req.body.packageId);
 
-        if (count < 1 || count > 1000) {
+        if (count < 1 || count > 250) {
           return res
             .status(400)
-            .json({ error: "Count must be between 1 and 1000" });
+            .json({ error: "Count must be between 1 and 250" });
         }
 
         const games = [];
         for (let i = 0; i < count; i++) {
-          const gameData = this.generateRandomGameData();
+          const gameData = this.generateRandomGameData(packageId);
           const game = await this.gameService.create(req, gameData);
           games.push(game);
         }
 
         res.json({ success: true, games });
-      } catch (error) {
-        Logger.error(`DEV: Generate games error: ${error}`);
-        res.status(500).json({ error: "Failed to generate games" });
+      } catch (err: any) {
+        Logger.error(`DEV: Generate games error: ${err.message}`);
+        res.status(500).json({ error: `Failed to generate games` });
       }
     });
   }
@@ -114,15 +116,13 @@ export class DevelopmentRestApiController {
    * Generates random game data conforming to the createGameScheme constraints.
    * @returns {GameCreateDTO} Random game data object
    */
-  private generateRandomGameData(): GameCreateDTO {
+  private generateRandomGameData(packageId: number): GameCreateDTO {
     // Random title length between min and max
     const titleLength =
       Math.floor(
         Math.random() * (GAME_TITLE_MAX_CHARS - GAME_TITLE_MIN_CHARS + 1)
       ) + GAME_TITLE_MIN_CHARS;
     const title = this.generateRandomString(titleLength);
-
-    const packageId = 29874;
 
     const isPrivate = Math.random() < 0.5;
 

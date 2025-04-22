@@ -1,10 +1,12 @@
+import { instrument } from "@socket.io/admin-ui";
+import { hashSync } from "bcryptjs";
 import express from "express";
 import { createServer, type Server } from "http";
 import { Server as IOServer } from "socket.io";
 
 import { ApiContext } from "application/context/ApiContext";
 import { ErrorController } from "domain/errors/ErrorController";
-import { Environment } from "infrastructure/config/Environment";
+import { Environment, EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { Database } from "infrastructure/database/Database";
 import { AppDataSource } from "infrastructure/database/DataSource";
@@ -13,15 +15,54 @@ import { ServeApi } from "presentation/ServeApi";
 
 const main = async () => {
   Logger.info(`Initializing API Context`);
+  Logger.info(`API version: ${process.env.npm_package_version}`);
 
   // Initialize api context
   const app = express();
+
+  const origins =
+    process.env.SOCKET_IO_CORS_ORIGINS ?? process.env.CORS_ORIGINS;
+
+  const allowedHosts = origins ? origins.split(",") : [];
+  let allOriginsAllowed = allowedHosts.includes("*");
+
+  Logger.gray(
+    `Allowed CORS origins for socket.io: [${allowedHosts}]`,
+    "[IO CORS]: "
+  );
+  if (allowedHosts.some((host) => host === "*")) {
+    allOriginsAllowed = true;
+    Logger.warn("Current socket.io CORS allows all origins !!", "[IO CORS]: ");
+  }
+
   const io = new IOServer(createServer(app), {
     cors: {
-      origin: "*",
-      methods: ["GET", "POST"],
-      credentials: true,
+      origin: (origin, callback) => {
+        if (allOriginsAllowed || !origin) {
+          return callback(null, true);
+        }
+
+        try {
+          const domain = new URL(origin).hostname;
+          const isOriginAllowed = allowedHosts.some(
+            (allowedHost) =>
+              domain === allowedHost ||
+              domain.endsWith(`.${allowedHost}`) ||
+              origin === allowedHost
+          );
+
+          if (isOriginAllowed) {
+            return callback(null, origin);
+          }
+          return callback(
+            new Error(`CORS policy: Origin '${origin}' is not allowed`)
+          );
+        } catch {
+          return callback(new Error("CORS policy: Invalid origin provided"));
+        }
+      },
     },
+    cookie: true,
     connectTimeout: 45000,
     transports: ["websocket", "polling"],
   });
@@ -32,6 +73,18 @@ const main = async () => {
     io,
     app,
   });
+
+  if (context.env.SOCKET_IO_ADMIN_UI_ENABLE) {
+    Logger.info("Socket.IO Admin UI enabled");
+    instrument(io, {
+      auth: {
+        type: "basic",
+        username: context.env.SOCKET_IO_ADMIN_UI_USERNAME,
+        password: hashSync(context.env.SOCKET_IO_ADMIN_UI_PASSWORD, 10),
+      },
+      mode: context.env.ENV === EnvType.PROD ? "production" : "development",
+    });
+  }
 
   Logger.info(`Starting server process: ${process.pid}`);
 

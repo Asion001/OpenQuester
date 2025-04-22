@@ -8,6 +8,7 @@ import { Container, CONTAINER_TYPES } from "application/Container";
 import { type ApiContext } from "application/context/ApiContext";
 import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
+import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { UserService } from "application/services/user/UserService";
 import { SESSION_SECRET_LENGTH } from "domain/constants/session";
 import { BaseError } from "domain/errors/BaseError";
@@ -16,7 +17,9 @@ import { EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { type Database } from "infrastructure/database/Database";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
+import { GameRepository } from "infrastructure/database/repositories/GameRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { TemplateUtils } from "infrastructure/utils/TemplateUtils";
@@ -34,7 +37,7 @@ import { errorMiddleware } from "presentation/middleware/errorMiddleware";
 const APP_PREFIX = "[APP]: ";
 
 /**
- * Servers all api endpoints in one place.
+ * Serves all api controllers and dependencies.
  */
 export class ServeApi {
   /** Express app */
@@ -82,10 +85,23 @@ export class ServeApi {
       // Initialize Dependency injection Container
       await new DIConfig(this._db, this._redis, this._io).initialize();
 
+      // Clean up all games (set all players as disconnected and pause game)
+      const gameRepository = Container.get<GameRepository>(
+        CONTAINER_TYPES.GameRepository
+      );
+      await gameRepository.cleanupAllGames();
+
+      // Clean up all authorized socket sessions
+      const socketUserDataService = Container.get<SocketUserDataService>(
+        CONTAINER_TYPES.SocketUserDataService
+      );
+      await socketUserDataService.cleanupAllSession();
+
       // Attach API controllers
       this._attachControllers();
       this._app.use(errorMiddleware);
     } catch (err: unknown) {
+      // TODO: Translate errors from first level of nesting (initialization errors)
       let message = "unknown error";
       if (err instanceof BaseError) {
         message = TemplateUtils.text(err.message, err.textArgs ?? {});
@@ -121,6 +137,9 @@ export class ServeApi {
     const packageService = Container.get<PackageService>(
       CONTAINER_TYPES.PackageService
     );
+    const socketIOGameService = Container.get<SocketIOGameService>(
+      CONTAINER_TYPES.SocketIOGameService
+    );
     const storage = Container.get<S3StorageService>(
       CONTAINER_TYPES.S3StorageService
     );
@@ -129,6 +148,9 @@ export class ServeApi {
 
     // Repositories
     const redis = Container.get<Redis>(CONTAINER_TYPES.Redis);
+    const socketUserDataService = Container.get<SocketUserDataService>(
+      CONTAINER_TYPES.SocketUserDataService
+    );
     const userRepository = Container.get<UserRepository>(
       CONTAINER_TYPES.UserRepository
     );
@@ -143,7 +165,8 @@ export class ServeApi {
       redis,
       userRepository,
       fileRepository,
-      storage
+      storage,
+      socketUserDataService
     );
     new PackageRestApiController(app, packageService);
     new FileRestApiController(app, storage);
@@ -160,6 +183,6 @@ export class ServeApi {
     }
 
     // Socket
-    new SocketIOInitializer(io);
+    new SocketIOInitializer(io, socketIOGameService, socketUserDataService);
   }
 }

@@ -6,14 +6,8 @@ import 'package:openquester/common_imports.dart';
 @Singleton(order: 2)
 class AuthController extends ChangeNotifier {
   ResponseUser? _userData;
-  bool get autorized => _userData != null;
-
-  bool _loading = false;
-  bool get loading => _loading;
-  set loading(bool value) {
-    _loading = value;
-    notifyListeners();
-  }
+  ResponseUser? get user => _userData;
+  bool get authorized => _userData != null;
 
   @PostConstruct(preResolve: true)
   Future<void> init() async {
@@ -24,13 +18,17 @@ class AuthController extends ChangeNotifier {
     }
   }
 
-  Future<(bool, String?)> loginUser() async {
+  Future<void> loginUser() async {
     try {
-      loading = true;
-
       final accessTokenResponse = await getIt<Oauth2Controller>().auth();
+      final token = accessTokenResponse.accessToken;
+
+      if (token == null) {
+        throw UserError(LocaleKeys.authorization_canceled.tr());
+      }
+
       final inputOauthLogin = InputOauthLogin(
-        token: accessTokenResponse.accessToken!,
+        token: token,
         oauthProvider: InputOauthLoginOauthProvider.discord,
         tokenSchema: accessTokenResponse.tokenType,
       );
@@ -39,12 +37,14 @@ class AuthController extends ChangeNotifier {
             body: inputOauthLogin,
           );
 
-      loading = false;
-      return (_userData != null, 'AuthData == null');
+      notifyListeners();
+
+      if (_userData == null) {
+        throw UserError(LocaleKeys.authorization_canceled.tr());
+      }
     } catch (e, s) {
-      logger.e(e, stackTrace: s);
-      loading = false;
-      return (false, e.toString());
+      logger.w(e, stackTrace: s);
+      rethrow;
     }
   }
 

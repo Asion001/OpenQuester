@@ -5,7 +5,7 @@ import https, { RequestOptions } from "node:https";
 
 import { TranslateService as ts } from "application/services/text/TranslateService";
 import { getDiscordCDNLink } from "domain/constants/discord";
-import { USER_SELECT_FIELDS } from "domain/constants/user";
+import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { FileSource } from "domain/enums/file/FileSource";
 import { HttpStatus } from "domain/enums/HttpStatus";
@@ -18,14 +18,17 @@ import {
   EOauthProvider,
   Oauth2LoginDTO,
 } from "domain/types/dto/auth/Oauth2LoginDTO";
+import { SocketAuthDTO } from "domain/types/dto/auth/SocketAuthDTO";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
+import { socketAuthScheme } from "presentation/schemes/auth/authSchemes";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 export class AuthRestApiController {
@@ -34,15 +37,39 @@ export class AuthRestApiController {
     private readonly redis: Redis,
     private readonly userRepository: UserRepository,
     private readonly fileRepository: FileRepository,
-    private readonly storage: S3StorageService
+    private readonly storage: S3StorageService,
+    private readonly socketUserDataService: SocketUserDataService
   ) {
     const router = Router();
 
     this.app.use("/v1/auth", router);
 
     router.get("/logout", asyncHandler(this.logout));
+    router.post("/socket", asyncHandler(this.socketAuth));
     router.post("/oauth2", asyncHandler(this.handleOauthLogin));
   }
+
+  private socketAuth = async (req: Request, res: Response) => {
+    const authDTO = await new RequestDataValidator<SocketAuthDTO>(
+      req.body,
+      socketAuthScheme
+    ).validate();
+
+    const existingData = await this.socketUserDataService.getSocketData(
+      authDTO.socketId
+    );
+
+    if (existingData && existingData.id) {
+      throw new ClientError("Socket already logged in");
+    }
+
+    await this.socketUserDataService.set(
+      authDTO.socketId,
+      req.user!.id // Null safety approved by auth middleware
+    );
+
+    res.status(HttpStatus.OK).send();
+  };
 
   private handleOauthLogin = async (req: Request, res: Response) => {
     const authDTO = await new RequestDataValidator<Oauth2LoginDTO>(
@@ -147,7 +174,7 @@ export class AuthRestApiController {
       { discord_id: profile.id, is_deleted: false },
       {
         select: USER_SELECT_FIELDS,
-        relations: ["avatar", "permissions"],
+        relations: USER_RELATIONS,
         relationSelects: {
           avatar: ["id", "filename"],
           permissions: ["id", "name"],
@@ -174,7 +201,13 @@ export class AuthRestApiController {
         );
       }
 
-      const registerData: RegisterUser = await user.export();
+      const registerData: RegisterUser = {
+        username: user.username,
+        email: user.email,
+        discord_id: user.discord_id,
+        birthday: user.birthday,
+        avatar: user.avatar,
+      };
 
       user = await this.userRepository.create(registerData);
     }

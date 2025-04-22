@@ -3,7 +3,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:openquester/src/core/logger.dart';
 
 abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
-  int? nextPageKey = 0;
+  int? _nextPageKey = 0;
 
   @protected
   Future<ListResponse<I>> getPage(ListRequest request);
@@ -27,9 +27,9 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
   void _setNextPage(ListResponse<dynamic> newItems, ListRequest listRequest) {
     final currentLenght = pagingController.items?.length ?? 0;
     if (newItems.metadata.total > currentLenght + newItems.list.length) {
-      nextPageKey = listRequest.offset + 1;
+      _nextPageKey = listRequest.offset + 1;
     } else {
-      nextPageKey = null;
+      _nextPageKey = null;
     }
   }
 
@@ -69,9 +69,16 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
   }
 
   late final PagingController<int, I> pagingController = PagingController(
-    getNextPageKey: (state) => nextPageKey,
+    getNextPageKey: _getNextPageKey,
     fetchPage: _fetchPage,
   );
+
+  int? _getNextPageKey(PagingState<int, I> state) {
+    if (state.status == PagingStatus.loadingFirstPage) {
+      return _nextPageKey = 0;
+    }
+    return _nextPageKey;
+  }
 }
 
 class ListRequest {

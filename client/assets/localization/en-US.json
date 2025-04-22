@@ -1,6 +1,6 @@
 {
   "home_tabs": {
-    "home": "Home",
+    "games": "Games",
     "packages": "Packages"
   },
   "home": {
@@ -29,5 +29,9 @@
     "started": "Started"
   },
   "hosted_by": "hosted by {}",
-  "close": "Close"
+  "close": "Close",
+  "user_unauthorized": "User unauthorized",
+  "authorization_canceled": "Authorization canceled",
+  "login_with_discord": "Login with Discord",
+  "logout": "Logout"
 }
