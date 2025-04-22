@@ -24,7 +24,7 @@ mixin _$SocketIOChatMessageEventPayload {
   String get message => throw _privateConstructorUsedError;
 
   /// ID of the user who sent the message
-  num get user => throw _privateConstructorUsedError;
+  int get user => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
 
   /// Serializes this SocketIOChatMessageEventPayload to a JSON map.
@@ -45,7 +45,7 @@ abstract class $SocketIOChatMessageEventPayloadCopyWith<$Res> {
       _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
           SocketIOChatMessageEventPayload>;
   @useResult
-  $Res call({String message, num user, DateTime timestamp});
+  $Res call({String message, int user, DateTime timestamp});
 }
 
 /// @nodoc
@@ -76,7 +76,7 @@ class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -94,7 +94,7 @@ abstract class _$$SocketIOChatMessageEventPayloadImplCopyWith<$Res>
       __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String message, num user, DateTime timestamp});
+  $Res call({String message, int user, DateTime timestamp});
 }
 
 /// @nodoc
@@ -124,7 +124,7 @@ class __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -149,7 +149,7 @@ class _$SocketIOChatMessageEventPayloadImpl
 
   /// ID of the user who sent the message
   @override
-  final num user;
+  final int user;
   @override
   final DateTime timestamp;
 
@@ -195,7 +195,7 @@ abstract class _SocketIOChatMessageEventPayload
     implements SocketIOChatMessageEventPayload {
   const factory _SocketIOChatMessageEventPayload(
           {required final String message,
-          required final num user,
+          required final int user,
           required final DateTime timestamp}) =
       _$SocketIOChatMessageEventPayloadImpl;
 
@@ -207,7 +207,7 @@ abstract class _SocketIOChatMessageEventPayload
 
   /// ID of the user who sent the message
   @override
-  num get user;
+  int get user;
   @override
   DateTime get timestamp;
 

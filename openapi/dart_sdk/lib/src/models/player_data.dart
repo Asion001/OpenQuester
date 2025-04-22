@@ -19,10 +19,10 @@ class PlayerData with _$PlayerData {
     required PlayerMeta meta,
     required PlayerRole role,
     required RestrictionsEventData restrictionData,
-    required num score,
+    required int score,
 
     /// Slot null has only showman and spectators
-    required num? slot,
+    required int? slot,
     required PlayerDataStatus status,
   }) = _PlayerData;
   

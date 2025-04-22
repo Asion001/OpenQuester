@@ -11,7 +11,7 @@ part 'socket_io_game_leave_event_payload.g.dart';
 class SocketIOGameLeaveEventPayload with _$SocketIOGameLeaveEventPayload {
   const factory SocketIOGameLeaveEventPayload({
     /// Emitted to everyone in game, including sender. ID of the user who left the game
-    required num user,
+    required int user,
   }) = _SocketIOGameLeaveEventPayload;
   
   factory SocketIOGameLeaveEventPayload.fromJson(Map<String, Object?> json) => _$SocketIOGameLeaveEventPayloadFromJson(json);

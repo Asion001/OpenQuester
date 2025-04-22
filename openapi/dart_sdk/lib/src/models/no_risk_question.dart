@@ -53,7 +53,7 @@ class NoRiskQuestion with _$NoRiskQuestion {
 
     /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
     @Default(1.5)
-    num priceMultiplier,
+    double priceMultiplier,
   }) = _NoRiskQuestion;
   
   factory NoRiskQuestion.fromJson(Map<String, Object?> json) => _$NoRiskQuestionFromJson(json);

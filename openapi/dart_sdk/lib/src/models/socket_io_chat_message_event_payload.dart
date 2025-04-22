@@ -14,7 +14,7 @@ class SocketIOChatMessageEventPayload with _$SocketIOChatMessageEventPayload {
     required String message,
 
     /// ID of the user who sent the message
-    required num user,
+    required int user,
     required DateTime timestamp,
   }) = _SocketIOChatMessageEventPayload;
   

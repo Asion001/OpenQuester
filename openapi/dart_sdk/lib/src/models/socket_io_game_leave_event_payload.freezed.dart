@@ -22,7 +22,7 @@ SocketIOGameLeaveEventPayload _$SocketIOGameLeaveEventPayloadFromJson(
 /// @nodoc
 mixin _$SocketIOGameLeaveEventPayload {
   /// Emitted to everyone in game, including sender. ID of the user who left the game
-  num get user => throw _privateConstructorUsedError;
+  int get user => throw _privateConstructorUsedError;
 
   /// Serializes this SocketIOGameLeaveEventPayload to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $SocketIOGameLeaveEventPayloadCopyWith<$Res> {
       _$SocketIOGameLeaveEventPayloadCopyWithImpl<$Res,
           SocketIOGameLeaveEventPayload>;
   @useResult
-  $Res call({num user});
+  $Res call({int user});
 }
 
 /// @nodoc
@@ -67,7 +67,7 @@ class _$SocketIOGameLeaveEventPayloadCopyWithImpl<$Res,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$SocketIOGameLeaveEventPayloadImplCopyWith<$Res>
       __$$SocketIOGameLeaveEventPayloadImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({num user});
+  $Res call({int user});
 }
 
 /// @nodoc
@@ -105,7 +105,7 @@ class __$$SocketIOGameLeaveEventPayloadImplCopyWithImpl<$Res>
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
     ));
   }
 }
@@ -122,7 +122,7 @@ class _$SocketIOGameLeaveEventPayloadImpl
 
   /// Emitted to everyone in game, including sender. ID of the user who left the game
   @override
-  final num user;
+  final int user;
 
   @override
   String toString() {
@@ -161,7 +161,7 @@ class _$SocketIOGameLeaveEventPayloadImpl
 
 abstract class _SocketIOGameLeaveEventPayload
     implements SocketIOGameLeaveEventPayload {
-  const factory _SocketIOGameLeaveEventPayload({required final num user}) =
+  const factory _SocketIOGameLeaveEventPayload({required final int user}) =
       _$SocketIOGameLeaveEventPayloadImpl;
 
   factory _SocketIOGameLeaveEventPayload.fromJson(Map<String, dynamic> json) =
@@ -169,7 +169,7 @@ abstract class _SocketIOGameLeaveEventPayload
 
   /// Emitted to everyone in game, including sender. ID of the user who left the game
   @override
-  num get user;
+  int get user;
 
   /// Create a copy of SocketIOGameLeaveEventPayload
   /// with the given fields replaced by the non-null parameter values.

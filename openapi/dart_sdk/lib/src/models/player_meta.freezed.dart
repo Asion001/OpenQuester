@@ -20,7 +20,7 @@ PlayerMeta _$PlayerMetaFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PlayerMeta {
-  num get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
 
@@ -40,7 +40,7 @@ abstract class $PlayerMetaCopyWith<$Res> {
           PlayerMeta value, $Res Function(PlayerMeta) then) =
       _$PlayerMetaCopyWithImpl<$Res, PlayerMeta>;
   @useResult
-  $Res call({num id, String username, String? avatar});
+  $Res call({int id, String username, String? avatar});
 }
 
 /// @nodoc
@@ -66,7 +66,7 @@ class _$PlayerMetaCopyWithImpl<$Res, $Val extends PlayerMeta>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,7 @@ abstract class _$$PlayerMetaImplCopyWith<$Res>
       __$$PlayerMetaImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({num id, String username, String? avatar});
+  $Res call({int id, String username, String? avatar});
 }
 
 /// @nodoc
@@ -111,7 +111,7 @@ class __$$PlayerMetaImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -134,7 +134,7 @@ class _$PlayerMetaImpl implements _PlayerMeta {
       _$$PlayerMetaImplFromJson(json);
 
   @override
-  final num id;
+  final int id;
   @override
   final String username;
   @override
@@ -178,7 +178,7 @@ class _$PlayerMetaImpl implements _PlayerMeta {
 
 abstract class _PlayerMeta implements PlayerMeta {
   const factory _PlayerMeta(
-      {required final num id,
+      {required final int id,
       required final String username,
       required final String? avatar}) = _$PlayerMetaImpl;
 
@@ -186,7 +186,7 @@ abstract class _PlayerMeta implements PlayerMeta {
       _$PlayerMetaImpl.fromJson;
 
   @override
-  num get id;
+  int get id;
   @override
   String get username;
   @override

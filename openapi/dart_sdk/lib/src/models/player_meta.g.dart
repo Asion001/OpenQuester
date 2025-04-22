@@ -8,7 +8,7 @@ part of 'player_meta.dart';
 
 _$PlayerMetaImpl _$$PlayerMetaImplFromJson(Map<String, dynamic> json) =>
     _$PlayerMetaImpl(
-      id: json['id'] as num,
+      id: (json['id'] as num).toInt(),
       username: json['username'] as String,
       avatar: json['avatar'] as String?,
     );

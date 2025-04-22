@@ -10,7 +10,7 @@ _$SocketIOChatMessageEventPayloadImpl
     _$$SocketIOChatMessageEventPayloadImplFromJson(Map<String, dynamic> json) =>
         _$SocketIOChatMessageEventPayloadImpl(
           message: json['message'] as String,
-          user: json['user'] as num,
+          user: (json['user'] as num).toInt(),
           timestamp: DateTime.parse(json['timestamp'] as String),
         );
 

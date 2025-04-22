@@ -12,8 +12,8 @@ _$PlayerDataImpl _$$PlayerDataImplFromJson(Map<String, dynamic> json) =>
       role: PlayerRole.fromJson(json['role'] as String),
       restrictionData: RestrictionsEventData.fromJson(
           json['restrictionData'] as Map<String, dynamic>),
-      score: json['score'] as num,
-      slot: json['slot'] as num?,
+      score: (json['score'] as num).toInt(),
+      slot: (json['slot'] as num?)?.toInt(),
       status: PlayerDataStatus.fromJson(json['status'] as String),
     );
 

@@ -1776,6 +1776,7 @@
               },
               "priceMultiplier": {
                 "type": "number",
+                "format": "float",
                 "description": "Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct",
                 "default": 1.5,
                 "examples": [0.5, 1.25, 1.5, 2]
@@ -2002,7 +2003,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "number",
+            "type": "integer",
             "examples": [200]
           },
           "username": {
@@ -2029,11 +2030,11 @@
             "$ref": "#/components/schemas/RestrictionsEventData"
           },
           "score": {
-            "type": "number",
+            "type": "integer",
             "examples": [200, 500, 1250]
           },
           "slot": {
-            "type": ["number", "null"],
+            "type": ["integer", "null"],
             "examples": [0, 1, 2, null],
             "description": "Slot null has only showman and spectators"
           },
@@ -2061,7 +2062,7 @@
         "type": "object",
         "properties": {
           "user": {
-            "type": "number",
+            "type": "integer",
             "examples": [5],
             "description": "Emitted to everyone in game, including sender. ID of the user who left the game"
           }
@@ -2075,7 +2076,7 @@
             "type": "object",
             "properties": {
               "user": {
-                "type": "number",
+                "type": "integer",
                 "examples": [5],
                 "description": "ID of the user who sent the message"
               },

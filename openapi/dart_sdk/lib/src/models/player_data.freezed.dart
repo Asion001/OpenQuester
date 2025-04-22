@@ -24,10 +24,10 @@ mixin _$PlayerData {
   PlayerRole get role => throw _privateConstructorUsedError;
   RestrictionsEventData get restrictionData =>
       throw _privateConstructorUsedError;
-  num get score => throw _privateConstructorUsedError;
+  int get score => throw _privateConstructorUsedError;
 
   /// Slot null has only showman and spectators
-  num? get slot => throw _privateConstructorUsedError;
+  int? get slot => throw _privateConstructorUsedError;
   PlayerDataStatus get status => throw _privateConstructorUsedError;
 
   /// Serializes this PlayerData to a JSON map.
@@ -50,8 +50,8 @@ abstract class $PlayerDataCopyWith<$Res> {
       {PlayerMeta meta,
       PlayerRole role,
       RestrictionsEventData restrictionData,
-      num score,
-      num? slot,
+      int score,
+      int? slot,
       PlayerDataStatus status});
 
   $PlayerMetaCopyWith<$Res> get meta;
@@ -96,11 +96,11 @@ class _$PlayerDataCopyWithImpl<$Res, $Val extends PlayerData>
       score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       slot: freezed == slot
           ? _value.slot
           : slot // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as int?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -142,8 +142,8 @@ abstract class _$$PlayerDataImplCopyWith<$Res>
       {PlayerMeta meta,
       PlayerRole role,
       RestrictionsEventData restrictionData,
-      num score,
-      num? slot,
+      int score,
+      int? slot,
       PlayerDataStatus status});
 
   @override
@@ -188,11 +188,11 @@ class __$$PlayerDataImplCopyWithImpl<$Res>
       score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as num,
+              as int,
       slot: freezed == slot
           ? _value.slot
           : slot // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as int?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -222,11 +222,11 @@ class _$PlayerDataImpl implements _PlayerData {
   @override
   final RestrictionsEventData restrictionData;
   @override
-  final num score;
+  final int score;
 
   /// Slot null has only showman and spectators
   @override
-  final num? slot;
+  final int? slot;
   @override
   final PlayerDataStatus status;
 
@@ -275,8 +275,8 @@ abstract class _PlayerData implements PlayerData {
       {required final PlayerMeta meta,
       required final PlayerRole role,
       required final RestrictionsEventData restrictionData,
-      required final num score,
-      required final num? slot,
+      required final int score,
+      required final int? slot,
       required final PlayerDataStatus status}) = _$PlayerDataImpl;
 
   factory _PlayerData.fromJson(Map<String, dynamic> json) =
@@ -289,11 +289,11 @@ abstract class _PlayerData implements PlayerData {
   @override
   RestrictionsEventData get restrictionData;
   @override
-  num get score;
+  int get score;
 
   /// Slot null has only showman and spectators
   @override
-  num? get slot;
+  int? get slot;
   @override
   PlayerDataStatus get status;
 
