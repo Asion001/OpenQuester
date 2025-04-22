@@ -815,7 +815,7 @@
         "tags": ["Games"],
         "parameters": [
           {
-            "name": "id",
+            "name": "gameId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2054,12 +2054,12 @@
         "properties": {
           "gameId": {
             "type": "string",
-            "examples": ["Q31XAD"]
+            "examples": ["Q31X"]
           },
           "role": {
             "type": "string",
             "enum": ["showman", "player", "spectator"],
-            "examples": ["Q31XAD"]
+            "examples": ["player"]
           }
         }
       },
