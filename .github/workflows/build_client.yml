@@ -11,6 +11,12 @@ on:
         required: true
       ANDROID_KEYSTORE_BASE64:
         required: true
+      CLOUDFLARE_API_TOKEN:
+        required: true
+      CLOUDFLARE_ACCOUNT_ID:
+        required: true
+      GITHUB_TOKEN:
+        required: true
   push:
     branches:
       - main
