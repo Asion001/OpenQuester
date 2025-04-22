@@ -18,7 +18,7 @@ jobs:
     needs: [tests]
     uses: ./.github/workflows/build_client.yml
     with:
-      deploy_env: production
+      deploy_env: "production"
     secrets: inherit
 
   build_docker:
