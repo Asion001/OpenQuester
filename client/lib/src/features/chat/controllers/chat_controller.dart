@@ -11,16 +11,22 @@ class SocketChatController extends ChangeNotifier {
 
   User? user;
   Socket? _socket;
+  List<User>? users;
 
   void clear() {
     _socket?.destroy();
     _socket = null;
     user = null;
     messages.clear();
+    users?.clear();
+    users = null;
     notifyListeners();
   }
 
-  Future<void> init({required Socket socket}) async {
+  Future<void> init({
+    required Socket socket,
+    required List<User> users,
+  }) async {
     // Clear before connect
     clear();
 
@@ -46,7 +52,7 @@ class SocketChatController extends ChangeNotifier {
     _socket?.emit(
       SocketIOEvents.chatMessage.name,
       jsonEncode(
-        InputSocketIOChatMessage(message: message.text).toJson(),
+        SocketIOChatMessageContent(message: message.text).toJson(),
       ),
     );
     final textMessage = TextMessage(
@@ -60,14 +66,17 @@ class SocketChatController extends ChangeNotifier {
   }
 
   void _onChatMessage(dynamic data) {
-    final message = IOGameChatMessage.fromJson(
+    final message = SocketIOChatMessageEventPayload.fromJson(
       data as Map<String, dynamic>,
+    );
+    final user = users?.firstWhereOrNull(
+      (e) => e.id == message.user.toString(),
     );
     final textMessage = TextMessage(
       id: UniqueKey().toString(),
-      author: User(id: message.user.toString(), firstName: message.username),
+      author: user!,
       text: message.message,
-      createdAt: message.timestamp,
+      createdAt: message.timestamp.millisecondsSinceEpoch,
     );
     messages.insert(0, textMessage);
     notifyListeners();

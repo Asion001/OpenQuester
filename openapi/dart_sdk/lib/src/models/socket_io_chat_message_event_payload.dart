@@ -4,8 +4,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'input_socket_io_chat_message.dart';
-
 part 'socket_io_chat_message_event_payload.freezed.dart';
 part 'socket_io_chat_message_event_payload.g.dart';
 
@@ -13,7 +11,7 @@ part 'socket_io_chat_message_event_payload.g.dart';
 @Freezed()
 class SocketIOChatMessageEventPayload with _$SocketIOChatMessageEventPayload {
   const factory SocketIOChatMessageEventPayload({
-    required InputSocketIOChatMessage message,
+    required String message,
 
     /// ID of the user who sent the message
     required num user,

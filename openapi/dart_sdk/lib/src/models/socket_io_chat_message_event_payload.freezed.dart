@@ -21,7 +21,7 @@ SocketIOChatMessageEventPayload _$SocketIOChatMessageEventPayloadFromJson(
 
 /// @nodoc
 mixin _$SocketIOChatMessageEventPayload {
-  InputSocketIOChatMessage get message => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
 
   /// ID of the user who sent the message
   num get user => throw _privateConstructorUsedError;
@@ -45,9 +45,7 @@ abstract class $SocketIOChatMessageEventPayloadCopyWith<$Res> {
       _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
           SocketIOChatMessageEventPayload>;
   @useResult
-  $Res call({InputSocketIOChatMessage message, num user, DateTime timestamp});
-
-  $InputSocketIOChatMessageCopyWith<$Res> get message;
+  $Res call({String message, num user, DateTime timestamp});
 }
 
 /// @nodoc
@@ -74,7 +72,7 @@ class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as InputSocketIOChatMessage,
+              as String,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -84,16 +82,6 @@ class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
           : timestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ) as $Val);
-  }
-
-  /// Create a copy of SocketIOChatMessageEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $InputSocketIOChatMessageCopyWith<$Res> get message {
-    return $InputSocketIOChatMessageCopyWith<$Res>(_value.message, (value) {
-      return _then(_value.copyWith(message: value) as $Val);
-    });
   }
 }
 
@@ -106,10 +94,7 @@ abstract class _$$SocketIOChatMessageEventPayloadImplCopyWith<$Res>
       __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({InputSocketIOChatMessage message, num user, DateTime timestamp});
-
-  @override
-  $InputSocketIOChatMessageCopyWith<$Res> get message;
+  $Res call({String message, num user, DateTime timestamp});
 }
 
 /// @nodoc
@@ -135,7 +120,7 @@ class __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as InputSocketIOChatMessage,
+              as String,
       user: null == user
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
@@ -160,7 +145,7 @@ class _$SocketIOChatMessageEventPayloadImpl
       _$$SocketIOChatMessageEventPayloadImplFromJson(json);
 
   @override
-  final InputSocketIOChatMessage message;
+  final String message;
 
   /// ID of the user who sent the message
   @override
@@ -209,7 +194,7 @@ class _$SocketIOChatMessageEventPayloadImpl
 abstract class _SocketIOChatMessageEventPayload
     implements SocketIOChatMessageEventPayload {
   const factory _SocketIOChatMessageEventPayload(
-          {required final InputSocketIOChatMessage message,
+          {required final String message,
           required final num user,
           required final DateTime timestamp}) =
       _$SocketIOChatMessageEventPayloadImpl;
@@ -218,7 +203,7 @@ abstract class _SocketIOChatMessageEventPayload
       _$SocketIOChatMessageEventPayloadImpl.fromJson;
 
   @override
-  InputSocketIOChatMessage get message;
+  String get message;
 
   /// ID of the user who sent the message
   @override

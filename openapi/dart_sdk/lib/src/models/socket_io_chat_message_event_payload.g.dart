@@ -9,8 +9,7 @@ part of 'socket_io_chat_message_event_payload.dart';
 _$SocketIOChatMessageEventPayloadImpl
     _$$SocketIOChatMessageEventPayloadImplFromJson(Map<String, dynamic> json) =>
         _$SocketIOChatMessageEventPayloadImpl(
-          message: InputSocketIOChatMessage.fromJson(
-              json['message'] as Map<String, dynamic>),
+          message: json['message'] as String,
           user: json['user'] as num,
           timestamp: DateTime.parse(json['timestamp'] as String),
         );

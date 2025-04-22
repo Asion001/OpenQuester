@@ -1979,16 +1979,6 @@
           }
         }
       },
-      "InputSocketIOChatMessage": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "examples": ["Hello guys!"],
-            "maxLength": 255
-          }
-        }
-      },
       "PlayerRole": {
         "type": "string",
         "enum": ["showman", "player", "spectator"]
@@ -2074,30 +2064,25 @@
         }
       },
       "SocketIOChatMessageEventPayload": {
-        "type": "object",
         "description": "Emitted to everyone in game, including sender. Data that sent to all players in room on chat message",
-        "properties": {
-          "message": {
+        "allOf": [
+          { "$ref": "#/components/schemas/SocketIOChatMessageContent" },
+          {
             "type": "object",
             "properties": {
-              "message": {
+              "user": {
+                "type": "number",
+                "examples": [5],
+                "description": "ID of the user who sent the message"
+              },
+              "timestamp": {
                 "type": "string",
-                "examples": ["Hello guys!"],
-                "maxLength": 255
+                "format": "date-time",
+                "examples": ["2024-01-01T00:00:00Z"]
               }
             }
-          },
-          "user": {
-            "type": "number",
-            "examples": [5],
-            "description": "ID of the user who sent the message"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "examples": ["2024-01-01T00:00:00Z"]
           }
-        }
+        ]
       },
       "SocketIOGameJoinEventPayload": {
         "type": "object",
@@ -2125,6 +2110,16 @@
         "type": "string",
         "enum": ["join", "user-leave", "game-data"],
         "examples": ["join"]
+      },
+      "SocketIOChatMessageContent": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "examples": ["Hello guys!"],
+            "maxLength": 255
+          }
+        }
       }
     }
   }

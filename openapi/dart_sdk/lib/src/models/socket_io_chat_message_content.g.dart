@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'input_socket_io_chat_message.dart';
+part of 'socket_io_chat_message_content.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$InputSocketIOChatMessageImpl _$$InputSocketIOChatMessageImplFromJson(
+_$SocketIOChatMessageContentImpl _$$SocketIOChatMessageContentImplFromJson(
         Map<String, dynamic> json) =>
-    _$InputSocketIOChatMessageImpl(
+    _$SocketIOChatMessageContentImpl(
       message: json['message'] as String,
     );
 
-Map<String, dynamic> _$$InputSocketIOChatMessageImplToJson(
-        _$InputSocketIOChatMessageImpl instance) =>
+Map<String, dynamic> _$$SocketIOChatMessageContentImplToJson(
+        _$SocketIOChatMessageContentImpl instance) =>
     <String, dynamic>{
       'message': instance.message,
     };
