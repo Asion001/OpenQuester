@@ -74,7 +74,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy web/ --project-name=openquester --branch main
+          command: pages deploy web/ --project-name=openquester --branch main --commit-dirty=true
 
       - name: Purge Cloudflare cache
         run: |
