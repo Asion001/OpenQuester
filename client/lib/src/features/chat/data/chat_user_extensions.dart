@@ -7,7 +7,7 @@ extension UserX on User {
       id: playerData.meta.id.toString(),
       firstName: playerData.meta.username,
       imageUrl: playerData.meta.avatar,
-      role: Role.user,
+      role: playerData.role == PlayerRole.showman ? Role.moderator : Role.user,
     );
   }
 }
