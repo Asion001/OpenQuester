@@ -82,7 +82,10 @@ export class SocketIOGameController {
   private async handleLobbyLeave() {
     const userData = await this._fetchUserData();
     const gameId = userData?.gameId;
-    if (!gameId) throw new ClientError(ClientResponse.NOT_IN_GAME);
+
+    if (!gameId) {
+      throw new ClientError(ClientResponse.GAME_NOT_FOUND);
+    }
 
     const result = await this.socketIOGameService.leaveLobby(
       this.socket.id,
