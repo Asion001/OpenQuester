@@ -18,7 +18,10 @@ import '../connection/controllers/auth_controller.dart' as _i785;
 import '../connection/controllers/dio_controller.dart' as _i895;
 import '../connection/socket/socket_controller.dart' as _i496;
 import '../connection/storage/storage.dart' as _i741;
-import '../features/game/controllers/game_preview_controller.dart' as _i386;
+import '../features/chat/controllers/chat_controller.dart' as _i899;
+import '../features/game_lobby/controllers/game_lobby_controller.dart' as _i674;
+import '../features/game_preview/controllers/game_preview_controller.dart'
+    as _i546;
 import '../features/games/controllers/games_list_controller.dart' as _i747;
 import '../features/package_upload/controllers/package_upload_controller.dart'
     as _i905;
@@ -27,6 +30,7 @@ import '../features/packages/controllers/packages_list_controller.dart'
     as _i793;
 import 'controllers/load_controller.dart' as _i676;
 import 'controllers/time_controller.dart' as _i697;
+import 'controllers/toast_controller.dart' as _i278;
 import 'router.dart' as _i216;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -42,6 +46,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
     gh.singleton<_i697.TimeController>(() => _i697.TimeController()..init());
+    gh.singleton<_i278.ToastController>(() => _i278.ToastController());
     gh.singleton<_i676.LoadController>(() => _i676.LoadController());
     gh.singleton<_i419.Oauth2Controller>(() => _i419.Oauth2Controller());
     gh.singleton<_i741.Storage>(() => _i741.Storage());
@@ -52,10 +57,13 @@ extension GetItInjectableX on _i174.GetIt {
       },
       preResolve: true,
     );
+    gh.singleton<_i899.SocketChatController>(
+        () => _i899.SocketChatController());
+    gh.singleton<_i674.GameLobbyController>(() => _i674.GameLobbyController());
+    gh.singleton<_i546.GamePreviewController>(
+        () => _i546.GamePreviewController());
     gh.singleton<_i905.PackageUploadController>(
         () => _i905.PackageUploadController());
-    gh.singleton<_i386.GamePreviewController>(
-        () => _i386.GamePreviewController());
     gh.singleton<_i149.Api>(() => _i149.Api());
     await gh.singletonAsync<_i785.AuthController>(
       () {

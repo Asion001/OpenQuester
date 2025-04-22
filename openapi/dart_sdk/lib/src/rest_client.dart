@@ -9,7 +9,6 @@ import 'clients/packages_client.dart';
 import 'clients/users_client.dart';
 import 'clients/auth_client.dart';
 import 'clients/games_client.dart';
-import 'clients/socket_io_client.dart';
 
 /// OpenQuester API `v0.10.0`
 class RestClient {
@@ -29,7 +28,6 @@ class RestClient {
   UsersClient? _users;
   AuthClient? _auth;
   GamesClient? _games;
-  SocketIOClient? _socketIO;
 
   FilesClient get files => _files ??= FilesClient(_dio, baseUrl: _baseUrl);
 
@@ -40,6 +38,4 @@ class RestClient {
   AuthClient get auth => _auth ??= AuthClient(_dio, baseUrl: _baseUrl);
 
   GamesClient get games => _games ??= GamesClient(_dio, baseUrl: _baseUrl);
-
-  SocketIOClient get socketIO => _socketIO ??= SocketIOClient(_dio, baseUrl: _baseUrl);
 }

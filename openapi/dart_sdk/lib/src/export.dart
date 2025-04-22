@@ -8,7 +8,6 @@ export 'clients/packages_client.dart';
 export 'clients/users_client.dart';
 export 'clients/auth_client.dart';
 export 'clients/games_client.dart';
-export 'clients/socket_io_client.dart';
 // Data classes
 export 'models/page_info.dart';
 export 'models/package_creation_input.dart';
@@ -67,8 +66,18 @@ export 'models/package_question_union.dart';
 export 'models/package_theme.dart';
 export 'models/package_round.dart';
 export 'models/package_create_input_data.dart';
-export 'models/input_socket_auth.dart';
-export 'models/io_game_join_input.dart';
+export 'models/input_socket_io_auth.dart';
+export 'models/player_role.dart';
+export 'models/restrictions_event_data.dart';
+export 'models/player_meta.dart';
+export 'models/player_data.dart';
+export 'models/socket_io_game_join_input.dart';
+export 'models/socket_io_game_leave_event_payload.dart';
+export 'models/socket_io_chat_message_event_payload.dart';
+export 'models/socket_io_game_join_event_payload.dart';
+export 'models/socket_io_events.dart';
+export 'models/socket_io_game_events.dart';
+export 'models/socket_io_chat_message_content.dart';
 export 'models/permissions.dart';
 export 'models/answers.dart';
 export 'models/input_oauth_login_oauth_provider.dart';
@@ -81,7 +90,8 @@ export 'models/simple_question_type.dart';
 export 'models/stake_question_type.dart';
 export 'models/stake_question_sub_type.dart';
 export 'models/hidden_question_type.dart';
-export 'models/io_game_join_input_role.dart';
+export 'models/player_data_status.dart';
+export 'models/socket_io_game_join_input_role.dart';
 // Root client
 export 'rest_client.dart';
 

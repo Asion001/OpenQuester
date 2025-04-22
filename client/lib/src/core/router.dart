@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -7,28 +8,35 @@ import 'package:openquester/common_imports.dart';
 @singleton
 class AppRouter extends RootStackRouter {
   @override
-  List<AutoRoute> get routes => [
-        AutoRoute(page: HomeTabsRoute.page, initial: true, children: homeTabs),
-        AutoRoute(page: ClickerRoute.page, path: '/clicker'),
-        AutoRoute(page: ProfileRoute.page, path: '/profile'),
-        AutoRoute(page: TestScreenRoute.page, path: '/test'),
-        AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
-        BlurDialogRoute<void>(
-          page: GamePreviewRoute.page,
-          path: '/game-preview',
-        ),
-      ];
-
-  List<AutoRoute> get homeTabs => [
-        AutoRoute(page: GamesListRoute.page, path: 'games'),
-        AutoRoute(page: PackagesListRoute.page, path: 'packages'),
-      ];
+  List<AutoRoute> get routes {
+    return [
+      AutoRoute(page: HomeTabsRoute.page, path: '/', initial: true),
+      AutoRoute(page: ProfileRoute.page, path: '/profile'),
+      BlurDialogRoute<void>(
+        page: GamePreviewRoute.page,
+        path: '/games/:gameId',
+      ),
+      AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId/lobby'),
+      AutoRoute(page: ClickerRoute.page, path: '/clicker'),
+      AutoRoute(page: TestScreenRoute.page, path: '/test'),
+      AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
+    ];
+  }
 
   static AppRouter get I => getIt<AppRouter>();
 
   @override
   RouteType get defaultRouteType =>
       const RouteType.adaptive(enablePredictiveBackGesture: true);
+
+  Future<Uri> deepLinkTransformer(Uri uri) async {
+    // Make home screen behind any page from deep link
+    Future.delayed(
+      Duration.zero,
+      () => getIt<AppRouter>().pushPath(uri.path),
+    );
+    return Uri(path: '/');
+  }
 }
 
 class BlurDialogRoute<R> extends CustomRoute<R> {

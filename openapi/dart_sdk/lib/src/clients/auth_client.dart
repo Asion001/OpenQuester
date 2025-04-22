@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../models/input_oauth_login.dart';
-import '../models/input_socket_auth.dart';
+import '../models/input_socket_io_auth.dart';
 import '../models/logout_response.dart';
 import '../models/response_user.dart';
 
@@ -29,6 +29,6 @@ abstract class AuthClient {
   /// Authorize socket.io connection
   @POST('/v1/auth/socket')
   Future<void> postV1AuthSocket({
-    @Body() required InputSocketAuth body,
+    @Body() required InputSocketIOAuth body,
   });
 }

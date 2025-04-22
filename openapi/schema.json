@@ -1776,6 +1776,7 @@
               },
               "priceMultiplier": {
                 "type": "number",
+                "format": "float",
                 "description": "Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct",
                 "default": 1.5,
                 "examples": [0.5, 1.25, 1.5, 2]
@@ -1979,16 +1980,6 @@
           }
         }
       },
-      "InputSocketIOChatMessage": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "examples": ["Hello guys!"],
-            "maxLength": 255
-          }
-        }
-      },
       "PlayerRole": {
         "type": "string",
         "enum": ["showman", "player", "spectator"]
@@ -2012,7 +2003,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "number",
+            "type": "integer",
             "examples": [200]
           },
           "username": {
@@ -2035,17 +2026,21 @@
           "role": {
             "$ref": "#/components/schemas/PlayerRole"
           },
-          "restrictions": {
+          "restrictionData": {
             "$ref": "#/components/schemas/RestrictionsEventData"
           },
-          "balance": {
-            "type": "number",
+          "score": {
+            "type": "integer",
             "examples": [200, 500, 1250]
           },
           "slot": {
-            "type": ["number", "null"],
+            "type": ["integer", "null"],
             "examples": [0, 1, 2, null],
             "description": "Slot null has only showman and spectators"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["in-game", "disconnected"]
           }
         }
       },
@@ -2067,37 +2062,32 @@
         "type": "object",
         "properties": {
           "user": {
-            "type": "number",
+            "type": "integer",
             "examples": [5],
             "description": "Emitted to everyone in game, including sender. ID of the user who left the game"
           }
         }
       },
       "SocketIOChatMessageEventPayload": {
-        "type": "object",
         "description": "Emitted to everyone in game, including sender. Data that sent to all players in room on chat message",
-        "properties": {
-          "message": {
+        "allOf": [
+          { "$ref": "#/components/schemas/SocketIOChatMessageContent" },
+          {
             "type": "object",
             "properties": {
-              "message": {
+              "user": {
+                "type": "integer",
+                "examples": [5],
+                "description": "ID of the user who sent the message"
+              },
+              "timestamp": {
                 "type": "string",
-                "examples": ["Hello guys!"],
-                "maxLength": 255
+                "format": "date-time",
+                "examples": ["2024-01-01T00:00:00Z"]
               }
             }
-          },
-          "user": {
-            "type": "number",
-            "examples": [5],
-            "description": "ID of the user who sent the message"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "examples": ["2024-01-01T00:00:00Z"]
           }
-        }
+        ]
       },
       "SocketIOGameJoinEventPayload": {
         "type": "object",
@@ -2125,6 +2115,16 @@
         "type": "string",
         "enum": ["join", "user-leave", "game-data"],
         "examples": ["join"]
+      },
+      "SocketIOChatMessageContent": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "examples": ["Hello guys!"],
+            "maxLength": 255
+          }
+        }
       }
     }
   }

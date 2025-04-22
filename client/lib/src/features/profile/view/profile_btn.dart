@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:openquester/src/core/router.gr.dart';
+import 'package:openquester/openquester.dart';
 
 class ProfileBtn extends StatelessWidget {
   const ProfileBtn({super.key});
@@ -8,6 +8,7 @@ class ProfileBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.account_circle),
+      tooltip: LocaleKeys.profile.tr(),
       onPressed: () => const ProfileRoute().push<void>(context),
     );
   }

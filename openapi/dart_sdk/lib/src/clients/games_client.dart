@@ -43,6 +43,6 @@ abstract class GamesClient {
   /// Delete game
   @DELETE('/v1/games/{gameId}')
   Future<void> deleteV1GamesGameId({
-    @Path('id') required String id,
+    @Path('gameId') required String gameId,
   });
 }

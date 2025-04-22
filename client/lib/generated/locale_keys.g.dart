@@ -3,7 +3,7 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class LocaleKeys {
-  static const home_tabs_home = 'home_tabs.home';
+  static const home_tabs_games = 'home_tabs.games';
   static const home_tabs_packages = 'home_tabs.packages';
   static const home_tabs = 'home_tabs';
   static const home_start_game = 'home.start_game';
@@ -27,4 +27,8 @@ abstract class LocaleKeys {
   static const game_status = 'game_status';
   static const hosted_by = 'hosted_by';
   static const close = 'close';
+  static const user_unauthorized = 'user_unauthorized';
+  static const authorization_canceled = 'authorization_canceled';
+  static const login_with_discord = 'login_with_discord';
+  static const logout = 'logout';
 }
