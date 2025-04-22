@@ -15,8 +15,6 @@ on:
         required: true
       CLOUDFLARE_ACCOUNT_ID:
         required: true
-      GITHUB_TOKEN:
-        required: true
   push:
     branches:
       - main
