@@ -9,15 +9,12 @@ import {
 } from "domain/enums/SocketIOEvents";
 import { ClientError } from "domain/errors/ClientError";
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
-import { ChatMessageInputData } from "domain/types/socket/ChatMessageInputData";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { ChatMessageEventPayload } from "domain/types/socket/events/ChatMessageEventPayload";
 import { GameJoinEventPayload } from "domain/types/socket/events/game/GameJoinEventPayload";
 import { GameLeaveEventPayload } from "domain/types/socket/events/game/GameLeaveEventPayload";
-import { GameJoinData } from "domain/types/socket/game/GameJoinData";
 import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
-import { ValueUtils } from "infrastructure/utils/ValueUtils";
 import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
 
 export class SocketIOGameController {
@@ -28,50 +25,47 @@ export class SocketIOGameController {
     private readonly socketIOGameService: SocketIOGameService,
     private readonly gameValidator: GameValidator
   ) {
-    // TODO: Update schema with input/output DTOs
     this.socket.on(
       SocketIOGameEvents.JOIN,
       SocketWrapper.catchErrors<string>(
         this.eventEmitter,
-        async (data: string) => await this.handleJoinLobby(data)
+        this.handleJoinLobby.bind(this)
       )
     );
     this.socket.on(
       SocketIOEvents.DISCONNECT,
       SocketWrapper.catchErrors(
         this.eventEmitter,
-        async () => await this.handleSocketDisconnect()
+        this.handleSocketDisconnect.bind(this)
       )
     );
     this.socket.on(
       SocketIOGameEvents.LEAVE,
       SocketWrapper.catchErrors(
         this.eventEmitter,
-        async () => await this.handleRoomLeave()
+        this.handleLobbyLeave.bind(this)
       )
     );
     this.socket.on(
       SocketIOEvents.CHAT_MESSAGE,
       SocketWrapper.catchErrors<string>(
         this.eventEmitter,
-        async (data: string) => await this.handleChatMessage(data)
+        this.handleChatMessage.bind(this)
       )
     );
   }
 
-  private async handleJoinLobby(data: string) {
-    const gameData = await this._parseEventData<GameJoinData>(data);
-    const dto = await this.gameValidator.validateJoinInput(gameData);
+  private async handleJoinLobby(data: any) {
+    const dto = await this.gameValidator.validateJoinInput(data);
 
     const result = await this.socketIOGameService.joinUser(dto, this.socket.id);
     const { player, game } = result;
 
     this.eventEmitter.emit<PlayerDTO>(SocketIOGameEvents.JOIN, player.toDTO(), {
       emitter: SocketEventEmitter.IO,
-      roomId: dto.gameId,
+      gameId: dto.gameId,
     });
 
-    // TODO: Add chat history
     this.eventEmitter.emit<GameJoinEventPayload>(SocketIOGameEvents.GAME_DATA, {
       players: game.players.map((player) => player.toDTO()),
       gameState: await this.socketIOGameService.gameToListItem(game),
@@ -81,16 +75,16 @@ export class SocketIOGameController {
   }
 
   private async handleSocketDisconnect() {
-    await this.handleRoomLeave();
+    await this.handleLobbyLeave();
     await this.socketUserDataService.remove(this.socket.id);
   }
 
-  private async handleRoomLeave() {
+  private async handleLobbyLeave() {
     const userData = await this._fetchUserData();
     const gameId = userData?.gameId;
     if (!gameId) throw new ClientError(ClientResponse.NOT_IN_GAME);
 
-    const result = await this.socketIOGameService.leaveRoom(
+    const result = await this.socketIOGameService.leaveLobby(
       this.socket.id,
       userData.id,
       gameId
@@ -101,16 +95,15 @@ export class SocketIOGameController {
         { user: userData.id },
         {
           emitter: SocketEventEmitter.IO,
-          roomId: gameId,
+          gameId: gameId,
         }
       );
       this.socket.leave(gameId);
     }
   }
 
-  private async handleChatMessage(data: string) {
-    const chatData = await this._parseEventData<ChatMessageInputData>(data);
-    const dto = await this.gameValidator.validateChatMessage(chatData);
+  private async handleChatMessage(data: any) {
+    const dto = await this.gameValidator.validateChatMessage(data);
     const userData = await this._fetchUserData();
 
     if (!userData || !userData.gameId) {
@@ -135,16 +128,12 @@ export class SocketIOGameController {
       },
       {
         emitter: SocketEventEmitter.IO,
-        roomId: userData.gameId,
+        gameId: userData.gameId,
       }
     );
   }
 
   private async _fetchUserData() {
     return this.socketUserDataService.getSocketData(this.socket.id);
-  }
-
-  private _parseEventData<T>(data: string): Promise<T> {
-    return ValueUtils.isObject(data) ? data : JSON.parse(data);
   }
 }
