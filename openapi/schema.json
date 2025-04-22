@@ -2008,23 +2008,6 @@
           }
         }
       },
-      "SimpleUserData": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "examples": [200]
-          },
-          "username": {
-            "type": "string",
-            "examples": ["Asion001"]
-          },
-          "avatar": {
-            "type": ["string", "null"],
-            "examples": ["https://example.image.com", null]
-          }
-        }
-      },
       "PlayerMeta": {
         "type": "object",
         "properties": {
