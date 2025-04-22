@@ -9,6 +9,9 @@ ENV=
 CORS_ORIGINS=
 # Optional, by default will use CORS_ORIGINS
 SOCKET_IO_CORS_ORIGINS=
+SOCKET_IO_ADMIN_UI_ENABLE=
+SOCKET_IO_ADMIN_UI_USERNAME=
+SOCKET_IO_ADMIN_UI_PASSWORD=
 
 # Domain (full) to which cookie will be assigned
 API_DOMAIN=

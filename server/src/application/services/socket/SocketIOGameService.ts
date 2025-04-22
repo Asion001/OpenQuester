@@ -66,7 +66,7 @@ export class SocketIOGameService {
     return { game, player };
   }
 
-  public async leaveRoom(
+  public async leaveLobby(
     socketId: string,
     userId: number,
     gameId: string

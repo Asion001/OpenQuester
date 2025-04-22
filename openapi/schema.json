@@ -815,7 +815,7 @@
         "tags": ["Games"],
         "parameters": [
           {
-            "name": "id",
+            "name": "gameId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2008,23 +2008,6 @@
           }
         }
       },
-      "SimpleUserData": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "examples": [200]
-          },
-          "username": {
-            "type": "string",
-            "examples": ["Asion001"]
-          },
-          "avatar": {
-            "type": ["string", "null"],
-            "examples": ["https://example.image.com", null]
-          }
-        }
-      },
       "PlayerMeta": {
         "type": "object",
         "properties": {
@@ -2071,32 +2054,12 @@
         "properties": {
           "gameId": {
             "type": "string",
-            "examples": ["Q31XAD"]
+            "examples": ["Q31X"]
           },
           "role": {
             "type": "string",
             "enum": ["showman", "player", "spectator"],
             "examples": ["player"]
-          }
-        }
-      },
-      "IOGameChatMessage": {
-        "type": "object",
-        "properties": {
-          "user": {
-            "type": "integer",
-            "examples": [13, 31]
-          },
-          "username": {
-            "type": "string",
-            "examples": ["BustaRhymes"]
-          },
-          "timestamp": {
-            "type": "integer"
-          },
-          "message": {
-            "type": "string",
-            "examples": ["Whats up?", ":)"]
           }
         }
       },
@@ -2115,7 +2078,14 @@
         "description": "Emitted to everyone in game, including sender. Data that sent to all players in room on chat message",
         "properties": {
           "message": {
-            "$ref": "#/components/schemas/InputSocketIOChatMessage"
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "examples": ["Hello guys!"],
+                "maxLength": 255
+              }
+            }
           },
           "user": {
             "type": "number",

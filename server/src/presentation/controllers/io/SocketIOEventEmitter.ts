@@ -24,14 +24,14 @@ export class SocketIOEventEmitter {
   public emit<T>(
     event: IOEVent,
     data: T,
-    options?: { emitter: SocketEventEmitter; roomId?: string }
+    options?: { emitter: SocketEventEmitter; gameId?: string }
   ) {
     const opts = options ? options : { emitter: SocketEventEmitter.SOCKET };
     const emitter =
       opts.emitter === SocketEventEmitter.IO ? this.io : this.socket;
 
-    if (opts.roomId) {
-      emitter.to(opts.roomId).emit(event, data);
+    if (opts.gameId) {
+      emitter.to(opts.gameId).emit(event, data);
     } else {
       emitter.emit(event, data);
     }

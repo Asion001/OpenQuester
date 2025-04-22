@@ -29,7 +29,7 @@ export class RedisService {
 
   /**
    * Retrieves all keys matching a pattern using Redis SCAN.
-   * @param pattern The pattern to match (e.g., "game:room:*").
+   * @param pattern The pattern to match (e.g., "game:*").
    * @returns An array of matching keys.
    */
   public async scan(pattern: string): Promise<string[]> {

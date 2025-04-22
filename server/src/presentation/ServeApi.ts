@@ -85,7 +85,7 @@ export class ServeApi {
       // Initialize Dependency injection Container
       await new DIConfig(this._db, this._redis, this._io).initialize();
 
-      // Clean up all game rooms
+      // Clean up all games (set all players as disconnected and pause game)
       const gameRepository = Container.get<GameRepository>(
         CONTAINER_TYPES.GameRepository
       );

@@ -1,7 +1,7 @@
 import { Game } from "domain/entities/game/Game";
 
 export interface GameRoomLeaveData {
-  /** Emit leave event to room if true */
+  /** Emit leave event to lobby if true */
   emit: boolean;
   /** Data for event emit */
   data?: {

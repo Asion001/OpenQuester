@@ -1,11 +1,12 @@
 import { instrument } from "@socket.io/admin-ui";
+import { hashSync } from "bcryptjs";
 import express from "express";
 import { createServer, type Server } from "http";
 import { Server as IOServer } from "socket.io";
 
 import { ApiContext } from "application/context/ApiContext";
 import { ErrorController } from "domain/errors/ErrorController";
-import { Environment } from "infrastructure/config/Environment";
+import { Environment, EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { Database } from "infrastructure/database/Database";
 import { AppDataSource } from "infrastructure/database/DataSource";
@@ -66,17 +67,24 @@ const main = async () => {
     transports: ["websocket", "polling"],
   });
 
-  instrument(io, {
-    auth: false,
-    mode: "development",
-  });
-
   const context = new ApiContext({
     db: Database.getInstance(AppDataSource),
     env: Environment.instance,
     io,
     app,
   });
+
+  if (context.env.SOCKET_IO_ADMIN_UI_ENABLE) {
+    Logger.info("Socket.IO Admin UI enabled");
+    instrument(io, {
+      auth: {
+        type: "basic",
+        username: context.env.SOCKET_IO_ADMIN_UI_USERNAME,
+        password: hashSync(context.env.SOCKET_IO_ADMIN_UI_PASSWORD, 10),
+      },
+      mode: context.env.ENV === EnvType.PROD ? "production" : "development",
+    });
+  }
 
   Logger.info(`Starting server process: ${process.pid}`);
 

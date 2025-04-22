@@ -275,7 +275,7 @@ export class GameRepository {
     const playersArr = JSON.parse(players) as PlayerDTO[];
     const player = playersArr.find((p) => new Player(p).meta.id === playerId);
 
-    return player!.restrictionData.muted;
+    return player!.restrictionData.muted ?? true;
   }
 
   private async _parseGameToListItemDTO(

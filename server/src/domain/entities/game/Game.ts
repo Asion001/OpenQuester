@@ -109,7 +109,6 @@ export class Game {
     return this._players.length;
   }
 
-  // Player Management Methods (from GameRoom)
   public hasPlayer(userId: number): boolean {
     return this._players.some(
       (p) => p.meta.id === userId && p.gameStatus === PlayerGameStatus.IN_GAME
@@ -167,7 +166,7 @@ export class Game {
    * @returns Whether showman slot is free
    */
   public checkShowmanSlot(): boolean {
-    return !this._players.find(
+    return this._players.some(
       (p) =>
         p.role === PlayerRole.SHOWMAN &&
         p.gameStatus === PlayerGameStatus.IN_GAME
