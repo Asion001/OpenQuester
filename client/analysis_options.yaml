@@ -13,7 +13,6 @@ analyzer:
     flutter_style_todos: ignore
     document_ignores: ignore
     unnecessary_library_directive: ignore
-    avoid_setters_without_getters: ignore
   exclude:
     - "**/*_generated.dart"
     - "**/*.freezed.dart"
