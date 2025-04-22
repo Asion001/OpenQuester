@@ -4,6 +4,12 @@ on:
   pull_request:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      deploy_env:
+        description: 'Which environment to deploy to'
+        required: true
+        type: string
+        default: 'preview'
     secrets:
       ANDROID_KEYSTORE_PASSWORD:
         required: true
@@ -49,7 +55,12 @@ jobs:
         working-directory: ./client
     env:
       DONT_USE_PURO: true
-    environment: "${{ github.event_name == 'workflow_call' && 'openquester (Production)' || 'openquester (Preview)' }}"
+    environment: >-
+      ${{ 
+        inputs.deploy_env == 'production' && 
+          'openquester (Production)' || 
+          'openquester (Preview)' 
+      }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
