@@ -15,10 +15,14 @@ class GameLobbyController {
   final showDesktopChat = ValueNotifier<bool>(true);
 
   Future<void> join({required String gameId}) async {
-    if (this.gameId == gameId) return; // Check if already joined
+    // Check if already joined
+    if (this.gameId == gameId) return;
+
     clear();
+
     try {
       this.gameId = gameId;
+
       socket = await getIt<SocketController>().createConnection(path: '/games');
       socket!
         ..onConnect((_) => _onConnect())
@@ -56,6 +60,7 @@ class GameLobbyController {
     }
   }
 
+  /// Clear all fields for new game to use
   void clear() {
     try {
       gameId = null;
