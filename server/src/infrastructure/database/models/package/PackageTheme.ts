@@ -38,6 +38,9 @@ export class PackageTheme {
   )
   questions!: PackageQuestion[];
 
+  @Column({ type: "int" })
+  order!: number;
+
   public import(data: PackageThemeImport) {
     this.name = data.name;
     this.description = data.description;

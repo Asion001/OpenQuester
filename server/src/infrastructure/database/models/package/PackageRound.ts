@@ -33,6 +33,9 @@ export class PackageRound {
   @OneToMany(() => PackageTheme, (theme: PackageTheme) => theme.round)
   themes!: PackageTheme[];
 
+  @Column({ type: "int" })
+  order!: number;
+
   public import(data: PackageRoundImport): void {
     this.name = data.name;
     this.description = data.description;

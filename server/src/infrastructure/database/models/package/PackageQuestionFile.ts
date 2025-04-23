@@ -24,6 +24,9 @@ export class PackageQuestionFile {
   @JoinColumn({ name: "question" })
   question!: PackageQuestion;
 
+  @Column({ type: "int" })
+  order!: number;
+
   @ManyToOne(() => File, { onDelete: "CASCADE" })
   @JoinColumn({ name: "file" })
   file!: File;

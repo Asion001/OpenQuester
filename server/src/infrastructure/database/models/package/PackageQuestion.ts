@@ -23,6 +23,9 @@ export class PackageQuestion {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column({ type: "int" })
+  order!: number;
+
   @ManyToOne(() => PackageTheme, (theme) => theme.questions, {
     onDelete: "CASCADE",
   })

@@ -24,6 +24,9 @@ export class PackageQuestionChoiceAnswer {
   @JoinColumn({ name: "question" })
   question!: PackageQuestion;
 
+  @Column({ type: "int" })
+  order!: number;
+
   @Column({ type: "text", nullable: true })
   text?: string | null;
 
