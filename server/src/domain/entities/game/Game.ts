@@ -2,6 +2,7 @@ import { Player } from "domain/entities/game/Player";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
 import { GameRedisHashDTO } from "domain/types/dto/game/GameRedisHashDTO";
+import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { PlayerMeta } from "domain/types/socket/game/PlayerMeta";
@@ -17,7 +18,7 @@ export class Game {
   private _currentRound: number;
   private _maxPlayers: number;
   private _startedAt: Date | null;
-  private _package: number;
+  private _package: PackageDTO;
   private _roundsCount: number;
   private _questionsCount: number;
   private _players: Player[];
@@ -32,7 +33,7 @@ export class Game {
     currentRound: number;
     maxPlayers: number;
     startedAt: Date | null;
-    package: number;
+    package: PackageDTO;
     roundsCount: number;
     questionsCount: number;
     players: Player[];
@@ -90,6 +91,10 @@ export class Game {
   }
 
   public get packageId() {
+    return this._package.id;
+  }
+
+  public get package() {
     return this._package;
   }
 
@@ -115,7 +120,7 @@ export class Game {
     );
   }
 
-  public async addUser(meta: PlayerMeta, role: PlayerRole): Promise<Player> {
+  public async addPlayer(meta: PlayerMeta, role: PlayerRole): Promise<Player> {
     const playerData = this._players.find((p) => p.meta.id === meta.id);
 
     const slotIdx =
@@ -205,7 +210,7 @@ export class Game {
       ageRestriction: this._ageRestriction,
       currentRound: this._currentRound.toString(),
       maxPlayers: this._maxPlayers.toString(),
-      package: this._package.toString(),
+      package: JSON.stringify(this._package),
       startedAt: this._startedAt ? this._startedAt.getTime().toString() : "",
       roundsCount: this._roundsCount.toString(),
       questionsCount: this._questionsCount.toString(),
@@ -224,7 +229,7 @@ export class Game {
       currentRound: parseInt(data.currentRound),
       maxPlayers: parseInt(data.maxPlayers),
       startedAt: data.startedAt ? new Date(parseInt(data.startedAt)) : null,
-      package: parseInt(data.package),
+      package: JSON.parse(data.package),
       roundsCount: parseInt(data.roundsCount),
       questionsCount: parseInt(data.questionsCount),
       players: JSON.parse(data.players).map((p: any) => new Player(p)),

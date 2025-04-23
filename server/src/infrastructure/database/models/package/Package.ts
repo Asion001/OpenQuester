@@ -13,7 +13,8 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { PackageFileType } from "domain/enums/package/PackageFileType";
 import { ClientError } from "domain/errors/ClientError";
-import { PackageResponseDTO } from "domain/types/dto/package/response/PackageResponseDTO";
+import { PackageDTOOptions } from "domain/types/dto/package/options/PackageDTOOptions";
+import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PackageImport } from "domain/types/package/import/PackageImport";
 import { File } from "infrastructure/database/models/File";
 import { PackageRound } from "infrastructure/database/models/package/PackageRound";
@@ -83,8 +84,9 @@ export class Package {
     }
   }
 
-  public async logoDTO(storage: S3StorageService) {
-    return this.logo
+  public async logoDTO(storage: S3StorageService, opts?: PackageDTOOptions) {
+    const options = opts ?? { fetchIds: false };
+    const dto = this.logo
       ? {
           file: {
             id: this.logo.id,
@@ -94,9 +96,20 @@ export class Package {
           },
         }
       : null;
+
+    if (options.fetchIds && this.logo) {
+      dto!.file.id = this.logo.id;
+    }
+
+    return dto;
   }
 
-  public async toDTO(storage: S3StorageService): Promise<PackageResponseDTO> {
+  public async toDTO(
+    storage: S3StorageService,
+    opts?: PackageDTOOptions
+  ): Promise<PackageDTO> {
+    const options = opts ?? { fetchIds: false };
+
     const logoDTO = await this.logoDTO(storage);
 
     if (this.rounds.length < 1) {
@@ -107,12 +120,11 @@ export class Package {
     }
 
     const roundsDTO = await Promise.all(
-      this.rounds.map((round) => round.toDTO(storage))
+      this.rounds.map((round) => round.toDTO(storage, options))
     );
     const tagsDTO = this.tags.map((tag) => tag.toDTO());
 
-    return {
-      id: this.id,
+    let dto: PackageDTO = {
       title: this.title,
       ageRestriction: this.age_restriction,
       author: {
@@ -126,5 +138,14 @@ export class Package {
       rounds: roundsDTO,
       tags: tagsDTO,
     };
+
+    if (options.fetchIds) {
+      dto = {
+        id: this.id,
+        ...dto,
+      };
+    }
+
+    return dto;
   }
 }

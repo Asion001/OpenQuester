@@ -70,9 +70,6 @@ export class ServeApi {
       // Build database connection
       await this._db.build();
 
-      // Connect to Redis
-      await RedisConfig.waitForConnection();
-
       // Middlewares
       await new MiddlewareController(this._context, this._redis).initialize();
 
@@ -121,68 +118,68 @@ export class ServeApi {
    * Initializes API controllers.
    * API controller is an entity, that manages initializing and handling of endpoints
    * to which this controller related (you can see it in their names)
-   *
-   * All API controllers use same Database and app instances
-   *
-   * Required and possible fields to send on endpoints you can find
-   * in `openapi/scheme.json`. This scheme used mostly in client-side for
-   * generating and using of entities based on server endpoints.
    */
   private _attachControllers() {
-    // Reusable dependencies
-    const app = this._context.app;
-
-    // Services
-    const userService = Container.get<UserService>(CONTAINER_TYPES.UserService);
-    const packageService = Container.get<PackageService>(
-      CONTAINER_TYPES.PackageService
-    );
-    const socketIOGameService = Container.get<SocketIOGameService>(
-      CONTAINER_TYPES.SocketIOGameService
-    );
-    const storage = Container.get<S3StorageService>(
-      CONTAINER_TYPES.S3StorageService
-    );
-    const game = Container.get<GameService>(CONTAINER_TYPES.GameService);
-    const io = Container.get<IOServer>(CONTAINER_TYPES.IO);
-
-    // Repositories
-    const redis = Container.get<Redis>(CONTAINER_TYPES.Redis);
-    const socketUserDataService = Container.get<SocketUserDataService>(
-      CONTAINER_TYPES.SocketUserDataService
-    );
-    const userRepository = Container.get<UserRepository>(
-      CONTAINER_TYPES.UserRepository
-    );
-    const fileRepository = Container.get<FileRepository>(
-      CONTAINER_TYPES.FileRepository
-    );
+    const deps = {
+      app: this._app,
+      userService: Container.get<UserService>(CONTAINER_TYPES.UserService),
+      packageService: Container.get<PackageService>(
+        CONTAINER_TYPES.PackageService
+      ),
+      socketIOGameService: Container.get<SocketIOGameService>(
+        CONTAINER_TYPES.SocketIOGameService
+      ),
+      socketUserDataService: Container.get<SocketUserDataService>(
+        CONTAINER_TYPES.SocketUserDataService
+      ),
+      storage: Container.get<S3StorageService>(
+        CONTAINER_TYPES.S3StorageService
+      ),
+      game: Container.get<GameService>(CONTAINER_TYPES.GameService),
+      io: Container.get<IOServer>(CONTAINER_TYPES.IO),
+      redis: Container.get<Redis>(CONTAINER_TYPES.Redis),
+      userRepository: Container.get<UserRepository>(
+        CONTAINER_TYPES.UserRepository
+      ),
+      fileRepository: Container.get<FileRepository>(
+        CONTAINER_TYPES.FileRepository
+      ),
+    };
 
     // REST
-    new UserRestApiController(app, userService, userRepository, fileRepository);
-    new AuthRestApiController(
-      app,
-      redis,
-      userRepository,
-      fileRepository,
-      storage,
-      socketUserDataService
+    new UserRestApiController(
+      deps.app,
+      deps.userService,
+      deps.userRepository,
+      deps.fileRepository
     );
-    new PackageRestApiController(app, packageService);
-    new FileRestApiController(app, storage);
-    new GameRestApiController(app, game);
-    new SwaggerRestApiController(app);
+    new AuthRestApiController(
+      deps.app,
+      deps.redis,
+      deps.userRepository,
+      deps.fileRepository,
+      deps.storage,
+      deps.socketUserDataService
+    );
+    new PackageRestApiController(deps.app, deps.packageService);
+    new FileRestApiController(deps.app, deps.storage);
+    new GameRestApiController(deps.app, deps.game);
+    new SwaggerRestApiController(deps.app);
 
     if (this._context.env.ENV === EnvType.DEV) {
       new DevelopmentRestApiController(
-        app,
-        userRepository,
+        deps.app,
+        deps.userRepository,
         this._context.env,
-        game
+        deps.game
       );
     }
 
     // Socket
-    new SocketIOInitializer(io, socketIOGameService, socketUserDataService);
+    new SocketIOInitializer(
+      deps.io,
+      deps.socketIOGameService,
+      deps.socketUserDataService
+    );
   }
 }

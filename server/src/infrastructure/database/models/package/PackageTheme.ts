@@ -9,7 +9,8 @@ import {
 
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
-import { PackageThemeResponseDTO } from "domain/types/dto/package/response/PackageThemeResponseDTO";
+import { PackageDTOOptions } from "domain/types/dto/package/options/PackageDTOOptions";
+import { PackageThemeDTO } from "domain/types/dto/package/PackageThemeDTO";
 import { PackageThemeImport } from "domain/types/package/import/PackageThemeImport";
 import { PackageQuestion } from "infrastructure/database/models/package/PackageQuestion";
 import { PackageRound } from "infrastructure/database/models/package/PackageRound";
@@ -45,8 +46,9 @@ export class PackageTheme {
   }
 
   public async toDTO(
-    storage: S3StorageService
-  ): Promise<PackageThemeResponseDTO> {
+    storage: S3StorageService,
+    opts: PackageDTOOptions
+  ): Promise<PackageThemeDTO> {
     if (this.questions.length < 1) {
       throw new ClientError(ClientResponse.PACKAGE_CORRUPTED, undefined, {
         id: this.id,
@@ -55,13 +57,22 @@ export class PackageTheme {
     }
 
     const questionsDTO = await Promise.all(
-      this.questions.map((question) => question.toDTO(storage))
+      this.questions.map((question) => question.toDTO(storage, opts))
     );
-    return {
-      id: this.id,
+
+    let dto: PackageThemeDTO = {
       name: this.name,
       description: this.description,
       questions: questionsDTO,
     };
+
+    if (opts.fetchIds) {
+      dto = {
+        id: this.id,
+        ...dto,
+      };
+    }
+
+    return dto;
   }
 }

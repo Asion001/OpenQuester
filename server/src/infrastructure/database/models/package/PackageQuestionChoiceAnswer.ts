@@ -7,7 +7,9 @@ import {
 } from "typeorm";
 
 import { PackageFileType } from "domain/enums/package/PackageFileType";
+import { PackageDTOOptions } from "domain/types/dto/package/options/PackageDTOOptions";
 import { PackageAnswerDTO } from "domain/types/dto/package/PackageAnswerDTO";
+import { PackageFileDTO } from "domain/types/dto/package/PackageFileDTO";
 import { PackageQuestionChoiceAnswerImport } from "domain/types/package/import/PackageQuestionChoiceAnswerImport";
 import { File } from "infrastructure/database/models/File";
 import { PackageQuestion } from "infrastructure/database/models/package/PackageQuestion";
@@ -41,18 +43,34 @@ export class PackageQuestionChoiceAnswer {
     this.question = data.question;
   }
 
-  public async toDTO(storage: S3StorageService): Promise<PackageAnswerDTO> {
-    const fileDTO = this.file
+  public async toDTO(
+    storage: S3StorageService,
+    opts: PackageDTOOptions
+  ): Promise<PackageAnswerDTO> {
+    const fileDTO: PackageFileDTO | null = this.file
       ? {
-          id: this.file.id,
           md5: this.file.filename,
           type: this.type!,
           link: await storage.get(this.file.filename),
         }
       : null;
-    return {
+
+    if (opts.fetchIds && this.file) {
+      fileDTO!.id = this.file.id;
+    }
+
+    let dto: PackageAnswerDTO = {
       text: this.text,
       file: fileDTO,
     };
+
+    if (opts.fetchIds) {
+      dto = {
+        id: this.id,
+        ...dto,
+      };
+    }
+
+    return dto;
   }
 }

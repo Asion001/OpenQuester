@@ -46,7 +46,7 @@ export enum ClientResponse {
   BAD_GAME_CREATION = "bad_game_creation",
   GAME_NOT_FOUND = "game_not_found",
   GAME_DATA_IS_CORRUPTED = "game_data_corrupted",
-  USER_ALREADY_IN_GAME = "user_already_in_game",
+  ALREADY_IN_GAME = "already_in_game",
   NOT_IN_GAME = "not_in_game",
   GAME_IS_FULL = "game_is_full",
   SHOWMAN_IS_TAKEN = "showman_is_taken",

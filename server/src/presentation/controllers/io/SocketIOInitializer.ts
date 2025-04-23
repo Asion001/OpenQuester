@@ -1,10 +1,9 @@
 import { Server as IOServer, Namespace, Socket } from "socket.io";
 
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
-import { GameValidator } from "domain/entities/game/GameValidator";
 import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { SocketIOGameController } from "presentation/controllers/io/game/SocketIOGameController";
-import { SocketIOEventEmitter } from "./SocketIOEventEmitter";
+import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
 
 export class SocketIOInitializer {
   constructor(
@@ -13,19 +12,22 @@ export class SocketIOInitializer {
     private readonly socketUserDataService: SocketUserDataService
   ) {
     const gameNamespace = this.io.of("/games");
+    const gameController = new SocketIOGameController(
+      new SocketIOEventEmitter(),
+      this.socketUserDataService,
+      this.socketIOGameService
+    );
 
     gameNamespace.on("connection", (socket: Socket) => {
-      this._initializeGameControllers(socket, gameNamespace);
+      this._initializeGameControllers(gameController, gameNamespace, socket);
     });
   }
 
-  private async _initializeGameControllers(socket: Socket, nsp: Namespace) {
-    new SocketIOGameController(
-      socket,
-      new SocketIOEventEmitter(nsp, socket),
-      this.socketUserDataService,
-      this.socketIOGameService,
-      new GameValidator()
-    );
+  private async _initializeGameControllers(
+    gamesController: SocketIOGameController,
+    nsp: Namespace,
+    socket: Socket
+  ) {
+    gamesController.registerSocket(nsp, socket);
   }
 }

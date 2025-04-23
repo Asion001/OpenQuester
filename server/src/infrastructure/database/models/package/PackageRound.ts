@@ -9,7 +9,8 @@ import {
 
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
-import { PackageRoundResponseDTO } from "domain/types/dto/package/response/PackageRoundResponseDTO";
+import { PackageDTOOptions } from "domain/types/dto/package/options/PackageDTOOptions";
+import { PackageRoundDTO } from "domain/types/dto/package/PackageRoundDTO";
 import { PackageRoundImport } from "domain/types/package/import/PackageRoundImport";
 import { Package } from "infrastructure/database/models/package/Package";
 import { PackageTheme } from "infrastructure/database/models/package/PackageTheme";
@@ -40,8 +41,9 @@ export class PackageRound {
   }
 
   public async toDTO(
-    storage: S3StorageService
-  ): Promise<PackageRoundResponseDTO> {
+    storage: S3StorageService,
+    opts: PackageDTOOptions
+  ): Promise<PackageRoundDTO> {
     if (this.themes.length < 1) {
       throw new ClientError(ClientResponse.PACKAGE_CORRUPTED, undefined, {
         id: this.id,
@@ -50,14 +52,22 @@ export class PackageRound {
     }
 
     const themesDTO = await Promise.all(
-      this.themes.map((theme) => theme.toDTO(storage))
+      this.themes.map((theme) => theme.toDTO(storage, opts))
     );
 
-    return {
-      id: this.id,
+    let dto: PackageRoundDTO = {
       name: this.name,
       description: this.description,
       themes: themesDTO,
     };
+
+    if (opts.fetchIds) {
+      dto = {
+        id: this.id,
+        ...dto,
+      };
+    }
+
+    return dto;
   }
 }

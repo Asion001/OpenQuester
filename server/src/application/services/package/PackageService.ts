@@ -6,7 +6,6 @@ import { USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
-import { PackageResponseDTO } from "domain/types/dto/package/response/PackageResponseDTO";
 import { PackageUploadResponse } from "domain/types/package/PackageUploadResponse";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
 import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
@@ -25,9 +24,7 @@ export class PackageService {
     //
   }
 
-  public async getPackage(
-    packId: string | number
-  ): Promise<PackageResponseDTO> {
+  public async getPackage(packId: string | number): Promise<PackageDTO> {
     const id = ValueUtils.validateId(packId);
     const pack = await this.packageRepository.get(
       id,
@@ -39,17 +36,17 @@ export class PackageService {
       throw new ClientError(ClientResponse.PACKAGE_NOT_FOUND);
     }
 
-    return pack.toDTO(this.storage);
+    return pack.toDTO(this.storage, { fetchIds: true });
   }
 
   public async listPackages(
     paginationOpts: PaginationOpts<Package>
-  ): Promise<PaginatedResult<PackageResponseDTO[]>> {
+  ): Promise<PaginatedResult<PackageDTO[]>> {
     const paginatedList = await this.packageRepository.list(paginationOpts);
 
     const packageListItems = await Promise.all(
       paginatedList.data.map(async (pack) => {
-        return await pack.toDTO(this.storage);
+        return await pack.toDTO(this.storage, { fetchIds: true });
       })
     );
 

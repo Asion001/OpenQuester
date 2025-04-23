@@ -38,7 +38,7 @@
   "game_data_corrupted": "Game data is corrupted",
   "socket_user_not_authenticated": "Socket client (user) is not authenticated",
   "user_data_corrupted": "User data is corrupted",
-  "user_already_in_game": "User already in the game",
+  "already_in_game": "You are already in this game",
   "not_in_game": "You are not currently in this game",
   "game_is_full": "This game is full! You can join only as spectator",
   "game_does_not_exists": "Game with this ID does not exists",

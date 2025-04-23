@@ -4,7 +4,10 @@ import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { PackageFileType } from "domain/enums/package/PackageFileType";
 import { PackageQuestionType } from "domain/enums/package/QuestionType";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
-import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
+import {
+  PackageQuestionDTO,
+  PackageQuestionSubType,
+} from "domain/types/dto/package/PackageQuestionDTO";
 import { PackageRoundDTO } from "domain/types/dto/package/PackageRoundDTO";
 import { PackageThemeDTO } from "domain/types/dto/package/PackageThemeDTO";
 import { PackageQuestionTransferType } from "domain/types/package/PackageQuestionTransferType";
@@ -47,16 +50,28 @@ const baseQuestionSchema = Joi.object<PackageQuestionDTO>({
 const questionSchema = baseQuestionSchema.keys({
   subType: Joi.when("type", {
     is: "stake",
-    then: Joi.string().valid("simple", "forEveryone").required(),
+    then: Joi.string()
+      .valid(PackageQuestionSubType.SIMPLE, PackageQuestionSubType.FOR_EVERYONE)
+      .required(),
     otherwise: Joi.when("type", {
       is: "secret",
-      then: Joi.string().valid("simple", "customPrice").required(),
+      then: Joi.string()
+        .valid(
+          PackageQuestionSubType.SIMPLE,
+          PackageQuestionSubType.CUSTOM_PRICE
+        )
+        .required(),
       otherwise: Joi.when("type", {
         is: "noRisk",
-        then: Joi.string().valid("simple", "forEveryone").required(),
+        then: Joi.string()
+          .valid(
+            PackageQuestionSubType.SIMPLE,
+            PackageQuestionSubType.FOR_EVERYONE
+          )
+          .required(),
         otherwise: Joi.when("type", {
           is: "choice",
-          then: Joi.string().valid("simple").required(),
+          then: Joi.string().valid(PackageQuestionSubType.SIMPLE).required(),
           otherwise: Joi.when("type", {
             is: "hidden",
             then: Joi.forbidden(), // No subType for hidden
@@ -74,7 +89,7 @@ const questionSchema = baseQuestionSchema.keys({
   allowedPrices: Joi.when("type", {
     is: "secret",
     then: Joi.when("subType", {
-      is: "customPrice",
+      is: PackageQuestionSubType.CUSTOM_PRICE,
       then: Joi.array().items(Joi.number()).min(2).max(5).required(),
       otherwise: Joi.optional().valid(null),
     }),

@@ -113,6 +113,7 @@ export class UserRestApiController {
       throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
+    // TODO: Use service
     const user = await this.userRepository.get(userInputDTO.id, {
       select: USER_SELECT_FIELDS,
       relations: USER_RELATIONS,
@@ -129,6 +130,7 @@ export class UserRestApiController {
     let avatarFile: File | null = null;
 
     if (userInputDTO.avatar) {
+      // TODO: Use service
       avatarFile = await this.fileRepository.getFileByFilename(
         userInputDTO.avatar
       );

@@ -4,7 +4,10 @@ import {
   GAME_NAMESPACE,
   GAME_TTL,
 } from "domain/constants/game";
-import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
+import {
+  PACKAGE_SELECT_FIELDS,
+  PACKAGE_SELECT_RELATIONS,
+} from "domain/constants/package";
 import { Game } from "domain/entities/game/Game";
 import { Player } from "domain/entities/game/Player";
 import { ClientResponse } from "domain/enums/ClientResponse";
@@ -105,7 +108,7 @@ export class GameRepository {
     }
 
     games.forEach((game: Game) => {
-      packageIds.add(game.packageId);
+      packageIds.add(game.packageId!);
       userIds.add(game.createdBy);
     });
 
@@ -127,7 +130,7 @@ export class GameRepository {
       await Promise.all(
         games.map(async (game: Game) => {
           const createdBy = userMap.get(game.createdBy);
-          const packData = packageMap.get(game.packageId);
+          const packData = packageMap.get(game.packageId!);
 
           if (!packData || !packData.author || !createdBy) {
             return null;
@@ -153,7 +156,7 @@ export class GameRepository {
     const packageData = await this.packageRepository.get(
       gameData.packageId,
       PACKAGE_SELECT_FIELDS,
-      ["author"]
+      PACKAGE_SELECT_RELATIONS
     );
 
     if (!packageData) {
@@ -197,7 +200,7 @@ export class GameRepository {
       currentRound: 0,
       maxPlayers: gameData.maxPlayers,
       startedAt: null,
-      package: gameData.packageId,
+      package: await packageData.toDTO(this.storage),
       roundsCount: counts.roundsCount,
       questionsCount: counts.questionsCount,
       players: [],
@@ -242,7 +245,7 @@ export class GameRepository {
     });
 
     const packData = await this.packageRepository.get(
-      game.packageId,
+      game.packageId!,
       PACKAGE_SELECT_FIELDS,
       ["author", "tags", "logo"]
     );
@@ -323,7 +326,7 @@ export class GameRepository {
 
   private async _fetchGameDetails(gameIds: string[]) {
     const pipeline = this.redisService.pipeline();
-    gameIds.forEach((id) => pipeline.hgetall(`${GAME_NAMESPACE}:${id}`));
+    gameIds.forEach((id) => pipeline.hgetall(this.getGameKey(id)));
 
     const results = await pipeline.exec();
     if (!results) {

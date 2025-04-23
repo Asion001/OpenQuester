@@ -34,9 +34,9 @@ import { RequestDataValidator } from "presentation/schemes/RequestDataValidator"
 export class AuthRestApiController {
   constructor(
     private readonly app: Express,
-    private readonly redis: Redis,
-    private readonly userRepository: UserRepository,
-    private readonly fileRepository: FileRepository,
+    private readonly redis: Redis, // TODO: Should be RedisService
+    private readonly userRepository: UserRepository, // TODO: User service
+    private readonly fileRepository: FileRepository, // TODO: User Service
     private readonly storage: S3StorageService,
     private readonly socketUserDataService: SocketUserDataService
   ) {

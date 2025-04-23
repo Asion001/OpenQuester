@@ -4,13 +4,15 @@ import { PackageAnswerFileDTO } from "domain/types/dto/package/PackageAnswerFile
 import { PackageQuestionFileDTO } from "domain/types/dto/package/PackageQuestionFileDTO";
 import { PackageQuestionTransferType } from "domain/types/package/PackageQuestionTransferType";
 
-export type PackageQuestionSubType =
-  | "simple"
-  | "customPrice"
-  | "empty"
-  | "forEveryone";
+export enum PackageQuestionSubType {
+  SIMPLE = "simple",
+  CUSTOM_PRICE = "customPrice",
+  EMPTY = "empty",
+  FOR_EVERYONE = "forEveryone",
+}
 
 export interface PackageQuestionDTO {
+  id?: number;
   type: PackageQuestionType;
   price: number;
   isHidden: boolean;

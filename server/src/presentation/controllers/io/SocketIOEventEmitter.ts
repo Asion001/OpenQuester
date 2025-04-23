@@ -2,17 +2,23 @@ import {
   SocketIOEvents,
   SocketIOGameEvents,
 } from "domain/enums/SocketIOEvents";
+import { ServerError } from "domain/errors/ServerError";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { Namespace, Server, Socket } from "socket.io";
 
 type IOEVent = SocketIOEvents | SocketIOGameEvents;
 
 export class SocketIOEventEmitter {
-  constructor(
-    private readonly io: Namespace | Server,
-    private readonly socket: Socket
-  ) {
+  private _io?: Namespace | Server;
+  private _socket?: Socket;
+
+  constructor() {
     //
+  }
+
+  public init(io: Namespace | Server, socket: Socket) {
+    this._io = io;
+    this._socket = socket;
   }
 
   /**
@@ -26,9 +32,13 @@ export class SocketIOEventEmitter {
     data: T,
     options?: { emitter: SocketEventEmitter; gameId?: string }
   ) {
+    if (!this._io || !this._socket) {
+      throw new ServerError("SocketIOEventEmitter not initialized");
+    }
+
     const opts = options ? options : { emitter: SocketEventEmitter.SOCKET };
     const emitter =
-      opts.emitter === SocketEventEmitter.IO ? this.io : this.socket;
+      opts.emitter === SocketEventEmitter.IO ? this._io : this._socket;
 
     if (opts.gameId) {
       emitter.to(opts.gameId).emit(event, data);

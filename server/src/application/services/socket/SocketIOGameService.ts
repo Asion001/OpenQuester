@@ -21,7 +21,7 @@ export class SocketIOGameService {
     //
   }
 
-  public async joinUser(
+  public async joinPlayer(
     data: GameJoinData,
     socketId: string
   ): Promise<GameJoinResult> {
@@ -32,11 +32,11 @@ export class SocketIOGameService {
       throw new ClientError(ClientResponse.GAME_IS_FULL);
     }
 
-    if (data.role === PlayerRole.SHOWMAN && !game.checkShowmanSlot()) {
+    if (data.role === PlayerRole.SHOWMAN && game.checkShowmanSlot()) {
       throw new ClientError(ClientResponse.SHOWMAN_IS_TAKEN);
     }
 
-    const player = await game.addUser(
+    const player = await game.addPlayer(
       {
         id: user.id,
         username: user.username,
