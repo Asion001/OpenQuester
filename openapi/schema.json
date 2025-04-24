@@ -168,7 +168,7 @@
           {
             "name": "sortBy",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/PackagesSortBy"
             }
@@ -176,7 +176,7 @@
           {
             "name": "order",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/OrderDirection"
             }
@@ -683,7 +683,7 @@
           {
             "name": "sortBy",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/GamesSortBy"
             }
@@ -691,7 +691,7 @@
           {
             "name": "order",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/OrderDirection"
             }
@@ -1274,7 +1274,7 @@
         "minimum": 0
       },
       "GamesSortBy": {
-        "type": ["string", "null"],
+        "type": "string",
         "enum": [
           "id",
           "title",
@@ -1288,13 +1288,13 @@
         "default": "createdAt"
       },
       "UsersSortBy": {
-        "type": ["string", "null"],
+        "type": "string",
         "enum": ["id", "is_deleted", "created_at", "username", "email"],
         "examples": ["createdAt"],
         "default": "createdAt"
       },
       "PackagesSortBy": {
-        "type": ["string", "null"],
+        "type": "string",
         "enum": ["id", "title", "created_at", "author"],
         "examples": ["created_at"],
         "default": "created_at"

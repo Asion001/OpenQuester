@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show PersistentBottomSheetController;
 import 'package:openquester/openquester.dart';
@@ -34,6 +35,7 @@ class GameLobbyController {
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
+
       rethrow;
     }
   }
@@ -57,6 +59,17 @@ class GameLobbyController {
       await getIt<SocketChatController>().init(socket: socket!);
     } catch (e, s) {
       logger.e(e, stackTrace: s);
+      clear();
+
+      // Show error toast
+      await getIt<ToastController>().show(
+        e is DioException && e.response?.statusCode == 401
+            ? LocaleKeys.user_unauthorized.tr()
+            : e,
+      );
+
+      // Close game
+      await AppRouter.I.replace(const HomeTabsRoute());
     }
   }
 
