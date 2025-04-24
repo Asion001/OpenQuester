@@ -25,6 +25,7 @@ import { UpdateUserModelFields_0_1_11_1723107959823 as updateUserModelFields } f
 import { CreateUserAndFileTables_0_1_1_1722683756069 as createUserAndFileTables } from "infrastructure/database/migrations/0.1.1_CreateUserAndFileTables";
 import { UpdateUserRequiredFields_0_1_21_1723204474011 as updateUserRequiredFields } from "infrastructure/database/migrations/0.1.21_UpdateUserRequiredFields";
 import { CreatePermissionTable_0_1_2_1723128633623 as createPermissionTable } from "infrastructure/database/migrations/0.1.2_CreatePermissionTable";
+import { AddOrderColumn_1745439282807 as AddOrderColumn } from "infrastructure/database/migrations/0.11.4_AddOrderColumn";
 import { WriteMoreInfoToDB_0_2_9_1725692779638 as writeMoreToDB } from "infrastructure/database/migrations/0.2.9_WriteMoreInfoToDB";
 import { ChangePermissionValidation_0_3_0_1729181792142 as changePermissionValidation } from "infrastructure/database/migrations/0.3.0_ChangePermissionValidation";
 import { AddDeleteFilePermission_0_3_9_1730832569761 as addDeletePermission } from "infrastructure/database/migrations/0.3.9_AddDeleteFilePermission";
@@ -93,6 +94,7 @@ export const AppDataSource = new DataSource({
     UpdatePackageTypesAndFields,
     AddPackageLogoFK,
     AddTypeColumnForChoiceFile,
+    AddOrderColumn,
   ],
   poolSize: 25,
   migrationsRun: true,

@@ -4,6 +4,7 @@ import { PackageQuestion } from "infrastructure/database/models/package/PackageQ
 
 export interface PackageQuestionChoiceAnswerImport {
   question: PackageQuestion;
+  order: number;
   text?: string | null;
   fileData?: {
     file: File;

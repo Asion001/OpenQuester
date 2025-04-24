@@ -4,7 +4,10 @@ import {
   PACKAGE_SELECT_FIELDS,
   PACKAGE_SELECT_RELATIONS,
 } from "domain/constants/package";
+import { ClientResponse } from "domain/enums/ClientResponse";
 import { FileSource } from "domain/enums/file/FileSource";
+import { ClientError } from "domain/errors/ClientError";
+import { ServerError } from "domain/errors/ServerError";
 import { FileDTO } from "domain/types/dto/file/FileDTO";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
@@ -28,6 +31,14 @@ import { User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { PackageTagRepository } from "infrastructure/database/repositories/TagRepository";
 import { StorageUtils } from "infrastructure/utils/StorageUtils";
+
+type OrderMapEntry =
+  | "rounds"
+  | "themes"
+  | "questions"
+  | "questionFiles"
+  | "answerFiles"
+  | "answers";
 
 export class PackageRepository {
   constructor(
@@ -194,35 +205,86 @@ export class PackageRepository {
       const fileUsagesToSave: FileUsage[] = [];
       const answersToSave: PackageQuestionChoiceAnswer[] = [];
 
+      // Orders map for checking duplicates
+      const ordersMap = new Map<OrderMapEntry, Set<number>>([
+        ["rounds", new Set()],
+        ["themes", new Set()],
+        ["questions", new Set()],
+        ["questionFiles", new Set()],
+        ["answerFiles", new Set()],
+        ["answers", new Set()],
+      ]);
+
       // Create Rounds, Themes, Questions, and Associated Entities
       for (const roundData of packageData.rounds) {
         const round = new PackageRound();
+        const orders = ordersMap.get("rounds");
+
+        if (!orders) {
+          throw new ServerError("Orders map for rounds not found");
+        }
+
+        if (orders.has(roundData.order)) {
+          throw new ClientError(ClientResponse.ORDER_DUPLICATED, 400, {
+            name: "rounds",
+            order: roundData.order,
+          });
+        }
 
         // Import and save round
         round.import({
           description: roundData.description,
           name: roundData.name,
           package: pack,
+          order: roundData.order,
         });
         roundsToSave.push(round);
+        orders.add(roundData.order);
 
         for (const themeData of roundData.themes) {
           const theme = new PackageTheme();
+          const orders = ordersMap.get("themes");
+
+          if (!orders) {
+            throw new ClientError("Orders map for themes not found");
+          }
+
+          if (orders.has(themeData.order)) {
+            throw new ClientError(ClientResponse.ORDER_DUPLICATED, 400, {
+              name: "themes",
+              order: themeData.order,
+            });
+          }
 
           // Import and save theme
           theme.import({
             description: themeData.description,
             name: themeData.name,
             round,
+            order: themeData.order,
           });
           themesToSave.push(theme);
+          orders.add(themeData.order);
 
           for (const questionData of themeData.questions) {
             const question = new PackageQuestion();
+            const orders = ordersMap.get("questions");
+
+            if (!orders) {
+              throw new ClientError("Orders map for questions not found");
+            }
+
+            if (orders.has(questionData.order)) {
+              throw new ClientError(ClientResponse.ORDER_DUPLICATED, 400, {
+                name: "questions",
+                order: questionData.order,
+              });
+            }
 
             // Import and save question data
             question.import({
               theme: theme,
+              order: questionData.order,
               price: questionData.price,
               type: questionData.type,
               isHidden: questionData.isHidden,
@@ -239,9 +301,25 @@ export class PackageRepository {
               showDelay: questionData.showDelay,
             });
             questionsToSave.push(question);
+            orders.add(questionData.order);
 
             // Create and save question files
             for (const questionFileData of questionData.questionFiles || []) {
+              const orders = ordersMap.get("questionFiles");
+
+              if (!orders) {
+                throw new ClientError(
+                  "Orders map for question files not found"
+                );
+              }
+
+              if (orders.has(questionFileData.order)) {
+                throw new ClientError(ClientResponse.ORDER_DUPLICATED, 400, {
+                  name: "question files",
+                  order: questionFileData.order,
+                });
+              }
+
               const fileEntity = new File();
               fileEntity.import({
                 filename: questionFileData.file.md5,
@@ -253,10 +331,12 @@ export class PackageRepository {
               const questionFile = new PackageQuestionFile();
               questionFile.import({
                 file: fileEntity,
+                order: questionFileData.order,
                 type: questionFileData.file.type,
                 display_time: questionFileData.displayTime,
                 question: question,
               });
+              orders.add(questionFileData.order);
 
               filesToSave.push(fileEntity);
               questionFilesToSave.push(questionFile);
@@ -271,9 +351,23 @@ export class PackageRepository {
 
               files.push(fileEntity.toDTO());
             }
+            ordersMap.set("questionFiles", new Set());
 
             // Create and save answer files with the saved question
             for (const answerFileData of questionData.answerFiles || []) {
+              const orders = ordersMap.get("answerFiles");
+
+              if (!orders) {
+                throw new ClientError("Orders map for answer files not found");
+              }
+
+              if (orders.has(answerFileData.order)) {
+                throw new ClientError(ClientResponse.ORDER_DUPLICATED, 400, {
+                  name: "answer files",
+                  order: answerFileData.order,
+                });
+              }
+
               const fileEntity = new File();
               fileEntity.import({
                 filename: answerFileData.file.md5,
@@ -285,10 +379,12 @@ export class PackageRepository {
               const answerFile = new PackageAnswerFile();
               answerFile.import({
                 file: fileEntity,
+                order: answerFileData.order,
                 type: answerFileData.file.type,
                 display_time: answerFileData.displayTime,
                 question: question,
               });
+              orders.add(answerFileData.order);
 
               filesToSave.push(fileEntity);
               answerFilesToSave.push(answerFile);
@@ -303,9 +399,23 @@ export class PackageRepository {
 
               files.push(fileEntity.toDTO());
             }
+            ordersMap.set("answerFiles", new Set());
 
             // Create and save answers for choice questions (if there any)
             for (const answerData of questionData.answers || []) {
+              const orders = ordersMap.get("answers");
+
+              if (!orders) {
+                throw new ClientError("Orders map for answers not found");
+              }
+
+              if (orders.has(answerData.order)) {
+                throw new ClientError(ClientResponse.ORDER_DUPLICATED, 400, {
+                  name: "answers",
+                  order: answerData.order,
+                });
+              }
+
               const answer = new PackageQuestionChoiceAnswer();
               let file = null;
               if (answerData.file) {
@@ -333,14 +443,19 @@ export class PackageRepository {
               const type = answerData.file?.type;
               answer.import({
                 question: question,
+                order: answerData.order,
                 text: answerData.text,
                 fileData: file && type ? { file, type } : null,
               });
+              orders.add(answerData.order);
 
               answersToSave.push(answer);
             }
+            ordersMap.set("answers", new Set());
           }
+          ordersMap.set("questions", new Set());
         }
+        ordersMap.set("themes", new Set());
       }
 
       // Bulk Save in Order of Dependency

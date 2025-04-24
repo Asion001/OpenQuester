@@ -5,6 +5,7 @@ import { PackageTheme } from "infrastructure/database/models/package/PackageThem
 
 export interface PackageQuestionImport {
   theme: PackageTheme;
+  order: number;
   price: number;
   type: PackageQuestionType;
   isHidden: boolean;

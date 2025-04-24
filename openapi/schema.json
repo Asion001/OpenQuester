@@ -1558,6 +1558,11 @@
             "type": ["integer", "null"],
             "examples": [69]
           },
+          "order": {
+            "type": "integer",
+            "description": "Order of the question file in the question, should be unique, starting from 0",
+            "examples": [1, 2, 3]
+          },
           "file": {
             "$ref": "#/components/schemas/FileItem"
           },
@@ -1578,6 +1583,11 @@
             "type": ["integer", "null"],
             "examples": [1337]
           },
+          "order": {
+            "type": "integer",
+            "description": "Order of the answer file in the question, should be unique, starting from 0",
+            "examples": [1, 2, 3]
+          },
           "file": {
             "$ref": "#/components/schemas/FileItem"
           },
@@ -1597,6 +1607,11 @@
           "id": {
             "type": ["integer", "null"],
             "examples": [187]
+          },
+          "order": {
+            "type": "integer",
+            "description": "Order of the question in the theme, should be unique, starting from 0",
+            "examples": [1, 2, 3]
           },
           "price": {
             "type": "integer",
@@ -1705,6 +1720,11 @@
                     "id": {
                       "type": ["integer", "null"],
                       "examples": [99]
+                    },
+                    "order": {
+                      "type": "integer",
+                      "description": "Order of the answer in the choice answers, should be unique, starting from 0",
+                      "examples": [1, 2, 3]
                     },
                     "text": {
                       "type": ["string", "null"],
@@ -1896,6 +1916,11 @@
             "type": ["integer", "null"],
             "examples": [92]
           },
+          "order": {
+            "type": "integer",
+            "description": "Order of the theme in the round, should be unique, starting from 0",
+            "examples": [1, 2, 3]
+          },
           "name": {
             "type": "string",
             "description": "Name of the theme",
@@ -1925,6 +1950,11 @@
           "id": {
             "type": ["integer", "null"],
             "examples": [17]
+          },
+          "order": {
+            "type": "integer",
+            "description": "Order of the round in the package, should be unique, starting from 0",
+            "examples": [1, 2, 3]
           },
           "name": {
             "type": "string",
