@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'game_event_subscription.dart';
+part of 'game_update_event_subscription.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,49 +14,52 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-GameEventSubscription _$GameEventSubscriptionFromJson(
+GameUpdateEventSubscription _$GameUpdateEventSubscriptionFromJson(
     Map<String, dynamic> json) {
-  return _GameEventSubscription.fromJson(json);
+  return _GameUpdateEventSubscription.fromJson(json);
 }
 
 /// @nodoc
-mixin _$GameEventSubscription {
-  GameEvent get event => throw _privateConstructorUsedError;
+mixin _$GameUpdateEventSubscription {
+  GameUpdateEventSubscriptionEvent get event =>
+      throw _privateConstructorUsedError;
   GameListItem get data => throw _privateConstructorUsedError;
 
-  /// Serializes this GameEventSubscription to a JSON map.
+  /// Serializes this GameUpdateEventSubscription to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of GameEventSubscription
+  /// Create a copy of GameUpdateEventSubscription
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $GameEventSubscriptionCopyWith<GameEventSubscription> get copyWith =>
-      throw _privateConstructorUsedError;
+  $GameUpdateEventSubscriptionCopyWith<GameUpdateEventSubscription>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GameEventSubscriptionCopyWith<$Res> {
-  factory $GameEventSubscriptionCopyWith(GameEventSubscription value,
-          $Res Function(GameEventSubscription) then) =
-      _$GameEventSubscriptionCopyWithImpl<$Res, GameEventSubscription>;
+abstract class $GameUpdateEventSubscriptionCopyWith<$Res> {
+  factory $GameUpdateEventSubscriptionCopyWith(
+          GameUpdateEventSubscription value,
+          $Res Function(GameUpdateEventSubscription) then) =
+      _$GameUpdateEventSubscriptionCopyWithImpl<$Res,
+          GameUpdateEventSubscription>;
   @useResult
-  $Res call({GameEvent event, GameListItem data});
+  $Res call({GameUpdateEventSubscriptionEvent event, GameListItem data});
 
   $GameListItemCopyWith<$Res> get data;
 }
 
 /// @nodoc
-class _$GameEventSubscriptionCopyWithImpl<$Res,
-        $Val extends GameEventSubscription>
-    implements $GameEventSubscriptionCopyWith<$Res> {
-  _$GameEventSubscriptionCopyWithImpl(this._value, this._then);
+class _$GameUpdateEventSubscriptionCopyWithImpl<$Res,
+        $Val extends GameUpdateEventSubscription>
+    implements $GameUpdateEventSubscriptionCopyWith<$Res> {
+  _$GameUpdateEventSubscriptionCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of GameEventSubscription
+  /// Create a copy of GameUpdateEventSubscription
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -68,7 +71,7 @@ class _$GameEventSubscriptionCopyWithImpl<$Res,
       event: null == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
-              as GameEvent,
+              as GameUpdateEventSubscriptionEvent,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -76,7 +79,7 @@ class _$GameEventSubscriptionCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of GameEventSubscription
+  /// Create a copy of GameUpdateEventSubscription
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -88,30 +91,31 @@ class _$GameEventSubscriptionCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$GameEventSubscriptionImplCopyWith<$Res>
-    implements $GameEventSubscriptionCopyWith<$Res> {
-  factory _$$GameEventSubscriptionImplCopyWith(
-          _$GameEventSubscriptionImpl value,
-          $Res Function(_$GameEventSubscriptionImpl) then) =
-      __$$GameEventSubscriptionImplCopyWithImpl<$Res>;
+abstract class _$$GameUpdateEventSubscriptionImplCopyWith<$Res>
+    implements $GameUpdateEventSubscriptionCopyWith<$Res> {
+  factory _$$GameUpdateEventSubscriptionImplCopyWith(
+          _$GameUpdateEventSubscriptionImpl value,
+          $Res Function(_$GameUpdateEventSubscriptionImpl) then) =
+      __$$GameUpdateEventSubscriptionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({GameEvent event, GameListItem data});
+  $Res call({GameUpdateEventSubscriptionEvent event, GameListItem data});
 
   @override
   $GameListItemCopyWith<$Res> get data;
 }
 
 /// @nodoc
-class __$$GameEventSubscriptionImplCopyWithImpl<$Res>
-    extends _$GameEventSubscriptionCopyWithImpl<$Res,
-        _$GameEventSubscriptionImpl>
-    implements _$$GameEventSubscriptionImplCopyWith<$Res> {
-  __$$GameEventSubscriptionImplCopyWithImpl(_$GameEventSubscriptionImpl _value,
-      $Res Function(_$GameEventSubscriptionImpl) _then)
+class __$$GameUpdateEventSubscriptionImplCopyWithImpl<$Res>
+    extends _$GameUpdateEventSubscriptionCopyWithImpl<$Res,
+        _$GameUpdateEventSubscriptionImpl>
+    implements _$$GameUpdateEventSubscriptionImplCopyWith<$Res> {
+  __$$GameUpdateEventSubscriptionImplCopyWithImpl(
+      _$GameUpdateEventSubscriptionImpl _value,
+      $Res Function(_$GameUpdateEventSubscriptionImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of GameEventSubscription
+  /// Create a copy of GameUpdateEventSubscription
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -119,11 +123,11 @@ class __$$GameEventSubscriptionImplCopyWithImpl<$Res>
     Object? event = null,
     Object? data = null,
   }) {
-    return _then(_$GameEventSubscriptionImpl(
+    return _then(_$GameUpdateEventSubscriptionImpl(
       event: null == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
-              as GameEvent,
+              as GameUpdateEventSubscriptionEvent,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -134,27 +138,30 @@ class __$$GameEventSubscriptionImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$GameEventSubscriptionImpl implements _GameEventSubscription {
-  const _$GameEventSubscriptionImpl({required this.event, required this.data});
+class _$GameUpdateEventSubscriptionImpl
+    implements _GameUpdateEventSubscription {
+  const _$GameUpdateEventSubscriptionImpl(
+      {required this.event, required this.data});
 
-  factory _$GameEventSubscriptionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GameEventSubscriptionImplFromJson(json);
+  factory _$GameUpdateEventSubscriptionImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$GameUpdateEventSubscriptionImplFromJson(json);
 
   @override
-  final GameEvent event;
+  final GameUpdateEventSubscriptionEvent event;
   @override
   final GameListItem data;
 
   @override
   String toString() {
-    return 'GameEventSubscription(event: $event, data: $data)';
+    return 'GameUpdateEventSubscription(event: $event, data: $data)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GameEventSubscriptionImpl &&
+            other is _$GameUpdateEventSubscriptionImpl &&
             (identical(other.event, event) || other.event == event) &&
             (identical(other.data, data) || other.data == data));
   }
@@ -163,40 +170,41 @@ class _$GameEventSubscriptionImpl implements _GameEventSubscription {
   @override
   int get hashCode => Object.hash(runtimeType, event, data);
 
-  /// Create a copy of GameEventSubscription
+  /// Create a copy of GameUpdateEventSubscription
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$GameEventSubscriptionImplCopyWith<_$GameEventSubscriptionImpl>
-      get copyWith => __$$GameEventSubscriptionImplCopyWithImpl<
-          _$GameEventSubscriptionImpl>(this, _$identity);
+  _$$GameUpdateEventSubscriptionImplCopyWith<_$GameUpdateEventSubscriptionImpl>
+      get copyWith => __$$GameUpdateEventSubscriptionImplCopyWithImpl<
+          _$GameUpdateEventSubscriptionImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GameEventSubscriptionImplToJson(
+    return _$$GameUpdateEventSubscriptionImplToJson(
       this,
     );
   }
 }
 
-abstract class _GameEventSubscription implements GameEventSubscription {
-  const factory _GameEventSubscription(
-      {required final GameEvent event,
-      required final GameListItem data}) = _$GameEventSubscriptionImpl;
+abstract class _GameUpdateEventSubscription
+    implements GameUpdateEventSubscription {
+  const factory _GameUpdateEventSubscription(
+      {required final GameUpdateEventSubscriptionEvent event,
+      required final GameListItem data}) = _$GameUpdateEventSubscriptionImpl;
 
-  factory _GameEventSubscription.fromJson(Map<String, dynamic> json) =
-      _$GameEventSubscriptionImpl.fromJson;
+  factory _GameUpdateEventSubscription.fromJson(Map<String, dynamic> json) =
+      _$GameUpdateEventSubscriptionImpl.fromJson;
 
   @override
-  GameEvent get event;
+  GameUpdateEventSubscriptionEvent get event;
   @override
   GameListItem get data;
 
-  /// Create a copy of GameEventSubscription
+  /// Create a copy of GameUpdateEventSubscription
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GameEventSubscriptionImplCopyWith<_$GameEventSubscriptionImpl>
+  _$$GameUpdateEventSubscriptionImplCopyWith<_$GameUpdateEventSubscriptionImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
