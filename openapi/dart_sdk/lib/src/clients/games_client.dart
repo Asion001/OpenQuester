@@ -22,10 +22,10 @@ abstract class GamesClient {
   /// Get all games
   @GET('/v1/games')
   Future<PaginatedGames> getV1Games({
-    @Query('sortBy') required GamesSortBy sortBy,
-    @Query('order') required OrderDirection order,
-    @Query('limit') required PaginationLimit limit,
     @Query('offset') required PaginationOffset offset,
+    @Query('sortBy') GamesSortBy? sortBy,
+    @Query('order') OrderDirection? order,
+    @Query('limit') PaginationLimit? limit,
   });
 
   /// Create a new game
