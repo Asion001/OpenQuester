@@ -25,11 +25,6 @@ class GameLobbyScreen extends WatchingWidget {
 
         final wideModeOn = UiModeUtils.wideModeOn(context);
 
-        final round = getIt<GameLobbyController>().round.value!;
-        final themes = round.themes
-            .map((theme) => GameLobbyTheme(theme: theme).paddingBottom(16))
-            .toList();
-
         return Scaffold(
           appBar: AppBar(
             title: Text(gameId),
@@ -42,18 +37,34 @@ class GameLobbyScreen extends WatchingWidget {
           body: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListView.builder(
-                itemCount: themes.length,
-                itemBuilder: (context, index) => themes[index],
-              ).expand(),
-              Visibility(
-                visible: wideModeOn && showChat,
-                child: const _Chat(),
-              ),
+              const _Themes().expand(),
+              Visibility(visible: wideModeOn && showChat, child: const _Chat()),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class _Themes extends WatchingWidget {
+  const _Themes();
+
+  @override
+  Widget build(BuildContext context) {
+    final round =
+        watchValue<GameLobbyController, LobbyRound?>((p0) => p0.round);
+    final themes = round?.themes
+        .map((theme) => GameLobbyTheme(theme: theme).paddingBottom(16))
+        .toList();
+
+    if (themes == null) {
+      return const CircularProgressIndicator.adaptive().center();
+    }
+
+    return ListView.builder(
+      itemCount: themes.length,
+      itemBuilder: (context, index) => themes[index],
     );
   }
 }
