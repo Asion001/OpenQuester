@@ -1086,11 +1086,6 @@
         "required": ["tag"],
         "description": "Individual tag object"
       },
-      "GameEvent": {
-        "type": "string",
-        "enum": ["created", "changed", "deleted", "started"],
-        "examples": ["created"]
-      },
       "PaginatedPackages": {
         "type": "object",
         "properties": {
@@ -1427,14 +1422,51 @@
       },
       "GameEventSubscription": {
         "type": "object",
+        "discriminator": {
+          "propertyName": "event",
+          "mapping": {
+            "created": "#/components/schemas/GameUpdateEventSubscription",
+            "changed": "#/components/schemas/GameUpdateEventSubscription",
+            "started": "#/components/schemas/GameUpdateEventSubscription",
+            "deleted": "#/components/schemas/GameDeleteEventSubscription"
+          }
+        },
+        "oneOf": [
+          { "$ref": "#/components/schemas/GameUpdateEventSubscription" },
+          { "$ref": "#/components/schemas/GameDeleteEventSubscription" }
+        ]
+      },
+      "GameUpdateEventSubscription": {
+        "type": "object",
         "properties": {
           "event": {
-            "$ref": "#/components/schemas/GameEvent"
+            "type": "string",
+            "enum": ["created", "changed", "started"]
           },
           "data": {
             "$ref": "#/components/schemas/GameListItem"
           }
-        }
+        },
+        "required": ["type", "event", "data"]
+      },
+      "GameDeleteEventSubscription": {
+        "type": "object",
+        "properties": {
+          "event": {
+            "type": "string",
+            "enum": ["deleted"]
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              }
+            },
+            "required": ["id"]
+          }
+        },
+        "required": ["type", "event", "data"]
       },
       "AgeRestriction": {
         "type": "string",

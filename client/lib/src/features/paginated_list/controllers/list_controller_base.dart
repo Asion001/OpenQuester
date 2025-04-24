@@ -34,32 +34,67 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
   }
 
   @protected
-  Future<void> deleteItem(I item) async {
-    // TODO: Migrate to new version
-    // final items = pagingController.items;
-    // if (items == null) return;
-    // final list = List<I>.from(items);
-    // final gameIndex = list.indexWhere((e) => e.id == item.id);
-    // if (gameIndex < 0) return;
-    // list.removeAt(gameIndex);
-    // pagingController.value = pagingController.items = ;
+  Future<void> deleteItem(dynamic id) async {
+    final state = pagingController.value;
+    final pages = state.pages;
+    if (pages == null) return;
+
+    // Make a deep copy of each page
+    final newPages = pages.map(List<I>.from).toList();
+
+    // Find & remove the item from whichever page it lives in
+    for (final page in newPages) {
+      final idx = page.indexWhere((e) => e.id == id);
+      if (idx >= 0) {
+        page.removeAt(idx);
+        break;
+      }
+    }
+
+    // Emit a new state with updated pages
+    pagingController.value = state.copyWith(
+      pages: newPages,
+    );
   }
 
   @protected
   Future<void> addFirstItem(I item) async {
-    // if (pagingController.itemList == null) return;
-    // final list = List<I>.from(pagingController.itemList!)..insert(0, item);
-    // pagingController.itemList = list;
+    final state = pagingController.value;
+    final pages = state.pages;
+    if (pages == null || pages.isEmpty) return;
+
+    // Copy the first page and insert at its front
+    final firstPage = List<I>.from(pages.first)..insert(0, item);
+
+    // Rebuild pages array with the new first page
+    final newPages = [firstPage, ...pages.sublist(1)];
+
+    pagingController.value = state.copyWith(
+      pages: newPages,
+    );
   }
 
   @protected
-  Future<void> updateItem(I game) async {
-    // if (pagingController.itemList == null) return;
-    // final list = List<I>.from(pagingController.itemList!);
-    // final gameIndex = list.indexWhere((e) => e.id == game.id);
-    // if (gameIndex < 0) return;
-    // list[gameIndex] = game;
-    // pagingController.itemList = list;
+  Future<void> updateItem(I updated) async {
+    final state = pagingController.value;
+    final pages = state.pages;
+    if (pages == null) return;
+
+    // Deep-copy pages so we can mutate
+    final newPages = pages.map(List<I>.from).toList();
+
+    // Find & replace the item
+    for (final page in newPages) {
+      final idx = page.indexWhere((e) => e.id == updated.id);
+      if (idx >= 0) {
+        page[idx] = updated;
+        break;
+      }
+    }
+
+    pagingController.value = state.copyWith(
+      pages: newPages,
+    );
   }
 
   @override
