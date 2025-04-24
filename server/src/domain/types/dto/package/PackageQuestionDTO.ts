@@ -12,6 +12,7 @@ export type PackageQuestionSubType =
 
 export interface PackageQuestionDTO {
   type: PackageQuestionType;
+  order: number;
   price: number;
   isHidden: boolean;
   text?: string | null;

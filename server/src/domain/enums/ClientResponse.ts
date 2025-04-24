@@ -34,6 +34,7 @@ export enum ClientResponse {
   PACKAGE_AUTHOR_NOT_FOUND = "package_author_not_found",
   PACKAGE_NOT_FOUND = "package_not_found",
   PACKAGE_CORRUPTED = "package_corrupted",
+  ORDER_DUPLICATED = "order_duplicated",
 
   // File
   FILENAME_REQUIRED = "filename_required",

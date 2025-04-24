@@ -97,6 +97,7 @@ export class PackageQuestion {
 
   public import(data: PackageQuestionImport) {
     this.theme = data.theme;
+    this.order = data.order;
     this.price = data.price;
     this.type = data.type;
     this.isHidden = data.isHidden;
@@ -136,6 +137,7 @@ export class PackageQuestion {
     return {
       id: this.id,
       type: this.type,
+      order: this.order,
       price: this.price,
       isHidden: this.isHidden,
       text: this.text,

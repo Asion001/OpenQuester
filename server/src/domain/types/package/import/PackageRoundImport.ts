@@ -4,4 +4,5 @@ export interface PackageRoundImport {
   name: string;
   description?: string | null;
   package: Package;
+  order: number;
 }

@@ -45,6 +45,7 @@ export class PackageTheme {
     this.name = data.name;
     this.description = data.description;
     this.round = data.round;
+    this.order = data.order;
   }
 
   public async toDTO(
@@ -62,6 +63,7 @@ export class PackageTheme {
     );
     return {
       id: this.id,
+      order: this.order,
       name: this.name,
       description: this.description,
       questions: questionsDTO,

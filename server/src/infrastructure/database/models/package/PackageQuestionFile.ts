@@ -39,6 +39,7 @@ export class PackageQuestionFile {
 
   public import(data: PackageQuestionFileImport) {
     this.file = data.file;
+    this.order = data.order;
     this.type = data.type;
     this.display_time = data.display_time;
     this.question = data.question;
@@ -56,6 +57,7 @@ export class PackageQuestionFile {
     return {
       file: fileDTO,
       displayTime: this.display_time,
+      order: this.order,
     };
   }
 }

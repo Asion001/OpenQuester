@@ -21,11 +21,13 @@ const fileSchema = Joi.object({
 const packageFileSchema = Joi.object({
   file: fileSchema.required(),
   displayTime: Joi.number().required(),
+  order: Joi.number().min(1).required(),
 });
 
 // Base question schema with common fields
 const baseQuestionSchema = Joi.object<PackageQuestionDTO>({
   price: Joi.number().required(),
+  order: Joi.number().min(1).required(),
   type: Joi.string()
     .valid(...Object.values(PackageQuestionType))
     .required(),
@@ -104,6 +106,7 @@ const questionSchema = baseQuestionSchema.keys({
         Joi.object({
           text: Joi.string().allow(null),
           file: fileSchema.allow(null),
+          order: Joi.number().min(1).required(),
         })
       )
       .min(2)
@@ -120,6 +123,7 @@ const themes = Joi.array()
   .items(
     Joi.object<PackageThemeDTO>({
       name: Joi.string().required(),
+      order: Joi.number().min(1).required(),
       description: Joi.string().allow(null),
       questions,
     }).required()
@@ -131,6 +135,7 @@ const rounds = Joi.array()
   .items(
     Joi.object<PackageRoundDTO>({
       name: Joi.string().required(),
+      order: Joi.number().min(1).required(),
       description: Joi.string().allow(null),
       themes,
     }).required()
