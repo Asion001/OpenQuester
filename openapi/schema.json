@@ -1560,7 +1560,7 @@
           },
           "order": {
             "type": "integer",
-            "description": "Order of the question file in the question, should be unique, starting from 1",
+            "description": "Order of the question file in the question, should be unique, starting from 0",
             "examples": [1, 2, 3]
           },
           "file": {
@@ -1585,7 +1585,7 @@
           },
           "order": {
             "type": "integer",
-            "description": "Order of the answer file in the question, should be unique, starting from 1",
+            "description": "Order of the answer file in the question, should be unique, starting from 0",
             "examples": [1, 2, 3]
           },
           "file": {
@@ -1610,7 +1610,7 @@
           },
           "order": {
             "type": "integer",
-            "description": "Order of the question in the theme, should be unique, starting from 1",
+            "description": "Order of the question in the theme, should be unique, starting from 0",
             "examples": [1, 2, 3]
           },
           "price": {
@@ -1723,7 +1723,7 @@
                     },
                     "order": {
                       "type": "integer",
-                      "description": "Order of the answer in the choice answers, should be unique, starting from 1",
+                      "description": "Order of the answer in the choice answers, should be unique, starting from 0",
                       "examples": [1, 2, 3]
                     },
                     "text": {
@@ -1918,7 +1918,7 @@
           },
           "order": {
             "type": "integer",
-            "description": "Order of the theme in the round, should be unique, starting from 1",
+            "description": "Order of the theme in the round, should be unique, starting from 0",
             "examples": [1, 2, 3]
           },
           "name": {
@@ -1953,7 +1953,7 @@
           },
           "order": {
             "type": "integer",
-            "description": "Order of the round in the package, should be unique, starting from 1",
+            "description": "Order of the round in the package, should be unique, starting from 0",
             "examples": [1, 2, 3]
           },
           "name": {

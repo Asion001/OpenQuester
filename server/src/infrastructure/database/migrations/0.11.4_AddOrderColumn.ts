@@ -16,7 +16,7 @@ export class AddOrderColumn_1745439282807 implements MigrationInterface {
           new TableColumn({
             name: "order",
             type: "smallint",
-            default: 1,
+            default: 0,
             isNullable: false,
           })
         );
@@ -51,8 +51,8 @@ export class AddOrderColumn_1745439282807 implements MigrationInterface {
           [groupId]
         );
 
-        // Assign order numbers starting from 1
-        let orderValue = 1;
+        // Assign order numbers starting from 0
+        let orderValue = 0;
         for (const record of records) {
           await queryRunner.query(
             `UPDATE "${tableName}" SET "order" = $1 WHERE id = $2`,
