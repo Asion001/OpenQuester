@@ -184,7 +184,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/PaginationLimit"
             }
@@ -699,7 +699,7 @@
           {
             "name": "limit",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
               "$ref": "#/components/schemas/PaginationLimit"
             }

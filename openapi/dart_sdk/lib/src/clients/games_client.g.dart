@@ -19,17 +19,17 @@ class _GamesClient implements GamesClient {
 
   @override
   Future<PaginatedGames> getV1Games({
+    required int limit,
     required int offset,
     GamesSortBy? sortBy,
     OrderDirection? order,
-    int? limit,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'limit': limit,
       r'offset': offset,
       r'sortBy': sortBy?.toJson(),
       r'order': order?.toJson(),
-      r'limit': limit,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

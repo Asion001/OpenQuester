@@ -29,10 +29,10 @@ abstract class PackagesClient {
   /// Get all packages
   @GET('/v1/packages')
   Future<PaginatedPackages> getV1Packages({
+    @Query('limit') required PaginationLimit limit,
     @Query('offset') required PaginationOffset offset,
     @Query('sortBy') PackagesSortBy? sortBy,
     @Query('order') OrderDirection? order,
-    @Query('limit') PaginationLimit? limit,
   });
 
   /// Get package by id
