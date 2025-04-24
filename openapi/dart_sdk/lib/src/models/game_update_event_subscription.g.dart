@@ -1,20 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'game_event_subscription.dart';
+part of 'game_update_event_subscription.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GameEventSubscriptionImpl _$$GameEventSubscriptionImplFromJson(
+_$GameUpdateEventSubscriptionImpl _$$GameUpdateEventSubscriptionImplFromJson(
         Map<String, dynamic> json) =>
-    _$GameEventSubscriptionImpl(
-      event: GameEvent.fromJson(json['event'] as String),
+    _$GameUpdateEventSubscriptionImpl(
+      event: GameUpdateEventSubscriptionEvent.fromJson(json['event'] as String),
       data: GameListItem.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$GameEventSubscriptionImplToJson(
-        _$GameEventSubscriptionImpl instance) =>
+Map<String, dynamic> _$$GameUpdateEventSubscriptionImplToJson(
+        _$GameUpdateEventSubscriptionImpl instance) =>
     <String, dynamic>{
       'event': instance.event,
       'data': instance.data,
