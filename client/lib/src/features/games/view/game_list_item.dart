@@ -23,24 +23,20 @@ class GameListItemWidget extends StatelessWidget {
     final children = [
       _GameListItemBadges(item),
       ListTile(
-        title: Tooltip(
-          message: LocaleKeys.game_tile_tooltips_game_title.tr(),
-          child: Text(
-            item.title,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-          ),
-        ).shrink(),
+        title: Text(
+          item.title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        )
+            .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
+            .shrink(),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Tooltip(
-              message: LocaleKeys.game_tile_tooltips_packages_title.tr(),
-              child: Text(
-                item.package.title,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            Text(
+              item.package.title,
+              overflow: TextOverflow.ellipsis,
+            ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr()),
             Text(_packInfo(), overflow: TextOverflow.ellipsis),
             Text(_gameInfo(), overflow: TextOverflow.ellipsis),
           ],
@@ -149,22 +145,19 @@ class _Badge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: tooltip ?? '',
-      child: Badge(
-        backgroundColor: context.theme.colorScheme.onPrimary,
-        textColor: context.theme.colorScheme.onSurface,
-        label: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 48),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Icon(icon, size: 24),
-              Text(label, style: context.textTheme.labelSmall),
-            ],
-          ),
+    return Badge(
+      backgroundColor: context.theme.colorScheme.onPrimary,
+      textColor: context.theme.colorScheme.onSurface,
+      label: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 48),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Icon(icon, size: 24),
+            Text(label, style: context.textTheme.labelSmall),
+          ],
         ),
       ),
-    );
+    ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr());
   }
 }

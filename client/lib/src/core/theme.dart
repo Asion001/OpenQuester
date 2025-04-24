@@ -13,6 +13,13 @@ class AppTheme {
       ),
       appBarTheme: AppBarTheme(systemOverlayStyle: systemOverlay(theme)),
       pageTransitionsTheme: pageTransitionsTheme,
+      inputDecorationTheme: inputDecorationTheme,
+    );
+  }
+
+  static InputDecorationTheme get inputDecorationTheme {
+    return InputDecorationTheme(
+      border: OutlineInputBorder(),
     );
   }
 
