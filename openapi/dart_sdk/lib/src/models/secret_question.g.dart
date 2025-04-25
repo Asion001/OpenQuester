@@ -9,6 +9,7 @@ part of 'secret_question.dart';
 _$SecretQuestionImpl _$$SecretQuestionImplFromJson(Map<String, dynamic> json) =>
     _$SecretQuestionImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -35,6 +36,7 @@ Map<String, dynamic> _$$SecretQuestionImplToJson(
         _$SecretQuestionImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,

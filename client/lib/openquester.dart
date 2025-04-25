@@ -34,6 +34,8 @@ export 'src/features/chat/controllers/chat_controller.dart';
 export 'src/features/chat/data/chat_user_extensions.dart';
 export 'src/features/chat/view/chat_screen.dart';
 export 'src/features/clicker/clicker_page.dart';
+export 'src/features/create_game/controller/create_game_controller.dart';
+export 'src/features/create_game/data/create_game_dto.dart';
 export 'src/features/create_game/view/create_game_dialog.dart';
 export 'src/features/game_lobby/controllers/game_lobby_controller.dart';
 export 'src/features/game_lobby/data/lobby_question.dart';

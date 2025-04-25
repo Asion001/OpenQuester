@@ -9,6 +9,7 @@ part of 'package_theme.dart';
 _$PackageThemeImpl _$$PackageThemeImplFromJson(Map<String, dynamic> json) =>
     _$PackageThemeImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       name: json['name'] as String,
       description: json['description'] as String?,
       questions: (json['questions'] as List<dynamic>)
@@ -19,6 +20,7 @@ _$PackageThemeImpl _$$PackageThemeImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$PackageThemeImplToJson(_$PackageThemeImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'name': instance.name,
       'description': instance.description,
       'questions': instance.questions,

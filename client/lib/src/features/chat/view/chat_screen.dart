@@ -13,12 +13,14 @@ class ChatScreen extends WatchingWidget {
       return const CircularProgressIndicator.adaptive().center();
     }
 
-    return Chat(
-      onSendPressed: controller.onSendPressed,
-      messages: controller.messages,
-      user: controller.user!,
-      theme: AppTheme.chatTheme(context),
-      showUserNames: true,
+    return SafeArea(
+      child: Chat(
+        onSendPressed: controller.onSendPressed,
+        messages: controller.messages,
+        user: controller.user!,
+        theme: AppTheme.chatTheme(context),
+        showUserNames: true,
+      ),
     );
   }
 }

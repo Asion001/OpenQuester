@@ -21,6 +21,9 @@ PackageQuestionFile _$PackageQuestionFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PackageQuestionFile {
   int? get id => throw _privateConstructorUsedError;
+
+  /// Order of the question file in the question, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
   FileItem get file => throw _privateConstructorUsedError;
 
   /// Display duration in milliseconds
@@ -42,7 +45,7 @@ abstract class $PackageQuestionFileCopyWith<$Res> {
           PackageQuestionFile value, $Res Function(PackageQuestionFile) then) =
       _$PackageQuestionFileCopyWithImpl<$Res, PackageQuestionFile>;
   @useResult
-  $Res call({int? id, FileItem file, int displayTime});
+  $Res call({int? id, int order, FileItem file, int displayTime});
 
   $FileItemCopyWith<$Res> get file;
 }
@@ -63,6 +66,7 @@ class _$PackageQuestionFileCopyWithImpl<$Res, $Val extends PackageQuestionFile>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? file = null,
     Object? displayTime = null,
   }) {
@@ -71,6 +75,10 @@ class _$PackageQuestionFileCopyWithImpl<$Res, $Val extends PackageQuestionFile>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       file: null == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
@@ -101,7 +109,7 @@ abstract class _$$PackageQuestionFileImplCopyWith<$Res>
       __$$PackageQuestionFileImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? id, FileItem file, int displayTime});
+  $Res call({int? id, int order, FileItem file, int displayTime});
 
   @override
   $FileItemCopyWith<$Res> get file;
@@ -121,6 +129,7 @@ class __$$PackageQuestionFileImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? file = null,
     Object? displayTime = null,
   }) {
@@ -129,6 +138,10 @@ class __$$PackageQuestionFileImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       file: null == file
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
@@ -145,13 +158,20 @@ class __$$PackageQuestionFileImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PackageQuestionFileImpl implements _PackageQuestionFile {
   const _$PackageQuestionFileImpl(
-      {required this.id, required this.file, this.displayTime = 5000});
+      {required this.id,
+      required this.order,
+      required this.file,
+      this.displayTime = 5000});
 
   factory _$PackageQuestionFileImpl.fromJson(Map<String, dynamic> json) =>
       _$$PackageQuestionFileImplFromJson(json);
 
   @override
   final int? id;
+
+  /// Order of the question file in the question, should be unique, starting from 0
+  @override
+  final int order;
   @override
   final FileItem file;
 
@@ -162,7 +182,7 @@ class _$PackageQuestionFileImpl implements _PackageQuestionFile {
 
   @override
   String toString() {
-    return 'PackageQuestionFile(id: $id, file: $file, displayTime: $displayTime)';
+    return 'PackageQuestionFile(id: $id, order: $order, file: $file, displayTime: $displayTime)';
   }
 
   @override
@@ -171,6 +191,7 @@ class _$PackageQuestionFileImpl implements _PackageQuestionFile {
         (other.runtimeType == runtimeType &&
             other is _$PackageQuestionFileImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.file, file) || other.file == file) &&
             (identical(other.displayTime, displayTime) ||
                 other.displayTime == displayTime));
@@ -178,7 +199,7 @@ class _$PackageQuestionFileImpl implements _PackageQuestionFile {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, file, displayTime);
+  int get hashCode => Object.hash(runtimeType, id, order, file, displayTime);
 
   /// Create a copy of PackageQuestionFile
   /// with the given fields replaced by the non-null parameter values.
@@ -200,6 +221,7 @@ class _$PackageQuestionFileImpl implements _PackageQuestionFile {
 abstract class _PackageQuestionFile implements PackageQuestionFile {
   const factory _PackageQuestionFile(
       {required final int? id,
+      required final int order,
       required final FileItem file,
       final int displayTime}) = _$PackageQuestionFileImpl;
 
@@ -208,6 +230,10 @@ abstract class _PackageQuestionFile implements PackageQuestionFile {
 
   @override
   int? get id;
+
+  /// Order of the question file in the question, should be unique, starting from 0
+  @override
+  int get order;
   @override
   FileItem get file;
 

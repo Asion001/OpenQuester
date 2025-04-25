@@ -36,10 +36,14 @@ extension WidgetX on Widget {
   Widget shrink() =>
       Row(mainAxisSize: MainAxisSize.min, children: [flexible()]);
 
-  Widget withTitle(String title) {
+  Widget withTitle(
+    String title, {
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start,
+  }) {
     return Column(
-      spacing: 2,
+      spacing: 4,
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: crossAxisAlignment,
       children: [
         Text(title),
         this,

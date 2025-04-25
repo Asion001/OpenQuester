@@ -110,12 +110,14 @@ class _WideHome extends WatchingWidget {
         context: context,
         authorized: authorized,
       ),
-      body: Row(
-        spacing: 42,
-        children: [
-          const _WideHomeLeftBar(),
-          const GamesListScreen().expand(),
-        ],
+      body: SafeArea(
+        child: Row(
+          spacing: 42,
+          children: [
+            const _WideHomeLeftBar(),
+            const GamesListScreen().expand(),
+          ],
+        ),
       ),
     );
   }

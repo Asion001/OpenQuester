@@ -9,6 +9,7 @@ part of 'answers.dart';
 _$AnswersImpl _$$AnswersImplFromJson(Map<String, dynamic> json) =>
     _$AnswersImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       text: json['text'] as String?,
       file: json['file'] == null
           ? null
@@ -18,6 +19,7 @@ _$AnswersImpl _$$AnswersImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$AnswersImplToJson(_$AnswersImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'text': instance.text,
       'file': instance.file,
     };

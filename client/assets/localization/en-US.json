@@ -38,5 +38,8 @@
   "select_game_package": "Select game package",
   "game_name": "Game name",
   "age_restriction": "Age restriction",
-  "none": "None"
+  "none": "None",
+  "private": "Private",
+  "private_game_description": "Makes game available only by invite",
+  "max_players": "Max players"
 }

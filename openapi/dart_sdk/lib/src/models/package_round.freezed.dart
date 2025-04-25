@@ -22,6 +22,9 @@ PackageRound _$PackageRoundFromJson(Map<String, dynamic> json) {
 mixin _$PackageRound {
   int? get id => throw _privateConstructorUsedError;
 
+  /// Order of the round in the package, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
+
   /// Name of the round
   String get name => throw _privateConstructorUsedError;
 
@@ -48,7 +51,11 @@ abstract class $PackageRoundCopyWith<$Res> {
       _$PackageRoundCopyWithImpl<$Res, PackageRound>;
   @useResult
   $Res call(
-      {int? id, String name, String? description, List<PackageTheme> themes});
+      {int? id,
+      int order,
+      String name,
+      String? description,
+      List<PackageTheme> themes});
 }
 
 /// @nodoc
@@ -67,6 +74,7 @@ class _$PackageRoundCopyWithImpl<$Res, $Val extends PackageRound>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? name = null,
     Object? description = freezed,
     Object? themes = null,
@@ -76,6 +84,10 @@ class _$PackageRoundCopyWithImpl<$Res, $Val extends PackageRound>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -101,7 +113,11 @@ abstract class _$$PackageRoundImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int? id, String name, String? description, List<PackageTheme> themes});
+      {int? id,
+      int order,
+      String name,
+      String? description,
+      List<PackageTheme> themes});
 }
 
 /// @nodoc
@@ -118,6 +134,7 @@ class __$$PackageRoundImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? name = null,
     Object? description = freezed,
     Object? themes = null,
@@ -127,6 +144,10 @@ class __$$PackageRoundImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -148,6 +169,7 @@ class __$$PackageRoundImplCopyWithImpl<$Res>
 class _$PackageRoundImpl implements _PackageRound {
   const _$PackageRoundImpl(
       {required this.id,
+      required this.order,
       required this.name,
       required this.description,
       required final List<PackageTheme> themes})
@@ -158,6 +180,10 @@ class _$PackageRoundImpl implements _PackageRound {
 
   @override
   final int? id;
+
+  /// Order of the round in the package, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Name of the round
   @override
@@ -180,7 +206,7 @@ class _$PackageRoundImpl implements _PackageRound {
 
   @override
   String toString() {
-    return 'PackageRound(id: $id, name: $name, description: $description, themes: $themes)';
+    return 'PackageRound(id: $id, order: $order, name: $name, description: $description, themes: $themes)';
   }
 
   @override
@@ -189,6 +215,7 @@ class _$PackageRoundImpl implements _PackageRound {
         (other.runtimeType == runtimeType &&
             other is _$PackageRoundImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -197,7 +224,7 @@ class _$PackageRoundImpl implements _PackageRound {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, description,
+  int get hashCode => Object.hash(runtimeType, id, order, name, description,
       const DeepCollectionEquality().hash(_themes));
 
   /// Create a copy of PackageRound
@@ -219,6 +246,7 @@ class _$PackageRoundImpl implements _PackageRound {
 abstract class _PackageRound implements PackageRound {
   const factory _PackageRound(
       {required final int? id,
+      required final int order,
       required final String name,
       required final String? description,
       required final List<PackageTheme> themes}) = _$PackageRoundImpl;
@@ -228,6 +256,10 @@ abstract class _PackageRound implements PackageRound {
 
   @override
   int? get id;
+
+  /// Order of the round in the package, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Name of the round
   @override

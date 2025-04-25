@@ -35,5 +35,8 @@ abstract class  LocaleKeys {
   static const game_name = 'game_name';
   static const age_restriction = 'age_restriction';
   static const none = 'none';
+  static const private = 'private';
+  static const private_game_description = 'private_game_description';
+  static const max_players = 'max_players';
 
 }

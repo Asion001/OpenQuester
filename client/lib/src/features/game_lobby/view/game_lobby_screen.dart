@@ -34,12 +34,17 @@ class GameLobbyScreen extends WatchingWidget {
             ),
             actions: [_ChatButton(toggleChat: wideModeOn)],
           ),
-          body: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _Themes().expand(),
-              Visibility(visible: wideModeOn && showChat, child: const _Chat()),
-            ],
+          body: SafeArea(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _Themes().expand(),
+                Visibility(
+                  visible: wideModeOn && showChat,
+                  child: const _Chat(),
+                ),
+              ],
+            ),
           ),
         );
       },
