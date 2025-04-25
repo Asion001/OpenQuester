@@ -18,7 +18,7 @@ class AppTheme {
   }
 
   static InputDecorationTheme get inputDecorationTheme {
-    return InputDecorationTheme(
+    return const InputDecorationTheme(
       border: OutlineInputBorder(),
     );
   }

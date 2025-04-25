@@ -33,5 +33,7 @@ abstract class  LocaleKeys {
   static const start_game = 'start_game';
   static const select_game_package = 'select_game_package';
   static const game_name = 'game_name';
+  static const age_restriction = 'age_restriction';
+  static const none = 'none';
 
 }

@@ -29,7 +29,7 @@ class _CreateGameDialogState extends State<CreateGameDialog>
   }
 }
 
-class _CreateGameBody extends StatelessWidget {
+class _CreateGameBody extends WatchingWidget {
   const _CreateGameBody();
 
   @override
@@ -51,6 +51,15 @@ class _CreateGameBody extends StatelessWidget {
               labelText: LocaleKeys.game_name.tr(),
             ),
           ),
+          Wrap(
+            children: [
+              for (final age in AgeRestriction.values)
+                ChoiceChip(
+                  label: Text(age.f()),
+                  selected: false,
+                ),
+            ],
+          ).withTitle(LocaleKeys.age_restriction.tr()),
         ],
       ),
     );

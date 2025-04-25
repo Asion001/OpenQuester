@@ -36,5 +36,7 @@
   "logout": "Logout",
   "start_game": "Start Game",
   "select_game_package": "Select game package",
-  "game_name": "Game name"
+  "game_name": "Game name",
+  "age_restriction": "Age restriction",
+  "none": "None"
 }
