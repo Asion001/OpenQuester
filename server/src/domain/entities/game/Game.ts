@@ -1,8 +1,9 @@
 import { Player } from "domain/entities/game/Player";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
+import { GameImportDTO } from "domain/types/dto/game/GameImportDTO";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
-import { GameRedisHashDTO } from "domain/types/dto/game/GameRedisHashDTO";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
+import { GetPlayerOptions } from "domain/types/game/GetPlayerOptions";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { PlayerMeta } from "domain/types/socket/game/PlayerMeta";
@@ -23,21 +24,7 @@ export class Game {
   private _questionsCount: number;
   private _players: Player[];
 
-  constructor(data: {
-    id: string;
-    title: string;
-    createdBy: number;
-    createdAt: Date;
-    isPrivate: boolean;
-    ageRestriction: AgeRestriction;
-    currentRound: number;
-    maxPlayers: number;
-    startedAt: Date | null;
-    package: PackageDTO;
-    roundsCount: number;
-    questionsCount: number;
-    players: Player[];
-  }) {
+  constructor(data: GameImportDTO) {
     this._id = data.id;
     this._title = data.title;
     this._createdBy = data.createdBy;
@@ -150,8 +137,23 @@ export class Game {
     return player;
   }
 
+  public getPlayer(userId: number, opts: GetPlayerOptions): Player | null {
+    const player = this._players.find((p) => {
+      if (p.meta.id !== userId) {
+        return false;
+      }
+
+      if (opts.fetchDisconnected) {
+        return true;
+      }
+      return p.gameStatus === PlayerGameStatus.IN_GAME;
+    });
+
+    return player ?? null;
+  }
+
   public removePlayer(userId: number): void {
-    const player = this._players.find((p) => p.meta.id === userId);
+    const player = this.getPlayer(userId, { fetchDisconnected: false });
     if (player) {
       player.gameStatus = PlayerGameStatus.DISCONNECTED;
     }
@@ -198,42 +200,6 @@ export class Game {
     Logger.error("Game join collision happened !!", "[GAME]: ");
     Logger.warn(`Slots: ${occupiedSlots}, \ngame: ${JSON.stringify(this.id)}`);
     return -1;
-  }
-
-  public serializeGameToHash(): GameRedisHashDTO {
-    return {
-      id: this._id,
-      createdBy: this._createdBy.toString(),
-      title: this._title,
-      createdAt: this._createdAt.getTime().toString(),
-      isPrivate: this._isPrivate ? "1" : "0",
-      ageRestriction: this._ageRestriction,
-      currentRound: this._currentRound.toString(),
-      maxPlayers: this._maxPlayers.toString(),
-      package: JSON.stringify(this._package),
-      startedAt: this._startedAt ? this._startedAt.getTime().toString() : "",
-      roundsCount: this._roundsCount.toString(),
-      questionsCount: this._questionsCount.toString(),
-      players: JSON.stringify(this._players.map((p) => p.toDTO())),
-    };
-  }
-
-  public static deserializeGameHash(data: GameRedisHashDTO): Game {
-    return new Game({
-      id: data.id,
-      title: data.title,
-      createdBy: parseInt(data.createdBy),
-      createdAt: new Date(parseInt(data.createdAt)),
-      isPrivate: data.isPrivate === "1",
-      ageRestriction: data.ageRestriction as AgeRestriction,
-      currentRound: parseInt(data.currentRound),
-      maxPlayers: parseInt(data.maxPlayers),
-      startedAt: data.startedAt ? new Date(parseInt(data.startedAt)) : null,
-      package: JSON.parse(data.package),
-      roundsCount: parseInt(data.roundsCount),
-      questionsCount: parseInt(data.questionsCount),
-      players: JSON.parse(data.players).map((p: any) => new Player(p)),
-    });
   }
 
   public toIndexData(): GameIndexesInputDTO {

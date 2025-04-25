@@ -23,8 +23,8 @@ import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
+import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
-import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
@@ -35,10 +35,10 @@ export class AuthRestApiController {
   constructor(
     private readonly app: Express,
     private readonly redis: Redis, // TODO: Should be RedisService
-    private readonly userRepository: UserRepository, // TODO: User service
-    private readonly fileRepository: FileRepository, // TODO: User Service
+    private readonly userRepository: UserRepository, // TODO: Use service
+    private readonly fileRepository: FileRepository, // TODO: Use Service
     private readonly storage: S3StorageService,
-    private readonly socketUserDataService: SocketUserDataService
+    private readonly socketUserDataRepository: SocketUserDataRepository
   ) {
     const router = Router();
 
@@ -55,7 +55,7 @@ export class AuthRestApiController {
       socketAuthScheme
     ).validate();
 
-    const existingData = await this.socketUserDataService.getSocketData(
+    const existingData = await this.socketUserDataRepository.getSocketData(
       authDTO.socketId
     );
 
@@ -63,7 +63,7 @@ export class AuthRestApiController {
       throw new ClientError("Socket already logged in");
     }
 
-    await this.socketUserDataService.set(
+    await this.socketUserDataRepository.set(
       authDTO.socketId,
       req.user!.id // Null safety approved by auth middleware
     );

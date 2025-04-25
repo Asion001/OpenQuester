@@ -1,20 +1,17 @@
 import { Server as IOServer, Namespace, Socket } from "socket.io";
 
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
-import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { SocketIOGameController } from "presentation/controllers/io/game/SocketIOGameController";
 import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
 
 export class SocketIOInitializer {
   constructor(
     private readonly io: IOServer,
-    private readonly socketIOGameService: SocketIOGameService,
-    private readonly socketUserDataService: SocketUserDataService
+    private readonly socketIOGameService: SocketIOGameService
   ) {
     const gameNamespace = this.io.of("/games");
     const gameController = new SocketIOGameController(
       new SocketIOEventEmitter(),
-      this.socketUserDataService,
       this.socketIOGameService
     );
 

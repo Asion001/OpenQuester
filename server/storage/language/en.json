@@ -46,5 +46,6 @@
   "you_are_restricted": "You are restricted from this game and can only join as spectator",
   "you_are_muted": "You are muted in this chat",
   "showman_is_taken": "Showman role for this game is already taken",
-  "order_duplicated": "Order duplicate in %name - order number %order"
+  "order_duplicated": "Order duplicate in %name - order number %order",
+  "only_showman_can_start": "Only showman can start the game"
 }

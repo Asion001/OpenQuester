@@ -4,16 +4,17 @@ import {
 } from "domain/constants/socket";
 import { SocketRedisUserUpdateDTO } from "domain/types/dto/user/SocketRedisUserUpdateDTO";
 import { SocketRedisUserData } from "domain/types/user/SocketRedisUserData";
-import { RedisService } from "infrastructure/services/RedisService";
+import { RedisRepository } from "infrastructure/database/repositories/RedisRepository";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
-export class SocketUserDataService {
-  constructor(private readonly redisService: RedisService) {
+export class SocketUserDataRepository {
+  // TODO: Use service
+  constructor(private readonly redisRepository: RedisRepository) {
     //
   }
 
   public async getRaw(socketId: string) {
-    return this.redisService.hgetall(this._getKey(socketId));
+    return this.redisRepository.hgetall(this._getKey(socketId));
   }
 
   public async getSocketData(
@@ -27,7 +28,7 @@ export class SocketUserDataService {
   }
 
   public async set(socketId: string, userId: number) {
-    this.redisService.hset(
+    this.redisRepository.hset(
       this._getKey(socketId),
       {
         id: userId,
@@ -37,18 +38,22 @@ export class SocketUserDataService {
   }
 
   public async update(socketId: string, data: SocketRedisUserUpdateDTO) {
-    this.redisService.hset(this._getKey(socketId), data, SOCKET_GAME_AUTH_TTL);
+    this.redisRepository.hset(
+      this._getKey(socketId),
+      data,
+      SOCKET_GAME_AUTH_TTL
+    );
   }
 
   public async remove(socketId: string) {
-    this.redisService.del(this._getKey(socketId));
+    this.redisRepository.del(this._getKey(socketId));
   }
 
   /**
    * Cleans up all socket auth sessions since on server restart connections recreated
    */
   public async cleanupAllSession(): Promise<void> {
-    this.redisService.cleanupKeys(this._getKey("*"), "socket session");
+    this.redisRepository.cleanupKeys(this._getKey("*"), "socket session");
   }
 
   private _getKey(socketId: string) {

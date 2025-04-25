@@ -18,8 +18,8 @@ import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { type Database } from "infrastructure/database/Database";
 import { FileRepository } from "infrastructure/database/repositories/FileRepository";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
+import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
-import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { TemplateUtils } from "infrastructure/utils/TemplateUtils";
@@ -89,10 +89,10 @@ export class ServeApi {
       await gameRepository.cleanupAllGames();
 
       // Clean up all authorized socket sessions
-      const socketUserDataService = Container.get<SocketUserDataService>(
-        CONTAINER_TYPES.SocketUserDataService
+      const socketUserDataRepository = Container.get<SocketUserDataRepository>(
+        CONTAINER_TYPES.SocketUserDataRepository
       );
-      await socketUserDataService.cleanupAllSession();
+      await socketUserDataRepository.cleanupAllSession();
 
       // Attach API controllers
       this._attachControllers();
@@ -129,8 +129,9 @@ export class ServeApi {
       socketIOGameService: Container.get<SocketIOGameService>(
         CONTAINER_TYPES.SocketIOGameService
       ),
-      socketUserDataService: Container.get<SocketUserDataService>(
-        CONTAINER_TYPES.SocketUserDataService
+
+      socketUserDataRepository: Container.get<SocketUserDataRepository>(
+        CONTAINER_TYPES.SocketUserDataRepository
       ),
       storage: Container.get<S3StorageService>(
         CONTAINER_TYPES.S3StorageService
@@ -159,7 +160,7 @@ export class ServeApi {
       deps.userRepository,
       deps.fileRepository,
       deps.storage,
-      deps.socketUserDataService
+      deps.socketUserDataRepository
     );
     new PackageRestApiController(deps.app, deps.packageService);
     new FileRestApiController(deps.app, deps.storage);
@@ -176,10 +177,6 @@ export class ServeApi {
     }
 
     // Socket
-    new SocketIOInitializer(
-      deps.io,
-      deps.socketIOGameService,
-      deps.socketUserDataService
-    );
+    new SocketIOInitializer(deps.io, deps.socketIOGameService);
   }
 }

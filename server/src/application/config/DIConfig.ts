@@ -21,11 +21,11 @@ import { FileUsageRepository } from "infrastructure/database/repositories/FileUs
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
 import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
 import { PermissionRepository } from "infrastructure/database/repositories/PermissionRepository";
+import { RedisRepository } from "infrastructure/database/repositories/RedisRepository";
+import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
 import { PackageTagRepository } from "infrastructure/database/repositories/TagRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
-import { RedisService } from "infrastructure/services/RedisService";
-import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 
 export class DIConfig {
@@ -128,14 +128,14 @@ export class DIConfig {
 
     Container.register(
       CONTAINER_TYPES.RedisService,
-      new RedisService(),
-      "service"
+      new RedisRepository(),
+      "repository"
     );
 
     Container.register(
       CONTAINER_TYPES.GameRepository,
       new GameRepository(
-        Container.get<RedisService>(CONTAINER_TYPES.RedisService),
+        Container.get<RedisRepository>(CONTAINER_TYPES.RedisService),
         new GameIndexManager(Container.get(CONTAINER_TYPES.Redis)),
         Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
         Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
@@ -155,18 +155,18 @@ export class DIConfig {
     );
 
     Container.register(
-      CONTAINER_TYPES.SocketUserDataService,
-      new SocketUserDataService(
-        Container.get<RedisService>(CONTAINER_TYPES.RedisService)
+      CONTAINER_TYPES.SocketUserDataRepository,
+      new SocketUserDataRepository(
+        Container.get<RedisRepository>(CONTAINER_TYPES.RedisService)
       ),
-      "service"
+      "repository"
     );
 
     Container.register(
       CONTAINER_TYPES.SocketIOGameService,
       new SocketIOGameService(
-        Container.get<SocketUserDataService>(
-          CONTAINER_TYPES.SocketUserDataService
+        Container.get<SocketUserDataRepository>(
+          CONTAINER_TYPES.SocketUserDataRepository
         ),
         Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
         Container.get<UserService>(CONTAINER_TYPES.UserService)

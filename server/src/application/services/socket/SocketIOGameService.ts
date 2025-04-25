@@ -5,16 +5,17 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
+import { GameChatMessageData } from "domain/types/game/GameChatMessageData";
 import { GameRoomLeaveData } from "domain/types/game/GameRoomLeaveData";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
 import { GameJoinResult } from "domain/types/socket/game/GameJoinResult";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
-import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
+import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
 
 export class SocketIOGameService {
   constructor(
-    private readonly socketUserDataService: SocketUserDataService,
+    private readonly socketUserDataRepository: SocketUserDataRepository,
     private readonly gameRepository: GameRepository,
     private readonly userService: UserService
   ) {
@@ -57,7 +58,7 @@ export class SocketIOGameService {
       throw new ClientError(ClientResponse.YOU_ARE_BANNED);
     }
 
-    await this.socketUserDataService.update(socketId, {
+    await this.socketUserDataRepository.update(socketId, {
       id: JSON.stringify(user.id),
       gameId: data.gameId,
     });
@@ -66,23 +67,64 @@ export class SocketIOGameService {
     return { game, player };
   }
 
-  public async leaveLobby(
-    socketId: string,
-    userId: number,
-    gameId: string
-  ): Promise<GameRoomLeaveData> {
+  public async startGame(socketId: string) {
+    const userData = await this._fetchUserSocketData(socketId);
+    const gameId = userData.gameId;
+
+    if (!gameId) {
+      throw new ClientError(ClientResponse.NOT_IN_GAME);
+    }
+
     const game = await this.gameRepository.getGameEntity(gameId, GAME_TTL);
-    if (!game.hasPlayer(userId)) return { emit: false };
+    const player = game.getPlayer(userData.id, { fetchDisconnected: false });
 
-    game.removePlayer(userId);
+    if (player?.role !== PlayerRole.SHOWMAN) {
+      throw new ClientError(ClientResponse.ONLY_SHOWMAN_CAN_START);
+    }
+  }
 
-    await this.socketUserDataService.update(socketId, {
-      id: JSON.stringify(userId),
+  public async leaveLobby(socketId: string): Promise<GameRoomLeaveData> {
+    const userData = await this._fetchUserSocketData(socketId);
+    const gameId = userData.gameId;
+
+    if (!gameId) {
+      throw new ClientError(ClientResponse.GAME_NOT_FOUND);
+    }
+
+    const game = await this.gameRepository.getGameEntity(gameId, GAME_TTL);
+    if (!game.hasPlayer(userData.id)) return { emit: false };
+
+    game.removePlayer(userData.id);
+
+    await this.socketUserDataRepository.update(socketId, {
+      id: JSON.stringify(userData.id),
       gameId: JSON.stringify(null),
     });
     await this.gameRepository.updateGame(game);
 
-    return { emit: true, data: { game } };
+    return { emit: true, data: { userId: userData.id, gameId: game.id } };
+  }
+
+  public async processChatMessage(
+    socketId: string
+  ): Promise<GameChatMessageData> {
+    const userData = await this._fetchUserSocketData(socketId);
+    const gameId = userData.gameId;
+
+    if (!gameId) {
+      throw new ClientError(ClientResponse.NOT_IN_GAME);
+    }
+
+    const isMuted = await this.isPlayerMuted(gameId, userData.id);
+
+    if (isMuted) {
+      throw new ClientError(ClientResponse.YOU_ARE_MUTED);
+    }
+
+    return {
+      gameId,
+      userId: userData.id,
+    };
   }
 
   public async gameToListItem(game: Game) {
@@ -93,11 +135,24 @@ export class SocketIOGameService {
     return this.gameRepository.isPlayerMuted(gameId, playerId);
   }
 
-  private async _fetchUser(socketId: string): Promise<UserDTO> {
-    const userData = await this.socketUserDataService.getSocketData(socketId);
+  public async removePlayerAuth(socketId: string) {
+    return this.socketUserDataRepository.remove(socketId);
+  }
+
+  private async _fetchUserSocketData(socketId: string) {
+    const userData = await this.socketUserDataRepository.getSocketData(
+      socketId
+    );
+
     if (!userData) {
       throw new ClientError(ClientResponse.SOCKET_USER_NOT_AUTHENTICATED);
     }
+
+    return userData;
+  }
+
+  private async _fetchUser(socketId: string): Promise<UserDTO> {
+    const userData = await this._fetchUserSocketData(socketId);
 
     const user = await this.userService.get(userData.id);
     if (!user) {

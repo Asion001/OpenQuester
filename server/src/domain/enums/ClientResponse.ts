@@ -55,6 +55,7 @@ export enum ClientResponse {
   YOU_ARE_BANNED = "you_are_banned",
   YOU_ARE_RESTRICTED = "you_are_restricted",
   YOU_ARE_MUTED = "you_are_muted",
+  ONLY_SHOWMAN_CAN_START = "only_showman_can_start",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",
