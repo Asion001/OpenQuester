@@ -34,10 +34,14 @@ export class PackageRound {
   @OneToMany(() => PackageTheme, (theme: PackageTheme) => theme.round)
   themes!: PackageTheme[];
 
+  @Column({ type: "int" })
+  order!: number;
+
   public import(data: PackageRoundImport): void {
     this.name = data.name;
     this.description = data.description;
     this.package = data.package;
+    this.order = data.order;
   }
 
   public async toDTO(
@@ -59,6 +63,7 @@ export class PackageRound {
       name: this.name,
       description: this.description,
       themes: themesDTO,
+      order: this.order,
     };
 
     if (opts.fetchIds) {

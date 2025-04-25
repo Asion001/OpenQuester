@@ -4,4 +4,5 @@ export interface PackageAnswerDTO {
   id?: number;
   text?: string | null;
   file: PackageFileDTO | null;
+  order: number;
 }

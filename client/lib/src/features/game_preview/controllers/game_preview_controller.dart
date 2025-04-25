@@ -23,8 +23,17 @@ class GamePreviewController {
     game = null;
   }
 
-  Future<void> onPressPlay() async {
+  Future<void> onPressPlay(BuildContext context) async {
+    if (!getIt<AuthController>().authorized) {
+      await getIt<ToastController>().show(
+        LocaleKeys.user_unauthorized.tr(),
+        context: context,
+      );
+      return;
+    }
+
     if (game == null) throw Exception('game == null');
+
     final gameId = game!.id;
     await getIt<GameLobbyController>().join(gameId: gameId);
     await getIt<AppRouter>().navigate(GameLobbyRoute(gameId: gameId));

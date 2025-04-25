@@ -4,4 +4,5 @@ export interface PackageThemeImport {
   name: string;
   description?: string | null;
   round: PackageRound;
+  order: number;
 }

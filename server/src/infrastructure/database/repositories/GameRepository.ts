@@ -333,10 +333,16 @@ export class GameRepository {
       return;
     }
 
-    return results.map(([, data]) =>
-      // TODO: Use Joi to retrieve typed object
-      Game.deserializeGameHash(data as unknown as GameRedisHashDTO)
-    );
+    return results
+      .map(([, data]) => {
+        try {
+          // TODO: Use Joi to retrieve typed object
+          return Game.deserializeGameHash(data as unknown as GameRedisHashDTO);
+        } catch {
+          // Ignore invalid games
+        }
+      })
+      .filter((g): g is Game => !!g);
   }
 
   /**

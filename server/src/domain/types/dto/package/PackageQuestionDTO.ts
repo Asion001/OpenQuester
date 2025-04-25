@@ -14,6 +14,7 @@ export enum PackageQuestionSubType {
 export interface PackageQuestionDTO {
   id?: number;
   type: PackageQuestionType;
+  order: number;
   price: number;
   isHidden: boolean;
   text?: string | null;

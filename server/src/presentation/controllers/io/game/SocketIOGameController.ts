@@ -17,6 +17,9 @@ import { SocketUserDataService } from "infrastructure/services/socket/SocketRedi
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
 
+// TODO: Implement order field for every round/theme/question
+// TODO: Implement GameStateMapper that will map current round info that should be displayed
+// TODO: Handle game start - retrieve first round info
 export class SocketIOGameController {
   private _socket!: Socket;
 

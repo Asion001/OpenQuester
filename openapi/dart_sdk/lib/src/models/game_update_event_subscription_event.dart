@@ -5,21 +5,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 @JsonEnum()
-enum GameEvent {
+enum GameUpdateEventSubscriptionEvent {
   @JsonValue('created')
   created('created'),
   @JsonValue('changed')
   changed('changed'),
-  @JsonValue('deleted')
-  deleted('deleted'),
   @JsonValue('started')
   started('started'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 
-  const GameEvent(this.json);
+  const GameUpdateEventSubscriptionEvent(this.json);
 
-  factory GameEvent.fromJson(String json) => values.firstWhere(
+  factory GameUpdateEventSubscriptionEvent.fromJson(String json) => values.firstWhere(
         (e) => e.json == json,
         orElse: () => $unknown,
       );

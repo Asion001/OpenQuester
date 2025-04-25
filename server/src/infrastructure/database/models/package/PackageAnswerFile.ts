@@ -26,6 +26,9 @@ export class PackageAnswerFile {
   @JoinColumn({ name: "question" })
   question!: PackageQuestion;
 
+  @Column({ type: "int" })
+  order!: number;
+
   @ManyToOne(() => File, { onDelete: "CASCADE" })
   @JoinColumn({ name: "file" })
   file!: File;
@@ -38,6 +41,7 @@ export class PackageAnswerFile {
 
   public import(data: PackageAnswerFileImport) {
     this.file = data.file;
+    this.order = data.order;
     this.type = data.type;
     this.display_time = data.display_time;
     this.question = data.question;
@@ -59,6 +63,7 @@ export class PackageAnswerFile {
 
     return {
       file: fileDTO,
+      order: this.order,
       displayTime: this.display_time,
     };
   }

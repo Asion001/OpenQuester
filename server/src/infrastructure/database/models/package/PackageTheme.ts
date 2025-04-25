@@ -39,10 +39,14 @@ export class PackageTheme {
   )
   questions!: PackageQuestion[];
 
+  @Column({ type: "int" })
+  order!: number;
+
   public import(data: PackageThemeImport) {
     this.name = data.name;
     this.description = data.description;
     this.round = data.round;
+    this.order = data.order;
   }
 
   public async toDTO(
@@ -61,6 +65,8 @@ export class PackageTheme {
     );
 
     let dto: PackageThemeDTO = {
+      id: this.id,
+      order: this.order,
       name: this.name,
       description: this.description,
       questions: questionsDTO,

@@ -26,6 +26,9 @@ export class PackageQuestionChoiceAnswer {
   @JoinColumn({ name: "question" })
   question!: PackageQuestion;
 
+  @Column({ type: "int" })
+  order!: number;
+
   @Column({ type: "text", nullable: true })
   text?: string | null;
 
@@ -38,6 +41,7 @@ export class PackageQuestionChoiceAnswer {
 
   public import(data: PackageQuestionChoiceAnswerImport) {
     this.text = data.text;
+    this.order = data.order;
     this.file = data.fileData?.file;
     this.type = data.fileData?.type;
     this.question = data.question;
@@ -62,6 +66,7 @@ export class PackageQuestionChoiceAnswer {
     let dto: PackageAnswerDTO = {
       text: this.text,
       file: fileDTO,
+      order: this.order,
     };
 
     if (opts.fetchIds) {

@@ -11,7 +11,6 @@ export 'src/connection/controllers/auth_controller.dart';
 export 'src/connection/controllers/dio_controller.dart';
 export 'src/connection/files/file_service.dart';
 export 'src/connection/socket/socket_controller.dart';
-export 'src/connection/socket/socket_subscriptions.dart';
 export 'src/connection/storage/storage.dart';
 export 'src/core/app_init.dart';
 export 'src/core/application.dart';
