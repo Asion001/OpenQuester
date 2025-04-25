@@ -169,5 +169,5 @@ export const uploadPackageScheme = () =>
 
 export const packIdScheme = () =>
   Joi.object({
-    packId: Joi.number().required(),
+    packageId: Joi.number().required(),
   });
