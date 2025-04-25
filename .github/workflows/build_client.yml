@@ -11,7 +11,7 @@ on:
         required: true
       ANDROID_KEYSTORE_BASE64:
         required: true
-        
+
     inputs:
       DEPLOY_PROD:
         type: boolean
@@ -80,7 +80,7 @@ jobs:
 
       # Deploy to Cloudflare Pages with preview environment when pushing to main branch.
       - name: Publish to Cloudflare Pages (Preview)
-        if: !inputs.DEPLOY_PROD
+        if: inputs.DEPLOY_PROD == false
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -89,7 +89,7 @@ jobs:
           command: pages deploy ./client/build/web/ --project-name=openquester-dev --branch ${{ github.ref_name }}
 
       - name: Purge Cloudflare cache
-        if: !inputs.DEPLOY_PROD
+        if: inputs.DEPLOY_PROD == false
         run: |
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/purge_cache" \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
