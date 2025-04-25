@@ -4,6 +4,7 @@ import { PackageQuestion } from "infrastructure/database/models/package/PackageQ
 
 export interface PackageAnswerFileImport {
   file: File;
+  order: number;
   type: PackageFileType;
   display_time: number;
   question: PackageQuestion;
