@@ -48,6 +48,8 @@ dependencies:
   flutter_chat_core: ^0.0.11
   flutter_chat_ui: ^2.0.0-dev.10
   cached_network_image: ^3.4.1
+  cached_network_image_platform_interface: ^4.1.1
+  fetch_client: ^1.1.4
 
 dev_dependencies:
   flutter_test:
