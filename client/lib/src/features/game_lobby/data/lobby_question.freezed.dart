@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,75 +10,54 @@ part of 'lobby_question.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$LobbyQuestion {
-  int get price => throw _privateConstructorUsedError;
+  int get price;
 
   /// Create a copy of LobbyQuestion
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LobbyQuestionCopyWith<LobbyQuestion> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $LobbyQuestionCopyWith<$Res> {
-  factory $LobbyQuestionCopyWith(
-          LobbyQuestion value, $Res Function(LobbyQuestion) then) =
-      _$LobbyQuestionCopyWithImpl<$Res, LobbyQuestion>;
-  @useResult
-  $Res call({int price});
-}
-
-/// @nodoc
-class _$LobbyQuestionCopyWithImpl<$Res, $Val extends LobbyQuestion>
-    implements $LobbyQuestionCopyWith<$Res> {
-  _$LobbyQuestionCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of LobbyQuestion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $LobbyQuestionCopyWith<LobbyQuestion> get copyWith =>
+      _$LobbyQuestionCopyWithImpl<LobbyQuestion>(
+          this as LobbyQuestion, _$identity);
+
   @override
-  $Res call({
-    Object? price = null,
-  }) {
-    return _then(_value.copyWith(
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is LobbyQuestion &&
+            (identical(other.price, price) || other.price == price));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, price);
+
+  @override
+  String toString() {
+    return 'LobbyQuestion(price: $price)';
   }
 }
 
 /// @nodoc
-abstract class _$$LobbyQuestionImplCopyWith<$Res>
-    implements $LobbyQuestionCopyWith<$Res> {
-  factory _$$LobbyQuestionImplCopyWith(
-          _$LobbyQuestionImpl value, $Res Function(_$LobbyQuestionImpl) then) =
-      __$$LobbyQuestionImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $LobbyQuestionCopyWith<$Res> {
+  factory $LobbyQuestionCopyWith(
+          LobbyQuestion value, $Res Function(LobbyQuestion) _then) =
+      _$LobbyQuestionCopyWithImpl;
   @useResult
   $Res call({int price});
 }
 
 /// @nodoc
-class __$$LobbyQuestionImplCopyWithImpl<$Res>
-    extends _$LobbyQuestionCopyWithImpl<$Res, _$LobbyQuestionImpl>
-    implements _$$LobbyQuestionImplCopyWith<$Res> {
-  __$$LobbyQuestionImplCopyWithImpl(
-      _$LobbyQuestionImpl _value, $Res Function(_$LobbyQuestionImpl) _then)
-      : super(_value, _then);
+class _$LobbyQuestionCopyWithImpl<$Res>
+    implements $LobbyQuestionCopyWith<$Res> {
+  _$LobbyQuestionCopyWithImpl(this._self, this._then);
+
+  final LobbyQuestion _self;
+  final $Res Function(LobbyQuestion) _then;
 
   /// Create a copy of LobbyQuestion
   /// with the given fields replaced by the non-null parameter values.
@@ -86,9 +66,9 @@ class __$$LobbyQuestionImplCopyWithImpl<$Res>
   $Res call({
     Object? price = null,
   }) {
-    return _then(_$LobbyQuestionImpl(
+    return _then(_self.copyWith(
       price: null == price
-          ? _value.price
+          ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -97,48 +77,70 @@ class __$$LobbyQuestionImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LobbyQuestionImpl implements _LobbyQuestion {
-  const _$LobbyQuestionImpl({required this.price});
+class _LobbyQuestion implements LobbyQuestion {
+  const _LobbyQuestion({required this.price});
 
   @override
   final int price;
 
+  /// Create a copy of LobbyQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'LobbyQuestion(price: $price)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LobbyQuestionCopyWith<_LobbyQuestion> get copyWith =>
+      __$LobbyQuestionCopyWithImpl<_LobbyQuestion>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LobbyQuestionImpl &&
+            other is _LobbyQuestion &&
             (identical(other.price, price) || other.price == price));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, price);
 
+  @override
+  String toString() {
+    return 'LobbyQuestion(price: $price)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$LobbyQuestionCopyWith<$Res>
+    implements $LobbyQuestionCopyWith<$Res> {
+  factory _$LobbyQuestionCopyWith(
+          _LobbyQuestion value, $Res Function(_LobbyQuestion) _then) =
+      __$LobbyQuestionCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int price});
+}
+
+/// @nodoc
+class __$LobbyQuestionCopyWithImpl<$Res>
+    implements _$LobbyQuestionCopyWith<$Res> {
+  __$LobbyQuestionCopyWithImpl(this._self, this._then);
+
+  final _LobbyQuestion _self;
+  final $Res Function(_LobbyQuestion) _then;
+
   /// Create a copy of LobbyQuestion
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$LobbyQuestionImplCopyWith<_$LobbyQuestionImpl> get copyWith =>
-      __$$LobbyQuestionImplCopyWithImpl<_$LobbyQuestionImpl>(this, _$identity);
+  $Res call({
+    Object? price = null,
+  }) {
+    return _then(_LobbyQuestion(
+      price: null == price
+          ? _self.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
 
-abstract class _LobbyQuestion implements LobbyQuestion {
-  const factory _LobbyQuestion({required final int price}) =
-      _$LobbyQuestionImpl;
-
-  @override
-  int get price;
-
-  /// Create a copy of LobbyQuestion
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LobbyQuestionImplCopyWith<_$LobbyQuestionImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

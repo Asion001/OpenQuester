@@ -4,7 +4,7 @@ import 'package:openapi/openapi.dart';
 part 'create_game_dto.freezed.dart';
 
 @freezed
-class CreateGameDto with _$CreateGameDto {
+abstract class CreateGameDto with _$CreateGameDto {
   const factory CreateGameDto({
     PackageItem? package,
     String? gameName,

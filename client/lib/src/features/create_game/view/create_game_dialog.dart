@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
-import 'package:openquester/src/features/create_game/data/game_validation_const.dart';
 
 @RoutePage(deferredLoading: false)
 class CreateGameDialog extends StatefulWidget {
