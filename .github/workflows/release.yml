@@ -17,10 +17,9 @@ jobs:
   build_client:
     needs: [tests]
     uses: ./.github/workflows/build_client.yml
-    secrets:
-      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+    secrets: inherit
+    with:
+      DEPLOY_PROD: true
 
   build_docker:
     needs: [tests]
@@ -62,9 +61,9 @@ jobs:
         with:
           generate_release_notes: true
           tag_name: ${{ env.LATEST_TAG }}
-          #TODO: body_path: misc/release/notes.tmpl
           files: |
             *.apk
+
       # Deploy to Cloudflare Pages with production environment when not on main branch.
       - name: Publish to Cloudflare Pages (Production)
         uses: cloudflare/wrangler-action@v3
@@ -72,7 +71,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: pages deploy web/ --project-name=openquester
+          command: pages deploy web/ --project-name=openquester --branch=main
 
       - name: Purge Cloudflare cache
         run: |
