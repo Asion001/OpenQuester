@@ -5,7 +5,7 @@ else
 PURO_CMD = puro
 endif
 
-pre_build: pre_run pre_build_packages gen_indexes gen_api format 
+pre_build: gen_api pre_build_packages pre_run gen_indexes format 
 
 pre_run: gen_files gen_workers gen_locale 
 

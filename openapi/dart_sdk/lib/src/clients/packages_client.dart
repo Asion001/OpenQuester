@@ -13,6 +13,7 @@ import '../models/packages_sort_by.dart';
 import '../models/paginated_packages.dart';
 import '../models/pagination_limit.dart';
 import '../models/pagination_offset.dart';
+import '../models/pagination_title.dart';
 
 part 'packages_client.g.dart';
 
@@ -26,13 +27,16 @@ abstract class PackagesClient {
     @Body() required PackageCreationInput body,
   });
 
-  /// Get all packages
+  /// Get all packages.
+  ///
+  /// [title] - Search by package title, not case sensitive.
   @GET('/v1/packages')
   Future<PaginatedPackages> getV1Packages({
     @Query('limit') required PaginationLimit limit,
     @Query('offset') required PaginationOffset offset,
     @Query('sortBy') PackagesSortBy? sortBy,
     @Query('order') OrderDirection? order,
+    @Query('title') PaginationTitle? title,
   });
 
   /// Get package by id

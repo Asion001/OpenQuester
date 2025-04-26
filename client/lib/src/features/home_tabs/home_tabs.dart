@@ -23,13 +23,6 @@ AppBar _homeAppBar({
 }) {
   return AppBar(
     leading: const ProfileBtn(),
-    actions: [
-      if (authorized)
-        IconButton(
-          onPressed: () => const PackageUploadRoute().push<void>(context),
-          icon: const Icon(Icons.upload),
-        ),
-    ],
   );
 }
 

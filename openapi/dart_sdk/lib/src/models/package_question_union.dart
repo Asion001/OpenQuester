@@ -199,8 +199,8 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     int answerDelay,
 
     /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-    @Default(1.5)
-    double priceMultiplier,
+    @Default('1.5')
+    String priceMultiplier,
   }) = PackageQuestionUnionNoRisk;
 
   @FreezedUnionValue('choice')

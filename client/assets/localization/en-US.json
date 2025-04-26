@@ -41,5 +41,8 @@
   "none": "None",
   "private": "Private",
   "private_game_description": "Makes game available only by invite",
-  "max_players": "Max players"
+  "max_players": "Max players",
+  "nothing_found": "Nothing found",
+  "search_package_hint": "Enter a package name to search",
+  "upload_package": "Upload package"
 }

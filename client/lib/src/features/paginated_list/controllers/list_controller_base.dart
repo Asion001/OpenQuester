@@ -117,9 +117,14 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
 }
 
 class ListRequest {
-  const ListRequest({required this.offset, this.limit = 20});
+  const ListRequest({
+    required this.offset,
+    this.limit = 20,
+    this.query,
+  });
   final int limit;
   final int offset;
+  final String? query;
 }
 
 class ListResponse<I> {
