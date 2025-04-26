@@ -8,9 +8,8 @@ import { ClientError } from "domain/errors/ClientError";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PackageResponseDTO } from "domain/types/dto/package/response/PackageResponseDTO";
 import { PackageUploadResponse } from "domain/types/package/PackageUploadResponse";
+import { PackagePaginationOpts } from "domain/types/pagination/package/PackagePaginationOpts";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
-import { Package } from "infrastructure/database/models/package/Package";
 import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
@@ -43,7 +42,7 @@ export class PackageService {
   }
 
   public async listPackages(
-    paginationOpts: PaginationOpts<Package>
+    paginationOpts: PackagePaginationOpts
   ): Promise<PaginatedResult<PackageResponseDTO[]>> {
     const paginatedList = await this.packageRepository.list(paginationOpts);
 

@@ -7,17 +7,17 @@ import { ServerResponse } from "domain/enums/ServerResponse";
 import { ClientError } from "domain/errors/ClientError";
 import { ServerError } from "domain/errors/ServerError";
 import {
-  PaginationOpts,
+  PaginationOptsBase,
   PaginationOrder,
 } from "domain/types/pagination/PaginationOpts";
 import { PaginationSchemaOpts } from "domain/types/pagination/PaginationSchemaOpts";
 
 export class PaginationSchema<T> {
-  protected _schema: Joi.ObjectSchema<PaginationOpts<T>>;
-  protected _paginationData: PaginationOpts<T>;
+  protected _schema: Joi.ObjectSchema<PaginationOptsBase<T>>;
+  protected _paginationData: PaginationOptsBase<T>;
 
   constructor(schemaOpts: PaginationSchemaOpts<T>) {
-    this._schema = Joi.object<PaginationOpts<T>>({
+    this._schema = Joi.object<PaginationOptsBase<T>>({
       limit: Joi.number().required().min(LIMIT_MIN).max(LIMIT_MAX).required(),
       offset: Joi.number().required().min(OFFSET_MIN).required(),
       order: Joi.valid(...Object.values(PaginationOrder)),

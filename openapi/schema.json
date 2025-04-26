@@ -196,6 +196,14 @@
             "schema": {
               "$ref": "#/components/schemas/PaginationOffset"
             }
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/PaginationTitle"
+            }
           }
         ],
         "responses": {
@@ -1267,6 +1275,10 @@
         "type": "integer",
         "examples": [0],
         "minimum": 0
+      },
+      "PaginationTitle": {
+        "type": "string",
+        "examples": ["Gays"]
       },
       "GamesSortBy": {
         "type": "string",
