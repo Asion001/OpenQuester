@@ -16,6 +16,9 @@ class Answers with _$Answers {
   const factory Answers({
     required int? id,
 
+    /// Order of the answer in the choice answers, should be unique, starting from 0
+    required int order,
+
     /// Text of the answer option
     required String? text,
 

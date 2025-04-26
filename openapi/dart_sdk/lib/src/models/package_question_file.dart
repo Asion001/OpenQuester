@@ -16,6 +16,9 @@ part 'package_question_file.g.dart';
 class PackageQuestionFile with _$PackageQuestionFile {
   const factory PackageQuestionFile({
     required int? id,
+
+    /// Order of the question file in the question, should be unique, starting from 0
+    required int order,
     required FileItem file,
 
     /// Display duration in milliseconds

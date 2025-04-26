@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' show PersistentBottomSheetController;
 import 'package:openquester/openquester.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -11,8 +10,6 @@ class GameLobbyController {
 
   final round = ValueNotifier<LobbyRound?>(null);
   final gameData = ValueNotifier<SocketIOGameJoinEventPayload?>(null);
-
-  PersistentBottomSheetController? bottomSheetController;
   final showDesktopChat = ValueNotifier<bool>(true);
 
   Future<void> join({required String gameId}) async {
@@ -79,8 +76,6 @@ class GameLobbyController {
       gameId = null;
       socket?.dispose();
       socket = null;
-      bottomSheetController?.close();
-      bottomSheetController = null;
       round.value = null;
       gameData.value = null;
     } catch (_) {}
@@ -89,11 +84,6 @@ class GameLobbyController {
   Future<void> leave() async {
     socket?.emit(SocketIOGameEvents.userLeave.json!);
     socket?.disconnect();
-  }
-
-  void closeChatSheet() {
-    bottomSheetController?.close();
-    bottomSheetController = null;
   }
 
   void toggleDesktopChat() {

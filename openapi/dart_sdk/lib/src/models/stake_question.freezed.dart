@@ -22,6 +22,9 @@ StakeQuestion _$StakeQuestionFromJson(Map<String, dynamic> json) {
 mixin _$StakeQuestion {
   int? get id => throw _privateConstructorUsedError;
 
+  /// Order of the question in the theme, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
+
   /// Point value of the question
   int get price => throw _privateConstructorUsedError;
 
@@ -76,6 +79,7 @@ abstract class $StakeQuestionCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -106,6 +110,7 @@ class _$StakeQuestionCopyWithImpl<$Res, $Val extends StakeQuestion>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -124,6 +129,10 @@ class _$StakeQuestionCopyWithImpl<$Res, $Val extends StakeQuestion>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -186,6 +195,7 @@ abstract class _$$StakeQuestionImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -214,6 +224,7 @@ class __$$StakeQuestionImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -232,6 +243,10 @@ class __$$StakeQuestionImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -289,6 +304,7 @@ class __$$StakeQuestionImplCopyWithImpl<$Res>
 class _$StakeQuestionImpl implements _StakeQuestion {
   const _$StakeQuestionImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -309,6 +325,10 @@ class _$StakeQuestionImpl implements _StakeQuestion {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -380,7 +400,7 @@ class _$StakeQuestionImpl implements _StakeQuestion {
 
   @override
   String toString() {
-    return 'StakeQuestion(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, maxPrice: $maxPrice, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
+    return 'StakeQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, maxPrice: $maxPrice, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
   }
 
   @override
@@ -389,6 +409,7 @@ class _$StakeQuestionImpl implements _StakeQuestion {
         (other.runtimeType == runtimeType &&
             other is _$StakeQuestionImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -416,6 +437,7 @@ class _$StakeQuestionImpl implements _StakeQuestion {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -448,6 +470,7 @@ class _$StakeQuestionImpl implements _StakeQuestion {
 abstract class _StakeQuestion implements StakeQuestion {
   const factory _StakeQuestion(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -466,6 +489,10 @@ abstract class _StakeQuestion implements StakeQuestion {
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override

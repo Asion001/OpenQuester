@@ -15,6 +15,9 @@ class PackageTheme with _$PackageTheme {
   const factory PackageTheme({
     required int? id,
 
+    /// Order of the theme in the round, should be unique, starting from 0
+    required int order,
+
     /// Name of the theme
     required String name,
 

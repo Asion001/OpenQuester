@@ -9,6 +9,7 @@ part of 'stake_question.dart';
 _$StakeQuestionImpl _$$StakeQuestionImplFromJson(Map<String, dynamic> json) =>
     _$StakeQuestionImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -32,6 +33,7 @@ _$StakeQuestionImpl _$$StakeQuestionImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$StakeQuestionImplToJson(_$StakeQuestionImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,

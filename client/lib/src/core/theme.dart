@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 
 class AppTheme {
   static ThemeData change(ThemeData theme) {
@@ -13,6 +12,13 @@ class AppTheme {
       ),
       appBarTheme: AppBarTheme(systemOverlayStyle: systemOverlay(theme)),
       pageTransitionsTheme: pageTransitionsTheme,
+      inputDecorationTheme: inputDecorationTheme,
+    );
+  }
+
+  static InputDecorationTheme get inputDecorationTheme {
+    return const InputDecorationTheme(
+      border: OutlineInputBorder(),
     );
   }
 
@@ -29,16 +35,6 @@ class AppTheme {
     return SystemUiOverlayStyle(
       systemNavigationBarColor: theme.colorScheme.surfaceContainer,
       systemNavigationBarDividerColor: theme.colorScheme.surfaceContainer,
-    );
-  }
-
-  static DefaultChatTheme chatTheme(BuildContext context) {
-    final theme = Theme.of(context);
-    return DefaultChatTheme(
-      backgroundColor: theme.colorScheme.surface,
-      messageInsetsVertical: 8,
-      messageInsetsHorizontal: 8,
-      messageBorderRadius: 8,
     );
   }
 

@@ -71,7 +71,8 @@ jobs:
       - run: make pre_run
 
       - name: Build web
-        run: flutter build web --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER
+        run: flutter build web --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER --wasm
+
       - name: Publish Web Artifacts
         uses: actions/upload-artifact@v4
         with:

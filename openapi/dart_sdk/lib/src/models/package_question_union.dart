@@ -34,6 +34,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   const factory PackageQuestionUnion.simple({
     required int? id,
 
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
+
     /// Point value of the question
     required int price,
 
@@ -68,6 +71,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('stake')
   const factory PackageQuestionUnion.stake({
     required int? id,
+
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
 
     /// Point value of the question
     required int price,
@@ -111,6 +117,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   const factory PackageQuestionUnion.secret({
     required int? id,
 
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
+
     /// Point value of the question
     required int price,
 
@@ -152,6 +161,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('noRisk')
   const factory PackageQuestionUnion.noRisk({
     required int? id,
+
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
 
     /// Point value of the question
     required int price,
@@ -195,6 +207,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   const factory PackageQuestionUnion.choice({
     required int? id,
 
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
+
     /// Point value of the question
     required int price,
 
@@ -236,6 +251,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('hidden')
   const factory PackageQuestionUnion.hidden({
     required int? id,
+
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
 
     /// Point value of the question
     required int price,
