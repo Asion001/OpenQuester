@@ -83,6 +83,7 @@ class PackageUploadController extends ChangeNotifier {
         ? FetchClient(
             mode: RequestMode.cors,
             cache: RequestCache.noCache,
+            credentials: RequestCredentials.cors,
             // ignore: avoid_redundant_argument_values
             streamRequests: kIsWasm,
           )
