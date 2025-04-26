@@ -4,14 +4,13 @@ import { PackageService } from "application/services/package/PackageService";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PackageInputDTO } from "domain/types/dto/package/PackageInputDTO";
-import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
-import { Package } from "infrastructure/database/models/package/Package";
+import { PackagePaginationOpts } from "domain/types/pagination/package/PackagePaginationOpts";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 import {
+  packagePaginationScheme,
   packIdScheme,
   uploadPackageScheme,
 } from "presentation/schemes/package/packageSchemes";
-import { PaginationSchema } from "presentation/schemes/pagination/PaginationSchema";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 export class PackageRestApiController {
@@ -52,15 +51,11 @@ export class PackageRestApiController {
   };
 
   private listPackages = async (req: Request, res: Response) => {
-    const paginationOpts = await new PaginationSchema<Package>({
-      data: {
-        sortBy: req.query.sortBy as keyof Package,
-        order: req.query.order as PaginationOrder,
-        limit: Number(req.query.limit),
-        offset: Number(req.query.offset),
-      },
-      possibleSortByFields: ["id", "title", "created_at", "author"],
-    }).validate();
+    const paginationOpts =
+      await new RequestDataValidator<PackagePaginationOpts>(
+        req.query as unknown as PackagePaginationOpts,
+        packagePaginationScheme()
+      ).validate();
 
     const data = await this.packageService.listPackages(paginationOpts);
 

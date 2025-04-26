@@ -9,7 +9,7 @@ import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { GameDTO } from "domain/types/dto/game/GameDTO";
 import { GameEvent, GameEventDTO } from "domain/types/dto/game/GameEventDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
+import { PaginationOptsBase } from "domain/types/pagination/PaginationOpts";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 
@@ -29,7 +29,7 @@ export class GameService {
     return this.gameRepository.getGame(gameId, updatedTtl);
   }
 
-  public async list(paginationOpts: PaginationOpts<GameDTO>) {
+  public async list(paginationOpts: PaginationOptsBase<GameDTO>) {
     return this.gameRepository.getAllGames(paginationOpts);
   }
 

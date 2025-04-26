@@ -1,5 +1,6 @@
 import Joi from "joi";
 
+import { LIMIT_MAX, LIMIT_MIN, OFFSET_MIN } from "domain/constants/pagination";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { PackageFileType } from "domain/enums/package/PackageFileType";
 import { PackageQuestionType } from "domain/enums/package/QuestionType";
@@ -8,6 +9,8 @@ import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO"
 import { PackageRoundDTO } from "domain/types/dto/package/PackageRoundDTO";
 import { PackageThemeDTO } from "domain/types/dto/package/PackageThemeDTO";
 import { PackageQuestionTransferType } from "domain/types/package/PackageQuestionTransferType";
+import { PackagePaginationOpts } from "domain/types/pagination/package/PackagePaginationOpts";
+import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
 
 // File schema for basic file properties
 const fileSchema = Joi.object({
@@ -170,4 +173,17 @@ export const uploadPackageScheme = () =>
 export const packIdScheme = () =>
   Joi.object({
     packageId: Joi.number().required(),
+  });
+
+export const packagePaginationScheme = () =>
+  Joi.object<PackagePaginationOpts>({
+    title: Joi.string().optional(),
+    sortBy: Joi.string()
+      .valid("id", "title", "created_at", "author")
+      .default("created_at"),
+    order: Joi.string()
+      .valid(PaginationOrder.ASC, PaginationOrder.DESC)
+      .default(PaginationOrder.ASC),
+    limit: Joi.number().min(LIMIT_MIN).max(LIMIT_MAX).required(),
+    offset: Joi.number().min(OFFSET_MIN).required(),
   });
