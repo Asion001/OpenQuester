@@ -16,6 +16,9 @@ part 'package_answer_file.g.dart';
 class PackageAnswerFile with _$PackageAnswerFile {
   const factory PackageAnswerFile({
     required int? id,
+
+    /// Order of the answer file in the question, should be unique, starting from 0
+    required int order,
     required FileItem file,
 
     /// Display duration in milliseconds

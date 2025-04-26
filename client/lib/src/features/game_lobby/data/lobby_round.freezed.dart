@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,81 +10,55 @@ part of 'lobby_round.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$LobbyRound {
-  String get name => throw _privateConstructorUsedError;
-  List<LobbyTheme> get themes => throw _privateConstructorUsedError;
+  String get name;
+  List<LobbyTheme> get themes;
 
   /// Create a copy of LobbyRound
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LobbyRoundCopyWith<LobbyRound> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $LobbyRoundCopyWith<$Res> {
-  factory $LobbyRoundCopyWith(
-          LobbyRound value, $Res Function(LobbyRound) then) =
-      _$LobbyRoundCopyWithImpl<$Res, LobbyRound>;
-  @useResult
-  $Res call({String name, List<LobbyTheme> themes});
-}
-
-/// @nodoc
-class _$LobbyRoundCopyWithImpl<$Res, $Val extends LobbyRound>
-    implements $LobbyRoundCopyWith<$Res> {
-  _$LobbyRoundCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of LobbyRound
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $LobbyRoundCopyWith<LobbyRound> get copyWith =>
+      _$LobbyRoundCopyWithImpl<LobbyRound>(this as LobbyRound, _$identity);
+
   @override
-  $Res call({
-    Object? name = null,
-    Object? themes = null,
-  }) {
-    return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      themes: null == themes
-          ? _value.themes
-          : themes // ignore: cast_nullable_to_non_nullable
-              as List<LobbyTheme>,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is LobbyRound &&
+            (identical(other.name, name) || other.name == name) &&
+            const DeepCollectionEquality().equals(other.themes, themes));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, name, const DeepCollectionEquality().hash(themes));
+
+  @override
+  String toString() {
+    return 'LobbyRound(name: $name, themes: $themes)';
   }
 }
 
 /// @nodoc
-abstract class _$$LobbyRoundImplCopyWith<$Res>
-    implements $LobbyRoundCopyWith<$Res> {
-  factory _$$LobbyRoundImplCopyWith(
-          _$LobbyRoundImpl value, $Res Function(_$LobbyRoundImpl) then) =
-      __$$LobbyRoundImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $LobbyRoundCopyWith<$Res> {
+  factory $LobbyRoundCopyWith(
+          LobbyRound value, $Res Function(LobbyRound) _then) =
+      _$LobbyRoundCopyWithImpl;
   @useResult
   $Res call({String name, List<LobbyTheme> themes});
 }
 
 /// @nodoc
-class __$$LobbyRoundImplCopyWithImpl<$Res>
-    extends _$LobbyRoundCopyWithImpl<$Res, _$LobbyRoundImpl>
-    implements _$$LobbyRoundImplCopyWith<$Res> {
-  __$$LobbyRoundImplCopyWithImpl(
-      _$LobbyRoundImpl _value, $Res Function(_$LobbyRoundImpl) _then)
-      : super(_value, _then);
+class _$LobbyRoundCopyWithImpl<$Res> implements $LobbyRoundCopyWith<$Res> {
+  _$LobbyRoundCopyWithImpl(this._self, this._then);
+
+  final LobbyRound _self;
+  final $Res Function(LobbyRound) _then;
 
   /// Create a copy of LobbyRound
   /// with the given fields replaced by the non-null parameter values.
@@ -93,13 +68,13 @@ class __$$LobbyRoundImplCopyWithImpl<$Res>
     Object? name = null,
     Object? themes = null,
   }) {
-    return _then(_$LobbyRoundImpl(
+    return _then(_self.copyWith(
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       themes: null == themes
-          ? _value._themes
+          ? _self.themes
           : themes // ignore: cast_nullable_to_non_nullable
               as List<LobbyTheme>,
     ));
@@ -108,8 +83,8 @@ class __$$LobbyRoundImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LobbyRoundImpl implements _LobbyRound {
-  const _$LobbyRoundImpl(
+class _LobbyRound implements LobbyRound {
+  const _LobbyRound(
       {required this.name, required final List<LobbyTheme> themes})
       : _themes = themes;
 
@@ -123,16 +98,19 @@ class _$LobbyRoundImpl implements _LobbyRound {
     return EqualUnmodifiableListView(_themes);
   }
 
+  /// Create a copy of LobbyRound
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'LobbyRound(name: $name, themes: $themes)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LobbyRoundCopyWith<_LobbyRound> get copyWith =>
+      __$LobbyRoundCopyWithImpl<_LobbyRound>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LobbyRoundImpl &&
+            other is _LobbyRound &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other._themes, _themes));
   }
@@ -141,29 +119,49 @@ class _$LobbyRoundImpl implements _LobbyRound {
   int get hashCode => Object.hash(
       runtimeType, name, const DeepCollectionEquality().hash(_themes));
 
+  @override
+  String toString() {
+    return 'LobbyRound(name: $name, themes: $themes)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$LobbyRoundCopyWith<$Res>
+    implements $LobbyRoundCopyWith<$Res> {
+  factory _$LobbyRoundCopyWith(
+          _LobbyRound value, $Res Function(_LobbyRound) _then) =
+      __$LobbyRoundCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String name, List<LobbyTheme> themes});
+}
+
+/// @nodoc
+class __$LobbyRoundCopyWithImpl<$Res> implements _$LobbyRoundCopyWith<$Res> {
+  __$LobbyRoundCopyWithImpl(this._self, this._then);
+
+  final _LobbyRound _self;
+  final $Res Function(_LobbyRound) _then;
+
   /// Create a copy of LobbyRound
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$LobbyRoundImplCopyWith<_$LobbyRoundImpl> get copyWith =>
-      __$$LobbyRoundImplCopyWithImpl<_$LobbyRoundImpl>(this, _$identity);
+  $Res call({
+    Object? name = null,
+    Object? themes = null,
+  }) {
+    return _then(_LobbyRound(
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      themes: null == themes
+          ? _self._themes
+          : themes // ignore: cast_nullable_to_non_nullable
+              as List<LobbyTheme>,
+    ));
+  }
 }
 
-abstract class _LobbyRound implements LobbyRound {
-  const factory _LobbyRound(
-      {required final String name,
-      required final List<LobbyTheme> themes}) = _$LobbyRoundImpl;
-
-  @override
-  String get name;
-  @override
-  List<LobbyTheme> get themes;
-
-  /// Create a copy of LobbyRound
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LobbyRoundImplCopyWith<_$LobbyRoundImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

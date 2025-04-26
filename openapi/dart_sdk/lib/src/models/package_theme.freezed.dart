@@ -22,6 +22,9 @@ PackageTheme _$PackageThemeFromJson(Map<String, dynamic> json) {
 mixin _$PackageTheme {
   int? get id => throw _privateConstructorUsedError;
 
+  /// Order of the theme in the round, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
+
   /// Name of the theme
   String get name => throw _privateConstructorUsedError;
 
@@ -50,6 +53,7 @@ abstract class $PackageThemeCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
+      int order,
       String name,
       String? description,
       List<PackageQuestionUnion> questions});
@@ -71,6 +75,7 @@ class _$PackageThemeCopyWithImpl<$Res, $Val extends PackageTheme>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? name = null,
     Object? description = freezed,
     Object? questions = null,
@@ -80,6 +85,10 @@ class _$PackageThemeCopyWithImpl<$Res, $Val extends PackageTheme>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -106,6 +115,7 @@ abstract class _$$PackageThemeImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       String name,
       String? description,
       List<PackageQuestionUnion> questions});
@@ -125,6 +135,7 @@ class __$$PackageThemeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? name = null,
     Object? description = freezed,
     Object? questions = null,
@@ -134,6 +145,10 @@ class __$$PackageThemeImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -155,6 +170,7 @@ class __$$PackageThemeImplCopyWithImpl<$Res>
 class _$PackageThemeImpl implements _PackageTheme {
   const _$PackageThemeImpl(
       {required this.id,
+      required this.order,
       required this.name,
       required this.description,
       required final List<PackageQuestionUnion> questions})
@@ -165,6 +181,10 @@ class _$PackageThemeImpl implements _PackageTheme {
 
   @override
   final int? id;
+
+  /// Order of the theme in the round, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Name of the theme
   @override
@@ -187,7 +207,7 @@ class _$PackageThemeImpl implements _PackageTheme {
 
   @override
   String toString() {
-    return 'PackageTheme(id: $id, name: $name, description: $description, questions: $questions)';
+    return 'PackageTheme(id: $id, order: $order, name: $name, description: $description, questions: $questions)';
   }
 
   @override
@@ -196,6 +216,7 @@ class _$PackageThemeImpl implements _PackageTheme {
         (other.runtimeType == runtimeType &&
             other is _$PackageThemeImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -205,7 +226,7 @@ class _$PackageThemeImpl implements _PackageTheme {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, description,
+  int get hashCode => Object.hash(runtimeType, id, order, name, description,
       const DeepCollectionEquality().hash(_questions));
 
   /// Create a copy of PackageTheme
@@ -227,6 +248,7 @@ class _$PackageThemeImpl implements _PackageTheme {
 abstract class _PackageTheme implements PackageTheme {
   const factory _PackageTheme(
           {required final int? id,
+          required final int order,
           required final String name,
           required final String? description,
           required final List<PackageQuestionUnion> questions}) =
@@ -237,6 +259,10 @@ abstract class _PackageTheme implements PackageTheme {
 
   @override
   int? get id;
+
+  /// Order of the theme in the round, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Name of the theme
   @override

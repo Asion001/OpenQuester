@@ -9,6 +9,7 @@ part of 'simple_question.dart';
 _$SimpleQuestionImpl _$$SimpleQuestionImplFromJson(Map<String, dynamic> json) =>
     _$SimpleQuestionImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -29,6 +30,7 @@ Map<String, dynamic> _$$SimpleQuestionImplToJson(
         _$SimpleQuestionImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,

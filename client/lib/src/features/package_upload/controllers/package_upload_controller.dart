@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:fetch_client/fetch_client.dart';
+import 'package:flutter/foundation.dart' show ChangeNotifier, kIsWasm, kIsWeb;
 import 'package:openquester/common_imports.dart' hide ParseSiqFileWorker;
 import 'package:openquester/workers/upload_isolate.dart'
     deferred as upload_isolate show ParseSiqFileWorker;
@@ -73,15 +74,24 @@ class PackageUploadController extends ChangeNotifier {
     SiqArchiveParser parser,
   ) async {
     logger.d('Uploading ${links.length} files...');
-    final client = Dio(
-      BaseOptions(
-        persistentConnection: false,
-        validateStatus: (status) {
-          if ({520, 412}.contains(status)) return true;
-          return status != null && status >= 200 && status < 300;
-        },
-      ),
-    );
+    bool validateStatus(int? status) {
+      if ({412}.contains(status)) return true;
+      return status != null && status >= 200 && status < 300;
+    }
+
+    final client = kIsWeb
+        ? FetchClient(
+            mode: RequestMode.cors,
+            cache: RequestCache.noCache,
+            // ignore: avoid_redundant_argument_values
+            streamRequests: kIsWasm,
+          )
+        : Dio(
+            BaseOptions(
+              persistentConnection: true,
+              validateStatus: validateStatus,
+            ),
+          );
 
     try {
       for (final link in links) {
@@ -90,18 +100,33 @@ class PackageUploadController extends ChangeNotifier {
         await archiveFile?.close();
         if (file == null) continue;
         final fileHeaders = _fileHeaders(link.key);
+        final headers = {
+          ...fileHeaders,
+          'Content-Length': file.lengthInBytes.toString(),
+          'content-type': 'application/octet-stream',
+        };
+        if (client is FetchClient) {
+          try {
+            final response = await client.put(
+              Uri.parse(link.value),
+              body: file,
+              headers: headers,
+            );
 
-        await client.put<void>(
-          link.value,
-          data: file,
-          options: Options(
-            headers: {
-              ...fileHeaders,
-              'Content-Length': file.lengthInBytes.toString(),
-            },
-            contentType: 'application/octet-stream',
-          ),
-        );
+            throwIf(!validateStatus(response.statusCode), response.body);
+          } catch (e, s) {
+            logger.e(e, stackTrace: s);
+          }
+        } else if (client is Dio) {
+          await client.put<void>(
+            link.value,
+            data: file,
+            options: Options(
+              headers: headers,
+              contentType: 'application/octet-stream',
+            ),
+          );
+        }
       }
       logger.d('All files uploaded!');
     } catch (e, s) {

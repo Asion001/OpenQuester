@@ -18,6 +18,9 @@ class NoRiskQuestion with _$NoRiskQuestion {
   const factory NoRiskQuestion({
     required int? id,
 
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
+
     /// Point value of the question
     required int price,
 

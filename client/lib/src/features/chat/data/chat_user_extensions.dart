@@ -1,4 +1,4 @@
-import 'package:flutter_chat_types/flutter_chat_types.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:openquester/common_imports.dart';
 
 extension UserX on User {
@@ -6,8 +6,7 @@ extension UserX on User {
     return User(
       id: playerData.meta.id.toString(),
       firstName: playerData.meta.username,
-      imageUrl: playerData.meta.avatar,
-      role: playerData.role == PlayerRole.showman ? Role.moderator : Role.user,
+      imageSource: playerData.meta.avatar,
     );
   }
 }

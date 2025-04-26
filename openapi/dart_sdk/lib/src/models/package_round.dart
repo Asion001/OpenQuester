@@ -15,6 +15,9 @@ class PackageRound with _$PackageRound {
   const factory PackageRound({
     required int? id,
 
+    /// Order of the round in the package, should be unique, starting from 0
+    required int order,
+
     /// Name of the round
     required String name,
 

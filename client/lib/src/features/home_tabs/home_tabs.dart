@@ -19,11 +19,9 @@ class HomeTabsScreen extends WatchingWidget {
 
 AppBar _homeAppBar({
   required BuildContext context,
-  required String title,
   required bool authorized,
 }) {
   return AppBar(
-    title: Text(title),
     leading: const ProfileBtn(),
     actions: [
       if (authorized)
@@ -51,10 +49,10 @@ class _MobileHomeState extends State<_MobileHome> {
 
     return Scaffold(
       appBar: _homeAppBar(
-        title: _destionations[index].$2.label,
         context: context,
         authorized: authorized,
       ),
+      floatingActionButton: const _StartGameButton(),
       body: _destionations[index].$1,
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
@@ -87,6 +85,20 @@ class _MobileHomeState extends State<_MobileHome> {
   }
 }
 
+class _StartGameButton extends StatelessWidget {
+  const _StartGameButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton.extended(
+      onPressed: () => const CreateGameRoute().push<void>(context),
+      label: Text(LocaleKeys.start_game.tr()),
+      icon: const Icon(Icons.play_arrow_outlined),
+      tooltip: LocaleKeys.start_game.tr(),
+    );
+  }
+}
+
 class _WideHome extends WatchingWidget {
   const _WideHome();
 
@@ -95,14 +107,33 @@ class _WideHome extends WatchingWidget {
     final authorized = watchIt<AuthController>().authorized;
     return Scaffold(
       appBar: _homeAppBar(
-        title: LocaleKeys.home_tabs_games.tr(),
         context: context,
         authorized: authorized,
       ),
-      body: Row(
+      body: SafeArea(
+        child: Row(
+          spacing: 42,
+          children: [
+            const _WideHomeLeftBar(),
+            const GamesListScreen().expand(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WideHomeLeftBar extends StatelessWidget {
+  const _WideHomeLeftBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints.tightFor(width: 200),
+      padding: 35.top,
+      child: const Column(
         children: [
-          const GamesListScreen().expand(),
-          const PackagesListScreen().expand(),
+          _StartGameButton(),
         ],
       ),
     );
