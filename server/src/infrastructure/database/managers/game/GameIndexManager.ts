@@ -3,7 +3,7 @@ import Redis, { ChainableCommander } from "ioredis";
 import { GAME_NAMESPACE } from "domain/constants/game";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
 import {
-  PaginationOpts,
+  PaginationOptsBase,
   PaginationOrder,
 } from "domain/types/pagination/PaginationOpts";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
@@ -68,7 +68,7 @@ export class GameIndexManager {
       isPrivate?: boolean;
       titlePrefix?: string;
     },
-    pagination: PaginationOpts<T>
+    pagination: PaginationOptsBase<T>
   ): Promise<{ ids: string[]; total: number }> {
     const tempKey = `${this.INDEX_PREFIX}:temp:${Date.now()}`;
 
@@ -168,7 +168,7 @@ export class GameIndexManager {
 
   private async _paginateResults<T>(
     tempKey: string,
-    pagination: PaginationOpts<T>
+    pagination: PaginationOptsBase<T>
   ) {
     const [total, ids] = await Promise.all([
       this.redis.zcard(tempKey),
