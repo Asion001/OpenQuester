@@ -200,6 +200,7 @@
           {
             "name": "title",
             "in": "query",
+            "description": "Search by package title, not case sensitive",
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/PaginationTitle"
