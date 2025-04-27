@@ -80,3 +80,9 @@ extension AgeRestrictionX on AgeRestriction {
     };
   }
 }
+
+extension PackageX on PackageResponse {
+  List<PackageRound> sortedRounds() {
+    return rounds.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
+  }
+}

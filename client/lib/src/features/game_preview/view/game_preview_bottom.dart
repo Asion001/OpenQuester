@@ -15,12 +15,14 @@ class GamePreviewBottom extends StatelessWidget {
       future: getIt<PackageController>().getPackage(packageId),
       builder: (context, snapshot) {
         final pack = snapshot.data;
+        final rounds = pack?.sortedRounds() ?? <PackageRound>[];
+
         return AnimatedSize(
           duration: animationConfiguration.duration,
           child: ListView(
             shrinkWrap: true,
             children: [
-              for (final round in pack?.rounds ?? <PackageRound>[])
+              for (final round in rounds)
                 ListTile(
                   title: Text(round.name),
                   subtitle:

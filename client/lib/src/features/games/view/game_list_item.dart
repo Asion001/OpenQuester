@@ -41,20 +41,25 @@ class GameListItemWidget extends StatelessWidget {
             Text(_gameInfo(), overflow: TextOverflow.ellipsis),
           ],
         ).paddingTop(4).shrink(),
-        trailing: trailing,
         titleAlignment: ListTileTitleAlignment.bottom,
         contentPadding: const EdgeInsets.only(right: 16, left: 4),
         mouseCursor: MouseCursor.defer,
       ).expand(),
+      if (trailing != null)
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [trailing!],
+        ).paddingRight(16),
     ];
 
     return Hero(
       tag: item,
       child: Material(
-        color: Colors.transparent,
+        color: context.theme.colorScheme.surface,
+        borderRadius: 16.circular,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: 16.circular,
           child: Card(
             color: context.theme.colorScheme.secondaryContainer
                 .withValues(alpha: .33),
@@ -62,14 +67,15 @@ class GameListItemWidget extends StatelessWidget {
               mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
               children: [
                 Row(
+                  spacing: 8,
                   children: children,
-                ).paddingSymmetric(horizontal: 2),
+                ).paddingSymmetric(horizontal: 2).withHeight(110),
                 if (bottom != null) bottom!.flexible(),
               ],
             ),
           ),
-        ).paddingSymmetric(horizontal: 6),
-      ),
+        ),
+      ).paddingSymmetric(horizontal: 6),
     );
   }
 
@@ -107,35 +113,34 @@ class _GameListItemBadges extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dividerColor =
+        context.theme.colorScheme.outline.withValues(alpha: .15);
+    final divider = Divider(
+      height: 1,
+      color: dividerColor,
+    );
     return Container(
-      padding: const EdgeInsets.all(6),
-      margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: context.theme.colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(18),
+        border: Border(right: BorderSide(color: dividerColor)),
       ),
       child: Column(
-        spacing: 24,
+        spacing: 4,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.min,
         children: [
           _Badge(
             icon: Icons.person_outline,
             tooltip: LocaleKeys.game_tile_tooltips_players.tr(),
             label: [item.players, item.maxPlayers].join('/'),
           ),
+          divider,
           _Badge(
             icon: Icons.check,
             tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
             label: [item.currentRound, item.package.roundsCount].join('/'),
           ),
-          // _Badge(
-          //   icon: Icons.question_mark,
-          //   tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
-          //   label: [item.currentRound, item.package.roundsCount].join('/'),
-          // ),
         ],
-      ),
+      ).paddingSymmetric(vertical: 4).withWidth(80),
     );
   }
 }
@@ -152,19 +157,14 @@ class _Badge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Badge(
-      backgroundColor: context.theme.colorScheme.onPrimary,
-      textColor: context.theme.colorScheme.onSurface,
-      label: ConstrainedBox(
-        constraints: const BoxConstraints(minWidth: 48),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Icon(icon, size: 24),
-            Text(label, style: context.textTheme.labelSmall),
-          ],
-        ),
-      ),
-    ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr());
+    return Row(
+      spacing: 8,
+      children: [
+        Icon(icon, size: 24),
+        Text(label, style: context.textTheme.labelSmall),
+      ],
+    )
+        .paddingSymmetric(horizontal: 4, vertical: 2)
+        .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr());
   }
 }
