@@ -1,4 +1,4 @@
-import Redis from "ioredis";
+import Redis, { RedisKey, RedisValue } from "ioredis";
 
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { Logger } from "infrastructure/utils/Logger";
@@ -33,14 +33,20 @@ export class RedisRepository {
     let cursor = "0";
     do {
       const reply = await this._client.scan(
-        cursor,
+        cursor.toString(),
         "MATCH",
         pattern,
         "COUNT",
         100
       );
-      cursor = reply[0];
-      keys.push(...reply[1]);
+      cursor = reply[0]?.toString() ?? "0";
+
+      const keysReply = reply[1];
+
+      // Ignore index keys
+      const filtered = keysReply.filter((key) => !key.includes("index"));
+
+      keys.push(...filtered);
     } while (cursor !== "0");
     return keys;
   }
@@ -146,5 +152,61 @@ export class RedisRepository {
 
   public async del(key: string): Promise<number> {
     return this._client.del(key);
+  }
+
+  public async zrem(key: string, members: string) {
+    return this._client.zrem(key, members);
+  }
+
+  public async srem(key: string, members: string) {
+    return this._client.srem(key, members);
+  }
+
+  public async zunionstore(
+    destination: string,
+    numKeys: number | string,
+    keys: string[]
+  ) {
+    return this._client.zunionstore(destination, numKeys, keys);
+  }
+
+  public async zremrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string
+  ) {
+    return this._client.zremrangebyscore(key, min, max);
+  }
+
+  public async zinterstore(
+    destination: string,
+    numKeys: number,
+    keys: (RedisKey | RedisValue)[]
+  ) {
+    return this._client.zinterstore(destination, numKeys, ...keys);
+  }
+
+  public async zrangebylex(key: string, min: string, max: string) {
+    return this._client.zrangebylex(key, min, max);
+  }
+
+  public async sadd(key: string, members: string[]) {
+    return this._client.sadd(key, members);
+  }
+
+  public async zadd(key: string, scoreMembers: string[]) {
+    return this._client.zadd(key, ...scoreMembers);
+  }
+
+  public async zcard(key: string) {
+    return this._client.zcard(key);
+  }
+
+  public async zrevrange(key: string, start: number, stop: number) {
+    return this._client.zrevrange(key, start, stop);
+  }
+
+  public async zrange(key: string, start: number, stop: number) {
+    return this._client.zrange(key, start, stop);
   }
 }
