@@ -56,6 +56,8 @@ class GameListItemWidget extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
           child: Card(
+            color: context.theme.colorScheme.secondaryContainer
+                .withValues(alpha: .33),
             child: Column(
               mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
               children: [
@@ -124,6 +126,11 @@ class _GameListItemBadges extends StatelessWidget {
           ),
           _Badge(
             icon: Icons.check,
+            tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
+            label: [item.currentRound, item.package.roundsCount].join('/'),
+          ),
+          _Badge(
+            icon: Icons.question_mark,
             tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
             label: [item.currentRound, item.package.roundsCount].join('/'),
           ),

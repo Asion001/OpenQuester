@@ -44,5 +44,6 @@
   "max_players": "Max players",
   "nothing_found": "Nothing found",
   "search_package_hint": "Enter a package name to search",
-  "upload_package": "Upload package"
+  "upload_package": "Upload package",
+  "package_uploaded": "Package uploaded!"
 }

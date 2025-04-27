@@ -17,15 +17,18 @@ class UploadPackageButton extends WatchingWidget {
       onPressed: () async {
         try {
           final result = await getIt<PackageUploadController>().pickAndUpload();
+
+          if (result != null) {
+            await getIt<ToastController>()
+                .show(LocaleKeys.package_uploaded.tr());
+          }
           if (afterUpload != null && result != null) {
             final package = await getIt<PackageController>().getPackage(result);
             afterUpload!(package);
           }
         } catch (e) {
           if (!context.mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
-          );
+          await getIt<ToastController>().show(e);
         }
       },
       child: const Icon(Icons.upload),
@@ -35,7 +38,7 @@ class UploadPackageButton extends WatchingWidget {
           label: Text(
             [
               LocaleKeys.upload_package.tr(),
-              if (controller.loading) ...[
+              if (controller.loading && controller.progress != 0) ...[
                 (100 * controller.progress).ceil(),
                 '%',
               ],
