@@ -38,7 +38,7 @@
   "game_data_corrupted": "Game data is corrupted",
   "socket_user_not_authenticated": "Socket client (user) is not authenticated",
   "user_data_corrupted": "User data is corrupted",
-  "user_already_in_game": "User already in the game",
+  "already_in_game": "You are already in this game",
   "not_in_game": "You are not currently in this game",
   "game_is_full": "This game is full! You can join only as spectator",
   "game_does_not_exists": "Game with this ID does not exists",
@@ -46,5 +46,11 @@
   "you_are_restricted": "You are restricted from this game and can only join as spectator",
   "you_are_muted": "You are muted in this chat",
   "showman_is_taken": "Showman role for this game is already taken",
-  "order_duplicated": "Order duplicate in %name - order number %order"
+  "order_duplicated": "Order duplicate in %name - order number %order",
+  "only_showman_can_start": "Only showman can start the game",
+  "game_already_started": "Game already started",
+  "socket_logged_in": "Socket already logged in",
+  "cannot_parse_user_data": "Unable to parse user data",
+  "bad_round_retrieval": "Something went wrong during round retrieval",
+  "only_host_can_delete": "Only host (creator) can delete the game"
 }

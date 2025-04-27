@@ -1,3 +1,5 @@
+import { PackageService } from "application/services/package/PackageService";
+import { UserService } from "application/services/user/UserService";
 import {
   GAME_ID_CHARACTERS,
   GAME_ID_CHARACTERS_LENGTH,
@@ -10,10 +12,11 @@ import { Player } from "domain/entities/game/Player";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
+import { GameMapper } from "domain/mappers/GameMapper";
+import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { GameDTO } from "domain/types/dto/game/GameDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
-import { GameRedisHashDTO } from "domain/types/dto/game/GameRedisHashDTO";
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
@@ -23,9 +26,7 @@ import { GameIndexManager } from "infrastructure/database/managers/game/GameInde
 import { Package } from "infrastructure/database/models/package/Package";
 import { PackageTag } from "infrastructure/database/models/package/PackageTag";
 import { User } from "infrastructure/database/models/User";
-import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
-import { RedisService } from "infrastructure/services/RedisService";
+import { RedisService } from "infrastructure/services/redis/RedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
@@ -34,8 +35,8 @@ export class GameRepository {
   constructor(
     private readonly redisService: RedisService,
     private readonly gameIndexManager: GameIndexManager,
-    private readonly userRepository: UserRepository,
-    private readonly packageRepository: PackageRepository,
+    private readonly userService: UserService,
+    private readonly packageService: PackageService,
     private readonly storage: S3StorageService
   ) {
     //
@@ -60,12 +61,16 @@ export class GameRepository {
       );
     }
 
-    return Game.deserializeGameHash(data as unknown as GameRedisHashDTO);
+    return GameMapper.deserializeGameHash(data);
   }
 
   public async updateGame(game: Game): Promise<void> {
     const key = this.getGameKey(game.id);
-    await this.redisService.hset(key, game.serializeGameToHash(), GAME_TTL);
+    await this.redisService.hset(
+      key,
+      GameMapper.serializeGameToHash(game),
+      GAME_TTL
+    );
   }
 
   private async _isGameExists(gameId: string) {
@@ -101,20 +106,20 @@ export class GameRepository {
     const games = await this._fetchGameDetails(ids);
 
     if (!games?.length) {
-      return { data: [], pageInfo: { total: 0 } };
+      return { data: [], pageInfo: { total } };
     }
 
     games.forEach((game: Game) => {
-      packageIds.add(game.packageId);
+      packageIds.add(game.packageId!);
       userIds.add(game.createdBy);
     });
 
     const [users, packages] = await Promise.all([
-      this.userRepository.findByIds(Array.from(userIds), {
+      this.userService.findByIds(Array.from(userIds), {
         select: ["id", "username"],
         relations: [],
       }) as Promise<ShortUserInfo[]>,
-      this.packageRepository.findByIds(Array.from(packageIds), {
+      this.packageService.findByIds(Array.from(packageIds), {
         select: PACKAGE_SELECT_FIELDS,
         relations: ["author", "logo", "tags"],
       }),
@@ -127,7 +132,7 @@ export class GameRepository {
       await Promise.all(
         games.map(async (game: Game) => {
           const createdBy = userMap.get(game.createdBy);
-          const packData = packageMap.get(game.packageId);
+          const packData = packageMap.get(game.packageId!);
 
           if (!packData || !packData.author || !createdBy) {
             return null;
@@ -150,10 +155,8 @@ export class GameRepository {
     gameData: GameCreateDTO,
     createdBy: User
   ): Promise<GameListItemDTO> {
-    const packageData = await this.packageRepository.get(
-      gameData.packageId,
-      PACKAGE_SELECT_FIELDS,
-      ["author"]
+    const packageData = await this.packageService.getPackageRaw(
+      gameData.packageId
     );
 
     if (!packageData) {
@@ -183,7 +186,7 @@ export class GameRepository {
 
     const key = this.getGameKey(gameId);
 
-    const counts = await this.packageRepository.getCountsForPackage(
+    const counts = await this.packageService.getCountsForPackage(
       gameData.packageId
     );
 
@@ -194,17 +197,18 @@ export class GameRepository {
       createdAt: new Date(),
       isPrivate: gameData.isPrivate,
       ageRestriction: gameData.ageRestriction,
-      currentRound: 0,
       maxPlayers: gameData.maxPlayers,
       startedAt: null,
-      package: gameData.packageId,
+      finishedAt: null,
+      package: await packageData.toDTO(this.storage, { fetchIds: true }),
       roundsCount: counts.roundsCount,
       questionsCount: counts.questionsCount,
       players: [],
+      gameState: GameStateMapper.initGameState(),
     });
 
     const pipeline = this.redisService.pipeline();
-    pipeline.hset(key, game.serializeGameToHash());
+    pipeline.hset(key, GameMapper.serializeGameToHash(game));
     this.gameIndexManager.addGameToIndexesPipeline(
       pipeline,
       game.toIndexData()
@@ -215,7 +219,7 @@ export class GameRepository {
     return this._parseGameToListItemDTO(game, createdBy, packageData);
   }
 
-  public async deleteGame(gameId: string) {
+  public async deleteGame(user: number, gameId: string) {
     const key = this.getGameKey(gameId);
     const game = await this.getGameEntity(gameId);
 
@@ -227,6 +231,10 @@ export class GameRepository {
       );
     }
 
+    if (game.createdBy !== user) {
+      throw new ClientError(ClientResponse.ONLY_HOST_CAN_DELETE);
+    }
+
     await this.gameIndexManager.removeGameFromIndexes(
       gameId,
       game.toIndexData()
@@ -236,13 +244,13 @@ export class GameRepository {
   }
 
   public async gameToListItemDTO(game: Game): Promise<GameListItemDTO> {
-    const createdBy = await this.userRepository.get(game.createdBy, {
+    const createdBy = await this.userService.get(game.createdBy, {
       select: ["id", "username"],
       relations: [],
     });
 
-    const packData = await this.packageRepository.get(
-      game.packageId,
+    const packData = await this.packageService.getPackageRaw(
+      game.packageId!,
       PACKAGE_SELECT_FIELDS,
       ["author", "tags", "logo"]
     );
@@ -283,6 +291,14 @@ export class GameRepository {
     createdBy: ShortUserInfo,
     packData: Package
   ): Promise<GameListItemDTO> {
+    const currentRound = game.gameState.currentRound
+      ? game.gameState.currentRound.order + 1
+      : null;
+
+    const currentQuestion = game.gameState.currentQuestion
+      ? game.gameState.currentQuestion
+      : null;
+
     return {
       id: game.id,
       title: game.title,
@@ -292,8 +308,10 @@ export class GameRepository {
       players: game.playersCount,
       createdBy,
       startedAt: game.startedAt,
+      finishedAt: game.finishedAt,
       createdAt: game.createdAt,
-      currentRound: game.currentRound,
+      currentRound,
+      currentQuestion,
       package: {
         id: packData.id,
         title: packData.title,
@@ -323,7 +341,7 @@ export class GameRepository {
 
   private async _fetchGameDetails(gameIds: string[]) {
     const pipeline = this.redisService.pipeline();
-    gameIds.forEach((id) => pipeline.hgetall(`${GAME_NAMESPACE}:${id}`));
+    gameIds.forEach((id) => pipeline.hgetall(this.getGameKey(id)));
 
     const results = await pipeline.exec();
     if (!results) {
@@ -333,8 +351,7 @@ export class GameRepository {
     return results
       .map(([, data]) => {
         try {
-          // TODO: Use Joi to retrieve typed object
-          return Game.deserializeGameHash(data as unknown as GameRedisHashDTO);
+          return GameMapper.deserializeGameHash(data as Record<string, string>);
         } catch {
           // Ignore invalid games
         }

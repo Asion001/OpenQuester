@@ -36,7 +36,7 @@ export class GameRestApiController {
       gameIdScheme()
     ).validate();
 
-    await this.gameService.delete(validatedData.gameId);
+    await this.gameService.delete(req, validatedData.gameId);
 
     return res.status(HttpStatus.NO_CONTENT).send();
   };

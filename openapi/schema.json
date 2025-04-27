@@ -834,7 +834,7 @@
         ],
         "responses": {
           "204": {
-            "description": "User deleted successfully"
+            "description": "Game deleted successfully"
           },
           "400": {
             "description": "Game not found",
@@ -1018,7 +1018,11 @@
             "examples": [false]
           },
           "currentRound": {
-            "type": "integer",
+            "type": ["integer", "null"],
+            "examples": [0]
+          },
+          "currentQuestion": {
+            "type": ["integer", "null"],
             "examples": [0]
           },
           "players": {
@@ -1033,6 +1037,11 @@
             "type": ["string", "null"],
             "format": "date-time",
             "examples": ["2024-01-01T00:00:00Z"]
+          },
+          "finishedAt": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "examples": ["2024-01-01T02:00:00Z"]
           },
           "package": {
             "$ref": "#/components/schemas/PackageItem"
@@ -1564,6 +1573,11 @@
         "required": ["file"],
         "description": "Logo file structure for package creation. Only images acceptable"
       },
+      "PackageEntitiesOrder": {
+        "type": "integer",
+        "description": "Order of the round/theme/question file in package data, should be unique, starting from 0",
+        "examples": [1, 2, 3]
+      },
       "PackageQuestionFile": {
         "type": "object",
         "properties": {
@@ -1572,9 +1586,7 @@
             "examples": [69]
           },
           "order": {
-            "type": "integer",
-            "description": "Order of the question file in the question, should be unique, starting from 0",
-            "examples": [1, 2, 3]
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
           "file": {
             "$ref": "#/components/schemas/FileItem"
@@ -1597,9 +1609,7 @@
             "examples": [1337]
           },
           "order": {
-            "type": "integer",
-            "description": "Order of the answer file in the question, should be unique, starting from 0",
-            "examples": [1, 2, 3]
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
           "file": {
             "$ref": "#/components/schemas/FileItem"
@@ -1622,9 +1632,7 @@
             "examples": [187]
           },
           "order": {
-            "type": "integer",
-            "description": "Order of the question in the theme, should be unique, starting from 0",
-            "examples": [1, 2, 3]
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
           "price": {
             "type": "integer",
@@ -1735,9 +1743,7 @@
                       "examples": [99]
                     },
                     "order": {
-                      "type": "integer",
-                      "description": "Order of the answer in the choice answers, should be unique, starting from 0",
-                      "examples": [1, 2, 3]
+                      "$ref": "#/components/schemas/PackageEntitiesOrder"
                     },
                     "text": {
                       "type": ["string", "null"],
@@ -1929,9 +1935,7 @@
             "examples": [92]
           },
           "order": {
-            "type": "integer",
-            "description": "Order of the theme in the round, should be unique, starting from 0",
-            "examples": [1, 2, 3]
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
           "name": {
             "type": "string",
@@ -1964,9 +1968,7 @@
             "examples": [17]
           },
           "order": {
-            "type": "integer",
-            "description": "Order of the round in the package, should be unique, starting from 0",
-            "examples": [1, 2, 3]
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
           "name": {
             "type": "string",
@@ -2175,8 +2177,156 @@
             "description": "Players in the game"
           },
           "gameState": {
-            "description": "!!! Work in progress, will be changed with actual game state component",
-            "$ref": "#/components/schemas/GameListItem"
+            "description": "Current game state",
+            "$ref": "#/components/schemas/GameState"
+          }
+        }
+      },
+      "GameState": {
+        "type": "object",
+        "properties": {
+          "questionState": {
+            "type": "string",
+            "enum": ["choosing", "showing", "answered"],
+            "examples": ["choosing"]
+          },
+          "isPaused": {
+            "type": "boolean",
+            "examples": [false]
+          },
+          "currentRound": {
+            "$ref": "#/components/schemas/SocketIOGameStateRoundData"
+          },
+          "currentQuestion": {
+            "type": ["integer", "null"],
+            "description": "Last chosen / current question number out of all",
+            "examples": [25, 31]
+          },
+          "answeringPlayer": {
+            "type": ["integer", "null"],
+            "description": "Id of player who is currently answering",
+            "examples": [727]
+          },
+          "answeredPlayers": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/GameStateAnsweredPlayer"
+            }
+          },
+          "timer": {
+            "$ref": "#/components/schemas/GameStateTimer"
+          }
+        }
+      },
+      "GameStateTimer": {
+        "type": ["object", "null"],
+        "properties": {
+          "startedAt": {
+            "type": "string",
+            "description": "Describes when timer started",
+            "format": "date-time",
+            "examples": ["2024-01-01T00:00:00Z"]
+          },
+          "durationMs": {
+            "type": "integer",
+            "description": "Describes how long timer should last until it's ended",
+            "examples": [30000]
+          },
+          "elapsedMs": {
+            "type": "integer",
+            "description": "This value written only when timer paused because of something. Helps to track passed time and resume timer correctly",
+            "examples": [5000]
+          }
+        }
+      },
+      "GameStateAnsweredPlayer": {
+        "type": "object",
+        "properties": {
+          "player": {
+            "type": "integer",
+            "description": "Id of answered player",
+            "examples": [727]
+          },
+          "result": {
+            "type": "integer",
+            "examples": [-1000, 500, 0, -250]
+          }
+        }
+      },
+      "SocketIOGameStartEventPayload": {
+        "type": "object",
+        "description": "This data sent to all players in room when game is started",
+        "properties": {
+          "currentRound": {
+            "$ref": "#/components/schemas/SocketIOGameStateRoundData"
+          }
+        }
+      },
+      "SocketIOGameStateRoundData": {
+        "type": "object",
+        "description": "Info about current round of the game",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
+          },
+          "name": {
+            "type": "string",
+            "examples": ["Round 1"]
+          },
+          "description": {
+            "type": ["string", "null"],
+            "examples": ["This package is focused on anime questions"]
+          },
+          "themes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocketIOGameStateThemeData"
+            }
+          }
+        }
+      },
+      "SocketIOGameStateThemeData": {
+        "type": "object",
+        "description": "Info about theme of the round",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
+          },
+          "name": {
+            "type": "string",
+            "examples": ["Theme 1"]
+          },
+          "description": {
+            "type": ["string", "null"],
+            "examples": ["In this theme you have to guess character name"]
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SocketIOGameStateQuestionData"
+            }
+          }
+        }
+      },
+      "SocketIOGameStateQuestionData": {
+        "type": "object",
+        "description": "Info about question of the theme",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
+          },
+          "price": {
+            "type": "integer",
+            "examples": [200]
+          },
+          "isHidden": {
+            "type": "boolean",
+            "examples": [false]
+          },
+          "questionComment": {
+            "type": "string",
+            "description": "Comment that clarify what have to be answered on this question",
+            "examples": ["Answer full name of character"]
           }
         }
       },
@@ -2187,7 +2337,7 @@
       },
       "SocketIOGameEvents": {
         "type": "string",
-        "enum": ["join", "user-leave", "game-data"],
+        "enum": ["join", "user-leave", "game-data", "start"],
         "examples": ["join"]
       },
       "SocketIOChatMessageContent": {

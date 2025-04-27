@@ -4,15 +4,11 @@ import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { Logger } from "infrastructure/utils/Logger";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
-export class RedisService {
+export class RedisRepository {
   private _client: Redis;
 
   constructor() {
     this._client = RedisConfig.getClient();
-  }
-
-  public get connected() {
-    return this._client.status === "ready";
   }
 
   /**
