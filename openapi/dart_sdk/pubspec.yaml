@@ -19,4 +19,8 @@ dev_dependencies:
   json_serializable: ^6.9.4
   retrofit_generator: ^9.1.9
   dart_mappable_builder: ^4.5.0 # for dart_mappable
-  swagger_parser: ^1.22.1
+  swagger_parser:
+    git:
+      url: https://github.com/Asion001/swagger_parser.git
+      path: swagger_parser
+      branch: main

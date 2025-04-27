@@ -4,6 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package_entities_order.dart';
 import 'package_question_union.dart';
 
 part 'package_theme.freezed.dart';
@@ -14,9 +15,7 @@ part 'package_theme.g.dart';
 class PackageTheme with _$PackageTheme {
   const factory PackageTheme({
     required int? id,
-
-    /// Order of the theme in the round, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Name of the theme
     required String name,

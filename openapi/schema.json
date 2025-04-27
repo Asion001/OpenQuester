@@ -2186,8 +2186,8 @@
         "type": "object",
         "properties": {
           "questionState": {
-            "type": "string",
-            "enum": ["choosing", "showing", "answered"],
+            "type": ["string", "null"],
+            "enum": ["choosing", "showing", "answered", null],
             "examples": ["choosing"]
           },
           "isPaused": {

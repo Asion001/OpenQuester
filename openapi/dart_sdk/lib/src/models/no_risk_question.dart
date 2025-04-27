@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'no_risk_question_sub_type.dart';
 import 'no_risk_question_type.dart';
 import 'package_answer_file.dart';
+import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
 
@@ -17,9 +18,7 @@ part 'no_risk_question.g.dart';
 class NoRiskQuestion with _$NoRiskQuestion {
   const factory NoRiskQuestion({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,

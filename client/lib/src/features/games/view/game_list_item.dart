@@ -137,7 +137,13 @@ class _GameListItemBadges extends StatelessWidget {
           _Badge(
             icon: Icons.check,
             tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
-            label: [item.currentRound, item.package.roundsCount].join('/'),
+            label: [item.currentRound ?? 0, item.package.roundsCount].join('/'),
+          ),
+          _Badge(
+            icon: Icons.question_mark,
+            tooltip: LocaleKeys.game_tile_tooltips_questions.tr(),
+            label: [item.currentQuestion ?? 0, item.package.questionsCount]
+                .join('/'),
           ),
         ],
       ).paddingSymmetric(vertical: 4).withWidth(80),

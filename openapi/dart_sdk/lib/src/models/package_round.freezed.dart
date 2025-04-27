@@ -21,8 +21,6 @@ PackageRound _$PackageRoundFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PackageRound {
   int? get id => throw _privateConstructorUsedError;
-
-  /// Order of the round in the package, should be unique, starting from 0
   int get order => throw _privateConstructorUsedError;
 
   /// Name of the round
@@ -180,8 +178,6 @@ class _$PackageRoundImpl implements _PackageRound {
 
   @override
   final int? id;
-
-  /// Order of the round in the package, should be unique, starting from 0
   @override
   final int order;
 
@@ -256,8 +252,6 @@ abstract class _PackageRound implements PackageRound {
 
   @override
   int? get id;
-
-  /// Order of the round in the package, should be unique, starting from 0
   @override
   int get order;
 

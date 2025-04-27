@@ -12,8 +12,7 @@ _$SocketIOGameJoinEventPayloadImpl _$$SocketIOGameJoinEventPayloadImplFromJson(
       players: (json['players'] as List<dynamic>)
           .map((e) => PlayerData.fromJson(e as Map<String, dynamic>))
           .toList(),
-      gameState:
-          GameListItem.fromJson(json['gameState'] as Map<String, dynamic>),
+      gameState: GameState.fromJson(json['gameState'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$SocketIOGameJoinEventPayloadImplToJson(

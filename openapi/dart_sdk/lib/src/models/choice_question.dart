@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'answers.dart';
 import 'choice_question_type.dart';
 import 'package_answer_file.dart';
+import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
 
@@ -17,9 +18,7 @@ part 'choice_question.g.dart';
 class ChoiceQuestion with _$ChoiceQuestion {
   const factory ChoiceQuestion({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,

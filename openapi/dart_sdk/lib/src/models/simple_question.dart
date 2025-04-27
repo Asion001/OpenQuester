@@ -5,6 +5,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package_answer_file.dart';
+import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
 import 'simple_question_type.dart';
@@ -16,9 +17,7 @@ part 'simple_question.g.dart';
 class SimpleQuestion with _$SimpleQuestion {
   const factory SimpleQuestion({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,

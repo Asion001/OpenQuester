@@ -21,8 +21,6 @@ PackageQuestionFile _$PackageQuestionFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PackageQuestionFile {
   int? get id => throw _privateConstructorUsedError;
-
-  /// Order of the question file in the question, should be unique, starting from 0
   int get order => throw _privateConstructorUsedError;
   FileItem get file => throw _privateConstructorUsedError;
 
@@ -168,8 +166,6 @@ class _$PackageQuestionFileImpl implements _PackageQuestionFile {
 
   @override
   final int? id;
-
-  /// Order of the question file in the question, should be unique, starting from 0
   @override
   final int order;
   @override
@@ -230,8 +226,6 @@ abstract class _PackageQuestionFile implements PackageQuestionFile {
 
   @override
   int? get id;
-
-  /// Order of the question file in the question, should be unique, starting from 0
   @override
   int get order;
   @override

@@ -48,11 +48,12 @@ class SocketChatController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onSendPressed(String message) {
-    _socket?.emit(
+  Future<void> onSendPressed(String message) async {
+    final result = await _socket?.emitWithAckAsync(
       SocketIOEvents.chatMessage.json!,
       SocketIOChatMessageContent(message: message).toJson(),
     );
+    logger.d('message');
   }
 
   void _onChatMessage(dynamic data) {
