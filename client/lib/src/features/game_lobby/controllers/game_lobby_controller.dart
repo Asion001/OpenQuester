@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart'
+    show ChatOperation, ChatOperationType;
+import 'package:flutter_chat_core/src/models/message.dart';
 import 'package:openquester/openquester.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -12,7 +15,9 @@ class GameLobbyController {
 
   final gameData = ValueNotifier<SocketIOGameJoinEventPayload?>(null);
   final gameListData = ValueNotifier<GameListItem?>(null);
+
   final showDesktopChat = ValueNotifier<bool>(false);
+  StreamSubscription<ChatOperation>? _chatMessagesSub;
 
   Future<void> join({required String gameId}) async {
     // Check if already joined
@@ -70,6 +75,10 @@ class GameLobbyController {
 
       // Init chat controller
       await getIt<SocketChatController>().init(socket: socket!);
+      _chatMessagesSub = getIt<SocketChatController>()
+          .chatController
+          .operationsStream
+          .listen(_onChatMessage);
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -86,6 +95,21 @@ class GameLobbyController {
     }
   }
 
+  Future<void> _onChatMessage(ChatOperation chatOperation) async {
+    // Dont show toast if chat is open
+    if (showDesktopChat.value) return;
+
+    if (chatOperation.type != ChatOperationType.insert) return;
+    final message = chatOperation.message;
+    final text = switch (message) {
+      TextMessage() => message.text,
+      SystemMessage() => message.text,
+      _ => null
+    };
+    if (text.isEmptyOrNull) return;
+    await getIt<ToastController>().show(text);
+  }
+
   /// Clear all fields for new game to use
   void clear() {
     try {
@@ -94,6 +118,8 @@ class GameLobbyController {
       socket = null;
       gameData.value = null;
       gameListData.value = null;
+      _chatMessagesSub?.cancel();
+      _chatMessagesSub = null;
     } catch (_) {}
   }
 

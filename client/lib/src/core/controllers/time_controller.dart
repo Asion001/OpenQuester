@@ -5,7 +5,7 @@ import 'package:openquester/common_imports.dart';
 
 @singleton
 class TimeController extends ChangeNotifier {
-  late DateTime current;
+  late DateTime current = DateTime.now();
   late Timer timer;
 
   @postConstruct
