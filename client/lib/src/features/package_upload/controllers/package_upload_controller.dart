@@ -18,6 +18,10 @@ class PackageUploadController extends ChangeNotifier {
   var _progress = 0.0;
   double get progress => _progress;
 
+  /// Progress part after picking
+  static const _afterPickProgress = 0.1;
+  static const _afterParseProgress = 0.15;
+
   void _setProgress(double value) {
     _progress = value;
     notifyListeners();
@@ -58,7 +62,7 @@ class PackageUploadController extends ChangeNotifier {
       await worker.start();
       final rawBody = await worker.compute(fileData);
 
-      _setProgress(0.1);
+      _setProgress(_afterPickProgress);
 
       final response = jsonDecode(rawBody) as Map<String, dynamic>;
       final body = PackageCreationInput.fromJson(
@@ -91,7 +95,7 @@ class PackageUploadController extends ChangeNotifier {
     SiqArchiveParser parser,
   ) async {
     logger.d('Uploading ${links.length} files...');
-    _setProgress(0.2);
+    _setProgress(_afterParseProgress);
 
     bool validateStatus(int? status) {
       if ({412}.contains(status)) return true;
@@ -115,7 +119,7 @@ class PackageUploadController extends ChangeNotifier {
 
     try {
       for (var i = 0; i < links.length; i++) {
-        _setProgress(.2 + (i / links.length * .8));
+        _setProgress(_afterParseProgress + (i / links.length * .8));
 
         final link = links[i];
 
