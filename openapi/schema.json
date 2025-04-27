@@ -2195,7 +2195,10 @@
             "examples": [false]
           },
           "currentRound": {
-            "$ref": "#/components/schemas/SocketIOGameStateRoundData"
+            "oneOf": [
+              { "$ref": "#/components/schemas/SocketIOGameStateRoundData" },
+              { "type": "null" }
+            ]
           },
           "currentQuestion": {
             "type": ["integer", "null"],
@@ -2214,7 +2217,10 @@
             }
           },
           "timer": {
-            "$ref": "#/components/schemas/GameStateTimer"
+            "oneOf": [
+              { "$ref": "#/components/schemas/GameStateTimer" },
+              { "type": "null" }
+            ]
           }
         }
       },

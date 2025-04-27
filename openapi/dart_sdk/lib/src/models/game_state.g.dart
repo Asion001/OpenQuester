@@ -12,24 +12,28 @@ _$GameStateImpl _$$GameStateImplFromJson(Map<String, dynamic> json) =>
           ? null
           : GameStateQuestionState.fromJson(json['questionState'] as String?),
       isPaused: json['isPaused'] as bool,
-      currentRound: SocketIOGameStateRoundData.fromJson(
-          json['currentRound'] as Map<String, dynamic>),
       currentQuestion: (json['currentQuestion'] as num?)?.toInt(),
       answeringPlayer: (json['answeringPlayer'] as num?)?.toInt(),
       answeredPlayers: (json['answeredPlayers'] as List<dynamic>?)
           ?.map((e) =>
               GameStateAnsweredPlayer.fromJson(e as Map<String, dynamic>))
           .toList(),
-      timer: GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),
+      currentRound: json['currentRound'] == null
+          ? null
+          : SocketIOGameStateRoundData.fromJson(
+              json['currentRound'] as Map<String, dynamic>),
+      timer: json['timer'] == null
+          ? null
+          : GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
     <String, dynamic>{
       'questionState': instance.questionState,
       'isPaused': instance.isPaused,
-      'currentRound': instance.currentRound,
       'currentQuestion': instance.currentQuestion,
       'answeringPlayer': instance.answeringPlayer,
       'answeredPlayers': instance.answeredPlayers,
+      'currentRound': instance.currentRound,
       'timer': instance.timer,
     };

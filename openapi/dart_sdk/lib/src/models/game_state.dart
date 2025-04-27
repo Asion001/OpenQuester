@@ -17,7 +17,6 @@ class GameState with _$GameState {
   const factory GameState({
     required GameStateQuestionState? questionState,
     required bool isPaused,
-    required SocketIOGameStateRoundData currentRound,
 
     /// Last chosen / current question number out of all
     required int? currentQuestion,
@@ -25,7 +24,8 @@ class GameState with _$GameState {
     /// Id of player who is currently answering
     required int? answeringPlayer,
     required List<GameStateAnsweredPlayer>? answeredPlayers,
-    required GameStateTimer timer,
+    SocketIOGameStateRoundData? currentRound,
+    GameStateTimer? timer,
   }) = _GameState;
   
   factory GameState.fromJson(Map<String, Object?> json) => _$GameStateFromJson(json);
