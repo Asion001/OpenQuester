@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openquester/openquester.dart';
@@ -20,6 +22,13 @@ class GameLobbyController {
 
     try {
       this.gameId = gameId;
+
+      // Get list game data
+      unawaited(
+        Api.I.api.games
+            .getV1GamesGameId(gameId: gameId)
+            .then((value) => gameListData.value = value),
+      );
 
       socket = await getIt<SocketController>().createConnection(path: '/games');
       socket!
@@ -44,8 +53,6 @@ class GameLobbyController {
           .auth
           .postV1AuthSocket(body: InputSocketIOAuth(socketId: socket!.id!));
 
-      gameListData.value =
-          await Api.I.api.games.getV1GamesGameId(gameId: gameId!);
       final iAmHost =
           gameListData.value!.createdBy.id == getIt<AuthController>().user?.id;
 
