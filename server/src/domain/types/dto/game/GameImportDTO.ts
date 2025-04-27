@@ -10,7 +10,6 @@ export interface GameImportDTO {
   createdAt: Date;
   isPrivate: boolean;
   ageRestriction: AgeRestriction;
-  currentRound: number;
   maxPlayers: number;
   startedAt: Date | null;
   finishedAt: Date | null;

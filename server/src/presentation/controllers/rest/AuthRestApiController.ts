@@ -65,7 +65,7 @@ export class AuthRestApiController {
 
     await this.socketUserDataService.set(authDTO.socketId, {
       userId: req.user!.id, // Null safety approved by auth middleware
-      language: authDTO.language,
+      language: ts.parseHeaders(req.headers),
     });
 
     res.status(HttpStatus.OK).send();

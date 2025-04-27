@@ -123,6 +123,15 @@ export class DIConfig {
     );
 
     Container.register(
+      CONTAINER_TYPES.UserService,
+      new UserService(
+        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
+        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
+      ),
+      "service"
+    );
+
+    Container.register(
       CONTAINER_TYPES.S3StorageService,
       new S3StorageService(
         StorageContextBuilder.buildS3Context(),
@@ -141,15 +150,6 @@ export class DIConfig {
     );
 
     Container.register(
-      CONTAINER_TYPES.UserService,
-      new UserService(
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
-        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
-      ),
-      "service"
-    );
-
-    Container.register(
       CONTAINER_TYPES.TranslateService,
       new TranslateService(),
       "service"
@@ -165,6 +165,16 @@ export class DIConfig {
       CONTAINER_TYPES.RedisService,
       new RedisService(
         Container.get<RedisRepository>(CONTAINER_TYPES.RedisRepository)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.PackageService,
+      new PackageService(
+        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
+        Container.get<UserService>(CONTAINER_TYPES.UserService),
+        Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
       ),
       "service"
     );
@@ -217,16 +227,6 @@ export class DIConfig {
         ),
         Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
         Container.get<UserService>(CONTAINER_TYPES.UserService)
-      ),
-      "service"
-    );
-
-    Container.register(
-      CONTAINER_TYPES.PackageService,
-      new PackageService(
-        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
-        Container.get<UserService>(CONTAINER_TYPES.UserService),
-        Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
       ),
       "service"
     );

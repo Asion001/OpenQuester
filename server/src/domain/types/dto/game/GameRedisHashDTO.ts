@@ -5,7 +5,6 @@ export interface GameRedisHashDTO {
   createdAt: string; // Stored as timestamp string
   isPrivate: string; // '0' | '1'
   ageRestriction: string;
-  currentRound: string;
   players: string; // JSON string of Player[]
   maxPlayers: string;
   startedAt: string; // Empty string if null

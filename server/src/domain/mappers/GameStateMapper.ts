@@ -2,11 +2,11 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
 import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
 import { GameStateQuestionDTO } from "domain/types/dto/game/state/GameStateQuestionDTO";
+import { GameStateRoundDTO } from "domain/types/dto/game/state/GameStateRoundDTO";
 import { GameStateThemeDTO } from "domain/types/dto/game/state/GameStateThemeDTO";
+import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PackageRoundDTO } from "domain/types/dto/package/PackageRoundDTO";
 import { PackageThemeDTO } from "domain/types/dto/package/PackageThemeDTO";
-import { GameStateRoundDTO } from "../types/dto/game/state/GameStateRoundDTO";
-import { PackageDTO } from "../types/dto/package/PackageDTO";
 
 export class GameStateMapper {
   public static initGameState(): GameStateDTO {
@@ -59,7 +59,6 @@ export class GameStateMapper {
         isHidden: question.isHidden,
         price: question.price,
         questionComment: question.questionComment ?? null,
-        subType: question.subType,
       };
     });
   }

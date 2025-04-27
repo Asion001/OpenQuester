@@ -7,7 +7,8 @@ export interface GameListItemDTO {
   createdBy: ShortUserInfo;
   title: string;
   createdAt: Date;
-  currentRound: number;
+  currentRound: number | null;
+  currentQuestion: number | null;
   isPrivate: boolean;
   ageRestriction: AgeRestriction;
   players: number;

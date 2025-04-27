@@ -72,7 +72,7 @@ const main = async () => {
     adapter: createAdapter(redis, sub),
     cookie: true,
     connectTimeout: 45000,
-    transports: ["websocket", "polling"],
+    transports: ["websocket"],
   });
 
   const context = new ApiContext({

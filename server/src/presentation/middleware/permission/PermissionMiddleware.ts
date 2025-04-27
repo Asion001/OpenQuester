@@ -2,20 +2,20 @@ import { type NextFunction, type Request, type Response } from "express";
 
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { TranslateService as ts } from "application/services/text/TranslateService";
+import { UserService } from "application/services/user/UserService";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { type Permissions } from "domain/enums/Permissions";
 import { ClientError } from "domain/errors/ClientError";
 import { ErrorController } from "domain/errors/ErrorController";
 import { Permission } from "infrastructure/database/models/Permission";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export function checkPermission(permission: Permissions) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await Container.get<UserRepository>(
-        CONTAINER_TYPES.UserRepository
+      const user = await Container.get<UserService>(
+        CONTAINER_TYPES.UserService
       ).getUserByRequest(req, {
         select: ["id"],
         relations: ["permissions"],
@@ -56,8 +56,8 @@ export function checkPermissionWithId(permission: Permissions) {
       try {
         const id = ValueUtils.validateId(req.params.id);
 
-        const requestUser = await Container.get<UserRepository>(
-          CONTAINER_TYPES.UserRepository
+        const requestUser = await Container.get<UserService>(
+          CONTAINER_TYPES.UserService
         ).getUserByRequest(req, {
           select: ["id"],
           relations: ["permissions"],

@@ -33,8 +33,20 @@ export class GameService {
     return this.gameRepository.getAllGames(paginationOpts);
   }
 
-  public async delete(gameId: string) {
-    await this.gameRepository.deleteGame(gameId);
+  public async delete(req: Request, gameId: string) {
+    const user = await this.userService.getUserByRequest(req, {
+      select: ["id"],
+      relations: [],
+    });
+
+    if (!user) {
+      throw new ClientError(
+        ClientResponse.USER_NOT_FOUND,
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    await this.gameRepository.deleteGame(user.id, gameId);
 
     const eventDataDTO: GameEventDTO = {
       event: GameEvent.DELETED,

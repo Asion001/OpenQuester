@@ -60,6 +60,7 @@ export enum ClientResponse {
   ONLY_SHOWMAN_CAN_START = "only_showman_can_start",
   GAME_ALREADY_STARTED = "game_already_started",
   BAD_ROUND_RETRIEVAL = "bad_round_retrieval",
+  ONLY_HOST_CAN_DELETE = "only_host_can_delete",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

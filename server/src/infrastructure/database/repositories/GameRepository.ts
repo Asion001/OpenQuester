@@ -106,7 +106,7 @@ export class GameRepository {
     const games = await this._fetchGameDetails(ids);
 
     if (!games?.length) {
-      return { data: [], pageInfo: { total: 0 } };
+      return { data: [], pageInfo: { total } };
     }
 
     games.forEach((game: Game) => {
@@ -197,11 +197,10 @@ export class GameRepository {
       createdAt: new Date(),
       isPrivate: gameData.isPrivate,
       ageRestriction: gameData.ageRestriction,
-      currentRound: 0,
       maxPlayers: gameData.maxPlayers,
       startedAt: null,
       finishedAt: null,
-      package: await packageData.toDTO(this.storage),
+      package: await packageData.toDTO(this.storage, { fetchIds: true }),
       roundsCount: counts.roundsCount,
       questionsCount: counts.questionsCount,
       players: [],
@@ -220,7 +219,7 @@ export class GameRepository {
     return this._parseGameToListItemDTO(game, createdBy, packageData);
   }
 
-  public async deleteGame(gameId: string) {
+  public async deleteGame(user: number, gameId: string) {
     const key = this.getGameKey(gameId);
     const game = await this.getGameEntity(gameId);
 
@@ -230,6 +229,10 @@ export class GameRepository {
         HttpStatus.NOT_FOUND,
         { gameId }
       );
+    }
+
+    if (game.createdBy !== user) {
+      throw new ClientError(ClientResponse.ONLY_HOST_CAN_DELETE);
     }
 
     await this.gameIndexManager.removeGameFromIndexes(
@@ -288,6 +291,14 @@ export class GameRepository {
     createdBy: ShortUserInfo,
     packData: Package
   ): Promise<GameListItemDTO> {
+    const currentRound = game.gameState.currentRound
+      ? game.gameState.currentRound.order + 1
+      : null;
+
+    const currentQuestion = game.gameState.currentQuestion
+      ? game.gameState.currentQuestion
+      : null;
+
     return {
       id: game.id,
       title: game.title,
@@ -299,7 +310,8 @@ export class GameRepository {
       startedAt: game.startedAt,
       finishedAt: game.finishedAt,
       createdAt: game.createdAt,
-      currentRound: game.currentRound,
+      currentRound,
+      currentQuestion,
       package: {
         id: packData.id,
         title: packData.title,

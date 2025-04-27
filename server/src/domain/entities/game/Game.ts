@@ -17,7 +17,6 @@ export class Game {
   private _createdAt: Date;
   private _isPrivate: boolean;
   private _ageRestriction: AgeRestriction;
-  private _currentRound: number;
   private _maxPlayers: number;
   private _startedAt: Date | null;
   private _finishedAt: Date | null;
@@ -34,7 +33,6 @@ export class Game {
     this._createdAt = data.createdAt;
     this._isPrivate = data.isPrivate;
     this._ageRestriction = data.ageRestriction;
-    this._currentRound = data.currentRound;
     this._maxPlayers = data.maxPlayers;
     this._startedAt = data.startedAt;
     this._finishedAt = data.finishedAt;
@@ -68,10 +66,6 @@ export class Game {
 
   public get ageRestriction() {
     return this._ageRestriction;
-  }
-
-  public get currentRound() {
-    return this._currentRound;
   }
 
   public get maxPlayers() {
