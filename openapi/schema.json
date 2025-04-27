@@ -2039,6 +2039,10 @@
           "socketId": {
             "type": "string",
             "examples": ["Q04nceF-7noEw52hAAAD"]
+          },
+          "language": {
+            "type": "string",
+            "examples": ["en", "ua"]
           }
         }
       },

@@ -13,5 +13,6 @@ export interface GameListItemDTO {
   players: number;
   maxPlayers: number;
   startedAt: Date | null;
+  finishedAt: Date | null;
   package: PackageListItemDTO;
 }

@@ -13,7 +13,6 @@ export const userIdScheme = () =>
 
 export const userUpdateScheme = () =>
   Joi.object<UpdateUserInputDTO>({
-    id: Joi.number().min(0).allow(null),
     email: Joi.string().email().allow(null),
     username: Joi.string()
       .min(USER_NAME_MIN_CHARS)

@@ -6,6 +6,7 @@ import { type Server as IOServer } from "socket.io";
 import { DIConfig } from "application/config/DIConfig";
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { type ApiContext } from "application/context/ApiContext";
+import { FileService } from "application/services/file/FileService";
 import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
@@ -16,10 +17,8 @@ import { ServerError } from "domain/errors/ServerError";
 import { EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { type Database } from "infrastructure/database/Database";
-import { FileRepository } from "infrastructure/database/repositories/FileRepository";
-import { GameRepository } from "infrastructure/database/repositories/GameRepository";
-import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
+import { RedisService } from "infrastructure/services/redis/RedisService";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { TemplateUtils } from "infrastructure/utils/TemplateUtils";
@@ -83,16 +82,16 @@ export class ServeApi {
       await new DIConfig(this._db, this._redis, this._io).initialize();
 
       // Clean up all games (set all players as disconnected and pause game)
-      const gameRepository = Container.get<GameRepository>(
-        CONTAINER_TYPES.GameRepository
+      const gameService = Container.get<GameService>(
+        CONTAINER_TYPES.GameService
       );
-      await gameRepository.cleanupAllGames();
+      await gameService.cleanupAllGames();
 
       // Clean up all authorized socket sessions
-      const socketUserDataRepository = Container.get<SocketUserDataRepository>(
-        CONTAINER_TYPES.SocketUserDataRepository
+      const socketUserDataService = Container.get<SocketUserDataService>(
+        CONTAINER_TYPES.SocketUserDataService
       );
-      await socketUserDataRepository.cleanupAllSession();
+      await socketUserDataService.cleanupAllSession();
 
       // Attach API controllers
       this._attachControllers();
@@ -129,38 +128,27 @@ export class ServeApi {
       socketIOGameService: Container.get<SocketIOGameService>(
         CONTAINER_TYPES.SocketIOGameService
       ),
-
-      socketUserDataRepository: Container.get<SocketUserDataRepository>(
-        CONTAINER_TYPES.SocketUserDataRepository
+      socketUserDataService: Container.get<SocketUserDataService>(
+        CONTAINER_TYPES.SocketUserDataService
       ),
       storage: Container.get<S3StorageService>(
         CONTAINER_TYPES.S3StorageService
       ),
       game: Container.get<GameService>(CONTAINER_TYPES.GameService),
       io: Container.get<IOServer>(CONTAINER_TYPES.IO),
-      redis: Container.get<Redis>(CONTAINER_TYPES.Redis),
-      userRepository: Container.get<UserRepository>(
-        CONTAINER_TYPES.UserRepository
-      ),
-      fileRepository: Container.get<FileRepository>(
-        CONTAINER_TYPES.FileRepository
-      ),
+      redisService: Container.get<RedisService>(CONTAINER_TYPES.RedisService),
+      fileService: Container.get<FileService>(CONTAINER_TYPES.FileService),
     };
 
     // REST
-    new UserRestApiController(
-      deps.app,
-      deps.userService,
-      deps.userRepository,
-      deps.fileRepository
-    );
+    new UserRestApiController(deps.app, deps.userService, deps.fileService);
     new AuthRestApiController(
       deps.app,
-      deps.redis,
-      deps.userRepository,
-      deps.fileRepository,
+      deps.redisService,
+      deps.userService,
+      deps.fileService,
       deps.storage,
-      deps.socketUserDataRepository
+      deps.socketUserDataService
     );
     new PackageRestApiController(deps.app, deps.packageService);
     new FileRestApiController(deps.app, deps.storage);
@@ -170,7 +158,7 @@ export class ServeApi {
     if (this._context.env.ENV === EnvType.DEV) {
       new DevelopmentRestApiController(
         deps.app,
-        deps.userRepository,
+        deps.userService,
         this._context.env,
         deps.game
       );

@@ -1,9 +1,7 @@
-import { type Request } from "express";
 import { FindOptionsWhere, In, type Repository } from "typeorm";
 
-import { Container, CONTAINER_TYPES } from "application/Container";
+import { FileUsageService } from "application/services/file/FileUsageService";
 import { ClientResponse } from "domain/enums/ClientResponse";
-import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
 import {
   PaginationOpts,
@@ -14,13 +12,11 @@ import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
 import { PaginatedResults } from "infrastructure/database/pagination/PaginatedResults";
 import { QueryBuilder } from "infrastructure/database/QueryBuilder";
-import { FileUsageRepository } from "infrastructure/database/repositories/FileUsageRepository";
-import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class UserRepository {
   constructor(
     private readonly repository: Repository<User>,
-    private readonly fileUsageRepository: FileUsageRepository
+    private readonly fileUsageService: FileUsageService
   ) {
     //
   }
@@ -134,7 +130,7 @@ export class UserRepository {
     user = await this.repository.save(user);
 
     if (data.avatar) {
-      await this.fileUsageRepository.writeUsage(data.avatar, user);
+      await this.fileUsageService.writeUsage(data.avatar, user);
     }
 
     return user;
@@ -156,28 +152,6 @@ export class UserRepository {
         avatar: user.avatar ?? null,
         is_deleted: user.is_deleted,
       }
-    );
-  }
-
-  public async getUserByRequest(
-    req: Request,
-    selectOptions: SelectOptions<User>
-  ) {
-    if (!req.session.userId) {
-      throw new ClientError(
-        ClientResponse.INVALID_SESSION,
-        HttpStatus.UNAUTHORIZED
-      );
-    }
-
-    if (req.user) {
-      return req.user;
-    }
-
-    const id = ValueUtils.validateId(req.session.userId);
-    return Container.get<UserRepository>(CONTAINER_TYPES.UserRepository).get(
-      id,
-      selectOptions
     );
   }
 }

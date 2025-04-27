@@ -1,4 +1,5 @@
 import { GameService } from "application/services/game/GameService";
+import { UserService } from "application/services/user/UserService";
 import cookieSignature from "cookie-signature";
 import {
   GAME_MAX_PLAYERS,
@@ -11,13 +12,12 @@ import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { type Express } from "express";
 
 import { Environment } from "infrastructure/config/Environment";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { Logger } from "infrastructure/utils/Logger";
 
 export class DevelopmentRestApiController {
   constructor(
     private readonly app: Express,
-    private readonly userRepository: UserRepository,
+    private readonly userService: UserService,
     private readonly env: Environment,
     private readonly gameService: GameService
   ) {
@@ -32,7 +32,7 @@ export class DevelopmentRestApiController {
     this.app.post("/v1/dev/login/:num", async (req, res) => {
       try {
         const num = req.params.num ? `-${req.params.num}` : "";
-        let user = await this.userRepository.findOne(
+        let user = await this.userService.findOne(
           {
             username: dummyUser.username + num,
             email: dummyUser.email + num,
@@ -50,7 +50,7 @@ export class DevelopmentRestApiController {
         );
 
         if (!user) {
-          user = await this.userRepository.create({
+          user = await this.userService.create({
             username: dummyUser.username + num,
             email: dummyUser.email + num,
             discord_id: dummyUser.discord_id + num,

@@ -1,6 +1,7 @@
 import { Player } from "domain/entities/game/Player";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { PackageDTO } from "../package/PackageDTO";
+import { GameStateDTO } from "./state/GameStateDTO";
 
 export interface GameImportDTO {
   id: string;
@@ -12,8 +13,10 @@ export interface GameImportDTO {
   currentRound: number;
   maxPlayers: number;
   startedAt: Date | null;
+  finishedAt: Date | null;
   package: PackageDTO;
   roundsCount: number;
   questionsCount: number;
   players: Player[];
+  gameState: GameStateDTO;
 }

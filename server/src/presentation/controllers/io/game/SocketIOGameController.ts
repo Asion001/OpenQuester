@@ -12,6 +12,7 @@ import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { ChatMessageEventPayload } from "domain/types/socket/events/ChatMessageEventPayload";
 import { GameJoinEventPayload } from "domain/types/socket/events/game/GameJoinEventPayload";
 import { GameLeaveEventPayload } from "domain/types/socket/events/game/GameLeaveEventPayload";
+import { GameStartEventPayload } from "domain/types/socket/events/game/GameStartEventPayload";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
@@ -39,7 +40,7 @@ export class SocketIOGameController {
     );
     this._socket.on(
       SocketIOGameEvents.START,
-      SocketWrapper.catchErrors<string>(
+      SocketWrapper.catchErrors(
         this.eventEmitter,
         this.handleGameStart.bind(this)
       )
@@ -87,14 +88,25 @@ export class SocketIOGameController {
 
     this.eventEmitter.emit<GameJoinEventPayload>(SocketIOGameEvents.GAME_DATA, {
       players: game.players.map((player) => player.toDTO()),
-      gameState: game.package,
+      gameState: game.gameState,
     });
 
     this._socket.join(dto.gameId);
   }
 
   private async handleGameStart() {
-    //
+    const gameDTO = await this.socketIOGameService.startGame(this._socket.id);
+
+    this.eventEmitter.emit<GameStartEventPayload>(
+      SocketIOGameEvents.START,
+      {
+        currentRound: gameDTO.gameState.currentRound!,
+      },
+      {
+        emitter: SocketEventEmitter.IO,
+        gameId: gameDTO.id,
+      }
+    );
   }
 
   private async handleSocketDisconnect() {

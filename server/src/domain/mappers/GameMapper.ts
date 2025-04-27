@@ -21,9 +21,11 @@ export class GameMapper {
       maxPlayers: game.maxPlayers.toString(),
       package: JSON.stringify(game.package),
       startedAt: game.startedAt ? game.startedAt.getTime().toString() : "",
+      finishedAt: game.finishedAt ? game.finishedAt.getTime().toString() : "",
       roundsCount: game.roundsCount.toString(),
       questionsCount: game.questionsCount.toString(),
       players: JSON.stringify(game.players.map((p) => p.toDTO())),
+      gameState: JSON.stringify(game.gameState),
     };
   }
 
@@ -42,10 +44,12 @@ export class GameMapper {
       currentRound: parseInt(data.currentRound),
       maxPlayers: parseInt(data.maxPlayers),
       startedAt: data.startedAt ? new Date(parseInt(data.startedAt)) : null,
+      finishedAt: data.finishedAt ? new Date(parseInt(data.finishedAt)) : null,
       package: JSON.parse(data.package),
       roundsCount: parseInt(data.roundsCount),
       questionsCount: parseInt(data.questionsCount),
       players: JSON.parse(data.players).map((p: PlayerDTO) => new Player(p)),
+      gameState: JSON.parse(data.gameState),
     });
   }
 }

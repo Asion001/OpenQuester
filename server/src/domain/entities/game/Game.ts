@@ -2,6 +2,7 @@ import { Player } from "domain/entities/game/Player";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { GameImportDTO } from "domain/types/dto/game/GameImportDTO";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
+import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { GetPlayerOptions } from "domain/types/game/GetPlayerOptions";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
@@ -19,10 +20,12 @@ export class Game {
   private _currentRound: number;
   private _maxPlayers: number;
   private _startedAt: Date | null;
+  private _finishedAt: Date | null;
   private _package: PackageDTO;
   private _roundsCount: number;
   private _questionsCount: number;
   private _players: Player[];
+  private _gameState: GameStateDTO;
 
   constructor(data: GameImportDTO) {
     this._id = data.id;
@@ -34,10 +37,12 @@ export class Game {
     this._currentRound = data.currentRound;
     this._maxPlayers = data.maxPlayers;
     this._startedAt = data.startedAt;
+    this._finishedAt = data.finishedAt;
     this._package = data.package;
     this._roundsCount = data.roundsCount;
     this._questionsCount = data.questionsCount;
     this._players = data.players;
+    this._gameState = data.gameState;
   }
 
   // Getters
@@ -77,6 +82,10 @@ export class Game {
     return this._startedAt;
   }
 
+  public set startedAt(startedAt: Date | null) {
+    this._startedAt = startedAt;
+  }
+
   public get packageId() {
     return this._package.id;
   }
@@ -99,6 +108,18 @@ export class Game {
 
   public get playersCount() {
     return this._players.length;
+  }
+
+  public get gameState() {
+    return this._gameState;
+  }
+
+  public set gameState(gameState: GameStateDTO) {
+    this._gameState = gameState;
+  }
+
+  public get finishedAt() {
+    return this._finishedAt;
   }
 
   public hasPlayer(userId: number): boolean {

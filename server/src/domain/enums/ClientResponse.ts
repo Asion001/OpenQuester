@@ -20,11 +20,13 @@ export enum ClientResponse {
   DISCORD_AUTH_FAILED = "discord_auth_failed",
   OAUTH_PROVIDER_NOT_SUPPORTED = "oauth_provider_not_supported",
   SESSION_SAVING_ERROR = "session_saving_error",
+  SOCKET_LOGGED_IN = "socket_logged_in",
 
   // Validation
   VALIDATION_ERROR = "validation_error",
   BAD_USER_ID = "bad_user_id",
   NO_AVATAR = "no_avatar",
+  CANNOT_PARSE_USER_DATA = "cannot_parse_user_data",
 
   // Package
   NO_CONTENT_ROUNDS = "no_content_rounds",
@@ -56,6 +58,8 @@ export enum ClientResponse {
   YOU_ARE_RESTRICTED = "you_are_restricted",
   YOU_ARE_MUTED = "you_are_muted",
   ONLY_SHOWMAN_CAN_START = "only_showman_can_start",
+  GAME_ALREADY_STARTED = "game_already_started",
+  BAD_ROUND_RETRIEVAL = "bad_round_retrieval",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

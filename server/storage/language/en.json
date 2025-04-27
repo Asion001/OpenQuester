@@ -47,5 +47,9 @@
   "you_are_muted": "You are muted in this chat",
   "showman_is_taken": "Showman role for this game is already taken",
   "order_duplicated": "Order duplicate in %name - order number %order",
-  "only_showman_can_start": "Only showman can start the game"
+  "only_showman_can_start": "Only showman can start the game",
+  "game_already_started": "Game already started",
+  "socket_logged_in": "Socket already logged in",
+  "cannot_parse_user_data": "Unable to parse user data",
+  "bad_round_retrieval": "Something went wrong during round retrieval"
 }

@@ -1,7 +1,7 @@
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
-import { PackageDTO } from "domain/types/dto/package/PackageDTO";
+import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
 
 export interface GameJoinEventPayload {
   players: PlayerDTO[];
-  gameState: PackageDTO; // TODO: Change to game state later
+  gameState: GameStateDTO;
 }

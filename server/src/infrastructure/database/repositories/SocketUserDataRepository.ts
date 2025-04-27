@@ -4,17 +4,16 @@ import {
 } from "domain/constants/socket";
 import { SocketRedisUserUpdateDTO } from "domain/types/dto/user/SocketRedisUserUpdateDTO";
 import { SocketRedisUserData } from "domain/types/user/SocketRedisUserData";
-import { RedisRepository } from "infrastructure/database/repositories/RedisRepository";
+import { RedisService } from "infrastructure/services/redis/RedisService";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class SocketUserDataRepository {
-  // TODO: Use service
-  constructor(private readonly redisRepository: RedisRepository) {
+  constructor(private readonly redisService: RedisService) {
     //
   }
 
   public async getRaw(socketId: string) {
-    return this.redisRepository.hgetall(this._getKey(socketId));
+    return this.redisService.hgetall(this._getKey(socketId));
   }
 
   public async getSocketData(
@@ -27,33 +26,33 @@ export class SocketUserDataRepository {
       : null;
   }
 
-  public async set(socketId: string, userId: number) {
-    this.redisRepository.hset(
+  public async set(
+    socketId: string,
+    data: { userId: number; language: string }
+  ) {
+    this.redisService.hset(
       this._getKey(socketId),
       {
-        id: userId,
+        id: data.userId,
+        language: data.language,
       },
       SOCKET_GAME_AUTH_TTL
     );
   }
 
   public async update(socketId: string, data: SocketRedisUserUpdateDTO) {
-    this.redisRepository.hset(
-      this._getKey(socketId),
-      data,
-      SOCKET_GAME_AUTH_TTL
-    );
+    this.redisService.hset(this._getKey(socketId), data, SOCKET_GAME_AUTH_TTL);
   }
 
   public async remove(socketId: string) {
-    this.redisRepository.del(this._getKey(socketId));
+    this.redisService.del(this._getKey(socketId));
   }
 
   /**
    * Cleans up all socket auth sessions since on server restart connections recreated
    */
   public async cleanupAllSession(): Promise<void> {
-    this.redisRepository.cleanupKeys(this._getKey("*"), "socket session");
+    this.redisService.cleanupKeys(this._getKey("*"), "socket session");
   }
 
   private _getKey(socketId: string) {

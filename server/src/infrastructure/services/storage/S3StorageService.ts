@@ -8,6 +8,9 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { type Request } from "express";
 import https from "node:https";
 
+import { FileService } from "application/services/file/FileService";
+import { FileUsageService } from "application/services/file/FileUsageService";
+import { UserService } from "application/services/user/UserService";
 import { UPLOAD_FILE_LINK_EXPIRES_IN } from "domain/constants/storage";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { FileSource } from "domain/enums/file/FileSource";
@@ -22,9 +25,6 @@ import { type File } from "infrastructure/database/models/File";
 import { type Package } from "infrastructure/database/models/package/Package";
 import { Permission } from "infrastructure/database/models/Permission";
 import { type User } from "infrastructure/database/models/User";
-import { FileRepository } from "infrastructure/database/repositories/FileRepository";
-import { FileUsageRepository } from "infrastructure/database/repositories/FileUsageRepository";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
 import { Logger } from "infrastructure/utils/Logger";
 import { StorageUtils } from "infrastructure/utils/StorageUtils";
@@ -36,9 +36,9 @@ export class S3StorageService {
 
   constructor(
     private readonly s3Context: S3Context,
-    private readonly fileRepository: FileRepository,
-    private readonly fileUsageRepository: FileUsageRepository,
-    private readonly userRepository: UserRepository,
+    private readonly fileService: FileService,
+    private readonly fileUsageService: FileUsageService,
+    private readonly userService: UserService,
     private readonly dependencyService: DependencyService
   ) {
     this._client = new S3Client({
@@ -260,7 +260,7 @@ export class S3StorageService {
       throw new ClientError(ClientResponse.NO_PERMISSION, HttpStatus.FORBIDDEN);
     }
 
-    const file = await this.fileRepository.getFileByFilename(filename);
+    const file = await this.fileService.getFileByFilename(filename);
 
     if (!file) {
       return;
@@ -274,7 +274,7 @@ export class S3StorageService {
     }
 
     const filePath = StorageUtils.parseFilePath(filename);
-    this.fileRepository.removeFile(filename);
+    this.fileService.removeFile(filename);
 
     const command = new DeleteObjectCommand({
       Bucket: this.s3Context.bucket,
@@ -288,7 +288,7 @@ export class S3StorageService {
     filename: string,
     usage: UsageEntries
   ) {
-    const user = await this.userRepository.getUserByRequest(req, {
+    const user = await this.userService.getUserByRequest(req, {
       select: ["id"],
       relations: ["permissions"],
       relationSelects: { permissions: ["id", "name"] },
@@ -320,23 +320,24 @@ export class S3StorageService {
 
   private async _deleteUserAvatar(user: User) {
     if (user.avatar) {
-      user.avatar = undefined;
-      await this.userRepository.update(user);
+      await this.userService.update(user, {
+        avatar: undefined,
+      });
     }
   }
 
   private async _deleteAvatarUsage(filename: string, user: User) {
-    const file = await this.fileRepository.getFileByFilename(filename);
+    const file = await this.fileService.getFileByFilename(filename);
     if (file) {
-      await this.fileUsageRepository.deleteUsage(file, user);
+      await this.fileUsageService.deleteUsage(file, user);
     }
   }
 
   private async _writeUsage(file: File, user?: User, pack?: Package) {
-    return this.fileUsageRepository.writeUsage(file, user, pack);
+    return this.fileUsageService.writeUsage(file, user, pack);
   }
 
   private async _writeFile(path: string, filename: string, source: FileSource) {
-    return this.fileRepository.writeFile(path, filename, source);
+    return this.fileService.writeFile(path, filename, source);
   }
 }

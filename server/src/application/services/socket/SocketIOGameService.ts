@@ -4,6 +4,9 @@ import { Game } from "domain/entities/game/Game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
+import { GameStateMapper } from "domain/mappers/GameStateMapper";
+import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
+import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { GameChatMessageData } from "domain/types/game/GameChatMessageData";
 import { GameRoomLeaveData } from "domain/types/game/GameRoomLeaveData";
@@ -11,11 +14,12 @@ import { PlayerRole } from "domain/types/game/PlayerRole";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
 import { GameJoinResult } from "domain/types/socket/game/GameJoinResult";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
-import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
+import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class SocketIOGameService {
   constructor(
-    private readonly socketUserDataRepository: SocketUserDataRepository,
+    private readonly socketUserDataService: SocketUserDataService,
     private readonly gameRepository: GameRepository,
     private readonly userService: UserService
   ) {
@@ -58,7 +62,7 @@ export class SocketIOGameService {
       throw new ClientError(ClientResponse.YOU_ARE_BANNED);
     }
 
-    await this.socketUserDataRepository.update(socketId, {
+    await this.socketUserDataService.update(socketId, {
       id: JSON.stringify(user.id),
       gameId: data.gameId,
     });
@@ -81,6 +85,26 @@ export class SocketIOGameService {
     if (player?.role !== PlayerRole.SHOWMAN) {
       throw new ClientError(ClientResponse.ONLY_SHOWMAN_CAN_START);
     }
+
+    if (ValueUtils.isValidDate(game.startedAt)) {
+      throw new ClientError(ClientResponse.GAME_ALREADY_STARTED);
+    }
+
+    const gameState: GameStateDTO = {
+      currentRound: GameStateMapper.getGameRound(game.package, 0),
+      isPaused: false,
+      questionState: QuestionState.CHOOSING,
+      answeredPlayers: null,
+      answeringPlayer: null,
+      currentQuestion: null,
+      timer: null,
+    };
+
+    game.startedAt = new Date();
+    game.gameState = gameState;
+    await this.gameRepository.updateGame(game);
+
+    return game;
   }
 
   public async leaveLobby(socketId: string): Promise<GameRoomLeaveData> {
@@ -96,7 +120,7 @@ export class SocketIOGameService {
 
     game.removePlayer(userData.id);
 
-    await this.socketUserDataRepository.update(socketId, {
+    await this.socketUserDataService.update(socketId, {
       id: JSON.stringify(userData.id),
       gameId: JSON.stringify(null),
     });
@@ -136,13 +160,11 @@ export class SocketIOGameService {
   }
 
   public async removePlayerAuth(socketId: string) {
-    return this.socketUserDataRepository.remove(socketId);
+    return this.socketUserDataService.remove(socketId);
   }
 
   private async _fetchUserSocketData(socketId: string) {
-    const userData = await this.socketUserDataRepository.getSocketData(
-      socketId
-    );
+    const userData = await this.socketUserDataService.getSocketData(socketId);
 
     if (!userData) {
       throw new ClientError(ClientResponse.SOCKET_USER_NOT_AUTHENTICATED);

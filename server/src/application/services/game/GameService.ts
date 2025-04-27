@@ -11,13 +11,13 @@ import { GameEvent, GameEventDTO } from "domain/types/dto/game/GameEventDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
 import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
+import { UserService } from "../user/UserService";
 
 export class GameService {
   constructor(
     private readonly io: IOServer,
     private readonly gameRepository: GameRepository,
-    private readonly userRepository: UserRepository
+    private readonly userService: UserService
   ) {
     //
   }
@@ -47,7 +47,7 @@ export class GameService {
   }
 
   public async create(req: Request, gameData: GameCreateDTO) {
-    const createdByUser = await this.userRepository.getUserByRequest(req, {
+    const createdByUser = await this.userService.getUserByRequest(req, {
       select: ["id", "username"],
       relations: [],
     });
@@ -67,6 +67,10 @@ export class GameService {
     this._emitSocketGameCreated(gameDataOutput);
 
     return gameDataOutput;
+  }
+
+  public async cleanupAllGames() {
+    return this.gameRepository.cleanupAllGames();
   }
 
   private _emitSocketGameCreated(gameData: GameListItemDTO) {

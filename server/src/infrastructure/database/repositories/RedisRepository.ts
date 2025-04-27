@@ -11,10 +11,6 @@ export class RedisRepository {
     this._client = RedisConfig.getClient();
   }
 
-  public get connected() {
-    return this._client.status === "ready";
-  }
-
   /**
    * @param key storing key. Example of key with namespace: "cache:users:1"
    * @param expire expire time in seconds

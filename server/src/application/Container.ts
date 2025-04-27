@@ -55,6 +55,8 @@ export const CONTAINER_TYPES = {
   PermissionRepository: Symbol("PermissionRepository"),
   PackageRepository: Symbol("PackageRepository"),
   PackageTagRepository: Symbol("PackageTagRepository"),
+  SocketUserDataRepository: Symbol("SocketUserDataRepository"),
+  RedisRepository: Symbol("RedisRepository"),
 
   // Services
   UserService: Symbol("UserService"),
@@ -62,8 +64,11 @@ export const CONTAINER_TYPES = {
   TranslateService: Symbol("TranslateService"),
   DependencyService: Symbol("DependencyService"),
   S3StorageService: Symbol("S3StorageService"),
-  RedisService: Symbol("RedisService"),
-  SocketUserDataRepository: Symbol("SocketUserDataRepository"),
   SocketIOGameService: Symbol("SocketIOGameService"),
   PackageService: Symbol("PackageService"),
+  RedisService: Symbol("RedisService"),
+  SocketUserDataService: Symbol("SocketUserDataService"),
+  FileService: Symbol("FileService"),
+  FileUsageService: Symbol("FileUsageService"),
+  PackageTagService: Symbol("PackageTagService"),
 };

@@ -3,8 +3,11 @@ import { Server as IOServer } from "socket.io";
 
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { StorageContextBuilder } from "application/context/storage/StorageContextBuilder";
+import { FileService } from "application/services/file/FileService";
+import { FileUsageService } from "application/services/file/FileUsageService";
 import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
+import { PackageTagService } from "application/services/package/PackageTagService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { TranslateService } from "application/services/text/TranslateService";
 import { UserService } from "application/services/user/UserService";
@@ -20,12 +23,14 @@ import { FileRepository } from "infrastructure/database/repositories/FileReposit
 import { FileUsageRepository } from "infrastructure/database/repositories/FileUsageRepository";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
 import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
+import { PackageTagRepository } from "infrastructure/database/repositories/PackageTagRepository";
 import { PermissionRepository } from "infrastructure/database/repositories/PermissionRepository";
 import { RedisRepository } from "infrastructure/database/repositories/RedisRepository";
 import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
-import { PackageTagRepository } from "infrastructure/database/repositories/TagRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
+import { RedisService } from "infrastructure/services/redis/RedisService";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 
 export class DIConfig {
@@ -51,10 +56,18 @@ export class DIConfig {
     );
 
     Container.register(
+      CONTAINER_TYPES.FileUsageService,
+      new FileUsageService(
+        Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository)
+      ),
+      "service"
+    );
+
+    Container.register(
       CONTAINER_TYPES.UserRepository,
       new UserRepository(
         db.getRepository(User),
-        Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository)
+        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
       ),
       "repository"
     );
@@ -66,9 +79,27 @@ export class DIConfig {
     );
 
     Container.register(
+      CONTAINER_TYPES.PackageTagService,
+      new PackageTagService(
+        Container.get<PackageTagRepository>(
+          CONTAINER_TYPES.PackageTagRepository
+        )
+      ),
+      "service"
+    );
+
+    Container.register(
       CONTAINER_TYPES.FileRepository,
       new FileRepository(db.getRepository(File)),
       "repository"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.FileService,
+      new FileService(
+        Container.get<FileRepository>(CONTAINER_TYPES.FileRepository)
+      ),
+      "service"
     );
 
     Container.register(
@@ -76,10 +107,8 @@ export class DIConfig {
       new PackageRepository(
         db,
         db.getRepository(Package),
-        Container.get<PackageTagRepository>(
-          CONTAINER_TYPES.PackageTagRepository
-        ),
-        Container.get<FileRepository>(CONTAINER_TYPES.FileRepository)
+        Container.get<PackageTagService>(CONTAINER_TYPES.PackageTagService),
+        Container.get<FileService>(CONTAINER_TYPES.FileService)
       ),
       "repository"
     );
@@ -87,8 +116,8 @@ export class DIConfig {
     Container.register(
       CONTAINER_TYPES.DependencyService,
       new DependencyService(
-        Container.get<FileRepository>(CONTAINER_TYPES.FileRepository),
-        Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository)
+        Container.get<FileService>(CONTAINER_TYPES.FileService),
+        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
       ),
       "service"
     );
@@ -97,9 +126,9 @@ export class DIConfig {
       CONTAINER_TYPES.S3StorageService,
       new S3StorageService(
         StorageContextBuilder.buildS3Context(),
-        Container.get<FileRepository>(CONTAINER_TYPES.FileRepository),
-        Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository),
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
+        Container.get<FileService>(CONTAINER_TYPES.FileService),
+        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService),
+        Container.get<UserService>(CONTAINER_TYPES.UserService),
         Container.get<DependencyService>(CONTAINER_TYPES.DependencyService)
       ),
       "service"
@@ -115,7 +144,7 @@ export class DIConfig {
       CONTAINER_TYPES.UserService,
       new UserService(
         Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
-        Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository)
+        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
       ),
       "service"
     );
@@ -127,18 +156,26 @@ export class DIConfig {
     );
 
     Container.register(
-      CONTAINER_TYPES.RedisService,
+      CONTAINER_TYPES.RedisRepository,
       new RedisRepository(),
       "repository"
     );
 
     Container.register(
+      CONTAINER_TYPES.RedisService,
+      new RedisService(
+        Container.get<RedisRepository>(CONTAINER_TYPES.RedisRepository)
+      ),
+      "service"
+    );
+
+    Container.register(
       CONTAINER_TYPES.GameRepository,
       new GameRepository(
-        Container.get<RedisRepository>(CONTAINER_TYPES.RedisService),
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService),
         new GameIndexManager(Container.get(CONTAINER_TYPES.Redis)),
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
-        Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
+        Container.get<UserService>(CONTAINER_TYPES.UserService),
+        Container.get<PackageService>(CONTAINER_TYPES.PackageService),
         Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
       ),
       "repository"
@@ -149,7 +186,7 @@ export class DIConfig {
       new GameService(
         Container.get<IOServer>(CONTAINER_TYPES.IO),
         Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository)
+        Container.get<UserService>(CONTAINER_TYPES.UserService)
       ),
       "service"
     );
@@ -157,16 +194,26 @@ export class DIConfig {
     Container.register(
       CONTAINER_TYPES.SocketUserDataRepository,
       new SocketUserDataRepository(
-        Container.get<RedisRepository>(CONTAINER_TYPES.RedisService)
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService)
       ),
       "repository"
     );
 
     Container.register(
-      CONTAINER_TYPES.SocketIOGameService,
-      new SocketIOGameService(
+      CONTAINER_TYPES.SocketUserDataService,
+      new SocketUserDataService(
         Container.get<SocketUserDataRepository>(
           CONTAINER_TYPES.SocketUserDataRepository
+        )
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.SocketIOGameService,
+      new SocketIOGameService(
+        Container.get<SocketUserDataService>(
+          CONTAINER_TYPES.SocketUserDataService
         ),
         Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
         Container.get<UserService>(CONTAINER_TYPES.UserService)
@@ -178,7 +225,7 @@ export class DIConfig {
       CONTAINER_TYPES.PackageService,
       new PackageService(
         Container.get<PackageRepository>(CONTAINER_TYPES.PackageRepository),
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
+        Container.get<UserService>(CONTAINER_TYPES.UserService),
         Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
       ),
       "service"

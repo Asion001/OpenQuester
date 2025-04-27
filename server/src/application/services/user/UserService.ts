@@ -1,3 +1,7 @@
+import { type Request } from "express";
+import { FindOptionsWhere } from "typeorm";
+
+import { FileUsageService } from "application/services/file/FileUsageService";
 import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
@@ -7,15 +11,15 @@ import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
 import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
+import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
-import { FileUsageRepository } from "infrastructure/database/repositories/FileUsageRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly fileUsageRepository: FileUsageRepository
+    private readonly fileUsageService: FileUsageService
   ) {
     //
   }
@@ -48,6 +52,13 @@ export class UserService {
     userId: number,
     selectOptions?: SelectOptions<User>
   ): Promise<UserDTO> {
+    return (await this.getRaw(userId, selectOptions)).toDTO();
+  }
+
+  public async getRaw(
+    userId: number,
+    selectOptions?: SelectOptions<User>
+  ): Promise<User> {
     const user = await this.userRepository.get(userId, {
       select: selectOptions?.select ?? USER_SELECT_FIELDS,
       relations: selectOptions?.relations ?? USER_RELATIONS,
@@ -64,7 +75,32 @@ export class UserService {
       );
     }
 
-    return user.toDTO();
+    return user;
+  }
+
+  public async create(data: RegisterUser) {
+    return this.userRepository.create(data);
+  }
+
+  public async find(
+    where: FindOptionsWhere<User>,
+    selectOptions: SelectOptions<User>
+  ) {
+    return this.userRepository.find(where, selectOptions);
+  }
+
+  public async findOne(
+    where: FindOptionsWhere<User>,
+    selectOptions: SelectOptions<User>
+  ) {
+    return this.userRepository.findOne(where, selectOptions);
+  }
+
+  public findByIds(
+    ids: number[],
+    selectOptions: SelectOptions<User>
+  ): Promise<User[]> {
+    return this.userRepository.findByIds(ids, selectOptions);
   }
 
   /**
@@ -124,12 +160,31 @@ export class UserService {
     await this.userRepository.update(user);
 
     if (updateData.avatar && updateData.avatar.id != previousAvatar?.id) {
-      await this.fileUsageRepository.writeUsage(updateData.avatar, user);
+      await this.fileUsageService.writeUsage(updateData.avatar, user);
       if (previousAvatar) {
-        await this.fileUsageRepository.deleteUsage(previousAvatar, user);
+        await this.fileUsageService.deleteUsage(previousAvatar, user);
       }
     }
 
     return user.toDTO();
+  }
+
+  public async getUserByRequest(
+    req: Request,
+    selectOptions: SelectOptions<User>
+  ) {
+    if (!req.session.userId) {
+      throw new ClientError(
+        ClientResponse.INVALID_SESSION,
+        HttpStatus.UNAUTHORIZED
+      );
+    }
+
+    if (req.user) {
+      return req.user;
+    }
+
+    const id = ValueUtils.validateId(req.session.userId);
+    return this.userRepository.get(id, selectOptions);
   }
 }
