@@ -1,4 +1,5 @@
 import { RedisRepository } from "infrastructure/database/repositories/RedisRepository";
+import { RedisKey, RedisValue } from "ioredis";
 
 export class RedisService {
   constructor(private readonly redisRepository: RedisRepository) {
@@ -86,5 +87,61 @@ export class RedisService {
 
   public async del(key: string): Promise<number> {
     return this.redisRepository.del(key);
+  }
+
+  public async zrem(key: string, members: string) {
+    return this.redisRepository.zrem(key, members);
+  }
+
+  public async srem(key: string, members: string) {
+    return this.redisRepository.srem(key, members);
+  }
+
+  public async zunionstore(
+    destination: string,
+    numKeys: number | string,
+    keys: string[]
+  ) {
+    return this.redisRepository.zunionstore(destination, numKeys, keys);
+  }
+
+  public async zremrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string
+  ) {
+    return this.redisRepository.zremrangebyscore(key, min, max);
+  }
+
+  public async zinterstore(
+    destination: string,
+    numKeys: number,
+    keys: (RedisKey | RedisValue)[]
+  ) {
+    return this.redisRepository.zinterstore(destination, numKeys, keys);
+  }
+
+  public async zrangebylex(key: string, min: string, max: string) {
+    return this.redisRepository.zrangebylex(key, min, max);
+  }
+
+  public async sadd(key: string, members: string[]) {
+    return this.redisRepository.sadd(key, members);
+  }
+
+  public async zadd(key: string, scoreMembers: string[]) {
+    return this.redisRepository.zadd(key, scoreMembers);
+  }
+
+  public async zcard(key: string) {
+    return this.redisRepository.zcard(key);
+  }
+
+  public async zrevrange(key: string, start: number, stop: number) {
+    return this.redisRepository.zrevrange(key, start, stop);
+  }
+
+  public async zrange(key: string, start: number, stop: number) {
+    return this.redisRepository.zrange(key, start, stop);
   }
 }

@@ -1,6 +1,5 @@
 export interface GameStateQuestionDTO {
   order: number;
-  price: number;
-  isHidden: boolean;
+  price: number | null;
   questionComment: string | null;
 }
