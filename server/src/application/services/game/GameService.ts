@@ -6,10 +6,9 @@ import { HttpStatus } from "domain/enums/HttpStatus";
 import { SocketIOEvents } from "domain/enums/SocketIOEvents";
 import { ClientError } from "domain/errors/ClientError";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
-import { GameDTO } from "domain/types/dto/game/GameDTO";
 import { GameEvent, GameEventDTO } from "domain/types/dto/game/GameEventDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
-import { PaginationOptsBase } from "domain/types/pagination/PaginationOpts";
+import { GamePaginationOpts } from "domain/types/pagination/game/GamePaginationOpts";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
 import { UserService } from "../user/UserService";
 
@@ -29,7 +28,7 @@ export class GameService {
     return this.gameRepository.getGame(gameId, updatedTtl);
   }
 
-  public async list(paginationOpts: PaginationOptsBase<GameDTO>) {
+  public async list(paginationOpts: GamePaginationOpts) {
     return this.gameRepository.getAllGames(paginationOpts);
   }
 

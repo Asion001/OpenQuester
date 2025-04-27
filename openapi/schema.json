@@ -720,6 +720,38 @@
             "schema": {
               "$ref": "#/components/schemas/PaginationOffset"
             }
+          },
+          {
+            "name": "createdAtMin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/FilterCreatedAtMin"
+            }
+          },
+          {
+            "name": "createdAtMin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/FilterCreatedAtMax"
+            }
+          },
+          {
+            "name": "isPrivate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/FilterIsPrivate"
+            }
+          },
+          {
+            "name": "titlePrefix",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/PaginationTitlePrefix"
+            }
           }
         ],
         "responses": {
@@ -1285,6 +1317,25 @@
         "type": "integer",
         "examples": [0],
         "minimum": 0
+      },
+      "FilterCreatedAtMin": {
+        "type": "string",
+        "format": "date-time",
+        "examples": ["2024-01-01T00:00:00Z"]
+      },
+      "FilterCreatedAtMax": {
+        "type": "string",
+        "format": "date-time",
+        "examples": ["2024-01-01T12:00:00Z"]
+      },
+      "FilterIsPrivate": {
+        "type": "boolean",
+        "examples": [false]
+      },
+      "PaginationTitlePrefix": {
+        "type": "string",
+        "description": "Search by title prefix (start)",
+        "examples": ["Anime"]
       },
       "PaginationTitle": {
         "type": "string",
@@ -2316,12 +2367,9 @@
             "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
           "price": {
-            "type": "integer",
+            "type": ["integer", "null"],
+            "description": "Price is null only if price is hidden",
             "examples": [200]
-          },
-          "isHidden": {
-            "type": "boolean",
-            "examples": [false]
           },
           "questionComment": {
             "type": "string",
