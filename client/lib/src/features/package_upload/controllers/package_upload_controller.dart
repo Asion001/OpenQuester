@@ -2,25 +2,42 @@ import 'dart:convert';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show ChangeNotifier;
+import 'package:fetch_client/fetch_client.dart';
+import 'package:flutter/foundation.dart' show ChangeNotifier, kIsWasm, kIsWeb;
 import 'package:openquester/common_imports.dart' hide ParseSiqFileWorker;
 import 'package:openquester/workers/upload_isolate.dart'
     deferred as upload_isolate show ParseSiqFileWorker;
 import 'package:siq_file/siq_file.dart';
 
+typedef PackageId = int;
+
 @singleton
 class PackageUploadController extends ChangeNotifier {
   bool loading = false;
 
-  Future<void> pickAndUpload() async {
+  var _progress = 0.0;
+  double get progress => _progress;
+
+  /// Progress part after picking
+  static const _afterPickProgress = 0.1;
+  static const _afterParseProgress = 0.15;
+
+  void _setProgress(double value) {
+    _progress = value;
+    notifyListeners();
+  }
+
+  Future<PackageId?> pickAndUpload() async {
     try {
+      // Reset state
       loading = true;
-      notifyListeners();
+      _setProgress(0);
+
       final fileResult = await FileService.pickFile();
       final file = fileResult?.files.firstOrNull;
-      if (file == null) return;
+      if (file == null) return null;
 
-      await upload(file);
+      return await upload(file);
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       rethrow;
@@ -30,18 +47,22 @@ class PackageUploadController extends ChangeNotifier {
     }
   }
 
-  Future<void> upload(PlatformFile file) async {
+  /// return [int] is package id
+  Future<PackageId> upload(PlatformFile file) async {
     final fileData = await file.xFile.readAsBytes();
-    await _upload(fileData);
+    final result = await _upload(fileData);
+    return result;
   }
 
-  Future<void> _upload(Uint8List fileData) async {
+  Future<PackageId> _upload(Uint8List fileData) async {
     await upload_isolate.loadLibrary();
     final worker = upload_isolate.ParseSiqFileWorker();
     final parser = SiqArchiveParser();
     try {
       await worker.start();
       final rawBody = await worker.compute(fileData);
+
+      _setProgress(_afterPickProgress);
 
       final response = jsonDecode(rawBody) as Map<String, dynamic>;
       final body = PackageCreationInput.fromJson(
@@ -60,6 +81,7 @@ class PackageUploadController extends ChangeNotifier {
         }),
       );
       await _uploadFiles(links, parser);
+      return result.id;
     } finally {
       worker
         ..stop()
@@ -73,35 +95,75 @@ class PackageUploadController extends ChangeNotifier {
     SiqArchiveParser parser,
   ) async {
     logger.d('Uploading ${links.length} files...');
-    final client = Dio(
-      BaseOptions(
-        persistentConnection: false,
-        validateStatus: (status) {
-          if ({520, 412}.contains(status)) return true;
-          return status != null && status >= 200 && status < 300;
-        },
-      ),
-    );
+    _setProgress(_afterParseProgress);
+
+    bool validateStatus(int? status) {
+      if ({412}.contains(status)) return true;
+      return status != null && status >= 200 && status < 300;
+    }
+
+    final client = kIsWeb
+        ? FetchClient(
+            mode: RequestMode.cors,
+            cache: RequestCache.noCache,
+            credentials: RequestCredentials.cors,
+            // ignore: avoid_redundant_argument_values
+            streamRequests: kIsWasm,
+          )
+        : Dio(
+            BaseOptions(
+              persistentConnection: false,
+              validateStatus: validateStatus,
+            ),
+          );
 
     try {
-      for (final link in links) {
+      for (var fileIndex = 0; fileIndex < links.length; fileIndex++) {
+        // Set file upload progress
+        final filesUploadProgress = fileIndex / links.length * 1;
+        _setProgress(
+          _afterParseProgress + (filesUploadProgress - _afterParseProgress),
+        );
+
+        final link = links[fileIndex];
+
         final archiveFile = parser.filesHash[link.key];
         final file = archiveFile?.content;
         await archiveFile?.close();
-        if (file == null) continue;
-        final fileHeaders = _fileHeaders(link.key);
 
-        await client.put<void>(
-          link.value,
-          data: file,
-          options: Options(
-            headers: {
-              ...fileHeaders,
-              'Content-Length': file.lengthInBytes.toString(),
-            },
-            contentType: 'application/octet-stream',
-          ),
-        );
+        if (file == null) continue;
+
+        final fileHeaders = _fileHeaders(link.key);
+        final headers = {
+          ...fileHeaders,
+          'Content-Length': file.lengthInBytes.toString(),
+          'content-type': 'application/octet-stream',
+        };
+
+        if (client is FetchClient) {
+          try {
+            final response = await client.put(
+              Uri.parse(link.value),
+              body: file,
+              headers: headers,
+            );
+
+            throwIf(!validateStatus(response.statusCode), response.body);
+          } catch (e, s) {
+            logger.e(e, stackTrace: s);
+          }
+        } else if (client is Dio) {
+          try {
+            await client.put<void>(
+              link.value,
+              data: Stream.value(file),
+              options: Options(headers: headers),
+            );
+          } on DioException catch (e) {
+            // Ignore "Peer reset connection" error
+            if (e.type != DioExceptionType.unknown) rethrow;
+          }
+        }
       }
       logger.d('All files uploaded!');
     } catch (e, s) {

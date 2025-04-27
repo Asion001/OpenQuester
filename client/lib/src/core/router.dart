@@ -4,7 +4,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
-@AutoRouterConfig(deferredLoading: true)
+@AutoRouterConfig(
+  deferredLoading: true,
+  replaceInRouteName: 'Dialog|Page|Screen,Route',
+)
 @singleton
 class AppRouter extends RootStackRouter {
   @override
@@ -12,6 +15,7 @@ class AppRouter extends RootStackRouter {
     return [
       AutoRoute(page: HomeTabsRoute.page, path: '/', initial: true),
       AutoRoute(page: ProfileRoute.page, path: '/profile'),
+      BlurDialogRoute<void>(page: CreateGameRoute.page, path: '/games/create'),
       BlurDialogRoute<void>(
         page: GamePreviewRoute.page,
         path: '/games/:gameId',
@@ -19,7 +23,6 @@ class AppRouter extends RootStackRouter {
       AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId/lobby'),
       AutoRoute(page: ClickerRoute.page, path: '/clicker'),
       AutoRoute(page: TestScreenRoute.page, path: '/test'),
-      AutoRoute(page: PackageUploadRoute.page, path: '/upload-package'),
     ];
   }
 

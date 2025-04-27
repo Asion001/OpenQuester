@@ -35,6 +35,21 @@ extension IPackageItemAgeRestrictionX on AgeRestriction {
 extension WidgetX on Widget {
   Widget shrink() =>
       Row(mainAxisSize: MainAxisSize.min, children: [flexible()]);
+
+  Widget withTitle(
+    String title, {
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start,
+  }) {
+    return Column(
+      spacing: 4,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: crossAxisAlignment,
+      children: [
+        Text(title),
+        this,
+      ],
+    );
+  }
 }
 
 extension NumberPaddings on num {
@@ -52,5 +67,16 @@ extension SocketX on Socket {
   void reconnect() {
     disconnect();
     connect();
+  }
+}
+
+extension AgeRestrictionX on AgeRestriction {
+  String f() {
+    return switch (this) {
+      AgeRestriction.a18 => '18+',
+      AgeRestriction.a16 => '16+',
+      AgeRestriction.a12 => '12+',
+      _ => LocaleKeys.none.tr(),
+    };
   }
 }

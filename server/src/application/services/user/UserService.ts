@@ -9,7 +9,7 @@ import { ClientError } from "domain/errors/ClientError";
 import { UpdateUserDTO } from "domain/types/dto/user/UpdateUserDTO";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
+import { PaginationOptsBase } from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
 import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
@@ -27,7 +27,7 @@ export class UserService {
    * Get list of all available users in DB
    */
   public async list(
-    paginationOpts: PaginationOpts<User>
+    paginationOpts: PaginationOptsBase<User>
   ): Promise<PaginatedResult<UserDTO[]>> {
     const usersListPaginated = await this.userRepository.list(paginationOpts, {
       select: USER_SELECT_FIELDS,

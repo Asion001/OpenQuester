@@ -10,6 +10,7 @@ _$PackageQuestionUnionSimpleImpl _$$PackageQuestionUnionSimpleImplFromJson(
         Map<String, dynamic> json) =>
     _$PackageQuestionUnionSimpleImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -30,6 +31,7 @@ Map<String, dynamic> _$$PackageQuestionUnionSimpleImplToJson(
         _$PackageQuestionUnionSimpleImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
@@ -46,6 +48,7 @@ _$PackageQuestionUnionStakeImpl _$$PackageQuestionUnionStakeImplFromJson(
         Map<String, dynamic> json) =>
     _$PackageQuestionUnionStakeImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -70,6 +73,7 @@ Map<String, dynamic> _$$PackageQuestionUnionStakeImplToJson(
         _$PackageQuestionUnionStakeImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
@@ -88,6 +92,7 @@ _$PackageQuestionUnionSecretImpl _$$PackageQuestionUnionSecretImplFromJson(
         Map<String, dynamic> json) =>
     _$PackageQuestionUnionSecretImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -114,6 +119,7 @@ Map<String, dynamic> _$$PackageQuestionUnionSecretImplToJson(
         _$PackageQuestionUnionSecretImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
@@ -133,6 +139,7 @@ _$PackageQuestionUnionNoRiskImpl _$$PackageQuestionUnionNoRiskImplFromJson(
         Map<String, dynamic> json) =>
     _$PackageQuestionUnionNoRiskImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -148,13 +155,14 @@ _$PackageQuestionUnionNoRiskImpl _$$PackageQuestionUnionNoRiskImplFromJson(
       subType: NoRiskQuestionSubType.fromJson(json['subType'] as String),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
-      priceMultiplier: (json['priceMultiplier'] as num?)?.toDouble() ?? 1.5,
+      priceMultiplier: json['priceMultiplier'] as String? ?? '1.5',
     );
 
 Map<String, dynamic> _$$PackageQuestionUnionNoRiskImplToJson(
         _$PackageQuestionUnionNoRiskImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
@@ -173,6 +181,7 @@ _$PackageQuestionUnionChoiceImpl _$$PackageQuestionUnionChoiceImplFromJson(
         Map<String, dynamic> json) =>
     _$PackageQuestionUnionChoiceImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -198,6 +207,7 @@ Map<String, dynamic> _$$PackageQuestionUnionChoiceImplToJson(
         _$PackageQuestionUnionChoiceImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
@@ -217,6 +227,7 @@ _$PackageQuestionUnionHiddenImpl _$$PackageQuestionUnionHiddenImplFromJson(
         Map<String, dynamic> json) =>
     _$PackageQuestionUnionHiddenImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -237,6 +248,7 @@ Map<String, dynamic> _$$PackageQuestionUnionHiddenImplToJson(
         _$PackageQuestionUnionHiddenImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,

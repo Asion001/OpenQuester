@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
-class LoadingButtonBuilder extends StatelessWidget {
+class LoadingButtonBuilder extends StatefulWidget {
   const LoadingButtonBuilder({
     required this.onPressed,
     required this.child,
@@ -19,8 +19,14 @@ class LoadingButtonBuilder extends StatelessWidget {
   ) builder;
 
   @override
+  State<LoadingButtonBuilder> createState() => _LoadingButtonBuilderState();
+}
+
+class _LoadingButtonBuilderState extends State<LoadingButtonBuilder> {
+  bool loading = false;
+
+  @override
   Widget build(BuildContext context) {
-    var loading = false;
     const loader = CircularProgressIndicator.adaptive();
 
     Future<void> onPressed(
@@ -39,14 +45,10 @@ class LoadingButtonBuilder extends StatelessWidget {
       }
     }
 
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return builder(
-          context,
-          loading ? loader : child,
-          () async => onPressed(setState, this.onPressed),
-        );
-      },
+    return widget.builder(
+      context,
+      loading ? loader : widget.child,
+      () async => onPressed(setState, widget.onPressed),
     );
   }
 }

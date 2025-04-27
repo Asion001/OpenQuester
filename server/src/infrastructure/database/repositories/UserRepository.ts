@@ -4,7 +4,7 @@ import { FileUsageService } from "application/services/file/FileUsageService";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
 import {
-  PaginationOpts,
+  PaginationOptsBase,
   PaginationOrder,
 } from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
@@ -66,7 +66,7 @@ export class UserRepository {
   }
 
   public async list(
-    paginationOpts: PaginationOpts<User>,
+    paginationOpts: PaginationOptsBase<User>,
     selectOptions: SelectOptions<User>
   ) {
     const alias = this.repository.metadata.name.toLowerCase();

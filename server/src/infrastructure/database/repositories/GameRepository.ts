@@ -20,7 +20,7 @@ import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
+import { PaginationOptsBase } from "domain/types/pagination/PaginationOpts";
 import { ShortUserInfo } from "domain/types/user/ShortUserInfo";
 import { GameIndexManager } from "infrastructure/database/managers/game/GameIndexManager";
 import { Package } from "infrastructure/database/models/package/Package";
@@ -93,7 +93,7 @@ export class GameRepository {
   }
 
   public async getAllGames(
-    paginationOpts: PaginationOpts<GameDTO>
+    paginationOpts: PaginationOptsBase<GameDTO>
   ): Promise<PaginatedResult<GameListItemDTO[]>> {
     // TODO: Implement filters options and add more fields like maxPlayers
     const { ids, total } = await this.gameIndexManager.findGamesByIndex(

@@ -34,6 +34,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   const factory PackageQuestionUnion.simple({
     required int? id,
 
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
+
     /// Point value of the question
     required int price,
 
@@ -68,6 +71,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('stake')
   const factory PackageQuestionUnion.stake({
     required int? id,
+
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
 
     /// Point value of the question
     required int price,
@@ -111,6 +117,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   const factory PackageQuestionUnion.secret({
     required int? id,
 
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
+
     /// Point value of the question
     required int price,
 
@@ -153,6 +162,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   const factory PackageQuestionUnion.noRisk({
     required int? id,
 
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
+
     /// Point value of the question
     required int price,
 
@@ -187,13 +199,16 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     int answerDelay,
 
     /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-    @Default(1.5)
-    double priceMultiplier,
+    @Default('1.5')
+    String priceMultiplier,
   }) = PackageQuestionUnionNoRisk;
 
   @FreezedUnionValue('choice')
   const factory PackageQuestionUnion.choice({
     required int? id,
+
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
 
     /// Point value of the question
     required int price,
@@ -236,6 +251,9 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('hidden')
   const factory PackageQuestionUnion.hidden({
     required int? id,
+
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
 
     /// Point value of the question
     required int price,

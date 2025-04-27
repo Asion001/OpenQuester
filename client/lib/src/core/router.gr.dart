@@ -14,13 +14,13 @@ import 'package:flutter/material.dart' as _i9;
 import 'package:openquester/openquester.dart' as _i10;
 import 'package:openquester/src/features/clicker/clicker_page.dart'
     deferred as _i1;
+import 'package:openquester/src/features/create_game/view/create_game_dialog.dart'
+    as _i2;
 import 'package:openquester/src/features/game_lobby/view/game_lobby_screen.dart'
-    deferred as _i2;
+    deferred as _i3;
 import 'package:openquester/src/features/game_preview/view/game_preview.dart'
-    as _i3;
+    as _i4;
 import 'package:openquester/src/features/home_tabs/home_tabs.dart'
-    deferred as _i4;
-import 'package:openquester/src/features/package_upload/view/package_upload_screen.dart'
     deferred as _i5;
 import 'package:openquester/src/features/profile/view/profile_screen.dart'
     deferred as _i6;
@@ -43,7 +43,23 @@ class ClickerRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i2.GameLobbyScreen]
+/// [_i2.CreateGameDialog]
+class CreateGameRoute extends _i8.PageRouteInfo<void> {
+  const CreateGameRoute({List<_i8.PageRouteInfo>? children})
+      : super(CreateGameRoute.name, initialChildren: children);
+
+  static const String name = 'CreateGameRoute';
+
+  static _i8.PageInfo page = _i8.PageInfo(
+    name,
+    builder: (data) {
+      return const _i2.CreateGameDialog();
+    },
+  );
+}
+
+/// generated route for
+/// [_i3.GameLobbyScreen]
 class GameLobbyRoute extends _i8.PageRouteInfo<GameLobbyRouteArgs> {
   GameLobbyRoute({
     required String gameId,
@@ -67,8 +83,8 @@ class GameLobbyRoute extends _i8.PageRouteInfo<GameLobbyRouteArgs> {
             GameLobbyRouteArgs(gameId: pathParams.getString('gameId')),
       );
       return _i8.DeferredWidget(
-        _i2.loadLibrary,
-        () => _i2.GameLobbyScreen(gameId: args.gameId, key: args.key),
+        _i3.loadLibrary,
+        () => _i3.GameLobbyScreen(gameId: args.gameId, key: args.key),
       );
     },
   );
@@ -88,7 +104,7 @@ class GameLobbyRouteArgs {
 }
 
 /// generated route for
-/// [_i3.GamePreviewScreen]
+/// [_i4.GamePreviewScreen]
 class GamePreviewRoute extends _i8.PageRouteInfo<GamePreviewRouteArgs> {
   GamePreviewRoute({
     required String gameId,
@@ -112,7 +128,7 @@ class GamePreviewRoute extends _i8.PageRouteInfo<GamePreviewRouteArgs> {
         orElse: () =>
             GamePreviewRouteArgs(gameId: pathParams.getString('gameId')),
       );
-      return _i3.GamePreviewScreen(
+      return _i4.GamePreviewScreen(
         gameId: args.gameId,
         item: args.item,
         key: args.key,
@@ -137,7 +153,7 @@ class GamePreviewRouteArgs {
 }
 
 /// generated route for
-/// [_i4.HomeTabsScreen]
+/// [_i5.HomeTabsScreen]
 class HomeTabsRoute extends _i8.PageRouteInfo<void> {
   const HomeTabsRoute({List<_i8.PageRouteInfo>? children})
       : super(HomeTabsRoute.name, initialChildren: children);
@@ -147,26 +163,7 @@ class HomeTabsRoute extends _i8.PageRouteInfo<void> {
   static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
-      return _i8.DeferredWidget(_i4.loadLibrary, () => _i4.HomeTabsScreen());
-    },
-  );
-}
-
-/// generated route for
-/// [_i5.PackageUploadScreen]
-class PackageUploadRoute extends _i8.PageRouteInfo<void> {
-  const PackageUploadRoute({List<_i8.PageRouteInfo>? children})
-      : super(PackageUploadRoute.name, initialChildren: children);
-
-  static const String name = 'PackageUploadRoute';
-
-  static _i8.PageInfo page = _i8.PageInfo(
-    name,
-    builder: (data) {
-      return _i8.DeferredWidget(
-        _i5.loadLibrary,
-        () => _i5.PackageUploadScreen(),
-      );
+      return _i8.DeferredWidget(_i5.loadLibrary, () => _i5.HomeTabsScreen());
     },
   );
 }

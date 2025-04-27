@@ -1,6 +1,6 @@
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
+import { PaginationOptsBase } from "domain/types/pagination/PaginationOpts";
 
 export interface PaginationSchemaOpts<T> {
-  data: PaginationOpts<T>;
+  data: PaginationOptsBase<T>;
   possibleSortByFields: (keyof T)[];
 }

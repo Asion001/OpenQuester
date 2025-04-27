@@ -22,6 +22,9 @@ PackageQuestion _$PackageQuestionFromJson(Map<String, dynamic> json) {
 mixin _$PackageQuestion {
   int? get id => throw _privateConstructorUsedError;
 
+  /// Order of the question in the theme, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
+
   /// Point value of the question
   int get price => throw _privateConstructorUsedError;
 
@@ -69,6 +72,7 @@ abstract class $PackageQuestionCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -96,6 +100,7 @@ class _$PackageQuestionCopyWithImpl<$Res, $Val extends PackageQuestion>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -111,6 +116,10 @@ class _$PackageQuestionCopyWithImpl<$Res, $Val extends PackageQuestion>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -161,6 +170,7 @@ abstract class _$$PackageQuestionImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -186,6 +196,7 @@ class __$$PackageQuestionImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -201,6 +212,10 @@ class __$$PackageQuestionImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -246,6 +261,7 @@ class __$$PackageQuestionImplCopyWithImpl<$Res>
 class _$PackageQuestionImpl implements _PackageQuestion {
   const _$PackageQuestionImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -263,6 +279,10 @@ class _$PackageQuestionImpl implements _PackageQuestion {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -322,7 +342,7 @@ class _$PackageQuestionImpl implements _PackageQuestion {
 
   @override
   String toString() {
-    return 'PackageQuestion(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 
   @override
@@ -331,6 +351,7 @@ class _$PackageQuestionImpl implements _PackageQuestion {
         (other.runtimeType == runtimeType &&
             other is _$PackageQuestionImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -354,6 +375,7 @@ class _$PackageQuestionImpl implements _PackageQuestion {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -384,6 +406,7 @@ class _$PackageQuestionImpl implements _PackageQuestion {
 abstract class _PackageQuestion implements PackageQuestion {
   const factory _PackageQuestion(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -399,6 +422,10 @@ abstract class _PackageQuestion implements PackageQuestion {
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override

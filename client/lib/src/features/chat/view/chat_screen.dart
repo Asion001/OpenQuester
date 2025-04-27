@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:openquester/common_imports.dart';
 
@@ -14,11 +15,17 @@ class ChatScreen extends WatchingWidget {
     }
 
     return Chat(
-      onSendPressed: controller.onSendPressed,
-      messages: controller.messages,
-      user: controller.user!,
-      theme: AppTheme.chatTheme(context),
-      showUserNames: true,
+      chatController: controller.chatController,
+      onMessageSend: controller.onSendPressed,
+      currentUserId: controller.user!.id,
+      resolveUser: controller.resolveUser,
+      backgroundColor: context.theme.colorScheme.surfaceContainer,
+      theme: ChatTheme.fromThemeData(context.theme),
+      builders: Builders(
+        composerBuilder: (context) => const Composer(
+          attachmentIcon: null,
+        ),
+      ),
     );
   }
 }

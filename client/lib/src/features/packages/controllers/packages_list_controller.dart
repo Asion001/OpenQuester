@@ -41,6 +41,7 @@ class PackagesListController extends ListControllerBase<PackageListItem> {
       offset: request.offset,
       order: OrderDirection.desc,
       sortBy: PackagesSortBy.createdAt,
+      title: request.query,
     );
     return ListResponse(
       list: list.data,

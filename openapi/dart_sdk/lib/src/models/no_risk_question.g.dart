@@ -9,6 +9,7 @@ part of 'no_risk_question.dart';
 _$NoRiskQuestionImpl _$$NoRiskQuestionImplFromJson(Map<String, dynamic> json) =>
     _$NoRiskQuestionImpl(
       id: (json['id'] as num?)?.toInt(),
+      order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
@@ -24,13 +25,14 @@ _$NoRiskQuestionImpl _$$NoRiskQuestionImplFromJson(Map<String, dynamic> json) =>
       subType: NoRiskQuestionSubType.fromJson(json['subType'] as String),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
-      priceMultiplier: (json['priceMultiplier'] as num?)?.toDouble() ?? 1.5,
+      priceMultiplier: json['priceMultiplier'] as String? ?? '1.5',
     );
 
 Map<String, dynamic> _$$NoRiskQuestionImplToJson(
         _$NoRiskQuestionImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'order': instance.order,
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,

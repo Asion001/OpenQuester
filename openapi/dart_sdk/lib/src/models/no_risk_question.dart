@@ -18,6 +18,9 @@ class NoRiskQuestion with _$NoRiskQuestion {
   const factory NoRiskQuestion({
     required int? id,
 
+    /// Order of the question in the theme, should be unique, starting from 0
+    required int order,
+
     /// Point value of the question
     required int price,
 
@@ -52,8 +55,8 @@ class NoRiskQuestion with _$NoRiskQuestion {
     int answerDelay,
 
     /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-    @Default(1.5)
-    double priceMultiplier,
+    @Default('1.5')
+    String priceMultiplier,
   }) = _NoRiskQuestion;
   
   factory NoRiskQuestion.fromJson(Map<String, Object?> json) => _$NoRiskQuestionFromJson(json);

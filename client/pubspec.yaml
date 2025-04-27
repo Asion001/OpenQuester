@@ -45,9 +45,11 @@ dependencies:
   cross_file: ^0.3.4+2
   squadron: ^7.1.1
   collection: ^1.19.1
-  flutter_chat_ui: ^1.6.15
-  flutter_chat_types: ^3.6.2
+  flutter_chat_core: ^0.0.11
+  flutter_chat_ui: ^2.0.0-dev.10
   cached_network_image: ^3.4.1
+  cached_network_image_platform_interface: ^4.1.1
+  fetch_client: ^1.1.4
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +68,10 @@ dev_dependencies:
   flutter_gen_runner: ^5.10.0
   very_good_analysis: ^7.0.0
   squadron_builder: ^7.1.1
+
+dependency_overrides:
+  freezed_annotation: ^3.0.0
+  freezed: ^3.0.6
 
 flutter:
   uses-material-design: true

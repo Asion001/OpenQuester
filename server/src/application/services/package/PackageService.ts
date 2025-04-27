@@ -10,8 +10,8 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PackageUploadResponse } from "domain/types/package/PackageUploadResponse";
+import { PackagePaginationOpts } from "domain/types/pagination/package/PackagePaginationOpts";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
-import { PaginationOpts } from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
 import { Package } from "infrastructure/database/models/package/Package";
 import { PackageRepository } from "infrastructure/database/repositories/PackageRepository";
@@ -65,7 +65,7 @@ export class PackageService {
   }
 
   public async listPackages(
-    paginationOpts: PaginationOpts<Package>
+    paginationOpts: PackagePaginationOpts
   ): Promise<PaginatedResult<PackageDTO[]>> {
     const paginatedList = await this.packageRepository.list(paginationOpts);
 

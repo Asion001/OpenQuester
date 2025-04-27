@@ -1,4 +1,4 @@
-import { In, Repository } from "typeorm";
+import { FindManyOptions, ILike, In, Repository } from "typeorm";
 
 import { FileService } from "application/services/file/FileService";
 import { PackageTagService } from "application/services/package/PackageTagService";
@@ -12,11 +12,9 @@ import { ClientError } from "domain/errors/ClientError";
 import { ServerError } from "domain/errors/ServerError";
 import { FileDTO } from "domain/types/dto/file/FileDTO";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
+import { PackagePaginationOpts } from "domain/types/pagination/package/PackagePaginationOpts";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
-import {
-  PaginationOpts,
-  PaginationOrder,
-} from "domain/types/pagination/PaginationOpts";
+import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
 import { SelectOptions } from "domain/types/SelectOptions";
 import { Database } from "infrastructure/database/Database";
 import { File } from "infrastructure/database/models/File";
@@ -59,22 +57,31 @@ export class PackageRepository {
   }
 
   public async list(
-    paginationOpts: PaginationOpts<Package>
+    paginationOpts: PackagePaginationOpts
   ): Promise<PaginatedResult<Package[]>> {
     const {
       order = PaginationOrder.ASC,
       sortBy = "created_at",
       offset,
       limit,
+      title,
     } = paginationOpts;
 
-    const [data, total] = await this.repository.findAndCount({
+    const findOptions: FindManyOptions<Package> = {
       relations: PACKAGE_SELECT_RELATIONS,
       select: PACKAGE_SELECT_FIELDS,
       order: { [sortBy]: order.toUpperCase() },
       skip: offset,
       take: limit,
-    });
+    };
+
+    if (title && title.length > 0) {
+      findOptions.where = {
+        title: ILike(`%${title}%`),
+      };
+    }
+
+    const [data, total] = await this.repository.findAndCount(findOptions);
 
     return {
       data,

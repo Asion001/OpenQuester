@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:openquester/openquester.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 @singleton
 class SocketChatController extends ChangeNotifier {
-  List<Message> messages = [];
+  late final chatController = InMemoryChatController();
 
   User? user;
   Socket? _socket;
@@ -15,7 +15,7 @@ class SocketChatController extends ChangeNotifier {
     _socket?.destroy();
     _socket = null;
     user = null;
-    messages.clear();
+    chatController.messages.clear();
     _users?.clear();
     _users = null;
     notifyListeners();
@@ -32,8 +32,7 @@ class SocketChatController extends ChangeNotifier {
     user = User(
       id: restUser.id.toString(),
       firstName: restUser.username,
-      imageUrl: restUser.avatar,
-      role: Role.user,
+      imageSource: restUser.avatar,
     );
 
     // Setup socket
@@ -49,10 +48,10 @@ class SocketChatController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onSendPressed(PartialText message) {
+  void onSendPressed(String message) {
     _socket?.emit(
       SocketIOEvents.chatMessage.json!,
-      SocketIOChatMessageContent(message: message.text).toJson(),
+      SocketIOChatMessageContent(message: message).toJson(),
     );
   }
 
@@ -60,16 +59,18 @@ class SocketChatController extends ChangeNotifier {
     final message = SocketIOChatMessageEventPayload.fromJson(
       data as Map<String, dynamic>,
     );
-    final user = _users?.firstWhereOrNull(
-      (e) => e.id == message.user.toString(),
-    );
+
     final textMessage = TextMessage(
       id: UniqueKey().toString(),
-      author: user!,
       text: message.message,
-      createdAt: message.timestamp.millisecondsSinceEpoch,
+      createdAt: message.timestamp,
+      authorId: message.user.toString(),
     );
-    messages.insert(0, textMessage);
+    chatController.insert(textMessage);
     notifyListeners();
+  }
+
+  Future<User?> resolveUser(String id) async {
+    return _users?.firstWhereOrNull((e) => e.id == id);
   }
 }

@@ -22,6 +22,9 @@ Answers _$AnswersFromJson(Map<String, dynamic> json) {
 mixin _$Answers {
   int? get id => throw _privateConstructorUsedError;
 
+  /// Order of the answer in the choice answers, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
+
   /// Text of the answer option
   String? get text => throw _privateConstructorUsedError;
 
@@ -42,7 +45,7 @@ abstract class $AnswersCopyWith<$Res> {
   factory $AnswersCopyWith(Answers value, $Res Function(Answers) then) =
       _$AnswersCopyWithImpl<$Res, Answers>;
   @useResult
-  $Res call({int? id, String? text, FileItem? file});
+  $Res call({int? id, int order, String? text, FileItem? file});
 
   $FileItemCopyWith<$Res>? get file;
 }
@@ -63,6 +66,7 @@ class _$AnswersCopyWithImpl<$Res, $Val extends Answers>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? text = freezed,
     Object? file = freezed,
   }) {
@@ -71,6 +75,10 @@ class _$AnswersCopyWithImpl<$Res, $Val extends Answers>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -104,7 +112,7 @@ abstract class _$$AnswersImplCopyWith<$Res> implements $AnswersCopyWith<$Res> {
       __$$AnswersImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? id, String? text, FileItem? file});
+  $Res call({int? id, int order, String? text, FileItem? file});
 
   @override
   $FileItemCopyWith<$Res>? get file;
@@ -124,6 +132,7 @@ class __$$AnswersImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? text = freezed,
     Object? file = freezed,
   }) {
@@ -132,6 +141,10 @@ class __$$AnswersImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       text: freezed == text
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -147,13 +160,18 @@ class __$$AnswersImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AnswersImpl implements _Answers {
-  const _$AnswersImpl({required this.id, required this.text, this.file});
+  const _$AnswersImpl(
+      {required this.id, required this.order, required this.text, this.file});
 
   factory _$AnswersImpl.fromJson(Map<String, dynamic> json) =>
       _$$AnswersImplFromJson(json);
 
   @override
   final int? id;
+
+  /// Order of the answer in the choice answers, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Text of the answer option
   @override
@@ -165,7 +183,7 @@ class _$AnswersImpl implements _Answers {
 
   @override
   String toString() {
-    return 'Answers(id: $id, text: $text, file: $file)';
+    return 'Answers(id: $id, order: $order, text: $text, file: $file)';
   }
 
   @override
@@ -174,13 +192,14 @@ class _$AnswersImpl implements _Answers {
         (other.runtimeType == runtimeType &&
             other is _$AnswersImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.file, file) || other.file == file));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, text, file);
+  int get hashCode => Object.hash(runtimeType, id, order, text, file);
 
   /// Create a copy of Answers
   /// with the given fields replaced by the non-null parameter values.
@@ -201,6 +220,7 @@ class _$AnswersImpl implements _Answers {
 abstract class _Answers implements Answers {
   const factory _Answers(
       {required final int? id,
+      required final int order,
       required final String? text,
       final FileItem? file}) = _$AnswersImpl;
 
@@ -208,6 +228,10 @@ abstract class _Answers implements Answers {
 
   @override
   int? get id;
+
+  /// Order of the answer in the choice answers, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Text of the answer option
   @override

@@ -33,5 +33,17 @@
   "user_unauthorized": "User unauthorized",
   "authorization_canceled": "Authorization canceled",
   "login_with_discord": "Login with Discord",
-  "logout": "Logout"
+  "logout": "Logout",
+  "start_game": "Start Game",
+  "select_game_package": "Select game package",
+  "game_name": "Game name",
+  "age_restriction": "Age restriction",
+  "none": "None",
+  "private": "Private",
+  "private_game_description": "Makes game available only by invite",
+  "max_players": "Max players",
+  "nothing_found": "Nothing found",
+  "search_package_hint": "Enter a package name to search",
+  "upload_package": "Upload package",
+  "package_uploaded": "Package uploaded!"
 }

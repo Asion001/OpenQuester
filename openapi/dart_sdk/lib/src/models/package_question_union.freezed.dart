@@ -39,6 +39,9 @@ PackageQuestionUnion _$PackageQuestionUnionFromJson(Map<String, dynamic> json) {
 mixin _$PackageQuestionUnion {
   int? get id => throw _privateConstructorUsedError;
 
+  /// Order of the question in the theme, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
+
   /// Point value of the question
   int get price => throw _privateConstructorUsedError;
 
@@ -72,6 +75,7 @@ mixin _$PackageQuestionUnion {
   TResult when<TResult extends Object?>({
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -85,6 +89,7 @@ mixin _$PackageQuestionUnion {
         simple,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -100,6 +105,7 @@ mixin _$PackageQuestionUnion {
         stake,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -116,6 +122,7 @@ mixin _$PackageQuestionUnion {
         secret,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -127,10 +134,11 @@ mixin _$PackageQuestionUnion {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -147,6 +155,7 @@ mixin _$PackageQuestionUnion {
         choice,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -164,6 +173,7 @@ mixin _$PackageQuestionUnion {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -177,6 +187,7 @@ mixin _$PackageQuestionUnion {
         simple,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -192,6 +203,7 @@ mixin _$PackageQuestionUnion {
         stake,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -208,6 +220,7 @@ mixin _$PackageQuestionUnion {
         secret,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -219,10 +232,11 @@ mixin _$PackageQuestionUnion {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -239,6 +253,7 @@ mixin _$PackageQuestionUnion {
         choice,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -256,6 +271,7 @@ mixin _$PackageQuestionUnion {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -269,6 +285,7 @@ mixin _$PackageQuestionUnion {
         simple,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -284,6 +301,7 @@ mixin _$PackageQuestionUnion {
         stake,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -300,6 +318,7 @@ mixin _$PackageQuestionUnion {
         secret,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -311,10 +330,11 @@ mixin _$PackageQuestionUnion {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -331,6 +351,7 @@ mixin _$PackageQuestionUnion {
         choice,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -395,6 +416,7 @@ abstract class $PackageQuestionUnionCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -423,6 +445,7 @@ class _$PackageQuestionUnionCopyWithImpl<$Res,
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -438,6 +461,10 @@ class _$PackageQuestionUnionCopyWithImpl<$Res,
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -489,6 +516,7 @@ abstract class _$$PackageQuestionUnionSimpleImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -517,6 +545,7 @@ class __$$PackageQuestionUnionSimpleImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -533,6 +562,10 @@ class __$$PackageQuestionUnionSimpleImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -582,6 +615,7 @@ class __$$PackageQuestionUnionSimpleImplCopyWithImpl<$Res>
 class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
   const _$PackageQuestionUnionSimpleImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -601,6 +635,10 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -663,7 +701,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.simple(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion.simple(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 
   @override
@@ -672,6 +710,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         (other.runtimeType == runtimeType &&
             other is _$PackageQuestionUnionSimpleImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -696,6 +735,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -721,6 +761,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
   TResult when<TResult extends Object?>({
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -734,6 +775,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         simple,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -749,6 +791,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         stake,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -765,6 +808,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         secret,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -776,10 +820,11 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -796,6 +841,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         choice,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -808,8 +854,19 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
             int answerDelay)
         hidden,
   }) {
-    return simple(id, price, text, answerHint, answerText, questionComment,
-        questionFiles, answerFiles, type, isHidden, answerDelay);
+    return simple(
+        id,
+        order,
+        price,
+        text,
+        answerHint,
+        answerText,
+        questionComment,
+        questionFiles,
+        answerFiles,
+        type,
+        isHidden,
+        answerDelay);
   }
 
   @override
@@ -817,6 +874,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -830,6 +888,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         simple,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -845,6 +904,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         stake,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -861,6 +921,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         secret,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -872,10 +933,11 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -892,6 +954,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         choice,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -906,6 +969,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
   }) {
     return simple?.call(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -923,6 +987,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -936,6 +1001,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         simple,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -951,6 +1017,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         stake,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -967,6 +1034,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         secret,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -978,10 +1046,11 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -998,6 +1067,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
         choice,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1012,8 +1082,19 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
     required TResult orElse(),
   }) {
     if (simple != null) {
-      return simple(id, price, text, answerHint, answerText, questionComment,
-          questionFiles, answerFiles, type, isHidden, answerDelay);
+      return simple(
+          id,
+          order,
+          price,
+          text,
+          answerHint,
+          answerText,
+          questionComment,
+          questionFiles,
+          answerFiles,
+          type,
+          isHidden,
+          answerDelay);
     }
     return orElse();
   }
@@ -1072,6 +1153,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
 abstract class PackageQuestionUnionSimple implements PackageQuestionUnion {
   const factory PackageQuestionUnionSimple(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -1088,6 +1170,10 @@ abstract class PackageQuestionUnionSimple implements PackageQuestionUnion {
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override
@@ -1146,6 +1232,7 @@ abstract class _$$PackageQuestionUnionStakeImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -1176,6 +1263,7 @@ class __$$PackageQuestionUnionStakeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -1194,6 +1282,10 @@ class __$$PackageQuestionUnionStakeImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -1251,6 +1343,7 @@ class __$$PackageQuestionUnionStakeImplCopyWithImpl<$Res>
 class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
   const _$PackageQuestionUnionStakeImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -1271,6 +1364,10 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -1342,7 +1439,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.stake(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, maxPrice: $maxPrice, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
+    return 'PackageQuestionUnion.stake(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, maxPrice: $maxPrice, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
   }
 
   @override
@@ -1351,6 +1448,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         (other.runtimeType == runtimeType &&
             other is _$PackageQuestionUnionStakeImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -1378,6 +1476,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -1405,6 +1504,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
   TResult when<TResult extends Object?>({
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1418,6 +1518,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         simple,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1433,6 +1534,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         stake,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1449,6 +1551,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         secret,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1460,10 +1563,11 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1480,6 +1584,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         choice,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1494,6 +1599,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
   }) {
     return stake(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -1513,6 +1619,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1526,6 +1633,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         simple,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1541,6 +1649,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         stake,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1557,6 +1666,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         secret,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1568,10 +1678,11 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1588,6 +1699,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         choice,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1602,6 +1714,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
   }) {
     return stake?.call(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -1621,6 +1734,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1634,6 +1748,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         simple,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1649,6 +1764,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         stake,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1665,6 +1781,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         secret,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1676,10 +1793,11 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1696,6 +1814,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
         choice,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -1712,6 +1831,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
     if (stake != null) {
       return stake(
           id,
+          order,
           price,
           text,
           answerHint,
@@ -1782,6 +1902,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
 abstract class PackageQuestionUnionStake implements PackageQuestionUnion {
   const factory PackageQuestionUnionStake(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -1800,6 +1921,10 @@ abstract class PackageQuestionUnionStake implements PackageQuestionUnion {
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override
@@ -1864,6 +1989,7 @@ abstract class _$$PackageQuestionUnionSecretImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -1895,6 +2021,7 @@ class __$$PackageQuestionUnionSecretImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -1914,6 +2041,10 @@ class __$$PackageQuestionUnionSecretImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -1975,6 +2106,7 @@ class __$$PackageQuestionUnionSecretImplCopyWithImpl<$Res>
 class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
   const _$PackageQuestionUnionSecretImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -1998,6 +2130,10 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -2080,7 +2216,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.secret(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, allowedPrices: $allowedPrices, transferType: $transferType, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion.secret(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, allowedPrices: $allowedPrices, transferType: $transferType, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 
   @override
@@ -2089,6 +2225,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         (other.runtimeType == runtimeType &&
             other is _$PackageQuestionUnionSecretImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -2118,6 +2255,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -2146,6 +2284,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
   TResult when<TResult extends Object?>({
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2159,6 +2298,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         simple,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2174,6 +2314,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         stake,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2190,6 +2331,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         secret,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2201,10 +2343,11 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2221,6 +2364,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         choice,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2235,6 +2379,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
   }) {
     return secret(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -2255,6 +2400,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2268,6 +2414,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         simple,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2283,6 +2430,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         stake,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2299,6 +2447,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         secret,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2310,10 +2459,11 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2330,6 +2480,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         choice,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2344,6 +2495,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
   }) {
     return secret?.call(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -2364,6 +2516,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2377,6 +2530,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         simple,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2392,6 +2546,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         stake,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2408,6 +2563,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         secret,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2419,10 +2575,11 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2439,6 +2596,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
         choice,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2455,6 +2613,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
     if (secret != null) {
       return secret(
           id,
+          order,
           price,
           text,
           answerHint,
@@ -2526,6 +2685,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
 abstract class PackageQuestionUnionSecret implements PackageQuestionUnion {
   const factory PackageQuestionUnionSecret(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -2545,6 +2705,10 @@ abstract class PackageQuestionUnionSecret implements PackageQuestionUnion {
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override
@@ -2610,6 +2774,7 @@ abstract class _$$PackageQuestionUnionNoRiskImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -2621,7 +2786,7 @@ abstract class _$$PackageQuestionUnionNoRiskImplCopyWith<$Res>
       NoRiskQuestionSubType subType,
       bool isHidden,
       int answerDelay,
-      double priceMultiplier});
+      String priceMultiplier});
 }
 
 /// @nodoc
@@ -2640,6 +2805,7 @@ class __$$PackageQuestionUnionNoRiskImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -2658,6 +2824,10 @@ class __$$PackageQuestionUnionNoRiskImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -2705,7 +2875,7 @@ class __$$PackageQuestionUnionNoRiskImplCopyWithImpl<$Res>
       priceMultiplier: null == priceMultiplier
           ? _value.priceMultiplier
           : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as double,
+              as String,
     ));
   }
 }
@@ -2715,6 +2885,7 @@ class __$$PackageQuestionUnionNoRiskImplCopyWithImpl<$Res>
 class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   const _$PackageQuestionUnionNoRiskImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -2726,7 +2897,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
       required this.subType,
       this.isHidden = false,
       this.answerDelay = 4000,
-      this.priceMultiplier = 1.5})
+      this.priceMultiplier = '1.5'})
       : _questionFiles = questionFiles,
         _answerFiles = answerFiles;
 
@@ -2736,6 +2907,10 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -2803,11 +2978,11 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
   @override
   @JsonKey()
-  final double priceMultiplier;
+  final String priceMultiplier;
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.noRisk(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
+    return 'PackageQuestionUnion.noRisk(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
   }
 
   @override
@@ -2816,6 +2991,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         (other.runtimeType == runtimeType &&
             other is _$PackageQuestionUnionNoRiskImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -2843,6 +3019,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -2870,6 +3047,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   TResult when<TResult extends Object?>({
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2883,6 +3061,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         simple,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2898,6 +3077,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         stake,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2914,6 +3094,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         secret,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2925,10 +3106,11 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2945,6 +3127,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         choice,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2959,6 +3142,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   }) {
     return noRisk(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -2978,6 +3162,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -2991,6 +3176,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         simple,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3006,6 +3192,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         stake,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3022,6 +3209,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         secret,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3033,10 +3221,11 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3053,6 +3242,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         choice,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3067,6 +3257,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   }) {
     return noRisk?.call(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -3086,6 +3277,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3099,6 +3291,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         simple,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3114,6 +3307,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         stake,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3130,6 +3324,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         secret,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3141,10 +3336,11 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3161,6 +3357,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
         choice,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3177,6 +3374,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
     if (noRisk != null) {
       return noRisk(
           id,
+          order,
           price,
           text,
           answerHint,
@@ -3247,6 +3445,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
 abstract class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
   const factory PackageQuestionUnionNoRisk(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -3258,13 +3457,17 @@ abstract class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
       required final NoRiskQuestionSubType subType,
       final bool isHidden,
       final int answerDelay,
-      final double priceMultiplier}) = _$PackageQuestionUnionNoRiskImpl;
+      final String priceMultiplier}) = _$PackageQuestionUnionNoRiskImpl;
 
   factory PackageQuestionUnionNoRisk.fromJson(Map<String, dynamic> json) =
       _$PackageQuestionUnionNoRiskImpl.fromJson;
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override
@@ -3308,7 +3511,7 @@ abstract class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
   int get answerDelay;
 
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  double get priceMultiplier;
+  String get priceMultiplier;
 
   /// Create a copy of PackageQuestionUnion
   /// with the given fields replaced by the non-null parameter values.
@@ -3329,6 +3532,7 @@ abstract class _$$PackageQuestionUnionChoiceImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -3360,6 +3564,7 @@ class __$$PackageQuestionUnionChoiceImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -3379,6 +3584,10 @@ class __$$PackageQuestionUnionChoiceImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -3440,6 +3649,7 @@ class __$$PackageQuestionUnionChoiceImplCopyWithImpl<$Res>
 class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
   const _$PackageQuestionUnionChoiceImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -3463,6 +3673,10 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -3542,7 +3756,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.choice(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, showDelay: $showDelay, answers: $answers, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion.choice(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, showDelay: $showDelay, answers: $answers, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 
   @override
@@ -3551,6 +3765,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         (other.runtimeType == runtimeType &&
             other is _$PackageQuestionUnionChoiceImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -3579,6 +3794,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -3607,6 +3823,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
   TResult when<TResult extends Object?>({
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3620,6 +3837,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         simple,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3635,6 +3853,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         stake,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3651,6 +3870,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         secret,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3662,10 +3882,11 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3682,6 +3903,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         choice,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3696,6 +3918,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
   }) {
     return choice(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -3716,6 +3939,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3729,6 +3953,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         simple,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3744,6 +3969,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         stake,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3760,6 +3986,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         secret,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3771,10 +3998,11 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3791,6 +4019,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         choice,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3805,6 +4034,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
   }) {
     return choice?.call(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -3825,6 +4055,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3838,6 +4069,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         simple,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3853,6 +4085,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         stake,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3869,6 +4102,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         secret,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3880,10 +4114,11 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3900,6 +4135,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
         choice,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -3916,6 +4152,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
     if (choice != null) {
       return choice(
           id,
+          order,
           price,
           text,
           answerHint,
@@ -3987,6 +4224,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
 abstract class PackageQuestionUnionChoice implements PackageQuestionUnion {
   const factory PackageQuestionUnionChoice(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -4006,6 +4244,10 @@ abstract class PackageQuestionUnionChoice implements PackageQuestionUnion {
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override
@@ -4071,6 +4313,7 @@ abstract class _$$PackageQuestionUnionHiddenImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -4099,6 +4342,7 @@ class __$$PackageQuestionUnionHiddenImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -4115,6 +4359,10 @@ class __$$PackageQuestionUnionHiddenImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -4164,6 +4412,7 @@ class __$$PackageQuestionUnionHiddenImplCopyWithImpl<$Res>
 class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
   const _$PackageQuestionUnionHiddenImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -4183,6 +4432,10 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -4245,7 +4498,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.hidden(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion.hidden(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 
   @override
@@ -4254,6 +4507,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         (other.runtimeType == runtimeType &&
             other is _$PackageQuestionUnionHiddenImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -4278,6 +4532,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -4303,6 +4558,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
   TResult when<TResult extends Object?>({
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4316,6 +4572,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         simple,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4331,6 +4588,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         stake,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4347,6 +4605,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         secret,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4358,10 +4617,11 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4378,6 +4638,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         choice,
     required TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4390,8 +4651,19 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
             int answerDelay)
         hidden,
   }) {
-    return hidden(id, price, text, answerHint, answerText, questionComment,
-        questionFiles, answerFiles, type, isHidden, answerDelay);
+    return hidden(
+        id,
+        order,
+        price,
+        text,
+        answerHint,
+        answerText,
+        questionComment,
+        questionFiles,
+        answerFiles,
+        type,
+        isHidden,
+        answerDelay);
   }
 
   @override
@@ -4399,6 +4671,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4412,6 +4685,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         simple,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4427,6 +4701,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         stake,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4443,6 +4718,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         secret,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4454,10 +4730,11 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4474,6 +4751,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         choice,
     TResult? Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4488,6 +4766,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
   }) {
     return hidden?.call(
         id,
+        order,
         price,
         text,
         answerHint,
@@ -4505,6 +4784,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4518,6 +4798,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         simple,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4533,6 +4814,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         stake,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4549,6 +4831,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         secret,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4560,10 +4843,11 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4580,6 +4864,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
         choice,
     TResult Function(
             int? id,
+            int order,
             int price,
             String? text,
             String? answerHint,
@@ -4594,8 +4879,19 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
     required TResult orElse(),
   }) {
     if (hidden != null) {
-      return hidden(id, price, text, answerHint, answerText, questionComment,
-          questionFiles, answerFiles, type, isHidden, answerDelay);
+      return hidden(
+          id,
+          order,
+          price,
+          text,
+          answerHint,
+          answerText,
+          questionComment,
+          questionFiles,
+          answerFiles,
+          type,
+          isHidden,
+          answerDelay);
     }
     return orElse();
   }
@@ -4654,6 +4950,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
 abstract class PackageQuestionUnionHidden implements PackageQuestionUnion {
   const factory PackageQuestionUnionHidden(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -4670,6 +4967,10 @@ abstract class PackageQuestionUnionHidden implements PackageQuestionUnion {
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override

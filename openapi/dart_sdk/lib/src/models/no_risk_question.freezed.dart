@@ -22,6 +22,9 @@ NoRiskQuestion _$NoRiskQuestionFromJson(Map<String, dynamic> json) {
 mixin _$NoRiskQuestion {
   int? get id => throw _privateConstructorUsedError;
 
+  /// Order of the question in the theme, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
+
   /// Point value of the question
   int get price => throw _privateConstructorUsedError;
 
@@ -56,7 +59,7 @@ mixin _$NoRiskQuestion {
   int get answerDelay => throw _privateConstructorUsedError;
 
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  double get priceMultiplier => throw _privateConstructorUsedError;
+  String get priceMultiplier => throw _privateConstructorUsedError;
 
   /// Serializes this NoRiskQuestion to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -76,6 +79,7 @@ abstract class $NoRiskQuestionCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -87,7 +91,7 @@ abstract class $NoRiskQuestionCopyWith<$Res> {
       NoRiskQuestionSubType subType,
       bool isHidden,
       int answerDelay,
-      double priceMultiplier});
+      String priceMultiplier});
 }
 
 /// @nodoc
@@ -106,6 +110,7 @@ class _$NoRiskQuestionCopyWithImpl<$Res, $Val extends NoRiskQuestion>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -124,6 +129,10 @@ class _$NoRiskQuestionCopyWithImpl<$Res, $Val extends NoRiskQuestion>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -171,7 +180,7 @@ class _$NoRiskQuestionCopyWithImpl<$Res, $Val extends NoRiskQuestion>
       priceMultiplier: null == priceMultiplier
           ? _value.priceMultiplier
           : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as double,
+              as String,
     ) as $Val);
   }
 }
@@ -186,6 +195,7 @@ abstract class _$$NoRiskQuestionImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -197,7 +207,7 @@ abstract class _$$NoRiskQuestionImplCopyWith<$Res>
       NoRiskQuestionSubType subType,
       bool isHidden,
       int answerDelay,
-      double priceMultiplier});
+      String priceMultiplier});
 }
 
 /// @nodoc
@@ -214,6 +224,7 @@ class __$$NoRiskQuestionImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -232,6 +243,10 @@ class __$$NoRiskQuestionImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -279,7 +294,7 @@ class __$$NoRiskQuestionImplCopyWithImpl<$Res>
       priceMultiplier: null == priceMultiplier
           ? _value.priceMultiplier
           : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as double,
+              as String,
     ));
   }
 }
@@ -289,6 +304,7 @@ class __$$NoRiskQuestionImplCopyWithImpl<$Res>
 class _$NoRiskQuestionImpl implements _NoRiskQuestion {
   const _$NoRiskQuestionImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -300,7 +316,7 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
       required this.subType,
       this.isHidden = false,
       this.answerDelay = 4000,
-      this.priceMultiplier = 1.5})
+      this.priceMultiplier = '1.5'})
       : _questionFiles = questionFiles,
         _answerFiles = answerFiles;
 
@@ -309,6 +325,10 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -376,11 +396,11 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
   @override
   @JsonKey()
-  final double priceMultiplier;
+  final String priceMultiplier;
 
   @override
   String toString() {
-    return 'NoRiskQuestion(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
+    return 'NoRiskQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
   }
 
   @override
@@ -389,6 +409,7 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
         (other.runtimeType == runtimeType &&
             other is _$NoRiskQuestionImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -416,6 +437,7 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -449,6 +471,7 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
 abstract class _NoRiskQuestion implements NoRiskQuestion {
   const factory _NoRiskQuestion(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -460,13 +483,17 @@ abstract class _NoRiskQuestion implements NoRiskQuestion {
       required final NoRiskQuestionSubType subType,
       final bool isHidden,
       final int answerDelay,
-      final double priceMultiplier}) = _$NoRiskQuestionImpl;
+      final String priceMultiplier}) = _$NoRiskQuestionImpl;
 
   factory _NoRiskQuestion.fromJson(Map<String, dynamic> json) =
       _$NoRiskQuestionImpl.fromJson;
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override
@@ -512,7 +539,7 @@ abstract class _NoRiskQuestion implements NoRiskQuestion {
 
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
   @override
-  double get priceMultiplier;
+  String get priceMultiplier;
 
   /// Create a copy of NoRiskQuestion
   /// with the given fields replaced by the non-null parameter values.

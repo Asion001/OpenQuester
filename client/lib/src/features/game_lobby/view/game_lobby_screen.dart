@@ -16,13 +16,17 @@ class GameLobbyScreen extends WatchingWidget {
       dispose: () => getIt<GameLobbyController>().leave(),
     );
 
+    // Set init value for showing chat to [false] for mobile
+    callOnce((context) {
+      if (!UiModeUtils.wideModeOn(context)) {
+        getIt<GameLobbyController>().showDesktopChat.value = false;
+      }
+    });
+
     final showChat = watchValue((GameLobbyController e) => e.showDesktopChat);
 
     return LayoutBuilder(
       builder: (context, constrains) {
-        // Closes chat sheet on window resize
-        getIt<GameLobbyController>().closeChatSheet();
-
         final wideModeOn = UiModeUtils.wideModeOn(context);
 
         return Scaffold(
@@ -32,15 +36,22 @@ class GameLobbyScreen extends WatchingWidget {
               onPressed: Navigator.of(context).pop,
               icon: const Icon(Icons.exit_to_app),
             ),
-            actions: [_ChatButton(toggleChat: wideModeOn)],
+            actions: const [_ChatButton()],
           ),
-          body: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const _Themes().expand(),
-              Visibility(visible: wideModeOn && showChat, child: const _Chat()),
-            ],
+          body: SafeArea(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _Themes().expand(),
+                Visibility(
+                  visible: wideModeOn && showChat,
+                  child: const _Chat(),
+                ),
+              ],
+            ),
           ),
+          bottomSheet:
+              !wideModeOn && showChat ? const _ChatBottomSheet() : null,
         );
       },
     );
@@ -69,6 +80,18 @@ class _Themes extends WatchingWidget {
   }
 }
 
+class _ChatButton extends StatelessWidget {
+  const _ChatButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: getIt<GameLobbyController>().toggleDesktopChat,
+      icon: const Icon(Icons.chat),
+    );
+  }
+}
+
 class _Chat extends StatelessWidget {
   const _Chat();
 
@@ -82,43 +105,11 @@ class _Chat extends StatelessWidget {
   }
 }
 
-class _ChatButton extends StatelessWidget {
-  const _ChatButton({required this.toggleChat});
-  final bool toggleChat;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () async {
-        final controller = getIt<GameLobbyController>();
-
-        if (toggleChat) {
-          controller.toggleDesktopChat();
-          return;
-        }
-
-        // Close if pressed twice
-        final gameBottomSheet = controller.bottomSheetController;
-        if (gameBottomSheet != null) {
-          controller.closeChatSheet();
-          return;
-        }
-
-        controller.bottomSheetController = showBottomSheet(
-          context: context,
-          builder: (context) => const _ChatBottomSheet(),
-        );
-      },
-      icon: const Icon(Icons.chat),
-    );
-  }
-}
-
 class _ChatBottomSheet extends StatelessWidget {
   const _ChatBottomSheet();
 
   @override
   Widget build(BuildContext context) {
-    return const ChatScreen();
+    return SizedBox.expand(child: const _Chat().paddingBottom(16));
   }
 }

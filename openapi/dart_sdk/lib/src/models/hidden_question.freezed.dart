@@ -22,6 +22,9 @@ HiddenQuestion _$HiddenQuestionFromJson(Map<String, dynamic> json) {
 mixin _$HiddenQuestion {
   int? get id => throw _privateConstructorUsedError;
 
+  /// Order of the question in the theme, should be unique, starting from 0
+  int get order => throw _privateConstructorUsedError;
+
   /// Point value of the question
   int get price => throw _privateConstructorUsedError;
 
@@ -70,6 +73,7 @@ abstract class $HiddenQuestionCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -98,6 +102,7 @@ class _$HiddenQuestionCopyWithImpl<$Res, $Val extends HiddenQuestion>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -114,6 +119,10 @@ class _$HiddenQuestionCopyWithImpl<$Res, $Val extends HiddenQuestion>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -168,6 +177,7 @@ abstract class _$$HiddenQuestionImplCopyWith<$Res>
   @useResult
   $Res call(
       {int? id,
+      int order,
       int price,
       String? text,
       String? answerHint,
@@ -194,6 +204,7 @@ class __$$HiddenQuestionImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? order = null,
     Object? price = null,
     Object? text = freezed,
     Object? answerHint = freezed,
@@ -210,6 +221,10 @@ class __$$HiddenQuestionImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
       price: null == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -259,6 +274,7 @@ class __$$HiddenQuestionImplCopyWithImpl<$Res>
 class _$HiddenQuestionImpl implements _HiddenQuestion {
   const _$HiddenQuestionImpl(
       {required this.id,
+      required this.order,
       required this.price,
       required this.text,
       required this.answerHint,
@@ -277,6 +293,10 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
 
   @override
   final int? id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  final int order;
 
   /// Point value of the question
   @override
@@ -339,7 +359,7 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
 
   @override
   String toString() {
-    return 'HiddenQuestion(id: $id, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'HiddenQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 
   @override
@@ -348,6 +368,7 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
         (other.runtimeType == runtimeType &&
             other is _$HiddenQuestionImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
@@ -372,6 +393,7 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      order,
       price,
       text,
       answerHint,
@@ -403,6 +425,7 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
 abstract class _HiddenQuestion implements HiddenQuestion {
   const factory _HiddenQuestion(
       {required final int? id,
+      required final int order,
       required final int price,
       required final String? text,
       required final String? answerHint,
@@ -419,6 +442,10 @@ abstract class _HiddenQuestion implements HiddenQuestion {
 
   @override
   int? get id;
+
+  /// Order of the question in the theme, should be unique, starting from 0
+  @override
+  int get order;
 
   /// Point value of the question
   @override

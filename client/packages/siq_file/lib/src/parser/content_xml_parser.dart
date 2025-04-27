@@ -15,37 +15,42 @@ class ContentXmlParser {
     final package = document.getElement('package')!;
     final metadata = await _parseMetadata(package);
     final roundsXml = package.getElement('rounds')!;
-    final rounds = roundsXml.children.map(_parseRound).toList();
+    final rounds = roundsXml.children.mapIndexed(_parseRound).toList();
 
     siqFile = metadata.copyWith(
       rounds: await Future.wait(rounds),
     );
   }
 
-  Future<PackageRound> _parseRound(XmlNode round) async {
+  Future<PackageRound> _parseRound(int index, XmlNode round) async {
     final name = round.getAttribute('name') ?? '-';
     final description = round.getAttribute('description').nullOnEmpty;
     final themesXml = round.getElement('themes');
-    final themes = themesXml?.childElements.map(_parseTheme).toList();
+    final themes = themesXml?.childElements.mapIndexed(_parseTheme).toList();
     return PackageRound(
       id: null,
       name: name,
       themes: await Future.wait(themes ?? []),
       description: description,
+      order: index,
     );
   }
 
-  Future<PackageTheme> _parseTheme(XmlElement theme) async {
+  Future<PackageTheme> _parseTheme(int index, XmlElement theme) async {
     final name = theme.getAttribute('name') ?? '-';
     final comment = await _getComment(theme);
-    final questions =
-        theme.getElement('questions')?.children.map(_parseQuestion).toList() ??
-            [];
+    final questions = theme
+            .getElement('questions')
+            ?.children
+            .mapIndexed(_parseQuestion)
+            .toList() ??
+        [];
     return PackageTheme(
       name: name,
       description: comment.nullOnEmpty,
       questions: await Future.wait(questions),
       id: null,
+      order: index,
     );
   }
 
@@ -55,7 +60,10 @@ class ContentXmlParser {
     return comment;
   }
 
-  Future<PackageQuestionUnion> _parseQuestion(XmlNode question) async {
+  Future<PackageQuestionUnion> _parseQuestion(
+    int index,
+    XmlNode question,
+  ) async {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
     final params =
         question.getElement('params') ?? question.getElement('scenario');
@@ -101,10 +109,19 @@ class ContentXmlParser {
         wrongAnswers.isEmptyOrNull ? null : 'Wrong answers: $wrongAnswers';
 
     final packageQuestionFiles = questionFiles
-        .map((e) => PackageQuestionFile(id: null, file: e))
+        .mapIndexed(
+          (index, e) => PackageQuestionFile(id: null, file: e, order: index),
+        )
         .toList();
-    final packageAnswerFiles =
-        answerFiles.map((e) => PackageAnswerFile(id: null, file: e)).toList();
+    final packageAnswerFiles = answerFiles
+        .mapIndexed(
+          (index, e) => PackageAnswerFile(
+            id: null,
+            file: e,
+            order: index,
+          ),
+        )
+        .toList();
 
     return switch (questionType) {
       QuestionType.simple => PackageQuestionUnion.simple(
@@ -117,6 +134,7 @@ class ContentXmlParser {
           answerHint: hostHint,
           answerFiles: packageAnswerFiles,
           id: null,
+          order: index,
         ),
       QuestionType.stake => PackageQuestionUnion.stake(
           price: price,
@@ -129,6 +147,7 @@ class ContentXmlParser {
           answerFiles: packageAnswerFiles,
           id: null,
           maxPrice: null,
+          order: index,
         ),
       QuestionType.secret => PackageQuestionUnion.secret(
           price: price,
@@ -143,6 +162,7 @@ class ContentXmlParser {
           subType: SecretQuestionSubType.simple,
           allowedPrices: null,
           transferType: PackageQuestionTransferType.any,
+          order: index,
         ),
       QuestionType.noRisk => PackageQuestionUnion.noRisk(
           price: price,
@@ -155,6 +175,7 @@ class ContentXmlParser {
           answerFiles: packageAnswerFiles,
           id: null,
           subType: NoRiskQuestionSubType.simple,
+          order: index,
         ),
       QuestionType.hidden => PackageQuestionUnion.hidden(
           price: price,
@@ -167,6 +188,7 @@ class ContentXmlParser {
           answerFiles: packageAnswerFiles,
           isHidden: true,
           id: null,
+          order: index,
         ),
       QuestionType.choice => PackageQuestionUnion.choice(
           price: price,
@@ -178,9 +200,18 @@ class ContentXmlParser {
           answerHint: hostHint,
           answerFiles: packageAnswerFiles,
           showDelay: 3000,
-          answers: rightAnswers.map((e) => Answers(id: null, text: e)).toList(),
+          answers: rightAnswers
+              .mapIndexed(
+                (index, e) => Answers(
+                  id: null,
+                  text: e,
+                  order: index,
+                ),
+              )
+              .toList(),
           id: null,
           subType: null,
+          order: index,
         ),
       QuestionType.$unknown => throw Exception('QuestionType.unknown'),
     };
