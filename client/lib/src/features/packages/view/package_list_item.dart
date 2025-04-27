@@ -9,31 +9,27 @@ class PackageListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      borderRadius: BorderRadius.circular(16),
-      child: Card(
-        child: ListTile(
-          title: Text(
-            item.title,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-          )
-              .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
-              .shrink(),
-          subtitle: Text(
-            _packInfo(),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-          )
-              .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
-              .paddingTop(4)
-              .shrink(),
-          titleAlignment: ListTileTitleAlignment.bottom,
-          contentPadding: const EdgeInsets.only(right: 16, left: 4),
-          mouseCursor: MouseCursor.defer,
-        ).paddingSymmetric(horizontal: 2),
-      ),
+    return Card(
+      child: ListTile(
+        title: Text(
+          item.title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        )
+            .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
+            .shrink(),
+        subtitle: Text(
+          _packInfo(),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        )
+            .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
+            .paddingTop(4)
+            .shrink(),
+        titleAlignment: ListTileTitleAlignment.bottom,
+        contentPadding: const EdgeInsets.only(right: 16, left: 4),
+        mouseCursor: MouseCursor.defer,
+      ).paddingSymmetric(horizontal: 2),
     ).paddingSymmetric(horizontal: 6);
   }
 

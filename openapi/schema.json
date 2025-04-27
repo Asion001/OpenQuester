@@ -1840,11 +1840,10 @@
                 "examples": ["forEveryone"]
               },
               "priceMultiplier": {
-                "type": "number",
-                "format": "float",
+                "type": "string",
                 "description": "Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct",
-                "default": 1.5,
-                "examples": [0.5, 1.25, 1.5, 2]
+                "default": "1.5",
+                "examples": ["0.5", "1.25", "1.5", "2"]
               }
             },
             "required": ["subType", "priceMultiplier"],

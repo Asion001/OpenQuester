@@ -16,9 +16,9 @@ void main() {
 
 EntryPoint $getParseSiqFileActivator(SquadronPlatformType platform) {
   if (platform.isJs) {
-    return Squadron.uri('~/workers/upload_isolate.web.g.dart.js');
+    return Squadron.uri('/workers/upload_isolate.web.g.dart.js');
   } else if (platform.isWasm) {
-    return Squadron.uri('~/workers/upload_isolate.web.g.dart.wasm');
+    return Squadron.uri('/workers/upload_isolate.web.g.dart.wasm');
   } else {
     throw UnsupportedError('${platform.label} not supported.');
   }

@@ -52,6 +52,7 @@ class _PackagesClient implements PackagesClient {
     required int offset,
     PackagesSortBy? sortBy,
     OrderDirection? order,
+    String? title,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -59,6 +60,7 @@ class _PackagesClient implements PackagesClient {
       r'offset': offset,
       r'sortBy': sortBy?.toJson(),
       r'order': order?.toJson(),
+      r'title': title,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};

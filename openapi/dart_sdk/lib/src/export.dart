@@ -27,6 +27,7 @@ export 'models/paginated_games.dart';
 export 'models/order_direction.dart';
 export 'models/pagination_limit.dart';
 export 'models/pagination_offset.dart';
+export 'models/pagination_title.dart';
 export 'models/games_sort_by.dart';
 export 'models/users_sort_by.dart';
 export 'models/packages_sort_by.dart';

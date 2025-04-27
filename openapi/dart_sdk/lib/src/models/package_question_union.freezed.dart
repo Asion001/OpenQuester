@@ -134,7 +134,7 @@ mixin _$PackageQuestionUnion {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
@@ -232,7 +232,7 @@ mixin _$PackageQuestionUnion {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
@@ -330,7 +330,7 @@ mixin _$PackageQuestionUnion {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
@@ -820,7 +820,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
@@ -933,7 +933,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
@@ -1046,7 +1046,7 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
@@ -1563,7 +1563,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
@@ -1678,7 +1678,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
@@ -1793,7 +1793,7 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
@@ -2343,7 +2343,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
@@ -2459,7 +2459,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
@@ -2575,7 +2575,7 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
@@ -2786,7 +2786,7 @@ abstract class _$$PackageQuestionUnionNoRiskImplCopyWith<$Res>
       NoRiskQuestionSubType subType,
       bool isHidden,
       int answerDelay,
-      double priceMultiplier});
+      String priceMultiplier});
 }
 
 /// @nodoc
@@ -2875,7 +2875,7 @@ class __$$PackageQuestionUnionNoRiskImplCopyWithImpl<$Res>
       priceMultiplier: null == priceMultiplier
           ? _value.priceMultiplier
           : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as double,
+              as String,
     ));
   }
 }
@@ -2897,7 +2897,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
       required this.subType,
       this.isHidden = false,
       this.answerDelay = 4000,
-      this.priceMultiplier = 1.5})
+      this.priceMultiplier = '1.5'})
       : _questionFiles = questionFiles,
         _answerFiles = answerFiles;
 
@@ -2978,7 +2978,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
   @override
   @JsonKey()
-  final double priceMultiplier;
+  final String priceMultiplier;
 
   @override
   String toString() {
@@ -3106,7 +3106,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
@@ -3221,7 +3221,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
@@ -3336,7 +3336,7 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
@@ -3457,7 +3457,7 @@ abstract class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
       required final NoRiskQuestionSubType subType,
       final bool isHidden,
       final int answerDelay,
-      final double priceMultiplier}) = _$PackageQuestionUnionNoRiskImpl;
+      final String priceMultiplier}) = _$PackageQuestionUnionNoRiskImpl;
 
   factory PackageQuestionUnionNoRisk.fromJson(Map<String, dynamic> json) =
       _$PackageQuestionUnionNoRiskImpl.fromJson;
@@ -3511,7 +3511,7 @@ abstract class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
   int get answerDelay;
 
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  double get priceMultiplier;
+  String get priceMultiplier;
 
   /// Create a copy of PackageQuestionUnion
   /// with the given fields replaced by the non-null parameter values.
@@ -3882,7 +3882,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
@@ -3998,7 +3998,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
@@ -4114,7 +4114,7 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,
@@ -4617,7 +4617,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)
+            String priceMultiplier)
         noRisk,
     required TResult Function(
             int? id,
@@ -4730,7 +4730,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult? Function(
             int? id,
@@ -4843,7 +4843,7 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
             NoRiskQuestionSubType subType,
             bool isHidden,
             int answerDelay,
-            double priceMultiplier)?
+            String priceMultiplier)?
         noRisk,
     TResult Function(
             int? id,

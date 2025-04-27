@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$CreateGameDto {
-  PackageItem? get package;
+  PackageListItem? get package;
   String? get gameName;
   AgeRestriction get ageRestriction;
   bool get private;
@@ -61,13 +61,13 @@ abstract mixin class $CreateGameDtoCopyWith<$Res> {
       _$CreateGameDtoCopyWithImpl;
   @useResult
   $Res call(
-      {PackageItem? package,
+      {PackageListItem? package,
       String? gameName,
       AgeRestriction ageRestriction,
       bool private,
       int maxPlayers});
 
-  $PackageItemCopyWith<$Res>? get package;
+  $PackageResponseCopyWith<$Res>? get package;
 }
 
 /// @nodoc
@@ -93,7 +93,7 @@ class _$CreateGameDtoCopyWithImpl<$Res>
       package: freezed == package
           ? _self.package
           : package // ignore: cast_nullable_to_non_nullable
-              as PackageItem?,
+              as PackageListItem?,
       gameName: freezed == gameName
           ? _self.gameName
           : gameName // ignore: cast_nullable_to_non_nullable
@@ -117,12 +117,12 @@ class _$CreateGameDtoCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PackageItemCopyWith<$Res>? get package {
+  $PackageResponseCopyWith<$Res>? get package {
     if (_self.package == null) {
       return null;
     }
 
-    return $PackageItemCopyWith<$Res>(_self.package!, (value) {
+    return $PackageResponseCopyWith<$Res>(_self.package!, (value) {
       return _then(_self.copyWith(package: value));
     });
   }
@@ -139,7 +139,7 @@ class _CreateGameDto implements CreateGameDto {
       this.maxPlayers = 10});
 
   @override
-  final PackageItem? package;
+  final PackageListItem? package;
   @override
   final String? gameName;
   @override
@@ -194,14 +194,14 @@ abstract mixin class _$CreateGameDtoCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {PackageItem? package,
+      {PackageListItem? package,
       String? gameName,
       AgeRestriction ageRestriction,
       bool private,
       int maxPlayers});
 
   @override
-  $PackageItemCopyWith<$Res>? get package;
+  $PackageResponseCopyWith<$Res>? get package;
 }
 
 /// @nodoc
@@ -227,7 +227,7 @@ class __$CreateGameDtoCopyWithImpl<$Res>
       package: freezed == package
           ? _self.package
           : package // ignore: cast_nullable_to_non_nullable
-              as PackageItem?,
+              as PackageListItem?,
       gameName: freezed == gameName
           ? _self.gameName
           : gameName // ignore: cast_nullable_to_non_nullable
@@ -251,12 +251,12 @@ class __$CreateGameDtoCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PackageItemCopyWith<$Res>? get package {
+  $PackageResponseCopyWith<$Res>? get package {
     if (_self.package == null) {
       return null;
     }
 
-    return $PackageItemCopyWith<$Res>(_self.package!, (value) {
+    return $PackageResponseCopyWith<$Res>(_self.package!, (value) {
       return _then(_self.copyWith(package: value));
     });
   }

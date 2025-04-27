@@ -59,7 +59,7 @@ mixin _$NoRiskQuestion {
   int get answerDelay => throw _privateConstructorUsedError;
 
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  double get priceMultiplier => throw _privateConstructorUsedError;
+  String get priceMultiplier => throw _privateConstructorUsedError;
 
   /// Serializes this NoRiskQuestion to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -91,7 +91,7 @@ abstract class $NoRiskQuestionCopyWith<$Res> {
       NoRiskQuestionSubType subType,
       bool isHidden,
       int answerDelay,
-      double priceMultiplier});
+      String priceMultiplier});
 }
 
 /// @nodoc
@@ -180,7 +180,7 @@ class _$NoRiskQuestionCopyWithImpl<$Res, $Val extends NoRiskQuestion>
       priceMultiplier: null == priceMultiplier
           ? _value.priceMultiplier
           : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as double,
+              as String,
     ) as $Val);
   }
 }
@@ -207,7 +207,7 @@ abstract class _$$NoRiskQuestionImplCopyWith<$Res>
       NoRiskQuestionSubType subType,
       bool isHidden,
       int answerDelay,
-      double priceMultiplier});
+      String priceMultiplier});
 }
 
 /// @nodoc
@@ -294,7 +294,7 @@ class __$$NoRiskQuestionImplCopyWithImpl<$Res>
       priceMultiplier: null == priceMultiplier
           ? _value.priceMultiplier
           : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as double,
+              as String,
     ));
   }
 }
@@ -316,7 +316,7 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
       required this.subType,
       this.isHidden = false,
       this.answerDelay = 4000,
-      this.priceMultiplier = 1.5})
+      this.priceMultiplier = '1.5'})
       : _questionFiles = questionFiles,
         _answerFiles = answerFiles;
 
@@ -396,7 +396,7 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
   @override
   @JsonKey()
-  final double priceMultiplier;
+  final String priceMultiplier;
 
   @override
   String toString() {
@@ -483,7 +483,7 @@ abstract class _NoRiskQuestion implements NoRiskQuestion {
       required final NoRiskQuestionSubType subType,
       final bool isHidden,
       final int answerDelay,
-      final double priceMultiplier}) = _$NoRiskQuestionImpl;
+      final String priceMultiplier}) = _$NoRiskQuestionImpl;
 
   factory _NoRiskQuestion.fromJson(Map<String, dynamic> json) =
       _$NoRiskQuestionImpl.fromJson;
@@ -539,7 +539,7 @@ abstract class _NoRiskQuestion implements NoRiskQuestion {
 
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
   @override
-  double get priceMultiplier;
+  String get priceMultiplier;
 
   /// Create a copy of NoRiskQuestion
   /// with the given fields replaced by the non-null parameter values.

@@ -10,7 +10,7 @@ import 'package:squadron/squadron.dart';
 
 part 'upload_isolate.worker.g.dart';
 
-@SquadronService(baseUrl: '~/workers')
+@SquadronService(baseUrl: '/workers')
 base class ParseSiqFile {
   @SquadronMethod()
   Future<String> compute(Uint8List fileData) async {
