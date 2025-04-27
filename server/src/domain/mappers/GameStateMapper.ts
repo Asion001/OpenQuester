@@ -56,8 +56,7 @@ export class GameStateMapper {
     return theme.questions.map((question): GameStateQuestionDTO => {
       return {
         order: question.order,
-        isHidden: question.isHidden,
-        price: question.price,
+        price: question.isHidden ? null : question.price,
         questionComment: question.questionComment ?? null,
       };
     });

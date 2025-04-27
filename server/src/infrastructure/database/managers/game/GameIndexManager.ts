@@ -27,9 +27,7 @@ export class GameIndexManager {
       gameData.id
     );
 
-    if (gameData.isPrivate) {
-      pipeline.sadd(this._privacyIndexKey(true), gameData.id);
-    }
+    pipeline.sadd(this._privacyIndexKey(gameData.isPrivate), gameData.id);
 
     pipeline.zadd(
       this._titleIndexKey,
@@ -38,14 +36,6 @@ export class GameIndexManager {
     );
 
     return pipeline;
-  }
-
-  public async addGameToIndexes(gameId: string, gameData: GameIndexesInputDTO) {
-    return Promise.all([
-      this._addToCreatedAtIndex(gameId, gameData.createdAt),
-      this._addToPrivacyIndex(gameId, gameData.isPrivate),
-      this._addToTitleIndex(gameId, gameData.title),
-    ]);
   }
 
   public async removeGameFromIndexes(
@@ -64,7 +54,8 @@ export class GameIndexManager {
 
   public async findGamesByIndex<T>(
     filters: {
-      createdAt?: { min?: Date; max?: Date };
+      createdAtMin?: Date;
+      createdAtMax?: Date;
       isPrivate?: boolean;
       titlePrefix?: string;
     },
@@ -73,7 +64,14 @@ export class GameIndexManager {
     const tempKey = `${this.INDEX_PREFIX}:temp:${Date.now()}`;
 
     try {
-      await this._buildCompositeIndex(tempKey, filters);
+      await this._buildCompositeIndex(tempKey, {
+        createdAt: {
+          max: filters.createdAtMax,
+          min: filters.createdAtMin,
+        },
+        isPrivate: filters.isPrivate,
+        titlePrefix: filters.titlePrefix,
+      });
       return this._paginateResults(tempKey, pagination);
     } finally {
       await this.redis.expire(tempKey, this.TEMP_KEY_TTL);
@@ -88,13 +86,11 @@ export class GameIndexManager {
       titlePrefix?: string;
     }
   ) {
-    const filterSteps: Promise<unknown>[] = [];
-    const indexKeys: string[] = [this._createdAtIndexKey];
+    const indexKeys: string[] = [];
 
     // Privacy Filter
     if (ValueUtils.isBoolean(filters.isPrivate)) {
       indexKeys.push(this._privacyIndexKey(filters.isPrivate));
-      filterSteps.push(Promise.resolve()); // No value needed for sets
     }
 
     // Title Filter
@@ -116,6 +112,8 @@ export class GameIndexManager {
         this._createdAtIndexKey
       );
 
+      await this.redis.expire(createdAtIndexKeyToUse, 30);
+
       // Determine the score boundaries based on the provided dates.
       const minScore = filters.createdAt.min
         ? filters.createdAt.min.getTime()
@@ -135,6 +133,12 @@ export class GameIndexManager {
         maxScore,
         "+inf"
       );
+
+      indexKeys.push(createdAtIndexKeyToUse);
+    }
+
+    if (indexKeys.length < 1) {
+      indexKeys.push(this._createdAtIndexKey);
     }
 
     // Combine indexes
@@ -197,9 +201,7 @@ export class GameIndexManager {
   }
 
   private async _addToPrivacyIndex(gameId: string, isPrivate: boolean) {
-    if (isPrivate) {
-      await this.redis.sadd(this._privacyIndexKey(true), gameId);
-    }
+    await this.redis.sadd(this._privacyIndexKey(isPrivate), gameId);
   }
 
   private async _addToTitleIndex(gameId: string, title: string) {

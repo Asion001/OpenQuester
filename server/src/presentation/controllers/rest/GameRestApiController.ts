@@ -5,14 +5,13 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
-import { GameDTO } from "domain/types/dto/game/GameDTO";
-import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
+import { GamePaginationOpts } from "domain/types/pagination/game/GamePaginationOpts";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 import {
   createGameScheme,
   gameIdScheme,
+  gamePaginationScheme,
 } from "presentation/schemes/game/gameSchemes";
-import { PaginationSchema } from "presentation/schemes/pagination/PaginationSchema";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 export class GameRestApiController {
@@ -53,23 +52,10 @@ export class GameRestApiController {
   };
 
   private listGames = async (req: Request, res: Response) => {
-    const paginationOpts = await new PaginationSchema<GameDTO>({
-      data: {
-        sortBy: req.query.sortBy as keyof GameDTO,
-        order: req.query.order as PaginationOrder,
-        limit: Number(req.query.limit),
-        offset: Number(req.query.offset),
-      },
-      possibleSortByFields: [
-        "id",
-        "title",
-        "createdAt",
-        "createdBy",
-        "maxPlayers",
-        "players",
-        "startedAt",
-      ],
-    }).validate();
+    const paginationOpts = await new RequestDataValidator<GamePaginationOpts>(
+      req.query as unknown as GamePaginationOpts,
+      gamePaginationScheme()
+    ).validate();
 
     const result = await this.gameService.list(paginationOpts);
     return res.status(HttpStatus.OK).send(result);
