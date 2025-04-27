@@ -14,11 +14,12 @@ part 'socket_io_game_state_question_data.g.dart';
 class SocketIOGameStateQuestionData with _$SocketIOGameStateQuestionData {
   const factory SocketIOGameStateQuestionData({
     required PackageEntitiesOrder order,
-    required int price,
-    required bool isHidden,
+
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Comment that clarify what have to be answered on this question
-    required String questionComment,
+    required String? questionComment,
   }) = _SocketIOGameStateQuestionData;
   
   factory SocketIOGameStateQuestionData.fromJson(Map<String, Object?> json) => _$SocketIOGameStateQuestionDataFromJson(json);

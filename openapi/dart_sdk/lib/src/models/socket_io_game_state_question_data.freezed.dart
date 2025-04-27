@@ -22,11 +22,12 @@ SocketIOGameStateQuestionData _$SocketIOGameStateQuestionDataFromJson(
 /// @nodoc
 mixin _$SocketIOGameStateQuestionData {
   int get order => throw _privateConstructorUsedError;
-  int get price => throw _privateConstructorUsedError;
-  bool get isHidden => throw _privateConstructorUsedError;
+
+  /// Price is null only if price is hidden
+  int? get price => throw _privateConstructorUsedError;
 
   /// Comment that clarify what have to be answered on this question
-  String get questionComment => throw _privateConstructorUsedError;
+  String? get questionComment => throw _privateConstructorUsedError;
 
   /// Serializes this SocketIOGameStateQuestionData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,7 +47,7 @@ abstract class $SocketIOGameStateQuestionDataCopyWith<$Res> {
       _$SocketIOGameStateQuestionDataCopyWithImpl<$Res,
           SocketIOGameStateQuestionData>;
   @useResult
-  $Res call({int order, int price, bool isHidden, String questionComment});
+  $Res call({int order, int? price, String? questionComment});
 }
 
 /// @nodoc
@@ -66,27 +67,22 @@ class _$SocketIOGameStateQuestionDataCopyWithImpl<$Res,
   @override
   $Res call({
     Object? order = null,
-    Object? price = null,
-    Object? isHidden = null,
-    Object? questionComment = null,
+    Object? price = freezed,
+    Object? questionComment = freezed,
   }) {
     return _then(_value.copyWith(
       order: null == order
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
               as int,
-      price: null == price
+      price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
-      isHidden: null == isHidden
-          ? _value.isHidden
-          : isHidden // ignore: cast_nullable_to_non_nullable
-              as bool,
-      questionComment: null == questionComment
+              as int?,
+      questionComment: freezed == questionComment
           ? _value.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -100,7 +96,7 @@ abstract class _$$SocketIOGameStateQuestionDataImplCopyWith<$Res>
       __$$SocketIOGameStateQuestionDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int order, int price, bool isHidden, String questionComment});
+  $Res call({int order, int? price, String? questionComment});
 }
 
 /// @nodoc
@@ -119,27 +115,22 @@ class __$$SocketIOGameStateQuestionDataImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? order = null,
-    Object? price = null,
-    Object? isHidden = null,
-    Object? questionComment = null,
+    Object? price = freezed,
+    Object? questionComment = freezed,
   }) {
     return _then(_$SocketIOGameStateQuestionDataImpl(
       order: null == order
           ? _value.order
           : order // ignore: cast_nullable_to_non_nullable
               as int,
-      price: null == price
+      price: freezed == price
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
-      isHidden: null == isHidden
-          ? _value.isHidden
-          : isHidden // ignore: cast_nullable_to_non_nullable
-              as bool,
-      questionComment: null == questionComment
+              as int?,
+      questionComment: freezed == questionComment
           ? _value.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -151,7 +142,6 @@ class _$SocketIOGameStateQuestionDataImpl
   const _$SocketIOGameStateQuestionDataImpl(
       {required this.order,
       required this.price,
-      required this.isHidden,
       required this.questionComment});
 
   factory _$SocketIOGameStateQuestionDataImpl.fromJson(
@@ -160,18 +150,18 @@ class _$SocketIOGameStateQuestionDataImpl
 
   @override
   final int order;
+
+  /// Price is null only if price is hidden
   @override
-  final int price;
-  @override
-  final bool isHidden;
+  final int? price;
 
   /// Comment that clarify what have to be answered on this question
   @override
-  final String questionComment;
+  final String? questionComment;
 
   @override
   String toString() {
-    return 'SocketIOGameStateQuestionData(order: $order, price: $price, isHidden: $isHidden, questionComment: $questionComment)';
+    return 'SocketIOGameStateQuestionData(order: $order, price: $price, questionComment: $questionComment)';
   }
 
   @override
@@ -181,16 +171,13 @@ class _$SocketIOGameStateQuestionDataImpl
             other is _$SocketIOGameStateQuestionDataImpl &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
-            (identical(other.isHidden, isHidden) ||
-                other.isHidden == isHidden) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, order, price, isHidden, questionComment);
+  int get hashCode => Object.hash(runtimeType, order, price, questionComment);
 
   /// Create a copy of SocketIOGameStateQuestionData
   /// with the given fields replaced by the non-null parameter values.
@@ -214,9 +201,8 @@ abstract class _SocketIOGameStateQuestionData
     implements SocketIOGameStateQuestionData {
   const factory _SocketIOGameStateQuestionData(
           {required final int order,
-          required final int price,
-          required final bool isHidden,
-          required final String questionComment}) =
+          required final int? price,
+          required final String? questionComment}) =
       _$SocketIOGameStateQuestionDataImpl;
 
   factory _SocketIOGameStateQuestionData.fromJson(Map<String, dynamic> json) =
@@ -224,14 +210,14 @@ abstract class _SocketIOGameStateQuestionData
 
   @override
   int get order;
+
+  /// Price is null only if price is hidden
   @override
-  int get price;
-  @override
-  bool get isHidden;
+  int? get price;
 
   /// Comment that clarify what have to be answered on this question
   @override
-  String get questionComment;
+  String? get questionComment;
 
   /// Create a copy of SocketIOGameStateQuestionData
   /// with the given fields replaced by the non-null parameter values.

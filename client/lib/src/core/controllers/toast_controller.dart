@@ -5,7 +5,7 @@ import 'package:openquester/common_imports.dart';
 @singleton
 class ToastController {
   Future<void> show(
-    Object message, {
+    dynamic message, {
     BuildContext? context,
     Duration showFor = const Duration(seconds: 5),
   }) async {

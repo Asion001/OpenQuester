@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
-class GameListItemWidget extends StatelessWidget {
+class GameListItemWidget extends WatchingWidget {
   const GameListItemWidget({
     required this.item,
     required this.onTap,
@@ -20,6 +20,8 @@ class GameListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timeController = watchIt<TimeController>();
+
     final children = [
       _GameListItemBadges(item),
       ListTile(
@@ -38,7 +40,7 @@ class GameListItemWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr()),
             Text(_packInfo(), overflow: TextOverflow.ellipsis),
-            Text(_gameInfo(), overflow: TextOverflow.ellipsis),
+            Text(_gameInfo(timeController), overflow: TextOverflow.ellipsis),
           ],
         ).paddingTop(4).shrink(),
         titleAlignment: ListTileTitleAlignment.bottom,
@@ -94,13 +96,12 @@ class GameListItemWidget extends StatelessWidget {
     ].join('\n');
   }
 
-  String _gameInfo() {
+  String _gameInfo(TimeController timeController) {
     final startedAt = item.startedAt;
     return [
       [
         LocaleKeys.game_status_started.tr(),
-        if (startedAt != null)
-          watchIt<TimeController>().current.difference(startedAt).f(),
+        if (startedAt != null) timeController.current.difference(startedAt).f(),
         LocaleKeys.hosted_by.tr(args: [item.createdBy.username]),
       ].join(' • '),
     ].join('\n');

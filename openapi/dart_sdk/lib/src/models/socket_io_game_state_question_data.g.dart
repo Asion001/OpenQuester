@@ -10,9 +10,8 @@ _$SocketIOGameStateQuestionDataImpl
     _$$SocketIOGameStateQuestionDataImplFromJson(Map<String, dynamic> json) =>
         _$SocketIOGameStateQuestionDataImpl(
           order: (json['order'] as num).toInt(),
-          price: (json['price'] as num).toInt(),
-          isHidden: json['isHidden'] as bool,
-          questionComment: json['questionComment'] as String,
+          price: (json['price'] as num?)?.toInt(),
+          questionComment: json['questionComment'] as String?,
         );
 
 Map<String, dynamic> _$$SocketIOGameStateQuestionDataImplToJson(
@@ -20,6 +19,5 @@ Map<String, dynamic> _$$SocketIOGameStateQuestionDataImplToJson(
     <String, dynamic>{
       'order': instance.order,
       'price': instance.price,
-      'isHidden': instance.isHidden,
       'questionComment': instance.questionComment,
     };

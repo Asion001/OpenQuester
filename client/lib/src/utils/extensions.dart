@@ -86,3 +86,29 @@ extension PackageX on PackageResponse {
     return rounds.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
   }
 }
+
+extension PackageRoundX on PackageRound {
+  List<PackageTheme> sortedThemes() {
+    return themes.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
+  }
+}
+
+extension SocketIOGameStateThemeDataX on SocketIOGameStateThemeData {
+  List<SocketIOGameStateQuestionData> sortedQuestions() {
+    return questions.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
+  }
+}
+
+extension SocketIOGameStateRoundDataX on SocketIOGameStateRoundData {
+  List<SocketIOGameStateThemeData> sortedThemes() {
+    return themes.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
+  }
+}
+
+extension SocketIOGameJoinEventPayloadX on SocketIOGameJoinEventPayload {
+  PlayerData get me {
+    return players.firstWhere(
+      (e) => e.meta.id == getIt<AuthController>().user!.id,
+    );
+  }
+}

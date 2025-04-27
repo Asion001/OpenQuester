@@ -25,8 +25,9 @@ class GamePreviewBottom extends StatelessWidget {
               for (final round in rounds)
                 ListTile(
                   title: Text(round.name),
-                  subtitle:
-                      Text(round.themes.map((e) => ' • ${e.name}').join('\n')),
+                  subtitle: Text(
+                    round.sortedThemes().map((e) => ' • ${e.name}').join('\n'),
+                  ),
                 ),
             ],
           ),

@@ -8,9 +8,9 @@ class GameLobbyController {
   Socket? socket;
   String? gameId;
 
-  final round = ValueNotifier<LobbyRound?>(null);
   final gameData = ValueNotifier<SocketIOGameJoinEventPayload?>(null);
-  final showDesktopChat = ValueNotifier<bool>(true);
+  final gameListData = ValueNotifier<GameListItem?>(null);
+  final showDesktopChat = ValueNotifier<bool>(false);
 
   Future<void> join({required String gameId}) async {
     // Check if already joined
@@ -26,9 +26,9 @@ class GameLobbyController {
         ..onConnect((_) => _onConnect())
         ..onDisconnect((_) => clear())
         ..on(SocketIOGameEvents.gameData.json!, _onGameData)
+        ..on(SocketIOGameEvents.start.json!, _onGameStart)
+        ..on(SocketIOEvents.error.json!, _onError)
         ..connect();
-
-      round.value = testRound;
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -43,10 +43,19 @@ class GameLobbyController {
           .api
           .auth
           .postV1AuthSocket(body: InputSocketIOAuth(socketId: socket!.id!));
+
+      gameListData.value =
+          await Api.I.api.games.getV1GamesGameId(gameId: gameId!);
+      final iAmHost =
+          gameListData.value!.createdBy.id == getIt<AuthController>().user?.id;
+
       final ioGameJoinInput = SocketIOGameJoinInput(
         gameId: gameId!,
-        role: SocketIOGameJoinInputRole.spectator,
+        role: iAmHost
+            ? SocketIOGameJoinInputRole.showman
+            : SocketIOGameJoinInputRole.spectator,
       );
+
       socket?.emit(
         SocketIOGameEvents.join.json!,
         ioGameJoinInput.toJson(),
@@ -76,8 +85,8 @@ class GameLobbyController {
       gameId = null;
       socket?.dispose();
       socket = null;
-      round.value = null;
       gameData.value = null;
+      gameListData.value = null;
     } catch (_) {}
   }
 
@@ -99,46 +108,20 @@ class GameLobbyController {
     final users = gameData.value!.players.map(UserX.fromPlayerData).toList();
     getIt<SocketChatController>().setUsers(users);
   }
-}
 
-const testRound = LobbyRound(
-  name: 'name',
-  themes: [
-    LobbyTheme(
-      name: 'Random',
-      questions: [
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-      ],
-    ),
-    LobbyTheme(
-      name: 'Anime',
-      questions: [
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-      ],
-    ),
-    LobbyTheme(
-      name: 'Games',
-      questions: [
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-      ],
-    ),
-    LobbyTheme(
-      name: 'Games',
-      questions: [
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-      ],
-    ),
-  ],
-);
+  //SocketIOGameStartEventPayload
+  Future<void> _onGameStart(dynamic data) async {
+    final startData =
+        SocketIOGameStartEventPayload.fromJson(data as Map<String, dynamic>);
+    gameData.value = gameData.value?.copyWith
+        .gameState(currentRound: startData.currentRound);
+  }
+
+  void startRound() {
+    socket?.emit(SocketIOGameEvents.start.json!);
+  }
+
+  void _onError(dynamic data) {
+    getIt<ToastController>().show(data);
+  }
+}

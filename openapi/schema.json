@@ -2375,12 +2375,12 @@
           "price": {
             "type": ["integer", "null"],
             "description": "Price is null only if price is hidden",
-            "examples": [200]
+            "examples": [200, null]
           },
           "questionComment": {
-            "type": "string",
+            "type": ["string", "null"],
             "description": "Comment that clarify what have to be answered on this question",
-            "examples": ["Answer full name of character"]
+            "examples": ["Answer full name of character", null]
           }
         }
       },
