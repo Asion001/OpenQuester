@@ -730,7 +730,7 @@
             }
           },
           {
-            "name": "createdAtMin",
+            "name": "createdAtMax",
             "in": "query",
             "required": false,
             "schema": {
