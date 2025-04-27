@@ -57,6 +57,7 @@ export const CONTAINER_TYPES = {
   PackageTagRepository: Symbol("PackageTagRepository"),
   SocketUserDataRepository: Symbol("SocketUserDataRepository"),
   RedisRepository: Symbol("RedisRepository"),
+  SocketChatRepository: Symbol("SocketChatRepository"),
 
   // Services
   UserService: Symbol("UserService"),
@@ -71,4 +72,5 @@ export const CONTAINER_TYPES = {
   FileService: Symbol("FileService"),
   FileUsageService: Symbol("FileUsageService"),
   PackageTagService: Symbol("PackageTagService"),
+  SocketIOChatService: Symbol("SocketIOChatService"),
 };

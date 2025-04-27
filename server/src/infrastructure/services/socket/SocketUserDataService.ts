@@ -1,6 +1,6 @@
 import { SocketRedisUserUpdateDTO } from "domain/types/dto/user/SocketRedisUserUpdateDTO";
 import { SocketRedisUserData } from "domain/types/user/SocketRedisUserData";
-import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
+import { SocketUserDataRepository } from "infrastructure/database/repositories/socket/SocketUserDataRepository";
 
 export class SocketUserDataService {
   constructor(

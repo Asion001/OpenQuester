@@ -9,6 +9,7 @@ import { type ApiContext } from "application/context/ApiContext";
 import { FileService } from "application/services/file/FileService";
 import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
+import { SocketIOChatService } from "application/services/socket/SocketIOChatService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { UserService } from "application/services/user/UserService";
 import { SESSION_SECRET_LENGTH } from "domain/constants/session";
@@ -131,6 +132,9 @@ export class ServeApi {
       socketUserDataService: Container.get<SocketUserDataService>(
         CONTAINER_TYPES.SocketUserDataService
       ),
+      socketIOChatService: Container.get<SocketIOChatService>(
+        CONTAINER_TYPES.SocketIOChatService
+      ),
       storage: Container.get<S3StorageService>(
         CONTAINER_TYPES.S3StorageService
       ),
@@ -165,6 +169,10 @@ export class ServeApi {
     }
 
     // Socket
-    new SocketIOInitializer(deps.io, deps.socketIOGameService);
+    new SocketIOInitializer(
+      deps.io,
+      deps.socketIOGameService,
+      deps.socketIOChatService
+    );
   }
 }

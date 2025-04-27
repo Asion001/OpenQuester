@@ -8,7 +8,6 @@ import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
-import { GameChatMessageData } from "domain/types/game/GameChatMessageData";
 import { GameRoomLeaveData } from "domain/types/game/GameRoomLeaveData";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
@@ -127,28 +126,6 @@ export class SocketIOGameService {
     await this.gameRepository.updateGame(game);
 
     return { emit: true, data: { userId: userData.id, gameId: game.id } };
-  }
-
-  public async processChatMessage(
-    socketId: string
-  ): Promise<GameChatMessageData> {
-    const userData = await this._fetchUserSocketData(socketId);
-    const gameId = userData.gameId;
-
-    if (!gameId) {
-      throw new ClientError(ClientResponse.NOT_IN_GAME);
-    }
-
-    const isMuted = await this.isPlayerMuted(gameId, userData.id);
-
-    if (isMuted) {
-      throw new ClientError(ClientResponse.YOU_ARE_MUTED);
-    }
-
-    return {
-      gameId,
-      userId: userData.id,
-    };
   }
 
   public async gameToListItem(game: Game) {
