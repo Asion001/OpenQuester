@@ -94,7 +94,10 @@ export class GameRepository {
   public async getAllGames(
     paginationOpts: GamePaginationOpts
   ): Promise<PaginatedResult<GameListItemDTO[]>> {
-    const { ids, total } = await this.gameIndexManager.findGamesByIndex(
+    const totalKeys = await this.redisService.scan(this.getGameKey("*"));
+    const total = totalKeys.length;
+
+    const ids = await this.gameIndexManager.findGamesByIndex(
       {
         createdAtMax: paginationOpts.createdAtMax,
         createdAtMin: paginationOpts.createdAtMin,
