@@ -129,11 +129,11 @@ class _GameListItemBadges extends StatelessWidget {
             tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
             label: [item.currentRound, item.package.roundsCount].join('/'),
           ),
-          _Badge(
-            icon: Icons.question_mark,
-            tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
-            label: [item.currentRound, item.package.roundsCount].join('/'),
-          ),
+          // _Badge(
+          //   icon: Icons.question_mark,
+          //   tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
+          //   label: [item.currentRound, item.package.roundsCount].join('/'),
+          // ),
         ],
       ),
     );

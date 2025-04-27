@@ -118,10 +118,14 @@ class PackageUploadController extends ChangeNotifier {
           );
 
     try {
-      for (var i = 0; i < links.length; i++) {
-        _setProgress(_afterParseProgress + (i / links.length * .8));
+      for (var fileIndex = 0; fileIndex < links.length; fileIndex++) {
+        // Set file upload progress
+        final filesUploadProgress = fileIndex / links.length * 1;
+        _setProgress(
+          _afterParseProgress + (filesUploadProgress - _afterParseProgress),
+        );
 
-        final link = links[i];
+        final link = links[fileIndex];
 
         final archiveFile = parser.filesHash[link.key];
         final file = archiveFile?.content;
