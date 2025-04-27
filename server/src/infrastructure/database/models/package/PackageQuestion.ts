@@ -8,8 +8,11 @@ import {
 } from "typeorm";
 
 import { PackageQuestionType } from "domain/enums/package/QuestionType";
-import { PackageQuestionSubType } from "domain/types/dto/package/PackageQuestionDTO";
-import { PackageQuestionResponseDTO } from "domain/types/dto/package/response/PackageQuestionResponseDTO";
+import { PackageDTOOptions } from "domain/types/dto/package/options/PackageDTOOptions";
+import {
+  PackageQuestionDTO,
+  PackageQuestionSubType,
+} from "domain/types/dto/package/PackageQuestionDTO";
 import { PackageQuestionImport } from "domain/types/package/import/PackageQuestionImport";
 import { PackageQuestionTransferType } from "domain/types/package/PackageQuestionTransferType";
 import { PackageAnswerFile } from "infrastructure/database/models/package/PackageAnswerFile";
@@ -115,27 +118,31 @@ export class PackageQuestion {
   }
 
   public async toDTO(
-    storage: S3StorageService
-  ): Promise<PackageQuestionResponseDTO> {
+    storage: S3StorageService,
+    opts: PackageDTOOptions
+  ): Promise<PackageQuestionDTO> {
     const questionFilesDTO =
       this.questionFiles && this.questionFiles.length > 0
         ? await Promise.all(
-            this.questionFiles.map((file) => file.toDTO(storage))
+            this.questionFiles.map((file) => file.toDTO(storage, opts))
           )
         : null;
 
     const answerFilesDTO =
       this.answerFiles && this.answerFiles.length > 0
-        ? await Promise.all(this.answerFiles.map((file) => file.toDTO(storage)))
+        ? await Promise.all(
+            this.answerFiles.map((file) => file.toDTO(storage, opts))
+          )
         : null;
 
     const answersDTO =
       this.answers && this.answers.length > 0
-        ? await Promise.all(this.answers.map((answer) => answer.toDTO(storage)))
+        ? await Promise.all(
+            this.answers.map((answer) => answer.toDTO(storage, opts))
+          )
         : null;
 
-    return {
-      id: this.id,
+    let dto: PackageQuestionDTO = {
       type: this.type,
       order: this.order,
       price: this.price,
@@ -147,7 +154,7 @@ export class PackageQuestion {
       questionComment: this.question_comment,
       questionFiles: questionFilesDTO,
       answerFiles: answerFilesDTO,
-      subType: this.sub_type ?? "simple",
+      subType: this.sub_type ?? PackageQuestionSubType.SIMPLE,
       maxPrice: this.max_price,
       allowedPrices: this.allowed_prices,
       transferType: this.transfer_type,
@@ -155,5 +162,14 @@ export class PackageQuestion {
       showDelay: this.showDelay,
       answers: answersDTO,
     };
+
+    if (opts.fetchIds) {
+      dto = {
+        id: this.id,
+        ...dto,
+      };
+    }
+
+    return dto;
   }
 }

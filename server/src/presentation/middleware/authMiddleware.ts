@@ -3,6 +3,7 @@ import Joi from "joi";
 
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { TranslateService as ts } from "application/services/text/TranslateService";
+import { UserService } from "application/services/user/UserService";
 import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
@@ -10,7 +11,6 @@ import { ServerResponse } from "domain/enums/ServerResponse";
 import { Session } from "domain/types/auth/session";
 import { SessionDTO } from "domain/types/dto/auth/SessionDTO";
 import { Environment, EnvType } from "infrastructure/config/Environment";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { Logger } from "infrastructure/utils/Logger";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
@@ -68,8 +68,8 @@ export const verifySession = async (
   }
 
   // TODO: Get from cache when implemented
-  const user = await Container.get<UserRepository>(
-    CONTAINER_TYPES.UserRepository
+  const user = await Container.get<UserService>(
+    CONTAINER_TYPES.UserService
   ).getUserByRequest(req, {
     select: USER_SELECT_FIELDS,
     relations: USER_RELATIONS,

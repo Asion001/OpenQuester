@@ -8,6 +8,7 @@ export enum SocketIOEvents {
 
 export enum SocketIOGameEvents {
   JOIN = "join",
+  START = "start",
   LEAVE = "user-leave",
   GAME_DATA = "game-data",
 }

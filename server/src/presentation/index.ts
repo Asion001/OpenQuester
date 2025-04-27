@@ -1,4 +1,5 @@
 import { instrument } from "@socket.io/admin-ui";
+import { createAdapter } from "@socket.io/redis-adapter";
 import { hashSync } from "bcryptjs";
 import express from "express";
 import { createServer, type Server } from "http";
@@ -35,6 +36,12 @@ const main = async () => {
     Logger.warn("Current socket.io CORS allows all origins !!", "[IO CORS]: ");
   }
 
+  // Connect to Redis
+  const redis = RedisConfig.getClient();
+  const sub = redis.duplicate();
+
+  await RedisConfig.waitForConnection();
+
   const io = new IOServer(createServer(app), {
     cors: {
       origin: (origin, callback) => {
@@ -62,9 +69,10 @@ const main = async () => {
         }
       },
     },
+    adapter: createAdapter(redis, sub),
     cookie: true,
     connectTimeout: 45000,
-    transports: ["websocket", "polling"],
+    transports: ["websocket"],
   });
 
   const context = new ApiContext({

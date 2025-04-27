@@ -1,5 +1,6 @@
 import { type Express, type Request, type Response, Router } from "express";
 
+import { FileService } from "application/services/file/FileService";
 import { TranslateService as ts } from "application/services/text/TranslateService";
 import { type UserService } from "application/services/user/UserService";
 import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
@@ -14,8 +15,6 @@ import { UserInputDTO } from "domain/types/dto/user/UserInputDTO";
 import { PaginationOrder } from "domain/types/pagination/PaginationOpts";
 import { File } from "infrastructure/database/models/File";
 import { User } from "infrastructure/database/models/User";
-import { FileRepository } from "infrastructure/database/repositories/FileRepository";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
 import {
@@ -36,8 +35,7 @@ export class UserRestApiController {
   constructor(
     private readonly app: Express,
     private readonly userService: UserService,
-    private readonly userRepository: UserRepository,
-    private readonly fileRepository: FileRepository
+    private readonly fileService: FileService
   ) {
     const router = Router();
     const meRouter = Router();
@@ -105,7 +103,7 @@ export class UserRestApiController {
     const id: number = await this._getUserId(req);
 
     const userInputDTO = await new RequestDataValidator<UpdateUserInputDTO>(
-      { id, ...req.body },
+      { ...req.body },
       userUpdateScheme()
     ).validate();
 
@@ -113,7 +111,7 @@ export class UserRestApiController {
       throw new ClientError(ClientResponse.NO_USER_DATA);
     }
 
-    const user = await this.userRepository.get(userInputDTO.id, {
+    const user = await this.userService.getRaw(id, {
       select: USER_SELECT_FIELDS,
       relations: USER_RELATIONS,
       relationSelects: {
@@ -129,7 +127,7 @@ export class UserRestApiController {
     let avatarFile: File | null = null;
 
     if (userInputDTO.avatar) {
-      avatarFile = await this.fileRepository.getFileByFilename(
+      avatarFile = await this.fileService.getFileByFilename(
         userInputDTO.avatar
       );
 
@@ -139,7 +137,6 @@ export class UserRestApiController {
     }
 
     const userUpdateDTO: UpdateUserDTO = {
-      id,
       email: userInputDTO.email,
       username: userInputDTO.username,
       birthday: userInputDTO.birthday,

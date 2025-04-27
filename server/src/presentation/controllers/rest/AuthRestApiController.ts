@@ -1,9 +1,10 @@
 import { Router, type Express, type Request, type Response } from "express";
-import Redis from "ioredis";
 import Joi from "joi";
 import https, { RequestOptions } from "node:https";
 
+import { FileService } from "application/services/file/FileService";
 import { TranslateService as ts } from "application/services/text/TranslateService";
+import { UserService } from "application/services/user/UserService";
 import { getDiscordCDNLink } from "domain/constants/discord";
 import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { ClientResponse } from "domain/enums/ClientResponse";
@@ -22,9 +23,8 @@ import { SocketAuthDTO } from "domain/types/dto/auth/SocketAuthDTO";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
 import { RegisterUser } from "domain/types/user/RegisterUser";
 import { User } from "infrastructure/database/models/User";
-import { FileRepository } from "infrastructure/database/repositories/FileRepository";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
-import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
+import { RedisService } from "infrastructure/services/redis/RedisService";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { asyncHandler } from "presentation/middleware/asyncHandlerMiddleware";
@@ -34,9 +34,9 @@ import { RequestDataValidator } from "presentation/schemes/RequestDataValidator"
 export class AuthRestApiController {
   constructor(
     private readonly app: Express,
-    private readonly redis: Redis,
-    private readonly userRepository: UserRepository,
-    private readonly fileRepository: FileRepository,
+    private readonly redisService: RedisService,
+    private readonly userService: UserService,
+    private readonly fileService: FileService,
     private readonly storage: S3StorageService,
     private readonly socketUserDataService: SocketUserDataService
   ) {
@@ -60,13 +60,13 @@ export class AuthRestApiController {
     );
 
     if (existingData && existingData.id) {
-      throw new ClientError("Socket already logged in");
+      throw new ClientError(ClientResponse.SOCKET_LOGGED_IN);
     }
 
-    await this.socketUserDataService.set(
-      authDTO.socketId,
-      req.user!.id // Null safety approved by auth middleware
-    );
+    await this.socketUserDataService.set(authDTO.socketId, {
+      userId: req.user!.id, // Null safety approved by auth middleware
+      language: ts.parseHeaders(req.headers),
+    });
 
     res.status(HttpStatus.OK).send();
   };
@@ -117,7 +117,7 @@ export class AuthRestApiController {
         );
       }
 
-      await this.redis.del(`session:${sessionId}`);
+      await this.redisService.del(`session:${sessionId}`);
       res.clearCookie("connect.sid");
 
       res.status(HttpStatus.OK).json({
@@ -157,7 +157,7 @@ export class AuthRestApiController {
     try {
       profileData = JSON.parse(discordUser);
     } catch {
-      throw new ClientError("Unable to parse user data");
+      throw new ClientError(ClientResponse.CANNOT_PARSE_USER_DATA);
     }
 
     const profile = await new RequestDataValidator<DiscordProfileDTO>(
@@ -170,7 +170,7 @@ export class AuthRestApiController {
       })
     ).validate();
 
-    let user = await this.userRepository.findOne(
+    let user = await this.userService.findOne(
       { discord_id: profile.id, is_deleted: false },
       {
         select: USER_SELECT_FIELDS,
@@ -188,7 +188,7 @@ export class AuthRestApiController {
       user.username = profile.username;
       user.email = profile.email ?? null;
       if (profile.avatar) {
-        const file = await this.fileRepository.writeFile(
+        const file = await this.fileService.writeFile(
           getDiscordCDNLink(profile.id, profile.avatar),
           profile.avatar,
           FileSource.DISCORD
@@ -209,7 +209,7 @@ export class AuthRestApiController {
         avatar: user.avatar,
       };
 
-      user = await this.userRepository.create(registerData);
+      user = await this.userService.create(registerData);
     }
 
     return user.toDTO();

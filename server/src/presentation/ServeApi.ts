@@ -6,6 +6,7 @@ import { type Server as IOServer } from "socket.io";
 import { DIConfig } from "application/config/DIConfig";
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { type ApiContext } from "application/context/ApiContext";
+import { FileService } from "application/services/file/FileService";
 import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
@@ -16,10 +17,8 @@ import { ServerError } from "domain/errors/ServerError";
 import { EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { type Database } from "infrastructure/database/Database";
-import { FileRepository } from "infrastructure/database/repositories/FileRepository";
-import { GameRepository } from "infrastructure/database/repositories/GameRepository";
-import { UserRepository } from "infrastructure/database/repositories/UserRepository";
-import { SocketUserDataService } from "infrastructure/services/socket/SocketRedisService";
+import { RedisService } from "infrastructure/services/redis/RedisService";
+import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
 import { Logger } from "infrastructure/utils/Logger";
 import { TemplateUtils } from "infrastructure/utils/TemplateUtils";
@@ -70,9 +69,6 @@ export class ServeApi {
       // Build database connection
       await this._db.build();
 
-      // Connect to Redis
-      await RedisConfig.waitForConnection();
-
       // Middlewares
       await new MiddlewareController(this._context, this._redis).initialize();
 
@@ -86,10 +82,10 @@ export class ServeApi {
       await new DIConfig(this._db, this._redis, this._io).initialize();
 
       // Clean up all games (set all players as disconnected and pause game)
-      const gameRepository = Container.get<GameRepository>(
-        CONTAINER_TYPES.GameRepository
+      const gameService = Container.get<GameService>(
+        CONTAINER_TYPES.GameService
       );
-      await gameRepository.cleanupAllGames();
+      await gameService.cleanupAllGames();
 
       // Clean up all authorized socket sessions
       const socketUserDataService = Container.get<SocketUserDataService>(
@@ -121,68 +117,54 @@ export class ServeApi {
    * Initializes API controllers.
    * API controller is an entity, that manages initializing and handling of endpoints
    * to which this controller related (you can see it in their names)
-   *
-   * All API controllers use same Database and app instances
-   *
-   * Required and possible fields to send on endpoints you can find
-   * in `openapi/scheme.json`. This scheme used mostly in client-side for
-   * generating and using of entities based on server endpoints.
    */
   private _attachControllers() {
-    // Reusable dependencies
-    const app = this._context.app;
-
-    // Services
-    const userService = Container.get<UserService>(CONTAINER_TYPES.UserService);
-    const packageService = Container.get<PackageService>(
-      CONTAINER_TYPES.PackageService
-    );
-    const socketIOGameService = Container.get<SocketIOGameService>(
-      CONTAINER_TYPES.SocketIOGameService
-    );
-    const storage = Container.get<S3StorageService>(
-      CONTAINER_TYPES.S3StorageService
-    );
-    const game = Container.get<GameService>(CONTAINER_TYPES.GameService);
-    const io = Container.get<IOServer>(CONTAINER_TYPES.IO);
-
-    // Repositories
-    const redis = Container.get<Redis>(CONTAINER_TYPES.Redis);
-    const socketUserDataService = Container.get<SocketUserDataService>(
-      CONTAINER_TYPES.SocketUserDataService
-    );
-    const userRepository = Container.get<UserRepository>(
-      CONTAINER_TYPES.UserRepository
-    );
-    const fileRepository = Container.get<FileRepository>(
-      CONTAINER_TYPES.FileRepository
-    );
+    const deps = {
+      app: this._app,
+      userService: Container.get<UserService>(CONTAINER_TYPES.UserService),
+      packageService: Container.get<PackageService>(
+        CONTAINER_TYPES.PackageService
+      ),
+      socketIOGameService: Container.get<SocketIOGameService>(
+        CONTAINER_TYPES.SocketIOGameService
+      ),
+      socketUserDataService: Container.get<SocketUserDataService>(
+        CONTAINER_TYPES.SocketUserDataService
+      ),
+      storage: Container.get<S3StorageService>(
+        CONTAINER_TYPES.S3StorageService
+      ),
+      game: Container.get<GameService>(CONTAINER_TYPES.GameService),
+      io: Container.get<IOServer>(CONTAINER_TYPES.IO),
+      redisService: Container.get<RedisService>(CONTAINER_TYPES.RedisService),
+      fileService: Container.get<FileService>(CONTAINER_TYPES.FileService),
+    };
 
     // REST
-    new UserRestApiController(app, userService, userRepository, fileRepository);
+    new UserRestApiController(deps.app, deps.userService, deps.fileService);
     new AuthRestApiController(
-      app,
-      redis,
-      userRepository,
-      fileRepository,
-      storage,
-      socketUserDataService
+      deps.app,
+      deps.redisService,
+      deps.userService,
+      deps.fileService,
+      deps.storage,
+      deps.socketUserDataService
     );
-    new PackageRestApiController(app, packageService);
-    new FileRestApiController(app, storage);
-    new GameRestApiController(app, game);
-    new SwaggerRestApiController(app);
+    new PackageRestApiController(deps.app, deps.packageService);
+    new FileRestApiController(deps.app, deps.storage);
+    new GameRestApiController(deps.app, deps.game);
+    new SwaggerRestApiController(deps.app);
 
     if (this._context.env.ENV === EnvType.DEV) {
       new DevelopmentRestApiController(
-        app,
-        userRepository,
+        deps.app,
+        deps.userService,
         this._context.env,
-        game
+        deps.game
       );
     }
 
     // Socket
-    new SocketIOInitializer(io, socketIOGameService, socketUserDataService);
+    new SocketIOInitializer(deps.io, deps.socketIOGameService);
   }
 }

@@ -4,10 +4,10 @@ import {
 } from "domain/constants/socket";
 import { SocketRedisUserUpdateDTO } from "domain/types/dto/user/SocketRedisUserUpdateDTO";
 import { SocketRedisUserData } from "domain/types/user/SocketRedisUserData";
-import { RedisService } from "infrastructure/services/RedisService";
+import { RedisService } from "infrastructure/services/redis/RedisService";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
-export class SocketUserDataService {
+export class SocketUserDataRepository {
   constructor(private readonly redisService: RedisService) {
     //
   }
@@ -26,11 +26,15 @@ export class SocketUserDataService {
       : null;
   }
 
-  public async set(socketId: string, userId: number) {
+  public async set(
+    socketId: string,
+    data: { userId: number; language: string }
+  ) {
     this.redisService.hset(
       this._getKey(socketId),
       {
-        id: userId,
+        id: data.userId,
+        language: data.language,
       },
       SOCKET_GAME_AUTH_TTL
     );

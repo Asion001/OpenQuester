@@ -1,5 +1,7 @@
 import { FindManyOptions, ILike, In, Repository } from "typeorm";
 
+import { FileService } from "application/services/file/FileService";
+import { PackageTagService } from "application/services/package/PackageTagService";
 import {
   PACKAGE_SELECT_FIELDS,
   PACKAGE_SELECT_RELATIONS,
@@ -26,8 +28,6 @@ import { PackageRound } from "infrastructure/database/models/package/PackageRoun
 import { PackageTag } from "infrastructure/database/models/package/PackageTag";
 import { PackageTheme } from "infrastructure/database/models/package/PackageTheme";
 import { User } from "infrastructure/database/models/User";
-import { FileRepository } from "infrastructure/database/repositories/FileRepository";
-import { PackageTagRepository } from "infrastructure/database/repositories/TagRepository";
 import { StorageUtils } from "infrastructure/utils/StorageUtils";
 
 type OrderMapEntry =
@@ -42,17 +42,13 @@ export class PackageRepository {
   constructor(
     private readonly db: Database,
     private readonly repository: Repository<Package>,
-    private readonly packageTagRepository: PackageTagRepository,
-    private readonly fileRepository: FileRepository
+    private readonly packageTagService: PackageTagService,
+    private readonly fileService: FileService
   ) {
     //
   }
 
-  public async get(
-    id: number,
-    select: (keyof Package)[] = PACKAGE_SELECT_FIELDS,
-    relations: string[]
-  ) {
+  public async get(id: number, select: (keyof Package)[], relations: string[]) {
     return this.repository.findOne({
       where: { id },
       select,
@@ -92,6 +88,7 @@ export class PackageRepository {
       pageInfo: { total },
     };
   }
+
   public findByIds(
     ids: number[],
     selectOptions: SelectOptions<Package>
@@ -150,7 +147,7 @@ export class PackageRepository {
       const tagNames = (packageData.tags || []).map((tagData) => tagData.tag);
 
       const existingTags: PackageTag[] =
-        await this.packageTagRepository.getTagsByNames(tagNames);
+        await this.packageTagService.getTagsByNames(tagNames);
 
       const existingTagMap = new Map<string, PackageTag>(
         existingTags.map((tag) => [tag.tag, tag])
@@ -171,7 +168,7 @@ export class PackageRepository {
       // Save logo info to DB before creating package
       let logoFile = null;
       if (packageData.logo?.file.md5) {
-        logoFile = await this.fileRepository.getFileByFilename(
+        logoFile = await this.fileService.getFileByFilename(
           packageData.logo.file.md5
         );
         if (!logoFile) {

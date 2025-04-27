@@ -7,6 +7,8 @@ import {
 } from "typeorm";
 
 import { PackageFileType } from "domain/enums/package/PackageFileType";
+import { PackageDTOOptions } from "domain/types/dto/package/options/PackageDTOOptions";
+import { PackageFileDTO } from "domain/types/dto/package/PackageFileDTO";
 import { PackageQuestionFileDTO } from "domain/types/dto/package/PackageQuestionFileDTO";
 import { PackageQuestionFileImport } from "domain/types/package/import/PackageQuestionFileImport";
 import { File } from "infrastructure/database/models/File";
@@ -46,14 +48,19 @@ export class PackageQuestionFile {
   }
 
   public async toDTO(
-    storage: S3StorageService
+    storage: S3StorageService,
+    opts: PackageDTOOptions
   ): Promise<PackageQuestionFileDTO> {
-    const fileDTO = {
-      id: this.file.id,
+    const fileDTO: PackageFileDTO = {
       md5: this.file.filename,
       type: this.type,
       link: await storage.get(this.file.filename),
     };
+
+    if (opts.fetchIds) {
+      fileDTO.id = this.file.id;
+    }
+
     return {
       file: fileDTO,
       displayTime: this.display_time,
