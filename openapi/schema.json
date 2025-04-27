@@ -2200,7 +2200,7 @@
           "currentQuestion": {
             "type": ["integer", "null"],
             "description": "Last chosen / current question number out of all",
-            "examples": ["25", "31"]
+            "examples": [25, 31]
           },
           "answeringPlayer": {
             "type": ["integer", "null"],
@@ -2228,12 +2228,12 @@
             "examples": ["2024-01-01T00:00:00Z"]
           },
           "durationMs": {
-            "type": "number",
+            "type": "integer",
             "description": "Describes how long timer should last until it's ended",
             "examples": [30000]
           },
           "elapsedMs": {
-            "type": "number",
+            "type": "integer",
             "description": "This value written only when timer paused because of something. Helps to track passed time and resume timer correctly",
             "examples": [5000]
           }
@@ -2316,7 +2316,7 @@
             "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
           "price": {
-            "type": "number",
+            "type": "integer",
             "examples": [200]
           },
           "isHidden": {
