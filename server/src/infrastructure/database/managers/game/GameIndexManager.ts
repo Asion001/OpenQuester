@@ -73,9 +73,7 @@ export class GameIndexManager {
         isPrivate: filters.isPrivate,
         titlePrefix: filters.titlePrefix,
       });
-
-      const ids = await this._paginateResults(tempKey, pagination);
-      return ids;
+      return this._paginateResults(tempKey, pagination);
     } finally {
       await this.redisService.expire(tempKey, this.TEMP_KEY_TTL);
     }
