@@ -24,7 +24,6 @@ class ChatScreen extends WatchingWidget {
       builders: Builders(
         composerBuilder: (context) => const Composer(
           attachmentIcon: null,
-          
         ),
       ),
     );
