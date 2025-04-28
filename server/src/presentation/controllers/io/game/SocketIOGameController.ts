@@ -9,7 +9,7 @@ import {
   SocketIOGameEvents,
 } from "domain/enums/SocketIOEvents";
 import { ClientError } from "domain/errors/ClientError";
-import { ChatMessageDTO } from "domain/types/dto/game/chat/ChatMessageDTO";
+import { ChatMessageGamePayloadDTO } from "domain/types/dto/game/chat/ChatMessageEventPayloadDTO";
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { GameJoinEventPayload } from "domain/types/socket/events/game/GameJoinEventPayload";
@@ -149,9 +149,14 @@ export class SocketIOGameController {
       dto.message
     );
 
-    this.eventEmitter.emit<ChatMessageDTO>(
+    this.eventEmitter.emit<ChatMessageGamePayloadDTO>(
       SocketIOEvents.CHAT_MESSAGE,
-      result,
+      {
+        uuid: result.uuid,
+        timestamp: result.timestamp,
+        user: result.user,
+        message: result.message,
+      },
       {
         emitter: SocketEventEmitter.IO,
         gameId: result.gameId,

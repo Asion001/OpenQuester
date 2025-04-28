@@ -2202,6 +2202,11 @@
           {
             "type": "object",
             "properties": {
+              "uuid": {
+                "type": "string",
+                "format": "uuid",
+                "examples": ["d232e56c-2522-48b7-a74e-f467e9eef2e1"]
+              },
               "user": {
                 "type": "integer",
                 "examples": [5],
@@ -2220,6 +2225,9 @@
         "type": "object",
         "description": "This data sent to player when he joins game",
         "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/SocketIOGameJoinMeta"
+          },
           "players": {
             "type": "array",
             "items": {
@@ -2230,6 +2238,22 @@
           "gameState": {
             "description": "Current game state",
             "$ref": "#/components/schemas/GameState"
+          },
+          "chatMessages": {
+            "type": "array",
+            "description": "Last 100 chat messages, sorted 'DESC'",
+            "items": {
+              "$ref": "#/components/schemas/SocketIOChatMessageEventPayload"
+            }
+          }
+        }
+      },
+      "SocketIOGameJoinMeta": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "examples": ["Game title"]
           }
         }
       },
