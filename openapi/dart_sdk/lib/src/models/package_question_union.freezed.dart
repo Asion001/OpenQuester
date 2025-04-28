@@ -38,8 +38,6 @@ PackageQuestionUnion _$PackageQuestionUnionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PackageQuestionUnion {
   int? get id => throw _privateConstructorUsedError;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   int get order => throw _privateConstructorUsedError;
 
   /// Point value of the question
@@ -635,8 +633,6 @@ class _$PackageQuestionUnionSimpleImpl implements PackageQuestionUnionSimple {
 
   @override
   final int? id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   final int order;
 
@@ -1170,8 +1166,6 @@ abstract class PackageQuestionUnionSimple implements PackageQuestionUnion {
 
   @override
   int? get id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   int get order;
 
@@ -1364,8 +1358,6 @@ class _$PackageQuestionUnionStakeImpl implements PackageQuestionUnionStake {
 
   @override
   final int? id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   final int order;
 
@@ -1921,8 +1913,6 @@ abstract class PackageQuestionUnionStake implements PackageQuestionUnion {
 
   @override
   int? get id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   int get order;
 
@@ -2130,8 +2120,6 @@ class _$PackageQuestionUnionSecretImpl implements PackageQuestionUnionSecret {
 
   @override
   final int? id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   final int order;
 
@@ -2705,8 +2693,6 @@ abstract class PackageQuestionUnionSecret implements PackageQuestionUnion {
 
   @override
   int? get id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   int get order;
 
@@ -2907,8 +2893,6 @@ class _$PackageQuestionUnionNoRiskImpl implements PackageQuestionUnionNoRisk {
 
   @override
   final int? id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   final int order;
 
@@ -3464,8 +3448,6 @@ abstract class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
 
   @override
   int? get id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   int get order;
 
@@ -3673,8 +3655,6 @@ class _$PackageQuestionUnionChoiceImpl implements PackageQuestionUnionChoice {
 
   @override
   final int? id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   final int order;
 
@@ -4244,8 +4224,6 @@ abstract class PackageQuestionUnionChoice implements PackageQuestionUnion {
 
   @override
   int? get id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   int get order;
 
@@ -4432,8 +4410,6 @@ class _$PackageQuestionUnionHiddenImpl implements PackageQuestionUnionHidden {
 
   @override
   final int? id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   final int order;
 
@@ -4967,8 +4943,6 @@ abstract class PackageQuestionUnionHidden implements PackageQuestionUnion {
 
   @override
   int? get id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   int get order;
 

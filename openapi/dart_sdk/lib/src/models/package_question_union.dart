@@ -13,6 +13,7 @@ import 'no_risk_question.dart';
 import 'no_risk_question_sub_type.dart';
 import 'no_risk_question_type.dart';
 import 'package_answer_file.dart';
+import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_transfer_type.dart';
 import 'secret_question.dart';
@@ -33,9 +34,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('simple')
   const factory PackageQuestionUnion.simple({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,
@@ -71,9 +70,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('stake')
   const factory PackageQuestionUnion.stake({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,
@@ -116,9 +113,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('secret')
   const factory PackageQuestionUnion.secret({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,
@@ -161,9 +156,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('noRisk')
   const factory PackageQuestionUnion.noRisk({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,
@@ -206,9 +199,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('choice')
   const factory PackageQuestionUnion.choice({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,
@@ -251,9 +242,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
   @FreezedUnionValue('hidden')
   const factory PackageQuestionUnion.hidden({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,

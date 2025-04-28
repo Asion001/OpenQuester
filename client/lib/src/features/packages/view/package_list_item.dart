@@ -19,7 +19,7 @@ class PackageListItemWidget extends StatelessWidget {
             .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
             .shrink(),
         subtitle: Text(
-          _packInfo(),
+          _packInfo(context),
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
         )
@@ -33,11 +33,11 @@ class PackageListItemWidget extends StatelessWidget {
     ).paddingSymmetric(horizontal: 6);
   }
 
-  String _packInfo() {
-    final ageRestriction = item.ageRestriction.translate();
+  String _packInfo(BuildContext context) {
+    final ageRestriction = item.ageRestriction.format(context);
     return [
       [
-        ageRestriction,
+        ageRestriction?.$1,
         DateFormat.yMd().format(item.createdAt),
         if (item.tags?.isNotEmpty ?? false)
           item.tags!.sublist(0, min(5, item.tags!.length)).join(', '),

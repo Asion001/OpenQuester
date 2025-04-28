@@ -24,8 +24,8 @@ mixin _$SocketIOGameJoinEventPayload {
   /// Players in the game
   List<PlayerData> get players => throw _privateConstructorUsedError;
 
-  /// !!! Work in progress, will be changed with actual game state component
-  GameListItem get gameState => throw _privateConstructorUsedError;
+  /// Current game state
+  GameState get gameState => throw _privateConstructorUsedError;
 
   /// Serializes this SocketIOGameJoinEventPayload to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,9 +45,9 @@ abstract class $SocketIOGameJoinEventPayloadCopyWith<$Res> {
       _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res,
           SocketIOGameJoinEventPayload>;
   @useResult
-  $Res call({List<PlayerData> players, GameListItem gameState});
+  $Res call({List<PlayerData> players, GameState gameState});
 
-  $GameListItemCopyWith<$Res> get gameState;
+  $GameStateCopyWith<$Res> get gameState;
 }
 
 /// @nodoc
@@ -77,7 +77,7 @@ class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res,
       gameState: null == gameState
           ? _value.gameState
           : gameState // ignore: cast_nullable_to_non_nullable
-              as GameListItem,
+              as GameState,
     ) as $Val);
   }
 
@@ -85,8 +85,8 @@ class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $GameListItemCopyWith<$Res> get gameState {
-    return $GameListItemCopyWith<$Res>(_value.gameState, (value) {
+  $GameStateCopyWith<$Res> get gameState {
+    return $GameStateCopyWith<$Res>(_value.gameState, (value) {
       return _then(_value.copyWith(gameState: value) as $Val);
     });
   }
@@ -101,10 +101,10 @@ abstract class _$$SocketIOGameJoinEventPayloadImplCopyWith<$Res>
       __$$SocketIOGameJoinEventPayloadImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<PlayerData> players, GameListItem gameState});
+  $Res call({List<PlayerData> players, GameState gameState});
 
   @override
-  $GameListItemCopyWith<$Res> get gameState;
+  $GameStateCopyWith<$Res> get gameState;
 }
 
 /// @nodoc
@@ -133,7 +133,7 @@ class __$$SocketIOGameJoinEventPayloadImplCopyWithImpl<$Res>
       gameState: null == gameState
           ? _value.gameState
           : gameState // ignore: cast_nullable_to_non_nullable
-              as GameListItem,
+              as GameState,
     ));
   }
 }
@@ -161,9 +161,9 @@ class _$SocketIOGameJoinEventPayloadImpl
     return EqualUnmodifiableListView(_players);
   }
 
-  /// !!! Work in progress, will be changed with actual game state component
+  /// Current game state
   @override
-  final GameListItem gameState;
+  final GameState gameState;
 
   @override
   String toString() {
@@ -206,9 +206,8 @@ class _$SocketIOGameJoinEventPayloadImpl
 abstract class _SocketIOGameJoinEventPayload
     implements SocketIOGameJoinEventPayload {
   const factory _SocketIOGameJoinEventPayload(
-          {required final List<PlayerData> players,
-          required final GameListItem gameState}) =
-      _$SocketIOGameJoinEventPayloadImpl;
+      {required final List<PlayerData> players,
+      required final GameState gameState}) = _$SocketIOGameJoinEventPayloadImpl;
 
   factory _SocketIOGameJoinEventPayload.fromJson(Map<String, dynamic> json) =
       _$SocketIOGameJoinEventPayloadImpl.fromJson;
@@ -217,9 +216,9 @@ abstract class _SocketIOGameJoinEventPayload
   @override
   List<PlayerData> get players;
 
-  /// !!! Work in progress, will be changed with actual game state component
+  /// Current game state
   @override
-  GameListItem get gameState;
+  GameState get gameState;
 
   /// Create a copy of SocketIOGameJoinEventPayload
   /// with the given fields replaced by the non-null parameter values.

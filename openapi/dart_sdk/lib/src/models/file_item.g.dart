@@ -10,7 +10,7 @@ _$FileItemImpl _$$FileItemImplFromJson(Map<String, dynamic> json) =>
     _$FileItemImpl(
       id: (json['id'] as num?)?.toInt(),
       md5: json['md5'] as String,
-      type: PackageFileType.fromJson(json['type'] as String),
+      type: PackageFileType.fromJson(json['type'] as String?),
       link: json['link'] as String?,
     );
 

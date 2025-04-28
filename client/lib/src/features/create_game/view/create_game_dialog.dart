@@ -18,20 +18,25 @@ class CreateGameDialog extends WatchingWidget {
       builder: (context) => Card(
         child: SingleChildScrollView(
           padding: 16.all,
-          child: Column(
-            spacing: 16,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _UploadPackageButtons(controller: controller, state: state),
-              _SelectedPackagePreview(package: state.package),
-              _GameName(state: state, controller: controller),
-              _AgeRestrictionSelect(state: state, controller: controller)
-                  .withTitle(LocaleKeys.age_restriction.tr()),
-              _PrivateGameSelect(state: state, controller: controller),
-              _MaxPlayersSelect(state: state, controller: controller),
-              _StartGameButton(controller: controller, stateValid: state.valid)
-                  .paddingTop(40),
-            ],
+          child: Form(
+            key: controller.formKey,
+            child: Column(
+              spacing: 16,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _UploadPackageButtons(controller: controller, state: state),
+                _SelectedPackagePreview(package: state.package),
+                _GameName(state: state, controller: controller),
+                _AgeRestrictionSelect(state: state, controller: controller)
+                    .withTitle(LocaleKeys.age_restriction.tr()),
+                _PrivateGameSelect(state: state, controller: controller),
+                _MaxPlayersSelect(state: state, controller: controller),
+                _StartGameButton(
+                  controller: controller,
+                  stateValid: state.valid,
+                ).paddingTop(40),
+              ],
+            ),
           ),
         ),
       ),
@@ -182,7 +187,19 @@ class _GameName extends StatelessWidget {
       decoration: InputDecoration(
         labelText: LocaleKeys.game_name.tr(),
       ),
-      maxLength: GameValidationConst.maxGameNameLenght,
+      validator: (value) {
+        final lenght = value?.length ?? 0;
+        if (lenght <= GameValidationConst.minGameNameLength) {
+          return LocaleKeys.min_length_error.tr(
+            args: [GameValidationConst.minGameNameLength.toString()],
+          );
+        }
+        if (!GameValidationConst.gameNameRegExp.hasMatch(value ?? '')) {
+          return LocaleKeys.game_name_regex_error.tr();
+        }
+        return null;
+      },
+      maxLength: GameValidationConst.maxGameNameLength,
     );
   }
 }

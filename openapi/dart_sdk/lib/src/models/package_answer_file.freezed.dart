@@ -21,8 +21,6 @@ PackageAnswerFile _$PackageAnswerFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$PackageAnswerFile {
   int? get id => throw _privateConstructorUsedError;
-
-  /// Order of the answer file in the question, should be unique, starting from 0
   int get order => throw _privateConstructorUsedError;
   FileItem get file => throw _privateConstructorUsedError;
 
@@ -168,8 +166,6 @@ class _$PackageAnswerFileImpl implements _PackageAnswerFile {
 
   @override
   final int? id;
-
-  /// Order of the answer file in the question, should be unique, starting from 0
   @override
   final int order;
   @override
@@ -230,8 +226,6 @@ abstract class _PackageAnswerFile implements PackageAnswerFile {
 
   @override
   int? get id;
-
-  /// Order of the answer file in the question, should be unique, starting from 0
   @override
   int get order;
   @override

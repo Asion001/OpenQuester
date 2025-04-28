@@ -48,7 +48,7 @@ class SocketChatController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onSendPressed(String message) {
+  Future<void> onSendPressed(String message) async {
     _socket?.emit(
       SocketIOEvents.chatMessage.json!,
       SocketIOChatMessageContent(message: message).toJson(),

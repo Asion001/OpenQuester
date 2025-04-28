@@ -21,8 +21,6 @@ HiddenQuestion _$HiddenQuestionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$HiddenQuestion {
   int? get id => throw _privateConstructorUsedError;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   int get order => throw _privateConstructorUsedError;
 
   /// Point value of the question
@@ -293,8 +291,6 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
 
   @override
   final int? id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   final int order;
 
@@ -442,8 +438,6 @@ abstract class _HiddenQuestion implements HiddenQuestion {
 
   @override
   int? get id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   int get order;
 

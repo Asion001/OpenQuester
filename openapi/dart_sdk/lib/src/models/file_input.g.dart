@@ -9,7 +9,7 @@ part of 'file_input.dart';
 _$FileInputImpl _$$FileInputImplFromJson(Map<String, dynamic> json) =>
     _$FileInputImpl(
       md5: json['md5'] as String,
-      type: PackageFileType.fromJson(json['type'] as String),
+      type: PackageFileType.fromJson(json['type'] as String?),
     );
 
 Map<String, dynamic> _$$FileInputImplToJson(_$FileInputImpl instance) =>

@@ -20,10 +20,12 @@ class GameListItem with _$GameListItem {
     required DateTime createdAt,
     required AgeRestriction ageRestriction,
     required bool isPrivate,
-    required int currentRound,
+    required int? currentRound,
+    required int? currentQuestion,
     required int players,
     required int maxPlayers,
     required DateTime? startedAt,
+    required DateTime? finishedAt,
     required PackageItem package,
   }) = _GameListItem;
   

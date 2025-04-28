@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
-class GameListItemWidget extends StatelessWidget {
+class GameListItemWidget extends WatchingWidget {
   const GameListItemWidget({
     required this.item,
     required this.onTap,
@@ -20,41 +18,65 @@ class GameListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timeController = watchIt<TimeController>();
+
     final children = [
       _GameListItemBadges(item),
-      ListTile(
-        title: Text(
-          item.title,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-        )
-            .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
-            .shrink(),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              item.package.title,
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            title: _title(context),
+            subtitle: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${LocaleKeys.package.tr()}: ',
+                    style: TextStyle(color: context.theme.colorScheme.outline),
+                  ),
+                  TextSpan(text: item.package.title),
+                ],
+              ),
+              style: context.textTheme.bodyMedium
+                  ?.copyWith(color: context.theme.colorScheme.onSurfaceVariant),
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
-            ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr()),
-            Text(_packInfo(), overflow: TextOverflow.ellipsis),
-            Text(_gameInfo(), overflow: TextOverflow.ellipsis),
-          ],
-        ).paddingTop(4).shrink(),
-        trailing: trailing,
-        titleAlignment: ListTileTitleAlignment.bottom,
-        contentPadding: const EdgeInsets.only(right: 16, left: 4),
-        mouseCursor: MouseCursor.defer,
+            )
+                .constrained(const BoxConstraints(minHeight: 42))
+                .withTooltip(
+                  msg: LocaleKeys.game_tile_tooltips_packages_title.tr(),
+                )
+                .paddingTop(4)
+                .shrink(),
+            titleAlignment: ListTileTitleAlignment.top,
+            contentPadding: 4.left + 16.right,
+            mouseCursor: MouseCursor.defer,
+            minVerticalPadding: 4,
+          ).expand(),
+          Text(
+            _gameInfo(timeController),
+            overflow: TextOverflow.ellipsis,
+            style: context.textTheme.bodySmall
+                ?.copyWith(color: context.theme.colorScheme.outline),
+          ).paddingSymmetric(vertical: 8, horizontal: 4),
+        ],
       ).expand(),
+      if (trailing != null)
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [trailing!],
+        ).paddingRight(16),
     ];
 
     return Hero(
       tag: item,
       child: Material(
-        color: Colors.transparent,
+        color: context.theme.colorScheme.surface,
+        borderRadius: 16.circular,
+        elevation: 3,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: 16.circular,
           child: Card(
             color: context.theme.colorScheme.secondaryContainer
                 .withValues(alpha: .33),
@@ -62,39 +84,46 @@ class GameListItemWidget extends StatelessWidget {
               mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
               children: [
                 Row(
+                  spacing: 4,
                   children: children,
-                ).paddingSymmetric(horizontal: 2),
+                ).paddingSymmetric(horizontal: 2).withHeight(110),
                 if (bottom != null) bottom!.flexible(),
               ],
             ),
           ),
-        ).paddingSymmetric(horizontal: 6),
-      ),
+        ),
+      ).paddingSymmetric(horizontal: 6),
     );
   }
 
-  String _packInfo() {
-    final ageRestriction = item.package.ageRestriction.translate();
-    return [
-      [
-        ageRestriction,
-        DateFormat.yMd().format(item.package.createdAt),
-        if (item.package.tags.isNotEmpty)
-          item.package.tags
-              .sublist(0, min(3, item.package.tags.length))
-              .join(', '),
-        LocaleKeys.created_by.tr(args: [item.package.author.username]),
-      ].nonNulls.join(' | '),
-    ].join('\n');
+  Widget _title(BuildContext context) {
+    final ageRestriction = item.ageRestriction.format(context);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 8,
+      children: [
+        Text(
+          item.title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        ).flexible(),
+        if (item.isPrivate) const Icon(Icons.lock, size: 16),
+        if (ageRestriction != null)
+          Text(
+            ageRestriction.$1,
+            style: TextStyle(color: ageRestriction.$2),
+          ),
+      ],
+    ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr()).shrink();
   }
 
-  String _gameInfo() {
+  String _gameInfo(TimeController timeController) {
     final startedAt = item.startedAt;
     return [
       [
         LocaleKeys.game_status_started.tr(),
-        if (startedAt != null)
-          watchIt<TimeController>().current.difference(startedAt).f(),
+        if (startedAt != null) timeController.current.difference(startedAt).f(),
         LocaleKeys.hosted_by.tr(args: [item.createdBy.username]),
       ].join(' • '),
     ].join('\n');
@@ -107,17 +136,18 @@ class _GameListItemBadges extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dividerColor =
+        context.theme.colorScheme.outline.withValues(alpha: .15);
+
     return Container(
-      padding: const EdgeInsets.all(6),
-      margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: context.theme.colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(18),
+        border: Border(right: BorderSide(color: dividerColor)),
       ),
+      padding: 4.vertical,
       child: Column(
-        spacing: 24,
+        spacing: 4,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.min,
         children: [
           _Badge(
             icon: Icons.person_outline,
@@ -127,14 +157,17 @@ class _GameListItemBadges extends StatelessWidget {
           _Badge(
             icon: Icons.check,
             tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
-            label: [item.currentRound, item.package.roundsCount].join('/'),
+            dividerColor: dividerColor,
+            label: [item.currentRound ?? 0, item.package.roundsCount].join('/'),
           ),
-          // _Badge(
-          //   icon: Icons.question_mark,
-          //   tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
-          //   label: [item.currentRound, item.package.roundsCount].join('/'),
-          // ),
-        ],
+          _Badge(
+            icon: Icons.question_mark,
+            tooltip: LocaleKeys.game_tile_tooltips_questions.tr(),
+            dividerColor: dividerColor,
+            label: [item.currentQuestion ?? 0, item.package.questionsCount]
+                .join('/'),
+          ),
+        ].map((e) => e.expand()).toList(),
       ),
     );
   }
@@ -145,26 +178,41 @@ class _Badge extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.tooltip,
+    this.dividerColor,
   });
   final IconData icon;
   final String label;
   final String? tooltip;
+  final Color? dividerColor;
 
   @override
   Widget build(BuildContext context) {
-    return Badge(
-      backgroundColor: context.theme.colorScheme.onPrimary,
-      textColor: context.theme.colorScheme.onSurface,
-      label: ConstrainedBox(
-        constraints: const BoxConstraints(minWidth: 48),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Icon(icon, size: 24),
-            Text(label, style: context.textTheme.labelSmall),
-          ],
-        ),
+    final tooltipMsg = [
+      tooltip ?? '',
+      // Show long label in tooltip
+      if (label.length > 6) label,
+    ].join('\n');
+
+    return Container(
+      padding: 2.all + 4.right,
+      width: 80,
+      decoration: BoxDecoration(
+        border: dividerColor == null
+            ? null
+            : Border(top: BorderSide(color: dividerColor!)),
       ),
-    ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr());
+      child: Row(
+        spacing: 4,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16),
+          Text(
+            label,
+            style: context.textTheme.labelSmall,
+            overflow: TextOverflow.ellipsis,
+          ).flexible(),
+        ],
+      ),
+    ).withTooltip(msg: tooltipMsg);
   }
 }

@@ -36,6 +36,6 @@ class GamePreviewController {
 
     final gameId = game!.id;
     await getIt<GameLobbyController>().join(gameId: gameId);
-    await getIt<AppRouter>().navigate(GameLobbyRoute(gameId: gameId));
+    await getIt<AppRouter>().replace(GameLobbyRoute(gameId: gameId));
   }
 }

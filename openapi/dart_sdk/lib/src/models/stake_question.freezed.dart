@@ -21,8 +21,6 @@ StakeQuestion _$StakeQuestionFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$StakeQuestion {
   int? get id => throw _privateConstructorUsedError;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   int get order => throw _privateConstructorUsedError;
 
   /// Point value of the question
@@ -325,8 +323,6 @@ class _$StakeQuestionImpl implements _StakeQuestion {
 
   @override
   final int? id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   final int order;
 
@@ -489,8 +485,6 @@ abstract class _StakeQuestion implements StakeQuestion {
 
   @override
   int? get id;
-
-  /// Order of the question in the theme, should be unique, starting from 0
   @override
   int get order;
 

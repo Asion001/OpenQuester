@@ -18,7 +18,7 @@ enum PackageFileType {
 
   const PackageFileType(this.json);
 
-  factory PackageFileType.fromJson(String json) => values.firstWhere(
+  factory PackageFileType.fromJson(String? json) => values.firstWhere(
         (e) => e.json == json,
         orElse: () => $unknown,
       );

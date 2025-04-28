@@ -5,6 +5,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package_answer_file.dart';
+import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
 import 'stake_question_sub_type.dart';
@@ -17,9 +18,7 @@ part 'stake_question.g.dart';
 class StakeQuestion with _$StakeQuestion {
   const factory StakeQuestion({
     required int? id,
-
-    /// Order of the question in the theme, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Point value of the question
     required int price,

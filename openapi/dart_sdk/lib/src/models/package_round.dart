@@ -4,6 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package_entities_order.dart';
 import 'package_theme.dart';
 
 part 'package_round.freezed.dart';
@@ -14,9 +15,7 @@ part 'package_round.g.dart';
 class PackageRound with _$PackageRound {
   const factory PackageRound({
     required int? id,
-
-    /// Order of the round in the package, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Name of the round
     required String name,

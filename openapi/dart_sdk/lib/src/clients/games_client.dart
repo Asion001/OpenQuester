@@ -5,6 +5,9 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../models/filter_created_at_max.dart';
+import '../models/filter_created_at_min.dart';
+import '../models/filter_is_private.dart';
 import '../models/game_create_data.dart';
 import '../models/game_list_item.dart';
 import '../models/games_sort_by.dart';
@@ -12,6 +15,7 @@ import '../models/order_direction.dart';
 import '../models/paginated_games.dart';
 import '../models/pagination_limit.dart';
 import '../models/pagination_offset.dart';
+import '../models/pagination_title_prefix.dart';
 
 part 'games_client.g.dart';
 
@@ -26,6 +30,10 @@ abstract class GamesClient {
     @Query('offset') required PaginationOffset offset,
     @Query('sortBy') GamesSortBy? sortBy,
     @Query('order') OrderDirection? order,
+    @Query('createdAtMin') FilterCreatedAtMin? createdAtMin,
+    @Query('createdAtMax') FilterCreatedAtMax? createdAtMax,
+    @Query('isPrivate') FilterIsPrivate? isPrivate,
+    @Query('titlePrefix') PaginationTitlePrefix? titlePrefix,
   });
 
   /// Create a new game

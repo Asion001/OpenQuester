@@ -12,6 +12,8 @@ enum SocketIOGameEvents {
   userLeave('user-leave'),
   @JsonValue('game-data')
   gameData('game-data'),
+  @JsonValue('start')
+  start('start'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 
