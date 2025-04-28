@@ -38,6 +38,9 @@ class AppTheme {
     );
   }
 
+  static const Color sucecssColor = Color(0xFF7CE883);
+  static const Color warningColor = Color(0xFFFFE078);
+
   static ThemeData get light => change(ThemeData.light());
   static ThemeData get dark => change(ThemeData.dark());
 }

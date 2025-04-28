@@ -48,5 +48,10 @@
   "upload_package": "Upload package",
   "package_uploaded": "Package uploaded!",
   "min_lenght_error": "Length must be at least {} characters long",
-  "game_name_regex_error": "❌ Name can only contain printable characters (letters, digits, spaces, punctuation, emoji, etc.)"
+  "game_name_regex_error": "❌ Name can only contain printable characters (letters, digits, spaces, punctuation, emoji, etc.)",
+  "package": "Package",
+  "games_list": "Games List",
+  "type_to_find_games": "Type to find games",
+  "show_search": "Show search",
+  "hide_search": "Hide search"
 }

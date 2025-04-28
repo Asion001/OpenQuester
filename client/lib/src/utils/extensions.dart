@@ -25,11 +25,13 @@ extension DurationX on Duration {
 }
 
 extension IPackageItemAgeRestrictionX on AgeRestriction {
-  String? translate() => {
-        AgeRestriction.a12: '12+',
-        AgeRestriction.a16: '16+',
-        AgeRestriction.a18: '18+',
-      }[this];
+  (String, Color)? format(BuildContext context) {
+    return {
+      AgeRestriction.a12: ('12+', AppTheme.sucecssColor),
+      AgeRestriction.a16: ('16+', AppTheme.warningColor),
+      AgeRestriction.a18: ('18+', context.theme.colorScheme.error),
+    }[this];
+  }
 }
 
 extension WidgetX on Widget {
@@ -48,6 +50,13 @@ extension WidgetX on Widget {
         Text(title),
         this,
       ],
+    );
+  }
+
+  Widget constraned(BoxConstraints constraints) {
+    return ConstrainedBox(
+      constraints: constraints,
+      child: this,
     );
   }
 }

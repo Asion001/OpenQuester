@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart'
-    show ChatOperation, ChatOperationType;
-import 'package:flutter_chat_core/src/models/message.dart';
+    show ChatOperation, ChatOperationType, SystemMessage, TextMessage;
 import 'package:openquester/openquester.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
