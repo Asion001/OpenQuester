@@ -36,6 +36,9 @@ class GamePreviewController {
 
     final gameId = game!.id;
     await getIt<GameLobbyController>().join(gameId: gameId);
-    await getIt<AppRouter>().replace(GameLobbyRoute(gameId: gameId));
+    // Using popAndPush to avoid animation bug
+    // when page with preview is not pop'ed Here widget is not returning
+    // to his place
+    await getIt<AppRouter>().popAndPush(GameLobbyRoute(gameId: gameId));
   }
 }
