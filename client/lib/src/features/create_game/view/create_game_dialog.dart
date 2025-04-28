@@ -189,7 +189,7 @@ class _GameName extends StatelessWidget {
       ),
       validator: (value) {
         final lenght = value?.length ?? 0;
-        if (lenght <= GameValidationConst.minGameNameLength) {
+        if (lenght < GameValidationConst.minGameNameLength) {
           return LocaleKeys.min_length_error.tr(
             args: [GameValidationConst.minGameNameLength.toString()],
           );
