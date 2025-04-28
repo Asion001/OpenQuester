@@ -149,7 +149,7 @@ class GameLobbyController {
         .gameState(currentRound: startData.currentRound);
   }
 
-  void startRound() {
+  void startGame() {
     socket?.emit(SocketIOGameEvents.start.json!);
   }
 

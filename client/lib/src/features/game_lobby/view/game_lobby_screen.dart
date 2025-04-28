@@ -78,7 +78,7 @@ class _Themes extends WatchingWidget {
     if (themes == null) {
       if (gameData?.me.role == PlayerRole.showman) {
         return FilledButton(
-          onPressed: getIt<GameLobbyController>().startRound,
+          onPressed: getIt<GameLobbyController>().startGame,
           child: Text(LocaleKeys.start_game.tr()),
         ).center();
       }
