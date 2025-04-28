@@ -64,7 +64,7 @@ class GameLobbyController {
         gameId: gameId!,
         role: iAmHost
             ? SocketIOGameJoinInputRole.showman
-            : SocketIOGameJoinInputRole.spectator,
+            : SocketIOGameJoinInputRole.player,
       );
 
       socket?.emit(
