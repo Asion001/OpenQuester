@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,87 +10,58 @@ part of 'permission_denied_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PermissionDeniedResponse _$PermissionDeniedResponseFromJson(
-    Map<String, dynamic> json) {
-  return _PermissionDeniedResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PermissionDeniedResponse {
-  String get error => throw _privateConstructorUsedError;
-
-  /// Serializes this PermissionDeniedResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get error;
 
   /// Create a copy of PermissionDeniedResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PermissionDeniedResponseCopyWith<PermissionDeniedResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PermissionDeniedResponseCopyWith<$Res> {
-  factory $PermissionDeniedResponseCopyWith(PermissionDeniedResponse value,
-          $Res Function(PermissionDeniedResponse) then) =
-      _$PermissionDeniedResponseCopyWithImpl<$Res, PermissionDeniedResponse>;
-  @useResult
-  $Res call({String error});
-}
-
-/// @nodoc
-class _$PermissionDeniedResponseCopyWithImpl<$Res,
-        $Val extends PermissionDeniedResponse>
-    implements $PermissionDeniedResponseCopyWith<$Res> {
-  _$PermissionDeniedResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PermissionDeniedResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $PermissionDeniedResponseCopyWith<PermissionDeniedResponse> get copyWith =>
+      _$PermissionDeniedResponseCopyWithImpl<PermissionDeniedResponse>(
+          this as PermissionDeniedResponse, _$identity);
+
+  /// Serializes this PermissionDeniedResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_value.copyWith(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PermissionDeniedResponse &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  @override
+  String toString() {
+    return 'PermissionDeniedResponse(error: $error)';
   }
 }
 
 /// @nodoc
-abstract class _$$PermissionDeniedResponseImplCopyWith<$Res>
-    implements $PermissionDeniedResponseCopyWith<$Res> {
-  factory _$$PermissionDeniedResponseImplCopyWith(
-          _$PermissionDeniedResponseImpl value,
-          $Res Function(_$PermissionDeniedResponseImpl) then) =
-      __$$PermissionDeniedResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PermissionDeniedResponseCopyWith<$Res> {
+  factory $PermissionDeniedResponseCopyWith(PermissionDeniedResponse value,
+          $Res Function(PermissionDeniedResponse) _then) =
+      _$PermissionDeniedResponseCopyWithImpl;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$PermissionDeniedResponseImplCopyWithImpl<$Res>
-    extends _$PermissionDeniedResponseCopyWithImpl<$Res,
-        _$PermissionDeniedResponseImpl>
-    implements _$$PermissionDeniedResponseImplCopyWith<$Res> {
-  __$$PermissionDeniedResponseImplCopyWithImpl(
-      _$PermissionDeniedResponseImpl _value,
-      $Res Function(_$PermissionDeniedResponseImpl) _then)
-      : super(_value, _then);
+class _$PermissionDeniedResponseCopyWithImpl<$Res>
+    implements $PermissionDeniedResponseCopyWith<$Res> {
+  _$PermissionDeniedResponseCopyWithImpl(this._self, this._then);
+
+  final PermissionDeniedResponse _self;
+  final $Res Function(PermissionDeniedResponse) _then;
 
   /// Create a copy of PermissionDeniedResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -98,9 +70,9 @@ class __$$PermissionDeniedResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$PermissionDeniedResponseImpl(
+    return _then(_self.copyWith(
       error: null == error
-          ? _value.error
+          ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -109,25 +81,35 @@ class __$$PermissionDeniedResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PermissionDeniedResponseImpl implements _PermissionDeniedResponse {
-  const _$PermissionDeniedResponseImpl({required this.error});
-
-  factory _$PermissionDeniedResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PermissionDeniedResponseImplFromJson(json);
+class _PermissionDeniedResponse implements PermissionDeniedResponse {
+  const _PermissionDeniedResponse({required this.error});
+  factory _PermissionDeniedResponse.fromJson(Map<String, dynamic> json) =>
+      _$PermissionDeniedResponseFromJson(json);
 
   @override
   final String error;
 
+  /// Create a copy of PermissionDeniedResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PermissionDeniedResponse(error: $error)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PermissionDeniedResponseCopyWith<_PermissionDeniedResponse> get copyWith =>
+      __$PermissionDeniedResponseCopyWithImpl<_PermissionDeniedResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PermissionDeniedResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PermissionDeniedResponseImpl &&
+            other is _PermissionDeniedResponse &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -135,37 +117,45 @@ class _$PermissionDeniedResponseImpl implements _PermissionDeniedResponse {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  /// Create a copy of PermissionDeniedResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PermissionDeniedResponseImplCopyWith<_$PermissionDeniedResponseImpl>
-      get copyWith => __$$PermissionDeniedResponseImplCopyWithImpl<
-          _$PermissionDeniedResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PermissionDeniedResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PermissionDeniedResponse(error: $error)';
   }
 }
 
-abstract class _PermissionDeniedResponse implements PermissionDeniedResponse {
-  const factory _PermissionDeniedResponse({required final String error}) =
-      _$PermissionDeniedResponseImpl;
-
-  factory _PermissionDeniedResponse.fromJson(Map<String, dynamic> json) =
-      _$PermissionDeniedResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$PermissionDeniedResponseCopyWith<$Res>
+    implements $PermissionDeniedResponseCopyWith<$Res> {
+  factory _$PermissionDeniedResponseCopyWith(_PermissionDeniedResponse value,
+          $Res Function(_PermissionDeniedResponse) _then) =
+      __$PermissionDeniedResponseCopyWithImpl;
   @override
-  String get error;
+  @useResult
+  $Res call({String error});
+}
+
+/// @nodoc
+class __$PermissionDeniedResponseCopyWithImpl<$Res>
+    implements _$PermissionDeniedResponseCopyWith<$Res> {
+  __$PermissionDeniedResponseCopyWithImpl(this._self, this._then);
+
+  final _PermissionDeniedResponse _self;
+  final $Res Function(_PermissionDeniedResponse) _then;
 
   /// Create a copy of PermissionDeniedResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PermissionDeniedResponseImplCopyWith<_$PermissionDeniedResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_PermissionDeniedResponse(
+      error: null == error
+          ? _self.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

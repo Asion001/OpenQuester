@@ -8,7 +8,7 @@ part 'invalid_session_response.freezed.dart';
 part 'invalid_session_response.g.dart';
 
 @Freezed()
-class InvalidSessionResponse with _$InvalidSessionResponse {
+abstract class InvalidSessionResponse with _$InvalidSessionResponse {
   const factory InvalidSessionResponse({
     required String error,
   }) = _InvalidSessionResponse;

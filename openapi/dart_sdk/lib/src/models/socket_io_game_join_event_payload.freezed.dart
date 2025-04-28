@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,41 +10,56 @@ part of 'socket_io_game_join_event_payload.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-SocketIOGameJoinEventPayload _$SocketIOGameJoinEventPayloadFromJson(
-    Map<String, dynamic> json) {
-  return _SocketIOGameJoinEventPayload.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SocketIOGameJoinEventPayload {
   /// Players in the game
-  List<PlayerData> get players => throw _privateConstructorUsedError;
+  List<PlayerData> get players;
 
   /// Current game state
-  GameState get gameState => throw _privateConstructorUsedError;
-
-  /// Serializes this SocketIOGameJoinEventPayload to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  GameState get gameState;
 
   /// Create a copy of SocketIOGameJoinEventPayload
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $SocketIOGameJoinEventPayloadCopyWith<SocketIOGameJoinEventPayload>
-      get copyWith => throw _privateConstructorUsedError;
+      get copyWith => _$SocketIOGameJoinEventPayloadCopyWithImpl<
+              SocketIOGameJoinEventPayload>(
+          this as SocketIOGameJoinEventPayload, _$identity);
+
+  /// Serializes this SocketIOGameJoinEventPayload to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SocketIOGameJoinEventPayload &&
+            const DeepCollectionEquality().equals(other.players, players) &&
+            (identical(other.gameState, gameState) ||
+                other.gameState == gameState));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(players), gameState);
+
+  @override
+  String toString() {
+    return 'SocketIOGameJoinEventPayload(players: $players, gameState: $gameState)';
+  }
 }
 
 /// @nodoc
-abstract class $SocketIOGameJoinEventPayloadCopyWith<$Res> {
+abstract mixin class $SocketIOGameJoinEventPayloadCopyWith<$Res> {
   factory $SocketIOGameJoinEventPayloadCopyWith(
           SocketIOGameJoinEventPayload value,
-          $Res Function(SocketIOGameJoinEventPayload) then) =
-      _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res,
-          SocketIOGameJoinEventPayload>;
+          $Res Function(SocketIOGameJoinEventPayload) _then) =
+      _$SocketIOGameJoinEventPayloadCopyWithImpl;
   @useResult
   $Res call({List<PlayerData> players, GameState gameState});
 
@@ -51,15 +67,12 @@ abstract class $SocketIOGameJoinEventPayloadCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res,
-        $Val extends SocketIOGameJoinEventPayload>
+class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res>
     implements $SocketIOGameJoinEventPayloadCopyWith<$Res> {
-  _$SocketIOGameJoinEventPayloadCopyWithImpl(this._value, this._then);
+  _$SocketIOGameJoinEventPayloadCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final SocketIOGameJoinEventPayload _self;
+  final $Res Function(SocketIOGameJoinEventPayload) _then;
 
   /// Create a copy of SocketIOGameJoinEventPayload
   /// with the given fields replaced by the non-null parameter values.
@@ -69,16 +82,16 @@ class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res,
     Object? players = null,
     Object? gameState = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       players: null == players
-          ? _value.players
+          ? _self.players
           : players // ignore: cast_nullable_to_non_nullable
               as List<PlayerData>,
       gameState: null == gameState
-          ? _value.gameState
+          ? _self.gameState
           : gameState // ignore: cast_nullable_to_non_nullable
               as GameState,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of SocketIOGameJoinEventPayload
@@ -86,69 +99,20 @@ class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res,
   @override
   @pragma('vm:prefer-inline')
   $GameStateCopyWith<$Res> get gameState {
-    return $GameStateCopyWith<$Res>(_value.gameState, (value) {
-      return _then(_value.copyWith(gameState: value) as $Val);
+    return $GameStateCopyWith<$Res>(_self.gameState, (value) {
+      return _then(_self.copyWith(gameState: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$SocketIOGameJoinEventPayloadImplCopyWith<$Res>
-    implements $SocketIOGameJoinEventPayloadCopyWith<$Res> {
-  factory _$$SocketIOGameJoinEventPayloadImplCopyWith(
-          _$SocketIOGameJoinEventPayloadImpl value,
-          $Res Function(_$SocketIOGameJoinEventPayloadImpl) then) =
-      __$$SocketIOGameJoinEventPayloadImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({List<PlayerData> players, GameState gameState});
-
-  @override
-  $GameStateCopyWith<$Res> get gameState;
-}
-
-/// @nodoc
-class __$$SocketIOGameJoinEventPayloadImplCopyWithImpl<$Res>
-    extends _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res,
-        _$SocketIOGameJoinEventPayloadImpl>
-    implements _$$SocketIOGameJoinEventPayloadImplCopyWith<$Res> {
-  __$$SocketIOGameJoinEventPayloadImplCopyWithImpl(
-      _$SocketIOGameJoinEventPayloadImpl _value,
-      $Res Function(_$SocketIOGameJoinEventPayloadImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of SocketIOGameJoinEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? players = null,
-    Object? gameState = null,
-  }) {
-    return _then(_$SocketIOGameJoinEventPayloadImpl(
-      players: null == players
-          ? _value._players
-          : players // ignore: cast_nullable_to_non_nullable
-              as List<PlayerData>,
-      gameState: null == gameState
-          ? _value.gameState
-          : gameState // ignore: cast_nullable_to_non_nullable
-              as GameState,
-    ));
-  }
-}
-
-/// @nodoc
 @JsonSerializable()
-class _$SocketIOGameJoinEventPayloadImpl
-    implements _SocketIOGameJoinEventPayload {
-  const _$SocketIOGameJoinEventPayloadImpl(
+class _SocketIOGameJoinEventPayload implements SocketIOGameJoinEventPayload {
+  const _SocketIOGameJoinEventPayload(
       {required final List<PlayerData> players, required this.gameState})
       : _players = players;
-
-  factory _$SocketIOGameJoinEventPayloadImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$SocketIOGameJoinEventPayloadImplFromJson(json);
+  factory _SocketIOGameJoinEventPayload.fromJson(Map<String, dynamic> json) =>
+      _$SocketIOGameJoinEventPayloadFromJson(json);
 
   /// Players in the game
   final List<PlayerData> _players;
@@ -165,16 +129,27 @@ class _$SocketIOGameJoinEventPayloadImpl
   @override
   final GameState gameState;
 
+  /// Create a copy of SocketIOGameJoinEventPayload
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SocketIOGameJoinEventPayload(players: $players, gameState: $gameState)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SocketIOGameJoinEventPayloadCopyWith<_SocketIOGameJoinEventPayload>
+      get copyWith => __$SocketIOGameJoinEventPayloadCopyWithImpl<
+          _SocketIOGameJoinEventPayload>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SocketIOGameJoinEventPayloadToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SocketIOGameJoinEventPayloadImpl &&
+            other is _SocketIOGameJoinEventPayload &&
             const DeepCollectionEquality().equals(other._players, _players) &&
             (identical(other.gameState, gameState) ||
                 other.gameState == gameState));
@@ -185,46 +160,64 @@ class _$SocketIOGameJoinEventPayloadImpl
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_players), gameState);
 
-  /// Create a copy of SocketIOGameJoinEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SocketIOGameJoinEventPayloadImplCopyWith<
-          _$SocketIOGameJoinEventPayloadImpl>
-      get copyWith => __$$SocketIOGameJoinEventPayloadImplCopyWithImpl<
-          _$SocketIOGameJoinEventPayloadImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SocketIOGameJoinEventPayloadImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SocketIOGameJoinEventPayload(players: $players, gameState: $gameState)';
   }
 }
 
-abstract class _SocketIOGameJoinEventPayload
-    implements SocketIOGameJoinEventPayload {
-  const factory _SocketIOGameJoinEventPayload(
-      {required final List<PlayerData> players,
-      required final GameState gameState}) = _$SocketIOGameJoinEventPayloadImpl;
-
-  factory _SocketIOGameJoinEventPayload.fromJson(Map<String, dynamic> json) =
-      _$SocketIOGameJoinEventPayloadImpl.fromJson;
-
-  /// Players in the game
+/// @nodoc
+abstract mixin class _$SocketIOGameJoinEventPayloadCopyWith<$Res>
+    implements $SocketIOGameJoinEventPayloadCopyWith<$Res> {
+  factory _$SocketIOGameJoinEventPayloadCopyWith(
+          _SocketIOGameJoinEventPayload value,
+          $Res Function(_SocketIOGameJoinEventPayload) _then) =
+      __$SocketIOGameJoinEventPayloadCopyWithImpl;
   @override
-  List<PlayerData> get players;
+  @useResult
+  $Res call({List<PlayerData> players, GameState gameState});
 
-  /// Current game state
   @override
-  GameState get gameState;
+  $GameStateCopyWith<$Res> get gameState;
+}
+
+/// @nodoc
+class __$SocketIOGameJoinEventPayloadCopyWithImpl<$Res>
+    implements _$SocketIOGameJoinEventPayloadCopyWith<$Res> {
+  __$SocketIOGameJoinEventPayloadCopyWithImpl(this._self, this._then);
+
+  final _SocketIOGameJoinEventPayload _self;
+  final $Res Function(_SocketIOGameJoinEventPayload) _then;
 
   /// Create a copy of SocketIOGameJoinEventPayload
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SocketIOGameJoinEventPayloadImplCopyWith<
-          _$SocketIOGameJoinEventPayloadImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? players = null,
+    Object? gameState = null,
+  }) {
+    return _then(_SocketIOGameJoinEventPayload(
+      players: null == players
+          ? _self._players
+          : players // ignore: cast_nullable_to_non_nullable
+              as List<PlayerData>,
+      gameState: null == gameState
+          ? _self.gameState
+          : gameState // ignore: cast_nullable_to_non_nullable
+              as GameState,
+    ));
+  }
+
+  /// Create a copy of SocketIOGameJoinEventPayload
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $GameStateCopyWith<$Res> get gameState {
+    return $GameStateCopyWith<$Res>(_self.gameState, (value) {
+      return _then(_self.copyWith(gameState: value));
+    });
+  }
 }
+
+// dart format on

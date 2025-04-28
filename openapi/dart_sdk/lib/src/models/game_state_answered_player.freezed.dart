@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,141 +10,31 @@ part of 'game_state_answered_player.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-GameStateAnsweredPlayer _$GameStateAnsweredPlayerFromJson(
-    Map<String, dynamic> json) {
-  return _GameStateAnsweredPlayer.fromJson(json);
-}
 
 /// @nodoc
 mixin _$GameStateAnsweredPlayer {
   /// Id of answered player
-  int get player => throw _privateConstructorUsedError;
-  int get result => throw _privateConstructorUsedError;
-
-  /// Serializes this GameStateAnsweredPlayer to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get player;
+  int get result;
 
   /// Create a copy of GameStateAnsweredPlayer
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $GameStateAnsweredPlayerCopyWith<GameStateAnsweredPlayer> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$GameStateAnsweredPlayerCopyWithImpl<GameStateAnsweredPlayer>(
+          this as GameStateAnsweredPlayer, _$identity);
 
-/// @nodoc
-abstract class $GameStateAnsweredPlayerCopyWith<$Res> {
-  factory $GameStateAnsweredPlayerCopyWith(GameStateAnsweredPlayer value,
-          $Res Function(GameStateAnsweredPlayer) then) =
-      _$GameStateAnsweredPlayerCopyWithImpl<$Res, GameStateAnsweredPlayer>;
-  @useResult
-  $Res call({int player, int result});
-}
-
-/// @nodoc
-class _$GameStateAnsweredPlayerCopyWithImpl<$Res,
-        $Val extends GameStateAnsweredPlayer>
-    implements $GameStateAnsweredPlayerCopyWith<$Res> {
-  _$GameStateAnsweredPlayerCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of GameStateAnsweredPlayer
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? player = null,
-    Object? result = null,
-  }) {
-    return _then(_value.copyWith(
-      player: null == player
-          ? _value.player
-          : player // ignore: cast_nullable_to_non_nullable
-              as int,
-      result: null == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$GameStateAnsweredPlayerImplCopyWith<$Res>
-    implements $GameStateAnsweredPlayerCopyWith<$Res> {
-  factory _$$GameStateAnsweredPlayerImplCopyWith(
-          _$GameStateAnsweredPlayerImpl value,
-          $Res Function(_$GameStateAnsweredPlayerImpl) then) =
-      __$$GameStateAnsweredPlayerImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int player, int result});
-}
-
-/// @nodoc
-class __$$GameStateAnsweredPlayerImplCopyWithImpl<$Res>
-    extends _$GameStateAnsweredPlayerCopyWithImpl<$Res,
-        _$GameStateAnsweredPlayerImpl>
-    implements _$$GameStateAnsweredPlayerImplCopyWith<$Res> {
-  __$$GameStateAnsweredPlayerImplCopyWithImpl(
-      _$GameStateAnsweredPlayerImpl _value,
-      $Res Function(_$GameStateAnsweredPlayerImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of GameStateAnsweredPlayer
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? player = null,
-    Object? result = null,
-  }) {
-    return _then(_$GameStateAnsweredPlayerImpl(
-      player: null == player
-          ? _value.player
-          : player // ignore: cast_nullable_to_non_nullable
-              as int,
-      result: null == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$GameStateAnsweredPlayerImpl implements _GameStateAnsweredPlayer {
-  const _$GameStateAnsweredPlayerImpl(
-      {required this.player, required this.result});
-
-  factory _$GameStateAnsweredPlayerImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GameStateAnsweredPlayerImplFromJson(json);
-
-  /// Id of answered player
-  @override
-  final int player;
-  @override
-  final int result;
-
-  @override
-  String toString() {
-    return 'GameStateAnsweredPlayer(player: $player, result: $result)';
-  }
+  /// Serializes this GameStateAnsweredPlayer to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GameStateAnsweredPlayerImpl &&
+            other is GameStateAnsweredPlayer &&
             (identical(other.player, player) || other.player == player) &&
             (identical(other.result, result) || other.result == result));
   }
@@ -152,41 +43,136 @@ class _$GameStateAnsweredPlayerImpl implements _GameStateAnsweredPlayer {
   @override
   int get hashCode => Object.hash(runtimeType, player, result);
 
-  /// Create a copy of GameStateAnsweredPlayer
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$GameStateAnsweredPlayerImplCopyWith<_$GameStateAnsweredPlayerImpl>
-      get copyWith => __$$GameStateAnsweredPlayerImplCopyWithImpl<
-          _$GameStateAnsweredPlayerImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$GameStateAnsweredPlayerImplToJson(
-      this,
-    );
+  String toString() {
+    return 'GameStateAnsweredPlayer(player: $player, result: $result)';
   }
 }
 
-abstract class _GameStateAnsweredPlayer implements GameStateAnsweredPlayer {
-  const factory _GameStateAnsweredPlayer(
-      {required final int player,
-      required final int result}) = _$GameStateAnsweredPlayerImpl;
+/// @nodoc
+abstract mixin class $GameStateAnsweredPlayerCopyWith<$Res> {
+  factory $GameStateAnsweredPlayerCopyWith(GameStateAnsweredPlayer value,
+          $Res Function(GameStateAnsweredPlayer) _then) =
+      _$GameStateAnsweredPlayerCopyWithImpl;
+  @useResult
+  $Res call({int player, int result});
+}
 
-  factory _GameStateAnsweredPlayer.fromJson(Map<String, dynamic> json) =
-      _$GameStateAnsweredPlayerImpl.fromJson;
+/// @nodoc
+class _$GameStateAnsweredPlayerCopyWithImpl<$Res>
+    implements $GameStateAnsweredPlayerCopyWith<$Res> {
+  _$GameStateAnsweredPlayerCopyWithImpl(this._self, this._then);
+
+  final GameStateAnsweredPlayer _self;
+  final $Res Function(GameStateAnsweredPlayer) _then;
+
+  /// Create a copy of GameStateAnsweredPlayer
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? player = null,
+    Object? result = null,
+  }) {
+    return _then(_self.copyWith(
+      player: null == player
+          ? _self.player
+          : player // ignore: cast_nullable_to_non_nullable
+              as int,
+      result: null == result
+          ? _self.result
+          : result // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _GameStateAnsweredPlayer implements GameStateAnsweredPlayer {
+  const _GameStateAnsweredPlayer({required this.player, required this.result});
+  factory _GameStateAnsweredPlayer.fromJson(Map<String, dynamic> json) =>
+      _$GameStateAnsweredPlayerFromJson(json);
 
   /// Id of answered player
   @override
-  int get player;
+  final int player;
   @override
-  int get result;
+  final int result;
 
   /// Create a copy of GameStateAnsweredPlayer
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GameStateAnsweredPlayerImplCopyWith<_$GameStateAnsweredPlayerImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$GameStateAnsweredPlayerCopyWith<_GameStateAnsweredPlayer> get copyWith =>
+      __$GameStateAnsweredPlayerCopyWithImpl<_GameStateAnsweredPlayer>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$GameStateAnsweredPlayerToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _GameStateAnsweredPlayer &&
+            (identical(other.player, player) || other.player == player) &&
+            (identical(other.result, result) || other.result == result));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, player, result);
+
+  @override
+  String toString() {
+    return 'GameStateAnsweredPlayer(player: $player, result: $result)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$GameStateAnsweredPlayerCopyWith<$Res>
+    implements $GameStateAnsweredPlayerCopyWith<$Res> {
+  factory _$GameStateAnsweredPlayerCopyWith(_GameStateAnsweredPlayer value,
+          $Res Function(_GameStateAnsweredPlayer) _then) =
+      __$GameStateAnsweredPlayerCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int player, int result});
+}
+
+/// @nodoc
+class __$GameStateAnsweredPlayerCopyWithImpl<$Res>
+    implements _$GameStateAnsweredPlayerCopyWith<$Res> {
+  __$GameStateAnsweredPlayerCopyWithImpl(this._self, this._then);
+
+  final _GameStateAnsweredPlayer _self;
+  final $Res Function(_GameStateAnsweredPlayer) _then;
+
+  /// Create a copy of GameStateAnsweredPlayer
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? player = null,
+    Object? result = null,
+  }) {
+    return _then(_GameStateAnsweredPlayer(
+      player: null == player
+          ? _self.player
+          : player // ignore: cast_nullable_to_non_nullable
+              as int,
+      result: null == result
+          ? _self.result
+          : result // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+// dart format on

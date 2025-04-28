@@ -11,7 +11,7 @@ part 'file_item.g.dart';
 
 /// Basic file metadata
 @Freezed()
-class FileItem with _$FileItem {
+abstract class FileItem with _$FileItem {
   const factory FileItem({
     required int? id,
 

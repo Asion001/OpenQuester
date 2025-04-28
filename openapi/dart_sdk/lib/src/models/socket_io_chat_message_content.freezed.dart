@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,88 +10,59 @@ part of 'socket_io_chat_message_content.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-SocketIOChatMessageContent _$SocketIOChatMessageContentFromJson(
-    Map<String, dynamic> json) {
-  return _SocketIOChatMessageContent.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SocketIOChatMessageContent {
-  String get message => throw _privateConstructorUsedError;
-
-  /// Serializes this SocketIOChatMessageContent to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get message;
 
   /// Create a copy of SocketIOChatMessageContent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $SocketIOChatMessageContentCopyWith<SocketIOChatMessageContent>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SocketIOChatMessageContentCopyWith<$Res> {
-  factory $SocketIOChatMessageContentCopyWith(SocketIOChatMessageContent value,
-          $Res Function(SocketIOChatMessageContent) then) =
-      _$SocketIOChatMessageContentCopyWithImpl<$Res,
-          SocketIOChatMessageContent>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class _$SocketIOChatMessageContentCopyWithImpl<$Res,
-        $Val extends SocketIOChatMessageContent>
-    implements $SocketIOChatMessageContentCopyWith<$Res> {
-  _$SocketIOChatMessageContentCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of SocketIOChatMessageContent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $SocketIOChatMessageContentCopyWith<SocketIOChatMessageContent>
+      get copyWith =>
+          _$SocketIOChatMessageContentCopyWithImpl<SocketIOChatMessageContent>(
+              this as SocketIOChatMessageContent, _$identity);
+
+  /// Serializes this SocketIOChatMessageContent to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_value.copyWith(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SocketIOChatMessageContent &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @override
+  String toString() {
+    return 'SocketIOChatMessageContent(message: $message)';
   }
 }
 
 /// @nodoc
-abstract class _$$SocketIOChatMessageContentImplCopyWith<$Res>
-    implements $SocketIOChatMessageContentCopyWith<$Res> {
-  factory _$$SocketIOChatMessageContentImplCopyWith(
-          _$SocketIOChatMessageContentImpl value,
-          $Res Function(_$SocketIOChatMessageContentImpl) then) =
-      __$$SocketIOChatMessageContentImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SocketIOChatMessageContentCopyWith<$Res> {
+  factory $SocketIOChatMessageContentCopyWith(SocketIOChatMessageContent value,
+          $Res Function(SocketIOChatMessageContent) _then) =
+      _$SocketIOChatMessageContentCopyWithImpl;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$SocketIOChatMessageContentImplCopyWithImpl<$Res>
-    extends _$SocketIOChatMessageContentCopyWithImpl<$Res,
-        _$SocketIOChatMessageContentImpl>
-    implements _$$SocketIOChatMessageContentImplCopyWith<$Res> {
-  __$$SocketIOChatMessageContentImplCopyWithImpl(
-      _$SocketIOChatMessageContentImpl _value,
-      $Res Function(_$SocketIOChatMessageContentImpl) _then)
-      : super(_value, _then);
+class _$SocketIOChatMessageContentCopyWithImpl<$Res>
+    implements $SocketIOChatMessageContentCopyWith<$Res> {
+  _$SocketIOChatMessageContentCopyWithImpl(this._self, this._then);
+
+  final SocketIOChatMessageContent _self;
+  final $Res Function(SocketIOChatMessageContent) _then;
 
   /// Create a copy of SocketIOChatMessageContent
   /// with the given fields replaced by the non-null parameter values.
@@ -99,9 +71,9 @@ class __$$SocketIOChatMessageContentImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$SocketIOChatMessageContentImpl(
+    return _then(_self.copyWith(
       message: null == message
-          ? _value.message
+          ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -110,26 +82,35 @@ class __$$SocketIOChatMessageContentImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SocketIOChatMessageContentImpl implements _SocketIOChatMessageContent {
-  const _$SocketIOChatMessageContentImpl({required this.message});
-
-  factory _$SocketIOChatMessageContentImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$SocketIOChatMessageContentImplFromJson(json);
+class _SocketIOChatMessageContent implements SocketIOChatMessageContent {
+  const _SocketIOChatMessageContent({required this.message});
+  factory _SocketIOChatMessageContent.fromJson(Map<String, dynamic> json) =>
+      _$SocketIOChatMessageContentFromJson(json);
 
   @override
   final String message;
 
+  /// Create a copy of SocketIOChatMessageContent
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SocketIOChatMessageContent(message: $message)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SocketIOChatMessageContentCopyWith<_SocketIOChatMessageContent>
+      get copyWith => __$SocketIOChatMessageContentCopyWithImpl<
+          _SocketIOChatMessageContent>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SocketIOChatMessageContentToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SocketIOChatMessageContentImpl &&
+            other is _SocketIOChatMessageContent &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -137,38 +118,46 @@ class _$SocketIOChatMessageContentImpl implements _SocketIOChatMessageContent {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of SocketIOChatMessageContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SocketIOChatMessageContentImplCopyWith<_$SocketIOChatMessageContentImpl>
-      get copyWith => __$$SocketIOChatMessageContentImplCopyWithImpl<
-          _$SocketIOChatMessageContentImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SocketIOChatMessageContentImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SocketIOChatMessageContent(message: $message)';
   }
 }
 
-abstract class _SocketIOChatMessageContent
-    implements SocketIOChatMessageContent {
-  const factory _SocketIOChatMessageContent({required final String message}) =
-      _$SocketIOChatMessageContentImpl;
-
-  factory _SocketIOChatMessageContent.fromJson(Map<String, dynamic> json) =
-      _$SocketIOChatMessageContentImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$SocketIOChatMessageContentCopyWith<$Res>
+    implements $SocketIOChatMessageContentCopyWith<$Res> {
+  factory _$SocketIOChatMessageContentCopyWith(
+          _SocketIOChatMessageContent value,
+          $Res Function(_SocketIOChatMessageContent) _then) =
+      __$SocketIOChatMessageContentCopyWithImpl;
   @override
-  String get message;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$SocketIOChatMessageContentCopyWithImpl<$Res>
+    implements _$SocketIOChatMessageContentCopyWith<$Res> {
+  __$SocketIOChatMessageContentCopyWithImpl(this._self, this._then);
+
+  final _SocketIOChatMessageContent _self;
+  final $Res Function(_SocketIOChatMessageContent) _then;
 
   /// Create a copy of SocketIOChatMessageContent
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SocketIOChatMessageContentImplCopyWith<_$SocketIOChatMessageContentImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_SocketIOChatMessageContent(
+      message: null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

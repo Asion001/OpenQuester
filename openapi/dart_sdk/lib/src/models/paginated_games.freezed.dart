@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,35 +10,51 @@ part of 'paginated_games.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PaginatedGames _$PaginatedGamesFromJson(Map<String, dynamic> json) {
-  return _PaginatedGames.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PaginatedGames {
-  List<GameListItem> get data => throw _privateConstructorUsedError;
-  PageInfo get pageInfo => throw _privateConstructorUsedError;
-
-  /// Serializes this PaginatedGames to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  List<GameListItem> get data;
+  PageInfo get pageInfo;
 
   /// Create a copy of PaginatedGames
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PaginatedGamesCopyWith<PaginatedGames> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$PaginatedGamesCopyWithImpl<PaginatedGames>(
+          this as PaginatedGames, _$identity);
+
+  /// Serializes this PaginatedGames to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PaginatedGames &&
+            const DeepCollectionEquality().equals(other.data, data) &&
+            (identical(other.pageInfo, pageInfo) ||
+                other.pageInfo == pageInfo));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(data), pageInfo);
+
+  @override
+  String toString() {
+    return 'PaginatedGames(data: $data, pageInfo: $pageInfo)';
+  }
 }
 
 /// @nodoc
-abstract class $PaginatedGamesCopyWith<$Res> {
+abstract mixin class $PaginatedGamesCopyWith<$Res> {
   factory $PaginatedGamesCopyWith(
-          PaginatedGames value, $Res Function(PaginatedGames) then) =
-      _$PaginatedGamesCopyWithImpl<$Res, PaginatedGames>;
+          PaginatedGames value, $Res Function(PaginatedGames) _then) =
+      _$PaginatedGamesCopyWithImpl;
   @useResult
   $Res call({List<GameListItem> data, PageInfo pageInfo});
 
@@ -45,14 +62,12 @@ abstract class $PaginatedGamesCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PaginatedGamesCopyWithImpl<$Res, $Val extends PaginatedGames>
+class _$PaginatedGamesCopyWithImpl<$Res>
     implements $PaginatedGamesCopyWith<$Res> {
-  _$PaginatedGamesCopyWithImpl(this._value, this._then);
+  _$PaginatedGamesCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final PaginatedGames _self;
+  final $Res Function(PaginatedGames) _then;
 
   /// Create a copy of PaginatedGames
   /// with the given fields replaced by the non-null parameter values.
@@ -62,16 +77,16 @@ class _$PaginatedGamesCopyWithImpl<$Res, $Val extends PaginatedGames>
     Object? data = null,
     Object? pageInfo = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       data: null == data
-          ? _value.data
+          ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
               as List<GameListItem>,
       pageInfo: null == pageInfo
-          ? _value.pageInfo
+          ? _self.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
               as PageInfo,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of PaginatedGames
@@ -79,64 +94,20 @@ class _$PaginatedGamesCopyWithImpl<$Res, $Val extends PaginatedGames>
   @override
   @pragma('vm:prefer-inline')
   $PageInfoCopyWith<$Res> get pageInfo {
-    return $PageInfoCopyWith<$Res>(_value.pageInfo, (value) {
-      return _then(_value.copyWith(pageInfo: value) as $Val);
+    return $PageInfoCopyWith<$Res>(_self.pageInfo, (value) {
+      return _then(_self.copyWith(pageInfo: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$PaginatedGamesImplCopyWith<$Res>
-    implements $PaginatedGamesCopyWith<$Res> {
-  factory _$$PaginatedGamesImplCopyWith(_$PaginatedGamesImpl value,
-          $Res Function(_$PaginatedGamesImpl) then) =
-      __$$PaginatedGamesImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({List<GameListItem> data, PageInfo pageInfo});
-
-  @override
-  $PageInfoCopyWith<$Res> get pageInfo;
-}
-
-/// @nodoc
-class __$$PaginatedGamesImplCopyWithImpl<$Res>
-    extends _$PaginatedGamesCopyWithImpl<$Res, _$PaginatedGamesImpl>
-    implements _$$PaginatedGamesImplCopyWith<$Res> {
-  __$$PaginatedGamesImplCopyWithImpl(
-      _$PaginatedGamesImpl _value, $Res Function(_$PaginatedGamesImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PaginatedGames
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-    Object? pageInfo = null,
-  }) {
-    return _then(_$PaginatedGamesImpl(
-      data: null == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<GameListItem>,
-      pageInfo: null == pageInfo
-          ? _value.pageInfo
-          : pageInfo // ignore: cast_nullable_to_non_nullable
-              as PageInfo,
-    ));
-  }
-}
-
-/// @nodoc
 @JsonSerializable()
-class _$PaginatedGamesImpl implements _PaginatedGames {
-  const _$PaginatedGamesImpl(
+class _PaginatedGames implements PaginatedGames {
+  const _PaginatedGames(
       {required final List<GameListItem> data, required this.pageInfo})
       : _data = data;
-
-  factory _$PaginatedGamesImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PaginatedGamesImplFromJson(json);
+  factory _PaginatedGames.fromJson(Map<String, dynamic> json) =>
+      _$PaginatedGamesFromJson(json);
 
   final List<GameListItem> _data;
   @override
@@ -149,16 +120,26 @@ class _$PaginatedGamesImpl implements _PaginatedGames {
   @override
   final PageInfo pageInfo;
 
+  /// Create a copy of PaginatedGames
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PaginatedGames(data: $data, pageInfo: $pageInfo)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PaginatedGamesCopyWith<_PaginatedGames> get copyWith =>
+      __$PaginatedGamesCopyWithImpl<_PaginatedGames>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PaginatedGamesToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PaginatedGamesImpl &&
+            other is _PaginatedGames &&
             const DeepCollectionEquality().equals(other._data, _data) &&
             (identical(other.pageInfo, pageInfo) ||
                 other.pageInfo == pageInfo));
@@ -169,40 +150,63 @@ class _$PaginatedGamesImpl implements _PaginatedGames {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_data), pageInfo);
 
-  /// Create a copy of PaginatedGames
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PaginatedGamesImplCopyWith<_$PaginatedGamesImpl> get copyWith =>
-      __$$PaginatedGamesImplCopyWithImpl<_$PaginatedGamesImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PaginatedGamesImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PaginatedGames(data: $data, pageInfo: $pageInfo)';
   }
 }
 
-abstract class _PaginatedGames implements PaginatedGames {
-  const factory _PaginatedGames(
-      {required final List<GameListItem> data,
-      required final PageInfo pageInfo}) = _$PaginatedGamesImpl;
-
-  factory _PaginatedGames.fromJson(Map<String, dynamic> json) =
-      _$PaginatedGamesImpl.fromJson;
+/// @nodoc
+abstract mixin class _$PaginatedGamesCopyWith<$Res>
+    implements $PaginatedGamesCopyWith<$Res> {
+  factory _$PaginatedGamesCopyWith(
+          _PaginatedGames value, $Res Function(_PaginatedGames) _then) =
+      __$PaginatedGamesCopyWithImpl;
+  @override
+  @useResult
+  $Res call({List<GameListItem> data, PageInfo pageInfo});
 
   @override
-  List<GameListItem> get data;
-  @override
-  PageInfo get pageInfo;
+  $PageInfoCopyWith<$Res> get pageInfo;
+}
+
+/// @nodoc
+class __$PaginatedGamesCopyWithImpl<$Res>
+    implements _$PaginatedGamesCopyWith<$Res> {
+  __$PaginatedGamesCopyWithImpl(this._self, this._then);
+
+  final _PaginatedGames _self;
+  final $Res Function(_PaginatedGames) _then;
 
   /// Create a copy of PaginatedGames
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PaginatedGamesImplCopyWith<_$PaginatedGamesImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? data = null,
+    Object? pageInfo = null,
+  }) {
+    return _then(_PaginatedGames(
+      data: null == data
+          ? _self._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<GameListItem>,
+      pageInfo: null == pageInfo
+          ? _self.pageInfo
+          : pageInfo // ignore: cast_nullable_to_non_nullable
+              as PageInfo,
+    ));
+  }
+
+  /// Create a copy of PaginatedGames
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PageInfoCopyWith<$Res> get pageInfo {
+    return $PageInfoCopyWith<$Res>(_self.pageInfo, (value) {
+      return _then(_self.copyWith(pageInfo: value));
+    });
+  }
 }
+
+// dart format on

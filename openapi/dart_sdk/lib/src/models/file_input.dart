@@ -11,7 +11,7 @@ part 'file_input.g.dart';
 
 /// Basic file metadata for upload, used in place of full File model for input
 @Freezed()
-class FileInput with _$FileInput {
+abstract class FileInput with _$FileInput {
   const factory FileInput({
     /// MD5 hash of the file
     required String md5,

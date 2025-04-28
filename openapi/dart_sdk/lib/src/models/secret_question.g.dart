@@ -6,8 +6,8 @@ part of 'secret_question.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SecretQuestionImpl _$$SecretQuestionImplFromJson(Map<String, dynamic> json) =>
-    _$SecretQuestionImpl(
+_SecretQuestion _$SecretQuestionFromJson(Map<String, dynamic> json) =>
+    _SecretQuestion(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -32,8 +32,7 @@ _$SecretQuestionImpl _$$SecretQuestionImplFromJson(Map<String, dynamic> json) =>
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$SecretQuestionImplToJson(
-        _$SecretQuestionImpl instance) =>
+Map<String, dynamic> _$SecretQuestionToJson(_SecretQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

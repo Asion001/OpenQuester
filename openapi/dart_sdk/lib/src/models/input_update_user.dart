@@ -8,7 +8,7 @@ part 'input_update_user.freezed.dart';
 part 'input_update_user.g.dart';
 
 @Freezed()
-class InputUpdateUser with _$InputUpdateUser {
+abstract class InputUpdateUser with _$InputUpdateUser {
   const factory InputUpdateUser({
     required String? username,
     required String? email,

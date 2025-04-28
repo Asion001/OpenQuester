@@ -8,7 +8,7 @@ part 'package_not_found_response.freezed.dart';
 part 'package_not_found_response.g.dart';
 
 @Freezed()
-class PackageNotFoundResponse with _$PackageNotFoundResponse {
+abstract class PackageNotFoundResponse with _$PackageNotFoundResponse {
   const factory PackageNotFoundResponse({
     required String error,
   }) = _PackageNotFoundResponse;

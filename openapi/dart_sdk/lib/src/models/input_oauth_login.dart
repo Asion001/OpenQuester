@@ -10,7 +10,7 @@ part 'input_oauth_login.freezed.dart';
 part 'input_oauth_login.g.dart';
 
 @Freezed()
-class InputOauthLogin with _$InputOauthLogin {
+abstract class InputOauthLogin with _$InputOauthLogin {
   const factory InputOauthLogin({
     required String token,
     required String? tokenSchema,

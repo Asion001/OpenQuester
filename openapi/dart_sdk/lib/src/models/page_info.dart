@@ -8,7 +8,7 @@ part 'page_info.freezed.dart';
 part 'page_info.g.dart';
 
 @Freezed()
-class PageInfo with _$PageInfo {
+abstract class PageInfo with _$PageInfo {
   const factory PageInfo({
     required int total,
   }) = _PageInfo;

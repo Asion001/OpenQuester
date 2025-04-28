@@ -6,8 +6,8 @@ part of 'stake_question.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$StakeQuestionImpl _$$StakeQuestionImplFromJson(Map<String, dynamic> json) =>
-    _$StakeQuestionImpl(
+_StakeQuestion _$StakeQuestionFromJson(Map<String, dynamic> json) =>
+    _StakeQuestion(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -30,7 +30,7 @@ _$StakeQuestionImpl _$$StakeQuestionImplFromJson(Map<String, dynamic> json) =>
           : StakeQuestionSubType.fromJson(json['subType'] as String),
     );
 
-Map<String, dynamic> _$$StakeQuestionImplToJson(_$StakeQuestionImpl instance) =>
+Map<String, dynamic> _$StakeQuestionToJson(_StakeQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

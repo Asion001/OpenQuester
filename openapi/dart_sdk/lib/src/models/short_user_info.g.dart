@@ -6,13 +6,13 @@ part of 'short_user_info.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ShortUserInfoImpl _$$ShortUserInfoImplFromJson(Map<String, dynamic> json) =>
-    _$ShortUserInfoImpl(
+_ShortUserInfo _$ShortUserInfoFromJson(Map<String, dynamic> json) =>
+    _ShortUserInfo(
       id: (json['id'] as num).toInt(),
       username: json['username'] as String,
     );
 
-Map<String, dynamic> _$$ShortUserInfoImplToJson(_$ShortUserInfoImpl instance) =>
+Map<String, dynamic> _$ShortUserInfoToJson(_ShortUserInfo instance) =>
     <String, dynamic>{
       'id': instance.id,
       'username': instance.username,

@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,122 +10,78 @@ part of 'package_round.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageRound _$PackageRoundFromJson(Map<String, dynamic> json) {
-  return _PackageRound.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageRound {
-  int? get id => throw _privateConstructorUsedError;
-  int get order => throw _privateConstructorUsedError;
+  int? get id;
+  PackageEntitiesOrder get order;
 
   /// Name of the round
-  String get name => throw _privateConstructorUsedError;
+  String get name;
 
   /// Description of the round
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
 
   /// Themes in the round
-  List<PackageTheme> get themes => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageRound to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  List<PackageTheme> get themes;
 
   /// Create a copy of PackageRound
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PackageRoundCopyWith<PackageRound> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PackageRoundCopyWith<$Res> {
-  factory $PackageRoundCopyWith(
-          PackageRound value, $Res Function(PackageRound) then) =
-      _$PackageRoundCopyWithImpl<$Res, PackageRound>;
-  @useResult
-  $Res call(
-      {int? id,
-      int order,
-      String name,
-      String? description,
-      List<PackageTheme> themes});
-}
-
-/// @nodoc
-class _$PackageRoundCopyWithImpl<$Res, $Val extends PackageRound>
-    implements $PackageRoundCopyWith<$Res> {
-  _$PackageRoundCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PackageRound
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $PackageRoundCopyWith<PackageRound> get copyWith =>
+      _$PackageRoundCopyWithImpl<PackageRound>(
+          this as PackageRound, _$identity);
+
+  /// Serializes this PackageRound to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = freezed,
-    Object? order = null,
-    Object? name = null,
-    Object? description = freezed,
-    Object? themes = null,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      themes: null == themes
-          ? _value.themes
-          : themes // ignore: cast_nullable_to_non_nullable
-              as List<PackageTheme>,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PackageRound &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            const DeepCollectionEquality().equals(other.themes, themes));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, order, name, description,
+      const DeepCollectionEquality().hash(themes));
+
+  @override
+  String toString() {
+    return 'PackageRound(id: $id, order: $order, name: $name, description: $description, themes: $themes)';
   }
 }
 
 /// @nodoc
-abstract class _$$PackageRoundImplCopyWith<$Res>
-    implements $PackageRoundCopyWith<$Res> {
-  factory _$$PackageRoundImplCopyWith(
-          _$PackageRoundImpl value, $Res Function(_$PackageRoundImpl) then) =
-      __$$PackageRoundImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PackageRoundCopyWith<$Res> {
+  factory $PackageRoundCopyWith(
+          PackageRound value, $Res Function(PackageRound) _then) =
+      _$PackageRoundCopyWithImpl;
   @useResult
   $Res call(
       {int? id,
-      int order,
+      PackageEntitiesOrder order,
       String name,
       String? description,
       List<PackageTheme> themes});
 }
 
 /// @nodoc
-class __$$PackageRoundImplCopyWithImpl<$Res>
-    extends _$PackageRoundCopyWithImpl<$Res, _$PackageRoundImpl>
-    implements _$$PackageRoundImplCopyWith<$Res> {
-  __$$PackageRoundImplCopyWithImpl(
-      _$PackageRoundImpl _value, $Res Function(_$PackageRoundImpl) _then)
-      : super(_value, _then);
+class _$PackageRoundCopyWithImpl<$Res> implements $PackageRoundCopyWith<$Res> {
+  _$PackageRoundCopyWithImpl(this._self, this._then);
+
+  final PackageRound _self;
+  final $Res Function(PackageRound) _then;
 
   /// Create a copy of PackageRound
   /// with the given fields replaced by the non-null parameter values.
@@ -137,25 +94,25 @@ class __$$PackageRoundImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? themes = null,
   }) {
-    return _then(_$PackageRoundImpl(
+    return _then(_self.copyWith(
       id: freezed == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
       order: null == order
-          ? _value.order
+          ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
-              as int,
+              as PackageEntitiesOrder,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       description: freezed == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
       themes: null == themes
-          ? _value._themes
+          ? _self.themes
           : themes // ignore: cast_nullable_to_non_nullable
               as List<PackageTheme>,
     ));
@@ -164,22 +121,21 @@ class __$$PackageRoundImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PackageRoundImpl implements _PackageRound {
-  const _$PackageRoundImpl(
+class _PackageRound implements PackageRound {
+  const _PackageRound(
       {required this.id,
       required this.order,
       required this.name,
       required this.description,
       required final List<PackageTheme> themes})
       : _themes = themes;
-
-  factory _$PackageRoundImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageRoundImplFromJson(json);
+  factory _PackageRound.fromJson(Map<String, dynamic> json) =>
+      _$PackageRoundFromJson(json);
 
   @override
   final int? id;
   @override
-  final int order;
+  final PackageEntitiesOrder order;
 
   /// Name of the round
   @override
@@ -200,16 +156,26 @@ class _$PackageRoundImpl implements _PackageRound {
     return EqualUnmodifiableListView(_themes);
   }
 
+  /// Create a copy of PackageRound
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PackageRound(id: $id, order: $order, name: $name, description: $description, themes: $themes)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PackageRoundCopyWith<_PackageRound> get copyWith =>
+      __$PackageRoundCopyWithImpl<_PackageRound>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PackageRoundToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageRoundImpl &&
+            other is _PackageRound &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.name, name) || other.name == name) &&
@@ -223,54 +189,70 @@ class _$PackageRoundImpl implements _PackageRound {
   int get hashCode => Object.hash(runtimeType, id, order, name, description,
       const DeepCollectionEquality().hash(_themes));
 
-  /// Create a copy of PackageRound
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PackageRoundImplCopyWith<_$PackageRoundImpl> get copyWith =>
-      __$$PackageRoundImplCopyWithImpl<_$PackageRoundImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PackageRoundImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PackageRound(id: $id, order: $order, name: $name, description: $description, themes: $themes)';
   }
 }
 
-abstract class _PackageRound implements PackageRound {
-  const factory _PackageRound(
-      {required final int? id,
-      required final int order,
-      required final String name,
-      required final String? description,
-      required final List<PackageTheme> themes}) = _$PackageRoundImpl;
-
-  factory _PackageRound.fromJson(Map<String, dynamic> json) =
-      _$PackageRoundImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$PackageRoundCopyWith<$Res>
+    implements $PackageRoundCopyWith<$Res> {
+  factory _$PackageRoundCopyWith(
+          _PackageRound value, $Res Function(_PackageRound) _then) =
+      __$PackageRoundCopyWithImpl;
   @override
-  int? get id;
-  @override
-  int get order;
+  @useResult
+  $Res call(
+      {int? id,
+      PackageEntitiesOrder order,
+      String name,
+      String? description,
+      List<PackageTheme> themes});
+}
 
-  /// Name of the round
-  @override
-  String get name;
+/// @nodoc
+class __$PackageRoundCopyWithImpl<$Res>
+    implements _$PackageRoundCopyWith<$Res> {
+  __$PackageRoundCopyWithImpl(this._self, this._then);
 
-  /// Description of the round
-  @override
-  String? get description;
-
-  /// Themes in the round
-  @override
-  List<PackageTheme> get themes;
+  final _PackageRound _self;
+  final $Res Function(_PackageRound) _then;
 
   /// Create a copy of PackageRound
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageRoundImplCopyWith<_$PackageRoundImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = freezed,
+    Object? order = null,
+    Object? name = null,
+    Object? description = freezed,
+    Object? themes = null,
+  }) {
+    return _then(_PackageRound(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      order: null == order
+          ? _self.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as PackageEntitiesOrder,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      themes: null == themes
+          ? _self._themes
+          : themes // ignore: cast_nullable_to_non_nullable
+              as List<PackageTheme>,
+    ));
+  }
 }
+
+// dart format on

@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,42 +10,60 @@ part of 'player_data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PlayerData _$PlayerDataFromJson(Map<String, dynamic> json) {
-  return _PlayerData.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PlayerData {
-  PlayerMeta get meta => throw _privateConstructorUsedError;
-  PlayerRole get role => throw _privateConstructorUsedError;
-  RestrictionsEventData get restrictionData =>
-      throw _privateConstructorUsedError;
-  int get score => throw _privateConstructorUsedError;
+  PlayerMeta get meta;
+  PlayerRole get role;
+  RestrictionsEventData get restrictionData;
+  int get score;
 
   /// Slot null has only showman and spectators
-  int? get slot => throw _privateConstructorUsedError;
-  PlayerDataStatus get status => throw _privateConstructorUsedError;
-
-  /// Serializes this PlayerData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int? get slot;
+  PlayerDataStatus get status;
 
   /// Create a copy of PlayerData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PlayerDataCopyWith<PlayerData> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$PlayerDataCopyWithImpl<PlayerData>(this as PlayerData, _$identity);
+
+  /// Serializes this PlayerData to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PlayerData &&
+            (identical(other.meta, meta) || other.meta == meta) &&
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.restrictionData, restrictionData) ||
+                other.restrictionData == restrictionData) &&
+            (identical(other.score, score) || other.score == score) &&
+            (identical(other.slot, slot) || other.slot == slot) &&
+            (identical(other.status, status) || other.status == status));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, meta, role, restrictionData, score, slot, status);
+
+  @override
+  String toString() {
+    return 'PlayerData(meta: $meta, role: $role, restrictionData: $restrictionData, score: $score, slot: $slot, status: $status)';
+  }
 }
 
 /// @nodoc
-abstract class $PlayerDataCopyWith<$Res> {
+abstract mixin class $PlayerDataCopyWith<$Res> {
   factory $PlayerDataCopyWith(
-          PlayerData value, $Res Function(PlayerData) then) =
-      _$PlayerDataCopyWithImpl<$Res, PlayerData>;
+          PlayerData value, $Res Function(PlayerData) _then) =
+      _$PlayerDataCopyWithImpl;
   @useResult
   $Res call(
       {PlayerMeta meta,
@@ -59,14 +78,11 @@ abstract class $PlayerDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PlayerDataCopyWithImpl<$Res, $Val extends PlayerData>
-    implements $PlayerDataCopyWith<$Res> {
-  _$PlayerDataCopyWithImpl(this._value, this._then);
+class _$PlayerDataCopyWithImpl<$Res> implements $PlayerDataCopyWith<$Res> {
+  _$PlayerDataCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final PlayerData _self;
+  final $Res Function(PlayerData) _then;
 
   /// Create a copy of PlayerData
   /// with the given fields replaced by the non-null parameter values.
@@ -80,32 +96,32 @@ class _$PlayerDataCopyWithImpl<$Res, $Val extends PlayerData>
     Object? slot = freezed,
     Object? status = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       meta: null == meta
-          ? _value.meta
+          ? _self.meta
           : meta // ignore: cast_nullable_to_non_nullable
               as PlayerMeta,
       role: null == role
-          ? _value.role
+          ? _self.role
           : role // ignore: cast_nullable_to_non_nullable
               as PlayerRole,
       restrictionData: null == restrictionData
-          ? _value.restrictionData
+          ? _self.restrictionData
           : restrictionData // ignore: cast_nullable_to_non_nullable
               as RestrictionsEventData,
       score: null == score
-          ? _value.score
+          ? _self.score
           : score // ignore: cast_nullable_to_non_nullable
               as int,
       slot: freezed == slot
-          ? _value.slot
+          ? _self.slot
           : slot // ignore: cast_nullable_to_non_nullable
               as int?,
       status: null == status
-          ? _value.status
+          ? _self.status
           : status // ignore: cast_nullable_to_non_nullable
               as PlayerDataStatus,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of PlayerData
@@ -113,8 +129,8 @@ class _$PlayerDataCopyWithImpl<$Res, $Val extends PlayerData>
   @override
   @pragma('vm:prefer-inline')
   $PlayerMetaCopyWith<$Res> get meta {
-    return $PlayerMetaCopyWith<$Res>(_value.meta, (value) {
-      return _then(_value.copyWith(meta: value) as $Val);
+    return $PlayerMetaCopyWith<$Res>(_self.meta, (value) {
+      return _then(_self.copyWith(meta: value));
     });
   }
 
@@ -123,97 +139,24 @@ class _$PlayerDataCopyWithImpl<$Res, $Val extends PlayerData>
   @override
   @pragma('vm:prefer-inline')
   $RestrictionsEventDataCopyWith<$Res> get restrictionData {
-    return $RestrictionsEventDataCopyWith<$Res>(_value.restrictionData,
-        (value) {
-      return _then(_value.copyWith(restrictionData: value) as $Val);
+    return $RestrictionsEventDataCopyWith<$Res>(_self.restrictionData, (value) {
+      return _then(_self.copyWith(restrictionData: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$PlayerDataImplCopyWith<$Res>
-    implements $PlayerDataCopyWith<$Res> {
-  factory _$$PlayerDataImplCopyWith(
-          _$PlayerDataImpl value, $Res Function(_$PlayerDataImpl) then) =
-      __$$PlayerDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {PlayerMeta meta,
-      PlayerRole role,
-      RestrictionsEventData restrictionData,
-      int score,
-      int? slot,
-      PlayerDataStatus status});
-
-  @override
-  $PlayerMetaCopyWith<$Res> get meta;
-  @override
-  $RestrictionsEventDataCopyWith<$Res> get restrictionData;
-}
-
-/// @nodoc
-class __$$PlayerDataImplCopyWithImpl<$Res>
-    extends _$PlayerDataCopyWithImpl<$Res, _$PlayerDataImpl>
-    implements _$$PlayerDataImplCopyWith<$Res> {
-  __$$PlayerDataImplCopyWithImpl(
-      _$PlayerDataImpl _value, $Res Function(_$PlayerDataImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PlayerData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? meta = null,
-    Object? role = null,
-    Object? restrictionData = null,
-    Object? score = null,
-    Object? slot = freezed,
-    Object? status = null,
-  }) {
-    return _then(_$PlayerDataImpl(
-      meta: null == meta
-          ? _value.meta
-          : meta // ignore: cast_nullable_to_non_nullable
-              as PlayerMeta,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as PlayerRole,
-      restrictionData: null == restrictionData
-          ? _value.restrictionData
-          : restrictionData // ignore: cast_nullable_to_non_nullable
-              as RestrictionsEventData,
-      score: null == score
-          ? _value.score
-          : score // ignore: cast_nullable_to_non_nullable
-              as int,
-      slot: freezed == slot
-          ? _value.slot
-          : slot // ignore: cast_nullable_to_non_nullable
-              as int?,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
-              as PlayerDataStatus,
-    ));
-  }
-}
-
-/// @nodoc
 @JsonSerializable()
-class _$PlayerDataImpl implements _PlayerData {
-  const _$PlayerDataImpl(
+class _PlayerData implements PlayerData {
+  const _PlayerData(
       {required this.meta,
       required this.role,
       required this.restrictionData,
       required this.score,
       required this.slot,
       required this.status});
-
-  factory _$PlayerDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PlayerDataImplFromJson(json);
+  factory _PlayerData.fromJson(Map<String, dynamic> json) =>
+      _$PlayerDataFromJson(json);
 
   @override
   final PlayerMeta meta;
@@ -230,16 +173,26 @@ class _$PlayerDataImpl implements _PlayerData {
   @override
   final PlayerDataStatus status;
 
+  /// Create a copy of PlayerData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PlayerData(meta: $meta, role: $role, restrictionData: $restrictionData, score: $score, slot: $slot, status: $status)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PlayerDataCopyWith<_PlayerData> get copyWith =>
+      __$PlayerDataCopyWithImpl<_PlayerData>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PlayerDataToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PlayerDataImpl &&
+            other is _PlayerData &&
             (identical(other.meta, meta) || other.meta == meta) &&
             (identical(other.role, role) || other.role == role) &&
             (identical(other.restrictionData, restrictionData) ||
@@ -254,53 +207,100 @@ class _$PlayerDataImpl implements _PlayerData {
   int get hashCode => Object.hash(
       runtimeType, meta, role, restrictionData, score, slot, status);
 
-  /// Create a copy of PlayerData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PlayerDataImplCopyWith<_$PlayerDataImpl> get copyWith =>
-      __$$PlayerDataImplCopyWithImpl<_$PlayerDataImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PlayerDataImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PlayerData(meta: $meta, role: $role, restrictionData: $restrictionData, score: $score, slot: $slot, status: $status)';
   }
 }
 
-abstract class _PlayerData implements PlayerData {
-  const factory _PlayerData(
-      {required final PlayerMeta meta,
-      required final PlayerRole role,
-      required final RestrictionsEventData restrictionData,
-      required final int score,
-      required final int? slot,
-      required final PlayerDataStatus status}) = _$PlayerDataImpl;
+/// @nodoc
+abstract mixin class _$PlayerDataCopyWith<$Res>
+    implements $PlayerDataCopyWith<$Res> {
+  factory _$PlayerDataCopyWith(
+          _PlayerData value, $Res Function(_PlayerData) _then) =
+      __$PlayerDataCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {PlayerMeta meta,
+      PlayerRole role,
+      RestrictionsEventData restrictionData,
+      int score,
+      int? slot,
+      PlayerDataStatus status});
 
-  factory _PlayerData.fromJson(Map<String, dynamic> json) =
-      _$PlayerDataImpl.fromJson;
+  @override
+  $PlayerMetaCopyWith<$Res> get meta;
+  @override
+  $RestrictionsEventDataCopyWith<$Res> get restrictionData;
+}
 
-  @override
-  PlayerMeta get meta;
-  @override
-  PlayerRole get role;
-  @override
-  RestrictionsEventData get restrictionData;
-  @override
-  int get score;
+/// @nodoc
+class __$PlayerDataCopyWithImpl<$Res> implements _$PlayerDataCopyWith<$Res> {
+  __$PlayerDataCopyWithImpl(this._self, this._then);
 
-  /// Slot null has only showman and spectators
-  @override
-  int? get slot;
-  @override
-  PlayerDataStatus get status;
+  final _PlayerData _self;
+  final $Res Function(_PlayerData) _then;
 
   /// Create a copy of PlayerData
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PlayerDataImplCopyWith<_$PlayerDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? meta = null,
+    Object? role = null,
+    Object? restrictionData = null,
+    Object? score = null,
+    Object? slot = freezed,
+    Object? status = null,
+  }) {
+    return _then(_PlayerData(
+      meta: null == meta
+          ? _self.meta
+          : meta // ignore: cast_nullable_to_non_nullable
+              as PlayerMeta,
+      role: null == role
+          ? _self.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as PlayerRole,
+      restrictionData: null == restrictionData
+          ? _self.restrictionData
+          : restrictionData // ignore: cast_nullable_to_non_nullable
+              as RestrictionsEventData,
+      score: null == score
+          ? _self.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int,
+      slot: freezed == slot
+          ? _self.slot
+          : slot // ignore: cast_nullable_to_non_nullable
+              as int?,
+      status: null == status
+          ? _self.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as PlayerDataStatus,
+    ));
+  }
+
+  /// Create a copy of PlayerData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PlayerMetaCopyWith<$Res> get meta {
+    return $PlayerMetaCopyWith<$Res>(_self.meta, (value) {
+      return _then(_self.copyWith(meta: value));
+    });
+  }
+
+  /// Create a copy of PlayerData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RestrictionsEventDataCopyWith<$Res> get restrictionData {
+    return $RestrictionsEventDataCopyWith<$Res>(_self.restrictionData, (value) {
+      return _then(_self.copyWith(restrictionData: value));
+    });
+  }
 }
+
+// dart format on

@@ -6,8 +6,8 @@ part of 'choice_question.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ChoiceQuestionImpl _$$ChoiceQuestionImplFromJson(Map<String, dynamic> json) =>
-    _$ChoiceQuestionImpl(
+_ChoiceQuestion _$ChoiceQuestionFromJson(Map<String, dynamic> json) =>
+    _ChoiceQuestion(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -31,8 +31,7 @@ _$ChoiceQuestionImpl _$$ChoiceQuestionImplFromJson(Map<String, dynamic> json) =>
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$ChoiceQuestionImplToJson(
-        _$ChoiceQuestionImpl instance) =>
+Map<String, dynamic> _$ChoiceQuestionToJson(_ChoiceQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

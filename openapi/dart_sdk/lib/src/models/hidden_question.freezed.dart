@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,173 +10,111 @@ part of 'hidden_question.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-HiddenQuestion _$HiddenQuestionFromJson(Map<String, dynamic> json) {
-  return _HiddenQuestion.fromJson(json);
-}
 
 /// @nodoc
 mixin _$HiddenQuestion {
-  int? get id => throw _privateConstructorUsedError;
-  int get order => throw _privateConstructorUsedError;
+  int? get id;
+  PackageEntitiesOrder get order;
 
   /// Point value of the question
-  int get price => throw _privateConstructorUsedError;
+  int get price;
 
   /// Question text
-  String? get text => throw _privateConstructorUsedError;
+  String? get text;
 
   /// Hint for the answer
-  String? get answerHint => throw _privateConstructorUsedError;
+  String? get answerHint;
 
   /// Correct answer text
-  String? get answerText => throw _privateConstructorUsedError;
+  String? get answerText;
 
   /// Comment or note about the question
-  String? get questionComment => throw _privateConstructorUsedError;
+  String? get questionComment;
 
   /// Media files for the question
-  List<PackageQuestionFile>? get questionFiles =>
-      throw _privateConstructorUsedError;
+  List<PackageQuestionFile>? get questionFiles;
 
   /// Media files for the answer
-  List<PackageAnswerFile>? get answerFiles =>
-      throw _privateConstructorUsedError;
-  HiddenQuestionType get type => throw _privateConstructorUsedError;
+  List<PackageAnswerFile>? get answerFiles;
+  HiddenQuestionType get type;
 
   /// Whether the question is hidden
-  bool get isHidden => throw _privateConstructorUsedError;
+  bool get isHidden;
 
   /// Delay in milliseconds before being able to answer, if applicable
-  int get answerDelay => throw _privateConstructorUsedError;
-
-  /// Serializes this HiddenQuestion to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get answerDelay;
 
   /// Create a copy of HiddenQuestion
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $HiddenQuestionCopyWith<HiddenQuestion> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $HiddenQuestionCopyWith<$Res> {
-  factory $HiddenQuestionCopyWith(
-          HiddenQuestion value, $Res Function(HiddenQuestion) then) =
-      _$HiddenQuestionCopyWithImpl<$Res, HiddenQuestion>;
-  @useResult
-  $Res call(
-      {int? id,
-      int order,
-      int price,
-      String? text,
-      String? answerHint,
-      String? answerText,
-      String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
-      HiddenQuestionType type,
-      bool isHidden,
-      int answerDelay});
-}
-
-/// @nodoc
-class _$HiddenQuestionCopyWithImpl<$Res, $Val extends HiddenQuestion>
-    implements $HiddenQuestionCopyWith<$Res> {
-  _$HiddenQuestionCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of HiddenQuestion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $HiddenQuestionCopyWith<HiddenQuestion> get copyWith =>
+      _$HiddenQuestionCopyWithImpl<HiddenQuestion>(
+          this as HiddenQuestion, _$identity);
+
+  /// Serializes this HiddenQuestion to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = freezed,
-    Object? order = null,
-    Object? price = null,
-    Object? text = freezed,
-    Object? answerHint = freezed,
-    Object? answerText = freezed,
-    Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
-    Object? type = null,
-    Object? isHidden = null,
-    Object? answerDelay = null,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as int,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      answerHint: freezed == answerHint
-          ? _value.answerHint
-          : answerHint // ignore: cast_nullable_to_non_nullable
-              as String?,
-      answerText: freezed == answerText
-          ? _value.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questionComment: freezed == questionComment
-          ? _value.questionComment
-          : questionComment // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questionFiles: freezed == questionFiles
-          ? _value.questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _value.answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as HiddenQuestionType,
-      isHidden: null == isHidden
-          ? _value.isHidden
-          : isHidden // ignore: cast_nullable_to_non_nullable
-              as bool,
-      answerDelay: null == answerDelay
-          ? _value.answerDelay
-          : answerDelay // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is HiddenQuestion &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.answerHint, answerHint) ||
+                other.answerHint == answerHint) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
+            (identical(other.questionComment, questionComment) ||
+                other.questionComment == questionComment) &&
+            const DeepCollectionEquality()
+                .equals(other.questionFiles, questionFiles) &&
+            const DeepCollectionEquality()
+                .equals(other.answerFiles, answerFiles) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.isHidden, isHidden) ||
+                other.isHidden == isHidden) &&
+            (identical(other.answerDelay, answerDelay) ||
+                other.answerDelay == answerDelay));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      order,
+      price,
+      text,
+      answerHint,
+      answerText,
+      questionComment,
+      const DeepCollectionEquality().hash(questionFiles),
+      const DeepCollectionEquality().hash(answerFiles),
+      type,
+      isHidden,
+      answerDelay);
+
+  @override
+  String toString() {
+    return 'HiddenQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
 /// @nodoc
-abstract class _$$HiddenQuestionImplCopyWith<$Res>
-    implements $HiddenQuestionCopyWith<$Res> {
-  factory _$$HiddenQuestionImplCopyWith(_$HiddenQuestionImpl value,
-          $Res Function(_$HiddenQuestionImpl) then) =
-      __$$HiddenQuestionImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $HiddenQuestionCopyWith<$Res> {
+  factory $HiddenQuestionCopyWith(
+          HiddenQuestion value, $Res Function(HiddenQuestion) _then) =
+      _$HiddenQuestionCopyWithImpl;
   @useResult
   $Res call(
       {int? id,
-      int order,
+      PackageEntitiesOrder order,
       int price,
       String? text,
       String? answerHint,
@@ -189,12 +128,12 @@ abstract class _$$HiddenQuestionImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$HiddenQuestionImplCopyWithImpl<$Res>
-    extends _$HiddenQuestionCopyWithImpl<$Res, _$HiddenQuestionImpl>
-    implements _$$HiddenQuestionImplCopyWith<$Res> {
-  __$$HiddenQuestionImplCopyWithImpl(
-      _$HiddenQuestionImpl _value, $Res Function(_$HiddenQuestionImpl) _then)
-      : super(_value, _then);
+class _$HiddenQuestionCopyWithImpl<$Res>
+    implements $HiddenQuestionCopyWith<$Res> {
+  _$HiddenQuestionCopyWithImpl(this._self, this._then);
+
+  final HiddenQuestion _self;
+  final $Res Function(HiddenQuestion) _then;
 
   /// Create a copy of HiddenQuestion
   /// with the given fields replaced by the non-null parameter values.
@@ -214,53 +153,53 @@ class __$$HiddenQuestionImplCopyWithImpl<$Res>
     Object? isHidden = null,
     Object? answerDelay = null,
   }) {
-    return _then(_$HiddenQuestionImpl(
+    return _then(_self.copyWith(
       id: freezed == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
       order: null == order
-          ? _value.order
+          ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
-              as int,
+              as PackageEntitiesOrder,
       price: null == price
-          ? _value.price
+          ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
       text: freezed == text
-          ? _value.text
+          ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
       answerHint: freezed == answerHint
-          ? _value.answerHint
+          ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
       answerText: freezed == answerText
-          ? _value.answerText
+          ? _self.answerText
           : answerText // ignore: cast_nullable_to_non_nullable
               as String?,
       questionComment: freezed == questionComment
-          ? _value.questionComment
+          ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
       questionFiles: freezed == questionFiles
-          ? _value._questionFiles
+          ? _self.questionFiles
           : questionFiles // ignore: cast_nullable_to_non_nullable
               as List<PackageQuestionFile>?,
       answerFiles: freezed == answerFiles
-          ? _value._answerFiles
+          ? _self.answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
               as List<PackageAnswerFile>?,
       type: null == type
-          ? _value.type
+          ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as HiddenQuestionType,
       isHidden: null == isHidden
-          ? _value.isHidden
+          ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
               as bool,
       answerDelay: null == answerDelay
-          ? _value.answerDelay
+          ? _self.answerDelay
           : answerDelay // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -269,8 +208,8 @@ class __$$HiddenQuestionImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$HiddenQuestionImpl implements _HiddenQuestion {
-  const _$HiddenQuestionImpl(
+class _HiddenQuestion implements HiddenQuestion {
+  const _HiddenQuestion(
       {required this.id,
       required this.order,
       required this.price,
@@ -285,14 +224,13 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
       this.answerDelay = 4000})
       : _questionFiles = questionFiles,
         _answerFiles = answerFiles;
-
-  factory _$HiddenQuestionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$HiddenQuestionImplFromJson(json);
+  factory _HiddenQuestion.fromJson(Map<String, dynamic> json) =>
+      _$HiddenQuestionFromJson(json);
 
   @override
   final int? id;
   @override
-  final int order;
+  final PackageEntitiesOrder order;
 
   /// Point value of the question
   @override
@@ -353,16 +291,26 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
   @JsonKey()
   final int answerDelay;
 
+  /// Create a copy of HiddenQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'HiddenQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$HiddenQuestionCopyWith<_HiddenQuestion> get copyWith =>
+      __$HiddenQuestionCopyWithImpl<_HiddenQuestion>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$HiddenQuestionToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$HiddenQuestionImpl &&
+            other is _HiddenQuestion &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
@@ -401,88 +349,112 @@ class _$HiddenQuestionImpl implements _HiddenQuestion {
       isHidden,
       answerDelay);
 
-  /// Create a copy of HiddenQuestion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$HiddenQuestionImplCopyWith<_$HiddenQuestionImpl> get copyWith =>
-      __$$HiddenQuestionImplCopyWithImpl<_$HiddenQuestionImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$HiddenQuestionImplToJson(
-      this,
-    );
+  String toString() {
+    return 'HiddenQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
-abstract class _HiddenQuestion implements HiddenQuestion {
-  const factory _HiddenQuestion(
-      {required final int? id,
-      required final int order,
-      required final int price,
-      required final String? text,
-      required final String? answerHint,
-      required final String? answerText,
-      required final String? questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
-      required final HiddenQuestionType type,
-      final bool isHidden,
-      final int answerDelay}) = _$HiddenQuestionImpl;
+/// @nodoc
+abstract mixin class _$HiddenQuestionCopyWith<$Res>
+    implements $HiddenQuestionCopyWith<$Res> {
+  factory _$HiddenQuestionCopyWith(
+          _HiddenQuestion value, $Res Function(_HiddenQuestion) _then) =
+      __$HiddenQuestionCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int? id,
+      PackageEntitiesOrder order,
+      int price,
+      String? text,
+      String? answerHint,
+      String? answerText,
+      String? questionComment,
+      List<PackageQuestionFile>? questionFiles,
+      List<PackageAnswerFile>? answerFiles,
+      HiddenQuestionType type,
+      bool isHidden,
+      int answerDelay});
+}
 
-  factory _HiddenQuestion.fromJson(Map<String, dynamic> json) =
-      _$HiddenQuestionImpl.fromJson;
+/// @nodoc
+class __$HiddenQuestionCopyWithImpl<$Res>
+    implements _$HiddenQuestionCopyWith<$Res> {
+  __$HiddenQuestionCopyWithImpl(this._self, this._then);
 
-  @override
-  int? get id;
-  @override
-  int get order;
-
-  /// Point value of the question
-  @override
-  int get price;
-
-  /// Question text
-  @override
-  String? get text;
-
-  /// Hint for the answer
-  @override
-  String? get answerHint;
-
-  /// Correct answer text
-  @override
-  String? get answerText;
-
-  /// Comment or note about the question
-  @override
-  String? get questionComment;
-
-  /// Media files for the question
-  @override
-  List<PackageQuestionFile>? get questionFiles;
-
-  /// Media files for the answer
-  @override
-  List<PackageAnswerFile>? get answerFiles;
-  @override
-  HiddenQuestionType get type;
-
-  /// Whether the question is hidden
-  @override
-  bool get isHidden;
-
-  /// Delay in milliseconds before being able to answer, if applicable
-  @override
-  int get answerDelay;
+  final _HiddenQuestion _self;
+  final $Res Function(_HiddenQuestion) _then;
 
   /// Create a copy of HiddenQuestion
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HiddenQuestionImplCopyWith<_$HiddenQuestionImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = freezed,
+    Object? order = null,
+    Object? price = null,
+    Object? text = freezed,
+    Object? answerHint = freezed,
+    Object? answerText = freezed,
+    Object? questionComment = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
+    Object? type = null,
+    Object? isHidden = null,
+    Object? answerDelay = null,
+  }) {
+    return _then(_HiddenQuestion(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      order: null == order
+          ? _self.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as PackageEntitiesOrder,
+      price: null == price
+          ? _self.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int,
+      text: freezed == text
+          ? _self.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
+      answerHint: freezed == answerHint
+          ? _self.answerHint
+          : answerHint // ignore: cast_nullable_to_non_nullable
+              as String?,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as String?,
+      questionComment: freezed == questionComment
+          ? _self.questionComment
+          : questionComment // ignore: cast_nullable_to_non_nullable
+              as String?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageAnswerFile>?,
+      type: null == type
+          ? _self.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as HiddenQuestionType,
+      isHidden: null == isHidden
+          ? _self.isHidden
+          : isHidden // ignore: cast_nullable_to_non_nullable
+              as bool,
+      answerDelay: null == answerDelay
+          ? _self.answerDelay
+          : answerDelay // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
+
+// dart format on

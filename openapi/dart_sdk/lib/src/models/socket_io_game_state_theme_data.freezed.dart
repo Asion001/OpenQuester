@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,115 +10,71 @@ part of 'socket_io_game_state_theme_data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-SocketIOGameStateThemeData _$SocketIOGameStateThemeDataFromJson(
-    Map<String, dynamic> json) {
-  return _SocketIOGameStateThemeData.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SocketIOGameStateThemeData {
-  int get order => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-  List<SocketIOGameStateQuestionData> get questions =>
-      throw _privateConstructorUsedError;
-
-  /// Serializes this SocketIOGameStateThemeData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  PackageEntitiesOrder get order;
+  String get name;
+  String? get description;
+  List<SocketIOGameStateQuestionData> get questions;
 
   /// Create a copy of SocketIOGameStateThemeData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $SocketIOGameStateThemeDataCopyWith<SocketIOGameStateThemeData>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SocketIOGameStateThemeDataCopyWith<$Res> {
-  factory $SocketIOGameStateThemeDataCopyWith(SocketIOGameStateThemeData value,
-          $Res Function(SocketIOGameStateThemeData) then) =
-      _$SocketIOGameStateThemeDataCopyWithImpl<$Res,
-          SocketIOGameStateThemeData>;
-  @useResult
-  $Res call(
-      {int order,
-      String name,
-      String? description,
-      List<SocketIOGameStateQuestionData> questions});
-}
-
-/// @nodoc
-class _$SocketIOGameStateThemeDataCopyWithImpl<$Res,
-        $Val extends SocketIOGameStateThemeData>
-    implements $SocketIOGameStateThemeDataCopyWith<$Res> {
-  _$SocketIOGameStateThemeDataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of SocketIOGameStateThemeData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $SocketIOGameStateThemeDataCopyWith<SocketIOGameStateThemeData>
+      get copyWith =>
+          _$SocketIOGameStateThemeDataCopyWithImpl<SocketIOGameStateThemeData>(
+              this as SocketIOGameStateThemeData, _$identity);
+
+  /// Serializes this SocketIOGameStateThemeData to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? order = null,
-    Object? name = null,
-    Object? description = freezed,
-    Object? questions = null,
-  }) {
-    return _then(_value.copyWith(
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questions: null == questions
-          ? _value.questions
-          : questions // ignore: cast_nullable_to_non_nullable
-              as List<SocketIOGameStateQuestionData>,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SocketIOGameStateThemeData &&
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            const DeepCollectionEquality().equals(other.questions, questions));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, order, name, description,
+      const DeepCollectionEquality().hash(questions));
+
+  @override
+  String toString() {
+    return 'SocketIOGameStateThemeData(order: $order, name: $name, description: $description, questions: $questions)';
   }
 }
 
 /// @nodoc
-abstract class _$$SocketIOGameStateThemeDataImplCopyWith<$Res>
-    implements $SocketIOGameStateThemeDataCopyWith<$Res> {
-  factory _$$SocketIOGameStateThemeDataImplCopyWith(
-          _$SocketIOGameStateThemeDataImpl value,
-          $Res Function(_$SocketIOGameStateThemeDataImpl) then) =
-      __$$SocketIOGameStateThemeDataImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SocketIOGameStateThemeDataCopyWith<$Res> {
+  factory $SocketIOGameStateThemeDataCopyWith(SocketIOGameStateThemeData value,
+          $Res Function(SocketIOGameStateThemeData) _then) =
+      _$SocketIOGameStateThemeDataCopyWithImpl;
   @useResult
   $Res call(
-      {int order,
+      {PackageEntitiesOrder order,
       String name,
       String? description,
       List<SocketIOGameStateQuestionData> questions});
 }
 
 /// @nodoc
-class __$$SocketIOGameStateThemeDataImplCopyWithImpl<$Res>
-    extends _$SocketIOGameStateThemeDataCopyWithImpl<$Res,
-        _$SocketIOGameStateThemeDataImpl>
-    implements _$$SocketIOGameStateThemeDataImplCopyWith<$Res> {
-  __$$SocketIOGameStateThemeDataImplCopyWithImpl(
-      _$SocketIOGameStateThemeDataImpl _value,
-      $Res Function(_$SocketIOGameStateThemeDataImpl) _then)
-      : super(_value, _then);
+class _$SocketIOGameStateThemeDataCopyWithImpl<$Res>
+    implements $SocketIOGameStateThemeDataCopyWith<$Res> {
+  _$SocketIOGameStateThemeDataCopyWithImpl(this._self, this._then);
+
+  final SocketIOGameStateThemeData _self;
+  final $Res Function(SocketIOGameStateThemeData) _then;
 
   /// Create a copy of SocketIOGameStateThemeData
   /// with the given fields replaced by the non-null parameter values.
@@ -129,21 +86,21 @@ class __$$SocketIOGameStateThemeDataImplCopyWithImpl<$Res>
     Object? description = freezed,
     Object? questions = null,
   }) {
-    return _then(_$SocketIOGameStateThemeDataImpl(
+    return _then(_self.copyWith(
       order: null == order
-          ? _value.order
+          ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
-              as int,
+              as PackageEntitiesOrder,
       name: null == name
-          ? _value.name
+          ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
       description: freezed == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
       questions: null == questions
-          ? _value._questions
+          ? _self.questions
           : questions // ignore: cast_nullable_to_non_nullable
               as List<SocketIOGameStateQuestionData>,
     ));
@@ -152,20 +109,18 @@ class __$$SocketIOGameStateThemeDataImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SocketIOGameStateThemeDataImpl implements _SocketIOGameStateThemeData {
-  const _$SocketIOGameStateThemeDataImpl(
+class _SocketIOGameStateThemeData implements SocketIOGameStateThemeData {
+  const _SocketIOGameStateThemeData(
       {required this.order,
       required this.name,
       required this.description,
       required final List<SocketIOGameStateQuestionData> questions})
       : _questions = questions;
-
-  factory _$SocketIOGameStateThemeDataImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$SocketIOGameStateThemeDataImplFromJson(json);
+  factory _SocketIOGameStateThemeData.fromJson(Map<String, dynamic> json) =>
+      _$SocketIOGameStateThemeDataFromJson(json);
 
   @override
-  final int order;
+  final PackageEntitiesOrder order;
   @override
   final String name;
   @override
@@ -178,16 +133,27 @@ class _$SocketIOGameStateThemeDataImpl implements _SocketIOGameStateThemeData {
     return EqualUnmodifiableListView(_questions);
   }
 
+  /// Create a copy of SocketIOGameStateThemeData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SocketIOGameStateThemeData(order: $order, name: $name, description: $description, questions: $questions)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SocketIOGameStateThemeDataCopyWith<_SocketIOGameStateThemeData>
+      get copyWith => __$SocketIOGameStateThemeDataCopyWithImpl<
+          _SocketIOGameStateThemeData>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SocketIOGameStateThemeDataToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SocketIOGameStateThemeDataImpl &&
+            other is _SocketIOGameStateThemeData &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
@@ -201,48 +167,65 @@ class _$SocketIOGameStateThemeDataImpl implements _SocketIOGameStateThemeData {
   int get hashCode => Object.hash(runtimeType, order, name, description,
       const DeepCollectionEquality().hash(_questions));
 
-  /// Create a copy of SocketIOGameStateThemeData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SocketIOGameStateThemeDataImplCopyWith<_$SocketIOGameStateThemeDataImpl>
-      get copyWith => __$$SocketIOGameStateThemeDataImplCopyWithImpl<
-          _$SocketIOGameStateThemeDataImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SocketIOGameStateThemeDataImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SocketIOGameStateThemeData(order: $order, name: $name, description: $description, questions: $questions)';
   }
 }
 
-abstract class _SocketIOGameStateThemeData
-    implements SocketIOGameStateThemeData {
-  const factory _SocketIOGameStateThemeData(
-          {required final int order,
-          required final String name,
-          required final String? description,
-          required final List<SocketIOGameStateQuestionData> questions}) =
-      _$SocketIOGameStateThemeDataImpl;
+/// @nodoc
+abstract mixin class _$SocketIOGameStateThemeDataCopyWith<$Res>
+    implements $SocketIOGameStateThemeDataCopyWith<$Res> {
+  factory _$SocketIOGameStateThemeDataCopyWith(
+          _SocketIOGameStateThemeData value,
+          $Res Function(_SocketIOGameStateThemeData) _then) =
+      __$SocketIOGameStateThemeDataCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {PackageEntitiesOrder order,
+      String name,
+      String? description,
+      List<SocketIOGameStateQuestionData> questions});
+}
 
-  factory _SocketIOGameStateThemeData.fromJson(Map<String, dynamic> json) =
-      _$SocketIOGameStateThemeDataImpl.fromJson;
+/// @nodoc
+class __$SocketIOGameStateThemeDataCopyWithImpl<$Res>
+    implements _$SocketIOGameStateThemeDataCopyWith<$Res> {
+  __$SocketIOGameStateThemeDataCopyWithImpl(this._self, this._then);
 
-  @override
-  int get order;
-  @override
-  String get name;
-  @override
-  String? get description;
-  @override
-  List<SocketIOGameStateQuestionData> get questions;
+  final _SocketIOGameStateThemeData _self;
+  final $Res Function(_SocketIOGameStateThemeData) _then;
 
   /// Create a copy of SocketIOGameStateThemeData
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SocketIOGameStateThemeDataImplCopyWith<_$SocketIOGameStateThemeDataImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? order = null,
+    Object? name = null,
+    Object? description = freezed,
+    Object? questions = null,
+  }) {
+    return _then(_SocketIOGameStateThemeData(
+      order: null == order
+          ? _self.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as PackageEntitiesOrder,
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      questions: null == questions
+          ? _self._questions
+          : questions // ignore: cast_nullable_to_non_nullable
+              as List<SocketIOGameStateQuestionData>,
+    ));
+  }
 }
+
+// dart format on

@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,191 +10,122 @@ part of 'no_risk_question.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-NoRiskQuestion _$NoRiskQuestionFromJson(Map<String, dynamic> json) {
-  return _NoRiskQuestion.fromJson(json);
-}
 
 /// @nodoc
 mixin _$NoRiskQuestion {
-  int? get id => throw _privateConstructorUsedError;
-  int get order => throw _privateConstructorUsedError;
+  int? get id;
+  PackageEntitiesOrder get order;
 
   /// Point value of the question
-  int get price => throw _privateConstructorUsedError;
+  int get price;
 
   /// Question text
-  String? get text => throw _privateConstructorUsedError;
+  String? get text;
 
   /// Hint for the answer
-  String? get answerHint => throw _privateConstructorUsedError;
+  String? get answerHint;
 
   /// Correct answer text
-  String? get answerText => throw _privateConstructorUsedError;
+  String? get answerText;
 
   /// Comment or note about the question
-  String? get questionComment => throw _privateConstructorUsedError;
+  String? get questionComment;
 
   /// Media files for the question
-  List<PackageQuestionFile>? get questionFiles =>
-      throw _privateConstructorUsedError;
+  List<PackageQuestionFile>? get questionFiles;
 
   /// Media files for the answer
-  List<PackageAnswerFile>? get answerFiles =>
-      throw _privateConstructorUsedError;
-  NoRiskQuestionType get type => throw _privateConstructorUsedError;
+  List<PackageAnswerFile>? get answerFiles;
+  NoRiskQuestionType get type;
 
   /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
-  NoRiskQuestionSubType get subType => throw _privateConstructorUsedError;
+  NoRiskQuestionSubType get subType;
 
   /// Whether the question is hidden
-  bool get isHidden => throw _privateConstructorUsedError;
+  bool get isHidden;
 
   /// Delay in milliseconds before being able to answer, if applicable
-  int get answerDelay => throw _privateConstructorUsedError;
+  int get answerDelay;
 
   /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  String get priceMultiplier => throw _privateConstructorUsedError;
-
-  /// Serializes this NoRiskQuestion to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get priceMultiplier;
 
   /// Create a copy of NoRiskQuestion
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $NoRiskQuestionCopyWith<NoRiskQuestion> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $NoRiskQuestionCopyWith<$Res> {
-  factory $NoRiskQuestionCopyWith(
-          NoRiskQuestion value, $Res Function(NoRiskQuestion) then) =
-      _$NoRiskQuestionCopyWithImpl<$Res, NoRiskQuestion>;
-  @useResult
-  $Res call(
-      {int? id,
-      int order,
-      int price,
-      String? text,
-      String? answerHint,
-      String? answerText,
-      String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
-      NoRiskQuestionType type,
-      NoRiskQuestionSubType subType,
-      bool isHidden,
-      int answerDelay,
-      String priceMultiplier});
-}
-
-/// @nodoc
-class _$NoRiskQuestionCopyWithImpl<$Res, $Val extends NoRiskQuestion>
-    implements $NoRiskQuestionCopyWith<$Res> {
-  _$NoRiskQuestionCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of NoRiskQuestion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $NoRiskQuestionCopyWith<NoRiskQuestion> get copyWith =>
+      _$NoRiskQuestionCopyWithImpl<NoRiskQuestion>(
+          this as NoRiskQuestion, _$identity);
+
+  /// Serializes this NoRiskQuestion to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = freezed,
-    Object? order = null,
-    Object? price = null,
-    Object? text = freezed,
-    Object? answerHint = freezed,
-    Object? answerText = freezed,
-    Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
-    Object? type = null,
-    Object? subType = null,
-    Object? isHidden = null,
-    Object? answerDelay = null,
-    Object? priceMultiplier = null,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as int,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      answerHint: freezed == answerHint
-          ? _value.answerHint
-          : answerHint // ignore: cast_nullable_to_non_nullable
-              as String?,
-      answerText: freezed == answerText
-          ? _value.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questionComment: freezed == questionComment
-          ? _value.questionComment
-          : questionComment // ignore: cast_nullable_to_non_nullable
-              as String?,
-      questionFiles: freezed == questionFiles
-          ? _value.questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _value.answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as NoRiskQuestionType,
-      subType: null == subType
-          ? _value.subType
-          : subType // ignore: cast_nullable_to_non_nullable
-              as NoRiskQuestionSubType,
-      isHidden: null == isHidden
-          ? _value.isHidden
-          : isHidden // ignore: cast_nullable_to_non_nullable
-              as bool,
-      answerDelay: null == answerDelay
-          ? _value.answerDelay
-          : answerDelay // ignore: cast_nullable_to_non_nullable
-              as int,
-      priceMultiplier: null == priceMultiplier
-          ? _value.priceMultiplier
-          : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is NoRiskQuestion &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.answerHint, answerHint) ||
+                other.answerHint == answerHint) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
+            (identical(other.questionComment, questionComment) ||
+                other.questionComment == questionComment) &&
+            const DeepCollectionEquality()
+                .equals(other.questionFiles, questionFiles) &&
+            const DeepCollectionEquality()
+                .equals(other.answerFiles, answerFiles) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.subType, subType) || other.subType == subType) &&
+            (identical(other.isHidden, isHidden) ||
+                other.isHidden == isHidden) &&
+            (identical(other.answerDelay, answerDelay) ||
+                other.answerDelay == answerDelay) &&
+            (identical(other.priceMultiplier, priceMultiplier) ||
+                other.priceMultiplier == priceMultiplier));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      order,
+      price,
+      text,
+      answerHint,
+      answerText,
+      questionComment,
+      const DeepCollectionEquality().hash(questionFiles),
+      const DeepCollectionEquality().hash(answerFiles),
+      type,
+      subType,
+      isHidden,
+      answerDelay,
+      priceMultiplier);
+
+  @override
+  String toString() {
+    return 'NoRiskQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
   }
 }
 
 /// @nodoc
-abstract class _$$NoRiskQuestionImplCopyWith<$Res>
-    implements $NoRiskQuestionCopyWith<$Res> {
-  factory _$$NoRiskQuestionImplCopyWith(_$NoRiskQuestionImpl value,
-          $Res Function(_$NoRiskQuestionImpl) then) =
-      __$$NoRiskQuestionImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $NoRiskQuestionCopyWith<$Res> {
+  factory $NoRiskQuestionCopyWith(
+          NoRiskQuestion value, $Res Function(NoRiskQuestion) _then) =
+      _$NoRiskQuestionCopyWithImpl;
   @useResult
   $Res call(
       {int? id,
-      int order,
+      PackageEntitiesOrder order,
       int price,
       String? text,
       String? answerHint,
@@ -209,12 +141,12 @@ abstract class _$$NoRiskQuestionImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$NoRiskQuestionImplCopyWithImpl<$Res>
-    extends _$NoRiskQuestionCopyWithImpl<$Res, _$NoRiskQuestionImpl>
-    implements _$$NoRiskQuestionImplCopyWith<$Res> {
-  __$$NoRiskQuestionImplCopyWithImpl(
-      _$NoRiskQuestionImpl _value, $Res Function(_$NoRiskQuestionImpl) _then)
-      : super(_value, _then);
+class _$NoRiskQuestionCopyWithImpl<$Res>
+    implements $NoRiskQuestionCopyWith<$Res> {
+  _$NoRiskQuestionCopyWithImpl(this._self, this._then);
+
+  final NoRiskQuestion _self;
+  final $Res Function(NoRiskQuestion) _then;
 
   /// Create a copy of NoRiskQuestion
   /// with the given fields replaced by the non-null parameter values.
@@ -236,61 +168,61 @@ class __$$NoRiskQuestionImplCopyWithImpl<$Res>
     Object? answerDelay = null,
     Object? priceMultiplier = null,
   }) {
-    return _then(_$NoRiskQuestionImpl(
+    return _then(_self.copyWith(
       id: freezed == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
       order: null == order
-          ? _value.order
+          ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
-              as int,
+              as PackageEntitiesOrder,
       price: null == price
-          ? _value.price
+          ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
               as int,
       text: freezed == text
-          ? _value.text
+          ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
               as String?,
       answerHint: freezed == answerHint
-          ? _value.answerHint
+          ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
       answerText: freezed == answerText
-          ? _value.answerText
+          ? _self.answerText
           : answerText // ignore: cast_nullable_to_non_nullable
               as String?,
       questionComment: freezed == questionComment
-          ? _value.questionComment
+          ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
       questionFiles: freezed == questionFiles
-          ? _value._questionFiles
+          ? _self.questionFiles
           : questionFiles // ignore: cast_nullable_to_non_nullable
               as List<PackageQuestionFile>?,
       answerFiles: freezed == answerFiles
-          ? _value._answerFiles
+          ? _self.answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
               as List<PackageAnswerFile>?,
       type: null == type
-          ? _value.type
+          ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as NoRiskQuestionType,
       subType: null == subType
-          ? _value.subType
+          ? _self.subType
           : subType // ignore: cast_nullable_to_non_nullable
               as NoRiskQuestionSubType,
       isHidden: null == isHidden
-          ? _value.isHidden
+          ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
               as bool,
       answerDelay: null == answerDelay
-          ? _value.answerDelay
+          ? _self.answerDelay
           : answerDelay // ignore: cast_nullable_to_non_nullable
               as int,
       priceMultiplier: null == priceMultiplier
-          ? _value.priceMultiplier
+          ? _self.priceMultiplier
           : priceMultiplier // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -299,8 +231,8 @@ class __$$NoRiskQuestionImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$NoRiskQuestionImpl implements _NoRiskQuestion {
-  const _$NoRiskQuestionImpl(
+class _NoRiskQuestion implements NoRiskQuestion {
+  const _NoRiskQuestion(
       {required this.id,
       required this.order,
       required this.price,
@@ -317,14 +249,13 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
       this.priceMultiplier = '1.5'})
       : _questionFiles = questionFiles,
         _answerFiles = answerFiles;
-
-  factory _$NoRiskQuestionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$NoRiskQuestionImplFromJson(json);
+  factory _NoRiskQuestion.fromJson(Map<String, dynamic> json) =>
+      _$NoRiskQuestionFromJson(json);
 
   @override
   final int? id;
   @override
-  final int order;
+  final PackageEntitiesOrder order;
 
   /// Point value of the question
   @override
@@ -394,16 +325,26 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
   @JsonKey()
   final String priceMultiplier;
 
+  /// Create a copy of NoRiskQuestion
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'NoRiskQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$NoRiskQuestionCopyWith<_NoRiskQuestion> get copyWith =>
+      __$NoRiskQuestionCopyWithImpl<_NoRiskQuestion>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$NoRiskQuestionToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$NoRiskQuestionImpl &&
+            other is _NoRiskQuestion &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.price, price) || other.price == price) &&
@@ -447,98 +388,124 @@ class _$NoRiskQuestionImpl implements _NoRiskQuestion {
       answerDelay,
       priceMultiplier);
 
-  /// Create a copy of NoRiskQuestion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$NoRiskQuestionImplCopyWith<_$NoRiskQuestionImpl> get copyWith =>
-      __$$NoRiskQuestionImplCopyWithImpl<_$NoRiskQuestionImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$NoRiskQuestionImplToJson(
-      this,
-    );
+  String toString() {
+    return 'NoRiskQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
   }
 }
 
-abstract class _NoRiskQuestion implements NoRiskQuestion {
-  const factory _NoRiskQuestion(
-      {required final int? id,
-      required final int order,
-      required final int price,
-      required final String? text,
-      required final String? answerHint,
-      required final String? answerText,
-      required final String? questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
-      required final NoRiskQuestionType type,
-      required final NoRiskQuestionSubType subType,
-      final bool isHidden,
-      final int answerDelay,
-      final String priceMultiplier}) = _$NoRiskQuestionImpl;
+/// @nodoc
+abstract mixin class _$NoRiskQuestionCopyWith<$Res>
+    implements $NoRiskQuestionCopyWith<$Res> {
+  factory _$NoRiskQuestionCopyWith(
+          _NoRiskQuestion value, $Res Function(_NoRiskQuestion) _then) =
+      __$NoRiskQuestionCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int? id,
+      PackageEntitiesOrder order,
+      int price,
+      String? text,
+      String? answerHint,
+      String? answerText,
+      String? questionComment,
+      List<PackageQuestionFile>? questionFiles,
+      List<PackageAnswerFile>? answerFiles,
+      NoRiskQuestionType type,
+      NoRiskQuestionSubType subType,
+      bool isHidden,
+      int answerDelay,
+      String priceMultiplier});
+}
 
-  factory _NoRiskQuestion.fromJson(Map<String, dynamic> json) =
-      _$NoRiskQuestionImpl.fromJson;
+/// @nodoc
+class __$NoRiskQuestionCopyWithImpl<$Res>
+    implements _$NoRiskQuestionCopyWith<$Res> {
+  __$NoRiskQuestionCopyWithImpl(this._self, this._then);
 
-  @override
-  int? get id;
-  @override
-  int get order;
-
-  /// Point value of the question
-  @override
-  int get price;
-
-  /// Question text
-  @override
-  String? get text;
-
-  /// Hint for the answer
-  @override
-  String? get answerHint;
-
-  /// Correct answer text
-  @override
-  String? get answerText;
-
-  /// Comment or note about the question
-  @override
-  String? get questionComment;
-
-  /// Media files for the question
-  @override
-  List<PackageQuestionFile>? get questionFiles;
-
-  /// Media files for the answer
-  @override
-  List<PackageAnswerFile>? get answerFiles;
-  @override
-  NoRiskQuestionType get type;
-
-  /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
-  @override
-  NoRiskQuestionSubType get subType;
-
-  /// Whether the question is hidden
-  @override
-  bool get isHidden;
-
-  /// Delay in milliseconds before being able to answer, if applicable
-  @override
-  int get answerDelay;
-
-  /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  @override
-  String get priceMultiplier;
+  final _NoRiskQuestion _self;
+  final $Res Function(_NoRiskQuestion) _then;
 
   /// Create a copy of NoRiskQuestion
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$NoRiskQuestionImplCopyWith<_$NoRiskQuestionImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = freezed,
+    Object? order = null,
+    Object? price = null,
+    Object? text = freezed,
+    Object? answerHint = freezed,
+    Object? answerText = freezed,
+    Object? questionComment = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
+    Object? type = null,
+    Object? subType = null,
+    Object? isHidden = null,
+    Object? answerDelay = null,
+    Object? priceMultiplier = null,
+  }) {
+    return _then(_NoRiskQuestion(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      order: null == order
+          ? _self.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as PackageEntitiesOrder,
+      price: null == price
+          ? _self.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int,
+      text: freezed == text
+          ? _self.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
+      answerHint: freezed == answerHint
+          ? _self.answerHint
+          : answerHint // ignore: cast_nullable_to_non_nullable
+              as String?,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as String?,
+      questionComment: freezed == questionComment
+          ? _self.questionComment
+          : questionComment // ignore: cast_nullable_to_non_nullable
+              as String?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageAnswerFile>?,
+      type: null == type
+          ? _self.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as NoRiskQuestionType,
+      subType: null == subType
+          ? _self.subType
+          : subType // ignore: cast_nullable_to_non_nullable
+              as NoRiskQuestionSubType,
+      isHidden: null == isHidden
+          ? _self.isHidden
+          : isHidden // ignore: cast_nullable_to_non_nullable
+              as bool,
+      answerDelay: null == answerDelay
+          ? _self.answerDelay
+          : answerDelay // ignore: cast_nullable_to_non_nullable
+              as int,
+      priceMultiplier: null == priceMultiplier
+          ? _self.priceMultiplier
+          : priceMultiplier // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

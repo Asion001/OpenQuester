@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,87 +10,58 @@ part of 'package_corrupted_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageCorruptedResponse _$PackageCorruptedResponseFromJson(
-    Map<String, dynamic> json) {
-  return _PackageCorruptedResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageCorruptedResponse {
-  String get error => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageCorruptedResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get error;
 
   /// Create a copy of PackageCorruptedResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PackageCorruptedResponseCopyWith<PackageCorruptedResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PackageCorruptedResponseCopyWith<$Res> {
-  factory $PackageCorruptedResponseCopyWith(PackageCorruptedResponse value,
-          $Res Function(PackageCorruptedResponse) then) =
-      _$PackageCorruptedResponseCopyWithImpl<$Res, PackageCorruptedResponse>;
-  @useResult
-  $Res call({String error});
-}
-
-/// @nodoc
-class _$PackageCorruptedResponseCopyWithImpl<$Res,
-        $Val extends PackageCorruptedResponse>
-    implements $PackageCorruptedResponseCopyWith<$Res> {
-  _$PackageCorruptedResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PackageCorruptedResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $PackageCorruptedResponseCopyWith<PackageCorruptedResponse> get copyWith =>
+      _$PackageCorruptedResponseCopyWithImpl<PackageCorruptedResponse>(
+          this as PackageCorruptedResponse, _$identity);
+
+  /// Serializes this PackageCorruptedResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_value.copyWith(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PackageCorruptedResponse &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  @override
+  String toString() {
+    return 'PackageCorruptedResponse(error: $error)';
   }
 }
 
 /// @nodoc
-abstract class _$$PackageCorruptedResponseImplCopyWith<$Res>
-    implements $PackageCorruptedResponseCopyWith<$Res> {
-  factory _$$PackageCorruptedResponseImplCopyWith(
-          _$PackageCorruptedResponseImpl value,
-          $Res Function(_$PackageCorruptedResponseImpl) then) =
-      __$$PackageCorruptedResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PackageCorruptedResponseCopyWith<$Res> {
+  factory $PackageCorruptedResponseCopyWith(PackageCorruptedResponse value,
+          $Res Function(PackageCorruptedResponse) _then) =
+      _$PackageCorruptedResponseCopyWithImpl;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$PackageCorruptedResponseImplCopyWithImpl<$Res>
-    extends _$PackageCorruptedResponseCopyWithImpl<$Res,
-        _$PackageCorruptedResponseImpl>
-    implements _$$PackageCorruptedResponseImplCopyWith<$Res> {
-  __$$PackageCorruptedResponseImplCopyWithImpl(
-      _$PackageCorruptedResponseImpl _value,
-      $Res Function(_$PackageCorruptedResponseImpl) _then)
-      : super(_value, _then);
+class _$PackageCorruptedResponseCopyWithImpl<$Res>
+    implements $PackageCorruptedResponseCopyWith<$Res> {
+  _$PackageCorruptedResponseCopyWithImpl(this._self, this._then);
+
+  final PackageCorruptedResponse _self;
+  final $Res Function(PackageCorruptedResponse) _then;
 
   /// Create a copy of PackageCorruptedResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -98,9 +70,9 @@ class __$$PackageCorruptedResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$PackageCorruptedResponseImpl(
+    return _then(_self.copyWith(
       error: null == error
-          ? _value.error
+          ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -109,25 +81,35 @@ class __$$PackageCorruptedResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PackageCorruptedResponseImpl implements _PackageCorruptedResponse {
-  const _$PackageCorruptedResponseImpl({required this.error});
-
-  factory _$PackageCorruptedResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageCorruptedResponseImplFromJson(json);
+class _PackageCorruptedResponse implements PackageCorruptedResponse {
+  const _PackageCorruptedResponse({required this.error});
+  factory _PackageCorruptedResponse.fromJson(Map<String, dynamic> json) =>
+      _$PackageCorruptedResponseFromJson(json);
 
   @override
   final String error;
 
+  /// Create a copy of PackageCorruptedResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PackageCorruptedResponse(error: $error)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PackageCorruptedResponseCopyWith<_PackageCorruptedResponse> get copyWith =>
+      __$PackageCorruptedResponseCopyWithImpl<_PackageCorruptedResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PackageCorruptedResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageCorruptedResponseImpl &&
+            other is _PackageCorruptedResponse &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -135,37 +117,45 @@ class _$PackageCorruptedResponseImpl implements _PackageCorruptedResponse {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  /// Create a copy of PackageCorruptedResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PackageCorruptedResponseImplCopyWith<_$PackageCorruptedResponseImpl>
-      get copyWith => __$$PackageCorruptedResponseImplCopyWithImpl<
-          _$PackageCorruptedResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PackageCorruptedResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PackageCorruptedResponse(error: $error)';
   }
 }
 
-abstract class _PackageCorruptedResponse implements PackageCorruptedResponse {
-  const factory _PackageCorruptedResponse({required final String error}) =
-      _$PackageCorruptedResponseImpl;
-
-  factory _PackageCorruptedResponse.fromJson(Map<String, dynamic> json) =
-      _$PackageCorruptedResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$PackageCorruptedResponseCopyWith<$Res>
+    implements $PackageCorruptedResponseCopyWith<$Res> {
+  factory _$PackageCorruptedResponseCopyWith(_PackageCorruptedResponse value,
+          $Res Function(_PackageCorruptedResponse) _then) =
+      __$PackageCorruptedResponseCopyWithImpl;
   @override
-  String get error;
+  @useResult
+  $Res call({String error});
+}
+
+/// @nodoc
+class __$PackageCorruptedResponseCopyWithImpl<$Res>
+    implements _$PackageCorruptedResponseCopyWith<$Res> {
+  __$PackageCorruptedResponseCopyWithImpl(this._self, this._then);
+
+  final _PackageCorruptedResponse _self;
+  final $Res Function(_PackageCorruptedResponse) _then;
 
   /// Create a copy of PackageCorruptedResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageCorruptedResponseImplCopyWith<_$PackageCorruptedResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_PackageCorruptedResponse(
+      error: null == error
+          ? _self.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

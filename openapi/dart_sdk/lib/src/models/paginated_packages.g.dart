@@ -6,17 +6,15 @@ part of 'paginated_packages.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PaginatedPackagesImpl _$$PaginatedPackagesImplFromJson(
-        Map<String, dynamic> json) =>
-    _$PaginatedPackagesImpl(
+_PaginatedPackages _$PaginatedPackagesFromJson(Map<String, dynamic> json) =>
+    _PaginatedPackages(
       data: (json['data'] as List<dynamic>)
           .map((e) => PackageResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
       pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$PaginatedPackagesImplToJson(
-        _$PaginatedPackagesImpl instance) =>
+Map<String, dynamic> _$PaginatedPackagesToJson(_PaginatedPackages instance) =>
     <String, dynamic>{
       'data': instance.data,
       'pageInfo': instance.pageInfo,

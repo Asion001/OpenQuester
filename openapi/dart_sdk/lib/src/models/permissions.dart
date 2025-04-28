@@ -8,7 +8,7 @@ part 'permissions.freezed.dart';
 part 'permissions.g.dart';
 
 @Freezed()
-class Permissions with _$Permissions {
+abstract class Permissions with _$Permissions {
   const factory Permissions({
     required int id,
     required String name,

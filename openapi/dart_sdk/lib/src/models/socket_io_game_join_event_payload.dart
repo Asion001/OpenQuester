@@ -12,7 +12,7 @@ part 'socket_io_game_join_event_payload.g.dart';
 
 /// This data sent to player when he joins game
 @Freezed()
-class SocketIOGameJoinEventPayload with _$SocketIOGameJoinEventPayload {
+abstract class SocketIOGameJoinEventPayload with _$SocketIOGameJoinEventPayload {
   const factory SocketIOGameJoinEventPayload({
     /// Players in the game
     required List<PlayerData> players,

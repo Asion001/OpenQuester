@@ -6,13 +6,12 @@ part of 'file_input.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$FileInputImpl _$$FileInputImplFromJson(Map<String, dynamic> json) =>
-    _$FileInputImpl(
+_FileInput _$FileInputFromJson(Map<String, dynamic> json) => _FileInput(
       md5: json['md5'] as String,
       type: PackageFileType.fromJson(json['type'] as String?),
     );
 
-Map<String, dynamic> _$$FileInputImplToJson(_$FileInputImpl instance) =>
+Map<String, dynamic> _$FileInputToJson(_FileInput instance) =>
     <String, dynamic>{
       'md5': instance.md5,
       'type': instance.type,

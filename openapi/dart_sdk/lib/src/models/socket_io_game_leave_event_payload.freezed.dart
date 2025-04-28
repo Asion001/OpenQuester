@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,90 +10,61 @@ part of 'socket_io_game_leave_event_payload.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-SocketIOGameLeaveEventPayload _$SocketIOGameLeaveEventPayloadFromJson(
-    Map<String, dynamic> json) {
-  return _SocketIOGameLeaveEventPayload.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SocketIOGameLeaveEventPayload {
   /// Emitted to everyone in game, including sender. ID of the user who left the game
-  int get user => throw _privateConstructorUsedError;
-
-  /// Serializes this SocketIOGameLeaveEventPayload to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get user;
 
   /// Create a copy of SocketIOGameLeaveEventPayload
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $SocketIOGameLeaveEventPayloadCopyWith<SocketIOGameLeaveEventPayload>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SocketIOGameLeaveEventPayloadCopyWith<$Res> {
-  factory $SocketIOGameLeaveEventPayloadCopyWith(
-          SocketIOGameLeaveEventPayload value,
-          $Res Function(SocketIOGameLeaveEventPayload) then) =
-      _$SocketIOGameLeaveEventPayloadCopyWithImpl<$Res,
-          SocketIOGameLeaveEventPayload>;
-  @useResult
-  $Res call({int user});
-}
-
-/// @nodoc
-class _$SocketIOGameLeaveEventPayloadCopyWithImpl<$Res,
-        $Val extends SocketIOGameLeaveEventPayload>
-    implements $SocketIOGameLeaveEventPayloadCopyWith<$Res> {
-  _$SocketIOGameLeaveEventPayloadCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of SocketIOGameLeaveEventPayload
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $SocketIOGameLeaveEventPayloadCopyWith<SocketIOGameLeaveEventPayload>
+      get copyWith => _$SocketIOGameLeaveEventPayloadCopyWithImpl<
+              SocketIOGameLeaveEventPayload>(
+          this as SocketIOGameLeaveEventPayload, _$identity);
+
+  /// Serializes this SocketIOGameLeaveEventPayload to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? user = null,
-  }) {
-    return _then(_value.copyWith(
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SocketIOGameLeaveEventPayload &&
+            (identical(other.user, user) || other.user == user));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, user);
+
+  @override
+  String toString() {
+    return 'SocketIOGameLeaveEventPayload(user: $user)';
   }
 }
 
 /// @nodoc
-abstract class _$$SocketIOGameLeaveEventPayloadImplCopyWith<$Res>
-    implements $SocketIOGameLeaveEventPayloadCopyWith<$Res> {
-  factory _$$SocketIOGameLeaveEventPayloadImplCopyWith(
-          _$SocketIOGameLeaveEventPayloadImpl value,
-          $Res Function(_$SocketIOGameLeaveEventPayloadImpl) then) =
-      __$$SocketIOGameLeaveEventPayloadImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SocketIOGameLeaveEventPayloadCopyWith<$Res> {
+  factory $SocketIOGameLeaveEventPayloadCopyWith(
+          SocketIOGameLeaveEventPayload value,
+          $Res Function(SocketIOGameLeaveEventPayload) _then) =
+      _$SocketIOGameLeaveEventPayloadCopyWithImpl;
   @useResult
   $Res call({int user});
 }
 
 /// @nodoc
-class __$$SocketIOGameLeaveEventPayloadImplCopyWithImpl<$Res>
-    extends _$SocketIOGameLeaveEventPayloadCopyWithImpl<$Res,
-        _$SocketIOGameLeaveEventPayloadImpl>
-    implements _$$SocketIOGameLeaveEventPayloadImplCopyWith<$Res> {
-  __$$SocketIOGameLeaveEventPayloadImplCopyWithImpl(
-      _$SocketIOGameLeaveEventPayloadImpl _value,
-      $Res Function(_$SocketIOGameLeaveEventPayloadImpl) _then)
-      : super(_value, _then);
+class _$SocketIOGameLeaveEventPayloadCopyWithImpl<$Res>
+    implements $SocketIOGameLeaveEventPayloadCopyWith<$Res> {
+  _$SocketIOGameLeaveEventPayloadCopyWithImpl(this._self, this._then);
+
+  final SocketIOGameLeaveEventPayload _self;
+  final $Res Function(SocketIOGameLeaveEventPayload) _then;
 
   /// Create a copy of SocketIOGameLeaveEventPayload
   /// with the given fields replaced by the non-null parameter values.
@@ -101,9 +73,9 @@ class __$$SocketIOGameLeaveEventPayloadImplCopyWithImpl<$Res>
   $Res call({
     Object? user = null,
   }) {
-    return _then(_$SocketIOGameLeaveEventPayloadImpl(
+    return _then(_self.copyWith(
       user: null == user
-          ? _value.user
+          ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -112,28 +84,36 @@ class __$$SocketIOGameLeaveEventPayloadImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SocketIOGameLeaveEventPayloadImpl
-    implements _SocketIOGameLeaveEventPayload {
-  const _$SocketIOGameLeaveEventPayloadImpl({required this.user});
-
-  factory _$SocketIOGameLeaveEventPayloadImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$SocketIOGameLeaveEventPayloadImplFromJson(json);
+class _SocketIOGameLeaveEventPayload implements SocketIOGameLeaveEventPayload {
+  const _SocketIOGameLeaveEventPayload({required this.user});
+  factory _SocketIOGameLeaveEventPayload.fromJson(Map<String, dynamic> json) =>
+      _$SocketIOGameLeaveEventPayloadFromJson(json);
 
   /// Emitted to everyone in game, including sender. ID of the user who left the game
   @override
   final int user;
 
+  /// Create a copy of SocketIOGameLeaveEventPayload
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SocketIOGameLeaveEventPayload(user: $user)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SocketIOGameLeaveEventPayloadCopyWith<_SocketIOGameLeaveEventPayload>
+      get copyWith => __$SocketIOGameLeaveEventPayloadCopyWithImpl<
+          _SocketIOGameLeaveEventPayload>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SocketIOGameLeaveEventPayloadToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SocketIOGameLeaveEventPayloadImpl &&
+            other is _SocketIOGameLeaveEventPayload &&
             (identical(other.user, user) || other.user == user));
   }
 
@@ -141,41 +121,46 @@ class _$SocketIOGameLeaveEventPayloadImpl
   @override
   int get hashCode => Object.hash(runtimeType, user);
 
-  /// Create a copy of SocketIOGameLeaveEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SocketIOGameLeaveEventPayloadImplCopyWith<
-          _$SocketIOGameLeaveEventPayloadImpl>
-      get copyWith => __$$SocketIOGameLeaveEventPayloadImplCopyWithImpl<
-          _$SocketIOGameLeaveEventPayloadImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SocketIOGameLeaveEventPayloadImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SocketIOGameLeaveEventPayload(user: $user)';
   }
 }
 
-abstract class _SocketIOGameLeaveEventPayload
-    implements SocketIOGameLeaveEventPayload {
-  const factory _SocketIOGameLeaveEventPayload({required final int user}) =
-      _$SocketIOGameLeaveEventPayloadImpl;
-
-  factory _SocketIOGameLeaveEventPayload.fromJson(Map<String, dynamic> json) =
-      _$SocketIOGameLeaveEventPayloadImpl.fromJson;
-
-  /// Emitted to everyone in game, including sender. ID of the user who left the game
+/// @nodoc
+abstract mixin class _$SocketIOGameLeaveEventPayloadCopyWith<$Res>
+    implements $SocketIOGameLeaveEventPayloadCopyWith<$Res> {
+  factory _$SocketIOGameLeaveEventPayloadCopyWith(
+          _SocketIOGameLeaveEventPayload value,
+          $Res Function(_SocketIOGameLeaveEventPayload) _then) =
+      __$SocketIOGameLeaveEventPayloadCopyWithImpl;
   @override
-  int get user;
+  @useResult
+  $Res call({int user});
+}
+
+/// @nodoc
+class __$SocketIOGameLeaveEventPayloadCopyWithImpl<$Res>
+    implements _$SocketIOGameLeaveEventPayloadCopyWith<$Res> {
+  __$SocketIOGameLeaveEventPayloadCopyWithImpl(this._self, this._then);
+
+  final _SocketIOGameLeaveEventPayload _self;
+  final $Res Function(_SocketIOGameLeaveEventPayload) _then;
 
   /// Create a copy of SocketIOGameLeaveEventPayload
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SocketIOGameLeaveEventPayloadImplCopyWith<
-          _$SocketIOGameLeaveEventPayloadImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? user = null,
+  }) {
+    return _then(_SocketIOGameLeaveEventPayload(
+      user: null == user
+          ? _self.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
+
+// dart format on

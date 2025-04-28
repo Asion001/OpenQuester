@@ -12,7 +12,7 @@ part 'game_update_event_subscription.freezed.dart';
 part 'game_update_event_subscription.g.dart';
 
 @Freezed()
-class GameUpdateEventSubscription with _$GameUpdateEventSubscription {
+abstract class GameUpdateEventSubscription with _$GameUpdateEventSubscription {
   const factory GameUpdateEventSubscription({
     required GameUpdateEventSubscriptionEvent event,
     required GameListItem data,

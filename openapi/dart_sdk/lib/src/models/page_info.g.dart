@@ -6,12 +6,10 @@ part of 'page_info.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PageInfoImpl _$$PageInfoImplFromJson(Map<String, dynamic> json) =>
-    _$PageInfoImpl(
+_PageInfo _$PageInfoFromJson(Map<String, dynamic> json) => _PageInfo(
       total: (json['total'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$PageInfoImplToJson(_$PageInfoImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$PageInfoToJson(_PageInfo instance) => <String, dynamic>{
       'total': instance.total,
     };

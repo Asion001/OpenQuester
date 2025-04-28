@@ -6,9 +6,9 @@ part of 'socket_io_game_state_theme_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SocketIOGameStateThemeDataImpl _$$SocketIOGameStateThemeDataImplFromJson(
+_SocketIOGameStateThemeData _$SocketIOGameStateThemeDataFromJson(
         Map<String, dynamic> json) =>
-    _$SocketIOGameStateThemeDataImpl(
+    _SocketIOGameStateThemeData(
       order: (json['order'] as num).toInt(),
       name: json['name'] as String,
       description: json['description'] as String?,
@@ -18,8 +18,8 @@ _$SocketIOGameStateThemeDataImpl _$$SocketIOGameStateThemeDataImplFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$SocketIOGameStateThemeDataImplToJson(
-        _$SocketIOGameStateThemeDataImpl instance) =>
+Map<String, dynamic> _$SocketIOGameStateThemeDataToJson(
+        _SocketIOGameStateThemeData instance) =>
     <String, dynamic>{
       'order': instance.order,
       'name': instance.name,

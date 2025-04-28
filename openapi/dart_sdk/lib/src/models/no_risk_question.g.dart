@@ -6,8 +6,8 @@ part of 'no_risk_question.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$NoRiskQuestionImpl _$$NoRiskQuestionImplFromJson(Map<String, dynamic> json) =>
-    _$NoRiskQuestionImpl(
+_NoRiskQuestion _$NoRiskQuestionFromJson(Map<String, dynamic> json) =>
+    _NoRiskQuestion(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -28,8 +28,7 @@ _$NoRiskQuestionImpl _$$NoRiskQuestionImplFromJson(Map<String, dynamic> json) =>
       priceMultiplier: json['priceMultiplier'] as String? ?? '1.5',
     );
 
-Map<String, dynamic> _$$NoRiskQuestionImplToJson(
-        _$NoRiskQuestionImpl instance) =>
+Map<String, dynamic> _$NoRiskQuestionToJson(_NoRiskQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

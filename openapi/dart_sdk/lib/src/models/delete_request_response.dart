@@ -8,7 +8,7 @@ part 'delete_request_response.freezed.dart';
 part 'delete_request_response.g.dart';
 
 @Freezed()
-class DeleteRequestResponse with _$DeleteRequestResponse {
+abstract class DeleteRequestResponse with _$DeleteRequestResponse {
   const factory DeleteRequestResponse({
     required String message,
   }) = _DeleteRequestResponse;

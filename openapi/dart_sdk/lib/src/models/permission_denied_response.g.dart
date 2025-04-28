@@ -6,14 +6,14 @@ part of 'permission_denied_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PermissionDeniedResponseImpl _$$PermissionDeniedResponseImplFromJson(
+_PermissionDeniedResponse _$PermissionDeniedResponseFromJson(
         Map<String, dynamic> json) =>
-    _$PermissionDeniedResponseImpl(
+    _PermissionDeniedResponse(
       error: json['error'] as String,
     );
 
-Map<String, dynamic> _$$PermissionDeniedResponseImplToJson(
-        _$PermissionDeniedResponseImpl instance) =>
+Map<String, dynamic> _$PermissionDeniedResponseToJson(
+        _PermissionDeniedResponse instance) =>
     <String, dynamic>{
       'error': instance.error,
     };

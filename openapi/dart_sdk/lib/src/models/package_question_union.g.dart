@@ -6,9 +6,9 @@ part of 'package_question_union.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageQuestionUnionSimpleImpl _$$PackageQuestionUnionSimpleImplFromJson(
+PackageQuestionUnionSimple _$PackageQuestionUnionSimpleFromJson(
         Map<String, dynamic> json) =>
-    _$PackageQuestionUnionSimpleImpl(
+    PackageQuestionUnionSimple(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -27,8 +27,8 @@ _$PackageQuestionUnionSimpleImpl _$$PackageQuestionUnionSimpleImplFromJson(
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$PackageQuestionUnionSimpleImplToJson(
-        _$PackageQuestionUnionSimpleImpl instance) =>
+Map<String, dynamic> _$PackageQuestionUnionSimpleToJson(
+        PackageQuestionUnionSimple instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,
@@ -44,9 +44,9 @@ Map<String, dynamic> _$$PackageQuestionUnionSimpleImplToJson(
       'answerDelay': instance.answerDelay,
     };
 
-_$PackageQuestionUnionStakeImpl _$$PackageQuestionUnionStakeImplFromJson(
+PackageQuestionUnionStake _$PackageQuestionUnionStakeFromJson(
         Map<String, dynamic> json) =>
-    _$PackageQuestionUnionStakeImpl(
+    PackageQuestionUnionStake(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -69,8 +69,8 @@ _$PackageQuestionUnionStakeImpl _$$PackageQuestionUnionStakeImplFromJson(
           : StakeQuestionSubType.fromJson(json['subType'] as String),
     );
 
-Map<String, dynamic> _$$PackageQuestionUnionStakeImplToJson(
-        _$PackageQuestionUnionStakeImpl instance) =>
+Map<String, dynamic> _$PackageQuestionUnionStakeToJson(
+        PackageQuestionUnionStake instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,
@@ -88,9 +88,9 @@ Map<String, dynamic> _$$PackageQuestionUnionStakeImplToJson(
       'subType': instance.subType,
     };
 
-_$PackageQuestionUnionSecretImpl _$$PackageQuestionUnionSecretImplFromJson(
+PackageQuestionUnionSecret _$PackageQuestionUnionSecretFromJson(
         Map<String, dynamic> json) =>
-    _$PackageQuestionUnionSecretImpl(
+    PackageQuestionUnionSecret(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -115,8 +115,8 @@ _$PackageQuestionUnionSecretImpl _$$PackageQuestionUnionSecretImplFromJson(
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$PackageQuestionUnionSecretImplToJson(
-        _$PackageQuestionUnionSecretImpl instance) =>
+Map<String, dynamic> _$PackageQuestionUnionSecretToJson(
+        PackageQuestionUnionSecret instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,
@@ -135,9 +135,9 @@ Map<String, dynamic> _$$PackageQuestionUnionSecretImplToJson(
       'answerDelay': instance.answerDelay,
     };
 
-_$PackageQuestionUnionNoRiskImpl _$$PackageQuestionUnionNoRiskImplFromJson(
+PackageQuestionUnionNoRisk _$PackageQuestionUnionNoRiskFromJson(
         Map<String, dynamic> json) =>
-    _$PackageQuestionUnionNoRiskImpl(
+    PackageQuestionUnionNoRisk(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -158,8 +158,8 @@ _$PackageQuestionUnionNoRiskImpl _$$PackageQuestionUnionNoRiskImplFromJson(
       priceMultiplier: json['priceMultiplier'] as String? ?? '1.5',
     );
 
-Map<String, dynamic> _$$PackageQuestionUnionNoRiskImplToJson(
-        _$PackageQuestionUnionNoRiskImpl instance) =>
+Map<String, dynamic> _$PackageQuestionUnionNoRiskToJson(
+        PackageQuestionUnionNoRisk instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,
@@ -177,9 +177,9 @@ Map<String, dynamic> _$$PackageQuestionUnionNoRiskImplToJson(
       'priceMultiplier': instance.priceMultiplier,
     };
 
-_$PackageQuestionUnionChoiceImpl _$$PackageQuestionUnionChoiceImplFromJson(
+PackageQuestionUnionChoice _$PackageQuestionUnionChoiceFromJson(
         Map<String, dynamic> json) =>
-    _$PackageQuestionUnionChoiceImpl(
+    PackageQuestionUnionChoice(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -203,8 +203,8 @@ _$PackageQuestionUnionChoiceImpl _$$PackageQuestionUnionChoiceImplFromJson(
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$PackageQuestionUnionChoiceImplToJson(
-        _$PackageQuestionUnionChoiceImpl instance) =>
+Map<String, dynamic> _$PackageQuestionUnionChoiceToJson(
+        PackageQuestionUnionChoice instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,
@@ -223,9 +223,9 @@ Map<String, dynamic> _$$PackageQuestionUnionChoiceImplToJson(
       'answerDelay': instance.answerDelay,
     };
 
-_$PackageQuestionUnionHiddenImpl _$$PackageQuestionUnionHiddenImplFromJson(
+PackageQuestionUnionHidden _$PackageQuestionUnionHiddenFromJson(
         Map<String, dynamic> json) =>
-    _$PackageQuestionUnionHiddenImpl(
+    PackageQuestionUnionHidden(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -244,8 +244,8 @@ _$PackageQuestionUnionHiddenImpl _$$PackageQuestionUnionHiddenImplFromJson(
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$PackageQuestionUnionHiddenImplToJson(
-        _$PackageQuestionUnionHiddenImpl instance) =>
+Map<String, dynamic> _$PackageQuestionUnionHiddenToJson(
+        PackageQuestionUnionHidden instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

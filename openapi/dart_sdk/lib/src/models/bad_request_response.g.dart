@@ -6,14 +6,12 @@ part of 'bad_request_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$BadRequestResponseImpl _$$BadRequestResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$BadRequestResponseImpl(
+_BadRequestResponse _$BadRequestResponseFromJson(Map<String, dynamic> json) =>
+    _BadRequestResponse(
       error: json['error'] as String,
     );
 
-Map<String, dynamic> _$$BadRequestResponseImplToJson(
-        _$BadRequestResponseImpl instance) =>
+Map<String, dynamic> _$BadRequestResponseToJson(_BadRequestResponse instance) =>
     <String, dynamic>{
       'error': instance.error,
     };

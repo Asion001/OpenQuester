@@ -8,7 +8,7 @@ part 'bad_request_response.freezed.dart';
 part 'bad_request_response.g.dart';
 
 @Freezed()
-class BadRequestResponse with _$BadRequestResponse {
+abstract class BadRequestResponse with _$BadRequestResponse {
   const factory BadRequestResponse({
     required String error,
   }) = _BadRequestResponse;

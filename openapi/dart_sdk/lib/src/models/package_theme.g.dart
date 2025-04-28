@@ -6,8 +6,8 @@ part of 'package_theme.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageThemeImpl _$$PackageThemeImplFromJson(Map<String, dynamic> json) =>
-    _$PackageThemeImpl(
+_PackageTheme _$PackageThemeFromJson(Map<String, dynamic> json) =>
+    _PackageTheme(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       name: json['name'] as String,
@@ -17,7 +17,7 @@ _$PackageThemeImpl _$$PackageThemeImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$PackageThemeImplToJson(_$PackageThemeImpl instance) =>
+Map<String, dynamic> _$PackageThemeToJson(_PackageTheme instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

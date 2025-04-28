@@ -8,7 +8,7 @@ part 'user_not_found_response.freezed.dart';
 part 'user_not_found_response.g.dart';
 
 @Freezed()
-class UserNotFoundResponse with _$UserNotFoundResponse {
+abstract class UserNotFoundResponse with _$UserNotFoundResponse {
   const factory UserNotFoundResponse({
     required String error,
   }) = _UserNotFoundResponse;

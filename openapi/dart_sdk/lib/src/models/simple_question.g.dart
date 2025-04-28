@@ -6,8 +6,8 @@ part of 'simple_question.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SimpleQuestionImpl _$$SimpleQuestionImplFromJson(Map<String, dynamic> json) =>
-    _$SimpleQuestionImpl(
+_SimpleQuestion _$SimpleQuestionFromJson(Map<String, dynamic> json) =>
+    _SimpleQuestion(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -26,8 +26,7 @@ _$SimpleQuestionImpl _$$SimpleQuestionImplFromJson(Map<String, dynamic> json) =>
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$SimpleQuestionImplToJson(
-        _$SimpleQuestionImpl instance) =>
+Map<String, dynamic> _$SimpleQuestionToJson(_SimpleQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

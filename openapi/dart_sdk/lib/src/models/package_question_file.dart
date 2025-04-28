@@ -14,7 +14,7 @@ part 'package_question_file.g.dart';
 
 /// Question media file structure for package creation
 @Freezed()
-class PackageQuestionFile with _$PackageQuestionFile {
+abstract class PackageQuestionFile with _$PackageQuestionFile {
   const factory PackageQuestionFile({
     required int? id,
     required PackageEntitiesOrder order,

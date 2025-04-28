@@ -8,7 +8,7 @@ part 'bad_filename_response.freezed.dart';
 part 'bad_filename_response.g.dart';
 
 @Freezed()
-class BadFilenameResponse with _$BadFilenameResponse {
+abstract class BadFilenameResponse with _$BadFilenameResponse {
   const factory BadFilenameResponse({
     required String error,
   }) = _BadFilenameResponse;

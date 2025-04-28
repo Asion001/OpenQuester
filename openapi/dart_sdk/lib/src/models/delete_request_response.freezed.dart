@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,86 +10,58 @@ part of 'delete_request_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-DeleteRequestResponse _$DeleteRequestResponseFromJson(
-    Map<String, dynamic> json) {
-  return _DeleteRequestResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$DeleteRequestResponse {
-  String get message => throw _privateConstructorUsedError;
-
-  /// Serializes this DeleteRequestResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get message;
 
   /// Create a copy of DeleteRequestResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $DeleteRequestResponseCopyWith<DeleteRequestResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DeleteRequestResponseCopyWith<$Res> {
-  factory $DeleteRequestResponseCopyWith(DeleteRequestResponse value,
-          $Res Function(DeleteRequestResponse) then) =
-      _$DeleteRequestResponseCopyWithImpl<$Res, DeleteRequestResponse>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class _$DeleteRequestResponseCopyWithImpl<$Res,
-        $Val extends DeleteRequestResponse>
-    implements $DeleteRequestResponseCopyWith<$Res> {
-  _$DeleteRequestResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of DeleteRequestResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $DeleteRequestResponseCopyWith<DeleteRequestResponse> get copyWith =>
+      _$DeleteRequestResponseCopyWithImpl<DeleteRequestResponse>(
+          this as DeleteRequestResponse, _$identity);
+
+  /// Serializes this DeleteRequestResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_value.copyWith(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is DeleteRequestResponse &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @override
+  String toString() {
+    return 'DeleteRequestResponse(message: $message)';
   }
 }
 
 /// @nodoc
-abstract class _$$DeleteRequestResponseImplCopyWith<$Res>
-    implements $DeleteRequestResponseCopyWith<$Res> {
-  factory _$$DeleteRequestResponseImplCopyWith(
-          _$DeleteRequestResponseImpl value,
-          $Res Function(_$DeleteRequestResponseImpl) then) =
-      __$$DeleteRequestResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $DeleteRequestResponseCopyWith<$Res> {
+  factory $DeleteRequestResponseCopyWith(DeleteRequestResponse value,
+          $Res Function(DeleteRequestResponse) _then) =
+      _$DeleteRequestResponseCopyWithImpl;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$DeleteRequestResponseImplCopyWithImpl<$Res>
-    extends _$DeleteRequestResponseCopyWithImpl<$Res,
-        _$DeleteRequestResponseImpl>
-    implements _$$DeleteRequestResponseImplCopyWith<$Res> {
-  __$$DeleteRequestResponseImplCopyWithImpl(_$DeleteRequestResponseImpl _value,
-      $Res Function(_$DeleteRequestResponseImpl) _then)
-      : super(_value, _then);
+class _$DeleteRequestResponseCopyWithImpl<$Res>
+    implements $DeleteRequestResponseCopyWith<$Res> {
+  _$DeleteRequestResponseCopyWithImpl(this._self, this._then);
+
+  final DeleteRequestResponse _self;
+  final $Res Function(DeleteRequestResponse) _then;
 
   /// Create a copy of DeleteRequestResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -97,9 +70,9 @@ class __$$DeleteRequestResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$DeleteRequestResponseImpl(
+    return _then(_self.copyWith(
       message: null == message
-          ? _value.message
+          ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -108,25 +81,35 @@ class __$$DeleteRequestResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$DeleteRequestResponseImpl implements _DeleteRequestResponse {
-  const _$DeleteRequestResponseImpl({required this.message});
-
-  factory _$DeleteRequestResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$DeleteRequestResponseImplFromJson(json);
+class _DeleteRequestResponse implements DeleteRequestResponse {
+  const _DeleteRequestResponse({required this.message});
+  factory _DeleteRequestResponse.fromJson(Map<String, dynamic> json) =>
+      _$DeleteRequestResponseFromJson(json);
 
   @override
   final String message;
 
+  /// Create a copy of DeleteRequestResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'DeleteRequestResponse(message: $message)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$DeleteRequestResponseCopyWith<_DeleteRequestResponse> get copyWith =>
+      __$DeleteRequestResponseCopyWithImpl<_DeleteRequestResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$DeleteRequestResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DeleteRequestResponseImpl &&
+            other is _DeleteRequestResponse &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -134,37 +117,45 @@ class _$DeleteRequestResponseImpl implements _DeleteRequestResponse {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of DeleteRequestResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$DeleteRequestResponseImplCopyWith<_$DeleteRequestResponseImpl>
-      get copyWith => __$$DeleteRequestResponseImplCopyWithImpl<
-          _$DeleteRequestResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$DeleteRequestResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'DeleteRequestResponse(message: $message)';
   }
 }
 
-abstract class _DeleteRequestResponse implements DeleteRequestResponse {
-  const factory _DeleteRequestResponse({required final String message}) =
-      _$DeleteRequestResponseImpl;
-
-  factory _DeleteRequestResponse.fromJson(Map<String, dynamic> json) =
-      _$DeleteRequestResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$DeleteRequestResponseCopyWith<$Res>
+    implements $DeleteRequestResponseCopyWith<$Res> {
+  factory _$DeleteRequestResponseCopyWith(_DeleteRequestResponse value,
+          $Res Function(_DeleteRequestResponse) _then) =
+      __$DeleteRequestResponseCopyWithImpl;
   @override
-  String get message;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$DeleteRequestResponseCopyWithImpl<$Res>
+    implements _$DeleteRequestResponseCopyWith<$Res> {
+  __$DeleteRequestResponseCopyWithImpl(this._self, this._then);
+
+  final _DeleteRequestResponse _self;
+  final $Res Function(_DeleteRequestResponse) _then;
 
   /// Create a copy of DeleteRequestResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DeleteRequestResponseImplCopyWith<_$DeleteRequestResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_DeleteRequestResponse(
+      message: null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

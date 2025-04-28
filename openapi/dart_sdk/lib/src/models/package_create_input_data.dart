@@ -14,7 +14,7 @@ part 'package_create_input_data.g.dart';
 
 /// Input for creating a new package; author is set via authentication
 @Freezed()
-class PackageCreateInputData with _$PackageCreateInputData {
+abstract class PackageCreateInputData with _$PackageCreateInputData {
   const factory PackageCreateInputData({
     /// Title of the package
     required String title,

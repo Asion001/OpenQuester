@@ -22,14 +22,19 @@ class GamesListController extends ListControllerBase<GameListItem> {
   }
 
   Future<void> _onSocketEvent(dynamic data) async {
-    await GameEventSubscription.fromJson(
+    final result = GameEventSubscription.fromJson(
       data as Map<String, Object?>,
-    ).map(
-      created: (value) => addFirstItem(value.data),
-      changed: (value) => updateItem(value.data),
-      started: (value) => updateItem(value.data),
-      deleted: (value) => deleteItem(value.data.id),
     );
+    switch (result) {
+      case GameEventSubscriptionUnionCreated():
+        await addFirstItem(result.data);
+      case GameEventSubscriptionUnionChanged():
+        await updateItem(result.data);
+      case GameEventSubscriptionUnionStarted():
+        await updateItem(result.data);
+      case GameEventSubscriptionUnionDeleted():
+        await deleteItem(result.data.id);
+    }
   }
 
   @override

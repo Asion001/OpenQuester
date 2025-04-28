@@ -11,7 +11,7 @@ part 'paginated_users.freezed.dart';
 part 'paginated_users.g.dart';
 
 @Freezed()
-class PaginatedUsers with _$PaginatedUsers {
+abstract class PaginatedUsers with _$PaginatedUsers {
   const factory PaginatedUsers({
     required List<ResponseUser> data,
     required PageInfo pageInfo,

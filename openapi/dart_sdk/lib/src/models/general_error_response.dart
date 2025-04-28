@@ -8,7 +8,7 @@ part 'general_error_response.freezed.dart';
 part 'general_error_response.g.dart';
 
 @Freezed()
-class GeneralErrorResponse with _$GeneralErrorResponse {
+abstract class GeneralErrorResponse with _$GeneralErrorResponse {
   const factory GeneralErrorResponse({
     required String error,
   }) = _GeneralErrorResponse;

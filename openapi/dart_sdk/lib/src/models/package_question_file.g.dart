@@ -6,17 +6,16 @@ part of 'package_question_file.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageQuestionFileImpl _$$PackageQuestionFileImplFromJson(
-        Map<String, dynamic> json) =>
-    _$PackageQuestionFileImpl(
+_PackageQuestionFile _$PackageQuestionFileFromJson(Map<String, dynamic> json) =>
+    _PackageQuestionFile(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       file: FileItem.fromJson(json['file'] as Map<String, dynamic>),
       displayTime: (json['displayTime'] as num?)?.toInt() ?? 5000,
     );
 
-Map<String, dynamic> _$$PackageQuestionFileImplToJson(
-        _$PackageQuestionFileImpl instance) =>
+Map<String, dynamic> _$PackageQuestionFileToJson(
+        _PackageQuestionFile instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

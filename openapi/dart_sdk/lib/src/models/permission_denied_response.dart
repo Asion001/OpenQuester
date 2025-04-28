@@ -8,7 +8,7 @@ part 'permission_denied_response.freezed.dart';
 part 'permission_denied_response.g.dart';
 
 @Freezed()
-class PermissionDeniedResponse with _$PermissionDeniedResponse {
+abstract class PermissionDeniedResponse with _$PermissionDeniedResponse {
   const factory PermissionDeniedResponse({
     required String error,
   }) = _PermissionDeniedResponse;

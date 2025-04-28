@@ -8,7 +8,7 @@ part 'game_state_answered_player.freezed.dart';
 part 'game_state_answered_player.g.dart';
 
 @Freezed()
-class GameStateAnsweredPlayer with _$GameStateAnsweredPlayer {
+abstract class GameStateAnsweredPlayer with _$GameStateAnsweredPlayer {
   const factory GameStateAnsweredPlayer({
     /// Id of answered player
     required int player,

@@ -6,9 +6,9 @@ part of 'socket_io_game_state_round_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SocketIOGameStateRoundDataImpl _$$SocketIOGameStateRoundDataImplFromJson(
+_SocketIOGameStateRoundData _$SocketIOGameStateRoundDataFromJson(
         Map<String, dynamic> json) =>
-    _$SocketIOGameStateRoundDataImpl(
+    _SocketIOGameStateRoundData(
       order: (json['order'] as num).toInt(),
       name: json['name'] as String,
       description: json['description'] as String?,
@@ -18,8 +18,8 @@ _$SocketIOGameStateRoundDataImpl _$$SocketIOGameStateRoundDataImplFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$SocketIOGameStateRoundDataImplToJson(
-        _$SocketIOGameStateRoundDataImpl instance) =>
+Map<String, dynamic> _$SocketIOGameStateRoundDataToJson(
+        _SocketIOGameStateRoundData instance) =>
     <String, dynamic>{
       'order': instance.order,
       'name': instance.name,

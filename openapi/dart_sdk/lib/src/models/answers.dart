@@ -13,7 +13,7 @@ part 'answers.freezed.dart';
 part 'answers.g.dart';
 
 @Freezed()
-class Answers with _$Answers {
+abstract class Answers with _$Answers {
   const factory Answers({
     required int? id,
     required PackageEntitiesOrder order,

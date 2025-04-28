@@ -6,14 +6,12 @@ part of 'input_socket_io_auth.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$InputSocketIOAuthImpl _$$InputSocketIOAuthImplFromJson(
-        Map<String, dynamic> json) =>
-    _$InputSocketIOAuthImpl(
+_InputSocketIOAuth _$InputSocketIOAuthFromJson(Map<String, dynamic> json) =>
+    _InputSocketIOAuth(
       socketId: json['socketId'] as String,
     );
 
-Map<String, dynamic> _$$InputSocketIOAuthImplToJson(
-        _$InputSocketIOAuthImpl instance) =>
+Map<String, dynamic> _$InputSocketIOAuthToJson(_InputSocketIOAuth instance) =>
     <String, dynamic>{
       'socketId': instance.socketId,
     };

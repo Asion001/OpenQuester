@@ -8,7 +8,7 @@ part 'logout_response.freezed.dart';
 part 'logout_response.g.dart';
 
 @Freezed()
-class LogoutResponse with _$LogoutResponse {
+abstract class LogoutResponse with _$LogoutResponse {
   const factory LogoutResponse({
     required String message,
   }) = _LogoutResponse;

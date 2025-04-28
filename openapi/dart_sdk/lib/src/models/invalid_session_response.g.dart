@@ -6,14 +6,14 @@ part of 'invalid_session_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$InvalidSessionResponseImpl _$$InvalidSessionResponseImplFromJson(
+_InvalidSessionResponse _$InvalidSessionResponseFromJson(
         Map<String, dynamic> json) =>
-    _$InvalidSessionResponseImpl(
+    _InvalidSessionResponse(
       error: json['error'] as String,
     );
 
-Map<String, dynamic> _$$InvalidSessionResponseImplToJson(
-        _$InvalidSessionResponseImpl instance) =>
+Map<String, dynamic> _$InvalidSessionResponseToJson(
+        _InvalidSessionResponse instance) =>
     <String, dynamic>{
       'error': instance.error,
     };

@@ -6,15 +6,15 @@ part of 'restrictions_event_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RestrictionsEventDataImpl _$$RestrictionsEventDataImplFromJson(
+_RestrictionsEventData _$RestrictionsEventDataFromJson(
         Map<String, dynamic> json) =>
-    _$RestrictionsEventDataImpl(
+    _RestrictionsEventData(
       muted: json['muted'] as bool,
       restricted: json['restricted'] as bool,
     );
 
-Map<String, dynamic> _$$RestrictionsEventDataImplToJson(
-        _$RestrictionsEventDataImpl instance) =>
+Map<String, dynamic> _$RestrictionsEventDataToJson(
+        _RestrictionsEventData instance) =>
     <String, dynamic>{
       'muted': instance.muted,
       'restricted': instance.restricted,

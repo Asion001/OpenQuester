@@ -6,65 +6,57 @@ part of 'game_event_subscription_union.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GameEventSubscriptionUnionCreatedImpl
-    _$$GameEventSubscriptionUnionCreatedImplFromJson(
-            Map<String, dynamic> json) =>
-        _$GameEventSubscriptionUnionCreatedImpl(
-          event: GameUpdateEventSubscriptionEvent.fromJson(
-              json['event'] as String),
-          data: GameListItem.fromJson(json['data'] as Map<String, dynamic>),
-        );
+GameEventSubscriptionUnionCreated _$GameEventSubscriptionUnionCreatedFromJson(
+        Map<String, dynamic> json) =>
+    GameEventSubscriptionUnionCreated(
+      event: GameUpdateEventSubscriptionEvent.fromJson(json['event'] as String),
+      data: GameListItem.fromJson(json['data'] as Map<String, dynamic>),
+    );
 
-Map<String, dynamic> _$$GameEventSubscriptionUnionCreatedImplToJson(
-        _$GameEventSubscriptionUnionCreatedImpl instance) =>
+Map<String, dynamic> _$GameEventSubscriptionUnionCreatedToJson(
+        GameEventSubscriptionUnionCreated instance) =>
     <String, dynamic>{
       'event': instance.event,
       'data': instance.data,
     };
 
-_$GameEventSubscriptionUnionChangedImpl
-    _$$GameEventSubscriptionUnionChangedImplFromJson(
-            Map<String, dynamic> json) =>
-        _$GameEventSubscriptionUnionChangedImpl(
-          event: GameUpdateEventSubscriptionEvent.fromJson(
-              json['event'] as String),
-          data: GameListItem.fromJson(json['data'] as Map<String, dynamic>),
-        );
+GameEventSubscriptionUnionChanged _$GameEventSubscriptionUnionChangedFromJson(
+        Map<String, dynamic> json) =>
+    GameEventSubscriptionUnionChanged(
+      event: GameUpdateEventSubscriptionEvent.fromJson(json['event'] as String),
+      data: GameListItem.fromJson(json['data'] as Map<String, dynamic>),
+    );
 
-Map<String, dynamic> _$$GameEventSubscriptionUnionChangedImplToJson(
-        _$GameEventSubscriptionUnionChangedImpl instance) =>
+Map<String, dynamic> _$GameEventSubscriptionUnionChangedToJson(
+        GameEventSubscriptionUnionChanged instance) =>
     <String, dynamic>{
       'event': instance.event,
       'data': instance.data,
     };
 
-_$GameEventSubscriptionUnionStartedImpl
-    _$$GameEventSubscriptionUnionStartedImplFromJson(
-            Map<String, dynamic> json) =>
-        _$GameEventSubscriptionUnionStartedImpl(
-          event: GameUpdateEventSubscriptionEvent.fromJson(
-              json['event'] as String),
-          data: GameListItem.fromJson(json['data'] as Map<String, dynamic>),
-        );
+GameEventSubscriptionUnionStarted _$GameEventSubscriptionUnionStartedFromJson(
+        Map<String, dynamic> json) =>
+    GameEventSubscriptionUnionStarted(
+      event: GameUpdateEventSubscriptionEvent.fromJson(json['event'] as String),
+      data: GameListItem.fromJson(json['data'] as Map<String, dynamic>),
+    );
 
-Map<String, dynamic> _$$GameEventSubscriptionUnionStartedImplToJson(
-        _$GameEventSubscriptionUnionStartedImpl instance) =>
+Map<String, dynamic> _$GameEventSubscriptionUnionStartedToJson(
+        GameEventSubscriptionUnionStarted instance) =>
     <String, dynamic>{
       'event': instance.event,
       'data': instance.data,
     };
 
-_$GameEventSubscriptionUnionDeletedImpl
-    _$$GameEventSubscriptionUnionDeletedImplFromJson(
-            Map<String, dynamic> json) =>
-        _$GameEventSubscriptionUnionDeletedImpl(
-          event: GameDeleteEventSubscriptionEvent.fromJson(
-              json['event'] as String),
-          data: Data.fromJson(json['data'] as Map<String, dynamic>),
-        );
+GameEventSubscriptionUnionDeleted _$GameEventSubscriptionUnionDeletedFromJson(
+        Map<String, dynamic> json) =>
+    GameEventSubscriptionUnionDeleted(
+      event: GameDeleteEventSubscriptionEvent.fromJson(json['event'] as String),
+      data: Data.fromJson(json['data'] as Map<String, dynamic>),
+    );
 
-Map<String, dynamic> _$$GameEventSubscriptionUnionDeletedImplToJson(
-        _$GameEventSubscriptionUnionDeletedImpl instance) =>
+Map<String, dynamic> _$GameEventSubscriptionUnionDeletedToJson(
+        GameEventSubscriptionUnionDeleted instance) =>
     <String, dynamic>{
       'event': instance.event,
       'data': instance.data,

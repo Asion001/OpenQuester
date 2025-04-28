@@ -6,8 +6,7 @@ part of 'player_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PlayerDataImpl _$$PlayerDataImplFromJson(Map<String, dynamic> json) =>
-    _$PlayerDataImpl(
+_PlayerData _$PlayerDataFromJson(Map<String, dynamic> json) => _PlayerData(
       meta: PlayerMeta.fromJson(json['meta'] as Map<String, dynamic>),
       role: PlayerRole.fromJson(json['role'] as String),
       restrictionData: RestrictionsEventData.fromJson(
@@ -17,7 +16,7 @@ _$PlayerDataImpl _$$PlayerDataImplFromJson(Map<String, dynamic> json) =>
       status: PlayerDataStatus.fromJson(json['status'] as String),
     );
 
-Map<String, dynamic> _$$PlayerDataImplToJson(_$PlayerDataImpl instance) =>
+Map<String, dynamic> _$PlayerDataToJson(_PlayerData instance) =>
     <String, dynamic>{
       'meta': instance.meta,
       'role': instance.role,

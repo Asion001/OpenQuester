@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,133 +10,30 @@ part of 'short_user_info.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-ShortUserInfo _$ShortUserInfoFromJson(Map<String, dynamic> json) {
-  return _ShortUserInfo.fromJson(json);
-}
 
 /// @nodoc
 mixin _$ShortUserInfo {
-  int get id => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
-
-  /// Serializes this ShortUserInfo to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get id;
+  String get username;
 
   /// Create a copy of ShortUserInfo
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $ShortUserInfoCopyWith<ShortUserInfo> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$ShortUserInfoCopyWithImpl<ShortUserInfo>(
+          this as ShortUserInfo, _$identity);
 
-/// @nodoc
-abstract class $ShortUserInfoCopyWith<$Res> {
-  factory $ShortUserInfoCopyWith(
-          ShortUserInfo value, $Res Function(ShortUserInfo) then) =
-      _$ShortUserInfoCopyWithImpl<$Res, ShortUserInfo>;
-  @useResult
-  $Res call({int id, String username});
-}
-
-/// @nodoc
-class _$ShortUserInfoCopyWithImpl<$Res, $Val extends ShortUserInfo>
-    implements $ShortUserInfoCopyWith<$Res> {
-  _$ShortUserInfoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of ShortUserInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? username = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$ShortUserInfoImplCopyWith<$Res>
-    implements $ShortUserInfoCopyWith<$Res> {
-  factory _$$ShortUserInfoImplCopyWith(
-          _$ShortUserInfoImpl value, $Res Function(_$ShortUserInfoImpl) then) =
-      __$$ShortUserInfoImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int id, String username});
-}
-
-/// @nodoc
-class __$$ShortUserInfoImplCopyWithImpl<$Res>
-    extends _$ShortUserInfoCopyWithImpl<$Res, _$ShortUserInfoImpl>
-    implements _$$ShortUserInfoImplCopyWith<$Res> {
-  __$$ShortUserInfoImplCopyWithImpl(
-      _$ShortUserInfoImpl _value, $Res Function(_$ShortUserInfoImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ShortUserInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? username = null,
-  }) {
-    return _then(_$ShortUserInfoImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$ShortUserInfoImpl implements _ShortUserInfo {
-  const _$ShortUserInfoImpl({required this.id, required this.username});
-
-  factory _$ShortUserInfoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ShortUserInfoImplFromJson(json);
-
-  @override
-  final int id;
-  @override
-  final String username;
-
-  @override
-  String toString() {
-    return 'ShortUserInfo(id: $id, username: $username)';
-  }
+  /// Serializes this ShortUserInfo to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ShortUserInfoImpl &&
+            other is ShortUserInfo &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.username, username) ||
                 other.username == username));
@@ -145,39 +43,135 @@ class _$ShortUserInfoImpl implements _ShortUserInfo {
   @override
   int get hashCode => Object.hash(runtimeType, id, username);
 
-  /// Create a copy of ShortUserInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$ShortUserInfoImplCopyWith<_$ShortUserInfoImpl> get copyWith =>
-      __$$ShortUserInfoImplCopyWithImpl<_$ShortUserInfoImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ShortUserInfoImplToJson(
-      this,
-    );
+  String toString() {
+    return 'ShortUserInfo(id: $id, username: $username)';
   }
 }
 
-abstract class _ShortUserInfo implements ShortUserInfo {
-  const factory _ShortUserInfo(
-      {required final int id,
-      required final String username}) = _$ShortUserInfoImpl;
+/// @nodoc
+abstract mixin class $ShortUserInfoCopyWith<$Res> {
+  factory $ShortUserInfoCopyWith(
+          ShortUserInfo value, $Res Function(ShortUserInfo) _then) =
+      _$ShortUserInfoCopyWithImpl;
+  @useResult
+  $Res call({int id, String username});
+}
 
-  factory _ShortUserInfo.fromJson(Map<String, dynamic> json) =
-      _$ShortUserInfoImpl.fromJson;
+/// @nodoc
+class _$ShortUserInfoCopyWithImpl<$Res>
+    implements $ShortUserInfoCopyWith<$Res> {
+  _$ShortUserInfoCopyWithImpl(this._self, this._then);
+
+  final ShortUserInfo _self;
+  final $Res Function(ShortUserInfo) _then;
+
+  /// Create a copy of ShortUserInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? username = null,
+  }) {
+    return _then(_self.copyWith(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      username: null == username
+          ? _self.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _ShortUserInfo implements ShortUserInfo {
+  const _ShortUserInfo({required this.id, required this.username});
+  factory _ShortUserInfo.fromJson(Map<String, dynamic> json) =>
+      _$ShortUserInfoFromJson(json);
 
   @override
-  int get id;
+  final int id;
   @override
-  String get username;
+  final String username;
 
   /// Create a copy of ShortUserInfo
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ShortUserInfoImplCopyWith<_$ShortUserInfoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$ShortUserInfoCopyWith<_ShortUserInfo> get copyWith =>
+      __$ShortUserInfoCopyWithImpl<_ShortUserInfo>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$ShortUserInfoToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ShortUserInfo &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.username, username) ||
+                other.username == username));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, username);
+
+  @override
+  String toString() {
+    return 'ShortUserInfo(id: $id, username: $username)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$ShortUserInfoCopyWith<$Res>
+    implements $ShortUserInfoCopyWith<$Res> {
+  factory _$ShortUserInfoCopyWith(
+          _ShortUserInfo value, $Res Function(_ShortUserInfo) _then) =
+      __$ShortUserInfoCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int id, String username});
+}
+
+/// @nodoc
+class __$ShortUserInfoCopyWithImpl<$Res>
+    implements _$ShortUserInfoCopyWith<$Res> {
+  __$ShortUserInfoCopyWithImpl(this._self, this._then);
+
+  final _ShortUserInfo _self;
+  final $Res Function(_ShortUserInfo) _then;
+
+  /// Create a copy of ShortUserInfo
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? username = null,
+  }) {
+    return _then(_ShortUserInfo(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      username: null == username
+          ? _self.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+// dart format on

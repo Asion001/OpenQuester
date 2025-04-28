@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,78 +10,55 @@ part of 'data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-Data _$DataFromJson(Map<String, dynamic> json) {
-  return _Data.fromJson(json);
-}
 
 /// @nodoc
 mixin _$Data {
-  String get id => throw _privateConstructorUsedError;
-
-  /// Serializes this Data to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get id;
 
   /// Create a copy of Data
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $DataCopyWith<$Res> {
-  factory $DataCopyWith(Data value, $Res Function(Data) then) =
-      _$DataCopyWithImpl<$Res, Data>;
-  @useResult
-  $Res call({String id});
-}
-
-/// @nodoc
-class _$DataCopyWithImpl<$Res, $Val extends Data>
-    implements $DataCopyWith<$Res> {
-  _$DataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $DataCopyWith<Data> get copyWith =>
+      _$DataCopyWithImpl<Data>(this as Data, _$identity);
+
+  /// Serializes this Data to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Data &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  @override
+  String toString() {
+    return 'Data(id: $id)';
   }
 }
 
 /// @nodoc
-abstract class _$$DataImplCopyWith<$Res> implements $DataCopyWith<$Res> {
-  factory _$$DataImplCopyWith(
-          _$DataImpl value, $Res Function(_$DataImpl) then) =
-      __$$DataImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $DataCopyWith<$Res> {
+  factory $DataCopyWith(Data value, $Res Function(Data) _then) =
+      _$DataCopyWithImpl;
   @useResult
   $Res call({String id});
 }
 
 /// @nodoc
-class __$$DataImplCopyWithImpl<$Res>
-    extends _$DataCopyWithImpl<$Res, _$DataImpl>
-    implements _$$DataImplCopyWith<$Res> {
-  __$$DataImplCopyWithImpl(_$DataImpl _value, $Res Function(_$DataImpl) _then)
-      : super(_value, _then);
+class _$DataCopyWithImpl<$Res> implements $DataCopyWith<$Res> {
+  _$DataCopyWithImpl(this._self, this._then);
+
+  final Data _self;
+  final $Res Function(Data) _then;
 
   /// Create a copy of Data
   /// with the given fields replaced by the non-null parameter values.
@@ -89,9 +67,9 @@ class __$$DataImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
   }) {
-    return _then(_$DataImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -100,25 +78,33 @@ class __$$DataImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$DataImpl implements _Data {
-  const _$DataImpl({required this.id});
-
-  factory _$DataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$DataImplFromJson(json);
+class _Data implements Data {
+  const _Data({required this.id});
+  factory _Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
   @override
   final String id;
 
+  /// Create a copy of Data
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Data(id: $id)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$DataCopyWith<_Data> get copyWith =>
+      __$DataCopyWithImpl<_Data>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$DataToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DataImpl &&
+            other is _Data &&
             (identical(other.id, id) || other.id == id));
   }
 
@@ -126,34 +112,42 @@ class _$DataImpl implements _Data {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  /// Create a copy of Data
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
-      __$$DataImplCopyWithImpl<_$DataImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$DataImplToJson(
-      this,
-    );
+  String toString() {
+    return 'Data(id: $id)';
   }
 }
 
-abstract class _Data implements Data {
-  const factory _Data({required final String id}) = _$DataImpl;
-
-  factory _Data.fromJson(Map<String, dynamic> json) = _$DataImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$DataCopyWith<$Res> implements $DataCopyWith<$Res> {
+  factory _$DataCopyWith(_Data value, $Res Function(_Data) _then) =
+      __$DataCopyWithImpl;
   @override
-  String get id;
+  @useResult
+  $Res call({String id});
+}
+
+/// @nodoc
+class __$DataCopyWithImpl<$Res> implements _$DataCopyWith<$Res> {
+  __$DataCopyWithImpl(this._self, this._then);
+
+  final _Data _self;
+  final $Res Function(_Data) _then;
 
   /// Create a copy of Data
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DataImplCopyWith<_$DataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_Data(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

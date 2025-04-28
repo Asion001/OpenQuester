@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,81 +10,55 @@ part of 'page_info.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PageInfo _$PageInfoFromJson(Map<String, dynamic> json) {
-  return _PageInfo.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PageInfo {
-  int get total => throw _privateConstructorUsedError;
-
-  /// Serializes this PageInfo to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get total;
 
   /// Create a copy of PageInfo
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PageInfoCopyWith<PageInfo> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PageInfoCopyWith<$Res> {
-  factory $PageInfoCopyWith(PageInfo value, $Res Function(PageInfo) then) =
-      _$PageInfoCopyWithImpl<$Res, PageInfo>;
-  @useResult
-  $Res call({int total});
-}
-
-/// @nodoc
-class _$PageInfoCopyWithImpl<$Res, $Val extends PageInfo>
-    implements $PageInfoCopyWith<$Res> {
-  _$PageInfoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PageInfo
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $PageInfoCopyWith<PageInfo> get copyWith =>
+      _$PageInfoCopyWithImpl<PageInfo>(this as PageInfo, _$identity);
+
+  /// Serializes this PageInfo to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? total = null,
-  }) {
-    return _then(_value.copyWith(
-      total: null == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PageInfo &&
+            (identical(other.total, total) || other.total == total));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, total);
+
+  @override
+  String toString() {
+    return 'PageInfo(total: $total)';
   }
 }
 
 /// @nodoc
-abstract class _$$PageInfoImplCopyWith<$Res>
-    implements $PageInfoCopyWith<$Res> {
-  factory _$$PageInfoImplCopyWith(
-          _$PageInfoImpl value, $Res Function(_$PageInfoImpl) then) =
-      __$$PageInfoImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PageInfoCopyWith<$Res> {
+  factory $PageInfoCopyWith(PageInfo value, $Res Function(PageInfo) _then) =
+      _$PageInfoCopyWithImpl;
   @useResult
   $Res call({int total});
 }
 
 /// @nodoc
-class __$$PageInfoImplCopyWithImpl<$Res>
-    extends _$PageInfoCopyWithImpl<$Res, _$PageInfoImpl>
-    implements _$$PageInfoImplCopyWith<$Res> {
-  __$$PageInfoImplCopyWithImpl(
-      _$PageInfoImpl _value, $Res Function(_$PageInfoImpl) _then)
-      : super(_value, _then);
+class _$PageInfoCopyWithImpl<$Res> implements $PageInfoCopyWith<$Res> {
+  _$PageInfoCopyWithImpl(this._self, this._then);
+
+  final PageInfo _self;
+  final $Res Function(PageInfo) _then;
 
   /// Create a copy of PageInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -92,9 +67,9 @@ class __$$PageInfoImplCopyWithImpl<$Res>
   $Res call({
     Object? total = null,
   }) {
-    return _then(_$PageInfoImpl(
+    return _then(_self.copyWith(
       total: null == total
-          ? _value.total
+          ? _self.total
           : total // ignore: cast_nullable_to_non_nullable
               as int,
     ));
@@ -103,25 +78,34 @@ class __$$PageInfoImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PageInfoImpl implements _PageInfo {
-  const _$PageInfoImpl({required this.total});
-
-  factory _$PageInfoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PageInfoImplFromJson(json);
+class _PageInfo implements PageInfo {
+  const _PageInfo({required this.total});
+  factory _PageInfo.fromJson(Map<String, dynamic> json) =>
+      _$PageInfoFromJson(json);
 
   @override
   final int total;
 
+  /// Create a copy of PageInfo
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PageInfo(total: $total)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PageInfoCopyWith<_PageInfo> get copyWith =>
+      __$PageInfoCopyWithImpl<_PageInfo>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PageInfoToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PageInfoImpl &&
+            other is _PageInfo &&
             (identical(other.total, total) || other.total == total));
   }
 
@@ -129,35 +113,43 @@ class _$PageInfoImpl implements _PageInfo {
   @override
   int get hashCode => Object.hash(runtimeType, total);
 
-  /// Create a copy of PageInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PageInfoImplCopyWith<_$PageInfoImpl> get copyWith =>
-      __$$PageInfoImplCopyWithImpl<_$PageInfoImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PageInfoImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PageInfo(total: $total)';
   }
 }
 
-abstract class _PageInfo implements PageInfo {
-  const factory _PageInfo({required final int total}) = _$PageInfoImpl;
-
-  factory _PageInfo.fromJson(Map<String, dynamic> json) =
-      _$PageInfoImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$PageInfoCopyWith<$Res>
+    implements $PageInfoCopyWith<$Res> {
+  factory _$PageInfoCopyWith(_PageInfo value, $Res Function(_PageInfo) _then) =
+      __$PageInfoCopyWithImpl;
   @override
-  int get total;
+  @useResult
+  $Res call({int total});
+}
+
+/// @nodoc
+class __$PageInfoCopyWithImpl<$Res> implements _$PageInfoCopyWith<$Res> {
+  __$PageInfoCopyWithImpl(this._self, this._then);
+
+  final _PageInfo _self;
+  final $Res Function(_PageInfo) _then;
 
   /// Create a copy of PageInfo
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PageInfoImplCopyWith<_$PageInfoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? total = null,
+  }) {
+    return _then(_PageInfo(
+      total: null == total
+          ? _self.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
 }
+
+// dart format on

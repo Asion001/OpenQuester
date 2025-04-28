@@ -12,7 +12,7 @@ part 'socket_io_game_state_theme_data.g.dart';
 
 /// Info about theme of the round
 @Freezed()
-class SocketIOGameStateThemeData with _$SocketIOGameStateThemeData {
+abstract class SocketIOGameStateThemeData with _$SocketIOGameStateThemeData {
   const factory SocketIOGameStateThemeData({
     required PackageEntitiesOrder order,
     required String name,

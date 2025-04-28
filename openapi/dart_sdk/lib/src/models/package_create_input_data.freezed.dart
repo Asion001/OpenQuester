@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,54 +10,83 @@ part of 'package_create_input_data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageCreateInputData _$PackageCreateInputDataFromJson(
-    Map<String, dynamic> json) {
-  return _PackageCreateInputData.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageCreateInputData {
   /// Title of the package
-  String get title => throw _privateConstructorUsedError;
+  String get title;
 
   /// Description of the package
-  String? get description => throw _privateConstructorUsedError;
+  String? get description;
 
   /// Language of the package
-  String? get language => throw _privateConstructorUsedError;
+  String? get language;
 
   /// Age restriction
-  AgeRestriction get ageRestriction => throw _privateConstructorUsedError;
+  AgeRestriction get ageRestriction;
 
   /// Tags for the package. Can be null or an array of tag objects
-  List<PackageTag>? get tags => throw _privateConstructorUsedError;
+  List<PackageTag>? get tags;
 
   /// Rounds in the package
-  List<PackageRound> get rounds => throw _privateConstructorUsedError;
+  List<PackageRound> get rounds;
 
   /// Logo file for the package
-  PackageLogoFileInput? get logo => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageCreateInputData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  PackageLogoFileInput? get logo;
 
   /// Create a copy of PackageCreateInputData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PackageCreateInputDataCopyWith<PackageCreateInputData> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$PackageCreateInputDataCopyWithImpl<PackageCreateInputData>(
+          this as PackageCreateInputData, _$identity);
+
+  /// Serializes this PackageCreateInputData to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PackageCreateInputData &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.language, language) ||
+                other.language == language) &&
+            (identical(other.ageRestriction, ageRestriction) ||
+                other.ageRestriction == ageRestriction) &&
+            const DeepCollectionEquality().equals(other.tags, tags) &&
+            const DeepCollectionEquality().equals(other.rounds, rounds) &&
+            (identical(other.logo, logo) || other.logo == logo));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      title,
+      description,
+      language,
+      ageRestriction,
+      const DeepCollectionEquality().hash(tags),
+      const DeepCollectionEquality().hash(rounds),
+      logo);
+
+  @override
+  String toString() {
+    return 'PackageCreateInputData(title: $title, description: $description, language: $language, ageRestriction: $ageRestriction, tags: $tags, rounds: $rounds, logo: $logo)';
+  }
 }
 
 /// @nodoc
-abstract class $PackageCreateInputDataCopyWith<$Res> {
+abstract mixin class $PackageCreateInputDataCopyWith<$Res> {
   factory $PackageCreateInputDataCopyWith(PackageCreateInputData value,
-          $Res Function(PackageCreateInputData) then) =
-      _$PackageCreateInputDataCopyWithImpl<$Res, PackageCreateInputData>;
+          $Res Function(PackageCreateInputData) _then) =
+      _$PackageCreateInputDataCopyWithImpl;
   @useResult
   $Res call(
       {String title,
@@ -71,15 +101,12 @@ abstract class $PackageCreateInputDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PackageCreateInputDataCopyWithImpl<$Res,
-        $Val extends PackageCreateInputData>
+class _$PackageCreateInputDataCopyWithImpl<$Res>
     implements $PackageCreateInputDataCopyWith<$Res> {
-  _$PackageCreateInputDataCopyWithImpl(this._value, this._then);
+  _$PackageCreateInputDataCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final PackageCreateInputData _self;
+  final $Res Function(PackageCreateInputData) _then;
 
   /// Create a copy of PackageCreateInputData
   /// with the given fields replaced by the non-null parameter values.
@@ -94,36 +121,36 @@ class _$PackageCreateInputDataCopyWithImpl<$Res,
     Object? rounds = null,
     Object? logo = freezed,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       description: freezed == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
       language: freezed == language
-          ? _value.language
+          ? _self.language
           : language // ignore: cast_nullable_to_non_nullable
               as String?,
       ageRestriction: null == ageRestriction
-          ? _value.ageRestriction
+          ? _self.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
               as AgeRestriction,
       tags: freezed == tags
-          ? _value.tags
+          ? _self.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<PackageTag>?,
       rounds: null == rounds
-          ? _value.rounds
+          ? _self.rounds
           : rounds // ignore: cast_nullable_to_non_nullable
               as List<PackageRound>,
       logo: freezed == logo
-          ? _value.logo
+          ? _self.logo
           : logo // ignore: cast_nullable_to_non_nullable
               as PackageLogoFileInput?,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of PackageCreateInputData
@@ -131,98 +158,20 @@ class _$PackageCreateInputDataCopyWithImpl<$Res,
   @override
   @pragma('vm:prefer-inline')
   $PackageLogoFileInputCopyWith<$Res>? get logo {
-    if (_value.logo == null) {
+    if (_self.logo == null) {
       return null;
     }
 
-    return $PackageLogoFileInputCopyWith<$Res>(_value.logo!, (value) {
-      return _then(_value.copyWith(logo: value) as $Val);
+    return $PackageLogoFileInputCopyWith<$Res>(_self.logo!, (value) {
+      return _then(_self.copyWith(logo: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$PackageCreateInputDataImplCopyWith<$Res>
-    implements $PackageCreateInputDataCopyWith<$Res> {
-  factory _$$PackageCreateInputDataImplCopyWith(
-          _$PackageCreateInputDataImpl value,
-          $Res Function(_$PackageCreateInputDataImpl) then) =
-      __$$PackageCreateInputDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String title,
-      String? description,
-      String? language,
-      AgeRestriction ageRestriction,
-      List<PackageTag>? tags,
-      List<PackageRound> rounds,
-      PackageLogoFileInput? logo});
-
-  @override
-  $PackageLogoFileInputCopyWith<$Res>? get logo;
-}
-
-/// @nodoc
-class __$$PackageCreateInputDataImplCopyWithImpl<$Res>
-    extends _$PackageCreateInputDataCopyWithImpl<$Res,
-        _$PackageCreateInputDataImpl>
-    implements _$$PackageCreateInputDataImplCopyWith<$Res> {
-  __$$PackageCreateInputDataImplCopyWithImpl(
-      _$PackageCreateInputDataImpl _value,
-      $Res Function(_$PackageCreateInputDataImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PackageCreateInputData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? title = null,
-    Object? description = freezed,
-    Object? language = freezed,
-    Object? ageRestriction = null,
-    Object? tags = freezed,
-    Object? rounds = null,
-    Object? logo = freezed,
-  }) {
-    return _then(_$PackageCreateInputDataImpl(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      language: freezed == language
-          ? _value.language
-          : language // ignore: cast_nullable_to_non_nullable
-              as String?,
-      ageRestriction: null == ageRestriction
-          ? _value.ageRestriction
-          : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as AgeRestriction,
-      tags: freezed == tags
-          ? _value._tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<PackageTag>?,
-      rounds: null == rounds
-          ? _value._rounds
-          : rounds // ignore: cast_nullable_to_non_nullable
-              as List<PackageRound>,
-      logo: freezed == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as PackageLogoFileInput?,
-    ));
-  }
-}
-
-/// @nodoc
 @JsonSerializable()
-class _$PackageCreateInputDataImpl implements _PackageCreateInputData {
-  const _$PackageCreateInputDataImpl(
+class _PackageCreateInputData implements PackageCreateInputData {
+  const _PackageCreateInputData(
       {required this.title,
       required this.description,
       required this.language,
@@ -232,9 +181,8 @@ class _$PackageCreateInputDataImpl implements _PackageCreateInputData {
       this.logo})
       : _tags = tags,
         _rounds = rounds;
-
-  factory _$PackageCreateInputDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageCreateInputDataImplFromJson(json);
+  factory _PackageCreateInputData.fromJson(Map<String, dynamic> json) =>
+      _$PackageCreateInputDataFromJson(json);
 
   /// Title of the package
   @override
@@ -280,16 +228,27 @@ class _$PackageCreateInputDataImpl implements _PackageCreateInputData {
   @override
   final PackageLogoFileInput? logo;
 
+  /// Create a copy of PackageCreateInputData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PackageCreateInputData(title: $title, description: $description, language: $language, ageRestriction: $ageRestriction, tags: $tags, rounds: $rounds, logo: $logo)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PackageCreateInputDataCopyWith<_PackageCreateInputData> get copyWith =>
+      __$PackageCreateInputDataCopyWithImpl<_PackageCreateInputData>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PackageCreateInputDataToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageCreateInputDataImpl &&
+            other is _PackageCreateInputData &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -314,68 +273,99 @@ class _$PackageCreateInputDataImpl implements _PackageCreateInputData {
       const DeepCollectionEquality().hash(_rounds),
       logo);
 
-  /// Create a copy of PackageCreateInputData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PackageCreateInputDataImplCopyWith<_$PackageCreateInputDataImpl>
-      get copyWith => __$$PackageCreateInputDataImplCopyWithImpl<
-          _$PackageCreateInputDataImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PackageCreateInputDataImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PackageCreateInputData(title: $title, description: $description, language: $language, ageRestriction: $ageRestriction, tags: $tags, rounds: $rounds, logo: $logo)';
   }
 }
 
-abstract class _PackageCreateInputData implements PackageCreateInputData {
-  const factory _PackageCreateInputData(
-      {required final String title,
-      required final String? description,
-      required final String? language,
-      required final AgeRestriction ageRestriction,
-      required final List<PackageTag>? tags,
-      required final List<PackageRound> rounds,
-      final PackageLogoFileInput? logo}) = _$PackageCreateInputDataImpl;
-
-  factory _PackageCreateInputData.fromJson(Map<String, dynamic> json) =
-      _$PackageCreateInputDataImpl.fromJson;
-
-  /// Title of the package
+/// @nodoc
+abstract mixin class _$PackageCreateInputDataCopyWith<$Res>
+    implements $PackageCreateInputDataCopyWith<$Res> {
+  factory _$PackageCreateInputDataCopyWith(_PackageCreateInputData value,
+          $Res Function(_PackageCreateInputData) _then) =
+      __$PackageCreateInputDataCopyWithImpl;
   @override
-  String get title;
+  @useResult
+  $Res call(
+      {String title,
+      String? description,
+      String? language,
+      AgeRestriction ageRestriction,
+      List<PackageTag>? tags,
+      List<PackageRound> rounds,
+      PackageLogoFileInput? logo});
 
-  /// Description of the package
   @override
-  String? get description;
+  $PackageLogoFileInputCopyWith<$Res>? get logo;
+}
 
-  /// Language of the package
-  @override
-  String? get language;
+/// @nodoc
+class __$PackageCreateInputDataCopyWithImpl<$Res>
+    implements _$PackageCreateInputDataCopyWith<$Res> {
+  __$PackageCreateInputDataCopyWithImpl(this._self, this._then);
 
-  /// Age restriction
-  @override
-  AgeRestriction get ageRestriction;
-
-  /// Tags for the package. Can be null or an array of tag objects
-  @override
-  List<PackageTag>? get tags;
-
-  /// Rounds in the package
-  @override
-  List<PackageRound> get rounds;
-
-  /// Logo file for the package
-  @override
-  PackageLogoFileInput? get logo;
+  final _PackageCreateInputData _self;
+  final $Res Function(_PackageCreateInputData) _then;
 
   /// Create a copy of PackageCreateInputData
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageCreateInputDataImplCopyWith<_$PackageCreateInputDataImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? title = null,
+    Object? description = freezed,
+    Object? language = freezed,
+    Object? ageRestriction = null,
+    Object? tags = freezed,
+    Object? rounds = null,
+    Object? logo = freezed,
+  }) {
+    return _then(_PackageCreateInputData(
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      language: freezed == language
+          ? _self.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ageRestriction: null == ageRestriction
+          ? _self.ageRestriction
+          : ageRestriction // ignore: cast_nullable_to_non_nullable
+              as AgeRestriction,
+      tags: freezed == tags
+          ? _self._tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<PackageTag>?,
+      rounds: null == rounds
+          ? _self._rounds
+          : rounds // ignore: cast_nullable_to_non_nullable
+              as List<PackageRound>,
+      logo: freezed == logo
+          ? _self.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as PackageLogoFileInput?,
+    ));
+  }
+
+  /// Create a copy of PackageCreateInputData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PackageLogoFileInputCopyWith<$Res>? get logo {
+    if (_self.logo == null) {
+      return null;
+    }
+
+    return $PackageLogoFileInputCopyWith<$Res>(_self.logo!, (value) {
+      return _then(_self.copyWith(logo: value));
+    });
+  }
 }
+
+// dart format on

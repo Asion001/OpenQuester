@@ -15,7 +15,7 @@ part 'no_risk_question.freezed.dart';
 part 'no_risk_question.g.dart';
 
 @Freezed()
-class NoRiskQuestion with _$NoRiskQuestion {
+abstract class NoRiskQuestion with _$NoRiskQuestion {
   const factory NoRiskQuestion({
     required int? id,
     required PackageEntitiesOrder order,

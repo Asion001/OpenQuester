@@ -8,7 +8,7 @@ part 'short_user_info.freezed.dart';
 part 'short_user_info.g.dart';
 
 @Freezed()
-class ShortUserInfo with _$ShortUserInfo {
+abstract class ShortUserInfo with _$ShortUserInfo {
   const factory ShortUserInfo({
     required int id,
     required String username,
