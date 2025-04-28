@@ -53,7 +53,7 @@ extension WidgetX on Widget {
     );
   }
 
-  Widget constraned(BoxConstraints constraints) {
+  Widget constrained(BoxConstraints constraints) {
     return ConstrainedBox(
       constraints: constraints,
       child: this,

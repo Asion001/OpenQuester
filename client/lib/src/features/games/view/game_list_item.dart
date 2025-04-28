@@ -42,7 +42,7 @@ class GameListItemWidget extends WatchingWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             )
-                .constraned(const BoxConstraints(minHeight: 42))
+                .constrained(const BoxConstraints(minHeight: 42))
                 .withTooltip(
                   msg: LocaleKeys.game_tile_tooltips_packages_title.tr(),
                 )
