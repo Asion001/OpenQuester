@@ -15,7 +15,7 @@ class GameLobbyController {
   final gameData = ValueNotifier<SocketIOGameJoinEventPayload?>(null);
   final gameListData = ValueNotifier<GameListItem?>(null);
 
-  final showDesktopChat = ValueNotifier<bool>(false);
+  final showChat = ValueNotifier<bool>(false);
   StreamSubscription<ChatOperation>? _chatMessagesSub;
 
   Future<void> join({required String gameId}) async {
@@ -96,7 +96,7 @@ class GameLobbyController {
 
   Future<void> _onChatMessage(ChatOperation chatOperation) async {
     // Dont show toast if chat is open
-    if (showDesktopChat.value) return;
+    if (showChat.value) return;
 
     if (chatOperation.type != ChatOperationType.insert) return;
     final message = chatOperation.message;
@@ -123,12 +123,12 @@ class GameLobbyController {
   }
 
   Future<void> leave() async {
-    socket?.emit(SocketIOGameEvents.userLeave.json!);
+    await socket?.emitWithAckAsync(SocketIOGameEvents.userLeave.json!, null);
     socket?.disconnect();
   }
 
   void toggleDesktopChat() {
-    showDesktopChat.value = !showDesktopChat.value;
+    showChat.value = !showChat.value;
   }
 
   Future<void> _onGameData(dynamic data) async {
