@@ -1,3 +1,5 @@
+import { CHAT_NSP } from "./chat";
+
 export const GAME_NAMESPACE = "game";
 export const GAME_ID_CHARACTERS_LENGTH = 4;
 export const GAME_ID_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -5,3 +7,6 @@ export const GAME_TITLE_MAX_CHARS = 70;
 export const GAME_TITLE_MIN_CHARS = 3;
 export const GAME_MAX_PLAYERS = 15;
 export const GAME_TTL = 60 * 60 * 2; // 2 hours (updates with every action)
+export const GAME_CHAT_NSP = `${CHAT_NSP}:game`;
+export const GAME_CHAT_TTL = 60 * 60 * 24 * 21;
+export const GAME_CHAT_HISTORY_RETRIEVAL_LIMIT = 100;

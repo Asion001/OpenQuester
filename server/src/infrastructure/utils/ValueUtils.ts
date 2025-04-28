@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
 
@@ -146,5 +148,9 @@ export class ValueUtils {
       }
     }
     return false;
+  }
+
+  public static generateUUID() {
+    return uuidv4();
   }
 }

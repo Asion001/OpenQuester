@@ -2,7 +2,7 @@ import Joi from "joi";
 
 import { GAME_ID_CHARACTERS_LENGTH } from "domain/constants/game";
 import { PlayerRole } from "domain/types/game/PlayerRole";
-import { ChatMessageInputData } from "domain/types/socket/ChatMessageInputData";
+import { ChatMessageInputData } from "domain/types/socket/chat/ChatMessageInputData";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 

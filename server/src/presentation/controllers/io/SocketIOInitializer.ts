@@ -1,5 +1,6 @@
 import { Server as IOServer, Namespace, Socket } from "socket.io";
 
+import { SocketIOChatService } from "application/services/socket/SocketIOChatService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { SocketIOGameController } from "presentation/controllers/io/game/SocketIOGameController";
 import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
@@ -7,12 +8,14 @@ import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventE
 export class SocketIOInitializer {
   constructor(
     private readonly io: IOServer,
-    private readonly socketIOGameService: SocketIOGameService
+    private readonly socketIOGameService: SocketIOGameService,
+    private readonly socketIOChatService: SocketIOChatService
   ) {
     const gameNamespace = this.io.of("/games");
     const gameController = new SocketIOGameController(
       new SocketIOEventEmitter(),
-      this.socketIOGameService
+      this.socketIOGameService,
+      this.socketIOChatService
     );
 
     gameNamespace.on("connection", (socket: Socket) => {

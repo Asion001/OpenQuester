@@ -194,7 +194,7 @@ export class RedisRepository {
     return this._client.sadd(key, members);
   }
 
-  public async zadd(key: string, scoreMembers: string[]) {
+  public async zadd(key: string, scoreMembers: RedisValue[]) {
     return this._client.zadd(key, ...scoreMembers);
   }
 

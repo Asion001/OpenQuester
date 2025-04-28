@@ -129,7 +129,7 @@ export class RedisService {
     return this.redisRepository.sadd(key, members);
   }
 
-  public async zadd(key: string, scoreMembers: string[]) {
+  public async zadd(key: string, scoreMembers: RedisValue[]) {
     return this.redisRepository.zadd(key, scoreMembers);
   }
 
