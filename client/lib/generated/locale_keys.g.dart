@@ -44,7 +44,7 @@ abstract class LocaleKeys {
   static const search_package_hint = 'search_package_hint';
   static const upload_package = 'upload_package';
   static const package_uploaded = 'package_uploaded';
-  static const min_lenght_error = 'min_lenght_error';
+  static const min_length_error = 'min_length_error';
   static const game_name_regex_error = 'game_name_regex_error';
   static const package = 'package';
   static const games_list = 'games_list';

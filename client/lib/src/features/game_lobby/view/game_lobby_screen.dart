@@ -19,11 +19,11 @@ class GameLobbyScreen extends WatchingWidget {
     // Set init value for showing chat to [false] for mobile
     callOnce((context) {
       if (UiModeUtils.wideModeOn(context)) {
-        getIt<GameLobbyController>().showDesktopChat.value = true;
+        getIt<GameLobbyController>().showChat.value = true;
       }
     });
 
-    final showChat = watchValue((GameLobbyController e) => e.showDesktopChat);
+    final showChat = watchValue((GameLobbyController e) => e.showChat);
     final gameData = watchValue((GameLobbyController e) => e.gameListData);
 
     return LayoutBuilder(

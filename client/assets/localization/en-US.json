@@ -47,7 +47,7 @@
   "search_package_hint": "Enter a package name to search",
   "upload_package": "Upload package",
   "package_uploaded": "Package uploaded!",
-  "min_lenght_error": "Length must be at least {} characters long",
+  "min_length_error": "Length must be at least {} characters long",
   "game_name_regex_error": "❌ Name can only contain printable characters (letters, digits, spaces, punctuation, emoji, etc.)",
   "package": "Package",
   "games_list": "Games List",

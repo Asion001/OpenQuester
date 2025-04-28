@@ -189,9 +189,9 @@ class _GameName extends StatelessWidget {
       ),
       validator: (value) {
         final lenght = value?.length ?? 0;
-        if (lenght <= GameValidationConst.minGameNameLenght) {
-          return LocaleKeys.min_lenght_error.tr(
-            args: [GameValidationConst.minGameNameLenght.toString()],
+        if (lenght <= GameValidationConst.minGameNameLength) {
+          return LocaleKeys.min_length_error.tr(
+            args: [GameValidationConst.minGameNameLength.toString()],
           );
         }
         if (!GameValidationConst.gameNameRegExp.hasMatch(value ?? '')) {
@@ -199,7 +199,7 @@ class _GameName extends StatelessWidget {
         }
         return null;
       },
-      maxLength: GameValidationConst.maxGameNameLenght,
+      maxLength: GameValidationConst.maxGameNameLength,
     );
   }
 }
