@@ -8,6 +8,7 @@ import { FileUsageService } from "application/services/file/FileUsageService";
 import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
 import { PackageTagService } from "application/services/package/PackageTagService";
+import { SocketIOChatService } from "application/services/socket/SocketIOChatService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
 import { TranslateService } from "application/services/text/TranslateService";
 import { UserService } from "application/services/user/UserService";
@@ -26,7 +27,8 @@ import { PackageRepository } from "infrastructure/database/repositories/PackageR
 import { PackageTagRepository } from "infrastructure/database/repositories/PackageTagRepository";
 import { PermissionRepository } from "infrastructure/database/repositories/PermissionRepository";
 import { RedisRepository } from "infrastructure/database/repositories/RedisRepository";
-import { SocketUserDataRepository } from "infrastructure/database/repositories/SocketUserDataRepository";
+import { SocketChatRepository } from "infrastructure/database/repositories/socket/SocketChatRepository";
+import { SocketUserDataRepository } from "infrastructure/database/repositories/socket/SocketUserDataRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
 import { RedisService } from "infrastructure/services/redis/RedisService";
@@ -227,6 +229,29 @@ export class DIConfig {
         ),
         Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
         Container.get<UserService>(CONTAINER_TYPES.UserService)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.SocketChatRepository,
+      new SocketChatRepository(
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService)
+      ),
+      "repository"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.SocketIOChatService,
+      new SocketIOChatService(
+        Container.get<SocketChatRepository>(
+          CONTAINER_TYPES.SocketChatRepository
+        ),
+        Container.get<SocketUserDataService>(
+          CONTAINER_TYPES.SocketUserDataService
+        ),
+        Container.get<SocketIOGameService>(CONTAINER_TYPES.SocketIOGameService),
+        Container.get<GameService>(CONTAINER_TYPES.GameService)
       ),
       "service"
     );

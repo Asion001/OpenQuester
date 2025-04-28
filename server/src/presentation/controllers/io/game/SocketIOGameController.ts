@@ -1,15 +1,17 @@
 import { Namespace, Socket } from "socket.io";
 
+import { SocketIOChatService } from "application/services/socket/SocketIOChatService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
+import { GAME_CHAT_HISTORY_RETRIEVAL_LIMIT } from "domain/constants/game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import {
   SocketIOEvents,
   SocketIOGameEvents,
 } from "domain/enums/SocketIOEvents";
 import { ClientError } from "domain/errors/ClientError";
+import { ChatMessageGamePayloadDTO } from "domain/types/dto/game/chat/ChatMessageEventPayloadDTO";
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
-import { ChatMessageEventPayload } from "domain/types/socket/events/ChatMessageEventPayload";
 import { GameJoinEventPayload } from "domain/types/socket/events/game/GameJoinEventPayload";
 import { GameLeaveEventPayload } from "domain/types/socket/events/game/GameLeaveEventPayload";
 import { GameStartEventPayload } from "domain/types/socket/events/game/GameStartEventPayload";
@@ -22,7 +24,8 @@ export class SocketIOGameController {
 
   constructor(
     private readonly eventEmitter: SocketIOEventEmitter,
-    private readonly socketIOGameService: SocketIOGameService
+    private readonly socketIOGameService: SocketIOGameService,
+    private readonly socketIOChatService: SocketIOChatService
   ) {
     //
   }
@@ -87,8 +90,16 @@ export class SocketIOGameController {
     });
 
     this.eventEmitter.emit<GameJoinEventPayload>(SocketIOGameEvents.GAME_DATA, {
+      meta: {
+        title: game.title,
+      },
       players: game.players.map((player) => player.toDTO()),
       gameState: game.gameState,
+      chatMessages: await this.socketIOChatService.getMessages(
+        game.id,
+        game.createdAt,
+        GAME_CHAT_HISTORY_RETRIEVAL_LIMIT
+      ),
     });
 
     this._socket.join(dto.gameId);
@@ -133,16 +144,18 @@ export class SocketIOGameController {
   private async handleChatMessage(data: any) {
     const dto = await GameValidator.validateChatMessage(data);
 
-    const result = await this.socketIOGameService.processChatMessage(
-      this._socket.id
+    const result = await this.socketIOChatService.processChatMessage(
+      this._socket.id,
+      dto.message
     );
 
-    this.eventEmitter.emit<ChatMessageEventPayload>(
+    this.eventEmitter.emit<ChatMessageGamePayloadDTO>(
       SocketIOEvents.CHAT_MESSAGE,
       {
-        user: result.userId,
-        timestamp: new Date(),
-        message: dto.message,
+        uuid: result.uuid,
+        timestamp: result.timestamp,
+        user: result.user,
+        message: result.message,
       },
       {
         emitter: SocketEventEmitter.IO,
