@@ -1,12 +1,14 @@
 import { ChainableCommander } from "ioredis";
 
 import { GAME_NAMESPACE } from "domain/constants/game";
+import { REDIS_LOCK_GAMES_CLEANUP_ORPHANED } from "domain/constants/redis";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
 import {
   PaginationOptsBase,
   PaginationOrder,
 } from "domain/types/pagination/PaginationOpts";
 import { RedisService } from "infrastructure/services/redis/RedisService";
+import { Logger } from "infrastructure/utils/Logger";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class GameIndexManager {
@@ -44,13 +46,124 @@ export class GameIndexManager {
     gameData: GameIndexesInputDTO
   ) {
     return Promise.all([
-      this.redisService.zrem(this._createdAtIndexKey, gameId),
+      this.redisService.zrem(this._createdAtIndexKey, [gameId]),
       this.redisService.srem(this._privacyIndexKey(gameData.isPrivate), gameId),
-      this.redisService.zrem(
-        this._titleIndexKey,
-        `${gameData.title.toLowerCase()}:${gameId}`
-      ),
+      this.redisService.zrem(this._titleIndexKey, [
+        `${gameData.title.toLowerCase()}:${gameId}`,
+      ]),
     ]);
+  }
+
+  /**
+   * This method has little lower performance than `removeGameFromIndexes`
+   * and should be used only on key expiration
+   */
+  public async removeGameFromAllIndexes(gameId: string): Promise<void> {
+    const createdAtPromise = this.redisService.zrem(this._createdAtIndexKey, [
+      gameId,
+    ]);
+
+    const privacyPromises = [
+      this.redisService.srem(this._privacyIndexKey(true), gameId),
+      this.redisService.srem(this._privacyIndexKey(false), gameId),
+    ];
+
+    // Use SCAN to find matching entries
+    const titlePromise = (async () => {
+      let cursor = "0";
+      do {
+        const [nextCursor, members] = await this.redisService.zScanMatch(
+          this._titleIndexKey,
+          cursor,
+          `*:${gameId}`
+        );
+
+        cursor = nextCursor;
+        if (members.length > 0) {
+          // Extract member names (e.g., "title:gameId")
+          // Members are [member1, score1, member2, score2, ...]
+          const toRemove = members.filter(
+            (_: unknown, index: number) => index % 2 === 0
+          );
+          if (toRemove.length > 0) {
+            await this.redisService.zrem(this._titleIndexKey, toRemove);
+          }
+        }
+      } while (cursor !== "0");
+    })();
+
+    // Execute all removals concurrently
+    await Promise.all([createdAtPromise, ...privacyPromises, titlePromise]);
+  }
+
+  /**
+   * Scans the createdAt index and removes gameIds whose game keys are missing or have TTL <= 10 seconds.
+   * Cleans up all related indexes using removeGameFromAllIndexes.
+   */
+  public async cleanOrphanedGameIndexes(): Promise<void> {
+    const acquired = await this.redisService.setLockKey(
+      REDIS_LOCK_GAMES_CLEANUP_ORPHANED
+    );
+
+    if (!acquired) {
+      return; // Another instance acquired the lock
+    }
+
+    let cursor = "0";
+    const orphanedGameIds: string[] = [];
+
+    // Scan createdAt index in chunks
+    do {
+      const [nextCursor, members] = await this.redisService.zScanCount(
+        this._createdAtIndexKey,
+        cursor,
+        100
+      );
+      cursor = nextCursor;
+
+      if (members.length === 0) continue;
+
+      // Extract gameIds (members are [gameId, score, ...])
+      const gameIds = members.filter(
+        (_: unknown, index: number) => index % 2 === 0
+      );
+
+      // Pipeline TTL checks for efficiency
+      const pipeline = this.redisService.pipeline();
+      for (const gameId of gameIds) {
+        pipeline.ttl(`game:${gameId}`);
+      }
+      const ttlResults = await pipeline.exec();
+
+      if (!ttlResults) {
+        continue;
+      }
+
+      // Check TTLs and mark orphaned gameIds
+      gameIds.forEach((gameId: string, index: number) => {
+        const ttlResult = ttlResults[index];
+        if (ttlResult[1] === null) {
+          Logger.error(`TTL command failed for game:${gameId}`);
+          return;
+        }
+        const ttl = ttlResult[1] as number;
+        // TTL <= 10 seconds or key doesn't exist (ttl = -2)
+        if (ttl <= 10) {
+          orphanedGameIds.push(gameId);
+        }
+      });
+    } while (cursor != "0");
+
+    // Clean up orphaned gameIds
+    if (orphanedGameIds.length > 0) {
+      Logger.info(`Found ${orphanedGameIds.length} orphaned gameIds`);
+      const cleanupPromises = orphanedGameIds.map((gameId: string) =>
+        this.removeGameFromAllIndexes(gameId).catch((err) => {
+          Logger.error(`Failed to clean indexes for game ${gameId}: ${err}`);
+        })
+      );
+      await Promise.all(cleanupPromises);
+    }
   }
 
   public async findGamesByIndex<T>(

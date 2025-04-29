@@ -1,14 +1,46 @@
-import Redis, { RedisKey, RedisValue } from "ioredis";
+import Redis, { Callback, RedisKey, RedisValue } from "ioredis";
 
+import { REDIS_LOCK_KEY_EXPIRE_DEFAULT } from "domain/constants/redis";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { Logger } from "infrastructure/utils/Logger";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class RedisRepository {
   private _client: Redis;
+  private _subClient: Redis;
 
   constructor() {
     this._client = RedisConfig.getClient();
+    this._subClient = RedisConfig.getSubClient();
+  }
+
+  public async subscribe(channel: string, callback?: Callback<unknown>) {
+    if (callback) {
+      return this._subClient.subscribe(channel, callback);
+    } else {
+      return this._subClient.subscribe(channel);
+    }
+  }
+
+  public on(
+    event: string,
+    callback: (channel: string, message: string) => void
+  ) {
+    return this._subClient.on(event, callback);
+  }
+
+  public async setLockKey(lockValue: string, expire?: number) {
+    return this._client.set(
+      lockValue,
+      "1",
+      "EX",
+      expire ?? REDIS_LOCK_KEY_EXPIRE_DEFAULT,
+      "NX"
+    );
+  }
+
+  public async publish(channel: string, message: string) {
+    return this._client.publish(channel, message);
   }
 
   /**
@@ -154,7 +186,7 @@ export class RedisRepository {
     return this._client.del(key);
   }
 
-  public async zrem(key: string, members: string) {
+  public async zrem(key: string, members: string[]) {
     return this._client.zrem(key, members);
   }
 
@@ -208,5 +240,21 @@ export class RedisRepository {
 
   public async zrange(key: string, start: number, stop: number) {
     return this._client.zrange(key, start, stop);
+  }
+
+  public async zScanMatch(
+    key: string,
+    cursor: number | string,
+    pattern: string
+  ) {
+    return this._client.zscan(key, cursor, "MATCH", pattern);
+  }
+
+  public async zScanCount(
+    key: string,
+    cursor: number | string,
+    count: number | string
+  ) {
+    return this._client.zscan(key, cursor, "COUNT", count);
   }
 }
