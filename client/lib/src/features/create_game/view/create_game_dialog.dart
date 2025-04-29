@@ -56,7 +56,7 @@ class _StartGameButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoadingButtonBuilder(
-      onPressed: controller.createGame,
+      onPressed: () => controller.createGame(context),
       child: const Icon(Icons.play_arrow_outlined),
       builder: (context, child, onPressed) {
         return FilledButton.icon(

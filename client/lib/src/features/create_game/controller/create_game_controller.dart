@@ -11,7 +11,15 @@ class CreateGameController {
     state.dispose();
   }
 
-  Future<void> createGame() async {
+  Future<void> createGame(BuildContext context) async {
+    if (!getIt<AuthController>().authorized) {
+      await getIt<ToastController>().show(
+        LocaleKeys.user_unauthorized.tr(),
+        context: context,
+      );
+      return;
+    }
+
     final formValid = formKey.currentState?.validate() ?? false;
     if (!formValid) return;
 
