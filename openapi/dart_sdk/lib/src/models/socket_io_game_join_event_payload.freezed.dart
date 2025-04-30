@@ -15,11 +15,16 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$SocketIOGameJoinEventPayload {
+  SocketIOGameJoinMeta get meta;
+
   /// Players in the game
   List<PlayerData> get players;
 
   /// Current game state
   GameState get gameState;
+
+  /// Last 100 chat messages, sorted 'DESC'
+  List<SocketIOChatMessageEventPayload> get chatMessages;
 
   /// Create a copy of SocketIOGameJoinEventPayload
   /// with the given fields replaced by the non-null parameter values.
@@ -38,19 +43,26 @@ mixin _$SocketIOGameJoinEventPayload {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is SocketIOGameJoinEventPayload &&
+            (identical(other.meta, meta) || other.meta == meta) &&
             const DeepCollectionEquality().equals(other.players, players) &&
             (identical(other.gameState, gameState) ||
-                other.gameState == gameState));
+                other.gameState == gameState) &&
+            const DeepCollectionEquality()
+                .equals(other.chatMessages, chatMessages));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(players), gameState);
+      runtimeType,
+      meta,
+      const DeepCollectionEquality().hash(players),
+      gameState,
+      const DeepCollectionEquality().hash(chatMessages));
 
   @override
   String toString() {
-    return 'SocketIOGameJoinEventPayload(players: $players, gameState: $gameState)';
+    return 'SocketIOGameJoinEventPayload(meta: $meta, players: $players, gameState: $gameState, chatMessages: $chatMessages)';
   }
 }
 
@@ -61,8 +73,13 @@ abstract mixin class $SocketIOGameJoinEventPayloadCopyWith<$Res> {
           $Res Function(SocketIOGameJoinEventPayload) _then) =
       _$SocketIOGameJoinEventPayloadCopyWithImpl;
   @useResult
-  $Res call({List<PlayerData> players, GameState gameState});
+  $Res call(
+      {SocketIOGameJoinMeta meta,
+      List<PlayerData> players,
+      GameState gameState,
+      List<SocketIOChatMessageEventPayload> chatMessages});
 
+  $SocketIOGameJoinMetaCopyWith<$Res> get meta;
   $GameStateCopyWith<$Res> get gameState;
 }
 
@@ -79,10 +96,16 @@ class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? meta = null,
     Object? players = null,
     Object? gameState = null,
+    Object? chatMessages = null,
   }) {
     return _then(_self.copyWith(
+      meta: null == meta
+          ? _self.meta
+          : meta // ignore: cast_nullable_to_non_nullable
+              as SocketIOGameJoinMeta,
       players: null == players
           ? _self.players
           : players // ignore: cast_nullable_to_non_nullable
@@ -91,7 +114,21 @@ class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res>
           ? _self.gameState
           : gameState // ignore: cast_nullable_to_non_nullable
               as GameState,
+      chatMessages: null == chatMessages
+          ? _self.chatMessages
+          : chatMessages // ignore: cast_nullable_to_non_nullable
+              as List<SocketIOChatMessageEventPayload>,
     ));
+  }
+
+  /// Create a copy of SocketIOGameJoinEventPayload
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SocketIOGameJoinMetaCopyWith<$Res> get meta {
+    return $SocketIOGameJoinMetaCopyWith<$Res>(_self.meta, (value) {
+      return _then(_self.copyWith(meta: value));
+    });
   }
 
   /// Create a copy of SocketIOGameJoinEventPayload
@@ -109,10 +146,17 @@ class _$SocketIOGameJoinEventPayloadCopyWithImpl<$Res>
 @JsonSerializable()
 class _SocketIOGameJoinEventPayload implements SocketIOGameJoinEventPayload {
   const _SocketIOGameJoinEventPayload(
-      {required final List<PlayerData> players, required this.gameState})
-      : _players = players;
+      {required this.meta,
+      required final List<PlayerData> players,
+      required this.gameState,
+      required final List<SocketIOChatMessageEventPayload> chatMessages})
+      : _players = players,
+        _chatMessages = chatMessages;
   factory _SocketIOGameJoinEventPayload.fromJson(Map<String, dynamic> json) =>
       _$SocketIOGameJoinEventPayloadFromJson(json);
+
+  @override
+  final SocketIOGameJoinMeta meta;
 
   /// Players in the game
   final List<PlayerData> _players;
@@ -128,6 +172,17 @@ class _SocketIOGameJoinEventPayload implements SocketIOGameJoinEventPayload {
   /// Current game state
   @override
   final GameState gameState;
+
+  /// Last 100 chat messages, sorted 'DESC'
+  final List<SocketIOChatMessageEventPayload> _chatMessages;
+
+  /// Last 100 chat messages, sorted 'DESC'
+  @override
+  List<SocketIOChatMessageEventPayload> get chatMessages {
+    if (_chatMessages is EqualUnmodifiableListView) return _chatMessages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_chatMessages);
+  }
 
   /// Create a copy of SocketIOGameJoinEventPayload
   /// with the given fields replaced by the non-null parameter values.
@@ -150,19 +205,26 @@ class _SocketIOGameJoinEventPayload implements SocketIOGameJoinEventPayload {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SocketIOGameJoinEventPayload &&
+            (identical(other.meta, meta) || other.meta == meta) &&
             const DeepCollectionEquality().equals(other._players, _players) &&
             (identical(other.gameState, gameState) ||
-                other.gameState == gameState));
+                other.gameState == gameState) &&
+            const DeepCollectionEquality()
+                .equals(other._chatMessages, _chatMessages));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_players), gameState);
+      runtimeType,
+      meta,
+      const DeepCollectionEquality().hash(_players),
+      gameState,
+      const DeepCollectionEquality().hash(_chatMessages));
 
   @override
   String toString() {
-    return 'SocketIOGameJoinEventPayload(players: $players, gameState: $gameState)';
+    return 'SocketIOGameJoinEventPayload(meta: $meta, players: $players, gameState: $gameState, chatMessages: $chatMessages)';
   }
 }
 
@@ -175,8 +237,14 @@ abstract mixin class _$SocketIOGameJoinEventPayloadCopyWith<$Res>
       __$SocketIOGameJoinEventPayloadCopyWithImpl;
   @override
   @useResult
-  $Res call({List<PlayerData> players, GameState gameState});
+  $Res call(
+      {SocketIOGameJoinMeta meta,
+      List<PlayerData> players,
+      GameState gameState,
+      List<SocketIOChatMessageEventPayload> chatMessages});
 
+  @override
+  $SocketIOGameJoinMetaCopyWith<$Res> get meta;
   @override
   $GameStateCopyWith<$Res> get gameState;
 }
@@ -194,10 +262,16 @@ class __$SocketIOGameJoinEventPayloadCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
+    Object? meta = null,
     Object? players = null,
     Object? gameState = null,
+    Object? chatMessages = null,
   }) {
     return _then(_SocketIOGameJoinEventPayload(
+      meta: null == meta
+          ? _self.meta
+          : meta // ignore: cast_nullable_to_non_nullable
+              as SocketIOGameJoinMeta,
       players: null == players
           ? _self._players
           : players // ignore: cast_nullable_to_non_nullable
@@ -206,7 +280,21 @@ class __$SocketIOGameJoinEventPayloadCopyWithImpl<$Res>
           ? _self.gameState
           : gameState // ignore: cast_nullable_to_non_nullable
               as GameState,
+      chatMessages: null == chatMessages
+          ? _self._chatMessages
+          : chatMessages // ignore: cast_nullable_to_non_nullable
+              as List<SocketIOChatMessageEventPayload>,
     ));
+  }
+
+  /// Create a copy of SocketIOGameJoinEventPayload
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SocketIOGameJoinMetaCopyWith<$Res> get meta {
+    return $SocketIOGameJoinMetaCopyWith<$Res>(_self.meta, (value) {
+      return _then(_self.copyWith(meta: value));
+    });
   }
 
   /// Create a copy of SocketIOGameJoinEventPayload

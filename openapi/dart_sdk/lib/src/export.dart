@@ -82,6 +82,7 @@ export 'models/socket_io_game_join_input.dart';
 export 'models/socket_io_game_leave_event_payload.dart';
 export 'models/socket_io_chat_message_event_payload.dart';
 export 'models/socket_io_game_join_event_payload.dart';
+export 'models/socket_io_game_join_meta.dart';
 export 'models/game_state.dart';
 export 'models/game_state_timer.dart';
 export 'models/game_state_answered_player.dart';

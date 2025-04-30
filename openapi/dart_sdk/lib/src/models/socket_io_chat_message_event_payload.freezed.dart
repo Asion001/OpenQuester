@@ -16,6 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SocketIOChatMessageEventPayload {
   String get message;
+  String get uuid;
 
   /// ID of the user who sent the message
   int get user;
@@ -39,6 +40,7 @@ mixin _$SocketIOChatMessageEventPayload {
         (other.runtimeType == runtimeType &&
             other is SocketIOChatMessageEventPayload &&
             (identical(other.message, message) || other.message == message) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp));
@@ -46,11 +48,11 @@ mixin _$SocketIOChatMessageEventPayload {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, message, user, timestamp);
+  int get hashCode => Object.hash(runtimeType, message, uuid, user, timestamp);
 
   @override
   String toString() {
-    return 'SocketIOChatMessageEventPayload(message: $message, user: $user, timestamp: $timestamp)';
+    return 'SocketIOChatMessageEventPayload(message: $message, uuid: $uuid, user: $user, timestamp: $timestamp)';
   }
 }
 
@@ -61,7 +63,7 @@ abstract mixin class $SocketIOChatMessageEventPayloadCopyWith<$Res> {
           $Res Function(SocketIOChatMessageEventPayload) _then) =
       _$SocketIOChatMessageEventPayloadCopyWithImpl;
   @useResult
-  $Res call({String message, int user, DateTime timestamp});
+  $Res call({String message, String uuid, int user, DateTime timestamp});
 }
 
 /// @nodoc
@@ -78,6 +80,7 @@ class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res>
   @override
   $Res call({
     Object? message = null,
+    Object? uuid = null,
     Object? user = null,
     Object? timestamp = null,
   }) {
@@ -85,6 +88,10 @@ class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res>
       message: null == message
           ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      uuid: null == uuid
+          ? _self.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
               as String,
       user: null == user
           ? _self.user
@@ -103,13 +110,18 @@ class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res>
 class _SocketIOChatMessageEventPayload
     implements SocketIOChatMessageEventPayload {
   const _SocketIOChatMessageEventPayload(
-      {required this.message, required this.user, required this.timestamp});
+      {required this.message,
+      required this.uuid,
+      required this.user,
+      required this.timestamp});
   factory _SocketIOChatMessageEventPayload.fromJson(
           Map<String, dynamic> json) =>
       _$SocketIOChatMessageEventPayloadFromJson(json);
 
   @override
   final String message;
+  @override
+  final String uuid;
 
   /// ID of the user who sent the message
   @override
@@ -139,6 +151,7 @@ class _SocketIOChatMessageEventPayload
         (other.runtimeType == runtimeType &&
             other is _SocketIOChatMessageEventPayload &&
             (identical(other.message, message) || other.message == message) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp));
@@ -146,11 +159,11 @@ class _SocketIOChatMessageEventPayload
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, message, user, timestamp);
+  int get hashCode => Object.hash(runtimeType, message, uuid, user, timestamp);
 
   @override
   String toString() {
-    return 'SocketIOChatMessageEventPayload(message: $message, user: $user, timestamp: $timestamp)';
+    return 'SocketIOChatMessageEventPayload(message: $message, uuid: $uuid, user: $user, timestamp: $timestamp)';
   }
 }
 
@@ -163,7 +176,7 @@ abstract mixin class _$SocketIOChatMessageEventPayloadCopyWith<$Res>
       __$SocketIOChatMessageEventPayloadCopyWithImpl;
   @override
   @useResult
-  $Res call({String message, int user, DateTime timestamp});
+  $Res call({String message, String uuid, int user, DateTime timestamp});
 }
 
 /// @nodoc
@@ -180,6 +193,7 @@ class __$SocketIOChatMessageEventPayloadCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   $Res call({
     Object? message = null,
+    Object? uuid = null,
     Object? user = null,
     Object? timestamp = null,
   }) {
@@ -187,6 +201,10 @@ class __$SocketIOChatMessageEventPayloadCopyWithImpl<$Res>
       message: null == message
           ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      uuid: null == uuid
+          ? _self.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
               as String,
       user: null == user
           ? _self.user
