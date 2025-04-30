@@ -4,7 +4,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'game_list_item.dart';
+import 'game_state.dart';
 import 'player_data.dart';
 
 part 'socket_io_game_join_event_payload.freezed.dart';
@@ -17,8 +17,8 @@ class SocketIOGameJoinEventPayload with _$SocketIOGameJoinEventPayload {
     /// Players in the game
     required List<PlayerData> players,
 
-    /// !!! Work in progress, will be changed with actual game state component
-    required GameListItem gameState,
+    /// Current game state
+    required GameState gameState,
   }) = _SocketIOGameJoinEventPayload;
   
   factory SocketIOGameJoinEventPayload.fromJson(Map<String, Object?> json) => _$SocketIOGameJoinEventPayloadFromJson(json);

@@ -18,12 +18,13 @@ class GameLobbyScreen extends WatchingWidget {
 
     // Set init value for showing chat to [false] for mobile
     callOnce((context) {
-      if (!UiModeUtils.wideModeOn(context)) {
-        getIt<GameLobbyController>().showDesktopChat.value = false;
+      if (UiModeUtils.wideModeOn(context)) {
+        getIt<GameLobbyController>().showChat.value = true;
       }
     });
 
-    final showChat = watchValue((GameLobbyController e) => e.showDesktopChat);
+    final showChat = watchValue((GameLobbyController e) => e.showChat);
+    final gameData = watchValue((GameLobbyController e) => e.gameListData);
 
     return LayoutBuilder(
       builder: (context, constrains) {
@@ -31,7 +32,7 @@ class GameLobbyScreen extends WatchingWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(gameId),
+            title: Text(gameData?.title ?? gameId),
             leading: IconButton(
               onPressed: Navigator.of(context).pop,
               icon: const Icon(Icons.exit_to_app),
@@ -63,13 +64,24 @@ class _Themes extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final round =
-        watchValue<GameLobbyController, LobbyRound?>((p0) => p0.round);
-    final themes = round?.themes
+    final gameData =
+        watchValue<GameLobbyController, SocketIOGameJoinEventPayload?>(
+      (p0) => p0.gameData,
+    );
+
+    final round = gameData?.gameState.currentRound;
+    final themes = round
+        ?.sortedThemes()
         .map((theme) => GameLobbyTheme(theme: theme).paddingBottom(16))
         .toList();
 
     if (themes == null) {
+      if (gameData?.me.role == PlayerRole.showman) {
+        return FilledButton(
+          onPressed: getIt<GameLobbyController>().startGame,
+          child: Text(LocaleKeys.start_game.tr()),
+        ).center();
+      }
       return const CircularProgressIndicator.adaptive().center();
     }
 

@@ -21,8 +21,6 @@ Answers _$AnswersFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Answers {
   int? get id => throw _privateConstructorUsedError;
-
-  /// Order of the answer in the choice answers, should be unique, starting from 0
   int get order => throw _privateConstructorUsedError;
 
   /// Text of the answer option
@@ -168,8 +166,6 @@ class _$AnswersImpl implements _Answers {
 
   @override
   final int? id;
-
-  /// Order of the answer in the choice answers, should be unique, starting from 0
   @override
   final int order;
 
@@ -228,8 +224,6 @@ abstract class _Answers implements Answers {
 
   @override
   int? get id;
-
-  /// Order of the answer in the choice answers, should be unique, starting from 0
   @override
   int get order;
 

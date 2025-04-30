@@ -25,11 +25,13 @@ extension DurationX on Duration {
 }
 
 extension IPackageItemAgeRestrictionX on AgeRestriction {
-  String? translate() => {
-        AgeRestriction.a12: '12+',
-        AgeRestriction.a16: '16+',
-        AgeRestriction.a18: '18+',
-      }[this];
+  (String, Color)? format(BuildContext context) {
+    return {
+      AgeRestriction.a12: ('12+', AppTheme.successColor),
+      AgeRestriction.a16: ('16+', AppTheme.warningColor),
+      AgeRestriction.a18: ('18+', context.theme.colorScheme.error),
+    }[this];
+  }
 }
 
 extension WidgetX on Widget {
@@ -48,6 +50,13 @@ extension WidgetX on Widget {
         Text(title),
         this,
       ],
+    );
+  }
+
+  Widget constrained(BoxConstraints constraints) {
+    return ConstrainedBox(
+      constraints: constraints,
+      child: this,
     );
   }
 }
@@ -78,5 +87,37 @@ extension AgeRestrictionX on AgeRestriction {
       AgeRestriction.a12 => '12+',
       _ => LocaleKeys.none.tr(),
     };
+  }
+}
+
+extension PackageX on PackageResponse {
+  List<PackageRound> sortedRounds() {
+    return rounds.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
+  }
+}
+
+extension PackageRoundX on PackageRound {
+  List<PackageTheme> sortedThemes() {
+    return themes.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
+  }
+}
+
+extension SocketIOGameStateThemeDataX on SocketIOGameStateThemeData {
+  List<SocketIOGameStateQuestionData> sortedQuestions() {
+    return questions.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
+  }
+}
+
+extension SocketIOGameStateRoundDataX on SocketIOGameStateRoundData {
+  List<SocketIOGameStateThemeData> sortedThemes() {
+    return themes.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
+  }
+}
+
+extension SocketIOGameJoinEventPayloadX on SocketIOGameJoinEventPayload {
+  PlayerData get me {
+    return players.firstWhere(
+      (e) => e.meta.id == getIt<AuthController>().user!.id,
+    );
   }
 }

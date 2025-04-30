@@ -6,7 +6,7 @@ class GameQuestion extends StatelessWidget {
     required this.question,
     super.key,
   });
-  final LobbyQuestion question;
+  final SocketIOGameStateQuestionData question;
 
   @override
   Widget build(BuildContext context) {

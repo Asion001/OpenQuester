@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'package_entities_order.dart';
 import 'file_item.dart';
 
 part 'answers.freezed.dart';
@@ -15,9 +16,7 @@ part 'answers.g.dart';
 class Answers with _$Answers {
   const factory Answers({
     required int? id,
-
-    /// Order of the answer in the choice answers, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
 
     /// Text of the answer option
     required String? text,

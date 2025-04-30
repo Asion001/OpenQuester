@@ -2261,8 +2261,8 @@
         "type": "object",
         "properties": {
           "questionState": {
-            "type": "string",
-            "enum": ["choosing", "showing", "answered"],
+            "type": ["string", "null"],
+            "enum": ["choosing", "showing", "answered", null],
             "examples": ["choosing"]
           },
           "isPaused": {
@@ -2270,7 +2270,10 @@
             "examples": [false]
           },
           "currentRound": {
-            "$ref": "#/components/schemas/SocketIOGameStateRoundData"
+            "oneOf": [
+              { "$ref": "#/components/schemas/SocketIOGameStateRoundData" },
+              { "type": "null" }
+            ]
           },
           "currentQuestion": {
             "type": ["integer", "null"],
@@ -2289,7 +2292,10 @@
             }
           },
           "timer": {
-            "$ref": "#/components/schemas/GameStateTimer"
+            "oneOf": [
+              { "$ref": "#/components/schemas/GameStateTimer" },
+              { "type": "null" }
+            ]
           }
         }
       },
@@ -2393,12 +2399,12 @@
           "price": {
             "type": ["integer", "null"],
             "description": "Price is null only if price is hidden",
-            "examples": [200]
+            "examples": [200, null]
           },
           "questionComment": {
-            "type": "string",
+            "type": ["string", "null"],
             "description": "Comment that clarify what have to be answered on this question",
-            "examples": ["Answer full name of character"]
+            "examples": ["Answer full name of character", null]
           }
         }
       },

@@ -15,6 +15,7 @@ abstract class LocaleKeys {
   static const rounds = 'rounds';
   static const game_tile_tooltips_players = 'game_tile_tooltips.players';
   static const game_tile_tooltips_rounds = 'game_tile_tooltips.rounds';
+  static const game_tile_tooltips_questions = 'game_tile_tooltips.questions';
   static const game_tile_tooltips_packages_title =
       'game_tile_tooltips.packages_title';
   static const game_tile_tooltips_game_title = 'game_tile_tooltips.game_title';
@@ -43,4 +44,11 @@ abstract class LocaleKeys {
   static const search_package_hint = 'search_package_hint';
   static const upload_package = 'upload_package';
   static const package_uploaded = 'package_uploaded';
+  static const min_length_error = 'min_length_error';
+  static const game_name_regex_error = 'game_name_regex_error';
+  static const package = 'package';
+  static const games_list = 'games_list';
+  static const type_to_find_games = 'type_to_find_games';
+  static const show_search = 'show_search';
+  static const hide_search = 'hide_search';
 }

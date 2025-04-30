@@ -17,6 +17,7 @@
   "game_tile_tooltips": {
     "players": "Players playing/maximum",
     "rounds": "Rounds played/total",
+    "questions": "Questions played/total",
     "packages_title": "Package title",
     "game_title": "Game title"
   },
@@ -45,5 +46,12 @@
   "nothing_found": "Nothing found",
   "search_package_hint": "Enter a package name to search",
   "upload_package": "Upload package",
-  "package_uploaded": "Package uploaded!"
+  "package_uploaded": "Package uploaded!",
+  "min_length_error": "Length must be at least {} characters long",
+  "game_name_regex_error": "❌ Name can only contain printable characters (letters, digits, spaces, punctuation, emoji, etc.)",
+  "package": "Package",
+  "games_list": "Games List",
+  "type_to_find_games": "Type to find games",
+  "show_search": "Show search",
+  "hide_search": "Hide search"
 }

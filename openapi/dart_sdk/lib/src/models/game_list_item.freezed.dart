@@ -26,10 +26,12 @@ mixin _$GameListItem {
   DateTime get createdAt => throw _privateConstructorUsedError;
   AgeRestriction get ageRestriction => throw _privateConstructorUsedError;
   bool get isPrivate => throw _privateConstructorUsedError;
-  int get currentRound => throw _privateConstructorUsedError;
+  int? get currentRound => throw _privateConstructorUsedError;
+  int? get currentQuestion => throw _privateConstructorUsedError;
   int get players => throw _privateConstructorUsedError;
   int get maxPlayers => throw _privateConstructorUsedError;
   DateTime? get startedAt => throw _privateConstructorUsedError;
+  DateTime? get finishedAt => throw _privateConstructorUsedError;
   PackageItem get package => throw _privateConstructorUsedError;
 
   /// Serializes this GameListItem to a JSON map.
@@ -55,10 +57,12 @@ abstract class $GameListItemCopyWith<$Res> {
       DateTime createdAt,
       AgeRestriction ageRestriction,
       bool isPrivate,
-      int currentRound,
+      int? currentRound,
+      int? currentQuestion,
       int players,
       int maxPlayers,
       DateTime? startedAt,
+      DateTime? finishedAt,
       PackageItem package});
 
   $ShortUserInfoCopyWith<$Res> get createdBy;
@@ -86,10 +90,12 @@ class _$GameListItemCopyWithImpl<$Res, $Val extends GameListItem>
     Object? createdAt = null,
     Object? ageRestriction = null,
     Object? isPrivate = null,
-    Object? currentRound = null,
+    Object? currentRound = freezed,
+    Object? currentQuestion = freezed,
     Object? players = null,
     Object? maxPlayers = null,
     Object? startedAt = freezed,
+    Object? finishedAt = freezed,
     Object? package = null,
   }) {
     return _then(_value.copyWith(
@@ -117,10 +123,14 @@ class _$GameListItemCopyWithImpl<$Res, $Val extends GameListItem>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentRound: null == currentRound
+      currentRound: freezed == currentRound
           ? _value.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
+      currentQuestion: freezed == currentQuestion
+          ? _value.currentQuestion
+          : currentQuestion // ignore: cast_nullable_to_non_nullable
+              as int?,
       players: null == players
           ? _value.players
           : players // ignore: cast_nullable_to_non_nullable
@@ -132,6 +142,10 @@ class _$GameListItemCopyWithImpl<$Res, $Val extends GameListItem>
       startedAt: freezed == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      finishedAt: freezed == finishedAt
+          ? _value.finishedAt
+          : finishedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       package: null == package
           ? _value.package
@@ -176,10 +190,12 @@ abstract class _$$GameListItemImplCopyWith<$Res>
       DateTime createdAt,
       AgeRestriction ageRestriction,
       bool isPrivate,
-      int currentRound,
+      int? currentRound,
+      int? currentQuestion,
       int players,
       int maxPlayers,
       DateTime? startedAt,
+      DateTime? finishedAt,
       PackageItem package});
 
   @override
@@ -207,10 +223,12 @@ class __$$GameListItemImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? ageRestriction = null,
     Object? isPrivate = null,
-    Object? currentRound = null,
+    Object? currentRound = freezed,
+    Object? currentQuestion = freezed,
     Object? players = null,
     Object? maxPlayers = null,
     Object? startedAt = freezed,
+    Object? finishedAt = freezed,
     Object? package = null,
   }) {
     return _then(_$GameListItemImpl(
@@ -238,10 +256,14 @@ class __$$GameListItemImplCopyWithImpl<$Res>
           ? _value.isPrivate
           : isPrivate // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentRound: null == currentRound
+      currentRound: freezed == currentRound
           ? _value.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
+      currentQuestion: freezed == currentQuestion
+          ? _value.currentQuestion
+          : currentQuestion // ignore: cast_nullable_to_non_nullable
+              as int?,
       players: null == players
           ? _value.players
           : players // ignore: cast_nullable_to_non_nullable
@@ -253,6 +275,10 @@ class __$$GameListItemImplCopyWithImpl<$Res>
       startedAt: freezed == startedAt
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      finishedAt: freezed == finishedAt
+          ? _value.finishedAt
+          : finishedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       package: null == package
           ? _value.package
@@ -273,9 +299,11 @@ class _$GameListItemImpl implements _GameListItem {
       required this.ageRestriction,
       required this.isPrivate,
       required this.currentRound,
+      required this.currentQuestion,
       required this.players,
       required this.maxPlayers,
       required this.startedAt,
+      required this.finishedAt,
       required this.package});
 
   factory _$GameListItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -294,7 +322,9 @@ class _$GameListItemImpl implements _GameListItem {
   @override
   final bool isPrivate;
   @override
-  final int currentRound;
+  final int? currentRound;
+  @override
+  final int? currentQuestion;
   @override
   final int players;
   @override
@@ -302,11 +332,13 @@ class _$GameListItemImpl implements _GameListItem {
   @override
   final DateTime? startedAt;
   @override
+  final DateTime? finishedAt;
+  @override
   final PackageItem package;
 
   @override
   String toString() {
-    return 'GameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, isPrivate: $isPrivate, currentRound: $currentRound, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, package: $package)';
+    return 'GameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, isPrivate: $isPrivate, currentRound: $currentRound, currentQuestion: $currentQuestion, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, finishedAt: $finishedAt, package: $package)';
   }
 
   @override
@@ -326,11 +358,15 @@ class _$GameListItemImpl implements _GameListItem {
                 other.isPrivate == isPrivate) &&
             (identical(other.currentRound, currentRound) ||
                 other.currentRound == currentRound) &&
+            (identical(other.currentQuestion, currentQuestion) ||
+                other.currentQuestion == currentQuestion) &&
             (identical(other.players, players) || other.players == players) &&
             (identical(other.maxPlayers, maxPlayers) ||
                 other.maxPlayers == maxPlayers) &&
             (identical(other.startedAt, startedAt) ||
                 other.startedAt == startedAt) &&
+            (identical(other.finishedAt, finishedAt) ||
+                other.finishedAt == finishedAt) &&
             (identical(other.package, package) || other.package == package));
   }
 
@@ -345,9 +381,11 @@ class _$GameListItemImpl implements _GameListItem {
       ageRestriction,
       isPrivate,
       currentRound,
+      currentQuestion,
       players,
       maxPlayers,
       startedAt,
+      finishedAt,
       package);
 
   /// Create a copy of GameListItem
@@ -374,10 +412,12 @@ abstract class _GameListItem implements GameListItem {
       required final DateTime createdAt,
       required final AgeRestriction ageRestriction,
       required final bool isPrivate,
-      required final int currentRound,
+      required final int? currentRound,
+      required final int? currentQuestion,
       required final int players,
       required final int maxPlayers,
       required final DateTime? startedAt,
+      required final DateTime? finishedAt,
       required final PackageItem package}) = _$GameListItemImpl;
 
   factory _GameListItem.fromJson(Map<String, dynamic> json) =
@@ -396,13 +436,17 @@ abstract class _GameListItem implements GameListItem {
   @override
   bool get isPrivate;
   @override
-  int get currentRound;
+  int? get currentRound;
+  @override
+  int? get currentQuestion;
   @override
   int get players;
   @override
   int get maxPlayers;
   @override
   DateTime? get startedAt;
+  @override
+  DateTime? get finishedAt;
   @override
   PackageItem get package;
 

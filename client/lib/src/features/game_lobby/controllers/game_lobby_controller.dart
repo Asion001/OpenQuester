@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart'
+    show ChatOperation, ChatOperationType, SystemMessage, TextMessage;
 import 'package:openquester/openquester.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
@@ -8,9 +12,11 @@ class GameLobbyController {
   Socket? socket;
   String? gameId;
 
-  final round = ValueNotifier<LobbyRound?>(null);
   final gameData = ValueNotifier<SocketIOGameJoinEventPayload?>(null);
-  final showDesktopChat = ValueNotifier<bool>(true);
+  final gameListData = ValueNotifier<GameListItem?>(null);
+
+  final showChat = ValueNotifier<bool>(false);
+  StreamSubscription<ChatOperation>? _chatMessagesSub;
 
   Future<void> join({required String gameId}) async {
     // Check if already joined
@@ -21,14 +27,21 @@ class GameLobbyController {
     try {
       this.gameId = gameId;
 
+      // Get list game data
+      unawaited(
+        Api.I.api.games
+            .getV1GamesGameId(gameId: gameId)
+            .then((value) => gameListData.value = value),
+      );
+
       socket = await getIt<SocketController>().createConnection(path: '/games');
       socket!
         ..onConnect((_) => _onConnect())
         ..onDisconnect((_) => clear())
         ..on(SocketIOGameEvents.gameData.json!, _onGameData)
+        ..on(SocketIOGameEvents.start.json!, _onGameStart)
+        ..on(SocketIOEvents.error.json!, _onError)
         ..connect();
-
-      round.value = testRound;
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -43,10 +56,17 @@ class GameLobbyController {
           .api
           .auth
           .postV1AuthSocket(body: InputSocketIOAuth(socketId: socket!.id!));
+
+      final iAmHost =
+          gameListData.value!.createdBy.id == getIt<AuthController>().user?.id;
+
       final ioGameJoinInput = SocketIOGameJoinInput(
         gameId: gameId!,
-        role: SocketIOGameJoinInputRole.spectator,
+        role: iAmHost
+            ? SocketIOGameJoinInputRole.showman
+            : SocketIOGameJoinInputRole.player,
       );
+
       socket?.emit(
         SocketIOGameEvents.join.json!,
         ioGameJoinInput.toJson(),
@@ -54,6 +74,10 @@ class GameLobbyController {
 
       // Init chat controller
       await getIt<SocketChatController>().init(socket: socket!);
+      _chatMessagesSub = getIt<SocketChatController>()
+          .chatController
+          .operationsStream
+          .listen(_onChatMessage);
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -70,24 +94,41 @@ class GameLobbyController {
     }
   }
 
+  Future<void> _onChatMessage(ChatOperation chatOperation) async {
+    // Dont show toast if chat is open
+    if (showChat.value) return;
+
+    if (chatOperation.type != ChatOperationType.insert) return;
+    final message = chatOperation.message;
+    final text = switch (message) {
+      TextMessage() => message.text,
+      SystemMessage() => message.text,
+      _ => null
+    };
+    if (text.isEmptyOrNull) return;
+    await getIt<ToastController>().show(text);
+  }
+
   /// Clear all fields for new game to use
   void clear() {
     try {
       gameId = null;
       socket?.dispose();
       socket = null;
-      round.value = null;
       gameData.value = null;
+      gameListData.value = null;
+      _chatMessagesSub?.cancel();
+      _chatMessagesSub = null;
     } catch (_) {}
   }
 
   Future<void> leave() async {
-    socket?.emit(SocketIOGameEvents.userLeave.json!);
+    await socket?.emitWithAckAsync(SocketIOGameEvents.userLeave.json!, null);
     socket?.disconnect();
   }
 
   void toggleDesktopChat() {
-    showDesktopChat.value = !showDesktopChat.value;
+    showChat.value = !showChat.value;
   }
 
   Future<void> _onGameData(dynamic data) async {
@@ -99,46 +140,20 @@ class GameLobbyController {
     final users = gameData.value!.players.map(UserX.fromPlayerData).toList();
     getIt<SocketChatController>().setUsers(users);
   }
-}
 
-const testRound = LobbyRound(
-  name: 'name',
-  themes: [
-    LobbyTheme(
-      name: 'Random',
-      questions: [
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-      ],
-    ),
-    LobbyTheme(
-      name: 'Anime',
-      questions: [
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-      ],
-    ),
-    LobbyTheme(
-      name: 'Games',
-      questions: [
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-      ],
-    ),
-    LobbyTheme(
-      name: 'Games',
-      questions: [
-        LobbyQuestion(price: 100),
-        LobbyQuestion(price: 200),
-        LobbyQuestion(price: 300),
-      ],
-    ),
-  ],
-);
+  //SocketIOGameStartEventPayload
+  Future<void> _onGameStart(dynamic data) async {
+    final startData =
+        SocketIOGameStartEventPayload.fromJson(data as Map<String, dynamic>);
+    gameData.value = gameData.value?.copyWith
+        .gameState(currentRound: startData.currentRound);
+  }
+
+  void startGame() {
+    socket?.emit(SocketIOGameEvents.start.json!);
+  }
+
+  void _onError(dynamic data) {
+    getIt<ToastController>().show(data);
+  }
+}

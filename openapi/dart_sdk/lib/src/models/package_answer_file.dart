@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'file_item.dart';
+import 'package_entities_order.dart';
 
 part 'package_answer_file.freezed.dart';
 part 'package_answer_file.g.dart';
@@ -16,9 +17,7 @@ part 'package_answer_file.g.dart';
 class PackageAnswerFile with _$PackageAnswerFile {
   const factory PackageAnswerFile({
     required int? id,
-
-    /// Order of the answer file in the question, should be unique, starting from 0
-    required int order,
+    required PackageEntitiesOrder order,
     required FileItem file,
 
     /// Display duration in milliseconds

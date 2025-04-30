@@ -59,7 +59,7 @@ class _MobileHomeState extends State<_MobileHome> {
   List<(Widget, NavigationDestination)> get _destionations {
     return [
       (
-        const GamesListScreen(),
+        const _GameList(wideMode: false),
         NavigationDestination(
           label: LocaleKeys.home_tabs_games.tr(),
           icon: const Icon(Icons.games_outlined),
@@ -108,10 +108,80 @@ class _WideHome extends WatchingWidget {
           spacing: 42,
           children: [
             const _WideHomeLeftBar(),
-            const GamesListScreen().expand(),
+            const _GameList(wideMode: true).expand(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _GameList extends StatefulWidget {
+  const _GameList({required this.wideMode});
+  final bool wideMode;
+
+  @override
+  State<_GameList> createState() => _GameListState();
+}
+
+class _GameListState extends State<_GameList> {
+  bool expandSearchBar = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final searchBar = SearchBar(
+      hintText: LocaleKeys.type_to_find_games.tr(),
+      constraints: const BoxConstraints(maxWidth: 360, minHeight: 56),
+      onChanged: getIt<GamesListController>().search,
+      trailing: const [Icon(Icons.search)],
+    );
+
+    final title = AnimatedCrossFade(
+      duration: Durations.medium1,
+      // Wide mode state with title and search bar
+      firstChild: Row(
+        spacing: 8,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            LocaleKeys.games_list.tr(),
+            style: context.textTheme.headlineMedium,
+          ),
+          if (widget.wideMode)
+            searchBar.flexible()
+          else
+            IconButton(
+              tooltip: LocaleKeys.show_search.tr(),
+              onPressed: () =>
+                  setState(() => expandSearchBar = !expandSearchBar),
+              icon: const Icon(Icons.search),
+            ),
+        ],
+      ),
+      // Mobile state with search bar and hide btn
+      secondChild: Row(
+        spacing: 8,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            onPressed: () => setState(() => expandSearchBar = false),
+            icon: const Icon(Icons.close),
+            tooltip: LocaleKeys.hide_search.tr(),
+          ),
+          searchBar.flexible(),
+        ],
+      ),
+      crossFadeState: widget.wideMode || !expandSearchBar
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond,
+    );
+
+    return Column(
+      spacing: 16,
+      children: [
+        title.paddingSymmetric(horizontal: 16),
+        const GamesListScreen().expand(),
+      ],
     );
   }
 }
@@ -122,7 +192,7 @@ class _WideHomeLeftBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints.tightFor(width: 200),
+      constraints: const BoxConstraints.tightFor(width: 220),
       padding: 35.top,
       child: const Column(
         children: [

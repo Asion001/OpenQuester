@@ -18,9 +18,9 @@ class AppRouter extends RootStackRouter {
       BlurDialogRoute<void>(page: CreateGameRoute.page, path: '/games/create'),
       BlurDialogRoute<void>(
         page: GamePreviewRoute.page,
-        path: '/games/:gameId',
+        path: '/games/:gameId/preview',
       ),
-      AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId/lobby'),
+      AutoRoute(page: GameLobbyRoute.page, path: '/games/:gameId'),
       AutoRoute(page: ClickerRoute.page, path: '/clicker'),
       AutoRoute(page: TestScreenRoute.page, path: '/test'),
     ];

@@ -23,6 +23,10 @@ class _GamesClient implements GamesClient {
     required int offset,
     GamesSortBy? sortBy,
     OrderDirection? order,
+    DateTime? createdAtMin,
+    DateTime? createdAtMax,
+    bool? isPrivate,
+    String? titlePrefix,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -30,6 +34,10 @@ class _GamesClient implements GamesClient {
       r'offset': offset,
       r'sortBy': sortBy?.toJson(),
       r'order': order?.toJson(),
+      r'createdAtMin': createdAtMin?.toIso8601String(),
+      r'createdAtMax': createdAtMax?.toIso8601String(),
+      r'isPrivate': isPrivate,
+      r'titlePrefix': titlePrefix,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
