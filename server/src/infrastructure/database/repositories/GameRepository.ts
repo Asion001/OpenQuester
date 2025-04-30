@@ -7,6 +7,7 @@ import {
   GAME_TTL,
 } from "domain/constants/game";
 import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
+import { REDIS_LOCK_GAMES_CLEANUP } from "domain/constants/redis";
 import { Game } from "domain/entities/game/Game";
 import { Player } from "domain/entities/game/Player";
 import { ClientResponse } from "domain/enums/ClientResponse";
@@ -374,6 +375,14 @@ export class GameRepository {
    * Cleans up all active games from Redis on server start.
    */
   public async cleanupAllGames(): Promise<void> {
+    const acquired = await this.redisService.setLockKey(
+      REDIS_LOCK_GAMES_CLEANUP
+    );
+
+    if (!acquired) {
+      return; // Another instance acquired the lock
+    }
+
     const startTime = Date.now();
 
     const keys = await this.redisService.scan(this.getGameKey("*"));
@@ -401,5 +410,9 @@ export class GameRepository {
     Logger.info(
       `Games updated: ${gamesCounter}, in ${Date.now() - startTime} ms`
     );
+  }
+
+  public async cleanOrphanedGames() {
+    return this.gameIndexManager.cleanOrphanedGameIndexes();
   }
 }

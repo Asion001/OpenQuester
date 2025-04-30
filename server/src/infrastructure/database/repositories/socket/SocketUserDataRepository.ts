@@ -1,3 +1,4 @@
+import { REDIS_LOCK_SESSIONS_CLEANUP } from "domain/constants/redis";
 import {
   SOCKET_GAME_AUTH_TTL,
   SOCKET_USER_REDIS_NSP,
@@ -52,7 +53,15 @@ export class SocketUserDataRepository {
    * Cleans up all socket auth sessions since on server restart connections recreated
    */
   public async cleanupAllSession(): Promise<void> {
-    this.redisService.cleanupKeys(this._getKey("*"), "socket session");
+    const acquired = await this.redisService.setLockKey(
+      REDIS_LOCK_SESSIONS_CLEANUP
+    );
+
+    if (!acquired) {
+      return; // Another instance acquired the lock
+    }
+
+    return this.redisService.cleanupKeys(this._getKey("*"), "socket session");
   }
 
   private _getKey(socketId: string) {

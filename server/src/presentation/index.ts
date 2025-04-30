@@ -38,8 +38,9 @@ const main = async () => {
 
   // Connect to Redis
   const redis = RedisConfig.getClient();
-  const sub = redis.duplicate();
+  const sub = RedisConfig.getSubClient();
 
+  await RedisConfig.initConfig();
   await RedisConfig.waitForConnection();
 
   const io = new IOServer(createServer(app), {

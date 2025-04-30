@@ -9,6 +9,7 @@ const REDIS_PREFIX = "[REDIS]: ";
 
 export class RedisConfig {
   private static _client: Redis;
+  private static _subClient: Redis;
   private static _env: Environment;
 
   public static getClient(): Redis {
@@ -18,6 +19,17 @@ export class RedisConfig {
       });
     }
     return this._client;
+  }
+
+  public static getSubClient() {
+    if (!this._subClient) {
+      this._subClient = this._client.duplicate();
+    }
+    return this._subClient;
+  }
+
+  public static async initConfig() {
+    await this._client.config("SET", "notify-keyspace-events", "Ex");
   }
 
   public static async waitForConnection(): Promise<void> {

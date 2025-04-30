@@ -84,6 +84,10 @@ export class GameService {
     return this.gameRepository.cleanupAllGames();
   }
 
+  public async cleanOrphanedGames() {
+    return this.gameRepository.cleanOrphanedGames();
+  }
+
   private _emitSocketGameCreated(gameData: GameListItemDTO) {
     const eventDataDTO: GameEventDTO = {
       event: GameEvent.CREATED,
