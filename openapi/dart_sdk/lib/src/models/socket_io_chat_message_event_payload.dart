@@ -12,6 +12,7 @@ part 'socket_io_chat_message_event_payload.g.dart';
 class SocketIOChatMessageEventPayload with _$SocketIOChatMessageEventPayload {
   const factory SocketIOChatMessageEventPayload({
     required String message,
+    required String uuid,
 
     /// ID of the user who sent the message
     required int user,

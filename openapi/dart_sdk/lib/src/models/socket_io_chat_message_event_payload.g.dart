@@ -10,6 +10,7 @@ _$SocketIOChatMessageEventPayloadImpl
     _$$SocketIOChatMessageEventPayloadImplFromJson(Map<String, dynamic> json) =>
         _$SocketIOChatMessageEventPayloadImpl(
           message: json['message'] as String,
+          uuid: json['uuid'] as String,
           user: (json['user'] as num).toInt(),
           timestamp: DateTime.parse(json['timestamp'] as String),
         );
@@ -18,6 +19,7 @@ Map<String, dynamic> _$$SocketIOChatMessageEventPayloadImplToJson(
         _$SocketIOChatMessageEventPayloadImpl instance) =>
     <String, dynamic>{
       'message': instance.message,
+      'uuid': instance.uuid,
       'user': instance.user,
       'timestamp': instance.timestamp.toIso8601String(),
     };

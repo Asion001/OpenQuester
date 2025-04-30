@@ -73,13 +73,23 @@ class PackageUploadController extends ChangeNotifier {
       final links = result.uploadLinks.entries.toList();
 
       await parser.load(fileData);
-      final filesHash = response['files'] as Map<String, dynamic>;
-      parser.filesHash.addAll(
-        filesHash.map((a, b) {
-          final archiveFile = parser.archive!.firstWhere((e) => e.name == b);
-          return MapEntry(a, archiveFile);
-        }),
+
+      // Fill filesHash
+      (response['files'] as Map<String, dynamic>)
+          // Add new files without duplicates, checking by name
+          .forEach(
+        (key, rawFilePaths) {
+          final paths = List<String>.from(rawFilePaths as List);
+          // Find the ArchiveFile in the archive
+          final archiveFile =
+              parser.archive!.firstWhere((e) => paths.contains(e.name));
+          final existing = parser.filesHash[key] ?? [];
+          if (!existing.any((f) => f.name == archiveFile.name)) {
+            parser.filesHash[key] = [...existing, archiveFile];
+          }
+        },
       );
+
       await _uploadFiles(links, parser);
       return result.id;
     } finally {
@@ -127,7 +137,7 @@ class PackageUploadController extends ChangeNotifier {
 
         final link = links[fileIndex];
 
-        final archiveFile = parser.filesHash[link.key];
+        final archiveFile = parser.filesHash[link.key]?.firstOrNull;
         final file = archiveFile?.content;
         await archiveFile?.close();
 

@@ -15,18 +15,19 @@ class ContentXmlParser {
     final package = document.getElement('package')!;
     final metadata = await _parseMetadata(package);
     final roundsXml = package.getElement('rounds')!;
-    final rounds = roundsXml.children.mapIndexed(_parseRound).toList();
+    final rounds = roundsXml.childElements.mapIndexed(_parseRound).toList();
 
-    siqFile = metadata.copyWith(
-      rounds: await Future.wait(rounds),
-    );
+    siqFile = metadata.copyWith(rounds: await Future.wait(rounds));
   }
 
-  Future<PackageRound> _parseRound(int index, XmlNode round) async {
+  Future<PackageRound> _parseRound(int index, XmlElement round) async {
     final name = round.getAttribute('name') ?? '-';
-    final description = round.getAttribute('description').nullOnEmpty;
+    final attributeDescription = round.getAttribute('description');
+    final comment = _getComment(round);
+    final description = (attributeDescription ?? comment).nullOnEmpty;
     final themesXml = round.getElement('themes');
     final themes = themesXml?.childElements.mapIndexed(_parseTheme).toList();
+
     return PackageRound(
       id: null,
       name: name,
@@ -38,13 +39,14 @@ class ContentXmlParser {
 
   Future<PackageTheme> _parseTheme(int index, XmlElement theme) async {
     final name = theme.getAttribute('name') ?? '-';
-    final comment = await _getComment(theme);
+    final comment = _getComment(theme);
     final questions = theme
             .getElement('questions')
             ?.children
             .mapIndexed(_parseQuestion)
             .toList() ??
         [];
+
     return PackageTheme(
       name: name,
       description: comment.nullOnEmpty,
@@ -54,7 +56,7 @@ class ContentXmlParser {
     );
   }
 
-  Future<String?> _getComment(XmlElement element) async {
+  String? _getComment(XmlElement element) {
     final comment =
         element.getElement('info')?.getElement('comments')?.innerText;
     return comment;
@@ -67,30 +69,30 @@ class ContentXmlParser {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
     final params =
         question.getElement('params') ?? question.getElement('scenario');
-    final isScenario = params?.localName == 'scenario';
 
     final questionType = QuestionType.values.firstWhereOrNull(
           (e) => e.name == question.getAttribute('type'),
         ) ??
         QuestionType.simple;
 
-    final questionParam = isScenario
-        ? params
-        : params?.children.firstWhereOrNull(
-            (p0) {
-              final nameAtr =
-                  (p0 is XmlElement) ? p0.localName : p0.getAttribute('name');
-              return ['question'].contains(nameAtr);
-            },
-          );
+    final paramsChildren = params?.childElements ?? [];
+    final questionParam = paramsChildren
+            .firstWhereOrNull((e) => e.getAttribute('name') == 'question') ??
+        paramsChildren.firstOrNull;
     final questionItems = _getFileItems(questionParam);
     final questionFiles =
         (await Future.wait(questionItems.map(parseFile))).nonNulls;
     final questionComment = questionItems
         .firstWhereOrNull((e) => e.getAttribute('type') == 'say')
         ?.value;
-    const String? questionText = null;
 
+    final questionText = questionParam?.getElement('item')?.innerText;
+    final selectionModeString = paramsChildren
+        .firstWhereOrNull((e) => e.getAttribute('name') == 'selectionMode')
+        ?.innerText;
+    final transferType = selectionModeString == 'exceptCurrent'
+        ? PackageQuestionTransferType.exceptCurrent
+        : PackageQuestionTransferType.any;
     final answerParam = params?.children.firstWhereOrNull(
       (p0) => p0.getAttribute('name') == 'answer',
     );
@@ -161,7 +163,7 @@ class ContentXmlParser {
           id: null,
           subType: SecretQuestionSubType.simple,
           allowedPrices: null,
-          transferType: PackageQuestionTransferType.any,
+          transferType: transferType,
           order: index,
         ),
       QuestionType.noRisk => PackageQuestionUnion.noRisk(
@@ -227,32 +229,14 @@ class ContentXmlParser {
 
   Future<FileItem?> parseFile(XmlElement? item) async {
     final itemType = _getFileType(item);
-    final folder = switch (itemType) {
-      PackageFileType.image => 'Images',
-      PackageFileType.video => 'Video',
-      PackageFileType.audio => 'Audio',
-      PackageFileType.$unknown => null,
-      null => null,
-    };
-    if (folder == null || item == null) {
-      return null;
-    }
 
-    final filePath = [folder, item.innerText.replaceFirst('@', '')].join('/');
-    final archiveFile = _archive?.files.firstWhereOrNull(
-      (e) => Uri.decodeFull(e.name) == filePath,
+    final itemHash = await getItemMD5hash(
+      itemType: itemType,
+      itemFilePath: item?.innerText,
     );
-    final rawFile = archiveFile?.content;
-    archiveFile?.clear();
-    if (rawFile == null) {
-      throw Exception('$filePath not found in archive! (Question $item)');
-    }
+    if (itemHash == null) return null;
 
-    final md5 = await getFileMD5(rawFile);
-
-    // Save archive file to map for re-use
-    filesMD5[md5] = archiveFile!;
-
+    final md5 = itemHash.$2;
     final file = itemType == null
         ? null
         : FileItem(
@@ -267,6 +251,62 @@ class ContentXmlParser {
 
   Future<String> getFileMD5(List<int> data) async =>
       md5.convert(data).toString();
+
+  Future<(ArchiveFile, String)?> getItemMD5hash({
+    required PackageFileType? itemType,
+    required String? itemFilePath,
+  }) async {
+    final folder = switch (itemType) {
+      PackageFileType.image => 'Images',
+      PackageFileType.video => 'Video',
+      PackageFileType.audio => 'Audio',
+      PackageFileType.$unknown => null,
+      null => null,
+    };
+    if (folder == null || itemFilePath == null) {
+      return null;
+    }
+
+    final filePath = [folder, itemFilePath.replaceFirst('@', '')].join('/');
+
+    final cachedHash = filesMD5.entries.firstWhereOrNull(
+      (e) => e.value.any((e) => e.path == filePath),
+    );
+    if (cachedHash != null) {
+      return (
+        cachedHash.value.firstWhere((e) => e.path == filePath),
+        cachedHash.key
+      );
+    }
+
+    final archiveFile =
+        _archive?.files.firstWhereOrNull((e) => e.path == filePath);
+
+    archiveFile?.decompress();
+    final rawFile = archiveFile?.content;
+    if (rawFile == null || rawFile.isEmpty) {
+      throw Exception(
+        ['$filePath not found in archive!', '(File path: $itemFilePath)']
+            .join(' '),
+      );
+    }
+
+    final md5 = await getFileMD5(rawFile);
+
+    // Save archive file to map for re-use
+    if (filesMD5.containsKey(md5)) {
+      final fileIsInList =
+          filesMD5[md5]?.any((e) => e.path == archiveFile?.path) ?? false;
+      if (!fileIsInList) filesMD5[md5]!.add(archiveFile!);
+    } else {
+      filesMD5[md5] = [archiveFile!];
+    }
+
+    // Clear hashed and saved file data
+    archiveFile?.clear();
+
+    return (archiveFile!, md5);
+  }
 
   PackageFileType? _getFileType(XmlElement? item) {
     final type = item?.getAttribute('type');
@@ -283,19 +323,37 @@ class ContentXmlParser {
         (e) => MapEntry(e.localName, e.value),
       ),
     );
+    final packageAtrributeDescription = json['description']?.toString();
+    final comment = _getComment(package);
+    final restriction = switch (json['restriction']) {
+      '12+' => AgeRestriction.a12,
+      '16+' => AgeRestriction.a16,
+      '18+' => AgeRestriction.a18,
+      _ => AgeRestriction.none,
+    };
+
+    const image = PackageFileType.image;
+    final logo = await getItemMD5hash(
+      itemFilePath: json['logo']?.toString(),
+      itemType: image,
+    );
 
     final metadata = PackageCreateInputData(
       title: json['name']?.toString() ?? '',
-      description: json['description']?.toString().nullOnEmpty,
+      description: (packageAtrributeDescription ?? comment).nullOnEmpty,
       language: json['language']?.toString().nullOnEmpty,
-      ageRestriction: AgeRestriction.none,
+      ageRestriction: restriction,
       rounds: [],
       tags: [],
+      logo: logo == null
+          ? null
+          : PackageLogoFileInput(file: FileInput(md5: logo.$2, type: image)),
     );
+
     return metadata;
   }
 
   late PackageCreateInputData siqFile;
   Archive? _archive;
-  Map<String, ArchiveFile> filesMD5 = {};
+  Map<String, List<ArchiveFile>> filesMD5 = {};
 }

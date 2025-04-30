@@ -22,6 +22,7 @@ SocketIOChatMessageEventPayload _$SocketIOChatMessageEventPayloadFromJson(
 /// @nodoc
 mixin _$SocketIOChatMessageEventPayload {
   String get message => throw _privateConstructorUsedError;
+  String get uuid => throw _privateConstructorUsedError;
 
   /// ID of the user who sent the message
   int get user => throw _privateConstructorUsedError;
@@ -45,7 +46,7 @@ abstract class $SocketIOChatMessageEventPayloadCopyWith<$Res> {
       _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
           SocketIOChatMessageEventPayload>;
   @useResult
-  $Res call({String message, int user, DateTime timestamp});
+  $Res call({String message, String uuid, int user, DateTime timestamp});
 }
 
 /// @nodoc
@@ -65,6 +66,7 @@ class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
   @override
   $Res call({
     Object? message = null,
+    Object? uuid = null,
     Object? user = null,
     Object? timestamp = null,
   }) {
@@ -72,6 +74,10 @@ class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
               as String,
       user: null == user
           ? _value.user
@@ -94,7 +100,7 @@ abstract class _$$SocketIOChatMessageEventPayloadImplCopyWith<$Res>
       __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String message, int user, DateTime timestamp});
+  $Res call({String message, String uuid, int user, DateTime timestamp});
 }
 
 /// @nodoc
@@ -113,6 +119,7 @@ class __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? message = null,
+    Object? uuid = null,
     Object? user = null,
     Object? timestamp = null,
   }) {
@@ -120,6 +127,10 @@ class __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>
       message: null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
               as String,
       user: null == user
           ? _value.user
@@ -138,7 +149,10 @@ class __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>
 class _$SocketIOChatMessageEventPayloadImpl
     implements _SocketIOChatMessageEventPayload {
   const _$SocketIOChatMessageEventPayloadImpl(
-      {required this.message, required this.user, required this.timestamp});
+      {required this.message,
+      required this.uuid,
+      required this.user,
+      required this.timestamp});
 
   factory _$SocketIOChatMessageEventPayloadImpl.fromJson(
           Map<String, dynamic> json) =>
@@ -146,6 +160,8 @@ class _$SocketIOChatMessageEventPayloadImpl
 
   @override
   final String message;
+  @override
+  final String uuid;
 
   /// ID of the user who sent the message
   @override
@@ -155,7 +171,7 @@ class _$SocketIOChatMessageEventPayloadImpl
 
   @override
   String toString() {
-    return 'SocketIOChatMessageEventPayload(message: $message, user: $user, timestamp: $timestamp)';
+    return 'SocketIOChatMessageEventPayload(message: $message, uuid: $uuid, user: $user, timestamp: $timestamp)';
   }
 
   @override
@@ -164,6 +180,7 @@ class _$SocketIOChatMessageEventPayloadImpl
         (other.runtimeType == runtimeType &&
             other is _$SocketIOChatMessageEventPayloadImpl &&
             (identical(other.message, message) || other.message == message) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp));
@@ -171,7 +188,7 @@ class _$SocketIOChatMessageEventPayloadImpl
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, message, user, timestamp);
+  int get hashCode => Object.hash(runtimeType, message, uuid, user, timestamp);
 
   /// Create a copy of SocketIOChatMessageEventPayload
   /// with the given fields replaced by the non-null parameter values.
@@ -195,6 +212,7 @@ abstract class _SocketIOChatMessageEventPayload
     implements SocketIOChatMessageEventPayload {
   const factory _SocketIOChatMessageEventPayload(
           {required final String message,
+          required final String uuid,
           required final int user,
           required final DateTime timestamp}) =
       _$SocketIOChatMessageEventPayloadImpl;
@@ -204,6 +222,8 @@ abstract class _SocketIOChatMessageEventPayload
 
   @override
   String get message;
+  @override
+  String get uuid;
 
   /// ID of the user who sent the message
   @override

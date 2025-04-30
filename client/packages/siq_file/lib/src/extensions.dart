@@ -1,3 +1,5 @@
+import 'package:archive/archive_io.dart';
+
 extension MapExtension on Map<String, dynamic> {
   void renameKey(String from, String to) {
     final value = remove(from);
@@ -16,4 +18,8 @@ extension StringX on String? {
       this == null ||
       (this != null && this!.isEmpty) ||
       (this != null && this! == 'null');
+}
+
+extension ArchiveFileX on ArchiveFile {
+  String get path => Uri.decodeFull(name);
 }
