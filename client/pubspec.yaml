@@ -50,6 +50,7 @@ dependencies:
   cached_network_image: ^3.4.1
   cached_network_image_platform_interface: ^4.1.1
   fetch_client: ^1.1.4
+  crypto: ^3.0.6
 
 dev_dependencies:
   flutter_test:

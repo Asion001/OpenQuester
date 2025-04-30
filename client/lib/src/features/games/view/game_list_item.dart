@@ -71,15 +71,14 @@ class GameListItemWidget extends WatchingWidget {
     return Hero(
       tag: item,
       child: Material(
-        color: context.theme.colorScheme.surface,
+        color: Colors.transparent,
         borderRadius: 16.circular,
-        elevation: 3,
         child: InkWell(
           onTap: onTap,
           borderRadius: 16.circular,
           child: Card(
-            color: context.theme.colorScheme.secondaryContainer
-                .withValues(alpha: .33),
+            color: context.theme.colorScheme.surfaceContainer,
+            elevation: 4,
             child: Column(
               mainAxisSize: expanded ? MainAxisSize.max : MainAxisSize.min,
               children: [

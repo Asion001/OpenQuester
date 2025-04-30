@@ -25,7 +25,7 @@ class SocketChatController extends ChangeNotifier {
     // Clear before connect
     clear();
 
-    final restUser = getIt<AuthController>().user;
+    final restUser = ProfileController.getUser();
     if (restUser == null) throw UserError(LocaleKeys.user_unauthorized.tr());
 
     // Set chat user
@@ -61,7 +61,7 @@ class SocketChatController extends ChangeNotifier {
     );
 
     final textMessage = TextMessage(
-      id: UniqueKey().toString(),
+      id: message.uuid,
       text: message.message,
       createdAt: message.timestamp,
       authorId: message.user.toString(),

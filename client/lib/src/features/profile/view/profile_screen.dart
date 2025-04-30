@@ -7,7 +7,7 @@ class ProfileScreen extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = watchPropertyValue((AuthController m) => m.user);
+    final user = watchValue((ProfileController m) => m.user);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,15 +22,26 @@ class ProfileScreen extends WatchingWidget {
   }
 
   Widget _authorizedProfile(BuildContext context, ResponseUser user) {
+    const avatarSize = 100.0;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        CircleAvatar(
-          radius: 36,
-          foregroundImage:
-              user.avatar != null ? NetworkImageProvider(user.avatar!) : null,
-        ),
+        Stack(
+          children: [
+            CircleAvatar(
+              radius: avatarSize / 2,
+              foregroundImage: user.avatar != null
+                  ? NetworkImageProvider(user.avatar!)
+                  : null,
+            ),
+            const Align(
+              alignment: Alignment.bottomRight,
+              child: _ChangeAvatarBtn(),
+            ),
+          ],
+        ).withSize(width: avatarSize, height: avatarSize),
         Text(
           user.username,
           style: context.textTheme.bodyLarge,
@@ -76,6 +87,22 @@ class ProfileScreen extends WatchingWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _ChangeAvatarBtn extends StatelessWidget {
+  const _ChangeAvatarBtn();
+
+  @override
+  Widget build(BuildContext context) {
+    return LoadingButtonBuilder(
+      builder: (context, child, onPressed) => IconButton.filled(
+        onPressed: onPressed,
+        icon: child,
+      ),
+      onPressed: getIt<ProfileController>().changeAvatar,
+      child: const Icon(Icons.edit),
     );
   }
 }

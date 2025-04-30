@@ -59,7 +59,7 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
     final child = Column(
       children: [
         if (loading || game == null)
-          const CircularProgressIndicator.adaptive().center()
+          const CircularProgressIndicator().center()
         else
           AnimatedContainer(
             // Fixes overflow when width changes
@@ -79,6 +79,9 @@ class _GamePreviewScreenState extends State<GamePreviewScreen> {
       ],
     );
 
-    return DialogContainer(child: child);
+    return AdaptiveDialog(
+      allowBottomSheet: false,
+      builder: (_) => child,
+    );
   }
 }

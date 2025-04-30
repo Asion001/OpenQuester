@@ -16,6 +16,7 @@ class CreateGameDialog extends WatchingWidget {
 
     return AdaptiveDialog(
       builder: (context) => Card(
+        elevation: 0,
         child: SingleChildScrollView(
           padding: 16.all,
           child: Form(
@@ -241,11 +242,11 @@ class _UploadPackageButtons extends StatelessWidget {
       spacing: 16,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _SearchPackageButton(controller: controller, state: state),
+        _SearchPackageButton(controller: controller, state: state).flexible(),
         UploadPackageButton(
           afterUpload: (value) =>
               controller.state.value = state.copyWith(package: value),
-        ),
+        ).flexible(),
       ],
     );
   }

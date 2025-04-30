@@ -13,12 +13,14 @@ class SiqArchiveParser {
 
   Archive? archive;
   InputFileStream? targetStream;
-  Map<String, ArchiveFile> filesHash = {};
+  Map<String, List<ArchiveFile>> filesHash = {};
 
   Future<void> dispose() async {
     await targetStream?.close();
-    for (final e in filesHash.values) {
-      e.closeSync();
+    for (final files in filesHash.values) {
+      for (final file in files) {
+        await file.close();
+      }
     }
     filesHash.clear();
     _siqFile = null;

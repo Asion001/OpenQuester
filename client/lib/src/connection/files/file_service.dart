@@ -5,10 +5,14 @@ import 'package:universal_io/io.dart';
 export 'package:file_picker/file_picker.dart';
 
 abstract class FileService {
-  static Future<FilePickerResult?> pickFile() async {
-    final conf = kIsWeb || kIsWasm || !(Platform.isAndroid || Platform.isIOS)
-        ? PickerSettings.other()
-        : PickerSettings.mobile();
+  static Future<FilePickerResult?> pickFile({
+    PickerSettings? filePickConf,
+  }) async {
+    final defaultConf =
+        kIsWeb || kIsWasm || !(Platform.isAndroid || Platform.isIOS)
+            ? PickerSettings.other()
+            : PickerSettings.mobile();
+    final conf = filePickConf ?? defaultConf;
 
     final result = await FilePicker.platform.pickFiles(
       type: conf.type,
@@ -17,7 +21,7 @@ abstract class FileService {
     );
 
     final ext = result?.files.firstOrNull?.extension;
-    if (ext != null && !PickerSettings.isExtensionSupported(ext)) {
+    if (ext != null && !conf.isExtensionSupported(ext)) {
       throw Exception('Extension $ext is not supported!');
     }
 
@@ -38,5 +42,6 @@ class PickerSettings {
   final FileType type;
 
   static const List<String> siqExtensions = ['siq'];
-  static bool isExtensionSupported(String ext) => siqExtensions.contains(ext);
+  bool isExtensionSupported(String ext) =>
+      allowedExtensions?.contains(ext) ?? true;
 }

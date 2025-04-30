@@ -28,9 +28,11 @@ import '../features/package_upload/controllers/package_upload_controller.dart'
 import '../features/packages/controllers/package_controller.dart' as _i573;
 import '../features/packages/controllers/packages_list_controller.dart'
     as _i793;
+import '../features/profile/controller/profile_controller.dart' as _i932;
 import 'controllers/load_controller.dart' as _i676;
 import 'controllers/time_controller.dart' as _i697;
 import 'controllers/toast_controller.dart' as _i278;
+import 'controllers/upload_controller.dart' as _i936;
 import 'router.dart' as _i216;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -44,6 +46,7 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i936.S3UploadController>(() => _i936.S3UploadController());
     gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
     gh.singleton<_i697.TimeController>(() => _i697.TimeController()..init());
     gh.singleton<_i278.ToastController>(() => _i278.ToastController());
@@ -69,6 +72,13 @@ extension GetItInjectableX on _i174.GetIt {
       () {
         final i = _i785.AuthController();
         return i.init().then((_) => i);
+      },
+      preResolve: true,
+    );
+    await gh.singletonAsync<_i932.ProfileController>(
+      () {
+        final i = _i932.ProfileController();
+        return i.load().then((_) => i);
       },
       preResolve: true,
     );

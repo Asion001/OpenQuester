@@ -5,18 +5,10 @@ import 'package:openquester/common_imports.dart';
 
 @Singleton(order: 2)
 class AuthController extends ChangeNotifier {
-  ResponseUser? _userData;
-  ResponseUser? get user => _userData;
-  bool get authorized => _userData != null;
+  bool get authorized => ProfileController.getUser() != null;
 
   @PostConstruct(preResolve: true)
-  Future<void> init() async {
-    try {
-      _userData = await getIt.get<Api>().api.users.getV1Me();
-    } catch (e) {
-      logger.d(e);
-    }
-  }
+  Future<void> init() async {}
 
   Future<void> loginUser() async {
     try {
@@ -33,13 +25,14 @@ class AuthController extends ChangeNotifier {
         tokenSchema: accessTokenResponse.tokenType,
       );
 
-      _userData = await getIt.get<Api>().api.auth.postV1AuthOauth2(
-            body: inputOauthLogin,
-          );
+      getIt<ProfileController>().user.value =
+          await getIt.get<Api>().api.auth.postV1AuthOauth2(
+                body: inputOauthLogin,
+              );
 
       notifyListeners();
 
-      if (_userData == null) {
+      if (ProfileController.getUser() == null) {
         throw UserError(LocaleKeys.authorization_canceled.tr());
       }
     } catch (e, s) {
@@ -49,7 +42,7 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> logOut() async {
-    _userData = null;
+    getIt<ProfileController>().user.value = null;
     await getIt.get<Api>().api.auth.getV1AuthLogout();
     notifyListeners();
   }
