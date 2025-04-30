@@ -22,6 +22,7 @@ class ProfileController {
     );
     final file = fileResult?.files.firstOrNull;
     if (file == null) return;
+    // TODO: Add image resize
 
     final filename = await getIt<S3UploadController>()
         .getLinkAndUpload(await file.xFile.readAsBytes());
