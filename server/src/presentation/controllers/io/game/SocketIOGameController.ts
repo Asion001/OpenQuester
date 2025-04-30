@@ -20,49 +20,44 @@ import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
 
 export class SocketIOGameController {
-  private _socket!: Socket;
-
   constructor(
+    private readonly socket: Socket,
+    private readonly nsp: Namespace,
     private readonly eventEmitter: SocketIOEventEmitter,
     private readonly socketIOGameService: SocketIOGameService,
     private readonly socketIOChatService: SocketIOChatService
   ) {
-    //
-  }
+    this.eventEmitter.init(this.nsp, this.socket);
 
-  public registerSocket(nsp: Namespace, socket: Socket) {
-    this.eventEmitter.init(nsp, socket);
-    this._socket = socket;
-
-    this._socket.on(
+    this.socket.on(
       SocketIOGameEvents.JOIN,
       SocketWrapper.catchErrors<string>(
         this.eventEmitter,
         this.handleJoinLobby.bind(this)
       )
     );
-    this._socket.on(
+    this.socket.on(
       SocketIOGameEvents.START,
       SocketWrapper.catchErrors(
         this.eventEmitter,
         this.handleGameStart.bind(this)
       )
     );
-    this._socket.on(
+    this.socket.on(
       SocketIOEvents.DISCONNECT,
       SocketWrapper.catchErrors(
         this.eventEmitter,
         this.handleSocketDisconnect.bind(this)
       )
     );
-    this._socket.on(
+    this.socket.on(
       SocketIOGameEvents.LEAVE,
       SocketWrapper.catchErrors(
         this.eventEmitter,
         this.handleLobbyLeave.bind(this)
       )
     );
-    this._socket.on(
+    this.socket.on(
       SocketIOEvents.CHAT_MESSAGE,
       SocketWrapper.catchErrors<string>(
         this.eventEmitter,
@@ -74,13 +69,13 @@ export class SocketIOGameController {
   private async handleJoinLobby(data: any) {
     const dto = await GameValidator.validateJoinInput(data);
 
-    if (this._socket.rooms.has(dto.gameId)) {
+    if (this.socket.rooms.has(dto.gameId)) {
       throw new ClientError(ClientResponse.ALREADY_IN_GAME);
     }
 
     const result = await this.socketIOGameService.joinPlayer(
       dto,
-      this._socket.id
+      this.socket.id
     );
     const { player, game } = result;
 
@@ -102,11 +97,11 @@ export class SocketIOGameController {
       ),
     });
 
-    this._socket.join(dto.gameId);
+    this.socket.join(dto.gameId);
   }
 
   private async handleGameStart() {
-    const gameDTO = await this.socketIOGameService.startGame(this._socket.id);
+    const gameDTO = await this.socketIOGameService.startGame(this.socket.id);
 
     this.eventEmitter.emit<GameStartEventPayload>(
       SocketIOGameEvents.START,
@@ -121,12 +116,15 @@ export class SocketIOGameController {
   }
 
   private async handleSocketDisconnect() {
-    await this.handleLobbyLeave();
-    await this.socketIOGameService.removePlayerAuth(this._socket.id);
+    try {
+      await this.handleLobbyLeave();
+    } finally {
+      await this.socketIOGameService.removePlayerAuth(this.socket.id);
+    }
   }
 
   private async handleLobbyLeave() {
-    const result = await this.socketIOGameService.leaveLobby(this._socket.id);
+    const result = await this.socketIOGameService.leaveLobby(this.socket.id);
     if (result.emit && result.data) {
       this.eventEmitter.emit<GameLeaveEventPayload>(
         SocketIOGameEvents.LEAVE,
@@ -137,7 +135,7 @@ export class SocketIOGameController {
         }
       );
 
-      this._socket.leave(result.data.gameId);
+      this.socket.leave(result.data.gameId);
     }
   }
 
@@ -145,7 +143,7 @@ export class SocketIOGameController {
     const dto = await GameValidator.validateChatMessage(data);
 
     const result = await this.socketIOChatService.processChatMessage(
-      this._socket.id,
+      this.socket.id,
       dto.message
     );
 
