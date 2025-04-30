@@ -21,12 +21,10 @@ class S3UploadController {
             mode: RequestMode.cors,
             cache: RequestCache.noCache,
             credentials: RequestCredentials.cors,
-            // ignore: avoid_redundant_argument_values
-            streamRequests: kIsWasm,
           )
         : Dio(
             BaseOptions(
-              persistentConnection: false,
+              persistentConnection: true,
               validateStatus: validateStatus,
             ),
           );
