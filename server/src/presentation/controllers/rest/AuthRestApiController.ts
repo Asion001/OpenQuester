@@ -188,17 +188,18 @@ export class AuthRestApiController {
       user.username = profile.username;
       user.email = profile.email ?? null;
       if (profile.avatar) {
+        const avatarFileName = await this.storage.putFileFromDiscord(
+          getDiscordCDNLink(profile.id, profile.avatar),
+          profile.avatar
+        );
+
         const file = await this.fileService.writeFile(
           getDiscordCDNLink(profile.id, profile.avatar),
-          profile.avatar,
+          avatarFileName,
           FileSource.DISCORD
         );
 
         user.avatar = file;
-        await this.storage.putFileFromDiscord(
-          getDiscordCDNLink(profile.id, profile.avatar),
-          file.filename
-        );
       }
 
       const registerData: RegisterUser = {
