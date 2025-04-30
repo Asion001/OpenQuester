@@ -13,7 +13,7 @@ part 'package_logo_file_input.g.dart';
 
 /// Logo file structure for package creation. Only images acceptable
 @Freezed()
-class PackageLogoFileInput with _$PackageLogoFileInput {
+abstract class PackageLogoFileInput with _$PackageLogoFileInput {
   const factory PackageLogoFileInput({
     required FileInput file,
   }) = _PackageLogoFileInput;

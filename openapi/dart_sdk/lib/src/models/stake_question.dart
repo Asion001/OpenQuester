@@ -15,7 +15,7 @@ part 'stake_question.freezed.dart';
 part 'stake_question.g.dart';
 
 @Freezed()
-class StakeQuestion with _$StakeQuestion {
+abstract class StakeQuestion with _$StakeQuestion {
   const factory StakeQuestion({
     required int? id,
     required PackageEntitiesOrder order,

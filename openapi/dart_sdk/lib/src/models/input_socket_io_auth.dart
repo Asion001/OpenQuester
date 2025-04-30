@@ -8,7 +8,7 @@ part 'input_socket_io_auth.freezed.dart';
 part 'input_socket_io_auth.g.dart';
 
 @Freezed()
-class InputSocketIOAuth with _$InputSocketIOAuth {
+abstract class InputSocketIOAuth with _$InputSocketIOAuth {
   const factory InputSocketIOAuth({
     required String socketId,
   }) = _InputSocketIOAuth;

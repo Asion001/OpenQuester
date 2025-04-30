@@ -11,7 +11,7 @@ part 'socket_io_game_state_question_data.g.dart';
 
 /// Info about question of the theme
 @Freezed()
-class SocketIOGameStateQuestionData with _$SocketIOGameStateQuestionData {
+abstract class SocketIOGameStateQuestionData with _$SocketIOGameStateQuestionData {
   const factory SocketIOGameStateQuestionData({
     required PackageEntitiesOrder order,
 

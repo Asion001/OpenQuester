@@ -14,7 +14,7 @@ part 'player_data.g.dart';
 
 /// Player DTO. This is also sent to everyone when player joins game
 @Freezed()
-class PlayerData with _$PlayerData {
+abstract class PlayerData with _$PlayerData {
   const factory PlayerData({
     required PlayerMeta meta,
     required PlayerRole role,

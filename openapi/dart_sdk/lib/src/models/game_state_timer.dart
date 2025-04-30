@@ -8,7 +8,7 @@ part 'game_state_timer.freezed.dart';
 part 'game_state_timer.g.dart';
 
 @Freezed()
-class GameStateTimer with _$GameStateTimer {
+abstract class GameStateTimer with _$GameStateTimer {
   const factory GameStateTimer({
     /// Describes when timer started
     required DateTime startedAt,

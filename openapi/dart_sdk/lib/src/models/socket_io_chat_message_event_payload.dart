@@ -9,7 +9,7 @@ part 'socket_io_chat_message_event_payload.g.dart';
 
 /// Emitted to everyone in game, including sender. Data that sent to all players in room on chat message
 @Freezed()
-class SocketIOChatMessageEventPayload with _$SocketIOChatMessageEventPayload {
+abstract class SocketIOChatMessageEventPayload with _$SocketIOChatMessageEventPayload {
   const factory SocketIOChatMessageEventPayload({
     required String message,
     required String uuid,

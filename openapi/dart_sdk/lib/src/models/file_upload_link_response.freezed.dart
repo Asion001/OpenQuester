@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,87 +10,58 @@ part of 'file_upload_link_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-FileUploadLinkResponse _$FileUploadLinkResponseFromJson(
-    Map<String, dynamic> json) {
-  return _FileUploadLinkResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$FileUploadLinkResponse {
-  String get url => throw _privateConstructorUsedError;
-
-  /// Serializes this FileUploadLinkResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get url;
 
   /// Create a copy of FileUploadLinkResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $FileUploadLinkResponseCopyWith<FileUploadLinkResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $FileUploadLinkResponseCopyWith<$Res> {
-  factory $FileUploadLinkResponseCopyWith(FileUploadLinkResponse value,
-          $Res Function(FileUploadLinkResponse) then) =
-      _$FileUploadLinkResponseCopyWithImpl<$Res, FileUploadLinkResponse>;
-  @useResult
-  $Res call({String url});
-}
-
-/// @nodoc
-class _$FileUploadLinkResponseCopyWithImpl<$Res,
-        $Val extends FileUploadLinkResponse>
-    implements $FileUploadLinkResponseCopyWith<$Res> {
-  _$FileUploadLinkResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of FileUploadLinkResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $FileUploadLinkResponseCopyWith<FileUploadLinkResponse> get copyWith =>
+      _$FileUploadLinkResponseCopyWithImpl<FileUploadLinkResponse>(
+          this as FileUploadLinkResponse, _$identity);
+
+  /// Serializes this FileUploadLinkResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? url = null,
-  }) {
-    return _then(_value.copyWith(
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FileUploadLinkResponse &&
+            (identical(other.url, url) || other.url == url));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, url);
+
+  @override
+  String toString() {
+    return 'FileUploadLinkResponse(url: $url)';
   }
 }
 
 /// @nodoc
-abstract class _$$FileUploadLinkResponseImplCopyWith<$Res>
-    implements $FileUploadLinkResponseCopyWith<$Res> {
-  factory _$$FileUploadLinkResponseImplCopyWith(
-          _$FileUploadLinkResponseImpl value,
-          $Res Function(_$FileUploadLinkResponseImpl) then) =
-      __$$FileUploadLinkResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $FileUploadLinkResponseCopyWith<$Res> {
+  factory $FileUploadLinkResponseCopyWith(FileUploadLinkResponse value,
+          $Res Function(FileUploadLinkResponse) _then) =
+      _$FileUploadLinkResponseCopyWithImpl;
   @useResult
   $Res call({String url});
 }
 
 /// @nodoc
-class __$$FileUploadLinkResponseImplCopyWithImpl<$Res>
-    extends _$FileUploadLinkResponseCopyWithImpl<$Res,
-        _$FileUploadLinkResponseImpl>
-    implements _$$FileUploadLinkResponseImplCopyWith<$Res> {
-  __$$FileUploadLinkResponseImplCopyWithImpl(
-      _$FileUploadLinkResponseImpl _value,
-      $Res Function(_$FileUploadLinkResponseImpl) _then)
-      : super(_value, _then);
+class _$FileUploadLinkResponseCopyWithImpl<$Res>
+    implements $FileUploadLinkResponseCopyWith<$Res> {
+  _$FileUploadLinkResponseCopyWithImpl(this._self, this._then);
+
+  final FileUploadLinkResponse _self;
+  final $Res Function(FileUploadLinkResponse) _then;
 
   /// Create a copy of FileUploadLinkResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -98,9 +70,9 @@ class __$$FileUploadLinkResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? url = null,
   }) {
-    return _then(_$FileUploadLinkResponseImpl(
+    return _then(_self.copyWith(
       url: null == url
-          ? _value.url
+          ? _self.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -109,25 +81,35 @@ class __$$FileUploadLinkResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$FileUploadLinkResponseImpl implements _FileUploadLinkResponse {
-  const _$FileUploadLinkResponseImpl({required this.url});
-
-  factory _$FileUploadLinkResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FileUploadLinkResponseImplFromJson(json);
+class _FileUploadLinkResponse implements FileUploadLinkResponse {
+  const _FileUploadLinkResponse({required this.url});
+  factory _FileUploadLinkResponse.fromJson(Map<String, dynamic> json) =>
+      _$FileUploadLinkResponseFromJson(json);
 
   @override
   final String url;
 
+  /// Create a copy of FileUploadLinkResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'FileUploadLinkResponse(url: $url)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$FileUploadLinkResponseCopyWith<_FileUploadLinkResponse> get copyWith =>
+      __$FileUploadLinkResponseCopyWithImpl<_FileUploadLinkResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$FileUploadLinkResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FileUploadLinkResponseImpl &&
+            other is _FileUploadLinkResponse &&
             (identical(other.url, url) || other.url == url));
   }
 
@@ -135,37 +117,45 @@ class _$FileUploadLinkResponseImpl implements _FileUploadLinkResponse {
   @override
   int get hashCode => Object.hash(runtimeType, url);
 
-  /// Create a copy of FileUploadLinkResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$FileUploadLinkResponseImplCopyWith<_$FileUploadLinkResponseImpl>
-      get copyWith => __$$FileUploadLinkResponseImplCopyWithImpl<
-          _$FileUploadLinkResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$FileUploadLinkResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'FileUploadLinkResponse(url: $url)';
   }
 }
 
-abstract class _FileUploadLinkResponse implements FileUploadLinkResponse {
-  const factory _FileUploadLinkResponse({required final String url}) =
-      _$FileUploadLinkResponseImpl;
-
-  factory _FileUploadLinkResponse.fromJson(Map<String, dynamic> json) =
-      _$FileUploadLinkResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$FileUploadLinkResponseCopyWith<$Res>
+    implements $FileUploadLinkResponseCopyWith<$Res> {
+  factory _$FileUploadLinkResponseCopyWith(_FileUploadLinkResponse value,
+          $Res Function(_FileUploadLinkResponse) _then) =
+      __$FileUploadLinkResponseCopyWithImpl;
   @override
-  String get url;
+  @useResult
+  $Res call({String url});
+}
+
+/// @nodoc
+class __$FileUploadLinkResponseCopyWithImpl<$Res>
+    implements _$FileUploadLinkResponseCopyWith<$Res> {
+  __$FileUploadLinkResponseCopyWithImpl(this._self, this._then);
+
+  final _FileUploadLinkResponse _self;
+  final $Res Function(_FileUploadLinkResponse) _then;
 
   /// Create a copy of FileUploadLinkResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FileUploadLinkResponseImplCopyWith<_$FileUploadLinkResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? url = null,
+  }) {
+    return _then(_FileUploadLinkResponse(
+      url: null == url
+          ? _self.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

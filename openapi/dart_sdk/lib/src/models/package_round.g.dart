@@ -6,8 +6,8 @@ part of 'package_round.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageRoundImpl _$$PackageRoundImplFromJson(Map<String, dynamic> json) =>
-    _$PackageRoundImpl(
+_PackageRound _$PackageRoundFromJson(Map<String, dynamic> json) =>
+    _PackageRound(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       name: json['name'] as String,
@@ -17,7 +17,7 @@ _$PackageRoundImpl _$$PackageRoundImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$PackageRoundImplToJson(_$PackageRoundImpl instance) =>
+Map<String, dynamic> _$PackageRoundToJson(_PackageRound instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

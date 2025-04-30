@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,35 +10,51 @@ part of 'paginated_packages.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PaginatedPackages _$PaginatedPackagesFromJson(Map<String, dynamic> json) {
-  return _PaginatedPackages.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PaginatedPackages {
-  List<PackageResponse> get data => throw _privateConstructorUsedError;
-  PageInfo get pageInfo => throw _privateConstructorUsedError;
-
-  /// Serializes this PaginatedPackages to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  List<PackageResponse> get data;
+  PageInfo get pageInfo;
 
   /// Create a copy of PaginatedPackages
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PaginatedPackagesCopyWith<PaginatedPackages> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$PaginatedPackagesCopyWithImpl<PaginatedPackages>(
+          this as PaginatedPackages, _$identity);
+
+  /// Serializes this PaginatedPackages to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PaginatedPackages &&
+            const DeepCollectionEquality().equals(other.data, data) &&
+            (identical(other.pageInfo, pageInfo) ||
+                other.pageInfo == pageInfo));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(data), pageInfo);
+
+  @override
+  String toString() {
+    return 'PaginatedPackages(data: $data, pageInfo: $pageInfo)';
+  }
 }
 
 /// @nodoc
-abstract class $PaginatedPackagesCopyWith<$Res> {
+abstract mixin class $PaginatedPackagesCopyWith<$Res> {
   factory $PaginatedPackagesCopyWith(
-          PaginatedPackages value, $Res Function(PaginatedPackages) then) =
-      _$PaginatedPackagesCopyWithImpl<$Res, PaginatedPackages>;
+          PaginatedPackages value, $Res Function(PaginatedPackages) _then) =
+      _$PaginatedPackagesCopyWithImpl;
   @useResult
   $Res call({List<PackageResponse> data, PageInfo pageInfo});
 
@@ -45,14 +62,12 @@ abstract class $PaginatedPackagesCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PaginatedPackagesCopyWithImpl<$Res, $Val extends PaginatedPackages>
+class _$PaginatedPackagesCopyWithImpl<$Res>
     implements $PaginatedPackagesCopyWith<$Res> {
-  _$PaginatedPackagesCopyWithImpl(this._value, this._then);
+  _$PaginatedPackagesCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final PaginatedPackages _self;
+  final $Res Function(PaginatedPackages) _then;
 
   /// Create a copy of PaginatedPackages
   /// with the given fields replaced by the non-null parameter values.
@@ -62,16 +77,16 @@ class _$PaginatedPackagesCopyWithImpl<$Res, $Val extends PaginatedPackages>
     Object? data = null,
     Object? pageInfo = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       data: null == data
-          ? _value.data
+          ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
               as List<PackageResponse>,
       pageInfo: null == pageInfo
-          ? _value.pageInfo
+          ? _self.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
               as PageInfo,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of PaginatedPackages
@@ -79,64 +94,20 @@ class _$PaginatedPackagesCopyWithImpl<$Res, $Val extends PaginatedPackages>
   @override
   @pragma('vm:prefer-inline')
   $PageInfoCopyWith<$Res> get pageInfo {
-    return $PageInfoCopyWith<$Res>(_value.pageInfo, (value) {
-      return _then(_value.copyWith(pageInfo: value) as $Val);
+    return $PageInfoCopyWith<$Res>(_self.pageInfo, (value) {
+      return _then(_self.copyWith(pageInfo: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$PaginatedPackagesImplCopyWith<$Res>
-    implements $PaginatedPackagesCopyWith<$Res> {
-  factory _$$PaginatedPackagesImplCopyWith(_$PaginatedPackagesImpl value,
-          $Res Function(_$PaginatedPackagesImpl) then) =
-      __$$PaginatedPackagesImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({List<PackageResponse> data, PageInfo pageInfo});
-
-  @override
-  $PageInfoCopyWith<$Res> get pageInfo;
-}
-
-/// @nodoc
-class __$$PaginatedPackagesImplCopyWithImpl<$Res>
-    extends _$PaginatedPackagesCopyWithImpl<$Res, _$PaginatedPackagesImpl>
-    implements _$$PaginatedPackagesImplCopyWith<$Res> {
-  __$$PaginatedPackagesImplCopyWithImpl(_$PaginatedPackagesImpl _value,
-      $Res Function(_$PaginatedPackagesImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PaginatedPackages
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-    Object? pageInfo = null,
-  }) {
-    return _then(_$PaginatedPackagesImpl(
-      data: null == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<PackageResponse>,
-      pageInfo: null == pageInfo
-          ? _value.pageInfo
-          : pageInfo // ignore: cast_nullable_to_non_nullable
-              as PageInfo,
-    ));
-  }
-}
-
-/// @nodoc
 @JsonSerializable()
-class _$PaginatedPackagesImpl implements _PaginatedPackages {
-  const _$PaginatedPackagesImpl(
+class _PaginatedPackages implements PaginatedPackages {
+  const _PaginatedPackages(
       {required final List<PackageResponse> data, required this.pageInfo})
       : _data = data;
-
-  factory _$PaginatedPackagesImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PaginatedPackagesImplFromJson(json);
+  factory _PaginatedPackages.fromJson(Map<String, dynamic> json) =>
+      _$PaginatedPackagesFromJson(json);
 
   final List<PackageResponse> _data;
   @override
@@ -149,16 +120,26 @@ class _$PaginatedPackagesImpl implements _PaginatedPackages {
   @override
   final PageInfo pageInfo;
 
+  /// Create a copy of PaginatedPackages
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PaginatedPackages(data: $data, pageInfo: $pageInfo)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PaginatedPackagesCopyWith<_PaginatedPackages> get copyWith =>
+      __$PaginatedPackagesCopyWithImpl<_PaginatedPackages>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PaginatedPackagesToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PaginatedPackagesImpl &&
+            other is _PaginatedPackages &&
             const DeepCollectionEquality().equals(other._data, _data) &&
             (identical(other.pageInfo, pageInfo) ||
                 other.pageInfo == pageInfo));
@@ -169,40 +150,63 @@ class _$PaginatedPackagesImpl implements _PaginatedPackages {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_data), pageInfo);
 
-  /// Create a copy of PaginatedPackages
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PaginatedPackagesImplCopyWith<_$PaginatedPackagesImpl> get copyWith =>
-      __$$PaginatedPackagesImplCopyWithImpl<_$PaginatedPackagesImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PaginatedPackagesImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PaginatedPackages(data: $data, pageInfo: $pageInfo)';
   }
 }
 
-abstract class _PaginatedPackages implements PaginatedPackages {
-  const factory _PaginatedPackages(
-      {required final List<PackageResponse> data,
-      required final PageInfo pageInfo}) = _$PaginatedPackagesImpl;
-
-  factory _PaginatedPackages.fromJson(Map<String, dynamic> json) =
-      _$PaginatedPackagesImpl.fromJson;
+/// @nodoc
+abstract mixin class _$PaginatedPackagesCopyWith<$Res>
+    implements $PaginatedPackagesCopyWith<$Res> {
+  factory _$PaginatedPackagesCopyWith(
+          _PaginatedPackages value, $Res Function(_PaginatedPackages) _then) =
+      __$PaginatedPackagesCopyWithImpl;
+  @override
+  @useResult
+  $Res call({List<PackageResponse> data, PageInfo pageInfo});
 
   @override
-  List<PackageResponse> get data;
-  @override
-  PageInfo get pageInfo;
+  $PageInfoCopyWith<$Res> get pageInfo;
+}
+
+/// @nodoc
+class __$PaginatedPackagesCopyWithImpl<$Res>
+    implements _$PaginatedPackagesCopyWith<$Res> {
+  __$PaginatedPackagesCopyWithImpl(this._self, this._then);
+
+  final _PaginatedPackages _self;
+  final $Res Function(_PaginatedPackages) _then;
 
   /// Create a copy of PaginatedPackages
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PaginatedPackagesImplCopyWith<_$PaginatedPackagesImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? data = null,
+    Object? pageInfo = null,
+  }) {
+    return _then(_PaginatedPackages(
+      data: null == data
+          ? _self._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<PackageResponse>,
+      pageInfo: null == pageInfo
+          ? _self.pageInfo
+          : pageInfo // ignore: cast_nullable_to_non_nullable
+              as PageInfo,
+    ));
+  }
+
+  /// Create a copy of PaginatedPackages
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PageInfoCopyWith<$Res> get pageInfo {
+    return $PageInfoCopyWith<$Res>(_self.pageInfo, (value) {
+      return _then(_self.copyWith(pageInfo: value));
+    });
+  }
 }
+
+// dart format on

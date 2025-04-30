@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,144 +10,33 @@ part of 'restrictions_event_data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-RestrictionsEventData _$RestrictionsEventDataFromJson(
-    Map<String, dynamic> json) {
-  return _RestrictionsEventData.fromJson(json);
-}
 
 /// @nodoc
 mixin _$RestrictionsEventData {
   /// If true - player muted in in-game chat
-  bool get muted => throw _privateConstructorUsedError;
+  bool get muted;
 
   /// Restricted players can only join as spectators
-  bool get restricted => throw _privateConstructorUsedError;
-
-  /// Serializes this RestrictionsEventData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  bool get restricted;
 
   /// Create a copy of RestrictionsEventData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $RestrictionsEventDataCopyWith<RestrictionsEventData> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$RestrictionsEventDataCopyWithImpl<RestrictionsEventData>(
+          this as RestrictionsEventData, _$identity);
 
-/// @nodoc
-abstract class $RestrictionsEventDataCopyWith<$Res> {
-  factory $RestrictionsEventDataCopyWith(RestrictionsEventData value,
-          $Res Function(RestrictionsEventData) then) =
-      _$RestrictionsEventDataCopyWithImpl<$Res, RestrictionsEventData>;
-  @useResult
-  $Res call({bool muted, bool restricted});
-}
-
-/// @nodoc
-class _$RestrictionsEventDataCopyWithImpl<$Res,
-        $Val extends RestrictionsEventData>
-    implements $RestrictionsEventDataCopyWith<$Res> {
-  _$RestrictionsEventDataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of RestrictionsEventData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? muted = null,
-    Object? restricted = null,
-  }) {
-    return _then(_value.copyWith(
-      muted: null == muted
-          ? _value.muted
-          : muted // ignore: cast_nullable_to_non_nullable
-              as bool,
-      restricted: null == restricted
-          ? _value.restricted
-          : restricted // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$RestrictionsEventDataImplCopyWith<$Res>
-    implements $RestrictionsEventDataCopyWith<$Res> {
-  factory _$$RestrictionsEventDataImplCopyWith(
-          _$RestrictionsEventDataImpl value,
-          $Res Function(_$RestrictionsEventDataImpl) then) =
-      __$$RestrictionsEventDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({bool muted, bool restricted});
-}
-
-/// @nodoc
-class __$$RestrictionsEventDataImplCopyWithImpl<$Res>
-    extends _$RestrictionsEventDataCopyWithImpl<$Res,
-        _$RestrictionsEventDataImpl>
-    implements _$$RestrictionsEventDataImplCopyWith<$Res> {
-  __$$RestrictionsEventDataImplCopyWithImpl(_$RestrictionsEventDataImpl _value,
-      $Res Function(_$RestrictionsEventDataImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of RestrictionsEventData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? muted = null,
-    Object? restricted = null,
-  }) {
-    return _then(_$RestrictionsEventDataImpl(
-      muted: null == muted
-          ? _value.muted
-          : muted // ignore: cast_nullable_to_non_nullable
-              as bool,
-      restricted: null == restricted
-          ? _value.restricted
-          : restricted // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$RestrictionsEventDataImpl implements _RestrictionsEventData {
-  const _$RestrictionsEventDataImpl(
-      {required this.muted, required this.restricted});
-
-  factory _$RestrictionsEventDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RestrictionsEventDataImplFromJson(json);
-
-  /// If true - player muted in in-game chat
-  @override
-  final bool muted;
-
-  /// Restricted players can only join as spectators
-  @override
-  final bool restricted;
-
-  @override
-  String toString() {
-    return 'RestrictionsEventData(muted: $muted, restricted: $restricted)';
-  }
+  /// Serializes this RestrictionsEventData to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RestrictionsEventDataImpl &&
+            other is RestrictionsEventData &&
             (identical(other.muted, muted) || other.muted == muted) &&
             (identical(other.restricted, restricted) ||
                 other.restricted == restricted));
@@ -156,43 +46,139 @@ class _$RestrictionsEventDataImpl implements _RestrictionsEventData {
   @override
   int get hashCode => Object.hash(runtimeType, muted, restricted);
 
-  /// Create a copy of RestrictionsEventData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$RestrictionsEventDataImplCopyWith<_$RestrictionsEventDataImpl>
-      get copyWith => __$$RestrictionsEventDataImplCopyWithImpl<
-          _$RestrictionsEventDataImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RestrictionsEventDataImplToJson(
-      this,
-    );
+  String toString() {
+    return 'RestrictionsEventData(muted: $muted, restricted: $restricted)';
   }
 }
 
-abstract class _RestrictionsEventData implements RestrictionsEventData {
-  const factory _RestrictionsEventData(
-      {required final bool muted,
-      required final bool restricted}) = _$RestrictionsEventDataImpl;
+/// @nodoc
+abstract mixin class $RestrictionsEventDataCopyWith<$Res> {
+  factory $RestrictionsEventDataCopyWith(RestrictionsEventData value,
+          $Res Function(RestrictionsEventData) _then) =
+      _$RestrictionsEventDataCopyWithImpl;
+  @useResult
+  $Res call({bool muted, bool restricted});
+}
 
-  factory _RestrictionsEventData.fromJson(Map<String, dynamic> json) =
-      _$RestrictionsEventDataImpl.fromJson;
+/// @nodoc
+class _$RestrictionsEventDataCopyWithImpl<$Res>
+    implements $RestrictionsEventDataCopyWith<$Res> {
+  _$RestrictionsEventDataCopyWithImpl(this._self, this._then);
+
+  final RestrictionsEventData _self;
+  final $Res Function(RestrictionsEventData) _then;
+
+  /// Create a copy of RestrictionsEventData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? muted = null,
+    Object? restricted = null,
+  }) {
+    return _then(_self.copyWith(
+      muted: null == muted
+          ? _self.muted
+          : muted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      restricted: null == restricted
+          ? _self.restricted
+          : restricted // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _RestrictionsEventData implements RestrictionsEventData {
+  const _RestrictionsEventData({required this.muted, required this.restricted});
+  factory _RestrictionsEventData.fromJson(Map<String, dynamic> json) =>
+      _$RestrictionsEventDataFromJson(json);
 
   /// If true - player muted in in-game chat
   @override
-  bool get muted;
+  final bool muted;
 
   /// Restricted players can only join as spectators
   @override
-  bool get restricted;
+  final bool restricted;
 
   /// Create a copy of RestrictionsEventData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$RestrictionsEventDataImplCopyWith<_$RestrictionsEventDataImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$RestrictionsEventDataCopyWith<_RestrictionsEventData> get copyWith =>
+      __$RestrictionsEventDataCopyWithImpl<_RestrictionsEventData>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$RestrictionsEventDataToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _RestrictionsEventData &&
+            (identical(other.muted, muted) || other.muted == muted) &&
+            (identical(other.restricted, restricted) ||
+                other.restricted == restricted));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, muted, restricted);
+
+  @override
+  String toString() {
+    return 'RestrictionsEventData(muted: $muted, restricted: $restricted)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$RestrictionsEventDataCopyWith<$Res>
+    implements $RestrictionsEventDataCopyWith<$Res> {
+  factory _$RestrictionsEventDataCopyWith(_RestrictionsEventData value,
+          $Res Function(_RestrictionsEventData) _then) =
+      __$RestrictionsEventDataCopyWithImpl;
+  @override
+  @useResult
+  $Res call({bool muted, bool restricted});
+}
+
+/// @nodoc
+class __$RestrictionsEventDataCopyWithImpl<$Res>
+    implements _$RestrictionsEventDataCopyWith<$Res> {
+  __$RestrictionsEventDataCopyWithImpl(this._self, this._then);
+
+  final _RestrictionsEventData _self;
+  final $Res Function(_RestrictionsEventData) _then;
+
+  /// Create a copy of RestrictionsEventData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? muted = null,
+    Object? restricted = null,
+  }) {
+    return _then(_RestrictionsEventData(
+      muted: null == muted
+          ? _self.muted
+          : muted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      restricted: null == restricted
+          ? _self.restricted
+          : restricted // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+// dart format on

@@ -12,7 +12,7 @@ part 'package_round.g.dart';
 
 /// Round structure for package
 @Freezed()
-class PackageRound with _$PackageRound {
+abstract class PackageRound with _$PackageRound {
   const factory PackageRound({
     required int? id,
     required PackageEntitiesOrder order,

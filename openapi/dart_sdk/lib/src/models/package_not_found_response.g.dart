@@ -6,14 +6,14 @@ part of 'package_not_found_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageNotFoundResponseImpl _$$PackageNotFoundResponseImplFromJson(
+_PackageNotFoundResponse _$PackageNotFoundResponseFromJson(
         Map<String, dynamic> json) =>
-    _$PackageNotFoundResponseImpl(
+    _PackageNotFoundResponse(
       error: json['error'] as String,
     );
 
-Map<String, dynamic> _$$PackageNotFoundResponseImplToJson(
-        _$PackageNotFoundResponseImpl instance) =>
+Map<String, dynamic> _$PackageNotFoundResponseToJson(
+        _PackageNotFoundResponse instance) =>
     <String, dynamic>{
       'error': instance.error,
     };

@@ -8,7 +8,7 @@ part 'game_not_found_response.freezed.dart';
 part 'game_not_found_response.g.dart';
 
 @Freezed()
-class GameNotFoundResponse with _$GameNotFoundResponse {
+abstract class GameNotFoundResponse with _$GameNotFoundResponse {
   const factory GameNotFoundResponse({
     required String error,
   }) = _GameNotFoundResponse;

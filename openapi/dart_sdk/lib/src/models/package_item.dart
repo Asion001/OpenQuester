@@ -12,7 +12,7 @@ part 'package_item.freezed.dart';
 part 'package_item.g.dart';
 
 @Freezed()
-class PackageItem with _$PackageItem {
+abstract class PackageItem with _$PackageItem {
   const factory PackageItem({
     required int id,
     required String title,

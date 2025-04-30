@@ -6,14 +6,14 @@ part of 'general_error_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GeneralErrorResponseImpl _$$GeneralErrorResponseImplFromJson(
+_GeneralErrorResponse _$GeneralErrorResponseFromJson(
         Map<String, dynamic> json) =>
-    _$GeneralErrorResponseImpl(
+    _GeneralErrorResponse(
       error: json['error'] as String,
     );
 
-Map<String, dynamic> _$$GeneralErrorResponseImplToJson(
-        _$GeneralErrorResponseImpl instance) =>
+Map<String, dynamic> _$GeneralErrorResponseToJson(
+        _GeneralErrorResponse instance) =>
     <String, dynamic>{
       'error': instance.error,
     };

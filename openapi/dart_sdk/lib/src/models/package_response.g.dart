@@ -6,9 +6,8 @@ part of 'package_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageResponseImpl _$$PackageResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$PackageResponseImpl(
+_PackageResponse _$PackageResponseFromJson(Map<String, dynamic> json) =>
+    _PackageResponse(
       id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       description: json['description'] as String?,
@@ -27,8 +26,7 @@ _$PackageResponseImpl _$$PackageResponseImplFromJson(
           : PackageLogoFileItem.fromJson(json['logo'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$PackageResponseImplToJson(
-        _$PackageResponseImpl instance) =>
+Map<String, dynamic> _$PackageResponseToJson(_PackageResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

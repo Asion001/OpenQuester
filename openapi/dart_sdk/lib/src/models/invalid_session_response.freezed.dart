@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,87 +10,58 @@ part of 'invalid_session_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-InvalidSessionResponse _$InvalidSessionResponseFromJson(
-    Map<String, dynamic> json) {
-  return _InvalidSessionResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$InvalidSessionResponse {
-  String get error => throw _privateConstructorUsedError;
-
-  /// Serializes this InvalidSessionResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get error;
 
   /// Create a copy of InvalidSessionResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $InvalidSessionResponseCopyWith<InvalidSessionResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $InvalidSessionResponseCopyWith<$Res> {
-  factory $InvalidSessionResponseCopyWith(InvalidSessionResponse value,
-          $Res Function(InvalidSessionResponse) then) =
-      _$InvalidSessionResponseCopyWithImpl<$Res, InvalidSessionResponse>;
-  @useResult
-  $Res call({String error});
-}
-
-/// @nodoc
-class _$InvalidSessionResponseCopyWithImpl<$Res,
-        $Val extends InvalidSessionResponse>
-    implements $InvalidSessionResponseCopyWith<$Res> {
-  _$InvalidSessionResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of InvalidSessionResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $InvalidSessionResponseCopyWith<InvalidSessionResponse> get copyWith =>
+      _$InvalidSessionResponseCopyWithImpl<InvalidSessionResponse>(
+          this as InvalidSessionResponse, _$identity);
+
+  /// Serializes this InvalidSessionResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_value.copyWith(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is InvalidSessionResponse &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  @override
+  String toString() {
+    return 'InvalidSessionResponse(error: $error)';
   }
 }
 
 /// @nodoc
-abstract class _$$InvalidSessionResponseImplCopyWith<$Res>
-    implements $InvalidSessionResponseCopyWith<$Res> {
-  factory _$$InvalidSessionResponseImplCopyWith(
-          _$InvalidSessionResponseImpl value,
-          $Res Function(_$InvalidSessionResponseImpl) then) =
-      __$$InvalidSessionResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $InvalidSessionResponseCopyWith<$Res> {
+  factory $InvalidSessionResponseCopyWith(InvalidSessionResponse value,
+          $Res Function(InvalidSessionResponse) _then) =
+      _$InvalidSessionResponseCopyWithImpl;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$InvalidSessionResponseImplCopyWithImpl<$Res>
-    extends _$InvalidSessionResponseCopyWithImpl<$Res,
-        _$InvalidSessionResponseImpl>
-    implements _$$InvalidSessionResponseImplCopyWith<$Res> {
-  __$$InvalidSessionResponseImplCopyWithImpl(
-      _$InvalidSessionResponseImpl _value,
-      $Res Function(_$InvalidSessionResponseImpl) _then)
-      : super(_value, _then);
+class _$InvalidSessionResponseCopyWithImpl<$Res>
+    implements $InvalidSessionResponseCopyWith<$Res> {
+  _$InvalidSessionResponseCopyWithImpl(this._self, this._then);
+
+  final InvalidSessionResponse _self;
+  final $Res Function(InvalidSessionResponse) _then;
 
   /// Create a copy of InvalidSessionResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -98,9 +70,9 @@ class __$$InvalidSessionResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$InvalidSessionResponseImpl(
+    return _then(_self.copyWith(
       error: null == error
-          ? _value.error
+          ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -109,25 +81,35 @@ class __$$InvalidSessionResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$InvalidSessionResponseImpl implements _InvalidSessionResponse {
-  const _$InvalidSessionResponseImpl({required this.error});
-
-  factory _$InvalidSessionResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$InvalidSessionResponseImplFromJson(json);
+class _InvalidSessionResponse implements InvalidSessionResponse {
+  const _InvalidSessionResponse({required this.error});
+  factory _InvalidSessionResponse.fromJson(Map<String, dynamic> json) =>
+      _$InvalidSessionResponseFromJson(json);
 
   @override
   final String error;
 
+  /// Create a copy of InvalidSessionResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'InvalidSessionResponse(error: $error)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$InvalidSessionResponseCopyWith<_InvalidSessionResponse> get copyWith =>
+      __$InvalidSessionResponseCopyWithImpl<_InvalidSessionResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$InvalidSessionResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$InvalidSessionResponseImpl &&
+            other is _InvalidSessionResponse &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -135,37 +117,45 @@ class _$InvalidSessionResponseImpl implements _InvalidSessionResponse {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  /// Create a copy of InvalidSessionResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$InvalidSessionResponseImplCopyWith<_$InvalidSessionResponseImpl>
-      get copyWith => __$$InvalidSessionResponseImplCopyWithImpl<
-          _$InvalidSessionResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$InvalidSessionResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'InvalidSessionResponse(error: $error)';
   }
 }
 
-abstract class _InvalidSessionResponse implements InvalidSessionResponse {
-  const factory _InvalidSessionResponse({required final String error}) =
-      _$InvalidSessionResponseImpl;
-
-  factory _InvalidSessionResponse.fromJson(Map<String, dynamic> json) =
-      _$InvalidSessionResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$InvalidSessionResponseCopyWith<$Res>
+    implements $InvalidSessionResponseCopyWith<$Res> {
+  factory _$InvalidSessionResponseCopyWith(_InvalidSessionResponse value,
+          $Res Function(_InvalidSessionResponse) _then) =
+      __$InvalidSessionResponseCopyWithImpl;
   @override
-  String get error;
+  @useResult
+  $Res call({String error});
+}
+
+/// @nodoc
+class __$InvalidSessionResponseCopyWithImpl<$Res>
+    implements _$InvalidSessionResponseCopyWith<$Res> {
+  __$InvalidSessionResponseCopyWithImpl(this._self, this._then);
+
+  final _InvalidSessionResponse _self;
+  final $Res Function(_InvalidSessionResponse) _then;
 
   /// Create a copy of InvalidSessionResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InvalidSessionResponseImplCopyWith<_$InvalidSessionResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_InvalidSessionResponse(
+      error: null == error
+          ? _self.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

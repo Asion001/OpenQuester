@@ -10,7 +10,7 @@ part 'game_create_data.freezed.dart';
 part 'game_create_data.g.dart';
 
 @Freezed()
-class GameCreateData with _$GameCreateData {
+abstract class GameCreateData with _$GameCreateData {
   const factory GameCreateData({
     required String title,
     required int packageId,

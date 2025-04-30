@@ -6,14 +6,14 @@ part of 'package_logo_file_input.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageLogoFileInputImpl _$$PackageLogoFileInputImplFromJson(
+_PackageLogoFileInput _$PackageLogoFileInputFromJson(
         Map<String, dynamic> json) =>
-    _$PackageLogoFileInputImpl(
+    _PackageLogoFileInput(
       file: FileInput.fromJson(json['file'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$PackageLogoFileInputImplToJson(
-        _$PackageLogoFileInputImpl instance) =>
+Map<String, dynamic> _$PackageLogoFileInputToJson(
+        _PackageLogoFileInput instance) =>
     <String, dynamic>{
       'file': instance.file,
     };

@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,83 +10,58 @@ part of 'general_error_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-GeneralErrorResponse _$GeneralErrorResponseFromJson(Map<String, dynamic> json) {
-  return _GeneralErrorResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$GeneralErrorResponse {
-  String get error => throw _privateConstructorUsedError;
-
-  /// Serializes this GeneralErrorResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get error;
 
   /// Create a copy of GeneralErrorResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $GeneralErrorResponseCopyWith<GeneralErrorResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $GeneralErrorResponseCopyWith<$Res> {
-  factory $GeneralErrorResponseCopyWith(GeneralErrorResponse value,
-          $Res Function(GeneralErrorResponse) then) =
-      _$GeneralErrorResponseCopyWithImpl<$Res, GeneralErrorResponse>;
-  @useResult
-  $Res call({String error});
-}
-
-/// @nodoc
-class _$GeneralErrorResponseCopyWithImpl<$Res,
-        $Val extends GeneralErrorResponse>
-    implements $GeneralErrorResponseCopyWith<$Res> {
-  _$GeneralErrorResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of GeneralErrorResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $GeneralErrorResponseCopyWith<GeneralErrorResponse> get copyWith =>
+      _$GeneralErrorResponseCopyWithImpl<GeneralErrorResponse>(
+          this as GeneralErrorResponse, _$identity);
+
+  /// Serializes this GeneralErrorResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_value.copyWith(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is GeneralErrorResponse &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  @override
+  String toString() {
+    return 'GeneralErrorResponse(error: $error)';
   }
 }
 
 /// @nodoc
-abstract class _$$GeneralErrorResponseImplCopyWith<$Res>
-    implements $GeneralErrorResponseCopyWith<$Res> {
-  factory _$$GeneralErrorResponseImplCopyWith(_$GeneralErrorResponseImpl value,
-          $Res Function(_$GeneralErrorResponseImpl) then) =
-      __$$GeneralErrorResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $GeneralErrorResponseCopyWith<$Res> {
+  factory $GeneralErrorResponseCopyWith(GeneralErrorResponse value,
+          $Res Function(GeneralErrorResponse) _then) =
+      _$GeneralErrorResponseCopyWithImpl;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$GeneralErrorResponseImplCopyWithImpl<$Res>
-    extends _$GeneralErrorResponseCopyWithImpl<$Res, _$GeneralErrorResponseImpl>
-    implements _$$GeneralErrorResponseImplCopyWith<$Res> {
-  __$$GeneralErrorResponseImplCopyWithImpl(_$GeneralErrorResponseImpl _value,
-      $Res Function(_$GeneralErrorResponseImpl) _then)
-      : super(_value, _then);
+class _$GeneralErrorResponseCopyWithImpl<$Res>
+    implements $GeneralErrorResponseCopyWith<$Res> {
+  _$GeneralErrorResponseCopyWithImpl(this._self, this._then);
+
+  final GeneralErrorResponse _self;
+  final $Res Function(GeneralErrorResponse) _then;
 
   /// Create a copy of GeneralErrorResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -94,9 +70,9 @@ class __$$GeneralErrorResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$GeneralErrorResponseImpl(
+    return _then(_self.copyWith(
       error: null == error
-          ? _value.error
+          ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -105,25 +81,35 @@ class __$$GeneralErrorResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$GeneralErrorResponseImpl implements _GeneralErrorResponse {
-  const _$GeneralErrorResponseImpl({required this.error});
-
-  factory _$GeneralErrorResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GeneralErrorResponseImplFromJson(json);
+class _GeneralErrorResponse implements GeneralErrorResponse {
+  const _GeneralErrorResponse({required this.error});
+  factory _GeneralErrorResponse.fromJson(Map<String, dynamic> json) =>
+      _$GeneralErrorResponseFromJson(json);
 
   @override
   final String error;
 
+  /// Create a copy of GeneralErrorResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'GeneralErrorResponse(error: $error)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$GeneralErrorResponseCopyWith<_GeneralErrorResponse> get copyWith =>
+      __$GeneralErrorResponseCopyWithImpl<_GeneralErrorResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$GeneralErrorResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GeneralErrorResponseImpl &&
+            other is _GeneralErrorResponse &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -131,38 +117,45 @@ class _$GeneralErrorResponseImpl implements _GeneralErrorResponse {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  /// Create a copy of GeneralErrorResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$GeneralErrorResponseImplCopyWith<_$GeneralErrorResponseImpl>
-      get copyWith =>
-          __$$GeneralErrorResponseImplCopyWithImpl<_$GeneralErrorResponseImpl>(
-              this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$GeneralErrorResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'GeneralErrorResponse(error: $error)';
   }
 }
 
-abstract class _GeneralErrorResponse implements GeneralErrorResponse {
-  const factory _GeneralErrorResponse({required final String error}) =
-      _$GeneralErrorResponseImpl;
-
-  factory _GeneralErrorResponse.fromJson(Map<String, dynamic> json) =
-      _$GeneralErrorResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$GeneralErrorResponseCopyWith<$Res>
+    implements $GeneralErrorResponseCopyWith<$Res> {
+  factory _$GeneralErrorResponseCopyWith(_GeneralErrorResponse value,
+          $Res Function(_GeneralErrorResponse) _then) =
+      __$GeneralErrorResponseCopyWithImpl;
   @override
-  String get error;
+  @useResult
+  $Res call({String error});
+}
+
+/// @nodoc
+class __$GeneralErrorResponseCopyWithImpl<$Res>
+    implements _$GeneralErrorResponseCopyWith<$Res> {
+  __$GeneralErrorResponseCopyWithImpl(this._self, this._then);
+
+  final _GeneralErrorResponse _self;
+  final $Res Function(_GeneralErrorResponse) _then;
 
   /// Create a copy of GeneralErrorResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GeneralErrorResponseImplCopyWith<_$GeneralErrorResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_GeneralErrorResponse(
+      error: null == error
+          ? _self.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

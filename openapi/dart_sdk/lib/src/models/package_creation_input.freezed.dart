@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,136 +10,29 @@ part of 'package_creation_input.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageCreationInput _$PackageCreationInputFromJson(Map<String, dynamic> json) {
-  return _PackageCreationInput.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageCreationInput {
-  PackageCreateInputData get content => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageCreationInput to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  PackageCreateInputData get content;
 
   /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PackageCreationInputCopyWith<PackageCreationInput> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$PackageCreationInputCopyWithImpl<PackageCreationInput>(
+          this as PackageCreationInput, _$identity);
 
-/// @nodoc
-abstract class $PackageCreationInputCopyWith<$Res> {
-  factory $PackageCreationInputCopyWith(PackageCreationInput value,
-          $Res Function(PackageCreationInput) then) =
-      _$PackageCreationInputCopyWithImpl<$Res, PackageCreationInput>;
-  @useResult
-  $Res call({PackageCreateInputData content});
-
-  $PackageCreateInputDataCopyWith<$Res> get content;
-}
-
-/// @nodoc
-class _$PackageCreationInputCopyWithImpl<$Res,
-        $Val extends PackageCreationInput>
-    implements $PackageCreationInputCopyWith<$Res> {
-  _$PackageCreationInputCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PackageCreationInput
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? content = null,
-  }) {
-    return _then(_value.copyWith(
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as PackageCreateInputData,
-    ) as $Val);
-  }
-
-  /// Create a copy of PackageCreationInput
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PackageCreateInputDataCopyWith<$Res> get content {
-    return $PackageCreateInputDataCopyWith<$Res>(_value.content, (value) {
-      return _then(_value.copyWith(content: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$PackageCreationInputImplCopyWith<$Res>
-    implements $PackageCreationInputCopyWith<$Res> {
-  factory _$$PackageCreationInputImplCopyWith(_$PackageCreationInputImpl value,
-          $Res Function(_$PackageCreationInputImpl) then) =
-      __$$PackageCreationInputImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({PackageCreateInputData content});
-
-  @override
-  $PackageCreateInputDataCopyWith<$Res> get content;
-}
-
-/// @nodoc
-class __$$PackageCreationInputImplCopyWithImpl<$Res>
-    extends _$PackageCreationInputCopyWithImpl<$Res, _$PackageCreationInputImpl>
-    implements _$$PackageCreationInputImplCopyWith<$Res> {
-  __$$PackageCreationInputImplCopyWithImpl(_$PackageCreationInputImpl _value,
-      $Res Function(_$PackageCreationInputImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PackageCreationInput
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? content = null,
-  }) {
-    return _then(_$PackageCreationInputImpl(
-      content: null == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as PackageCreateInputData,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PackageCreationInputImpl implements _PackageCreationInput {
-  const _$PackageCreationInputImpl({required this.content});
-
-  factory _$PackageCreationInputImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageCreationInputImplFromJson(json);
-
-  @override
-  final PackageCreateInputData content;
-
-  @override
-  String toString() {
-    return 'PackageCreationInput(content: $content)';
-  }
+  /// Serializes this PackageCreationInput to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageCreationInputImpl &&
+            other is PackageCreationInput &&
             (identical(other.content, content) || other.content == content));
   }
 
@@ -146,39 +40,147 @@ class _$PackageCreationInputImpl implements _PackageCreationInput {
   @override
   int get hashCode => Object.hash(runtimeType, content);
 
-  /// Create a copy of PackageCreationInput
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PackageCreationInputImplCopyWith<_$PackageCreationInputImpl>
-      get copyWith =>
-          __$$PackageCreationInputImplCopyWithImpl<_$PackageCreationInputImpl>(
-              this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PackageCreationInputImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PackageCreationInput(content: $content)';
   }
 }
 
-abstract class _PackageCreationInput implements PackageCreationInput {
-  const factory _PackageCreationInput(
-          {required final PackageCreateInputData content}) =
-      _$PackageCreationInputImpl;
+/// @nodoc
+abstract mixin class $PackageCreationInputCopyWith<$Res> {
+  factory $PackageCreationInputCopyWith(PackageCreationInput value,
+          $Res Function(PackageCreationInput) _then) =
+      _$PackageCreationInputCopyWithImpl;
+  @useResult
+  $Res call({PackageCreateInputData content});
 
-  factory _PackageCreationInput.fromJson(Map<String, dynamic> json) =
-      _$PackageCreationInputImpl.fromJson;
+  $PackageCreateInputDataCopyWith<$Res> get content;
+}
+
+/// @nodoc
+class _$PackageCreationInputCopyWithImpl<$Res>
+    implements $PackageCreationInputCopyWith<$Res> {
+  _$PackageCreationInputCopyWithImpl(this._self, this._then);
+
+  final PackageCreationInput _self;
+  final $Res Function(PackageCreationInput) _then;
+
+  /// Create a copy of PackageCreationInput
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? content = null,
+  }) {
+    return _then(_self.copyWith(
+      content: null == content
+          ? _self.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as PackageCreateInputData,
+    ));
+  }
+
+  /// Create a copy of PackageCreationInput
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PackageCreateInputDataCopyWith<$Res> get content {
+    return $PackageCreateInputDataCopyWith<$Res>(_self.content, (value) {
+      return _then(_self.copyWith(content: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _PackageCreationInput implements PackageCreationInput {
+  const _PackageCreationInput({required this.content});
+  factory _PackageCreationInput.fromJson(Map<String, dynamic> json) =>
+      _$PackageCreationInputFromJson(json);
 
   @override
-  PackageCreateInputData get content;
+  final PackageCreateInputData content;
 
   /// Create a copy of PackageCreationInput
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageCreationInputImplCopyWith<_$PackageCreationInputImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$PackageCreationInputCopyWith<_PackageCreationInput> get copyWith =>
+      __$PackageCreationInputCopyWithImpl<_PackageCreationInput>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PackageCreationInputToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PackageCreationInput &&
+            (identical(other.content, content) || other.content == content));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, content);
+
+  @override
+  String toString() {
+    return 'PackageCreationInput(content: $content)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$PackageCreationInputCopyWith<$Res>
+    implements $PackageCreationInputCopyWith<$Res> {
+  factory _$PackageCreationInputCopyWith(_PackageCreationInput value,
+          $Res Function(_PackageCreationInput) _then) =
+      __$PackageCreationInputCopyWithImpl;
+  @override
+  @useResult
+  $Res call({PackageCreateInputData content});
+
+  @override
+  $PackageCreateInputDataCopyWith<$Res> get content;
+}
+
+/// @nodoc
+class __$PackageCreationInputCopyWithImpl<$Res>
+    implements _$PackageCreationInputCopyWith<$Res> {
+  __$PackageCreationInputCopyWithImpl(this._self, this._then);
+
+  final _PackageCreationInput _self;
+  final $Res Function(_PackageCreationInput) _then;
+
+  /// Create a copy of PackageCreationInput
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? content = null,
+  }) {
+    return _then(_PackageCreationInput(
+      content: null == content
+          ? _self.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as PackageCreateInputData,
+    ));
+  }
+
+  /// Create a copy of PackageCreationInput
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PackageCreateInputDataCopyWith<$Res> get content {
+    return $PackageCreateInputDataCopyWith<$Res>(_self.content, (value) {
+      return _then(_self.copyWith(content: value));
+    });
+  }
+}
+
+// dart format on

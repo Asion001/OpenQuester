@@ -13,7 +13,7 @@ part 'package_logo_file_item.g.dart';
 
 /// Logo file structure for package creation. Only images acceptable
 @Freezed()
-class PackageLogoFileItem with _$PackageLogoFileItem {
+abstract class PackageLogoFileItem with _$PackageLogoFileItem {
   const factory PackageLogoFileItem({
     required FileItem file,
   }) = _PackageLogoFileItem;

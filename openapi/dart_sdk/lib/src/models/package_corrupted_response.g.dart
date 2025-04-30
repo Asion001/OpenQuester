@@ -6,14 +6,14 @@ part of 'package_corrupted_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageCorruptedResponseImpl _$$PackageCorruptedResponseImplFromJson(
+_PackageCorruptedResponse _$PackageCorruptedResponseFromJson(
         Map<String, dynamic> json) =>
-    _$PackageCorruptedResponseImpl(
+    _PackageCorruptedResponse(
       error: json['error'] as String,
     );
 
-Map<String, dynamic> _$$PackageCorruptedResponseImplToJson(
-        _$PackageCorruptedResponseImpl instance) =>
+Map<String, dynamic> _$PackageCorruptedResponseToJson(
+        _PackageCorruptedResponse instance) =>
     <String, dynamic>{
       'error': instance.error,
     };

@@ -13,7 +13,7 @@ part 'game_state.freezed.dart';
 part 'game_state.g.dart';
 
 @Freezed()
-class GameState with _$GameState {
+abstract class GameState with _$GameState {
   const factory GameState({
     required GameStateQuestionState? questionState,
     required bool isPaused,

@@ -8,7 +8,7 @@ part 'player_meta.freezed.dart';
 part 'player_meta.g.dart';
 
 @Freezed()
-class PlayerMeta with _$PlayerMeta {
+abstract class PlayerMeta with _$PlayerMeta {
   const factory PlayerMeta({
     required int id,
     required String username,

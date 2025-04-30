@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,184 +10,35 @@ part of 'answers.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-Answers _$AnswersFromJson(Map<String, dynamic> json) {
-  return _Answers.fromJson(json);
-}
 
 /// @nodoc
 mixin _$Answers {
-  int? get id => throw _privateConstructorUsedError;
-  int get order => throw _privateConstructorUsedError;
+  int? get id;
+  PackageEntitiesOrder get order;
 
   /// Text of the answer option
-  String? get text => throw _privateConstructorUsedError;
+  String? get text;
 
   /// File associated with the answer option
-  FileItem? get file => throw _privateConstructorUsedError;
-
-  /// Serializes this Answers to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  FileItem? get file;
 
   /// Create a copy of Answers
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $AnswersCopyWith<Answers> get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $AnswersCopyWith<$Res> {
-  factory $AnswersCopyWith(Answers value, $Res Function(Answers) then) =
-      _$AnswersCopyWithImpl<$Res, Answers>;
-  @useResult
-  $Res call({int? id, int order, String? text, FileItem? file});
-
-  $FileItemCopyWith<$Res>? get file;
-}
-
-/// @nodoc
-class _$AnswersCopyWithImpl<$Res, $Val extends Answers>
-    implements $AnswersCopyWith<$Res> {
-  _$AnswersCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of Answers
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? order = null,
-    Object? text = freezed,
-    Object? file = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      file: freezed == file
-          ? _value.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as FileItem?,
-    ) as $Val);
-  }
+  $AnswersCopyWith<Answers> get copyWith =>
+      _$AnswersCopyWithImpl<Answers>(this as Answers, _$identity);
 
-  /// Create a copy of Answers
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $FileItemCopyWith<$Res>? get file {
-    if (_value.file == null) {
-      return null;
-    }
-
-    return $FileItemCopyWith<$Res>(_value.file!, (value) {
-      return _then(_value.copyWith(file: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$AnswersImplCopyWith<$Res> implements $AnswersCopyWith<$Res> {
-  factory _$$AnswersImplCopyWith(
-          _$AnswersImpl value, $Res Function(_$AnswersImpl) then) =
-      __$$AnswersImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int? id, int order, String? text, FileItem? file});
-
-  @override
-  $FileItemCopyWith<$Res>? get file;
-}
-
-/// @nodoc
-class __$$AnswersImplCopyWithImpl<$Res>
-    extends _$AnswersCopyWithImpl<$Res, _$AnswersImpl>
-    implements _$$AnswersImplCopyWith<$Res> {
-  __$$AnswersImplCopyWithImpl(
-      _$AnswersImpl _value, $Res Function(_$AnswersImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of Answers
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? order = null,
-    Object? text = freezed,
-    Object? file = freezed,
-  }) {
-    return _then(_$AnswersImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      file: freezed == file
-          ? _value.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as FileItem?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$AnswersImpl implements _Answers {
-  const _$AnswersImpl(
-      {required this.id, required this.order, required this.text, this.file});
-
-  factory _$AnswersImpl.fromJson(Map<String, dynamic> json) =>
-      _$$AnswersImplFromJson(json);
-
-  @override
-  final int? id;
-  @override
-  final int order;
-
-  /// Text of the answer option
-  @override
-  final String? text;
-
-  /// File associated with the answer option
-  @override
-  final FileItem? file;
-
-  @override
-  String toString() {
-    return 'Answers(id: $id, order: $order, text: $text, file: $file)';
-  }
+  /// Serializes this Answers to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AnswersImpl &&
+            other is Answers &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.text, text) || other.text == text) &&
@@ -197,48 +49,195 @@ class _$AnswersImpl implements _Answers {
   @override
   int get hashCode => Object.hash(runtimeType, id, order, text, file);
 
-  /// Create a copy of Answers
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$AnswersImplCopyWith<_$AnswersImpl> get copyWith =>
-      __$$AnswersImplCopyWithImpl<_$AnswersImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$AnswersImplToJson(
-      this,
-    );
+  String toString() {
+    return 'Answers(id: $id, order: $order, text: $text, file: $file)';
   }
 }
 
-abstract class _Answers implements Answers {
-  const factory _Answers(
-      {required final int? id,
-      required final int order,
-      required final String? text,
-      final FileItem? file}) = _$AnswersImpl;
+/// @nodoc
+abstract mixin class $AnswersCopyWith<$Res> {
+  factory $AnswersCopyWith(Answers value, $Res Function(Answers) _then) =
+      _$AnswersCopyWithImpl;
+  @useResult
+  $Res call(
+      {int? id, PackageEntitiesOrder order, String? text, FileItem? file});
 
-  factory _Answers.fromJson(Map<String, dynamic> json) = _$AnswersImpl.fromJson;
+  $FileItemCopyWith<$Res>? get file;
+}
+
+/// @nodoc
+class _$AnswersCopyWithImpl<$Res> implements $AnswersCopyWith<$Res> {
+  _$AnswersCopyWithImpl(this._self, this._then);
+
+  final Answers _self;
+  final $Res Function(Answers) _then;
+
+  /// Create a copy of Answers
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? order = null,
+    Object? text = freezed,
+    Object? file = freezed,
+  }) {
+    return _then(_self.copyWith(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      order: null == order
+          ? _self.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as PackageEntitiesOrder,
+      text: freezed == text
+          ? _self.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
+      file: freezed == file
+          ? _self.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as FileItem?,
+    ));
+  }
+
+  /// Create a copy of Answers
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FileItemCopyWith<$Res>? get file {
+    if (_self.file == null) {
+      return null;
+    }
+
+    return $FileItemCopyWith<$Res>(_self.file!, (value) {
+      return _then(_self.copyWith(file: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _Answers implements Answers {
+  const _Answers(
+      {required this.id, required this.order, required this.text, this.file});
+  factory _Answers.fromJson(Map<String, dynamic> json) =>
+      _$AnswersFromJson(json);
 
   @override
-  int? get id;
+  final int? id;
   @override
-  int get order;
+  final PackageEntitiesOrder order;
 
   /// Text of the answer option
   @override
-  String? get text;
+  final String? text;
 
   /// File associated with the answer option
   @override
-  FileItem? get file;
+  final FileItem? file;
 
   /// Create a copy of Answers
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AnswersImplCopyWith<_$AnswersImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$AnswersCopyWith<_Answers> get copyWith =>
+      __$AnswersCopyWithImpl<_Answers>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$AnswersToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Answers &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.text, text) || other.text == text) &&
+            (identical(other.file, file) || other.file == file));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, order, text, file);
+
+  @override
+  String toString() {
+    return 'Answers(id: $id, order: $order, text: $text, file: $file)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$AnswersCopyWith<$Res> implements $AnswersCopyWith<$Res> {
+  factory _$AnswersCopyWith(_Answers value, $Res Function(_Answers) _then) =
+      __$AnswersCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int? id, PackageEntitiesOrder order, String? text, FileItem? file});
+
+  @override
+  $FileItemCopyWith<$Res>? get file;
+}
+
+/// @nodoc
+class __$AnswersCopyWithImpl<$Res> implements _$AnswersCopyWith<$Res> {
+  __$AnswersCopyWithImpl(this._self, this._then);
+
+  final _Answers _self;
+  final $Res Function(_Answers) _then;
+
+  /// Create a copy of Answers
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = freezed,
+    Object? order = null,
+    Object? text = freezed,
+    Object? file = freezed,
+  }) {
+    return _then(_Answers(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      order: null == order
+          ? _self.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as PackageEntitiesOrder,
+      text: freezed == text
+          ? _self.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
+      file: freezed == file
+          ? _self.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as FileItem?,
+    ));
+  }
+
+  /// Create a copy of Answers
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FileItemCopyWith<$Res>? get file {
+    if (_self.file == null) {
+      return null;
+    }
+
+    return $FileItemCopyWith<$Res>(_self.file!, (value) {
+      return _then(_self.copyWith(file: value));
+    });
+  }
+}
+
+// dart format on

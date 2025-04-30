@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,82 +10,58 @@ part of 'logout_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-LogoutResponse _$LogoutResponseFromJson(Map<String, dynamic> json) {
-  return _LogoutResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$LogoutResponse {
-  String get message => throw _privateConstructorUsedError;
-
-  /// Serializes this LogoutResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get message;
 
   /// Create a copy of LogoutResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LogoutResponseCopyWith<LogoutResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $LogoutResponseCopyWith<$Res> {
-  factory $LogoutResponseCopyWith(
-          LogoutResponse value, $Res Function(LogoutResponse) then) =
-      _$LogoutResponseCopyWithImpl<$Res, LogoutResponse>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class _$LogoutResponseCopyWithImpl<$Res, $Val extends LogoutResponse>
-    implements $LogoutResponseCopyWith<$Res> {
-  _$LogoutResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of LogoutResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $LogoutResponseCopyWith<LogoutResponse> get copyWith =>
+      _$LogoutResponseCopyWithImpl<LogoutResponse>(
+          this as LogoutResponse, _$identity);
+
+  /// Serializes this LogoutResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_value.copyWith(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is LogoutResponse &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @override
+  String toString() {
+    return 'LogoutResponse(message: $message)';
   }
 }
 
 /// @nodoc
-abstract class _$$LogoutResponseImplCopyWith<$Res>
-    implements $LogoutResponseCopyWith<$Res> {
-  factory _$$LogoutResponseImplCopyWith(_$LogoutResponseImpl value,
-          $Res Function(_$LogoutResponseImpl) then) =
-      __$$LogoutResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $LogoutResponseCopyWith<$Res> {
+  factory $LogoutResponseCopyWith(
+          LogoutResponse value, $Res Function(LogoutResponse) _then) =
+      _$LogoutResponseCopyWithImpl;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$LogoutResponseImplCopyWithImpl<$Res>
-    extends _$LogoutResponseCopyWithImpl<$Res, _$LogoutResponseImpl>
-    implements _$$LogoutResponseImplCopyWith<$Res> {
-  __$$LogoutResponseImplCopyWithImpl(
-      _$LogoutResponseImpl _value, $Res Function(_$LogoutResponseImpl) _then)
-      : super(_value, _then);
+class _$LogoutResponseCopyWithImpl<$Res>
+    implements $LogoutResponseCopyWith<$Res> {
+  _$LogoutResponseCopyWithImpl(this._self, this._then);
+
+  final LogoutResponse _self;
+  final $Res Function(LogoutResponse) _then;
 
   /// Create a copy of LogoutResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -93,9 +70,9 @@ class __$$LogoutResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$LogoutResponseImpl(
+    return _then(_self.copyWith(
       message: null == message
-          ? _value.message
+          ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -104,25 +81,34 @@ class __$$LogoutResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$LogoutResponseImpl implements _LogoutResponse {
-  const _$LogoutResponseImpl({required this.message});
-
-  factory _$LogoutResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$LogoutResponseImplFromJson(json);
+class _LogoutResponse implements LogoutResponse {
+  const _LogoutResponse({required this.message});
+  factory _LogoutResponse.fromJson(Map<String, dynamic> json) =>
+      _$LogoutResponseFromJson(json);
 
   @override
   final String message;
 
+  /// Create a copy of LogoutResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'LogoutResponse(message: $message)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$LogoutResponseCopyWith<_LogoutResponse> get copyWith =>
+      __$LogoutResponseCopyWithImpl<_LogoutResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$LogoutResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LogoutResponseImpl &&
+            other is _LogoutResponse &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -130,37 +116,45 @@ class _$LogoutResponseImpl implements _LogoutResponse {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of LogoutResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$LogoutResponseImplCopyWith<_$LogoutResponseImpl> get copyWith =>
-      __$$LogoutResponseImplCopyWithImpl<_$LogoutResponseImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$LogoutResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'LogoutResponse(message: $message)';
   }
 }
 
-abstract class _LogoutResponse implements LogoutResponse {
-  const factory _LogoutResponse({required final String message}) =
-      _$LogoutResponseImpl;
-
-  factory _LogoutResponse.fromJson(Map<String, dynamic> json) =
-      _$LogoutResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$LogoutResponseCopyWith<$Res>
+    implements $LogoutResponseCopyWith<$Res> {
+  factory _$LogoutResponseCopyWith(
+          _LogoutResponse value, $Res Function(_LogoutResponse) _then) =
+      __$LogoutResponseCopyWithImpl;
   @override
-  String get message;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$LogoutResponseCopyWithImpl<$Res>
+    implements _$LogoutResponseCopyWith<$Res> {
+  __$LogoutResponseCopyWithImpl(this._self, this._then);
+
+  final _LogoutResponse _self;
+  final $Res Function(_LogoutResponse) _then;
 
   /// Create a copy of LogoutResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LogoutResponseImplCopyWith<_$LogoutResponseImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_LogoutResponse(
+      message: null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

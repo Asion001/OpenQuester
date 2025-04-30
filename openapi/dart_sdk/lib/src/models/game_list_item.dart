@@ -12,7 +12,7 @@ part 'game_list_item.freezed.dart';
 part 'game_list_item.g.dart';
 
 @Freezed()
-class GameListItem with _$GameListItem {
+abstract class GameListItem with _$GameListItem {
   const factory GameListItem({
     required String id,
     required ShortUserInfo createdBy,

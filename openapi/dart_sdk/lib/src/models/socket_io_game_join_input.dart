@@ -10,7 +10,7 @@ part 'socket_io_game_join_input.freezed.dart';
 part 'socket_io_game_join_input.g.dart';
 
 @Freezed()
-class SocketIOGameJoinInput with _$SocketIOGameJoinInput {
+abstract class SocketIOGameJoinInput with _$SocketIOGameJoinInput {
   const factory SocketIOGameJoinInput({
     required String gameId,
     required SocketIOGameJoinInputRole role,

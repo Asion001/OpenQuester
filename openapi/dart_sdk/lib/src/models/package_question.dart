@@ -13,7 +13,7 @@ part 'package_question.g.dart';
 
 /// Base properties for all question types
 @Freezed()
-class PackageQuestion with _$PackageQuestion {
+abstract class PackageQuestion with _$PackageQuestion {
   const factory PackageQuestion({
     required int? id,
     required PackageEntitiesOrder order,

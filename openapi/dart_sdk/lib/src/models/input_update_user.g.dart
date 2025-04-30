@@ -6,9 +6,8 @@ part of 'input_update_user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$InputUpdateUserImpl _$$InputUpdateUserImplFromJson(
-        Map<String, dynamic> json) =>
-    _$InputUpdateUserImpl(
+_InputUpdateUser _$InputUpdateUserFromJson(Map<String, dynamic> json) =>
+    _InputUpdateUser(
       username: json['username'] as String?,
       email: json['email'] as String?,
       birthday: json['birthday'] == null
@@ -17,8 +16,7 @@ _$InputUpdateUserImpl _$$InputUpdateUserImplFromJson(
       avatar: json['avatar'] as String?,
     );
 
-Map<String, dynamic> _$$InputUpdateUserImplToJson(
-        _$InputUpdateUserImpl instance) =>
+Map<String, dynamic> _$InputUpdateUserToJson(_InputUpdateUser instance) =>
     <String, dynamic>{
       'username': instance.username,
       'email': instance.email,

@@ -6,9 +6,9 @@ part of 'package_create_input_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageCreateInputDataImpl _$$PackageCreateInputDataImplFromJson(
+_PackageCreateInputData _$PackageCreateInputDataFromJson(
         Map<String, dynamic> json) =>
-    _$PackageCreateInputDataImpl(
+    _PackageCreateInputData(
       title: json['title'] as String,
       description: json['description'] as String?,
       language: json['language'] as String?,
@@ -24,8 +24,8 @@ _$PackageCreateInputDataImpl _$$PackageCreateInputDataImplFromJson(
           : PackageLogoFileInput.fromJson(json['logo'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$PackageCreateInputDataImplToJson(
-        _$PackageCreateInputDataImpl instance) =>
+Map<String, dynamic> _$PackageCreateInputDataToJson(
+        _PackageCreateInputData instance) =>
     <String, dynamic>{
       'title': instance.title,
       'description': instance.description,

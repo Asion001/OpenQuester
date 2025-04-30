@@ -6,8 +6,8 @@ part of 'hidden_question.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$HiddenQuestionImpl _$$HiddenQuestionImplFromJson(Map<String, dynamic> json) =>
-    _$HiddenQuestionImpl(
+_HiddenQuestion _$HiddenQuestionFromJson(Map<String, dynamic> json) =>
+    _HiddenQuestion(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -26,8 +26,7 @@ _$HiddenQuestionImpl _$$HiddenQuestionImplFromJson(Map<String, dynamic> json) =>
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$HiddenQuestionImplToJson(
-        _$HiddenQuestionImpl instance) =>
+Map<String, dynamic> _$HiddenQuestionToJson(_HiddenQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

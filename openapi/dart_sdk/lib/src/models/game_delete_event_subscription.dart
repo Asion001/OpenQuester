@@ -12,7 +12,7 @@ part 'game_delete_event_subscription.freezed.dart';
 part 'game_delete_event_subscription.g.dart';
 
 @Freezed()
-class GameDeleteEventSubscription with _$GameDeleteEventSubscription {
+abstract class GameDeleteEventSubscription with _$GameDeleteEventSubscription {
   const factory GameDeleteEventSubscription({
     required GameDeleteEventSubscriptionEvent event,
     required Data data,

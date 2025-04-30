@@ -6,14 +6,14 @@ part of 'socket_io_game_join_meta.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SocketIOGameJoinMetaImpl _$$SocketIOGameJoinMetaImplFromJson(
+_SocketIOGameJoinMeta _$SocketIOGameJoinMetaFromJson(
         Map<String, dynamic> json) =>
-    _$SocketIOGameJoinMetaImpl(
+    _SocketIOGameJoinMeta(
       title: json['title'] as String,
     );
 
-Map<String, dynamic> _$$SocketIOGameJoinMetaImplToJson(
-        _$SocketIOGameJoinMetaImpl instance) =>
+Map<String, dynamic> _$SocketIOGameJoinMetaToJson(
+        _SocketIOGameJoinMeta instance) =>
     <String, dynamic>{
       'title': instance.title,
     };

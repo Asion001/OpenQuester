@@ -6,9 +6,9 @@ part of 'socket_io_game_join_event_payload.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SocketIOGameJoinEventPayloadImpl _$$SocketIOGameJoinEventPayloadImplFromJson(
+_SocketIOGameJoinEventPayload _$SocketIOGameJoinEventPayloadFromJson(
         Map<String, dynamic> json) =>
-    _$SocketIOGameJoinEventPayloadImpl(
+    _SocketIOGameJoinEventPayload(
       meta: SocketIOGameJoinMeta.fromJson(json['meta'] as Map<String, dynamic>),
       players: (json['players'] as List<dynamic>)
           .map((e) => PlayerData.fromJson(e as Map<String, dynamic>))
@@ -20,8 +20,8 @@ _$SocketIOGameJoinEventPayloadImpl _$$SocketIOGameJoinEventPayloadImplFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$SocketIOGameJoinEventPayloadImplToJson(
-        _$SocketIOGameJoinEventPayloadImpl instance) =>
+Map<String, dynamic> _$SocketIOGameJoinEventPayloadToJson(
+        _SocketIOGameJoinEventPayload instance) =>
     <String, dynamic>{
       'meta': instance.meta,
       'players': instance.players,

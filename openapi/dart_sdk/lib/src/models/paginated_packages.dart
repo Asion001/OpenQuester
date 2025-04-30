@@ -11,7 +11,7 @@ part 'paginated_packages.freezed.dart';
 part 'paginated_packages.g.dart';
 
 @Freezed()
-class PaginatedPackages with _$PaginatedPackages {
+abstract class PaginatedPackages with _$PaginatedPackages {
   const factory PaginatedPackages({
     required List<PackageResponse> data,
     required PageInfo pageInfo,

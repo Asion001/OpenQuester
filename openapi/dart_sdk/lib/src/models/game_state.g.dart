@@ -6,8 +6,7 @@ part of 'game_state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GameStateImpl _$$GameStateImplFromJson(Map<String, dynamic> json) =>
-    _$GameStateImpl(
+_GameState _$GameStateFromJson(Map<String, dynamic> json) => _GameState(
       questionState: json['questionState'] == null
           ? null
           : GameStateQuestionState.fromJson(json['questionState'] as String?),
@@ -27,7 +26,7 @@ _$GameStateImpl _$$GameStateImplFromJson(Map<String, dynamic> json) =>
           : GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$GameStateImplToJson(_$GameStateImpl instance) =>
+Map<String, dynamic> _$GameStateToJson(_GameState instance) =>
     <String, dynamic>{
       'questionState': instance.questionState,
       'isPaused': instance.isPaused,

@@ -6,14 +6,12 @@ part of 'file_link_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$FileLinkResponseImpl _$$FileLinkResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$FileLinkResponseImpl(
+_FileLinkResponse _$FileLinkResponseFromJson(Map<String, dynamic> json) =>
+    _FileLinkResponse(
       url: json['url'] as String,
     );
 
-Map<String, dynamic> _$$FileLinkResponseImplToJson(
-        _$FileLinkResponseImpl instance) =>
+Map<String, dynamic> _$FileLinkResponseToJson(_FileLinkResponse instance) =>
     <String, dynamic>{
       'url': instance.url,
     };

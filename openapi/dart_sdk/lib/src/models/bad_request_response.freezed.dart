@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,82 +10,58 @@ part of 'bad_request_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-BadRequestResponse _$BadRequestResponseFromJson(Map<String, dynamic> json) {
-  return _BadRequestResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$BadRequestResponse {
-  String get error => throw _privateConstructorUsedError;
-
-  /// Serializes this BadRequestResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get error;
 
   /// Create a copy of BadRequestResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $BadRequestResponseCopyWith<BadRequestResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $BadRequestResponseCopyWith<$Res> {
-  factory $BadRequestResponseCopyWith(
-          BadRequestResponse value, $Res Function(BadRequestResponse) then) =
-      _$BadRequestResponseCopyWithImpl<$Res, BadRequestResponse>;
-  @useResult
-  $Res call({String error});
-}
-
-/// @nodoc
-class _$BadRequestResponseCopyWithImpl<$Res, $Val extends BadRequestResponse>
-    implements $BadRequestResponseCopyWith<$Res> {
-  _$BadRequestResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of BadRequestResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $BadRequestResponseCopyWith<BadRequestResponse> get copyWith =>
+      _$BadRequestResponseCopyWithImpl<BadRequestResponse>(
+          this as BadRequestResponse, _$identity);
+
+  /// Serializes this BadRequestResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_value.copyWith(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is BadRequestResponse &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  @override
+  String toString() {
+    return 'BadRequestResponse(error: $error)';
   }
 }
 
 /// @nodoc
-abstract class _$$BadRequestResponseImplCopyWith<$Res>
-    implements $BadRequestResponseCopyWith<$Res> {
-  factory _$$BadRequestResponseImplCopyWith(_$BadRequestResponseImpl value,
-          $Res Function(_$BadRequestResponseImpl) then) =
-      __$$BadRequestResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $BadRequestResponseCopyWith<$Res> {
+  factory $BadRequestResponseCopyWith(
+          BadRequestResponse value, $Res Function(BadRequestResponse) _then) =
+      _$BadRequestResponseCopyWithImpl;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$BadRequestResponseImplCopyWithImpl<$Res>
-    extends _$BadRequestResponseCopyWithImpl<$Res, _$BadRequestResponseImpl>
-    implements _$$BadRequestResponseImplCopyWith<$Res> {
-  __$$BadRequestResponseImplCopyWithImpl(_$BadRequestResponseImpl _value,
-      $Res Function(_$BadRequestResponseImpl) _then)
-      : super(_value, _then);
+class _$BadRequestResponseCopyWithImpl<$Res>
+    implements $BadRequestResponseCopyWith<$Res> {
+  _$BadRequestResponseCopyWithImpl(this._self, this._then);
+
+  final BadRequestResponse _self;
+  final $Res Function(BadRequestResponse) _then;
 
   /// Create a copy of BadRequestResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -93,9 +70,9 @@ class __$$BadRequestResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$BadRequestResponseImpl(
+    return _then(_self.copyWith(
       error: null == error
-          ? _value.error
+          ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -104,25 +81,34 @@ class __$$BadRequestResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$BadRequestResponseImpl implements _BadRequestResponse {
-  const _$BadRequestResponseImpl({required this.error});
-
-  factory _$BadRequestResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$BadRequestResponseImplFromJson(json);
+class _BadRequestResponse implements BadRequestResponse {
+  const _BadRequestResponse({required this.error});
+  factory _BadRequestResponse.fromJson(Map<String, dynamic> json) =>
+      _$BadRequestResponseFromJson(json);
 
   @override
   final String error;
 
+  /// Create a copy of BadRequestResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'BadRequestResponse(error: $error)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$BadRequestResponseCopyWith<_BadRequestResponse> get copyWith =>
+      __$BadRequestResponseCopyWithImpl<_BadRequestResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$BadRequestResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$BadRequestResponseImpl &&
+            other is _BadRequestResponse &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -130,37 +116,45 @@ class _$BadRequestResponseImpl implements _BadRequestResponse {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  /// Create a copy of BadRequestResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$BadRequestResponseImplCopyWith<_$BadRequestResponseImpl> get copyWith =>
-      __$$BadRequestResponseImplCopyWithImpl<_$BadRequestResponseImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$BadRequestResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'BadRequestResponse(error: $error)';
   }
 }
 
-abstract class _BadRequestResponse implements BadRequestResponse {
-  const factory _BadRequestResponse({required final String error}) =
-      _$BadRequestResponseImpl;
-
-  factory _BadRequestResponse.fromJson(Map<String, dynamic> json) =
-      _$BadRequestResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$BadRequestResponseCopyWith<$Res>
+    implements $BadRequestResponseCopyWith<$Res> {
+  factory _$BadRequestResponseCopyWith(
+          _BadRequestResponse value, $Res Function(_BadRequestResponse) _then) =
+      __$BadRequestResponseCopyWithImpl;
   @override
-  String get error;
+  @useResult
+  $Res call({String error});
+}
+
+/// @nodoc
+class __$BadRequestResponseCopyWithImpl<$Res>
+    implements _$BadRequestResponseCopyWith<$Res> {
+  __$BadRequestResponseCopyWithImpl(this._self, this._then);
+
+  final _BadRequestResponse _self;
+  final $Res Function(_BadRequestResponse) _then;
 
   /// Create a copy of BadRequestResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$BadRequestResponseImplCopyWith<_$BadRequestResponseImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_BadRequestResponse(
+      error: null == error
+          ? _self.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

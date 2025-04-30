@@ -8,7 +8,7 @@ part 'socket_io_game_join_meta.freezed.dart';
 part 'socket_io_game_join_meta.g.dart';
 
 @Freezed()
-class SocketIOGameJoinMeta with _$SocketIOGameJoinMeta {
+abstract class SocketIOGameJoinMeta with _$SocketIOGameJoinMeta {
   const factory SocketIOGameJoinMeta({
     required String title,
   }) = _SocketIOGameJoinMeta;

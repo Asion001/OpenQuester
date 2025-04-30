@@ -8,7 +8,7 @@ part 'restrictions_event_data.freezed.dart';
 part 'restrictions_event_data.g.dart';
 
 @Freezed()
-class RestrictionsEventData with _$RestrictionsEventData {
+abstract class RestrictionsEventData with _$RestrictionsEventData {
   const factory RestrictionsEventData({
     /// If true - player muted in in-game chat
     required bool muted,

@@ -6,15 +6,15 @@ part of 'package_creation_input.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageCreationInputImpl _$$PackageCreationInputImplFromJson(
+_PackageCreationInput _$PackageCreationInputFromJson(
         Map<String, dynamic> json) =>
-    _$PackageCreationInputImpl(
+    _PackageCreationInput(
       content: PackageCreateInputData.fromJson(
           json['content'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$PackageCreationInputImplToJson(
-        _$PackageCreationInputImpl instance) =>
+Map<String, dynamic> _$PackageCreationInputToJson(
+        _PackageCreationInput instance) =>
     <String, dynamic>{
       'content': instance.content,
     };

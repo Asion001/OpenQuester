@@ -11,7 +11,7 @@ part 'paginated_games.freezed.dart';
 part 'paginated_games.g.dart';
 
 @Freezed()
-class PaginatedGames with _$PaginatedGames {
+abstract class PaginatedGames with _$PaginatedGames {
   const factory PaginatedGames({
     required List<GameListItem> data,
     required PageInfo pageInfo,

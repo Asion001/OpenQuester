@@ -9,7 +9,7 @@ part 'package_tag.g.dart';
 
 /// Individual tag object
 @Freezed()
-class PackageTag with _$PackageTag {
+abstract class PackageTag with _$PackageTag {
   const factory PackageTag({
     required int id,
 

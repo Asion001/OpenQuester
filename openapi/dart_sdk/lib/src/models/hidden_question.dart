@@ -14,7 +14,7 @@ part 'hidden_question.freezed.dart';
 part 'hidden_question.g.dart';
 
 @Freezed()
-class HiddenQuestion with _$HiddenQuestion {
+abstract class HiddenQuestion with _$HiddenQuestion {
   const factory HiddenQuestion({
     required int? id,
     required PackageEntitiesOrder order,

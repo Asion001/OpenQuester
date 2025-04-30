@@ -12,7 +12,7 @@ part 'package_theme.g.dart';
 
 /// Theme structure for package
 @Freezed()
-class PackageTheme with _$PackageTheme {
+abstract class PackageTheme with _$PackageTheme {
   const factory PackageTheme({
     required int? id,
     required PackageEntitiesOrder order,

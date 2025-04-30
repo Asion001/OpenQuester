@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,83 +10,58 @@ part of 'game_not_found_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-GameNotFoundResponse _$GameNotFoundResponseFromJson(Map<String, dynamic> json) {
-  return _GameNotFoundResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$GameNotFoundResponse {
-  String get error => throw _privateConstructorUsedError;
-
-  /// Serializes this GameNotFoundResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get error;
 
   /// Create a copy of GameNotFoundResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $GameNotFoundResponseCopyWith<GameNotFoundResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $GameNotFoundResponseCopyWith<$Res> {
-  factory $GameNotFoundResponseCopyWith(GameNotFoundResponse value,
-          $Res Function(GameNotFoundResponse) then) =
-      _$GameNotFoundResponseCopyWithImpl<$Res, GameNotFoundResponse>;
-  @useResult
-  $Res call({String error});
-}
-
-/// @nodoc
-class _$GameNotFoundResponseCopyWithImpl<$Res,
-        $Val extends GameNotFoundResponse>
-    implements $GameNotFoundResponseCopyWith<$Res> {
-  _$GameNotFoundResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of GameNotFoundResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $GameNotFoundResponseCopyWith<GameNotFoundResponse> get copyWith =>
+      _$GameNotFoundResponseCopyWithImpl<GameNotFoundResponse>(
+          this as GameNotFoundResponse, _$identity);
+
+  /// Serializes this GameNotFoundResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_value.copyWith(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is GameNotFoundResponse &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  @override
+  String toString() {
+    return 'GameNotFoundResponse(error: $error)';
   }
 }
 
 /// @nodoc
-abstract class _$$GameNotFoundResponseImplCopyWith<$Res>
-    implements $GameNotFoundResponseCopyWith<$Res> {
-  factory _$$GameNotFoundResponseImplCopyWith(_$GameNotFoundResponseImpl value,
-          $Res Function(_$GameNotFoundResponseImpl) then) =
-      __$$GameNotFoundResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $GameNotFoundResponseCopyWith<$Res> {
+  factory $GameNotFoundResponseCopyWith(GameNotFoundResponse value,
+          $Res Function(GameNotFoundResponse) _then) =
+      _$GameNotFoundResponseCopyWithImpl;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$GameNotFoundResponseImplCopyWithImpl<$Res>
-    extends _$GameNotFoundResponseCopyWithImpl<$Res, _$GameNotFoundResponseImpl>
-    implements _$$GameNotFoundResponseImplCopyWith<$Res> {
-  __$$GameNotFoundResponseImplCopyWithImpl(_$GameNotFoundResponseImpl _value,
-      $Res Function(_$GameNotFoundResponseImpl) _then)
-      : super(_value, _then);
+class _$GameNotFoundResponseCopyWithImpl<$Res>
+    implements $GameNotFoundResponseCopyWith<$Res> {
+  _$GameNotFoundResponseCopyWithImpl(this._self, this._then);
+
+  final GameNotFoundResponse _self;
+  final $Res Function(GameNotFoundResponse) _then;
 
   /// Create a copy of GameNotFoundResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -94,9 +70,9 @@ class __$$GameNotFoundResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$GameNotFoundResponseImpl(
+    return _then(_self.copyWith(
       error: null == error
-          ? _value.error
+          ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -105,25 +81,35 @@ class __$$GameNotFoundResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$GameNotFoundResponseImpl implements _GameNotFoundResponse {
-  const _$GameNotFoundResponseImpl({required this.error});
-
-  factory _$GameNotFoundResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GameNotFoundResponseImplFromJson(json);
+class _GameNotFoundResponse implements GameNotFoundResponse {
+  const _GameNotFoundResponse({required this.error});
+  factory _GameNotFoundResponse.fromJson(Map<String, dynamic> json) =>
+      _$GameNotFoundResponseFromJson(json);
 
   @override
   final String error;
 
+  /// Create a copy of GameNotFoundResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'GameNotFoundResponse(error: $error)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$GameNotFoundResponseCopyWith<_GameNotFoundResponse> get copyWith =>
+      __$GameNotFoundResponseCopyWithImpl<_GameNotFoundResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$GameNotFoundResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GameNotFoundResponseImpl &&
+            other is _GameNotFoundResponse &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -131,38 +117,45 @@ class _$GameNotFoundResponseImpl implements _GameNotFoundResponse {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  /// Create a copy of GameNotFoundResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$GameNotFoundResponseImplCopyWith<_$GameNotFoundResponseImpl>
-      get copyWith =>
-          __$$GameNotFoundResponseImplCopyWithImpl<_$GameNotFoundResponseImpl>(
-              this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$GameNotFoundResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'GameNotFoundResponse(error: $error)';
   }
 }
 
-abstract class _GameNotFoundResponse implements GameNotFoundResponse {
-  const factory _GameNotFoundResponse({required final String error}) =
-      _$GameNotFoundResponseImpl;
-
-  factory _GameNotFoundResponse.fromJson(Map<String, dynamic> json) =
-      _$GameNotFoundResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$GameNotFoundResponseCopyWith<$Res>
+    implements $GameNotFoundResponseCopyWith<$Res> {
+  factory _$GameNotFoundResponseCopyWith(_GameNotFoundResponse value,
+          $Res Function(_GameNotFoundResponse) _then) =
+      __$GameNotFoundResponseCopyWithImpl;
   @override
-  String get error;
+  @useResult
+  $Res call({String error});
+}
+
+/// @nodoc
+class __$GameNotFoundResponseCopyWithImpl<$Res>
+    implements _$GameNotFoundResponseCopyWith<$Res> {
+  __$GameNotFoundResponseCopyWithImpl(this._self, this._then);
+
+  final _GameNotFoundResponse _self;
+  final $Res Function(_GameNotFoundResponse) _then;
 
   /// Create a copy of GameNotFoundResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GameNotFoundResponseImplCopyWith<_$GameNotFoundResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_GameNotFoundResponse(
+      error: null == error
+          ? _self.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

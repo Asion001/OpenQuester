@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,83 +10,58 @@ part of 'socket_io_game_join_meta.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-SocketIOGameJoinMeta _$SocketIOGameJoinMetaFromJson(Map<String, dynamic> json) {
-  return _SocketIOGameJoinMeta.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SocketIOGameJoinMeta {
-  String get title => throw _privateConstructorUsedError;
-
-  /// Serializes this SocketIOGameJoinMeta to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get title;
 
   /// Create a copy of SocketIOGameJoinMeta
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $SocketIOGameJoinMetaCopyWith<SocketIOGameJoinMeta> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SocketIOGameJoinMetaCopyWith<$Res> {
-  factory $SocketIOGameJoinMetaCopyWith(SocketIOGameJoinMeta value,
-          $Res Function(SocketIOGameJoinMeta) then) =
-      _$SocketIOGameJoinMetaCopyWithImpl<$Res, SocketIOGameJoinMeta>;
-  @useResult
-  $Res call({String title});
-}
-
-/// @nodoc
-class _$SocketIOGameJoinMetaCopyWithImpl<$Res,
-        $Val extends SocketIOGameJoinMeta>
-    implements $SocketIOGameJoinMetaCopyWith<$Res> {
-  _$SocketIOGameJoinMetaCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of SocketIOGameJoinMeta
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $SocketIOGameJoinMetaCopyWith<SocketIOGameJoinMeta> get copyWith =>
+      _$SocketIOGameJoinMetaCopyWithImpl<SocketIOGameJoinMeta>(
+          this as SocketIOGameJoinMeta, _$identity);
+
+  /// Serializes this SocketIOGameJoinMeta to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? title = null,
-  }) {
-    return _then(_value.copyWith(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SocketIOGameJoinMeta &&
+            (identical(other.title, title) || other.title == title));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, title);
+
+  @override
+  String toString() {
+    return 'SocketIOGameJoinMeta(title: $title)';
   }
 }
 
 /// @nodoc
-abstract class _$$SocketIOGameJoinMetaImplCopyWith<$Res>
-    implements $SocketIOGameJoinMetaCopyWith<$Res> {
-  factory _$$SocketIOGameJoinMetaImplCopyWith(_$SocketIOGameJoinMetaImpl value,
-          $Res Function(_$SocketIOGameJoinMetaImpl) then) =
-      __$$SocketIOGameJoinMetaImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SocketIOGameJoinMetaCopyWith<$Res> {
+  factory $SocketIOGameJoinMetaCopyWith(SocketIOGameJoinMeta value,
+          $Res Function(SocketIOGameJoinMeta) _then) =
+      _$SocketIOGameJoinMetaCopyWithImpl;
   @useResult
   $Res call({String title});
 }
 
 /// @nodoc
-class __$$SocketIOGameJoinMetaImplCopyWithImpl<$Res>
-    extends _$SocketIOGameJoinMetaCopyWithImpl<$Res, _$SocketIOGameJoinMetaImpl>
-    implements _$$SocketIOGameJoinMetaImplCopyWith<$Res> {
-  __$$SocketIOGameJoinMetaImplCopyWithImpl(_$SocketIOGameJoinMetaImpl _value,
-      $Res Function(_$SocketIOGameJoinMetaImpl) _then)
-      : super(_value, _then);
+class _$SocketIOGameJoinMetaCopyWithImpl<$Res>
+    implements $SocketIOGameJoinMetaCopyWith<$Res> {
+  _$SocketIOGameJoinMetaCopyWithImpl(this._self, this._then);
+
+  final SocketIOGameJoinMeta _self;
+  final $Res Function(SocketIOGameJoinMeta) _then;
 
   /// Create a copy of SocketIOGameJoinMeta
   /// with the given fields replaced by the non-null parameter values.
@@ -94,9 +70,9 @@ class __$$SocketIOGameJoinMetaImplCopyWithImpl<$Res>
   $Res call({
     Object? title = null,
   }) {
-    return _then(_$SocketIOGameJoinMetaImpl(
+    return _then(_self.copyWith(
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -105,25 +81,35 @@ class __$$SocketIOGameJoinMetaImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SocketIOGameJoinMetaImpl implements _SocketIOGameJoinMeta {
-  const _$SocketIOGameJoinMetaImpl({required this.title});
-
-  factory _$SocketIOGameJoinMetaImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SocketIOGameJoinMetaImplFromJson(json);
+class _SocketIOGameJoinMeta implements SocketIOGameJoinMeta {
+  const _SocketIOGameJoinMeta({required this.title});
+  factory _SocketIOGameJoinMeta.fromJson(Map<String, dynamic> json) =>
+      _$SocketIOGameJoinMetaFromJson(json);
 
   @override
   final String title;
 
+  /// Create a copy of SocketIOGameJoinMeta
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SocketIOGameJoinMeta(title: $title)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SocketIOGameJoinMetaCopyWith<_SocketIOGameJoinMeta> get copyWith =>
+      __$SocketIOGameJoinMetaCopyWithImpl<_SocketIOGameJoinMeta>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SocketIOGameJoinMetaToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SocketIOGameJoinMetaImpl &&
+            other is _SocketIOGameJoinMeta &&
             (identical(other.title, title) || other.title == title));
   }
 
@@ -131,38 +117,45 @@ class _$SocketIOGameJoinMetaImpl implements _SocketIOGameJoinMeta {
   @override
   int get hashCode => Object.hash(runtimeType, title);
 
-  /// Create a copy of SocketIOGameJoinMeta
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SocketIOGameJoinMetaImplCopyWith<_$SocketIOGameJoinMetaImpl>
-      get copyWith =>
-          __$$SocketIOGameJoinMetaImplCopyWithImpl<_$SocketIOGameJoinMetaImpl>(
-              this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SocketIOGameJoinMetaImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SocketIOGameJoinMeta(title: $title)';
   }
 }
 
-abstract class _SocketIOGameJoinMeta implements SocketIOGameJoinMeta {
-  const factory _SocketIOGameJoinMeta({required final String title}) =
-      _$SocketIOGameJoinMetaImpl;
-
-  factory _SocketIOGameJoinMeta.fromJson(Map<String, dynamic> json) =
-      _$SocketIOGameJoinMetaImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$SocketIOGameJoinMetaCopyWith<$Res>
+    implements $SocketIOGameJoinMetaCopyWith<$Res> {
+  factory _$SocketIOGameJoinMetaCopyWith(_SocketIOGameJoinMeta value,
+          $Res Function(_SocketIOGameJoinMeta) _then) =
+      __$SocketIOGameJoinMetaCopyWithImpl;
   @override
-  String get title;
+  @useResult
+  $Res call({String title});
+}
+
+/// @nodoc
+class __$SocketIOGameJoinMetaCopyWithImpl<$Res>
+    implements _$SocketIOGameJoinMetaCopyWith<$Res> {
+  __$SocketIOGameJoinMetaCopyWithImpl(this._self, this._then);
+
+  final _SocketIOGameJoinMeta _self;
+  final $Res Function(_SocketIOGameJoinMeta) _then;
 
   /// Create a copy of SocketIOGameJoinMeta
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SocketIOGameJoinMetaImplCopyWith<_$SocketIOGameJoinMetaImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? title = null,
+  }) {
+    return _then(_SocketIOGameJoinMeta(
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

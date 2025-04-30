@@ -8,7 +8,7 @@ part 'package_corrupted_response.freezed.dart';
 part 'package_corrupted_response.g.dart';
 
 @Freezed()
-class PackageCorruptedResponse with _$PackageCorruptedResponse {
+abstract class PackageCorruptedResponse with _$PackageCorruptedResponse {
   const factory PackageCorruptedResponse({
     required String error,
   }) = _PackageCorruptedResponse;

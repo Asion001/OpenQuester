@@ -14,7 +14,7 @@ part 'package_response.freezed.dart';
 part 'package_response.g.dart';
 
 @Freezed()
-class PackageResponse with _$PackageResponse {
+abstract class PackageResponse with _$PackageResponse {
   const factory PackageResponse({
     required int id,
     required String title,

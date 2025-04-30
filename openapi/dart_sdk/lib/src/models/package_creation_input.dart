@@ -10,7 +10,7 @@ part 'package_creation_input.freezed.dart';
 part 'package_creation_input.g.dart';
 
 @Freezed()
-class PackageCreationInput with _$PackageCreationInput {
+abstract class PackageCreationInput with _$PackageCreationInput {
   const factory PackageCreationInput({
     required PackageCreateInputData content,
   }) = _PackageCreationInput;

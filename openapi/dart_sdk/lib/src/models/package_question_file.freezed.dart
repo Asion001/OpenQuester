@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,183 +10,34 @@ part of 'package_question_file.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageQuestionFile _$PackageQuestionFileFromJson(Map<String, dynamic> json) {
-  return _PackageQuestionFile.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageQuestionFile {
-  int? get id => throw _privateConstructorUsedError;
-  int get order => throw _privateConstructorUsedError;
-  FileItem get file => throw _privateConstructorUsedError;
+  int? get id;
+  PackageEntitiesOrder get order;
+  FileItem get file;
 
   /// Display duration in milliseconds
-  int get displayTime => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageQuestionFile to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get displayTime;
 
   /// Create a copy of PackageQuestionFile
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PackageQuestionFileCopyWith<PackageQuestionFile> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$PackageQuestionFileCopyWithImpl<PackageQuestionFile>(
+          this as PackageQuestionFile, _$identity);
 
-/// @nodoc
-abstract class $PackageQuestionFileCopyWith<$Res> {
-  factory $PackageQuestionFileCopyWith(
-          PackageQuestionFile value, $Res Function(PackageQuestionFile) then) =
-      _$PackageQuestionFileCopyWithImpl<$Res, PackageQuestionFile>;
-  @useResult
-  $Res call({int? id, int order, FileItem file, int displayTime});
-
-  $FileItemCopyWith<$Res> get file;
-}
-
-/// @nodoc
-class _$PackageQuestionFileCopyWithImpl<$Res, $Val extends PackageQuestionFile>
-    implements $PackageQuestionFileCopyWith<$Res> {
-  _$PackageQuestionFileCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PackageQuestionFile
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? order = null,
-    Object? file = null,
-    Object? displayTime = null,
-  }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      file: null == file
-          ? _value.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as FileItem,
-      displayTime: null == displayTime
-          ? _value.displayTime
-          : displayTime // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
-
-  /// Create a copy of PackageQuestionFile
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $FileItemCopyWith<$Res> get file {
-    return $FileItemCopyWith<$Res>(_value.file, (value) {
-      return _then(_value.copyWith(file: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$PackageQuestionFileImplCopyWith<$Res>
-    implements $PackageQuestionFileCopyWith<$Res> {
-  factory _$$PackageQuestionFileImplCopyWith(_$PackageQuestionFileImpl value,
-          $Res Function(_$PackageQuestionFileImpl) then) =
-      __$$PackageQuestionFileImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int? id, int order, FileItem file, int displayTime});
-
-  @override
-  $FileItemCopyWith<$Res> get file;
-}
-
-/// @nodoc
-class __$$PackageQuestionFileImplCopyWithImpl<$Res>
-    extends _$PackageQuestionFileCopyWithImpl<$Res, _$PackageQuestionFileImpl>
-    implements _$$PackageQuestionFileImplCopyWith<$Res> {
-  __$$PackageQuestionFileImplCopyWithImpl(_$PackageQuestionFileImpl _value,
-      $Res Function(_$PackageQuestionFileImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PackageQuestionFile
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = freezed,
-    Object? order = null,
-    Object? file = null,
-    Object? displayTime = null,
-  }) {
-    return _then(_$PackageQuestionFileImpl(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      order: null == order
-          ? _value.order
-          : order // ignore: cast_nullable_to_non_nullable
-              as int,
-      file: null == file
-          ? _value.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as FileItem,
-      displayTime: null == displayTime
-          ? _value.displayTime
-          : displayTime // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PackageQuestionFileImpl implements _PackageQuestionFile {
-  const _$PackageQuestionFileImpl(
-      {required this.id,
-      required this.order,
-      required this.file,
-      this.displayTime = 5000});
-
-  factory _$PackageQuestionFileImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageQuestionFileImplFromJson(json);
-
-  @override
-  final int? id;
-  @override
-  final int order;
-  @override
-  final FileItem file;
-
-  /// Display duration in milliseconds
-  @override
-  @JsonKey()
-  final int displayTime;
-
-  @override
-  String toString() {
-    return 'PackageQuestionFile(id: $id, order: $order, file: $file, displayTime: $displayTime)';
-  }
+  /// Serializes this PackageQuestionFile to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageQuestionFileImpl &&
+            other is PackageQuestionFile &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.order, order) || other.order == order) &&
             (identical(other.file, file) || other.file == file) &&
@@ -197,48 +49,196 @@ class _$PackageQuestionFileImpl implements _PackageQuestionFile {
   @override
   int get hashCode => Object.hash(runtimeType, id, order, file, displayTime);
 
+  @override
+  String toString() {
+    return 'PackageQuestionFile(id: $id, order: $order, file: $file, displayTime: $displayTime)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $PackageQuestionFileCopyWith<$Res> {
+  factory $PackageQuestionFileCopyWith(
+          PackageQuestionFile value, $Res Function(PackageQuestionFile) _then) =
+      _$PackageQuestionFileCopyWithImpl;
+  @useResult
+  $Res call(
+      {int? id, PackageEntitiesOrder order, FileItem file, int displayTime});
+
+  $FileItemCopyWith<$Res> get file;
+}
+
+/// @nodoc
+class _$PackageQuestionFileCopyWithImpl<$Res>
+    implements $PackageQuestionFileCopyWith<$Res> {
+  _$PackageQuestionFileCopyWithImpl(this._self, this._then);
+
+  final PackageQuestionFile _self;
+  final $Res Function(PackageQuestionFile) _then;
+
   /// Create a copy of PackageQuestionFile
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? order = null,
+    Object? file = null,
+    Object? displayTime = null,
+  }) {
+    return _then(_self.copyWith(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      order: null == order
+          ? _self.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as PackageEntitiesOrder,
+      file: null == file
+          ? _self.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as FileItem,
+      displayTime: null == displayTime
+          ? _self.displayTime
+          : displayTime // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+
+  /// Create a copy of PackageQuestionFile
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$PackageQuestionFileImplCopyWith<_$PackageQuestionFileImpl> get copyWith =>
-      __$$PackageQuestionFileImplCopyWithImpl<_$PackageQuestionFileImpl>(
+  $FileItemCopyWith<$Res> get file {
+    return $FileItemCopyWith<$Res>(_self.file, (value) {
+      return _then(_self.copyWith(file: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _PackageQuestionFile implements PackageQuestionFile {
+  const _PackageQuestionFile(
+      {required this.id,
+      required this.order,
+      required this.file,
+      this.displayTime = 5000});
+  factory _PackageQuestionFile.fromJson(Map<String, dynamic> json) =>
+      _$PackageQuestionFileFromJson(json);
+
+  @override
+  final int? id;
+  @override
+  final PackageEntitiesOrder order;
+  @override
+  final FileItem file;
+
+  /// Display duration in milliseconds
+  @override
+  @JsonKey()
+  final int displayTime;
+
+  /// Create a copy of PackageQuestionFile
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PackageQuestionFileCopyWith<_PackageQuestionFile> get copyWith =>
+      __$PackageQuestionFileCopyWithImpl<_PackageQuestionFile>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PackageQuestionFileImplToJson(
+    return _$PackageQuestionFileToJson(
       this,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PackageQuestionFile &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.order, order) || other.order == order) &&
+            (identical(other.file, file) || other.file == file) &&
+            (identical(other.displayTime, displayTime) ||
+                other.displayTime == displayTime));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, order, file, displayTime);
+
+  @override
+  String toString() {
+    return 'PackageQuestionFile(id: $id, order: $order, file: $file, displayTime: $displayTime)';
+  }
 }
 
-abstract class _PackageQuestionFile implements PackageQuestionFile {
-  const factory _PackageQuestionFile(
-      {required final int? id,
-      required final int order,
-      required final FileItem file,
-      final int displayTime}) = _$PackageQuestionFileImpl;
+/// @nodoc
+abstract mixin class _$PackageQuestionFileCopyWith<$Res>
+    implements $PackageQuestionFileCopyWith<$Res> {
+  factory _$PackageQuestionFileCopyWith(_PackageQuestionFile value,
+          $Res Function(_PackageQuestionFile) _then) =
+      __$PackageQuestionFileCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int? id, PackageEntitiesOrder order, FileItem file, int displayTime});
 
-  factory _PackageQuestionFile.fromJson(Map<String, dynamic> json) =
-      _$PackageQuestionFileImpl.fromJson;
+  @override
+  $FileItemCopyWith<$Res> get file;
+}
 
-  @override
-  int? get id;
-  @override
-  int get order;
-  @override
-  FileItem get file;
+/// @nodoc
+class __$PackageQuestionFileCopyWithImpl<$Res>
+    implements _$PackageQuestionFileCopyWith<$Res> {
+  __$PackageQuestionFileCopyWithImpl(this._self, this._then);
 
-  /// Display duration in milliseconds
-  @override
-  int get displayTime;
+  final _PackageQuestionFile _self;
+  final $Res Function(_PackageQuestionFile) _then;
 
   /// Create a copy of PackageQuestionFile
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageQuestionFileImplCopyWith<_$PackageQuestionFileImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = freezed,
+    Object? order = null,
+    Object? file = null,
+    Object? displayTime = null,
+  }) {
+    return _then(_PackageQuestionFile(
+      id: freezed == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      order: null == order
+          ? _self.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as PackageEntitiesOrder,
+      file: null == file
+          ? _self.file
+          : file // ignore: cast_nullable_to_non_nullable
+              as FileItem,
+      displayTime: null == displayTime
+          ? _self.displayTime
+          : displayTime // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+
+  /// Create a copy of PackageQuestionFile
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FileItemCopyWith<$Res> get file {
+    return $FileItemCopyWith<$Res>(_self.file, (value) {
+      return _then(_self.copyWith(file: value));
+    });
+  }
 }
+
+// dart format on

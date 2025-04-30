@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,51 +10,88 @@ part of 'package_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageResponse _$PackageResponseFromJson(Map<String, dynamic> json) {
-  return _PackageResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageResponse {
-  int get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  ShortUserInfo get author => throw _privateConstructorUsedError;
+  int get id;
+  String get title;
+  String? get description;
+  DateTime get createdAt;
+  ShortUserInfo get author;
 
   /// Package age restriction
-  AgeRestriction get ageRestriction => throw _privateConstructorUsedError;
-  String? get language => throw _privateConstructorUsedError;
+  AgeRestriction get ageRestriction;
+  String? get language;
 
   /// Rounds in the package
-  List<PackageRound> get rounds => throw _privateConstructorUsedError;
+  List<PackageRound> get rounds;
 
   /// Tags for the package. Can be null or an array of tag objects
-  List<PackageTag>? get tags => throw _privateConstructorUsedError;
+  List<PackageTag>? get tags;
 
   /// Logo file for the package
-  PackageLogoFileItem? get logo => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  PackageLogoFileItem? get logo;
 
   /// Create a copy of PackageResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PackageResponseCopyWith<PackageResponse> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$PackageResponseCopyWithImpl<PackageResponse>(
+          this as PackageResponse, _$identity);
+
+  /// Serializes this PackageResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PackageResponse &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.author, author) || other.author == author) &&
+            (identical(other.ageRestriction, ageRestriction) ||
+                other.ageRestriction == ageRestriction) &&
+            (identical(other.language, language) ||
+                other.language == language) &&
+            const DeepCollectionEquality().equals(other.rounds, rounds) &&
+            const DeepCollectionEquality().equals(other.tags, tags) &&
+            (identical(other.logo, logo) || other.logo == logo));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      description,
+      createdAt,
+      author,
+      ageRestriction,
+      language,
+      const DeepCollectionEquality().hash(rounds),
+      const DeepCollectionEquality().hash(tags),
+      logo);
+
+  @override
+  String toString() {
+    return 'PackageResponse(id: $id, title: $title, description: $description, createdAt: $createdAt, author: $author, ageRestriction: $ageRestriction, language: $language, rounds: $rounds, tags: $tags, logo: $logo)';
+  }
 }
 
 /// @nodoc
-abstract class $PackageResponseCopyWith<$Res> {
+abstract mixin class $PackageResponseCopyWith<$Res> {
   factory $PackageResponseCopyWith(
-          PackageResponse value, $Res Function(PackageResponse) then) =
-      _$PackageResponseCopyWithImpl<$Res, PackageResponse>;
+          PackageResponse value, $Res Function(PackageResponse) _then) =
+      _$PackageResponseCopyWithImpl;
   @useResult
   $Res call(
       {int id,
@@ -72,14 +110,12 @@ abstract class $PackageResponseCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
+class _$PackageResponseCopyWithImpl<$Res>
     implements $PackageResponseCopyWith<$Res> {
-  _$PackageResponseCopyWithImpl(this._value, this._then);
+  _$PackageResponseCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final PackageResponse _self;
+  final $Res Function(PackageResponse) _then;
 
   /// Create a copy of PackageResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -97,48 +133,48 @@ class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
     Object? tags = freezed,
     Object? logo = freezed,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       title: null == title
-          ? _value.title
+          ? _self.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       description: freezed == description
-          ? _value.description
+          ? _self.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: null == createdAt
-          ? _value.createdAt
+          ? _self.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       author: null == author
-          ? _value.author
+          ? _self.author
           : author // ignore: cast_nullable_to_non_nullable
               as ShortUserInfo,
       ageRestriction: null == ageRestriction
-          ? _value.ageRestriction
+          ? _self.ageRestriction
           : ageRestriction // ignore: cast_nullable_to_non_nullable
               as AgeRestriction,
       language: freezed == language
-          ? _value.language
+          ? _self.language
           : language // ignore: cast_nullable_to_non_nullable
               as String?,
       rounds: null == rounds
-          ? _value.rounds
+          ? _self.rounds
           : rounds // ignore: cast_nullable_to_non_nullable
               as List<PackageRound>,
       tags: freezed == tags
-          ? _value.tags
+          ? _self.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<PackageTag>?,
       logo: freezed == logo
-          ? _value.logo
+          ? _self.logo
           : logo // ignore: cast_nullable_to_non_nullable
               as PackageLogoFileItem?,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of PackageResponse
@@ -146,8 +182,8 @@ class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
   @override
   @pragma('vm:prefer-inline')
   $ShortUserInfoCopyWith<$Res> get author {
-    return $ShortUserInfoCopyWith<$Res>(_value.author, (value) {
-      return _then(_value.copyWith(author: value) as $Val);
+    return $ShortUserInfoCopyWith<$Res>(_self.author, (value) {
+      return _then(_self.copyWith(author: value));
     });
   }
 
@@ -156,115 +192,20 @@ class _$PackageResponseCopyWithImpl<$Res, $Val extends PackageResponse>
   @override
   @pragma('vm:prefer-inline')
   $PackageLogoFileItemCopyWith<$Res>? get logo {
-    if (_value.logo == null) {
+    if (_self.logo == null) {
       return null;
     }
 
-    return $PackageLogoFileItemCopyWith<$Res>(_value.logo!, (value) {
-      return _then(_value.copyWith(logo: value) as $Val);
+    return $PackageLogoFileItemCopyWith<$Res>(_self.logo!, (value) {
+      return _then(_self.copyWith(logo: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$PackageResponseImplCopyWith<$Res>
-    implements $PackageResponseCopyWith<$Res> {
-  factory _$$PackageResponseImplCopyWith(_$PackageResponseImpl value,
-          $Res Function(_$PackageResponseImpl) then) =
-      __$$PackageResponseImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {int id,
-      String title,
-      String? description,
-      DateTime createdAt,
-      ShortUserInfo author,
-      AgeRestriction ageRestriction,
-      String? language,
-      List<PackageRound> rounds,
-      List<PackageTag>? tags,
-      PackageLogoFileItem? logo});
-
-  @override
-  $ShortUserInfoCopyWith<$Res> get author;
-  @override
-  $PackageLogoFileItemCopyWith<$Res>? get logo;
-}
-
-/// @nodoc
-class __$$PackageResponseImplCopyWithImpl<$Res>
-    extends _$PackageResponseCopyWithImpl<$Res, _$PackageResponseImpl>
-    implements _$$PackageResponseImplCopyWith<$Res> {
-  __$$PackageResponseImplCopyWithImpl(
-      _$PackageResponseImpl _value, $Res Function(_$PackageResponseImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PackageResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? title = null,
-    Object? description = freezed,
-    Object? createdAt = null,
-    Object? author = null,
-    Object? ageRestriction = null,
-    Object? language = freezed,
-    Object? rounds = null,
-    Object? tags = freezed,
-    Object? logo = freezed,
-  }) {
-    return _then(_$PackageResponseImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      author: null == author
-          ? _value.author
-          : author // ignore: cast_nullable_to_non_nullable
-              as ShortUserInfo,
-      ageRestriction: null == ageRestriction
-          ? _value.ageRestriction
-          : ageRestriction // ignore: cast_nullable_to_non_nullable
-              as AgeRestriction,
-      language: freezed == language
-          ? _value.language
-          : language // ignore: cast_nullable_to_non_nullable
-              as String?,
-      rounds: null == rounds
-          ? _value._rounds
-          : rounds // ignore: cast_nullable_to_non_nullable
-              as List<PackageRound>,
-      tags: freezed == tags
-          ? _value._tags
-          : tags // ignore: cast_nullable_to_non_nullable
-              as List<PackageTag>?,
-      logo: freezed == logo
-          ? _value.logo
-          : logo // ignore: cast_nullable_to_non_nullable
-              as PackageLogoFileItem?,
-    ));
-  }
-}
-
-/// @nodoc
 @JsonSerializable()
-class _$PackageResponseImpl implements _PackageResponse {
-  const _$PackageResponseImpl(
+class _PackageResponse implements PackageResponse {
+  const _PackageResponse(
       {required this.id,
       required this.title,
       required this.description,
@@ -277,9 +218,8 @@ class _$PackageResponseImpl implements _PackageResponse {
       this.logo})
       : _rounds = rounds,
         _tags = tags;
-
-  factory _$PackageResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageResponseImplFromJson(json);
+  factory _PackageResponse.fromJson(Map<String, dynamic> json) =>
+      _$PackageResponseFromJson(json);
 
   @override
   final int id;
@@ -326,16 +266,26 @@ class _$PackageResponseImpl implements _PackageResponse {
   @override
   final PackageLogoFileItem? logo;
 
+  /// Create a copy of PackageResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PackageResponse(id: $id, title: $title, description: $description, createdAt: $createdAt, author: $author, ageRestriction: $ageRestriction, language: $language, rounds: $rounds, tags: $tags, logo: $logo)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PackageResponseCopyWith<_PackageResponse> get copyWith =>
+      __$PackageResponseCopyWithImpl<_PackageResponse>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PackageResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageResponseImpl &&
+            other is _PackageResponse &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
@@ -367,72 +317,129 @@ class _$PackageResponseImpl implements _PackageResponse {
       const DeepCollectionEquality().hash(_tags),
       logo);
 
-  /// Create a copy of PackageResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PackageResponseImplCopyWith<_$PackageResponseImpl> get copyWith =>
-      __$$PackageResponseImplCopyWithImpl<_$PackageResponseImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PackageResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PackageResponse(id: $id, title: $title, description: $description, createdAt: $createdAt, author: $author, ageRestriction: $ageRestriction, language: $language, rounds: $rounds, tags: $tags, logo: $logo)';
   }
 }
 
-abstract class _PackageResponse implements PackageResponse {
-  const factory _PackageResponse(
-      {required final int id,
-      required final String title,
-      required final String? description,
-      required final DateTime createdAt,
-      required final ShortUserInfo author,
-      required final AgeRestriction ageRestriction,
-      required final String? language,
-      required final List<PackageRound> rounds,
-      required final List<PackageTag>? tags,
-      final PackageLogoFileItem? logo}) = _$PackageResponseImpl;
+/// @nodoc
+abstract mixin class _$PackageResponseCopyWith<$Res>
+    implements $PackageResponseCopyWith<$Res> {
+  factory _$PackageResponseCopyWith(
+          _PackageResponse value, $Res Function(_PackageResponse) _then) =
+      __$PackageResponseCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int id,
+      String title,
+      String? description,
+      DateTime createdAt,
+      ShortUserInfo author,
+      AgeRestriction ageRestriction,
+      String? language,
+      List<PackageRound> rounds,
+      List<PackageTag>? tags,
+      PackageLogoFileItem? logo});
 
-  factory _PackageResponse.fromJson(Map<String, dynamic> json) =
-      _$PackageResponseImpl.fromJson;
+  @override
+  $ShortUserInfoCopyWith<$Res> get author;
+  @override
+  $PackageLogoFileItemCopyWith<$Res>? get logo;
+}
 
-  @override
-  int get id;
-  @override
-  String get title;
-  @override
-  String? get description;
-  @override
-  DateTime get createdAt;
-  @override
-  ShortUserInfo get author;
+/// @nodoc
+class __$PackageResponseCopyWithImpl<$Res>
+    implements _$PackageResponseCopyWith<$Res> {
+  __$PackageResponseCopyWithImpl(this._self, this._then);
 
-  /// Package age restriction
-  @override
-  AgeRestriction get ageRestriction;
-  @override
-  String? get language;
-
-  /// Rounds in the package
-  @override
-  List<PackageRound> get rounds;
-
-  /// Tags for the package. Can be null or an array of tag objects
-  @override
-  List<PackageTag>? get tags;
-
-  /// Logo file for the package
-  @override
-  PackageLogoFileItem? get logo;
+  final _PackageResponse _self;
+  final $Res Function(_PackageResponse) _then;
 
   /// Create a copy of PackageResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageResponseImplCopyWith<_$PackageResponseImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? description = freezed,
+    Object? createdAt = null,
+    Object? author = null,
+    Object? ageRestriction = null,
+    Object? language = freezed,
+    Object? rounds = null,
+    Object? tags = freezed,
+    Object? logo = freezed,
+  }) {
+    return _then(_PackageResponse(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: freezed == description
+          ? _self.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: null == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      author: null == author
+          ? _self.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as ShortUserInfo,
+      ageRestriction: null == ageRestriction
+          ? _self.ageRestriction
+          : ageRestriction // ignore: cast_nullable_to_non_nullable
+              as AgeRestriction,
+      language: freezed == language
+          ? _self.language
+          : language // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rounds: null == rounds
+          ? _self._rounds
+          : rounds // ignore: cast_nullable_to_non_nullable
+              as List<PackageRound>,
+      tags: freezed == tags
+          ? _self._tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<PackageTag>?,
+      logo: freezed == logo
+          ? _self.logo
+          : logo // ignore: cast_nullable_to_non_nullable
+              as PackageLogoFileItem?,
+    ));
+  }
+
+  /// Create a copy of PackageResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ShortUserInfoCopyWith<$Res> get author {
+    return $ShortUserInfoCopyWith<$Res>(_self.author, (value) {
+      return _then(_self.copyWith(author: value));
+    });
+  }
+
+  /// Create a copy of PackageResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PackageLogoFileItemCopyWith<$Res>? get logo {
+    if (_self.logo == null) {
+      return null;
+    }
+
+    return $PackageLogoFileItemCopyWith<$Res>(_self.logo!, (value) {
+      return _then(_self.copyWith(logo: value));
+    });
+  }
 }
+
+// dart format on

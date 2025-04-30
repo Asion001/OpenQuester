@@ -10,7 +10,7 @@ part 'response_user.freezed.dart';
 part 'response_user.g.dart';
 
 @Freezed()
-class ResponseUser with _$ResponseUser {
+abstract class ResponseUser with _$ResponseUser {
   const factory ResponseUser({
     required int id,
     required String username,

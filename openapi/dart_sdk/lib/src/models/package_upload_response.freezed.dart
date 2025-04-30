@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,92 +10,62 @@ part of 'package_upload_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageUploadResponse _$PackageUploadResponseFromJson(
-    Map<String, dynamic> json) {
-  return _PackageUploadResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageUploadResponse {
-  int get id => throw _privateConstructorUsedError;
-  Map<String, String> get uploadLinks => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageUploadResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get id;
+  Map<String, String> get uploadLinks;
 
   /// Create a copy of PackageUploadResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PackageUploadResponseCopyWith<PackageUploadResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PackageUploadResponseCopyWith<$Res> {
-  factory $PackageUploadResponseCopyWith(PackageUploadResponse value,
-          $Res Function(PackageUploadResponse) then) =
-      _$PackageUploadResponseCopyWithImpl<$Res, PackageUploadResponse>;
-  @useResult
-  $Res call({int id, Map<String, String> uploadLinks});
-}
-
-/// @nodoc
-class _$PackageUploadResponseCopyWithImpl<$Res,
-        $Val extends PackageUploadResponse>
-    implements $PackageUploadResponseCopyWith<$Res> {
-  _$PackageUploadResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PackageUploadResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $PackageUploadResponseCopyWith<PackageUploadResponse> get copyWith =>
+      _$PackageUploadResponseCopyWithImpl<PackageUploadResponse>(
+          this as PackageUploadResponse, _$identity);
+
+  /// Serializes this PackageUploadResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? id = null,
-    Object? uploadLinks = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      uploadLinks: null == uploadLinks
-          ? _value.uploadLinks
-          : uploadLinks // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PackageUploadResponse &&
+            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality()
+                .equals(other.uploadLinks, uploadLinks));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, id, const DeepCollectionEquality().hash(uploadLinks));
+
+  @override
+  String toString() {
+    return 'PackageUploadResponse(id: $id, uploadLinks: $uploadLinks)';
   }
 }
 
 /// @nodoc
-abstract class _$$PackageUploadResponseImplCopyWith<$Res>
-    implements $PackageUploadResponseCopyWith<$Res> {
-  factory _$$PackageUploadResponseImplCopyWith(
-          _$PackageUploadResponseImpl value,
-          $Res Function(_$PackageUploadResponseImpl) then) =
-      __$$PackageUploadResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PackageUploadResponseCopyWith<$Res> {
+  factory $PackageUploadResponseCopyWith(PackageUploadResponse value,
+          $Res Function(PackageUploadResponse) _then) =
+      _$PackageUploadResponseCopyWithImpl;
   @useResult
   $Res call({int id, Map<String, String> uploadLinks});
 }
 
 /// @nodoc
-class __$$PackageUploadResponseImplCopyWithImpl<$Res>
-    extends _$PackageUploadResponseCopyWithImpl<$Res,
-        _$PackageUploadResponseImpl>
-    implements _$$PackageUploadResponseImplCopyWith<$Res> {
-  __$$PackageUploadResponseImplCopyWithImpl(_$PackageUploadResponseImpl _value,
-      $Res Function(_$PackageUploadResponseImpl) _then)
-      : super(_value, _then);
+class _$PackageUploadResponseCopyWithImpl<$Res>
+    implements $PackageUploadResponseCopyWith<$Res> {
+  _$PackageUploadResponseCopyWithImpl(this._self, this._then);
+
+  final PackageUploadResponse _self;
+  final $Res Function(PackageUploadResponse) _then;
 
   /// Create a copy of PackageUploadResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -104,13 +75,13 @@ class __$$PackageUploadResponseImplCopyWithImpl<$Res>
     Object? id = null,
     Object? uploadLinks = null,
   }) {
-    return _then(_$PackageUploadResponseImpl(
+    return _then(_self.copyWith(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
       uploadLinks: null == uploadLinks
-          ? _value._uploadLinks
+          ? _self.uploadLinks
           : uploadLinks // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
     ));
@@ -119,13 +90,12 @@ class __$$PackageUploadResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PackageUploadResponseImpl implements _PackageUploadResponse {
-  const _$PackageUploadResponseImpl(
+class _PackageUploadResponse implements PackageUploadResponse {
+  const _PackageUploadResponse(
       {required this.id, required final Map<String, String> uploadLinks})
       : _uploadLinks = uploadLinks;
-
-  factory _$PackageUploadResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageUploadResponseImplFromJson(json);
+  factory _PackageUploadResponse.fromJson(Map<String, dynamic> json) =>
+      _$PackageUploadResponseFromJson(json);
 
   @override
   final int id;
@@ -137,16 +107,27 @@ class _$PackageUploadResponseImpl implements _PackageUploadResponse {
     return EqualUnmodifiableMapView(_uploadLinks);
   }
 
+  /// Create a copy of PackageUploadResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PackageUploadResponse(id: $id, uploadLinks: $uploadLinks)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PackageUploadResponseCopyWith<_PackageUploadResponse> get copyWith =>
+      __$PackageUploadResponseCopyWithImpl<_PackageUploadResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PackageUploadResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageUploadResponseImpl &&
+            other is _PackageUploadResponse &&
             (identical(other.id, id) || other.id == id) &&
             const DeepCollectionEquality()
                 .equals(other._uploadLinks, _uploadLinks));
@@ -157,41 +138,50 @@ class _$PackageUploadResponseImpl implements _PackageUploadResponse {
   int get hashCode => Object.hash(
       runtimeType, id, const DeepCollectionEquality().hash(_uploadLinks));
 
-  /// Create a copy of PackageUploadResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PackageUploadResponseImplCopyWith<_$PackageUploadResponseImpl>
-      get copyWith => __$$PackageUploadResponseImplCopyWithImpl<
-          _$PackageUploadResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PackageUploadResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PackageUploadResponse(id: $id, uploadLinks: $uploadLinks)';
   }
 }
 
-abstract class _PackageUploadResponse implements PackageUploadResponse {
-  const factory _PackageUploadResponse(
-          {required final int id,
-          required final Map<String, String> uploadLinks}) =
-      _$PackageUploadResponseImpl;
-
-  factory _PackageUploadResponse.fromJson(Map<String, dynamic> json) =
-      _$PackageUploadResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$PackageUploadResponseCopyWith<$Res>
+    implements $PackageUploadResponseCopyWith<$Res> {
+  factory _$PackageUploadResponseCopyWith(_PackageUploadResponse value,
+          $Res Function(_PackageUploadResponse) _then) =
+      __$PackageUploadResponseCopyWithImpl;
   @override
-  int get id;
-  @override
-  Map<String, String> get uploadLinks;
+  @useResult
+  $Res call({int id, Map<String, String> uploadLinks});
+}
+
+/// @nodoc
+class __$PackageUploadResponseCopyWithImpl<$Res>
+    implements _$PackageUploadResponseCopyWith<$Res> {
+  __$PackageUploadResponseCopyWithImpl(this._self, this._then);
+
+  final _PackageUploadResponse _self;
+  final $Res Function(_PackageUploadResponse) _then;
 
   /// Create a copy of PackageUploadResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageUploadResponseImplCopyWith<_$PackageUploadResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? uploadLinks = null,
+  }) {
+    return _then(_PackageUploadResponse(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      uploadLinks: null == uploadLinks
+          ? _self._uploadLinks
+          : uploadLinks // ignore: cast_nullable_to_non_nullable
+              as Map<String, String>,
+    ));
+  }
 }
+
+// dart format on

@@ -6,13 +6,12 @@ part of 'permissions.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PermissionsImpl _$$PermissionsImplFromJson(Map<String, dynamic> json) =>
-    _$PermissionsImpl(
+_Permissions _$PermissionsFromJson(Map<String, dynamic> json) => _Permissions(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
     );
 
-Map<String, dynamic> _$$PermissionsImplToJson(_$PermissionsImpl instance) =>
+Map<String, dynamic> _$PermissionsToJson(_Permissions instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

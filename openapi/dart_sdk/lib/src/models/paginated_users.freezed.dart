@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,35 +10,51 @@ part of 'paginated_users.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PaginatedUsers _$PaginatedUsersFromJson(Map<String, dynamic> json) {
-  return _PaginatedUsers.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PaginatedUsers {
-  List<ResponseUser> get data => throw _privateConstructorUsedError;
-  PageInfo get pageInfo => throw _privateConstructorUsedError;
-
-  /// Serializes this PaginatedUsers to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  List<ResponseUser> get data;
+  PageInfo get pageInfo;
 
   /// Create a copy of PaginatedUsers
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PaginatedUsersCopyWith<PaginatedUsers> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$PaginatedUsersCopyWithImpl<PaginatedUsers>(
+          this as PaginatedUsers, _$identity);
+
+  /// Serializes this PaginatedUsers to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PaginatedUsers &&
+            const DeepCollectionEquality().equals(other.data, data) &&
+            (identical(other.pageInfo, pageInfo) ||
+                other.pageInfo == pageInfo));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(data), pageInfo);
+
+  @override
+  String toString() {
+    return 'PaginatedUsers(data: $data, pageInfo: $pageInfo)';
+  }
 }
 
 /// @nodoc
-abstract class $PaginatedUsersCopyWith<$Res> {
+abstract mixin class $PaginatedUsersCopyWith<$Res> {
   factory $PaginatedUsersCopyWith(
-          PaginatedUsers value, $Res Function(PaginatedUsers) then) =
-      _$PaginatedUsersCopyWithImpl<$Res, PaginatedUsers>;
+          PaginatedUsers value, $Res Function(PaginatedUsers) _then) =
+      _$PaginatedUsersCopyWithImpl;
   @useResult
   $Res call({List<ResponseUser> data, PageInfo pageInfo});
 
@@ -45,14 +62,12 @@ abstract class $PaginatedUsersCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PaginatedUsersCopyWithImpl<$Res, $Val extends PaginatedUsers>
+class _$PaginatedUsersCopyWithImpl<$Res>
     implements $PaginatedUsersCopyWith<$Res> {
-  _$PaginatedUsersCopyWithImpl(this._value, this._then);
+  _$PaginatedUsersCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final PaginatedUsers _self;
+  final $Res Function(PaginatedUsers) _then;
 
   /// Create a copy of PaginatedUsers
   /// with the given fields replaced by the non-null parameter values.
@@ -62,16 +77,16 @@ class _$PaginatedUsersCopyWithImpl<$Res, $Val extends PaginatedUsers>
     Object? data = null,
     Object? pageInfo = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       data: null == data
-          ? _value.data
+          ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
               as List<ResponseUser>,
       pageInfo: null == pageInfo
-          ? _value.pageInfo
+          ? _self.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
               as PageInfo,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of PaginatedUsers
@@ -79,64 +94,20 @@ class _$PaginatedUsersCopyWithImpl<$Res, $Val extends PaginatedUsers>
   @override
   @pragma('vm:prefer-inline')
   $PageInfoCopyWith<$Res> get pageInfo {
-    return $PageInfoCopyWith<$Res>(_value.pageInfo, (value) {
-      return _then(_value.copyWith(pageInfo: value) as $Val);
+    return $PageInfoCopyWith<$Res>(_self.pageInfo, (value) {
+      return _then(_self.copyWith(pageInfo: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$PaginatedUsersImplCopyWith<$Res>
-    implements $PaginatedUsersCopyWith<$Res> {
-  factory _$$PaginatedUsersImplCopyWith(_$PaginatedUsersImpl value,
-          $Res Function(_$PaginatedUsersImpl) then) =
-      __$$PaginatedUsersImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({List<ResponseUser> data, PageInfo pageInfo});
-
-  @override
-  $PageInfoCopyWith<$Res> get pageInfo;
-}
-
-/// @nodoc
-class __$$PaginatedUsersImplCopyWithImpl<$Res>
-    extends _$PaginatedUsersCopyWithImpl<$Res, _$PaginatedUsersImpl>
-    implements _$$PaginatedUsersImplCopyWith<$Res> {
-  __$$PaginatedUsersImplCopyWithImpl(
-      _$PaginatedUsersImpl _value, $Res Function(_$PaginatedUsersImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PaginatedUsers
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-    Object? pageInfo = null,
-  }) {
-    return _then(_$PaginatedUsersImpl(
-      data: null == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
-              as List<ResponseUser>,
-      pageInfo: null == pageInfo
-          ? _value.pageInfo
-          : pageInfo // ignore: cast_nullable_to_non_nullable
-              as PageInfo,
-    ));
-  }
-}
-
-/// @nodoc
 @JsonSerializable()
-class _$PaginatedUsersImpl implements _PaginatedUsers {
-  const _$PaginatedUsersImpl(
+class _PaginatedUsers implements PaginatedUsers {
+  const _PaginatedUsers(
       {required final List<ResponseUser> data, required this.pageInfo})
       : _data = data;
-
-  factory _$PaginatedUsersImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PaginatedUsersImplFromJson(json);
+  factory _PaginatedUsers.fromJson(Map<String, dynamic> json) =>
+      _$PaginatedUsersFromJson(json);
 
   final List<ResponseUser> _data;
   @override
@@ -149,16 +120,26 @@ class _$PaginatedUsersImpl implements _PaginatedUsers {
   @override
   final PageInfo pageInfo;
 
+  /// Create a copy of PaginatedUsers
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PaginatedUsers(data: $data, pageInfo: $pageInfo)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PaginatedUsersCopyWith<_PaginatedUsers> get copyWith =>
+      __$PaginatedUsersCopyWithImpl<_PaginatedUsers>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PaginatedUsersToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PaginatedUsersImpl &&
+            other is _PaginatedUsers &&
             const DeepCollectionEquality().equals(other._data, _data) &&
             (identical(other.pageInfo, pageInfo) ||
                 other.pageInfo == pageInfo));
@@ -169,40 +150,63 @@ class _$PaginatedUsersImpl implements _PaginatedUsers {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_data), pageInfo);
 
-  /// Create a copy of PaginatedUsers
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PaginatedUsersImplCopyWith<_$PaginatedUsersImpl> get copyWith =>
-      __$$PaginatedUsersImplCopyWithImpl<_$PaginatedUsersImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PaginatedUsersImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PaginatedUsers(data: $data, pageInfo: $pageInfo)';
   }
 }
 
-abstract class _PaginatedUsers implements PaginatedUsers {
-  const factory _PaginatedUsers(
-      {required final List<ResponseUser> data,
-      required final PageInfo pageInfo}) = _$PaginatedUsersImpl;
-
-  factory _PaginatedUsers.fromJson(Map<String, dynamic> json) =
-      _$PaginatedUsersImpl.fromJson;
+/// @nodoc
+abstract mixin class _$PaginatedUsersCopyWith<$Res>
+    implements $PaginatedUsersCopyWith<$Res> {
+  factory _$PaginatedUsersCopyWith(
+          _PaginatedUsers value, $Res Function(_PaginatedUsers) _then) =
+      __$PaginatedUsersCopyWithImpl;
+  @override
+  @useResult
+  $Res call({List<ResponseUser> data, PageInfo pageInfo});
 
   @override
-  List<ResponseUser> get data;
-  @override
-  PageInfo get pageInfo;
+  $PageInfoCopyWith<$Res> get pageInfo;
+}
+
+/// @nodoc
+class __$PaginatedUsersCopyWithImpl<$Res>
+    implements _$PaginatedUsersCopyWith<$Res> {
+  __$PaginatedUsersCopyWithImpl(this._self, this._then);
+
+  final _PaginatedUsers _self;
+  final $Res Function(_PaginatedUsers) _then;
 
   /// Create a copy of PaginatedUsers
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PaginatedUsersImplCopyWith<_$PaginatedUsersImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? data = null,
+    Object? pageInfo = null,
+  }) {
+    return _then(_PaginatedUsers(
+      data: null == data
+          ? _self._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<ResponseUser>,
+      pageInfo: null == pageInfo
+          ? _self.pageInfo
+          : pageInfo // ignore: cast_nullable_to_non_nullable
+              as PageInfo,
+    ));
+  }
+
+  /// Create a copy of PaginatedUsers
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PageInfoCopyWith<$Res> get pageInfo {
+    return $PageInfoCopyWith<$Res>(_self.pageInfo, (value) {
+      return _then(_self.copyWith(pageInfo: value));
+    });
+  }
 }
+
+// dart format on

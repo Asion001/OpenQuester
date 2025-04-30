@@ -15,7 +15,7 @@ part 'choice_question.freezed.dart';
 part 'choice_question.g.dart';
 
 @Freezed()
-class ChoiceQuestion with _$ChoiceQuestion {
+abstract class ChoiceQuestion with _$ChoiceQuestion {
   const factory ChoiceQuestion({
     required int? id,
     required PackageEntitiesOrder order,

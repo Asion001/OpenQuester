@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,109 +10,69 @@ part of 'socket_io_chat_message_event_payload.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-SocketIOChatMessageEventPayload _$SocketIOChatMessageEventPayloadFromJson(
-    Map<String, dynamic> json) {
-  return _SocketIOChatMessageEventPayload.fromJson(json);
-}
 
 /// @nodoc
 mixin _$SocketIOChatMessageEventPayload {
-  String get message => throw _privateConstructorUsedError;
-  String get uuid => throw _privateConstructorUsedError;
+  String get message;
+  String get uuid;
 
   /// ID of the user who sent the message
-  int get user => throw _privateConstructorUsedError;
-  DateTime get timestamp => throw _privateConstructorUsedError;
-
-  /// Serializes this SocketIOChatMessageEventPayload to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  int get user;
+  DateTime get timestamp;
 
   /// Create a copy of SocketIOChatMessageEventPayload
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $SocketIOChatMessageEventPayloadCopyWith<SocketIOChatMessageEventPayload>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SocketIOChatMessageEventPayloadCopyWith<$Res> {
-  factory $SocketIOChatMessageEventPayloadCopyWith(
-          SocketIOChatMessageEventPayload value,
-          $Res Function(SocketIOChatMessageEventPayload) then) =
-      _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
-          SocketIOChatMessageEventPayload>;
-  @useResult
-  $Res call({String message, String uuid, int user, DateTime timestamp});
-}
-
-/// @nodoc
-class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
-        $Val extends SocketIOChatMessageEventPayload>
-    implements $SocketIOChatMessageEventPayloadCopyWith<$Res> {
-  _$SocketIOChatMessageEventPayloadCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of SocketIOChatMessageEventPayload
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $SocketIOChatMessageEventPayloadCopyWith<SocketIOChatMessageEventPayload>
+      get copyWith => _$SocketIOChatMessageEventPayloadCopyWithImpl<
+              SocketIOChatMessageEventPayload>(
+          this as SocketIOChatMessageEventPayload, _$identity);
+
+  /// Serializes this SocketIOChatMessageEventPayload to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? message = null,
-    Object? uuid = null,
-    Object? user = null,
-    Object? timestamp = null,
-  }) {
-    return _then(_value.copyWith(
-      message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-      uuid: null == uuid
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
-              as String,
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as int,
-      timestamp: null == timestamp
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is SocketIOChatMessageEventPayload &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, message, uuid, user, timestamp);
+
+  @override
+  String toString() {
+    return 'SocketIOChatMessageEventPayload(message: $message, uuid: $uuid, user: $user, timestamp: $timestamp)';
   }
 }
 
 /// @nodoc
-abstract class _$$SocketIOChatMessageEventPayloadImplCopyWith<$Res>
-    implements $SocketIOChatMessageEventPayloadCopyWith<$Res> {
-  factory _$$SocketIOChatMessageEventPayloadImplCopyWith(
-          _$SocketIOChatMessageEventPayloadImpl value,
-          $Res Function(_$SocketIOChatMessageEventPayloadImpl) then) =
-      __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $SocketIOChatMessageEventPayloadCopyWith<$Res> {
+  factory $SocketIOChatMessageEventPayloadCopyWith(
+          SocketIOChatMessageEventPayload value,
+          $Res Function(SocketIOChatMessageEventPayload) _then) =
+      _$SocketIOChatMessageEventPayloadCopyWithImpl;
   @useResult
   $Res call({String message, String uuid, int user, DateTime timestamp});
 }
 
 /// @nodoc
-class __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>
-    extends _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res,
-        _$SocketIOChatMessageEventPayloadImpl>
-    implements _$$SocketIOChatMessageEventPayloadImplCopyWith<$Res> {
-  __$$SocketIOChatMessageEventPayloadImplCopyWithImpl(
-      _$SocketIOChatMessageEventPayloadImpl _value,
-      $Res Function(_$SocketIOChatMessageEventPayloadImpl) _then)
-      : super(_value, _then);
+class _$SocketIOChatMessageEventPayloadCopyWithImpl<$Res>
+    implements $SocketIOChatMessageEventPayloadCopyWith<$Res> {
+  _$SocketIOChatMessageEventPayloadCopyWithImpl(this._self, this._then);
+
+  final SocketIOChatMessageEventPayload _self;
+  final $Res Function(SocketIOChatMessageEventPayload) _then;
 
   /// Create a copy of SocketIOChatMessageEventPayload
   /// with the given fields replaced by the non-null parameter values.
@@ -123,21 +84,21 @@ class __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>
     Object? user = null,
     Object? timestamp = null,
   }) {
-    return _then(_$SocketIOChatMessageEventPayloadImpl(
+    return _then(_self.copyWith(
       message: null == message
-          ? _value.message
+          ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
       uuid: null == uuid
-          ? _value.uuid
+          ? _self.uuid
           : uuid // ignore: cast_nullable_to_non_nullable
               as String,
       user: null == user
-          ? _value.user
+          ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
               as int,
       timestamp: null == timestamp
-          ? _value.timestamp
+          ? _self.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
@@ -146,17 +107,16 @@ class __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$SocketIOChatMessageEventPayloadImpl
-    implements _SocketIOChatMessageEventPayload {
-  const _$SocketIOChatMessageEventPayloadImpl(
+class _SocketIOChatMessageEventPayload
+    implements SocketIOChatMessageEventPayload {
+  const _SocketIOChatMessageEventPayload(
       {required this.message,
       required this.uuid,
       required this.user,
       required this.timestamp});
-
-  factory _$SocketIOChatMessageEventPayloadImpl.fromJson(
+  factory _SocketIOChatMessageEventPayload.fromJson(
           Map<String, dynamic> json) =>
-      _$$SocketIOChatMessageEventPayloadImplFromJson(json);
+      _$SocketIOChatMessageEventPayloadFromJson(json);
 
   @override
   final String message;
@@ -169,16 +129,27 @@ class _$SocketIOChatMessageEventPayloadImpl
   @override
   final DateTime timestamp;
 
+  /// Create a copy of SocketIOChatMessageEventPayload
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'SocketIOChatMessageEventPayload(message: $message, uuid: $uuid, user: $user, timestamp: $timestamp)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SocketIOChatMessageEventPayloadCopyWith<_SocketIOChatMessageEventPayload>
+      get copyWith => __$SocketIOChatMessageEventPayloadCopyWithImpl<
+          _SocketIOChatMessageEventPayload>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$SocketIOChatMessageEventPayloadToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SocketIOChatMessageEventPayloadImpl &&
+            other is _SocketIOChatMessageEventPayload &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.user, user) || other.user == user) &&
@@ -190,52 +161,61 @@ class _$SocketIOChatMessageEventPayloadImpl
   @override
   int get hashCode => Object.hash(runtimeType, message, uuid, user, timestamp);
 
-  /// Create a copy of SocketIOChatMessageEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$SocketIOChatMessageEventPayloadImplCopyWith<
-          _$SocketIOChatMessageEventPayloadImpl>
-      get copyWith => __$$SocketIOChatMessageEventPayloadImplCopyWithImpl<
-          _$SocketIOChatMessageEventPayloadImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$SocketIOChatMessageEventPayloadImplToJson(
-      this,
-    );
+  String toString() {
+    return 'SocketIOChatMessageEventPayload(message: $message, uuid: $uuid, user: $user, timestamp: $timestamp)';
   }
 }
 
-abstract class _SocketIOChatMessageEventPayload
-    implements SocketIOChatMessageEventPayload {
-  const factory _SocketIOChatMessageEventPayload(
-          {required final String message,
-          required final String uuid,
-          required final int user,
-          required final DateTime timestamp}) =
-      _$SocketIOChatMessageEventPayloadImpl;
+/// @nodoc
+abstract mixin class _$SocketIOChatMessageEventPayloadCopyWith<$Res>
+    implements $SocketIOChatMessageEventPayloadCopyWith<$Res> {
+  factory _$SocketIOChatMessageEventPayloadCopyWith(
+          _SocketIOChatMessageEventPayload value,
+          $Res Function(_SocketIOChatMessageEventPayload) _then) =
+      __$SocketIOChatMessageEventPayloadCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String message, String uuid, int user, DateTime timestamp});
+}
 
-  factory _SocketIOChatMessageEventPayload.fromJson(Map<String, dynamic> json) =
-      _$SocketIOChatMessageEventPayloadImpl.fromJson;
+/// @nodoc
+class __$SocketIOChatMessageEventPayloadCopyWithImpl<$Res>
+    implements _$SocketIOChatMessageEventPayloadCopyWith<$Res> {
+  __$SocketIOChatMessageEventPayloadCopyWithImpl(this._self, this._then);
 
-  @override
-  String get message;
-  @override
-  String get uuid;
-
-  /// ID of the user who sent the message
-  @override
-  int get user;
-  @override
-  DateTime get timestamp;
+  final _SocketIOChatMessageEventPayload _self;
+  final $Res Function(_SocketIOChatMessageEventPayload) _then;
 
   /// Create a copy of SocketIOChatMessageEventPayload
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SocketIOChatMessageEventPayloadImplCopyWith<
-          _$SocketIOChatMessageEventPayloadImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? message = null,
+    Object? uuid = null,
+    Object? user = null,
+    Object? timestamp = null,
+  }) {
+    return _then(_SocketIOChatMessageEventPayload(
+      message: null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      uuid: null == uuid
+          ? _self.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      user: null == user
+          ? _self.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as int,
+      timestamp: null == timestamp
+          ? _self.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
 }
+
+// dart format on

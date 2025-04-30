@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,87 +10,58 @@ part of 'package_not_found_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageNotFoundResponse _$PackageNotFoundResponseFromJson(
-    Map<String, dynamic> json) {
-  return _PackageNotFoundResponse.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageNotFoundResponse {
-  String get error => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageNotFoundResponse to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get error;
 
   /// Create a copy of PackageNotFoundResponse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PackageNotFoundResponseCopyWith<PackageNotFoundResponse> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PackageNotFoundResponseCopyWith<$Res> {
-  factory $PackageNotFoundResponseCopyWith(PackageNotFoundResponse value,
-          $Res Function(PackageNotFoundResponse) then) =
-      _$PackageNotFoundResponseCopyWithImpl<$Res, PackageNotFoundResponse>;
-  @useResult
-  $Res call({String error});
-}
-
-/// @nodoc
-class _$PackageNotFoundResponseCopyWithImpl<$Res,
-        $Val extends PackageNotFoundResponse>
-    implements $PackageNotFoundResponseCopyWith<$Res> {
-  _$PackageNotFoundResponseCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PackageNotFoundResponse
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $PackageNotFoundResponseCopyWith<PackageNotFoundResponse> get copyWith =>
+      _$PackageNotFoundResponseCopyWithImpl<PackageNotFoundResponse>(
+          this as PackageNotFoundResponse, _$identity);
+
+  /// Serializes this PackageNotFoundResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_value.copyWith(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PackageNotFoundResponse &&
+            (identical(other.error, error) || other.error == error));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, error);
+
+  @override
+  String toString() {
+    return 'PackageNotFoundResponse(error: $error)';
   }
 }
 
 /// @nodoc
-abstract class _$$PackageNotFoundResponseImplCopyWith<$Res>
-    implements $PackageNotFoundResponseCopyWith<$Res> {
-  factory _$$PackageNotFoundResponseImplCopyWith(
-          _$PackageNotFoundResponseImpl value,
-          $Res Function(_$PackageNotFoundResponseImpl) then) =
-      __$$PackageNotFoundResponseImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $PackageNotFoundResponseCopyWith<$Res> {
+  factory $PackageNotFoundResponseCopyWith(PackageNotFoundResponse value,
+          $Res Function(PackageNotFoundResponse) _then) =
+      _$PackageNotFoundResponseCopyWithImpl;
   @useResult
   $Res call({String error});
 }
 
 /// @nodoc
-class __$$PackageNotFoundResponseImplCopyWithImpl<$Res>
-    extends _$PackageNotFoundResponseCopyWithImpl<$Res,
-        _$PackageNotFoundResponseImpl>
-    implements _$$PackageNotFoundResponseImplCopyWith<$Res> {
-  __$$PackageNotFoundResponseImplCopyWithImpl(
-      _$PackageNotFoundResponseImpl _value,
-      $Res Function(_$PackageNotFoundResponseImpl) _then)
-      : super(_value, _then);
+class _$PackageNotFoundResponseCopyWithImpl<$Res>
+    implements $PackageNotFoundResponseCopyWith<$Res> {
+  _$PackageNotFoundResponseCopyWithImpl(this._self, this._then);
+
+  final PackageNotFoundResponse _self;
+  final $Res Function(PackageNotFoundResponse) _then;
 
   /// Create a copy of PackageNotFoundResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -98,9 +70,9 @@ class __$$PackageNotFoundResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? error = null,
   }) {
-    return _then(_$PackageNotFoundResponseImpl(
+    return _then(_self.copyWith(
       error: null == error
-          ? _value.error
+          ? _self.error
           : error // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -109,25 +81,35 @@ class __$$PackageNotFoundResponseImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PackageNotFoundResponseImpl implements _PackageNotFoundResponse {
-  const _$PackageNotFoundResponseImpl({required this.error});
-
-  factory _$PackageNotFoundResponseImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageNotFoundResponseImplFromJson(json);
+class _PackageNotFoundResponse implements PackageNotFoundResponse {
+  const _PackageNotFoundResponse({required this.error});
+  factory _PackageNotFoundResponse.fromJson(Map<String, dynamic> json) =>
+      _$PackageNotFoundResponseFromJson(json);
 
   @override
   final String error;
 
+  /// Create a copy of PackageNotFoundResponse
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'PackageNotFoundResponse(error: $error)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$PackageNotFoundResponseCopyWith<_PackageNotFoundResponse> get copyWith =>
+      __$PackageNotFoundResponseCopyWithImpl<_PackageNotFoundResponse>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PackageNotFoundResponseToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageNotFoundResponseImpl &&
+            other is _PackageNotFoundResponse &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -135,37 +117,45 @@ class _$PackageNotFoundResponseImpl implements _PackageNotFoundResponse {
   @override
   int get hashCode => Object.hash(runtimeType, error);
 
-  /// Create a copy of PackageNotFoundResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PackageNotFoundResponseImplCopyWith<_$PackageNotFoundResponseImpl>
-      get copyWith => __$$PackageNotFoundResponseImplCopyWithImpl<
-          _$PackageNotFoundResponseImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PackageNotFoundResponseImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PackageNotFoundResponse(error: $error)';
   }
 }
 
-abstract class _PackageNotFoundResponse implements PackageNotFoundResponse {
-  const factory _PackageNotFoundResponse({required final String error}) =
-      _$PackageNotFoundResponseImpl;
-
-  factory _PackageNotFoundResponse.fromJson(Map<String, dynamic> json) =
-      _$PackageNotFoundResponseImpl.fromJson;
-
+/// @nodoc
+abstract mixin class _$PackageNotFoundResponseCopyWith<$Res>
+    implements $PackageNotFoundResponseCopyWith<$Res> {
+  factory _$PackageNotFoundResponseCopyWith(_PackageNotFoundResponse value,
+          $Res Function(_PackageNotFoundResponse) _then) =
+      __$PackageNotFoundResponseCopyWithImpl;
   @override
-  String get error;
+  @useResult
+  $Res call({String error});
+}
+
+/// @nodoc
+class __$PackageNotFoundResponseCopyWithImpl<$Res>
+    implements _$PackageNotFoundResponseCopyWith<$Res> {
+  __$PackageNotFoundResponseCopyWithImpl(this._self, this._then);
+
+  final _PackageNotFoundResponse _self;
+  final $Res Function(_PackageNotFoundResponse) _then;
 
   /// Create a copy of PackageNotFoundResponse
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageNotFoundResponseImplCopyWith<_$PackageNotFoundResponseImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? error = null,
+  }) {
+    return _then(_PackageNotFoundResponse(
+      error: null == error
+          ? _self.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
+
+// dart format on

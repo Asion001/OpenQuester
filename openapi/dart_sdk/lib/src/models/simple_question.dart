@@ -14,7 +14,7 @@ part 'simple_question.freezed.dart';
 part 'simple_question.g.dart';
 
 @Freezed()
-class SimpleQuestion with _$SimpleQuestion {
+abstract class SimpleQuestion with _$SimpleQuestion {
   const factory SimpleQuestion({
     required int? id,
     required PackageEntitiesOrder order,

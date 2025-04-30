@@ -6,9 +6,8 @@ part of 'package_question.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PackageQuestionImpl _$$PackageQuestionImplFromJson(
-        Map<String, dynamic> json) =>
-    _$PackageQuestionImpl(
+_PackageQuestion _$PackageQuestionFromJson(Map<String, dynamic> json) =>
+    _PackageQuestion(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
       price: (json['price'] as num).toInt(),
@@ -26,8 +25,7 @@ _$PackageQuestionImpl _$$PackageQuestionImplFromJson(
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
 
-Map<String, dynamic> _$$PackageQuestionImplToJson(
-        _$PackageQuestionImpl instance) =>
+Map<String, dynamic> _$PackageQuestionToJson(_PackageQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'order': instance.order,

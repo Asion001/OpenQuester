@@ -6,15 +6,15 @@ part of 'game_delete_event_subscription.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GameDeleteEventSubscriptionImpl _$$GameDeleteEventSubscriptionImplFromJson(
+_GameDeleteEventSubscription _$GameDeleteEventSubscriptionFromJson(
         Map<String, dynamic> json) =>
-    _$GameDeleteEventSubscriptionImpl(
+    _GameDeleteEventSubscription(
       event: GameDeleteEventSubscriptionEvent.fromJson(json['event'] as String),
       data: Data.fromJson(json['data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$GameDeleteEventSubscriptionImplToJson(
-        _$GameDeleteEventSubscriptionImpl instance) =>
+Map<String, dynamic> _$GameDeleteEventSubscriptionToJson(
+        _GameDeleteEventSubscription instance) =>
     <String, dynamic>{
       'event': instance.event,
       'data': instance.data,

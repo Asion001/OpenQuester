@@ -6,17 +6,15 @@ part of 'input_oauth_login.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$InputOauthLoginImpl _$$InputOauthLoginImplFromJson(
-        Map<String, dynamic> json) =>
-    _$InputOauthLoginImpl(
+_InputOauthLogin _$InputOauthLoginFromJson(Map<String, dynamic> json) =>
+    _InputOauthLogin(
       token: json['token'] as String,
       tokenSchema: json['tokenSchema'] as String?,
       oauthProvider: InputOauthLoginOauthProvider.fromJson(
           json['oauthProvider'] as String),
     );
 
-Map<String, dynamic> _$$InputOauthLoginImplToJson(
-        _$InputOauthLoginImpl instance) =>
+Map<String, dynamic> _$InputOauthLoginToJson(_InputOauthLogin instance) =>
     <String, dynamic>{
       'token': instance.token,
       'tokenSchema': instance.tokenSchema,

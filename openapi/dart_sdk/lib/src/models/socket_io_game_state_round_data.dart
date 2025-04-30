@@ -12,7 +12,7 @@ part 'socket_io_game_state_round_data.g.dart';
 
 /// Info about current round of the game
 @Freezed()
-class SocketIOGameStateRoundData with _$SocketIOGameStateRoundData {
+abstract class SocketIOGameStateRoundData with _$SocketIOGameStateRoundData {
   const factory SocketIOGameStateRoundData({
     required PackageEntitiesOrder order,
     required String name,

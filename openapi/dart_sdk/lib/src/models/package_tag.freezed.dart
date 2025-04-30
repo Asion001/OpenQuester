@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,137 +10,31 @@ part of 'package_tag.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PackageTag _$PackageTagFromJson(Map<String, dynamic> json) {
-  return _PackageTag.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PackageTag {
-  int get id => throw _privateConstructorUsedError;
+  int get id;
 
   /// A single tag for the package
-  String get tag => throw _privateConstructorUsedError;
-
-  /// Serializes this PackageTag to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  String get tag;
 
   /// Create a copy of PackageTag
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $PackageTagCopyWith<PackageTag> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+      _$PackageTagCopyWithImpl<PackageTag>(this as PackageTag, _$identity);
 
-/// @nodoc
-abstract class $PackageTagCopyWith<$Res> {
-  factory $PackageTagCopyWith(
-          PackageTag value, $Res Function(PackageTag) then) =
-      _$PackageTagCopyWithImpl<$Res, PackageTag>;
-  @useResult
-  $Res call({int id, String tag});
-}
-
-/// @nodoc
-class _$PackageTagCopyWithImpl<$Res, $Val extends PackageTag>
-    implements $PackageTagCopyWith<$Res> {
-  _$PackageTagCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of PackageTag
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? tag = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      tag: null == tag
-          ? _value.tag
-          : tag // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$PackageTagImplCopyWith<$Res>
-    implements $PackageTagCopyWith<$Res> {
-  factory _$$PackageTagImplCopyWith(
-          _$PackageTagImpl value, $Res Function(_$PackageTagImpl) then) =
-      __$$PackageTagImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int id, String tag});
-}
-
-/// @nodoc
-class __$$PackageTagImplCopyWithImpl<$Res>
-    extends _$PackageTagCopyWithImpl<$Res, _$PackageTagImpl>
-    implements _$$PackageTagImplCopyWith<$Res> {
-  __$$PackageTagImplCopyWithImpl(
-      _$PackageTagImpl _value, $Res Function(_$PackageTagImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of PackageTag
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? tag = null,
-  }) {
-    return _then(_$PackageTagImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
-      tag: null == tag
-          ? _value.tag
-          : tag // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$PackageTagImpl implements _PackageTag {
-  const _$PackageTagImpl({required this.id, required this.tag});
-
-  factory _$PackageTagImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PackageTagImplFromJson(json);
-
-  @override
-  final int id;
-
-  /// A single tag for the package
-  @override
-  final String tag;
-
-  @override
-  String toString() {
-    return 'PackageTag(id: $id, tag: $tag)';
-  }
+  /// Serializes this PackageTag to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PackageTagImpl &&
+            other is PackageTag &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.tag, tag) || other.tag == tag));
   }
@@ -148,40 +43,134 @@ class _$PackageTagImpl implements _PackageTag {
   @override
   int get hashCode => Object.hash(runtimeType, id, tag);
 
-  /// Create a copy of PackageTag
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$PackageTagImplCopyWith<_$PackageTagImpl> get copyWith =>
-      __$$PackageTagImplCopyWithImpl<_$PackageTagImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PackageTagImplToJson(
-      this,
-    );
+  String toString() {
+    return 'PackageTag(id: $id, tag: $tag)';
   }
 }
 
-abstract class _PackageTag implements PackageTag {
-  const factory _PackageTag(
-      {required final int id, required final String tag}) = _$PackageTagImpl;
+/// @nodoc
+abstract mixin class $PackageTagCopyWith<$Res> {
+  factory $PackageTagCopyWith(
+          PackageTag value, $Res Function(PackageTag) _then) =
+      _$PackageTagCopyWithImpl;
+  @useResult
+  $Res call({int id, String tag});
+}
 
-  factory _PackageTag.fromJson(Map<String, dynamic> json) =
-      _$PackageTagImpl.fromJson;
+/// @nodoc
+class _$PackageTagCopyWithImpl<$Res> implements $PackageTagCopyWith<$Res> {
+  _$PackageTagCopyWithImpl(this._self, this._then);
+
+  final PackageTag _self;
+  final $Res Function(PackageTag) _then;
+
+  /// Create a copy of PackageTag
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? tag = null,
+  }) {
+    return _then(_self.copyWith(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      tag: null == tag
+          ? _self.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _PackageTag implements PackageTag {
+  const _PackageTag({required this.id, required this.tag});
+  factory _PackageTag.fromJson(Map<String, dynamic> json) =>
+      _$PackageTagFromJson(json);
 
   @override
-  int get id;
+  final int id;
 
   /// A single tag for the package
   @override
-  String get tag;
+  final String tag;
 
   /// Create a copy of PackageTag
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PackageTagImplCopyWith<_$PackageTagImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$PackageTagCopyWith<_PackageTag> get copyWith =>
+      __$PackageTagCopyWithImpl<_PackageTag>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$PackageTagToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _PackageTag &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.tag, tag) || other.tag == tag));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, tag);
+
+  @override
+  String toString() {
+    return 'PackageTag(id: $id, tag: $tag)';
+  }
 }
+
+/// @nodoc
+abstract mixin class _$PackageTagCopyWith<$Res>
+    implements $PackageTagCopyWith<$Res> {
+  factory _$PackageTagCopyWith(
+          _PackageTag value, $Res Function(_PackageTag) _then) =
+      __$PackageTagCopyWithImpl;
+  @override
+  @useResult
+  $Res call({int id, String tag});
+}
+
+/// @nodoc
+class __$PackageTagCopyWithImpl<$Res> implements _$PackageTagCopyWith<$Res> {
+  __$PackageTagCopyWithImpl(this._self, this._then);
+
+  final _PackageTag _self;
+  final $Res Function(_PackageTag) _then;
+
+  /// Create a copy of PackageTag
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? tag = null,
+  }) {
+    return _then(_PackageTag(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      tag: null == tag
+          ? _self.tag
+          : tag // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+// dart format on

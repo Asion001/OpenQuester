@@ -6,8 +6,8 @@ part of 'game_list_item.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GameListItemImpl _$$GameListItemImplFromJson(Map<String, dynamic> json) =>
-    _$GameListItemImpl(
+_GameListItem _$GameListItemFromJson(Map<String, dynamic> json) =>
+    _GameListItem(
       id: json['id'] as String,
       createdBy:
           ShortUserInfo.fromJson(json['createdBy'] as Map<String, dynamic>),
@@ -28,7 +28,7 @@ _$GameListItemImpl _$$GameListItemImplFromJson(Map<String, dynamic> json) =>
       package: PackageItem.fromJson(json['package'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$GameListItemImplToJson(_$GameListItemImpl instance) =>
+Map<String, dynamic> _$GameListItemToJson(_GameListItem instance) =>
     <String, dynamic>{
       'id': instance.id,
       'createdBy': instance.createdBy,

@@ -8,7 +8,7 @@ part 'file_upload_link_response.freezed.dart';
 part 'file_upload_link_response.g.dart';
 
 @Freezed()
-class FileUploadLinkResponse with _$FileUploadLinkResponse {
+abstract class FileUploadLinkResponse with _$FileUploadLinkResponse {
   const factory FileUploadLinkResponse({
     required String url,
   }) = _FileUploadLinkResponse;

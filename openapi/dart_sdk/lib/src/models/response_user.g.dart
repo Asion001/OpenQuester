@@ -6,8 +6,8 @@ part of 'response_user.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ResponseUserImpl _$$ResponseUserImplFromJson(Map<String, dynamic> json) =>
-    _$ResponseUserImpl(
+_ResponseUser _$ResponseUserFromJson(Map<String, dynamic> json) =>
+    _ResponseUser(
       id: (json['id'] as num).toInt(),
       username: json['username'] as String,
       email: json['email'] as String?,
@@ -24,7 +24,7 @@ _$ResponseUserImpl _$$ResponseUserImplFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$ResponseUserImplToJson(_$ResponseUserImpl instance) =>
+Map<String, dynamic> _$ResponseUserToJson(_ResponseUser instance) =>
     <String, dynamic>{
       'id': instance.id,
       'username': instance.username,

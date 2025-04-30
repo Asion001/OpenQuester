@@ -11,7 +11,7 @@ part 'socket_io_game_start_event_payload.g.dart';
 
 /// This data sent to all players in room when game is started
 @Freezed()
-class SocketIOGameStartEventPayload with _$SocketIOGameStartEventPayload {
+abstract class SocketIOGameStartEventPayload with _$SocketIOGameStartEventPayload {
   const factory SocketIOGameStartEventPayload({
     required SocketIOGameStateRoundData currentRound,
   }) = _SocketIOGameStartEventPayload;

@@ -14,7 +14,7 @@ part 'package_answer_file.g.dart';
 
 /// Answer media file structure for package creation
 @Freezed()
-class PackageAnswerFile with _$PackageAnswerFile {
+abstract class PackageAnswerFile with _$PackageAnswerFile {
   const factory PackageAnswerFile({
     required int? id,
     required PackageEntitiesOrder order,

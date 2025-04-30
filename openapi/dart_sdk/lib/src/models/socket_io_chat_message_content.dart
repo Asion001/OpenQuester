@@ -8,7 +8,7 @@ part 'socket_io_chat_message_content.freezed.dart';
 part 'socket_io_chat_message_content.g.dart';
 
 @Freezed()
-class SocketIOChatMessageContent with _$SocketIOChatMessageContent {
+abstract class SocketIOChatMessageContent with _$SocketIOChatMessageContent {
   const factory SocketIOChatMessageContent({
     required String message,
   }) = _SocketIOChatMessageContent;
