@@ -31,6 +31,7 @@ import { SocketChatRepository } from "infrastructure/database/repositories/socke
 import { SocketUserDataRepository } from "infrastructure/database/repositories/socket/SocketUserDataRepository";
 import { UserRepository } from "infrastructure/database/repositories/UserRepository";
 import { DependencyService } from "infrastructure/services/dependency/DependencyService";
+import { RedisPubSubService } from "infrastructure/services/redis/RedisPubSubService";
 import { RedisService } from "infrastructure/services/redis/RedisService";
 import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
@@ -171,6 +172,10 @@ export class DIConfig {
       "service"
     );
 
+    const gameIndexManager = new GameIndexManager(
+      Container.get<RedisService>(CONTAINER_TYPES.RedisService)
+    );
+
     Container.register(
       CONTAINER_TYPES.PackageService,
       new PackageService(
@@ -185,7 +190,7 @@ export class DIConfig {
       CONTAINER_TYPES.GameRepository,
       new GameRepository(
         Container.get<RedisService>(CONTAINER_TYPES.RedisService),
-        new GameIndexManager(Container.get(CONTAINER_TYPES.Redis)),
+        gameIndexManager,
         Container.get<UserService>(CONTAINER_TYPES.UserService),
         Container.get<PackageService>(CONTAINER_TYPES.PackageService),
         Container.get<S3StorageService>(CONTAINER_TYPES.S3StorageService)
@@ -199,6 +204,15 @@ export class DIConfig {
         Container.get<IOServer>(CONTAINER_TYPES.IO),
         Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
         Container.get<UserService>(CONTAINER_TYPES.UserService)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.RedisPubSubService,
+      new RedisPubSubService(
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService),
+        gameIndexManager
       ),
       "service"
     );

@@ -12,22 +12,19 @@ export class SocketIOInitializer {
     private readonly socketIOChatService: SocketIOChatService
   ) {
     const gameNamespace = this.io.of("/games");
-    const gameController = new SocketIOGameController(
+
+    gameNamespace.on("connection", (socket: Socket) => {
+      this._initializeGameControllers(gameNamespace, socket);
+    });
+  }
+
+  private async _initializeGameControllers(nsp: Namespace, socket: Socket) {
+    new SocketIOGameController(
+      socket,
+      nsp,
       new SocketIOEventEmitter(),
       this.socketIOGameService,
       this.socketIOChatService
     );
-
-    gameNamespace.on("connection", (socket: Socket) => {
-      this._initializeGameControllers(gameController, gameNamespace, socket);
-    });
-  }
-
-  private async _initializeGameControllers(
-    gamesController: SocketIOGameController,
-    nsp: Namespace,
-    socket: Socket
-  ) {
-    gamesController.registerSocket(nsp, socket);
   }
 }

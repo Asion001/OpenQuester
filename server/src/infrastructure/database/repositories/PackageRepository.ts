@@ -180,6 +180,7 @@ export class PackageRepository {
             path: StorageUtils.getFilePath(packageData.logo.file.md5),
           });
           await transaction.save(logoFile);
+          files.push(logoFile);
         }
       }
 

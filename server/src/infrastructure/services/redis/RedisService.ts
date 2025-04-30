@@ -1,9 +1,29 @@
+import { Callback, RedisKey, RedisValue } from "ioredis";
+
 import { RedisRepository } from "infrastructure/database/repositories/RedisRepository";
-import { RedisKey, RedisValue } from "ioredis";
 
 export class RedisService {
   constructor(private readonly redisRepository: RedisRepository) {
     //
+  }
+
+  public async subscribe(channel: string, callback?: Callback<unknown>) {
+    return this.redisRepository.subscribe(channel, callback);
+  }
+
+  public on(
+    event: string,
+    callback: (channel: string, message: string) => void
+  ) {
+    return this.redisRepository.on(event, callback);
+  }
+
+  public async publish(channel: string, message: string) {
+    return this.redisRepository.publish(channel, message);
+  }
+
+  public async setLockKey(lockValue: string, expire?: number) {
+    return this.redisRepository.setLockKey(lockValue, expire);
   }
 
   /**
@@ -89,7 +109,7 @@ export class RedisService {
     return this.redisRepository.del(key);
   }
 
-  public async zrem(key: string, members: string) {
+  public async zrem(key: string, members: string[]) {
     return this.redisRepository.zrem(key, members);
   }
 
@@ -143,5 +163,21 @@ export class RedisService {
 
   public async zrange(key: string, start: number, stop: number) {
     return this.redisRepository.zrange(key, start, stop);
+  }
+
+  public async zScanMatch(
+    key: string,
+    cursor: number | string,
+    pattern: string
+  ) {
+    return this.redisRepository.zScanMatch(key, cursor, pattern);
+  }
+
+  public async zScanCount(
+    key: string,
+    cursor: number | string,
+    count: number | string
+  ) {
+    return this.redisRepository.zScanCount(key, cursor, count);
   }
 }
