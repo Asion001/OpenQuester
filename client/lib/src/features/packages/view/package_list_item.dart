@@ -16,16 +16,13 @@ class PackageListItemWidget extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
         )
-            .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
+            .withTooltip(msg: LocaleKeys.game_tile_tooltips_packages_title.tr())
             .shrink(),
         subtitle: Text(
           _packInfo(context),
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
-        )
-            .withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr())
-            .paddingTop(4)
-            .shrink(),
+        ).paddingTop(4).shrink(),
         titleAlignment: ListTileTitleAlignment.bottom,
         contentPadding: const EdgeInsets.only(right: 16, left: 4),
         mouseCursor: MouseCursor.defer,

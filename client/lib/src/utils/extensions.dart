@@ -117,7 +117,7 @@ extension SocketIOGameStateRoundDataX on SocketIOGameStateRoundData {
 extension SocketIOGameJoinEventPayloadX on SocketIOGameJoinEventPayload {
   PlayerData get me {
     return players.firstWhere(
-      (e) => e.meta.id == getIt<AuthController>().user!.id,
+      (e) => e.meta.id == ProfileController.getUser()?.id,
     );
   }
 }

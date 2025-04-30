@@ -82,7 +82,7 @@ class _Themes extends WatchingWidget {
           child: Text(LocaleKeys.start_game.tr()),
         ).center();
       }
-      return const CircularProgressIndicator.adaptive().center();
+      return const CircularProgressIndicator().center();
     }
 
     return ListView.builder(

@@ -14,6 +14,7 @@ class CreateGamePackageSearch extends SearchDelegate<PackageListItem?> {
           icon: const Icon(Icons.clear),
           onPressed: () {
             query = '';
+            _search();
             showSuggestions(context);
           },
         ),
@@ -36,18 +37,32 @@ class CreateGamePackageSearch extends SearchDelegate<PackageListItem?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    if (query.isEmpty) {
-      return Center(
-        child: Text(LocaleKeys.search_package_hint.tr()),
-      );
-    }
     return _buildSearchResults();
   }
 
-  Widget _buildSearchResults() {
-    final listRequest = ListRequest(offset: 0, limit: 5, query: query);
-    final future = _controller.getPage(listRequest);
+  @override
+  void showResults(BuildContext context) {
+    _search();
+    super.showResults(context);
+  }
 
+  @override
+  void showSuggestions(BuildContext context) {
+    _search();
+    super.showSuggestions(context);
+  }
+
+  ListRequest get _listRequest =>
+      ListRequest(offset: 0, limit: 5, query: query.isEmpty ? null : query);
+
+  late Future<ListResponse<PackageResponse>>? future =
+      _controller.getPage(_listRequest);
+
+  void _search() {
+    future = _controller.getPage(_listRequest);
+  }
+
+  Widget _buildSearchResults() {
     return FutureBuilder<ListResponse<PackageListItem>>(
       future: future,
       builder: (context, snapshot) {

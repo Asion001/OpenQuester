@@ -27,7 +27,19 @@ class _LoadingButtonBuilderState extends State<LoadingButtonBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    const loader = CircularProgressIndicator.adaptive();
+    final loader = Container(
+      decoration: BoxDecoration(
+        color: context.theme.colorScheme.onSecondary,
+        shape: BoxShape.circle,
+      ),
+      padding: 4.all,
+      margin: 4.all,
+      child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation(context.theme.colorScheme.secondary),
+        constraints: BoxConstraints.tight(const Size.square(18)),
+        strokeWidth: 2,
+      ),
+    );
 
     Future<void> onPressed(
       void Function(void Function()) setState,
