@@ -82,12 +82,27 @@ export class GameIndexManager {
   private async _buildCompositeIndex(
     tempKey: string,
     filters: {
-      createdAt?: { min?: Date; max?: Date };
+      createdAt: { min?: Date; max?: Date };
       isPrivate?: boolean;
       titlePrefix?: string;
     }
   ) {
     const indexKeys: string[] = [];
+    const anyFilterApplied =
+      !!filters.createdAt.max ||
+      !!filters.createdAt.min ||
+      ValueUtils.isBoolean(filters.isPrivate) ||
+      ValueUtils.isString(filters.titlePrefix);
+
+    // If filters is not applied - return default filter by created date
+    if (!anyFilterApplied) {
+      indexKeys.push(this._createdAtIndexKey);
+      return await this.redisService.zinterstore(tempKey, indexKeys.length, [
+        ...indexKeys,
+        "WEIGHTS",
+        ...indexKeys.map((_, i) => (i === 0 ? 1 : 0)),
+      ]);
+    }
 
     // Privacy Filter
     if (ValueUtils.isBoolean(filters.isPrivate)) {
@@ -104,7 +119,7 @@ export class GameIndexManager {
     }
 
     // Date Range Filter
-    if (filters.createdAt) {
+    if (filters.createdAt.max || filters.createdAt.min) {
       // Copy the main createdAt index into a temporary key.
       const createdAtIndexKeyToUse = `${tempKey}:createdAt`;
       await this.redisService.zunionstore(createdAtIndexKeyToUse, 1, [
@@ -136,8 +151,9 @@ export class GameIndexManager {
       indexKeys.push(createdAtIndexKeyToUse);
     }
 
+    // No indexes matches filters - return empty result without call to redis
     if (indexKeys.length < 1) {
-      indexKeys.push(this._createdAtIndexKey);
+      return [];
     }
 
     // Combine indexes
