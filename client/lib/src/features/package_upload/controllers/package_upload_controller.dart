@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data' show Uint8List;
 
-import 'package:dio/dio.dart';
-import 'package:fetch_client/fetch_client.dart';
-import 'package:flutter/foundation.dart' show ChangeNotifier, kIsWasm, kIsWeb;
+import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:openquester/common_imports.dart' hide ParseSiqFileWorker;
 import 'package:openquester/workers/upload_isolate.dart'
     deferred as upload_isolate show ParseSiqFileWorker;
@@ -107,26 +105,6 @@ class PackageUploadController extends ChangeNotifier {
     logger.d('Uploading ${links.length} files...');
     _setProgress(_afterParseProgress);
 
-    bool validateStatus(int? status) {
-      if ({412}.contains(status)) return true;
-      return status != null && status >= 200 && status < 300;
-    }
-
-    final client = kIsWeb
-        ? FetchClient(
-            mode: RequestMode.cors,
-            cache: RequestCache.noCache,
-            credentials: RequestCredentials.cors,
-            // ignore: avoid_redundant_argument_values
-            streamRequests: kIsWasm,
-          )
-        : Dio(
-            BaseOptions(
-              persistentConnection: false,
-              validateStatus: validateStatus,
-            ),
-          );
-
     try {
       for (var fileIndex = 0; fileIndex < links.length; fileIndex++) {
         // Set file upload progress
@@ -143,37 +121,11 @@ class PackageUploadController extends ChangeNotifier {
 
         if (file == null) continue;
 
-        final fileHeaders = _fileHeaders(link.key);
-        final headers = {
-          ...fileHeaders,
-          'Content-Length': file.lengthInBytes.toString(),
-          'content-type': 'application/octet-stream',
-        };
-
-        if (client is FetchClient) {
-          try {
-            final response = await client.put(
-              Uri.parse(link.value),
-              body: file,
-              headers: headers,
-            );
-
-            throwIf(!validateStatus(response.statusCode), response.body);
-          } catch (e, s) {
-            logger.e(e, stackTrace: s);
-          }
-        } else if (client is Dio) {
-          try {
-            await client.put<void>(
-              link.value,
-              data: Stream.value(file),
-              options: Options(headers: headers),
-            );
-          } on DioException catch (e) {
-            // Ignore "Peer reset connection" error
-            if (e.type != DioExceptionType.unknown) rethrow;
-          }
-        }
+        await getIt<S3UploadController>().uploadFile(
+          uploadLink: Uri.parse(link.value),
+          file: file,
+          md5Hash: link.key,
+        );
       }
       logger.d('All files uploaded!');
     } catch (e, s) {
@@ -182,10 +134,5 @@ class PackageUploadController extends ChangeNotifier {
     } finally {
       await parser.dispose();
     }
-  }
-
-  Map<String, String> _fileHeaders(String hash) {
-    final encodedHash = hexToBase64(hash);
-    return {'Content-MD5': encodedHash, 'if-none-match': '*'};
   }
 }

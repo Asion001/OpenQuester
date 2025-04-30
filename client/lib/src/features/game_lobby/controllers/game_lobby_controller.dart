@@ -58,7 +58,7 @@ class GameLobbyController {
           .postV1AuthSocket(body: InputSocketIOAuth(socketId: socket!.id!));
 
       final iAmHost =
-          gameListData.value!.createdBy.id == getIt<AuthController>().user?.id;
+          gameListData.value!.createdBy.id == ProfileController.getUser()?.id;
 
       final ioGameJoinInput = SocketIOGameJoinInput(
         gameId: gameId!,
@@ -119,6 +119,7 @@ class GameLobbyController {
       gameListData.value = null;
       _chatMessagesSub?.cancel();
       _chatMessagesSub = null;
+      getIt<SocketChatController>().clear();
     } catch (_) {}
   }
 
@@ -141,7 +142,6 @@ class GameLobbyController {
     getIt<SocketChatController>().setUsers(users);
   }
 
-  //SocketIOGameStartEventPayload
   Future<void> _onGameStart(dynamic data) async {
     final startData =
         SocketIOGameStartEventPayload.fromJson(data as Map<String, dynamic>);
@@ -154,6 +154,11 @@ class GameLobbyController {
   }
 
   void _onError(dynamic data) {
+    String? errorText = data.toString();
+    if (data is Map) {
+      errorText = data['message']?.toString() ?? errorText;
+    }
+
     getIt<ToastController>().show(data);
   }
 }

@@ -323,7 +323,7 @@ class ContentXmlParser {
         (e) => MapEntry(e.localName, e.value),
       ),
     );
-    final packageAtrributeDescription = json['description']?.toString();
+    final packageAttributeDescription = json['description']?.toString();
     final comment = _getComment(package);
     final restriction = switch (json['restriction']) {
       '12+' => AgeRestriction.a12,
@@ -340,7 +340,7 @@ class ContentXmlParser {
 
     final metadata = PackageCreateInputData(
       title: json['name']?.toString() ?? '',
-      description: (packageAtrributeDescription ?? comment).nullOnEmpty,
+      description: (packageAttributeDescription ?? comment).nullOnEmpty,
       language: json['language']?.toString().nullOnEmpty,
       ageRestriction: restriction,
       rounds: [],

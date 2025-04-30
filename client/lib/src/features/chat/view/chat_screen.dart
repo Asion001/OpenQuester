@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart' hide SimpleTextMessage;
 import 'package:openquester/common_imports.dart';
 
 class ChatScreen extends WatchingWidget {
@@ -25,7 +25,16 @@ class ChatScreen extends WatchingWidget {
         composerBuilder: (context) => const Composer(
           attachmentIcon: null,
         ),
+        textMessageBuilder: textMessageBuilder,
       ),
     );
+  }
+
+  Widget textMessageBuilder(
+    BuildContext context,
+    TextMessage message,
+    int index,
+  ) {
+    return SimpleTextMessage(message: message, index: index);
   }
 }

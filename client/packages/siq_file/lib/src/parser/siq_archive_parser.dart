@@ -17,9 +17,9 @@ class SiqArchiveParser {
 
   Future<void> dispose() async {
     await targetStream?.close();
-    for (final e in filesHash.values) {
-      for (final e in e) {
-        await e.close();
+    for (final files in filesHash.values) {
+      for (final file in files) {
+        await file.close();
       }
     }
     filesHash.clear();
