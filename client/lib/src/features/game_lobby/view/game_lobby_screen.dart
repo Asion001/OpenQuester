@@ -12,16 +12,17 @@ class GameLobbyScreen extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     callOnce(
-      (_) => getIt<GameLobbyController>().join(gameId: gameId),
+      (context) {
+        getIt<GameLobbyController>().join(gameId: gameId);
+
+        // Set init value for showing chat to [false] for mobile
+        final wideMode = UiModeUtils.wideModeOn(context);
+        if (wideMode) {
+          getIt<GameLobbyController>().showChat.value = true;
+        }
+      },
       dispose: () => getIt<GameLobbyController>().leave(),
     );
-
-    // Set init value for showing chat to [false] for mobile
-    callOnce((context) {
-      if (UiModeUtils.wideModeOn(context)) {
-        getIt<GameLobbyController>().showChat.value = true;
-      }
-    });
 
     final showChat = watchValue((GameLobbyController e) => e.showChat);
     final gameData = watchValue((GameLobbyController e) => e.gameListData);
@@ -38,6 +39,9 @@ class GameLobbyScreen extends WatchingWidget {
               icon: const Icon(Icons.exit_to_app),
             ),
             actions: const [_ChatButton()],
+            elevation: 0,
+            scrolledUnderElevation: 0,
+            notificationPredicate: (_) => false,
           ),
           body: SafeArea(
             child: Row(

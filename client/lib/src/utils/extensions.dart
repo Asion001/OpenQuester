@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:openquester/common_imports.dart';
 import 'package:socket_io_client/socket_io_client.dart' show Socket;
 
@@ -118,6 +119,17 @@ extension SocketIOGameJoinEventPayloadX on SocketIOGameJoinEventPayload {
   PlayerData get me {
     return players.firstWhere(
       (e) => e.meta.id == ProfileController.getUser()?.id,
+    );
+  }
+}
+
+extension SocketIOChatMessageEventPayloadX on SocketIOChatMessageEventPayload {
+  TextMessage toChatMessage() {
+  return  TextMessage(
+      id: uuid,
+      text: message,
+      createdAt: timestamp,
+      authorId: user.toString(),
     );
   }
 }

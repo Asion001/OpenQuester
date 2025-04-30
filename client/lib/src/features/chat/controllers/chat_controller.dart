@@ -49,9 +49,12 @@ class SocketChatController extends ChangeNotifier {
   }
 
   Future<void> onSendPressed(String message) async {
+    final formatedMessage = message.trim();
+    if (formatedMessage.isEmpty) return;
+
     _socket?.emit(
       SocketIOEvents.chatMessage.json!,
-      SocketIOChatMessageContent(message: message).toJson(),
+      SocketIOChatMessageContent(message: formatedMessage).toJson(),
     );
   }
 
@@ -60,12 +63,7 @@ class SocketChatController extends ChangeNotifier {
       data as Map<String, dynamic>,
     );
 
-    final textMessage = TextMessage(
-      id: message.uuid,
-      text: message.message,
-      createdAt: message.timestamp,
-      authorId: message.user.toString(),
-    );
+    final textMessage = message.toChatMessage();
     chatController.insert(textMessage);
     notifyListeners();
   }
