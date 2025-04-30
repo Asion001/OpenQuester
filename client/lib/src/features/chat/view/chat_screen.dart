@@ -11,7 +11,7 @@ class ChatScreen extends WatchingWidget {
     final controller = watchIt<SocketChatController>();
 
     if (controller.user == null) {
-      return const CircularProgressIndicator.adaptive().center();
+      return const CircularProgressIndicator().center();
     }
 
     return Chat(
