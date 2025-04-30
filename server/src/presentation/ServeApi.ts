@@ -18,6 +18,7 @@ import { ServerError } from "domain/errors/ServerError";
 import { EnvType } from "infrastructure/config/Environment";
 import { RedisConfig } from "infrastructure/config/RedisConfig";
 import { type Database } from "infrastructure/database/Database";
+import { RedisPubSubService } from "infrastructure/services/redis/RedisPubSubService";
 import { RedisService } from "infrastructure/services/redis/RedisService";
 import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
@@ -82,17 +83,7 @@ export class ServeApi {
       // Initialize Dependency injection Container
       await new DIConfig(this._db, this._redis, this._io).initialize();
 
-      // Clean up all games (set all players as disconnected and pause game)
-      const gameService = Container.get<GameService>(
-        CONTAINER_TYPES.GameService
-      );
-      await gameService.cleanupAllGames();
-
-      // Clean up all authorized socket sessions
-      const socketUserDataService = Container.get<SocketUserDataService>(
-        CONTAINER_TYPES.SocketUserDataService
-      );
-      await socketUserDataService.cleanupAllSession();
+      await this._processPrepareJobs();
 
       // Attach API controllers
       this._attachControllers();
@@ -174,5 +165,27 @@ export class ServeApi {
       deps.socketIOGameService,
       deps.socketIOChatService
     );
+  }
+
+  private async _processPrepareJobs() {
+    const pubSub = Container.get<RedisPubSubService>(
+      CONTAINER_TYPES.RedisPubSubService
+    );
+    const gameService = Container.get<GameService>(CONTAINER_TYPES.GameService);
+    const socketUserDataService = Container.get<SocketUserDataService>(
+      CONTAINER_TYPES.SocketUserDataService
+    );
+
+    // Clean up all games (set all players as disconnected and pause game)
+    await gameService.cleanupAllGames();
+
+    // Clean up games indexes that expires while server was down (if any)
+    await gameService.cleanOrphanedGames();
+
+    // Clean up all authorized socket sessions
+    await socketUserDataService.cleanupAllSession();
+
+    // Init key expiration listeners
+    await pubSub.initKeyExpirationHandling();
   }
 }
