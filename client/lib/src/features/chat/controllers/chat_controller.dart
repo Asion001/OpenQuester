@@ -5,8 +5,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 @singleton
 class SocketChatController extends ChangeNotifier {
-  late final chatController = InMemoryChatController();
-
+  InMemoryChatController? chatController;
   User? user;
   Socket? _socket;
   List<User>? _users;
@@ -15,15 +14,26 @@ class SocketChatController extends ChangeNotifier {
     _socket?.destroy();
     _socket = null;
     user = null;
-    chatController.messages.clear();
+    chatController?.dispose();
+    chatController = null;
     _users?.clear();
     _users = null;
     notifyListeners();
   }
 
-  Future<void> init({required Socket socket}) async {
+  @override
+  @disposeMethod
+  void dispose() {
+    clear();
+    super.dispose();
+  }
+
+  Future<void> init({required Socket socket, List<Message>? messages}) async {
     // Clear before connect
     clear();
+
+    // Init chat controller
+    chatController = InMemoryChatController(messages: messages);
 
     final restUser = ProfileController.getUser();
     if (restUser == null) throw UserError(LocaleKeys.user_unauthorized.tr());
@@ -49,9 +59,12 @@ class SocketChatController extends ChangeNotifier {
   }
 
   Future<void> onSendPressed(String message) async {
+    final formatedMessage = message.trim();
+    if (formatedMessage.isEmpty) return;
+
     _socket?.emit(
       SocketIOEvents.chatMessage.json!,
-      SocketIOChatMessageContent(message: message).toJson(),
+      SocketIOChatMessageContent(message: formatedMessage).toJson(),
     );
   }
 
@@ -60,13 +73,8 @@ class SocketChatController extends ChangeNotifier {
       data as Map<String, dynamic>,
     );
 
-    final textMessage = TextMessage(
-      id: message.uuid,
-      text: message.message,
-      createdAt: message.timestamp,
-      authorId: message.user.toString(),
-    );
-    chatController.insert(textMessage);
+    final textMessage = message.toChatMessage();
+    chatController?.insert(textMessage);
     notifyListeners();
   }
 

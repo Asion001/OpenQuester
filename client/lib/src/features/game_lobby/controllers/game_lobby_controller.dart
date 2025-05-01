@@ -41,6 +41,8 @@ class GameLobbyController {
         ..on(SocketIOGameEvents.gameData.json!, _onGameData)
         ..on(SocketIOGameEvents.start.json!, _onGameStart)
         ..on(SocketIOEvents.error.json!, _onError)
+        ..on(SocketIOGameEvents.userLeave.json!, _onUserLeave)
+        ..on(SocketIOGameEvents.join.json!, _onUserJoin)
         ..connect();
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -71,13 +73,6 @@ class GameLobbyController {
         SocketIOGameEvents.join.json!,
         ioGameJoinInput.toJson(),
       );
-
-      // Init chat controller
-      await getIt<SocketChatController>().init(socket: socket!);
-      _chatMessagesSub = getIt<SocketChatController>()
-          .chatController
-          .operationsStream
-          .listen(_onChatMessage);
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -106,7 +101,13 @@ class GameLobbyController {
       _ => null
     };
     if (text.isEmptyOrNull) return;
-    await getIt<ToastController>().show(text);
+
+    final author = gameData.value?.players.firstWhereOrNull(
+      (e) => e.meta.id.toString() == message?.authorId,
+    );
+    await getIt<ToastController>().show(
+      [author?.meta.username, text?.trim()].nonNulls.join(': '),
+    );
   }
 
   /// Clear all fields for new game to use
@@ -119,13 +120,13 @@ class GameLobbyController {
       gameListData.value = null;
       _chatMessagesSub?.cancel();
       _chatMessagesSub = null;
+      showChat.value = false;
       getIt<SocketChatController>().clear();
     } catch (_) {}
   }
 
   Future<void> leave() async {
-    await socket?.emitWithAckAsync(SocketIOGameEvents.userLeave.json!, null);
-    socket?.disconnect();
+    socket?.emit(SocketIOGameEvents.userLeave.json!);
   }
 
   void toggleDesktopChat() {
@@ -137,6 +138,31 @@ class GameLobbyController {
     gameData.value =
         SocketIOGameJoinEventPayload.fromJson(data as Map<String, dynamic>);
 
+    await _initChat();
+  }
+
+  Future<void> _initChat() async {
+    _updateChatUsers();
+
+    // Get chat messages history
+    final messages = gameData.value!.chatMessages
+        .map((e) => e.toChatMessage())
+        .toList()
+        .reversed
+        .toList();
+
+    // Init chat controller
+    await getIt<SocketChatController>()
+        .init(socket: socket!, messages: messages);
+
+    // Listen new messages in chat
+    _chatMessagesSub = getIt<SocketChatController>()
+        .chatController
+        ?.operationsStream
+        .listen(_onChatMessage);
+  }
+
+  void _updateChatUsers() {
     // Set chat users
     final users = gameData.value!.players.map(UserX.fromPlayerData).toList();
     getIt<SocketChatController>().setUsers(users);
@@ -160,5 +186,55 @@ class GameLobbyController {
     }
 
     getIt<ToastController>().show(data);
+  }
+
+  void _onUserLeave(dynamic data) {
+    if (data is! Map) return;
+    final userId = int.tryParse(data['user']?.toString() ?? '');
+    final user = gameData.value?.players.firstWhereOrNull(
+      (e) => e.meta.id == userId,
+    );
+    if (user == null) return;
+
+    // If i am leaving - close game
+    if (user.meta.id == gameData.value?.me.meta.id) {
+      socket?.dispose();
+
+      // Close only game page
+      if (AppRouter.I.current.name == GameLobbyRoute.page.name) {
+        AppRouter.I.maybePop();
+      }
+      clear();
+      return;
+    }
+
+    // Update player list
+    final players = List<PlayerData>.from(gameData.value?.players ?? []);
+    final playerIndex = players.indexWhere((e) => e.meta.id == user.meta.id);
+    players[playerIndex] =
+        players[playerIndex].copyWith(status: PlayerDataStatus.disconnected);
+    gameData.value = gameData.value?.copyWith(players: players);
+
+    getIt<ToastController>().show(
+      LocaleKeys.user_leave_the_game.tr(args: [user.meta.username]),
+    );
+  }
+
+  void _onUserJoin(dynamic data) {
+    if (data is! Map) return;
+
+    final user = PlayerData.fromJson(data as Map<String, dynamic>);
+
+    gameData.value = gameData.value?.copyWith(
+      players: [
+        ...?gameData.value?.players.whereNot((p) => p.meta.id == user.meta.id),
+        user,
+      ],
+    );
+    _updateChatUsers();
+
+    getIt<ToastController>().show(
+      LocaleKeys.user_joined_the_game.tr(args: [user.meta.username]),
+    );
   }
 }
