@@ -73,15 +73,6 @@ class GameLobbyController {
         SocketIOGameEvents.join.json!,
         ioGameJoinInput.toJson(),
       );
-
-      // Init chat controller
-      await getIt<SocketChatController>().init(socket: socket!);
-
-      // Listen new messages in chat
-      _chatMessagesSub = getIt<SocketChatController>()
-          .chatController
-          ?.operationsStream
-          .listen(_onChatMessage);
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -147,18 +138,28 @@ class GameLobbyController {
     gameData.value =
         SocketIOGameJoinEventPayload.fromJson(data as Map<String, dynamic>);
 
-    _updateChatUsers();
+    await _initChat();
+  }
 
-    // Set chat messages
+  Future<void> _initChat() async {
+    _updateChatUsers();
+    
+    // Get chat messages history
     final messages = gameData.value!.chatMessages
         .map((e) => e.toChatMessage())
         .toList()
-        .reversed;
-    _chatMessagesSub?.pause();
-    for (final message in messages) {
-      await getIt<SocketChatController>().chatController?.insert(message);
-    }
-    _chatMessagesSub?.resume();
+        .reversed
+        .toList();
+
+    // Init chat controller
+    await getIt<SocketChatController>()
+        .init(socket: socket!, messages: messages);
+
+    // Listen new messages in chat
+    _chatMessagesSub = getIt<SocketChatController>()
+        .chatController
+        ?.operationsStream
+        .listen(_onChatMessage);
   }
 
   void _updateChatUsers() {

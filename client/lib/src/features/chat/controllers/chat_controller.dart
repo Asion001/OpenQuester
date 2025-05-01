@@ -28,12 +28,12 @@ class SocketChatController extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<void> init({required Socket socket}) async {
+  Future<void> init({required Socket socket, List<Message>? messages}) async {
     // Clear before connect
     clear();
 
     // Init chat controller
-    chatController = InMemoryChatController();
+    chatController = InMemoryChatController(messages: messages);
 
     final restUser = ProfileController.getUser();
     if (restUser == null) throw UserError(LocaleKeys.user_unauthorized.tr());
