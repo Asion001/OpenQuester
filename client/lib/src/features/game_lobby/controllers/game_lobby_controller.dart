@@ -80,7 +80,7 @@ class GameLobbyController {
       // Listen new messages in chat
       _chatMessagesSub = getIt<SocketChatController>()
           .chatController
-          .operationsStream
+          ?.operationsStream
           .listen(_onChatMessage);
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -154,7 +154,11 @@ class GameLobbyController {
         .map((e) => e.toChatMessage())
         .toList()
         .reversed;
-    getIt<SocketChatController>().chatController.messages.addAll(messages);
+    _chatMessagesSub?.pause();
+    for (final message in messages) {
+      await getIt<SocketChatController>().chatController?.insert(message);
+    }
+    _chatMessagesSub?.resume();
   }
 
   void _updateChatUsers() {
@@ -199,7 +203,7 @@ class GameLobbyController {
       if (AppRouter.I.current.name == GameLobbyRoute.page.name) {
         AppRouter.I.maybePop();
       }
-
+      clear();
       return;
     }
 

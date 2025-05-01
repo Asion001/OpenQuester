@@ -5,8 +5,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 @singleton
 class SocketChatController extends ChangeNotifier {
-  late final chatController = InMemoryChatController();
-
+  InMemoryChatController? chatController;
   User? user;
   Socket? _socket;
   List<User>? _users;
@@ -15,15 +14,26 @@ class SocketChatController extends ChangeNotifier {
     _socket?.destroy();
     _socket = null;
     user = null;
-    chatController.messages.clear();
+    chatController?.dispose();
+    chatController = null;
     _users?.clear();
     _users = null;
     notifyListeners();
   }
 
+  @override
+  @disposeMethod
+  void dispose() {
+    clear();
+    super.dispose();
+  }
+
   Future<void> init({required Socket socket}) async {
     // Clear before connect
     clear();
+
+    // Init chat controller
+    chatController = InMemoryChatController();
 
     final restUser = ProfileController.getUser();
     if (restUser == null) throw UserError(LocaleKeys.user_unauthorized.tr());
@@ -64,7 +74,7 @@ class SocketChatController extends ChangeNotifier {
     );
 
     final textMessage = message.toChatMessage();
-    chatController.insert(textMessage);
+    chatController?.insert(textMessage);
     notifyListeners();
   }
 

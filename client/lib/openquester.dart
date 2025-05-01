@@ -33,6 +33,7 @@ export 'src/core/ui/ui_mode_utils.dart';
 export 'src/data/user_error.dart';
 export 'src/features/chat/controllers/chat_controller.dart';
 export 'src/features/chat/data/chat_user_extensions.dart';
+export 'src/features/chat/view/chat_composer.dart';
 export 'src/features/chat/view/chat_message.dart';
 export 'src/features/chat/view/chat_screen.dart';
 export 'src/features/clicker/clicker_page.dart';

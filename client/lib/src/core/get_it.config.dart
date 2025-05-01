@@ -61,7 +61,9 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i899.SocketChatController>(
-        () => _i899.SocketChatController());
+      () => _i899.SocketChatController(),
+      dispose: (i) => i.dispose(),
+    );
     gh.singleton<_i674.GameLobbyController>(() => _i674.GameLobbyController());
     gh.singleton<_i546.GamePreviewController>(
         () => _i546.GamePreviewController());
