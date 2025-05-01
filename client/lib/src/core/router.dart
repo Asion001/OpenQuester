@@ -33,11 +33,13 @@ class AppRouter extends RootStackRouter {
       const RouteType.adaptive(enablePredictiveBackGesture: true);
 
   Future<Uri> deepLinkTransformer(Uri uri) async {
-    // Make home screen behind any page from deep link
-    Future.delayed(
-      Duration.zero,
-      () => getIt<AppRouter>().pushPath(uri.path),
-    );
+    if (uri.path != '/') {
+      // Make home screen behind any page from deep link
+      Future.delayed(
+        Duration.zero,
+        () => pushPath(uri.path),
+      );
+    }
     return Uri(path: '/');
   }
 }

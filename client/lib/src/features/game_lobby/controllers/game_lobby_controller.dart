@@ -194,7 +194,12 @@ class GameLobbyController {
     // If i am leaving - close game
     if (user.meta.id == gameData.value?.me.meta.id) {
       socket?.dispose();
-      AppRouter.I.pop();
+
+      // Close only game page
+      if (AppRouter.I.current.name == GameLobbyRoute.page.name) {
+        AppRouter.I.maybePop();
+      }
+
       return;
     }
 

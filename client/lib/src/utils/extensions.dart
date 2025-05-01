@@ -125,7 +125,7 @@ extension SocketIOGameJoinEventPayloadX on SocketIOGameJoinEventPayload {
 
 extension SocketIOChatMessageEventPayloadX on SocketIOChatMessageEventPayload {
   TextMessage toChatMessage() {
-  return  TextMessage(
+    return TextMessage(
       id: uuid,
       text: message,
       createdAt: timestamp,
