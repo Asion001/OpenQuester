@@ -143,7 +143,7 @@ class GameLobbyController {
 
   Future<void> _initChat() async {
     _updateChatUsers();
-    
+
     // Get chat messages history
     final messages = gameData.value!.chatMessages
         .map((e) => e.toChatMessage())
