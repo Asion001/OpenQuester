@@ -1,6 +1,7 @@
 import { type Request } from "express";
 import { type Server as IOServer } from "socket.io";
 
+import { Game } from "domain/entities/game/Game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { SocketIOEvents } from "domain/enums/SocketIOEvents";
@@ -26,6 +27,13 @@ export class GameService {
     updatedTtl?: number
   ): Promise<GameListItemDTO> {
     return this.gameRepository.getGame(gameId, updatedTtl);
+  }
+
+  public async getGameEntity(
+    gameId: string,
+    updatedTtl?: number
+  ): Promise<Game> {
+    return this.gameRepository.getGameEntity(gameId, updatedTtl);
   }
 
   public async list(paginationOpts: GamePaginationOpts) {
@@ -82,6 +90,10 @@ export class GameService {
 
   public async cleanupAllGames() {
     return this.gameRepository.cleanupAllGames();
+  }
+
+  public async updateGame(game: Game) {
+    return this.gameRepository.updateGame(game);
   }
 
   public async cleanOrphanedGames() {

@@ -96,6 +96,7 @@ export class SocketIOGameService {
       answeredPlayers: null,
       answeringPlayer: null,
       currentQuestion: null,
+      readyPlayers: null,
       timer: null,
     };
 

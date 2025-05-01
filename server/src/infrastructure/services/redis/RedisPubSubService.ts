@@ -4,9 +4,9 @@ import {
   REDIS_LOCK_EXPIRATION_KEY,
 } from "domain/constants/redis";
 import { GameIndexManager } from "infrastructure/database/managers/game/GameIndexManager";
+import { RedisService } from "infrastructure/services/redis/RedisService";
 import { Logger } from "infrastructure/utils/Logger";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
-import { RedisService } from "./RedisService";
 
 export class RedisPubSubService {
   constructor(
@@ -25,6 +25,9 @@ export class RedisPubSubService {
         if (!ValueUtils.isString(message)) {
           return;
         }
+
+        // TODO: No need to delete, it will be handled correctly when logging system will improve
+        Logger.debug(`Key expired: ${message}`);
 
         if (message.startsWith(`${GAME_NAMESPACE}:`)) {
           await this._handleGameExpiration(message);

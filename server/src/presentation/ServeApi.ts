@@ -11,6 +11,7 @@ import { GameService } from "application/services/game/GameService";
 import { PackageService } from "application/services/package/PackageService";
 import { SocketIOChatService } from "application/services/socket/SocketIOChatService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
+import { SocketIOQuestionService } from "application/services/socket/SocketIOQuestionService";
 import { UserService } from "application/services/user/UserService";
 import { SESSION_SECRET_LENGTH } from "domain/constants/session";
 import { BaseError } from "domain/errors/BaseError";
@@ -126,6 +127,9 @@ export class ServeApi {
       socketIOChatService: Container.get<SocketIOChatService>(
         CONTAINER_TYPES.SocketIOChatService
       ),
+      socketIOQuestionService: Container.get<SocketIOQuestionService>(
+        CONTAINER_TYPES.SocketIOQuestionService
+      ),
       storage: Container.get<S3StorageService>(
         CONTAINER_TYPES.S3StorageService
       ),
@@ -163,7 +167,8 @@ export class ServeApi {
     new SocketIOInitializer(
       deps.io,
       deps.socketIOGameService,
-      deps.socketIOChatService
+      deps.socketIOChatService,
+      deps.socketIOQuestionService
     );
   }
 

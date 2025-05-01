@@ -59,8 +59,12 @@ export enum ClientResponse {
   YOU_ARE_MUTED = "you_are_muted",
   ONLY_SHOWMAN_CAN_START = "only_showman_can_start",
   GAME_ALREADY_STARTED = "game_already_started",
+  GAME_NOT_STARTED = "game_not_started",
   BAD_ROUND_RETRIEVAL = "bad_round_retrieval",
   ONLY_HOST_CAN_DELETE = "only_host_can_delete",
+  YOU_CANNOT_PICK_QUESTION = "you_cannot_pick_question",
+  QUESTION_NOT_FOUND = "question_not_found",
+  QUESTION_ALREADY_PICKED = "question_already_picked",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

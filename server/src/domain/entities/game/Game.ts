@@ -195,6 +195,25 @@ export class Game {
     );
   }
 
+  public set readyPlayers(players: number[]) {
+    this.gameState.readyPlayers = players;
+  }
+
+  public isEveryoneReady() {
+    if (!this.gameState.readyPlayers?.length) {
+      return false;
+    }
+
+    // Consider only in-game players
+    const validPlayers = this.players.filter(
+      (player) =>
+        player.gameStatus === PlayerGameStatus.IN_GAME &&
+        player.role === PlayerRole.PLAYER
+    );
+
+    return validPlayers.length === this.gameState.readyPlayers.length;
+  }
+
   private _getFirstFreeSlotIndex(): number {
     const occupiedSlots = this._players
       .filter(

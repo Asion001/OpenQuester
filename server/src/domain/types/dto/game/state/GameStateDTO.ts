@@ -1,10 +1,10 @@
-import { GameStateRoundDTO } from "./GameStateRoundDTO";
-import { GameStateTimerDTO } from "./GameStateTimerDTO";
-import { QuestionState } from "./QuestionState";
+import { GameStateRoundDTO } from "domain/types/dto/game/state/GameStateRoundDTO";
+import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
+import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 
 export interface GameStateAnsweredPlayerDTO {
   player: number;
-  /**Result can be -n, +n or 0 */
+  /** Result can be -n, +n or 0 */
   result: number;
 }
 
@@ -15,5 +15,7 @@ export interface GameStateDTO {
   currentQuestion: number | null; // Only if chosen
   answeringPlayer: number | null; // Only if answering
   answeredPlayers: GameStateAnsweredPlayerDTO[] | null;
+  /** This is used as readiness at game start and as readiness for another events */
+  readyPlayers: number[] | null;
   timer: GameStateTimerDTO | null;
 }

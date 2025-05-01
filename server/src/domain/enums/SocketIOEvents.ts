@@ -11,4 +11,9 @@ export enum SocketIOGameEvents {
   START = "start",
   LEAVE = "user-leave",
   GAME_DATA = "game-data",
+  QUESTION_PICK = "question-pick",
+  QUESTION_READY = "question-ready",
+  QUESTION_PLAYER_READY = "question-player-ready",
+  QUESTION_DATA = "question-data",
+  QUESTION_PREPARE = "question-prepare",
 }

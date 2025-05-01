@@ -239,7 +239,7 @@ export class GameIndexManager {
         this._createdAtIndexKey,
       ]);
 
-      await this.redisService.expire(createdAtIndexKeyToUse, 30);
+      await this.redisService.expire(createdAtIndexKeyToUse, this.TEMP_KEY_TTL);
 
       // Determine the score boundaries based on the provided dates.
       const minScore = filters.createdAt.min
@@ -291,6 +291,7 @@ export class GameIndexManager {
         titleFilterKey,
         titleMatches.map((m) => m.split(":")[1])
       );
+      await this.redisService.expire(titleFilterKey, this.TEMP_KEY_TTL);
       return titleFilterKey;
     }
     return null;

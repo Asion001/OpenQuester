@@ -10,6 +10,7 @@ import { PackageService } from "application/services/package/PackageService";
 import { PackageTagService } from "application/services/package/PackageTagService";
 import { SocketIOChatService } from "application/services/socket/SocketIOChatService";
 import { SocketIOGameService } from "application/services/socket/SocketIOGameService";
+import { SocketIOQuestionService } from "application/services/socket/SocketIOQuestionService";
 import { TranslateService } from "application/services/text/TranslateService";
 import { UserService } from "application/services/user/UserService";
 import { Database } from "infrastructure/database/Database";
@@ -231,6 +232,17 @@ export class DIConfig {
         Container.get<SocketUserDataRepository>(
           CONTAINER_TYPES.SocketUserDataRepository
         )
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.SocketIOQuestionService,
+      new SocketIOQuestionService(
+        Container.get<SocketUserDataService>(
+          CONTAINER_TYPES.SocketUserDataService
+        ),
+        Container.get<GameService>(CONTAINER_TYPES.GameService)
       ),
       "service"
     );
