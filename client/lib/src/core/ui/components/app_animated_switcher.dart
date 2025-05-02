@@ -1,19 +1,18 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
+/// Add fade and blur or size transition
 class AppAnimatedSwitcher extends StatelessWidget {
   const AppAnimatedSwitcher({
     required this.child,
-    required this.visible,
-    this.blurFadeTransition = false,
+    this.visible,
+    this.disableSizeTransition = false,
     super.key,
   });
 
   final Widget child;
-  final bool visible;
-
-  /// Disables size transition
-  final bool blurFadeTransition;
+  final bool? visible;
+  final bool disableSizeTransition;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class AppAnimatedSwitcher extends StatelessWidget {
       transitionBuilder: (child, animation) {
         final transition = FadeTransition(opacity: animation, child: child);
 
-        if (blurFadeTransition) {
+        if (disableSizeTransition) {
           return AnimatedBuilder(
             animation: animation,
             builder: (context, _) {
@@ -44,10 +43,13 @@ class AppAnimatedSwitcher extends StatelessWidget {
           child: transition,
         );
       },
-      // switch between your real child and an empty placeholder
-      child: visible
-          ? KeyedSubtree(key: const ValueKey('content'), child: child)
-          : const SizedBox.shrink(key: ValueKey('empty')),
+      // if [visible] is null pass changing child only
+      child: visible == null
+          ? child
+          // switch between your real child and an empty placeholder
+          : visible!
+              ? KeyedSubtree(key: const ValueKey('content'), child: child)
+              : const SizedBox.shrink(key: ValueKey('empty')),
     );
   }
 }
