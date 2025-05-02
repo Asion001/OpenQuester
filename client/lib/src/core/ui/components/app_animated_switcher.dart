@@ -5,27 +5,27 @@ class AppAnimatedSwitcher extends StatelessWidget {
   const AppAnimatedSwitcher({
     required this.child,
     required this.visible,
-    this.onlyFade = false,
+    this.blurFadeTransition = false,
     super.key,
   });
 
   final Widget child;
   final bool visible;
-  final bool onlyFade;
+
+  /// Disables size transition
+  final bool blurFadeTransition;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: Durations.medium1,
       transitionBuilder: (child, animation) {
-        // 1) Fade first:
         final transition = FadeTransition(opacity: animation, child: child);
 
-        if (onlyFade) {
+        if (blurFadeTransition) {
           return AnimatedBuilder(
             animation: animation,
             builder: (context, _) {
-              // as animation goes 0→1, blur goes from 2→0
               final sigma = lerpDouble(0, 2, animation.value)!;
               return ClipRect(
                 // ClipRect is required to prevent blur bleeding
@@ -38,7 +38,6 @@ class AppAnimatedSwitcher extends StatelessWidget {
           );
         }
 
-        // 3) Finally size‐transition the blurred+faded child:
         return SizeTransition(
           sizeFactor: animation,
           axis: Axis.horizontal,

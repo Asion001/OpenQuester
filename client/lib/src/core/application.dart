@@ -22,7 +22,7 @@ class _AppState extends State<App> {
     return MaterialApp.router(
       title: 'OpenQuester',
       theme: AppTheme.light,
-      darkTheme: AppTheme.light,
+      darkTheme: AppTheme.dark,
       routerConfig: getIt<AppRouter>().config(
         deepLinkTransformer: getIt<AppRouter>().deepLinkTransformer,
       ),

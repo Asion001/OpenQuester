@@ -80,7 +80,7 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 ),
                 AppAnimatedSwitcher(
                   visible: !wideModeOn && showChat,
-                  onlyFade: true,
+                  blurFadeTransition: true,
                   child: const _Chat().paddingAll(16),
                 ),
               ],
