@@ -74,6 +74,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/localization/
+    - assets/image/
 
 flutter_gen:
   output: lib/generated/

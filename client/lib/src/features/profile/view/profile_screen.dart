@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
+import 'package:openquester/src/core/ui/components/image_widget.dart';
 
 @RoutePage()
 class ProfileScreen extends WatchingWidget {
@@ -14,47 +15,18 @@ class ProfileScreen extends WatchingWidget {
         title: Text(LocaleKeys.profile.tr()),
       ),
       body: Center(
-        child: user == null
-            ? _loginField(context)
-            : _authorizedProfile(context, user),
+        child:
+            user == null ? const _LoginProfile() : const _AuthorizedProfile(),
       ),
     );
   }
+}
 
-  Widget _authorizedProfile(BuildContext context, ResponseUser user) {
-    const avatarSize = 100.0;
+class _LoginProfile extends WatchingWidget {
+  const _LoginProfile();
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 8,
-      children: [
-        Stack(
-          children: [
-            CircleAvatar(
-              radius: avatarSize / 2,
-              foregroundImage: user.avatar != null
-                  ? NetworkImageProvider(user.avatar!)
-                  : null,
-            ),
-            const Align(
-              alignment: Alignment.bottomRight,
-              child: _ChangeAvatarBtn(),
-            ),
-          ],
-        ).withSize(width: avatarSize, height: avatarSize),
-        Text(
-          user.username,
-          style: context.textTheme.bodyLarge,
-        ).paddingBottom(24),
-        FilledButton(
-          onPressed: getIt.get<AuthController>().logOut,
-          child: Text(LocaleKeys.logout.tr()),
-        ),
-      ],
-    );
-  }
-
-  Widget _loginField(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: 16.all,
       decoration: BoxDecoration(
@@ -87,6 +59,40 @@ class ProfileScreen extends WatchingWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _AuthorizedProfile extends WatchingWidget {
+  const _AuthorizedProfile();
+
+  @override
+  Widget build(BuildContext context) {
+    const avatarSize = 100.0;
+    final user = watchValue((ProfileController m) => m.user);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 8,
+      children: [
+        Stack(
+          children: [
+            ImageWidget(url: user?.avatar, avatarRadius: avatarSize / 2),
+            const Align(
+              alignment: Alignment.bottomRight,
+              child: _ChangeAvatarBtn(),
+            ),
+          ],
+        ).withSize(width: avatarSize, height: avatarSize),
+        Text(
+          user?.username ?? '',
+          style: context.textTheme.bodyLarge,
+        ).paddingBottom(24),
+        FilledButton(
+          onPressed: getIt.get<AuthController>().logOut,
+          child: Text(LocaleKeys.logout.tr()),
+        ),
+      ],
     );
   }
 }
