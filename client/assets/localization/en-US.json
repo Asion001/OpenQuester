@@ -55,5 +55,6 @@
   "show_search": "Show search",
   "hide_search": "Hide search",
   "user_leave_the_game": "User {} leave the game",
-  "user_joined_the_game": "User {} joined the game"
+  "user_joined_the_game": "User {} joined the game",
+  "showman": "Showman"
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
+import 'package:openquester/src/core/ui/components/app_animated_switcher.dart';
+import 'package:openquester/src/features/game_lobby/view/game_lobby_players.dart';
 
 @RoutePage()
-class GameLobbyScreen extends WatchingWidget {
+class GameLobbyScreen extends WatchingStatefulWidget {
   const GameLobbyScreen({
     @PathParam() required this.gameId,
     super.key,
@@ -10,56 +12,115 @@ class GameLobbyScreen extends WatchingWidget {
   final String gameId;
 
   @override
+  State<GameLobbyScreen> createState() => _GameLobbyScreenState();
+}
+
+class _GameLobbyScreenState extends State<GameLobbyScreen> {
+  @override
+  void initState() {
+    super.initState();
+    getIt<GameLobbyController>().join(gameId: widget.gameId);
+  }
+
+  @override
+  void deactivate() {
+    getIt<GameLobbyController>().leave();
+    super.deactivate();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final showChat = watchValue((GameLobbyController e) => e.showChat);
+    final gameData = watchValue((GameLobbyController e) => e.gameListData);
+
     callOnce(
       (context) {
-        getIt<GameLobbyController>().join(gameId: gameId);
-
         // Set init value for showing chat to [false] for mobile
         final wideMode = UiModeUtils.wideModeOn(context);
         if (wideMode) {
           getIt<GameLobbyController>().showChat.value = true;
         }
       },
-      dispose: () => getIt<GameLobbyController>().leave(),
     );
-
-    final showChat = watchValue((GameLobbyController e) => e.showChat);
-    final gameData = watchValue((GameLobbyController e) => e.gameListData);
 
     return LayoutBuilder(
       builder: (context, constrains) {
-        final wideModeOn = UiModeUtils.wideModeOn(context);
+        final wideModeOn = UiModeUtils.wideModeOn(
+          context,
+          UiModeUtils.wideModeWidth + 150,
+        );
+        final showDesktopChat = wideModeOn && showChat;
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(gameData?.title ?? gameId),
+            title: Text(gameData?.title ?? widget.gameId),
             leading: IconButton(
               onPressed: Navigator.of(context).pop,
               icon: const Icon(Icons.exit_to_app),
             ),
-            actions: const [_ChatButton()],
+            actions: [_ChatButton(show: showChat)],
+            actionsPadding: 8.right,
             elevation: 0,
             scrolledUnderElevation: 0,
             notificationPredicate: (_) => false,
           ),
-          body: SafeArea(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const _Themes().expand(),
-                Visibility(
-                  visible: wideModeOn && showChat,
-                  child: const _Chat(),
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              SafeArea(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _BodyBuilder(playerOnLeft: wideModeOn).expand(),
+                    AppAnimatedSwitcher(
+                      visible: showDesktopChat,
+                      child: const _Chat().withWidth(250),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              SafeArea(
+                child: AppAnimatedSwitcher(
+                  visible: !wideModeOn && showChat,
+                  onlyFade: true,
+                  child: const _Chat().paddingAll(16),
+                ),
+              ),
+            ],
           ),
-          bottomSheet:
-              !wideModeOn && showChat ? const _ChatBottomSheet() : null,
         );
       },
     );
+  }
+}
+
+class _BodyBuilder extends StatelessWidget {
+  const _BodyBuilder({required this.playerOnLeft});
+  final bool playerOnLeft;
+  @override
+  Widget build(BuildContext context) {
+    Widget child;
+
+    if (playerOnLeft) {
+      child = Row(
+        spacing: 8,
+        children: [
+          const GameLobbyPlayers(axis: Axis.vertical)
+              .paddingAll(8)
+              .withWidth(200),
+          const _Themes().expand(),
+        ],
+      );
+    } else {
+      child = Column(
+        children: [
+          const GameLobbyPlayers(axis: Axis.horizontal).withHeight(80),
+          const Divider(height: 0).paddingTop(8),
+          const _Themes().expand(),
+        ],
+      );
+    }
+    return child;
   }
 }
 
@@ -90,6 +151,7 @@ class _Themes extends WatchingWidget {
     }
 
     return ListView.builder(
+      padding: 8.vertical,
       itemCount: themes.length,
       itemBuilder: (context, index) => themes[index],
     );
@@ -97,13 +159,14 @@ class _Themes extends WatchingWidget {
 }
 
 class _ChatButton extends StatelessWidget {
-  const _ChatButton();
+  const _ChatButton({required this.show});
+  final bool show;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: getIt<GameLobbyController>().toggleDesktopChat,
-      icon: const Icon(Icons.chat),
+      icon: Icon(show ? Icons.chat_bubble_outline : Icons.chat),
     );
   }
 }
@@ -113,19 +176,10 @@ class _Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints:
-          const BoxConstraints.tightFor(width: UiModeUtils.wideModeWidth / 2),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      color: context.theme.colorScheme.surfaceContainer,
       child: const ChatScreen(),
     );
-  }
-}
-
-class _ChatBottomSheet extends StatelessWidget {
-  const _ChatBottomSheet();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox.expand(child: const _Chat().paddingBottom(16));
   }
 }

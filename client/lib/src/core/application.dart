@@ -10,6 +10,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   bool loading = true;
+
   @override
   void initState() {
     super.initState();
