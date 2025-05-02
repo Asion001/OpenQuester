@@ -8,6 +8,7 @@ import {
 } from "domain/constants/game";
 import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
 import { REDIS_LOCK_GAMES_CLEANUP } from "domain/constants/redis";
+import { TIMER_NSP } from "domain/constants/timer";
 import { Game } from "domain/entities/game/Game";
 import { Player } from "domain/entities/game/Player";
 import { ClientResponse } from "domain/enums/ClientResponse";
@@ -18,6 +19,7 @@ import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
+import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { GamePaginationOpts } from "domain/types/pagination/game/GamePaginationOpts";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
@@ -150,7 +152,7 @@ export class GameRepository {
             return null;
           }
 
-          return await this._parseGameToListItemDTO(game, createdBy, packData);
+          return this._parseGameToListItemDTO(game, createdBy, packData);
         })
       )
     ).filter((g): g is GameListItemDTO => g !== null);
@@ -298,6 +300,78 @@ export class GameRepository {
     return player!.restrictionData.muted ?? true;
   }
 
+  /**
+   * Cleans up all active games from Redis on server start.
+   */
+  public async cleanupAllGames(): Promise<void> {
+    const acquired = await this.redisService.setLockKey(
+      REDIS_LOCK_GAMES_CLEANUP
+    );
+
+    if (!acquired) {
+      return; // Another instance acquired the lock
+    }
+
+    const startTime = Date.now();
+
+    const keys = await this.redisService.scan(this.getGameKey("*"));
+    let gamesCounter = 0;
+
+    const gamesPromises = [];
+    const games: Game[] = [];
+
+    for (const key of keys) {
+      gamesPromises.push(
+        this.getGameEntity(key.split(":")[1])
+          .then((game) => {
+            games.push(game);
+          })
+          .catch(() => {
+            // Game not found - ignore (for game:index and other keys)
+          })
+      );
+    }
+
+    await Promise.all(gamesPromises);
+
+    for (const game of games) {
+      let playerDisconnected = false;
+      for (const player of game.players) {
+        if (player.gameStatus === PlayerGameStatus.IN_GAME) {
+          player.gameStatus = PlayerGameStatus.DISCONNECTED;
+          playerDisconnected = true;
+        }
+      }
+
+      if (playerDisconnected) {
+        gamesCounter++;
+        await this.updateGame(game);
+      }
+    }
+
+    Logger.info(
+      `Games updated: ${gamesCounter}, in ${Date.now() - startTime} ms`
+    );
+  }
+
+  public async cleanOrphanedGames() {
+    return this.gameIndexManager.cleanOrphanedGameIndexes();
+  }
+
+  public async createTimer(timer: GameStateTimerDTO, gameId: string) {
+    const key = this._getTimerKey(gameId);
+
+    await this.redisService.set(
+      key,
+      JSON.stringify(timer),
+      timer.durationMs / 1000
+    );
+  }
+
+  private _getTimerKey(gameId: string) {
+    return `${TIMER_NSP}:${gameId}`;
+  }
+
   private async _parseGameToListItemDTO(
     game: Game,
     createdBy: ShortUserInfo,
@@ -369,50 +443,5 @@ export class GameRepository {
         }
       })
       .filter((g): g is Game => !!g);
-  }
-
-  /**
-   * Cleans up all active games from Redis on server start.
-   */
-  public async cleanupAllGames(): Promise<void> {
-    const acquired = await this.redisService.setLockKey(
-      REDIS_LOCK_GAMES_CLEANUP
-    );
-
-    if (!acquired) {
-      return; // Another instance acquired the lock
-    }
-
-    const startTime = Date.now();
-
-    const keys = await this.redisService.scan(this.getGameKey("*"));
-    let gamesCounter = 0;
-    for (const key of keys) {
-      let playerDisconnected = false;
-      try {
-        const game = await this.getGameEntity(key.split(":")[1]);
-        for (const player of game.players) {
-          if (player.gameStatus === PlayerGameStatus.IN_GAME) {
-            player.gameStatus = PlayerGameStatus.DISCONNECTED;
-            playerDisconnected = true;
-          }
-        }
-
-        if (playerDisconnected) {
-          gamesCounter++;
-          await this.updateGame(game);
-        }
-      } catch {
-        // Game not found - ignore (for game:index and other keys)
-      }
-    }
-
-    Logger.info(
-      `Games updated: ${gamesCounter}, in ${Date.now() - startTime} ms`
-    );
-  }
-
-  public async cleanOrphanedGames() {
-    return this.gameIndexManager.cleanOrphanedGameIndexes();
   }
 }

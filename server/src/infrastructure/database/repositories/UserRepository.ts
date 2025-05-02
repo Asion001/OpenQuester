@@ -139,7 +139,7 @@ export class UserRepository {
   public async delete(user: User) {
     user.is_deleted = true;
     user.updated_at = new Date();
-    this.update(user);
+    return this.update(user);
   }
 
   public async update(user: User) {

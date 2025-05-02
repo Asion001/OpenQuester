@@ -219,7 +219,7 @@ export class S3StorageService {
     );
 
     if (user || pack) {
-      this._writeUsage(file, user, pack);
+      await this._writeUsage(file, user, pack);
     }
     return link;
   }
@@ -279,13 +279,13 @@ export class S3StorageService {
     }
 
     const filePath = StorageUtils.parseFilePath(filename);
-    this.fileService.removeFile(filename);
+    await this.fileService.removeFile(filename);
 
     const command = new DeleteObjectCommand({
       Bucket: this.s3Context.bucket,
       Key: filePath,
     });
-    this._client.send(command);
+    await this._client.send(command);
   }
 
   private async _handleAvatarRemove(

@@ -58,21 +58,27 @@ export class SocketIOQuestionService {
 
     let timer: GameStateTimer;
 
-    // TODO: Create service method to create timer key in redis (and then handle it's expiration)
     // If question has files to download - let everyone download first
     if (question.questionFiles && question.questionFiles.length > 0) {
       timer = new GameStateTimer(GAME_QUESTION_FILE_DOWNLOAD_TIME);
-      game.gameState.questionState = QuestionState.PREPARE;
+      await this.updateQuestionState(game, QuestionState.PREPARE, {
+        withSave: false,
+      });
     } else {
       timer = new GameStateTimer(GAME_QUESTION_ANSWER_TIME);
-      game.gameState.questionState = QuestionState.SHOWING;
+      await this.updateQuestionState(game, QuestionState.SHOWING, {
+        withSave: false,
+      });
     }
 
+    const timerStarted = timer.start();
+
     game.gameState.currentQuestion = questionId;
-    game.gameState.timer = timer.start();
+    game.gameState.timer = timerStarted;
     GameQuestionMapper.setQuestionPlayed(game, question.id!, theme.id!);
 
     await this.gameService.updateGame(game);
+    await this.gameService.createTimer(timerStarted, game.id);
 
     return { question, game, timer };
   }
@@ -103,6 +109,14 @@ export class SocketIOQuestionService {
     return question;
   }
 
+  public async createNewTimer(durationMs: number, gameId: string) {
+    const timer = new GameStateTimer(durationMs);
+
+    timer.start();
+    await this.gameService.createTimer(timer.value(), gameId);
+    return timer;
+  }
+
   public async handlePlayersBroadcastMap(
     socketsIds: string[],
     game: Game,
@@ -117,9 +131,16 @@ export class SocketIOQuestionService {
       PackageQuestionDTO | SimplePackageQuestionDTO
     > = new Map();
 
-    for (const socketId of socketsIds) {
-      const userData = await this._fetchUserSocketData(socketId);
+    const userDataPromises = socketsIds.map((socketId) =>
+      this._fetchUserSocketData(socketId).then((userData) => ({
+        socketId,
+        userData,
+      }))
+    );
 
+    const userDataResults = await Promise.all(userDataPromises);
+
+    for (const { socketId, userData } of userDataResults) {
       const player = game.getPlayer(userData.id, { fetchDisconnected: false });
 
       if (player?.role === PlayerRole.SHOWMAN) {
@@ -157,6 +178,26 @@ export class SocketIOQuestionService {
     await this.gameService.updateGame(game);
 
     return { game, player };
+  }
+
+  public async updateQuestionState(
+    game: Game,
+    questionState: QuestionState,
+    opts?: {
+      withSave: boolean;
+    }
+  ) {
+    if (game.gameState.questionState !== questionState) {
+      // Don't save even if `withSave` is true
+      game.gameState.questionState = questionState;
+      return;
+    }
+
+    if (opts && opts.withSave) {
+      await this.gameService.updateGame(game);
+    }
+
+    return game;
   }
 
   private async _fetchUserSocketData(socketId: string) {

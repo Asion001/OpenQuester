@@ -95,7 +95,7 @@ export class UserRestApiController {
     }
 
     return res.status(HttpStatus.NOT_FOUND).send({
-      message: ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
+      message: await ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
     });
   };
 
@@ -189,7 +189,7 @@ export class UserRestApiController {
     }
 
     return res.status(HttpStatus.NOT_FOUND).send({
-      message: ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
+      message: await ts.localize(ClientResponse.USER_NOT_FOUND, req.headers),
     });
   };
 

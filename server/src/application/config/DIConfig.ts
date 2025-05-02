@@ -210,15 +210,6 @@ export class DIConfig {
     );
 
     Container.register(
-      CONTAINER_TYPES.RedisPubSubService,
-      new RedisPubSubService(
-        Container.get<RedisService>(CONTAINER_TYPES.RedisService),
-        gameIndexManager
-      ),
-      "service"
-    );
-
-    Container.register(
       CONTAINER_TYPES.SocketUserDataRepository,
       new SocketUserDataRepository(
         Container.get<RedisService>(CONTAINER_TYPES.RedisService)
@@ -243,6 +234,20 @@ export class DIConfig {
           CONTAINER_TYPES.SocketUserDataService
         ),
         Container.get<GameService>(CONTAINER_TYPES.GameService)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.RedisPubSubService,
+      new RedisPubSubService(
+        Container.get<IOServer>(CONTAINER_TYPES.IO),
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService),
+        gameIndexManager,
+        Container.get<GameService>(CONTAINER_TYPES.GameService),
+        Container.get<SocketIOQuestionService>(
+          CONTAINER_TYPES.SocketIOQuestionService
+        )
       ),
       "service"
     );

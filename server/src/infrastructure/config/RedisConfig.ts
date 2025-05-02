@@ -95,14 +95,18 @@ export class RedisConfig {
     const port = this._env.REDIS_PORT || "6379";
     const dbNumber = this._env.REDIS_DB_NUMBER || "0";
 
-    let auth = "";
-    if (username && password) {
-      auth = `${username}:${password}@`;
-    } else if (username) {
-      auth = `${username}@`;
-    }
+    const auth = this._buildAuthString(username, password);
 
     // redis[s]://[[username][:password]@][host][:port][/db-number]
     return `redis://${auth}${host}:${port}/${dbNumber}`;
+  }
+
+  private static _buildAuthString(username: string, password: string): string {
+    if (username && password) {
+      return `${username}:${password}@`;
+    } else if (username) {
+      return `${username}@`;
+    }
+    return "";
   }
 }

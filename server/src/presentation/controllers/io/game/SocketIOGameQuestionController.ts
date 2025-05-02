@@ -14,7 +14,7 @@ import {
 } from "domain/types/socket/events/game/GameQuestionDataEventPayload";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
-import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
+import { SocketIOEventEmitter } from "presentation/emitters/SocketIOEventEmitter";
 
 export class SocketIOGameQuestionController {
   constructor(
@@ -86,12 +86,12 @@ export class SocketIOGameQuestionController {
 
     if (game.isEveryoneReady()) {
       const question = await this.socketIOQuestionService.getQuestion(game);
-      await this._broadcastQuestion(
-        game,
-        question,
-        // TODO: Create service method to create timer key in redis (and then handle it's expiration)
-        new GameStateTimer(GAME_QUESTION_ANSWER_TIME)
+      const timer = await this.socketIOQuestionService.createNewTimer(
+        GAME_QUESTION_ANSWER_TIME,
+        game.id
       );
+
+      await this._broadcastQuestion(game, question, timer);
     }
   };
 

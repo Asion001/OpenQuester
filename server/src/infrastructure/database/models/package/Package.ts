@@ -70,7 +70,7 @@ export class Package {
 
   questionCount?: number;
 
-  public async import(data: PackageImport) {
+  public import(data: PackageImport) {
     this.title = data.title;
     this.created_at = data.createdAt;
     this.language = data.language;

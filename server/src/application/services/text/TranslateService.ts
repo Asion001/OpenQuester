@@ -19,21 +19,21 @@ export class TranslateService {
   private static _translationKeys: string[] = [];
 
   /** Returns array that contains all translation keys */
-  public static get translationKeys() {
+  public static async translationKeys() {
     if (this._translationKeys.length > 0) {
       return this._translationKeys;
     }
 
-    this._loadTranslationKeys();
+    await this._loadTranslationKeys();
     return this._translationKeys;
   }
 
-  private static _loadTranslationKeys() {
+  private static async _loadTranslationKeys() {
     let translation = this._translationsMap.get("en");
 
     if (!translation || Object.keys(translation).length < 1) {
       const filePath = path.join(this._translationsPath, "en.json");
-      translation = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      translation = JSON.parse(await fs.promises.readFile(filePath, "utf8"));
     }
 
     for (const key of Object.keys(translation as Translation)) {
@@ -43,7 +43,9 @@ export class TranslateService {
     }
   }
 
-  private static _loadTranslation(language: Language): Translation | null {
+  private static async _loadTranslation(
+    language: Language
+  ): Promise<Translation | null> {
     const existing = this._translationsMap.get(language);
     if (!ValueUtils.isBad(existing) && !ValueUtils.isEmpty(existing)) {
       return existing;
@@ -51,12 +53,15 @@ export class TranslateService {
 
     try {
       const filePath = path.join(this._translationsPath, `${language}.json`);
-      if (fs.existsSync(filePath)) {
-        const translation = JSON.parse(fs.readFileSync(filePath, "utf8"));
-        this._translationsMap.set(language, translation);
-        Logger.gray(`Translation loading for '${language}' is completed`);
-        return translation;
-      }
+      await fs.promises.access(filePath, fs.constants.F_OK);
+
+      const translation = JSON.parse(
+        await fs.promises.readFile(filePath, "utf8")
+      );
+
+      this._translationsMap.set(language, translation);
+      Logger.gray(`Translation loading for '${language}' is completed`);
+      return translation;
     } catch (error) {
       Logger.error(
         `Error loading translation for language: ${language}: ${error}`
@@ -66,7 +71,7 @@ export class TranslateService {
     return null;
   }
 
-  public static localize(
+  public static async localize(
     translationKey: string,
     headers?: IncomingHttpHeaders
   ) {
@@ -79,10 +84,14 @@ export class TranslateService {
    * or returns English translation (default).
    * If no value by key is found, the key will be returned.
    */
-  public static translate(translationKey: string, language?: Language): string {
+  public static async translate(
+    translationKey: string,
+    language?: Language
+  ): Promise<string> {
     const selectedLang = language ?? "en";
     const translation =
-      this._loadTranslation(selectedLang) ?? this._loadTranslation("en");
+      (await this._loadTranslation(selectedLang)) ??
+      (await this._loadTranslation("en"));
 
     if (!translation) {
       Logger.warn(

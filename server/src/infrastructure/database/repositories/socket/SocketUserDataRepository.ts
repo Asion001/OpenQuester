@@ -31,7 +31,7 @@ export class SocketUserDataRepository {
     socketId: string,
     data: { userId: number; language: string }
   ) {
-    this.redisService.hset(
+    return this.redisService.hset(
       this._getKey(socketId),
       {
         id: data.userId,
@@ -42,11 +42,15 @@ export class SocketUserDataRepository {
   }
 
   public async update(socketId: string, data: SocketRedisUserUpdateDTO) {
-    this.redisService.hset(this._getKey(socketId), data, SOCKET_GAME_AUTH_TTL);
+    return this.redisService.hset(
+      this._getKey(socketId),
+      data,
+      SOCKET_GAME_AUTH_TTL
+    );
   }
 
   public async remove(socketId: string) {
-    this.redisService.del(this._getKey(socketId));
+    return this.redisService.del(this._getKey(socketId));
   }
 
   /**

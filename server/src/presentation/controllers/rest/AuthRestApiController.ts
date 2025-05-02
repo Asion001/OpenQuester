@@ -121,7 +121,7 @@ export class AuthRestApiController {
       res.clearCookie("connect.sid");
 
       res.status(HttpStatus.OK).json({
-        message: ts.localize(ClientResponse.LOGOUT_SUCCESS, req.headers),
+        message: await ts.localize(ClientResponse.LOGOUT_SUCCESS, req.headers),
       });
     });
   };

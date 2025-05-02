@@ -15,5 +15,6 @@ export enum SocketIOGameEvents {
   QUESTION_READY = "question-ready",
   QUESTION_PLAYER_READY = "question-player-ready",
   QUESTION_DATA = "question-data",
+  QUESTION_FINISH = "question-finish",
   QUESTION_PREPARE = "question-prepare",
 }

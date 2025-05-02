@@ -42,7 +42,10 @@ export class FileRestApiController {
     await this.storage.delete(validatedData.filename, req);
 
     res.status(HttpStatus.NO_CONTENT).send({
-      message: ts.localize(ClientResponse.DELETE_REQUEST_SENT, req.headers),
+      message: await ts.localize(
+        ClientResponse.DELETE_REQUEST_SENT,
+        req.headers
+      ),
     });
   };
 

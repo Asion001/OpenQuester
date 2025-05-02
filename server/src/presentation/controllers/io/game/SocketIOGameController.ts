@@ -17,7 +17,7 @@ import { GameLeaveEventPayload } from "domain/types/socket/events/game/GameLeave
 import { GameStartEventPayload } from "domain/types/socket/events/game/GameStartEventPayload";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
-import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
+import { SocketIOEventEmitter } from "presentation/emitters/SocketIOEventEmitter";
 
 export class SocketIOGameController {
   constructor(
@@ -82,7 +82,7 @@ export class SocketIOGameController {
       ),
     });
 
-    this.socket.join(dto.gameId);
+    await this.socket.join(dto.gameId);
   };
 
   private handleGameStart = async () => {
@@ -120,7 +120,7 @@ export class SocketIOGameController {
         }
       );
 
-      this.socket.leave(result.data.gameId);
+      await this.socket.leave(result.data.gameId);
     }
   };
 

@@ -1,6 +1,7 @@
 import { type Request } from "express";
 import { type Server as IOServer } from "socket.io";
 
+import { UserService } from "application/services/user/UserService";
 import { Game } from "domain/entities/game/Game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
@@ -9,9 +10,9 @@ import { ClientError } from "domain/errors/ClientError";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { GameEvent, GameEventDTO } from "domain/types/dto/game/GameEventDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
+import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { GamePaginationOpts } from "domain/types/pagination/game/GamePaginationOpts";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
-import { UserService } from "../user/UserService";
 
 export class GameService {
   constructor(
@@ -98,6 +99,10 @@ export class GameService {
 
   public async cleanOrphanedGames() {
     return this.gameRepository.cleanOrphanedGames();
+  }
+
+  public async createTimer(timer: GameStateTimerDTO, gameId: string) {
+    return this.gameRepository.createTimer(timer, gameId);
   }
 
   private _emitSocketGameCreated(gameData: GameListItemDTO) {

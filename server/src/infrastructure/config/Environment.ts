@@ -88,9 +88,12 @@ export class Environment {
       return;
     }
 
-    // Load variables from file only, if file exists
-    // In other case variables should provided directly in environment e.g. `$ export VAR="value"`
+    // Ignore rule since this read executes only on initialization
+    // It will be harder to handle DataSource with async env load
+    // eslint-disable-next-line node/no-sync
     if (fs.existsSync(path.resolve(process.cwd(), ".env"))) {
+      // Load variables from file only, if file exists
+      // In other case variables should provided directly in environment e.g. `$ export VAR="value"`
       dotenv.config();
     }
 
@@ -114,23 +117,13 @@ export class Environment {
     defaultValue: unknown = undefined,
     optional: boolean = false
   ): any {
-    let success = false;
     let value = process.env[variable] ?? defaultValue;
     value = value === "undefined" ? undefined : value;
 
-    if (ValueUtils.isArray(type)) {
-      type.forEach((t) => {
-        if (ValueUtils.checkPrimitiveType(value, t)) {
-          success = true;
-          type = t;
-        }
-      });
-    } else {
-      if (ValueUtils.checkPrimitiveType(value, type)) success = true;
-    }
+    const { success, resolvedType } = this._checkType(value, type);
 
     if (success) {
-      switch (type) {
+      switch (resolvedType) {
         case "boolean":
           return ValueUtils.parseBoolean(value);
         case "number":
@@ -252,5 +245,29 @@ export class Environment {
     );
     this.DB_PORT = this.getEnvVar("DB_PORT", "number", 5432);
     this.DB_LOGGER = this.getEnvVar("DB_LOGGER", ["boolean", "string"], false);
+  }
+
+  private _checkType(
+    value: unknown,
+    type: EnvVar | EnvVar[]
+  ): { success: boolean; resolvedType: EnvVar } {
+    let success = false;
+    let resolvedType: EnvVar = "string";
+
+    if (ValueUtils.isArray(type)) {
+      type.forEach((t) => {
+        if (ValueUtils.checkPrimitiveType(value, t)) {
+          success = true;
+          resolvedType = t;
+        }
+      });
+    } else {
+      if (ValueUtils.checkPrimitiveType(value, type)) {
+        success = true;
+        resolvedType = type;
+      }
+    }
+
+    return { success, resolvedType };
   }
 }

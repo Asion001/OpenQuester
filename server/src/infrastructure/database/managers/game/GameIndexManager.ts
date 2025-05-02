@@ -201,28 +201,63 @@ export class GameIndexManager {
     }
   ) {
     const indexKeys: string[] = [];
-    const anyFilterApplied =
+    const anyFilterApplied = this._isAnyFilterApplied(filters);
+
+    if (!anyFilterApplied) {
+      return this._applyDefaultFilter(tempKey, indexKeys);
+    }
+
+    await this._applyPrivacyFilter(filters, indexKeys);
+    await this._applyTitleFilter(filters, tempKey, indexKeys);
+    await this._applyDateRangeFilter(filters, tempKey, indexKeys);
+
+    if (indexKeys.length < 1) {
+      return [];
+    }
+
+    await this.redisService.zinterstore(tempKey, indexKeys.length, [
+      ...indexKeys,
+      "WEIGHTS",
+      ...indexKeys.map((_, i) => (i === 0 ? 1 : 0)),
+    ]);
+  }
+
+  private _isAnyFilterApplied(filters: {
+    createdAt: { min?: Date; max?: Date };
+    isPrivate?: boolean;
+    titlePrefix?: string;
+  }): boolean {
+    return (
       !!filters.createdAt.max ||
       !!filters.createdAt.min ||
       ValueUtils.isBoolean(filters.isPrivate) ||
-      ValueUtils.isString(filters.titlePrefix);
+      ValueUtils.isString(filters.titlePrefix)
+    );
+  }
 
-    // If filters is not applied - return default filter by created date
-    if (!anyFilterApplied) {
-      indexKeys.push(this._createdAtIndexKey);
-      return await this.redisService.zinterstore(tempKey, indexKeys.length, [
-        ...indexKeys,
-        "WEIGHTS",
-        ...indexKeys.map((_, i) => (i === 0 ? 1 : 0)),
-      ]);
-    }
+  private async _applyDefaultFilter(tempKey: string, indexKeys: string[]) {
+    indexKeys.push(this._createdAtIndexKey);
+    return this.redisService.zinterstore(tempKey, indexKeys.length, [
+      ...indexKeys,
+      "WEIGHTS",
+      ...indexKeys.map((_, i) => (i === 0 ? 1 : 0)),
+    ]);
+  }
 
-    // Privacy Filter
+  private async _applyPrivacyFilter(
+    filters: { isPrivate?: boolean },
+    indexKeys: string[]
+  ) {
     if (ValueUtils.isBoolean(filters.isPrivate)) {
       indexKeys.push(this._privacyIndexKey(filters.isPrivate));
     }
+  }
 
-    // Title Filter
+  private async _applyTitleFilter(
+    filters: { titlePrefix?: string },
+    tempKey: string,
+    indexKeys: string[]
+  ) {
     if (filters.titlePrefix) {
       const titleKey = await this._prepareTitleFilter(
         filters.titlePrefix,
@@ -230,10 +265,14 @@ export class GameIndexManager {
       );
       if (titleKey) indexKeys.push(titleKey);
     }
+  }
 
-    // Date Range Filter
+  private async _applyDateRangeFilter(
+    filters: { createdAt: { min?: Date; max?: Date } },
+    tempKey: string,
+    indexKeys: string[]
+  ) {
     if (filters.createdAt.max || filters.createdAt.min) {
-      // Copy the main createdAt index into a temporary key.
       const createdAtIndexKeyToUse = `${tempKey}:createdAt`;
       await this.redisService.zunionstore(createdAtIndexKeyToUse, 1, [
         this._createdAtIndexKey,
@@ -241,7 +280,6 @@ export class GameIndexManager {
 
       await this.redisService.expire(createdAtIndexKeyToUse, this.TEMP_KEY_TTL);
 
-      // Determine the score boundaries based on the provided dates.
       const minScore = filters.createdAt.min
         ? filters.createdAt.min.getTime()
         : "-inf";
@@ -249,7 +287,6 @@ export class GameIndexManager {
         ? filters.createdAt.max.getTime()
         : "+inf";
 
-      // Remove elements outside the desired range from the temporary index.
       await this.redisService.zremrangebyscore(
         createdAtIndexKeyToUse,
         "-inf",
@@ -263,18 +300,6 @@ export class GameIndexManager {
 
       indexKeys.push(createdAtIndexKeyToUse);
     }
-
-    // No indexes matches filters - return empty result without call to redis
-    if (indexKeys.length < 1) {
-      return [];
-    }
-
-    // Combine indexes
-    await this.redisService.zinterstore(tempKey, indexKeys.length, [
-      ...indexKeys,
-      "WEIGHTS",
-      ...indexKeys.map((_, i) => (i === 0 ? 1 : 0)),
-    ]);
   }
 
   private async _prepareTitleFilter(prefix: string, tempKey: string) {
