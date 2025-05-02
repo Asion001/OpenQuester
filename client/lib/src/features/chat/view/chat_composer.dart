@@ -31,6 +31,7 @@ class _ComposerState extends State<Composer> {
       attachmentIcon: null,
       focusNode: focusNode,
       textEditingController: textEditingController,
+      handleSafeArea: false,
     );
   }
 

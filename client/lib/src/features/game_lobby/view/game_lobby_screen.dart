@@ -50,6 +50,7 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
         final showDesktopChat = wideModeOn && showChat;
 
         return Scaffold(
+          extendBody: true,
           appBar: AppBar(
             title: Text(gameData?.title ?? widget.gameId),
             leading: IconButton(
@@ -62,11 +63,12 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
             scrolledUnderElevation: 0,
             notificationPredicate: (_) => false,
           ),
-          body: Stack(
-            fit: StackFit.expand,
-            children: [
-              SafeArea(
-                child: Row(
+          body: SafeArea(
+            bottom: false,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _BodyBuilder(playerOnLeft: wideModeOn).expand(),
@@ -76,15 +78,13 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                     ),
                   ],
                 ),
-              ),
-              SafeArea(
-                child: AppAnimatedSwitcher(
+                AppAnimatedSwitcher(
                   visible: !wideModeOn && showChat,
                   onlyFade: true,
                   child: const _Chat().paddingAll(16),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -104,55 +104,22 @@ class _BodyBuilder extends StatelessWidget {
         spacing: 8,
         children: [
           const GameLobbyPlayers(axis: Axis.vertical)
+              .withWidth(150)
               .paddingAll(8)
-              .withWidth(200),
-          const _Themes().expand(),
+              .paddingLeft(16),
+          const GameLobbyThemes().expand(),
         ],
       );
     } else {
       child = Column(
         children: [
           const GameLobbyPlayers(axis: Axis.horizontal).withHeight(80),
-          const Divider(height: 0).paddingTop(8),
-          const _Themes().expand(),
+          const Divider(height: 0, thickness: .4).paddingTop(8),
+          const GameLobbyThemes().expand(),
         ],
       );
     }
     return child;
-  }
-}
-
-class _Themes extends WatchingWidget {
-  const _Themes();
-
-  @override
-  Widget build(BuildContext context) {
-    final gameData =
-        watchValue<GameLobbyController, SocketIOGameJoinEventPayload?>(
-      (p0) => p0.gameData,
-    );
-
-    final round = gameData?.gameState.currentRound;
-    final themes = round
-        ?.sortedThemes()
-        .map((theme) => GameLobbyTheme(theme: theme).paddingBottom(16))
-        .toList();
-
-    if (themes == null) {
-      if (gameData?.me.role == PlayerRole.showman) {
-        return FilledButton(
-          onPressed: getIt<GameLobbyController>().startGame,
-          child: Text(LocaleKeys.start_game.tr()),
-        ).center();
-      }
-      return const CircularProgressIndicator().center();
-    }
-
-    return ListView.builder(
-      padding: 8.vertical,
-      itemCount: themes.length,
-      itemBuilder: (context, index) => themes[index],
-    );
   }
 }
 
@@ -174,10 +141,12 @@ class _Chat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      color: context.theme.colorScheme.surfaceContainer,
-      child: const ChatScreen(),
+    return SafeArea(
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        color: context.theme.colorScheme.surfaceContainer,
+        child: const ChatScreen(),
+      ),
     );
   }
 }

@@ -22,8 +22,8 @@ class GameLobbyPlayers extends WatchingWidget {
     return ListView.separated(
       itemCount: players.length,
       scrollDirection: axis,
+      padding: axis == Axis.horizontal ? 16.horizontal : null,
       separatorBuilder: (context, index) => const SizedBox.square(dimension: 8),
-      padding: 16.horizontal,
       itemBuilder: (context, index) {
         final player = players[index];
         return GameLobbyPlayer(player: player);
@@ -47,35 +47,61 @@ class GameLobbyPlayer extends StatelessWidget {
         border: Border.all(
           color: context.theme.colorScheme.surfaceContainerHigh,
         ),
-        borderRadius: 8.circular,
+        borderRadius: 12.circular,
         color: context.theme.colorScheme.surface,
       ),
       padding: 4.all,
       constraints: BoxConstraints.loose(const Size(100, 80)),
       child: Stack(
-        alignment: Alignment.topRight,
+        alignment: Alignment.center,
+        fit: StackFit.expand,
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ImageWidget(url: player.meta.avatar, avatarRadius: 16).flexible(),
-              Text(
-                player.meta.username,
-                style: context.textTheme.titleSmall,
-                overflow: TextOverflow.ellipsis,
+          Positioned.fill(
+            child: Container(
+              foregroundDecoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: .4),
+                borderRadius: 8.circular,
               ),
-              Text(
-                NumberFormat.compact().format(player.score),
-                style: context.textTheme.labelSmall,
-              ).withTooltip(msg: '${player.score}'),
+              decoration: BoxDecoration(borderRadius: 8.circular),
+              clipBehavior: Clip.antiAlias,
+              child: ImageWidget(url: player.meta.avatar),
+            ),
+          ),
+          Stack(
+            alignment: Alignment.topRight,
+            fit: StackFit.expand,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    player.meta.username,
+                    style: context.textTheme.titleSmall
+                        ?.copyWith(color: Colors.white),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    NumberFormat.compact().format(player.score),
+                    style: context.textTheme.labelSmall
+                        ?.copyWith(color: Colors.white),
+                  ).withTooltip(msg: '${player.score}'),
+                ],
+              ),
             ],
           ),
           if (player.role == PlayerRole.showman)
-            Icon(
-              Icons.record_voice_over_outlined,
-              size: 16,
-              color: context.theme.colorScheme.secondary,
-            ).withTooltip(msg: LocaleKeys.showman.tr()),
+            Positioned(
+              top: 4,
+              right: 4,
+              child: Assets.icons.crown
+                  .svg(
+                    width: 16,
+                    height: 16,
+                    colorFilter:
+                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  )
+                  .withTooltip(msg: LocaleKeys.showman.tr()),
+            ),
         ],
       ).center(),
     );
