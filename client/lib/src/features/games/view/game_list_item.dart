@@ -142,7 +142,7 @@ class _GameListItemBadges extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(right: BorderSide(color: dividerColor)),
       ),
-      constraints: const BoxConstraints(maxWidth: 90, minWidth: 60),
+      constraints: const BoxConstraints(maxWidth: 90),
       // [IntrinsicWidth] used to set all _Badge width to widest one of them
       // so borders can be as dividers which dont expand width to infinity
       child: IntrinsicWidth(
@@ -197,14 +197,13 @@ class _Badge extends StatelessWidget {
     ].join('\n');
 
     return Container(
-      padding: 2.all + 4.right,
+      padding: 2.all + 6.right,
       decoration: BoxDecoration(
         border: dividerColor == null
             ? null
             : Border(top: BorderSide(color: dividerColor!)),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         spacing: 4,
         children: [
           Icon(icon, size: 16),
