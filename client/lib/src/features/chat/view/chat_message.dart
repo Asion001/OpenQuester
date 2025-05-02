@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:openquester/common_imports.dart';
-import 'package:openquester/src/core/ui/components/image_widget.dart';
 
 class SimpleTextMessage extends StatelessWidget {
   const SimpleTextMessage({

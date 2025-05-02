@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
-import 'package:openquester/src/core/ui/components/image_widget.dart';
 
 @RoutePage()
 class ProfileScreen extends WatchingWidget {

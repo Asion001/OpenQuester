@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
-import 'package:openquester/src/core/ui/components/app_animated_switcher.dart';
-import 'package:openquester/src/features/game_lobby/view/game_lobby_players.dart';
 
 @RoutePage()
 class GameLobbyScreen extends WatchingStatefulWidget {

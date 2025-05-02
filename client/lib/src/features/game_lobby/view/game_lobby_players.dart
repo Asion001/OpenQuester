@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
-import 'package:openquester/src/core/ui/components/image_widget.dart';
 
 class GameLobbyPlayers extends WatchingWidget {
   const GameLobbyPlayers({
@@ -16,6 +15,7 @@ class GameLobbyPlayers extends WatchingWidget {
     const roleToShow = {PlayerRole.player, PlayerRole.showman};
     final players = gameData?.players
             .where((p) => p.status == inGame && roleToShow.contains(p.role))
+            .sorted((a, b) => a.role == PlayerRole.showman ? 1 : 0)
             .toList() ??
         [];
 
