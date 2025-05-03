@@ -142,31 +142,35 @@ class _GameListItemBadges extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(right: BorderSide(color: dividerColor)),
       ),
-      padding: 4.vertical,
-      child: Column(
-        spacing: 4,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _Badge(
-            icon: Icons.person_outline,
-            tooltip: LocaleKeys.game_tile_tooltips_players.tr(),
-            label: [item.players, item.maxPlayers].join('/'),
-          ),
-          _Badge(
-            icon: Icons.check,
-            tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
-            dividerColor: dividerColor,
-            label: [item.currentRound ?? 0, item.package.roundsCount].join('/'),
-          ),
-          _Badge(
-            icon: Icons.question_mark,
-            tooltip: LocaleKeys.game_tile_tooltips_questions.tr(),
-            dividerColor: dividerColor,
-            label: [item.currentQuestion ?? 0, item.package.questionsCount]
-                .join('/'),
-          ),
-        ].map((e) => e.expand()).toList(),
+      constraints: const BoxConstraints(maxWidth: 90),
+      // [IntrinsicWidth] used to set all _Badge width to widest one of them
+      // so borders can be as dividers which dont expand width to infinity
+      child: IntrinsicWidth(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _Badge(
+              icon: Icons.person_outline,
+              tooltip: LocaleKeys.game_tile_tooltips_players.tr(),
+              label: [item.players, item.maxPlayers].join('/'),
+            ),
+            _Badge(
+              icon: Icons.check,
+              tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
+              dividerColor: dividerColor,
+              label:
+                  [item.currentRound ?? 0, item.package.roundsCount].join('/'),
+            ),
+            _Badge(
+              icon: Icons.question_mark,
+              tooltip: LocaleKeys.game_tile_tooltips_questions.tr(),
+              dividerColor: dividerColor,
+              label: [item.currentQuestion ?? 0, item.package.questionsCount]
+                  .join('/'),
+            ),
+          ].map((e) => e.expand()).toList(),
+        ),
       ),
     );
   }
@@ -193,8 +197,7 @@ class _Badge extends StatelessWidget {
     ].join('\n');
 
     return Container(
-      padding: 2.all + 4.right,
-      width: 80,
+      padding: 2.all + 6.right,
       decoration: BoxDecoration(
         border: dividerColor == null
             ? null
@@ -202,7 +205,6 @@ class _Badge extends StatelessWidget {
       ),
       child: Row(
         spacing: 4,
-        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 16),
           Text(

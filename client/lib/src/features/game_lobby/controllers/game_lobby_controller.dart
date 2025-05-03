@@ -142,8 +142,6 @@ class GameLobbyController {
   }
 
   Future<void> _initChat() async {
-    _updateChatUsers();
-
     // Get chat messages history
     final messages = gameData.value!.chatMessages
         .map((e) => e.toChatMessage())
@@ -154,6 +152,8 @@ class GameLobbyController {
     // Init chat controller
     await getIt<SocketChatController>()
         .init(socket: socket!, messages: messages);
+
+    _updateChatUsers();
 
     // Listen new messages in chat
     _chatMessagesSub = getIt<SocketChatController>()

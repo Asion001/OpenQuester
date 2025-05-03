@@ -53,4 +53,5 @@ abstract class LocaleKeys {
   static const hide_search = 'hide_search';
   static const user_leave_the_game = 'user_leave_the_game';
   static const user_joined_the_game = 'user_joined_the_game';
+  static const showman = 'showman';
 }

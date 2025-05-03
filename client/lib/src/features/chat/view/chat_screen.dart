@@ -21,8 +21,9 @@ class ChatScreen extends WatchingWidget {
       onMessageSend: controller.onSendPressed,
       currentUserId: controller.user!.id,
       resolveUser: controller.resolveUser,
-      backgroundColor: context.theme.colorScheme.surfaceContainer,
-      theme: ChatTheme.fromThemeData(context.theme),
+      theme: ChatTheme.fromThemeData(context.theme)
+          .copyWith
+          .colors(surface: Colors.transparent),
       builders: Builders(
         composerBuilder: (context) => const Composer(),
         textMessageBuilder: textMessageBuilder,
