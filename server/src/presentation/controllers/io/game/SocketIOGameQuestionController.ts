@@ -1,17 +1,11 @@
 import { Namespace, Socket } from "socket.io";
 
 import { SocketIOQuestionService } from "application/services/socket/SocketIOQuestionService";
-import { GAME_QUESTION_ANSWER_TIME } from "domain/constants/game";
 import { Game } from "domain/entities/game/Game";
 import { GameStateTimer } from "domain/entities/game/GameStateTimer";
 import { SocketIOGameEvents } from "domain/enums/SocketIOEvents";
-import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
-import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
-import {
-  GameQuestionDataEventPayload,
-  GameQuestionPrepareEventPayload,
-} from "domain/types/socket/events/game/GameQuestionDataEventPayload";
+import { GameQuestionDataEventPayload } from "domain/types/socket/events/game/GameQuestionDataEventPayload";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { SocketIOEventEmitter } from "presentation/emitters/SocketIOEventEmitter";
@@ -27,10 +21,6 @@ export class SocketIOGameQuestionController {
       SocketIOGameEvents.QUESTION_PICK,
       SocketWrapper.catchErrors(this.eventEmitter, this.handleQuestionPick)
     );
-    this.socket.on(
-      SocketIOGameEvents.QUESTION_READY,
-      SocketWrapper.catchErrors(this.eventEmitter, this.handleQuestionReady)
-    );
   }
 
   private handleQuestionPick = async (data: any) => {
@@ -42,57 +32,7 @@ export class SocketIOGameQuestionController {
         dto.questionId
       );
 
-    // Send file to allow players download question first
-    if (game.gameState.questionState === QuestionState.PREPARE) {
-      return this.eventEmitter.emit<GameQuestionPrepareEventPayload>(
-        SocketIOGameEvents.QUESTION_PREPARE,
-        {
-          questionFiles: question.questionFiles ?? [],
-          timer: timer.value(),
-        },
-        {
-          emitter: SocketEventEmitter.IO,
-          gameId: game.id,
-        }
-      );
-    }
-
-    // Question does not contain files - we can send question immediately
     await this._broadcastQuestion(game, question, timer);
-  };
-
-  private handleQuestionReady = async () => {
-    const data = await this.socketIOQuestionService.handleQuestionReady(
-      this.socket.id
-    );
-
-    // Player is not playing - don't take him into consideration
-    if (!data) {
-      return;
-    }
-
-    const { game, player } = data;
-
-    this.eventEmitter.emit(
-      SocketIOGameEvents.QUESTION_PLAYER_READY,
-      {
-        playerId: player.meta.id,
-      },
-      {
-        emitter: SocketEventEmitter.IO,
-        gameId: game.id,
-      }
-    );
-
-    if (game.isEveryoneReady()) {
-      const question = await this.socketIOQuestionService.getQuestion(game);
-      const timer = await this.socketIOQuestionService.createNewTimer(
-        GAME_QUESTION_ANSWER_TIME,
-        game.id
-      );
-
-      await this._broadcastQuestion(game, question, timer);
-    }
   };
 
   private _broadcastQuestion = async (

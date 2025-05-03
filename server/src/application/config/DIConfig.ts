@@ -3,6 +3,8 @@ import { Server as IOServer } from "socket.io";
 
 import { Container, CONTAINER_TYPES } from "application/Container";
 import { StorageContextBuilder } from "application/context/storage/StorageContextBuilder";
+import { GameExpirationHandler } from "application/handlers/GameExpirationHandler";
+import { TimerExpirationHandler } from "application/handlers/TimerExpirationHandler";
 import { FileService } from "application/services/file/FileService";
 import { FileUsageService } from "application/services/file/FileUsageService";
 import { GameService } from "application/services/game/GameService";
@@ -13,6 +15,7 @@ import { SocketIOGameService } from "application/services/socket/SocketIOGameSer
 import { SocketIOQuestionService } from "application/services/socket/SocketIOQuestionService";
 import { TranslateService } from "application/services/text/TranslateService";
 import { UserService } from "application/services/user/UserService";
+import { RedisExpirationHandler } from "domain/types/redis/RedisExpirationHandler";
 import { Database } from "infrastructure/database/Database";
 import { GameIndexManager } from "infrastructure/database/managers/game/GameIndexManager";
 import { File } from "infrastructure/database/models/File";
@@ -238,16 +241,26 @@ export class DIConfig {
       "service"
     );
 
-    Container.register(
-      CONTAINER_TYPES.RedisPubSubService,
-      new RedisPubSubService(
-        Container.get<IOServer>(CONTAINER_TYPES.IO),
-        Container.get<RedisService>(CONTAINER_TYPES.RedisService),
+    const handlers: RedisExpirationHandler[] = [
+      new GameExpirationHandler(
         gameIndexManager,
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService)
+      ),
+      new TimerExpirationHandler(
+        Container.get<IOServer>(CONTAINER_TYPES.IO),
         Container.get<GameService>(CONTAINER_TYPES.GameService),
         Container.get<SocketIOQuestionService>(
           CONTAINER_TYPES.SocketIOQuestionService
-        )
+        ),
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService)
+      ),
+    ];
+
+    Container.register(
+      CONTAINER_TYPES.RedisPubSubService,
+      new RedisPubSubService(
+        Container.get<RedisService>(CONTAINER_TYPES.RedisService),
+        handlers
       ),
       "service"
     );

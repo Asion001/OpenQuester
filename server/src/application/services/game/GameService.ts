@@ -101,8 +101,8 @@ export class GameService {
     return this.gameRepository.cleanOrphanedGames();
   }
 
-  public async createTimer(timer: GameStateTimerDTO, gameId: string) {
-    return this.gameRepository.createTimer(timer, gameId);
+  public async saveTimer(timer: GameStateTimerDTO, gameId: string) {
+    return this.gameRepository.saveTimer(timer, gameId);
   }
 
   private _emitSocketGameCreated(gameData: GameListItemDTO) {

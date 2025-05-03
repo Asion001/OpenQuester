@@ -1,9 +1,5 @@
 import { GameService } from "application/services/game/GameService";
-import {
-  GAME_QUESTION_ANSWER_TIME,
-  GAME_QUESTION_FILE_DOWNLOAD_TIME,
-  GAME_TTL,
-} from "domain/constants/game";
+import { GAME_QUESTION_ANSWER_TIME, GAME_TTL } from "domain/constants/game";
 import { Game } from "domain/entities/game/Game";
 import { GameStateTimer } from "domain/entities/game/GameStateTimer";
 import { ClientResponse } from "domain/enums/ClientResponse";
@@ -56,29 +52,19 @@ export class SocketIOQuestionService {
 
     const { question, theme } = questionData;
 
-    let timer: GameStateTimer;
+    const timer = new GameStateTimer(GAME_QUESTION_ANSWER_TIME);
+    timer.start();
 
-    // If question has files to download - let everyone download first
-    if (question.questionFiles && question.questionFiles.length > 0) {
-      timer = new GameStateTimer(GAME_QUESTION_FILE_DOWNLOAD_TIME);
-      await this.updateQuestionState(game, QuestionState.PREPARE, {
-        withSave: false,
-      });
-    } else {
-      timer = new GameStateTimer(GAME_QUESTION_ANSWER_TIME);
-      await this.updateQuestionState(game, QuestionState.SHOWING, {
-        withSave: false,
-      });
-    }
-
-    const timerStarted = timer.start();
+    await this.updateQuestionState(game, QuestionState.SHOWING, {
+      withSave: false,
+    });
 
     game.gameState.currentQuestion = questionId;
-    game.gameState.timer = timerStarted;
+    game.gameState.timer = timer.value();
     GameQuestionMapper.setQuestionPlayed(game, question.id!, theme.id!);
 
     await this.gameService.updateGame(game);
-    await this.gameService.createTimer(timerStarted, game.id);
+    await this.gameService.saveTimer(timer.value(), game.id);
 
     return { question, game, timer };
   }
@@ -107,14 +93,6 @@ export class SocketIOQuestionService {
     const { question } = questionData;
 
     return question;
-  }
-
-  public async createNewTimer(durationMs: number, gameId: string) {
-    const timer = new GameStateTimer(durationMs);
-
-    timer.start();
-    await this.gameService.createTimer(timer.value(), gameId);
-    return timer;
   }
 
   public async handlePlayersBroadcastMap(
@@ -187,11 +165,11 @@ export class SocketIOQuestionService {
       withSave: boolean;
     }
   ) {
-    if (game.gameState.questionState !== questionState) {
-      // Don't save even if `withSave` is true
-      game.gameState.questionState = questionState;
+    if (game.gameState.questionState === questionState) {
       return;
     }
+
+    game.gameState.questionState = questionState;
 
     if (opts && opts.withSave) {
       await this.gameService.updateGame(game);

@@ -174,7 +174,7 @@ export class GameIndexManager {
       titlePrefix?: string;
     },
     pagination: PaginationOptsBase<T>
-  ): Promise<string[]> {
+  ): Promise<{ ids: string[]; total: number }> {
     const tempKey = `${this.INDEX_PREFIX}:temp:${Date.now()}`;
 
     try {
@@ -326,20 +326,22 @@ export class GameIndexManager {
     tempKey: string,
     pagination: PaginationOptsBase<T>
   ) {
-    const ids =
+    const [ids, total] = await Promise.all([
       pagination.order === PaginationOrder.DESC
-        ? await this.redisService.zrevrange(
+        ? this.redisService.zrevrange(
             tempKey,
             pagination.offset,
             pagination.offset + pagination.limit - 1
           )
-        : await this.redisService.zrange(
+        : this.redisService.zrange(
             tempKey,
             pagination.offset,
             pagination.offset + pagination.limit - 1
-          );
+          ),
+      this.redisService.zcard(tempKey),
+    ]);
 
-    return ids;
+    return { ids, total };
   }
 
   private get _createdAtIndexKey() {

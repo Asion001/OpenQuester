@@ -97,10 +97,7 @@ export class GameRepository {
   public async getAllGames(
     paginationOpts: GamePaginationOpts
   ): Promise<PaginatedResult<GameListItemDTO[]>> {
-    const totalKeys = await this.redisService.scan(this.getGameKey("*"));
-    const total = totalKeys.length;
-
-    const ids = await this.gameIndexManager.findGamesByIndex(
+    const { ids, total } = await this.gameIndexManager.findGamesByIndex(
       {
         createdAtMax: paginationOpts.createdAtMax,
         createdAtMin: paginationOpts.createdAtMin,
@@ -358,7 +355,7 @@ export class GameRepository {
     return this.gameIndexManager.cleanOrphanedGameIndexes();
   }
 
-  public async createTimer(timer: GameStateTimerDTO, gameId: string) {
+  public async saveTimer(timer: GameStateTimerDTO, gameId: string) {
     const key = this._getTimerKey(gameId);
 
     await this.redisService.set(
