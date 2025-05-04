@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:openquester/common_imports.dart';
 
 class AppTheme {
   static ThemeData change(ThemeData theme) {
@@ -21,6 +22,7 @@ class AppTheme {
     return AppBarTheme(
       systemOverlayStyle: systemOverlay(theme),
       centerTitle: true,
+      actionsPadding: 8.right,
     );
   }
 

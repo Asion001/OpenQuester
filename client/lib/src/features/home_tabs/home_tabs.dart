@@ -17,15 +17,6 @@ class HomeTabsScreen extends WatchingWidget {
   }
 }
 
-AppBar _homeAppBar({
-  required BuildContext context,
-  required bool authorized,
-}) {
-  return AppBar(
-    leading: const ProfileBtn(),
-  );
-}
-
 class _MobileHome extends WatchingStatefulWidget {
   const _MobileHome();
 
@@ -35,18 +26,29 @@ class _MobileHome extends WatchingStatefulWidget {
 
 class _MobileHomeState extends State<_MobileHome> {
   int index = 0;
+  bool showSearch = false;
 
   @override
   Widget build(BuildContext context) {
-    final authorized = watchIt<AuthController>().authorized;
-
     return Scaffold(
-      appBar: _homeAppBar(
-        context: context,
-        authorized: authorized,
+      appBar: AppBar(
+        leading: const ProfileBtn(),
+        title: Text(_destionations[index].$2.label),
+        actions: [
+          IconButton(
+            onPressed: () => setState(() => showSearch = !showSearch),
+            icon: Icon(showSearch ? Icons.search_off : Icons.search),
+          ),
+        ],
+        bottom: showSearch
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(70),
+                child: const GamesSearchBar().paddingAll(8),
+              )
+            : null,
       ),
       floatingActionButton: const _StartGameButton(),
-      body: _destionations[index].$1,
+      body: Column(children: [_destionations[index].$1.expand()]),
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
         onDestinationSelected: (newIndex) => setState(() => index = newIndex),
@@ -96,12 +98,8 @@ class _WideHome extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authorized = watchIt<AuthController>().authorized;
     return Scaffold(
-      appBar: _homeAppBar(
-        context: context,
-        authorized: authorized,
-      ),
+      appBar: AppBar(leading: const ProfileBtn()),
       body: SafeArea(
         child: Row(
           spacing: 42,
@@ -115,72 +113,45 @@ class _WideHome extends WatchingWidget {
   }
 }
 
-class _GameList extends StatefulWidget {
+class _GameList extends StatelessWidget {
   const _GameList({required this.wideMode});
   final bool wideMode;
 
   @override
-  State<_GameList> createState() => _GameListState();
-}
-
-class _GameListState extends State<_GameList> {
-  bool expandSearchBar = false;
-
-  @override
   Widget build(BuildContext context) {
-    final searchBar = SearchBar(
-      hintText: LocaleKeys.type_to_find_games.tr(),
-      constraints: const BoxConstraints(maxWidth: 360, minHeight: 56),
-      onChanged: getIt<GamesListController>().search,
-      trailing: const [Icon(Icons.search)],
-    );
-
-    final title = AnimatedCrossFade(
-      duration: Durations.medium1,
-      // Wide mode state with title and search bar
-      firstChild: Row(
-        spacing: 8,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            LocaleKeys.games_list.tr(),
-            style: context.textTheme.headlineMedium,
-          ),
-          if (widget.wideMode)
-            searchBar.flexible()
-          else
-            IconButton(
-              tooltip: LocaleKeys.show_search.tr(),
-              onPressed: () =>
-                  setState(() => expandSearchBar = !expandSearchBar),
-              icon: const Icon(Icons.search),
-            ),
-        ],
-      ),
-      // Mobile state with search bar and hide btn
-      secondChild: Row(
-        spacing: 8,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: () => setState(() => expandSearchBar = false),
-            icon: const Icon(Icons.close),
-            tooltip: LocaleKeys.hide_search.tr(),
-          ),
-          searchBar.flexible(),
-        ],
-      ),
-      crossFadeState: widget.wideMode || !expandSearchBar
-          ? CrossFadeState.showFirst
-          : CrossFadeState.showSecond,
-    );
-
     return Column(
       spacing: 16,
       children: [
-        title.paddingSymmetric(horizontal: 16),
+        if (wideMode)
+          Row(
+            spacing: 8,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                LocaleKeys.games_list.tr(),
+                style: context.textTheme.headlineMedium,
+              ),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 360, minHeight: 56),
+                child: const GamesSearchBar(),
+              ).flexible(),
+            ],
+          ).paddingSymmetric(horizontal: 16),
         const GamesListScreen().expand(),
       ],
+    );
+  }
+}
+
+class GamesSearchBar extends StatelessWidget {
+  const GamesSearchBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SearchBar(
+      hintText: LocaleKeys.type_to_find_games.tr(),
+      onChanged: getIt<GamesListController>().search,
+      trailing: const [Icon(Icons.search)],
     );
   }
 }

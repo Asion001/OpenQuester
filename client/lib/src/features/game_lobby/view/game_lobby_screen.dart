@@ -62,7 +62,6 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
               icon: const Icon(Icons.exit_to_app),
             ),
             actions: [_ChatButton(show: showChat)],
-            actionsPadding: 8.right,
             elevation: 0,
             scrolledUnderElevation: 0,
             notificationPredicate: (_) => false,
