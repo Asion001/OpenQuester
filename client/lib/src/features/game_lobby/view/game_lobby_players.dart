@@ -84,7 +84,8 @@ class GameLobbyPlayer extends StatelessWidget {
                     style: GameLobbyStyles.playerTextStyle(context),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  _PlayerScoreText(score: player.score),
+                  if (player.role != PlayerRole.showman)
+                    _PlayerScoreText(score: player.score),
                 ],
               ),
             ],
