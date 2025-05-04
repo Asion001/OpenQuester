@@ -51,6 +51,7 @@ export 'src/features/game_lobby/controllers/game_lobby_controller.dart';
 export 'src/features/game_lobby/view/game_lobby_players.dart';
 export 'src/features/game_lobby/view/game_lobby_question.dart';
 export 'src/features/game_lobby/view/game_lobby_screen.dart';
+export 'src/features/game_lobby/view/game_lobby_styles.dart';
 export 'src/features/game_lobby/view/game_lobby_theme.dart';
 export 'src/features/game_lobby/view/game_lobby_themes.dart';
 export 'src/features/game_preview/controllers/game_preview_controller.dart';
