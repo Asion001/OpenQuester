@@ -53,7 +53,12 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
           appBar: AppBar(
             title: Text(gameData?.title ?? widget.gameId),
             leading: IconButton(
-              onPressed: Navigator.of(context).pop,
+              onPressed: () async {
+                final exit = await ConfirmDialog(
+                  title: LocaleKeys.leave_game_confirmation.tr(),
+                ).show(context);
+                if (exit && context.mounted) Navigator.pop(context);
+              },
               icon: const Icon(Icons.exit_to_app),
             ),
             actions: [_ChatButton(show: showChat)],

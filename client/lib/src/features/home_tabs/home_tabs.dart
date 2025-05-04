@@ -87,7 +87,6 @@ class _StartGameButton extends StatelessWidget {
       onPressed: () => const CreateGameRoute().push<void>(context),
       label: Text(LocaleKeys.start_game.tr()),
       icon: const Icon(Icons.play_arrow_outlined),
-      tooltip: LocaleKeys.start_game.tr(),
     );
   }
 }

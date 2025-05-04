@@ -31,6 +31,7 @@ export 'src/core/ui/components/app_animated_switcher.dart';
 export 'src/core/ui/components/image_widget.dart';
 export 'src/core/ui/components/list_header.dart';
 export 'src/core/ui/components/loading_button_builder.dart';
+export 'src/core/ui/dialogs.dart';
 export 'src/core/ui/max_size_container.dart';
 export 'src/core/ui/ui_mode_utils.dart';
 export 'src/data/user_error.dart';
