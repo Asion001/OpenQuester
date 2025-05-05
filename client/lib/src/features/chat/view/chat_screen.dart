@@ -16,7 +16,6 @@ class ChatScreen extends WatchingWidget {
     }
 
     return Chat(
-      key: ValueKey(controller.chatController),
       chatController: controller.chatController!,
       onMessageSend: controller.onSendPressed,
       currentUserId: controller.user!.id,
@@ -27,9 +26,13 @@ class ChatScreen extends WatchingWidget {
       builders: Builders(
         composerBuilder: (context) => const Composer(),
         textMessageBuilder: textMessageBuilder,
+        chatAnimatedListBuilder: chatAnimatedListBuilder,
       ),
     );
   }
+
+  Widget chatAnimatedListBuilder(BuildContext context, ChatItem itemBuilder) =>
+      ChatAnimatedList(itemBuilder: itemBuilder);
 
   Widget textMessageBuilder(
     BuildContext context,

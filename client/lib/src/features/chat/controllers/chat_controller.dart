@@ -6,6 +6,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 @singleton
 class SocketChatController extends ChangeNotifier {
   InMemoryChatController? chatController;
+
   User? user;
   Socket? _socket;
   List<User>? _users;
