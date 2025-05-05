@@ -12,7 +12,10 @@ class GameLobbyStyles {
   }
 
   static TextStyle? playerTextStyle(BuildContext context) {
-    final wideMode = UiModeUtils.wideModeOn(context);
+    final wideMode = desktopChat(context);
     return wideMode ? context.textTheme.bodyLarge : context.textTheme.bodySmall;
   }
+
+  static bool desktopChat(BuildContext context) =>
+      UiModeUtils.wideModeOn(context, UiModeUtils.large);
 }
