@@ -63,8 +63,14 @@ export enum ClientResponse {
   BAD_ROUND_RETRIEVAL = "bad_round_retrieval",
   ONLY_HOST_CAN_DELETE = "only_host_can_delete",
   YOU_CANNOT_PICK_QUESTION = "you_cannot_pick_question",
+  YOU_CANNOT_ANSWER_QUESTION = "you_cannot_answer_question",
   QUESTION_NOT_FOUND = "question_not_found",
   QUESTION_ALREADY_PICKED = "question_already_picked",
+  QUESTION_ALREADY_PLAYED = "question_already_played",
+  QUESTION_NOT_PICKED = "question_not_picked",
+  SOMEONE_ALREADY_ANSWERING = "someone_already_answering",
+  GAME_IS_PAUSED = "game_is_paused",
+  PLAYER_NOT_FOUND = "player_not_found",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

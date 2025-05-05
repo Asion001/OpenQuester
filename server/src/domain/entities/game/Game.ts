@@ -1,9 +1,18 @@
 import { Player } from "domain/entities/game/Player";
+import { ClientResponse } from "domain/enums/ClientResponse";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
+import { ClientError } from "domain/errors/ClientError";
+import { AnswerOptions } from "domain/types/dto/game/AnswerOptions";
 import { GameImportDTO } from "domain/types/dto/game/GameImportDTO";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
-import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
+import {
+  GameStateAnsweredPlayerData,
+  GameStateDTO,
+} from "domain/types/dto/game/state/GameStateDTO";
+import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
+import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
+import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { GetPlayerOptions } from "domain/types/game/GetPlayerOptions";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
@@ -212,6 +221,74 @@ export class Game {
     );
 
     return validPlayers.length === this.gameState.readyPlayers.length;
+  }
+
+  /**
+   * Updates answered players array, answering player and question state
+   * based on whether answer was correct or not
+   * @param question on which question player answered
+   * @param nextState next question state to set
+   * @param options answering options
+   * @returns answer result DTO that can be emitted to clients
+   */
+  public handleQuestionAnswer(
+    question: PackageQuestionDTO,
+    nextState: QuestionState,
+    options: AnswerOptions
+  ) {
+    const player = this.getPlayer(this.gameState.answeringPlayer!, {
+      fetchDisconnected: false,
+    });
+
+    if (!player) {
+      throw new ClientError(ClientResponse.PLAYER_NOT_FOUND);
+    }
+
+    const isCorrect = options.isCorrect;
+
+    const answerResult: GameStateAnsweredPlayerData = {
+      player: this.gameState.answeringPlayer!,
+      result: isCorrect ? question.price : -question.price,
+      score: isCorrect
+        ? player.getScore() + question.price
+        : player.getScore() - question.price,
+    };
+
+    // Update answered players array
+    const answeredPlayers = this.gameState.answeredPlayers || [];
+    if (isCorrect) {
+      this.gameState.answeredPlayers = [...answeredPlayers, answerResult];
+    } else {
+      // When question is correct we reset answered players array
+      this.gameState.answeredPlayers = null;
+    }
+
+    // Always reset answering player
+    this.gameState.answeringPlayer = null;
+    this.updateQuestionState(nextState);
+
+    return answerResult;
+  }
+
+  /**
+   * Removes current question, timer ans sets question state to 'choosing'
+   */
+  public resetToChoosingState() {
+    this.gameState.currentQuestion = null;
+    this.gameState.timer = null;
+    this.updateQuestionState(QuestionState.CHOOSING);
+  }
+
+  public updateQuestionState(questionState: QuestionState) {
+    if (this.gameState.questionState === questionState) {
+      return;
+    }
+
+    this.gameState.questionState = questionState;
+  }
+
+  public setTimer(timer: GameStateTimerDTO | null) {
+    this.gameState.timer = timer;
   }
 
   private _getFirstFreeSlotIndex(): number {

@@ -59,6 +59,38 @@ export class GameQuestionMapper {
     questionID: number,
     themeId: number
   ) {
+    const question = this._getQuestionFromCurrentRound(
+      game,
+      questionID,
+      themeId
+    );
+
+    if (!question) {
+      return;
+    }
+
+    question.isPlayed = true;
+  }
+
+  public static isQuestionPlayed(
+    game: Game,
+    questionID: number,
+    themeId: number
+  ) {
+    const question = this._getQuestionFromCurrentRound(
+      game,
+      questionID,
+      themeId
+    );
+
+    return question ? question.isPlayed : undefined;
+  }
+
+  private static _getQuestionFromCurrentRound(
+    game: Game,
+    questionID: number,
+    themeId: number
+  ) {
     const currentRound = game.gameState.currentRound;
 
     if (!currentRound) {
@@ -75,10 +107,6 @@ export class GameQuestionMapper {
       (question) => question.id === questionID
     );
 
-    if (!question) {
-      return;
-    }
-
-    question.isPlayed = true;
+    return question;
   }
 }

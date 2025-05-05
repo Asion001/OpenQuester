@@ -55,6 +55,11 @@
   "bad_round_retrieval": "Something went wrong during round retrieval",
   "only_host_can_delete": "Only host (creator) can delete the game",
   "you_cannot_pick_question": "You cannot pick question",
+  "you_cannot_answer_question": "You cannot answer question",
   "question_not_found": "Question not found",
-  "question_already_picked": "Question is already picked"
+  "question_already_picked": "Question is already picked",
+  "question_already_played": "This question is already played",
+  "question_not_picked": "Question not picked yet",
+  "someone_already_answering": "Someone is already answering",
+  "player_not_found": "Player not found"
 }

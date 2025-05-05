@@ -12,9 +12,8 @@ export enum SocketIOGameEvents {
   LEAVE = "user-leave",
   GAME_DATA = "game-data",
   QUESTION_PICK = "question-pick",
-  QUESTION_READY = "question-ready",
-  QUESTION_PLAYER_READY = "question-player-ready",
+  QUESTION_ANSWER = "question-answer",
   QUESTION_DATA = "question-data",
   QUESTION_FINISH = "question-finish",
-  QUESTION_PREPARE = "question-prepare",
+  ANSWER_SUBMITTED = "answer-submitted",
 }

@@ -1,5 +1,9 @@
 import { GameService } from "application/services/game/GameService";
-import { GAME_QUESTION_ANSWER_TIME, GAME_TTL } from "domain/constants/game";
+import {
+  GAME_QUESTION_ANSWER_SUBMIT_TIME,
+  GAME_QUESTION_ANSWER_TIME,
+  GAME_TTL,
+} from "domain/constants/game";
 import { Game } from "domain/entities/game/Game";
 import { GameStateTimer } from "domain/entities/game/GameStateTimer";
 import { ClientResponse } from "domain/enums/ClientResponse";
@@ -11,6 +15,7 @@ import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO"
 import { SimplePackageQuestionDTO } from "domain/types/dto/package/SimplePackageQuestionDTO";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
+import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class SocketIOQuestionService {
   constructor(
@@ -20,8 +25,55 @@ export class SocketIOQuestionService {
     //
   }
 
+  public async handleQuestionAnswer(socketId: string) {
+    const { game, player } = await this._fetchPlayerAndGame(socketId);
+
+    this._validateGamePause(game);
+
+    if (
+      player?.role === PlayerRole.SHOWMAN ||
+      player?.role === PlayerRole.SPECTATOR
+    ) {
+      throw new ClientError(ClientResponse.YOU_CANNOT_ANSWER_QUESTION);
+    }
+
+    if (!game.gameState.currentQuestion) {
+      throw new ClientError(ClientResponse.QUESTION_NOT_PICKED);
+    }
+
+    if (ValueUtils.isNumber(game.gameState.answeringPlayer)) {
+      throw new ClientError(ClientResponse.SOMEONE_ALREADY_ANSWERING);
+    }
+
+    const elapsedTimer = game.gameState.timer!;
+
+    elapsedTimer.elapsedMs =
+      Date.now() - new Date(elapsedTimer.startedAt).getTime();
+
+    await this.gameService.saveTimer(
+      elapsedTimer,
+      game.id,
+      QuestionState.SHOWING,
+      // Apply some additional expire time for key safety (in case of high latency)
+      Math.ceil(GAME_QUESTION_ANSWER_SUBMIT_TIME * 1.5)
+    );
+
+    const timer = new GameStateTimer(GAME_QUESTION_ANSWER_SUBMIT_TIME);
+
+    game.gameState.answeringPlayer = player!.meta.id;
+    game.gameState.questionState = QuestionState.ANSWERING;
+    game.gameState.timer = timer.start();
+
+    await this.gameService.updateGame(game);
+    await this.gameService.saveTimer(timer.value(), game.id);
+
+    return { userId: player?.meta.id, gameId: game.id, timer };
+  }
+
   public async handleQuestionPick(socketId: string, questionId: number) {
     const { game, player } = await this._fetchPlayerAndGame(socketId);
+
+    this._validateGamePause(game);
 
     if (
       player?.role !== PlayerRole.PLAYER &&
@@ -51,6 +103,10 @@ export class SocketIOQuestionService {
     }
 
     const { question, theme } = questionData;
+
+    if (GameQuestionMapper.isQuestionPlayed(game, question.id!, theme.id!)) {
+      throw new ClientError(ClientResponse.QUESTION_ALREADY_PLAYED);
+    }
 
     const timer = new GameStateTimer(GAME_QUESTION_ANSWER_TIME);
     timer.start();
@@ -95,7 +151,7 @@ export class SocketIOQuestionService {
     return question;
   }
 
-  public async handlePlayersBroadcastMap(
+  public async getPlayersBroadcastMap(
     socketsIds: string[],
     game: Game,
     question: PackageQuestionDTO
@@ -129,33 +185,6 @@ export class SocketIOQuestionService {
     }
 
     return resultMap;
-  }
-
-  public async handleQuestionReady(socketId: string) {
-    const { game, player } = await this._fetchPlayerAndGame(socketId);
-
-    if (
-      !player ||
-      player.role === PlayerRole.SPECTATOR ||
-      player.role === PlayerRole.SHOWMAN
-    ) {
-      return;
-    }
-
-    let readyPlayers = game.gameState.readyPlayers;
-
-    if (!readyPlayers?.length) {
-      readyPlayers = [player.meta.id];
-    } else if (readyPlayers.includes(player.meta.id)) {
-      return;
-    } else {
-      readyPlayers.push(player.meta.id);
-    }
-
-    game.readyPlayers = readyPlayers;
-    await this.gameService.updateGame(game);
-
-    return { game, player };
   }
 
   public async updateQuestionState(
@@ -194,7 +223,8 @@ export class SocketIOQuestionService {
     if (!user.gameId) {
       throw new ClientError(
         ClientResponse.GAME_NOT_FOUND,
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
+        { gameId: user.gameId }
       );
     }
 
@@ -202,5 +232,11 @@ export class SocketIOQuestionService {
     const player = game.getPlayer(user.id, { fetchDisconnected: false });
 
     return { game, player };
+  }
+
+  private _validateGamePause(game: Game) {
+    if (game.gameState.isPaused) {
+      throw new ClientError(ClientResponse.GAME_IS_PAUSED);
+    }
   }
 }

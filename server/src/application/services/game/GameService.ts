@@ -101,8 +101,26 @@ export class GameService {
     return this.gameRepository.cleanOrphanedGames();
   }
 
-  public async saveTimer(timer: GameStateTimerDTO, gameId: string) {
-    return this.gameRepository.saveTimer(timer, gameId);
+  /**
+   * @param timerAdditional means additional body between timer and gameId,
+   *  e.g. timer:showing:ABCD, it this case timerAdditional is 'showing'
+   */
+  public async getTimer(gameId: string, timerAdditional?: string) {
+    return this.gameRepository.getTimer(gameId, timerAdditional);
+  }
+
+  /**
+   * @param timerAdditional means additional body between timer and gameId,
+   *  e.g. timer:showing:ABCD, it this case timerAdditional is 'showing'
+   * @param ttl in milliseconds
+   */
+  public async saveTimer(
+    timer: GameStateTimerDTO,
+    gameId: string,
+    timerAdditional?: string,
+    ttl?: number
+  ) {
+    return this.gameRepository.saveTimer(timer, gameId, timerAdditional, ttl);
   }
 
   private _emitSocketGameCreated(gameData: GameListItemDTO) {

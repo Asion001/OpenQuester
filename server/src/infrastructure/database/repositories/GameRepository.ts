@@ -355,18 +355,40 @@ export class GameRepository {
     return this.gameIndexManager.cleanOrphanedGameIndexes();
   }
 
-  public async saveTimer(timer: GameStateTimerDTO, gameId: string) {
-    const key = this._getTimerKey(gameId);
+  /**
+   * @param timerAdditional means additional body between timer and gameId,
+   *  e.g. timer:showing:ABCD, it this case timerAdditional is 'showing'
+   */
+  public async getTimer(gameId: string, timerAdditional?: string) {
+    const key = this._getTimerKey(gameId, timerAdditional);
+
+    return this.redisService.get(key);
+  }
+
+  /**
+   * @param timerAdditional means additional body between timer and gameId,
+   *  e.g. timer:showing:ABCD, it this case timerAdditional is 'showing'
+   * @param ttl in milliseconds
+   */
+  public async saveTimer(
+    timer: GameStateTimerDTO,
+    gameId: string,
+    timerAdditional?: string,
+    ttl?: number
+  ) {
+    const key = this._getTimerKey(gameId, timerAdditional);
 
     await this.redisService.set(
       key,
       JSON.stringify(timer),
-      timer.durationMs / 1000
+      ttl ? ttl : timer.durationMs
     );
   }
 
-  private _getTimerKey(gameId: string) {
-    return `${TIMER_NSP}:${gameId}`;
+  private _getTimerKey(gameId: string, timerAdditional?: string) {
+    return timerAdditional
+      ? `${TIMER_NSP}:${timerAdditional}:${gameId}`
+      : `${TIMER_NSP}:${gameId}`;
   }
 
   private async _parseGameToListItemDTO(

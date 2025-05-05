@@ -92,7 +92,7 @@ export class Package {
             id: this.logo.id,
             md5: this.logo.filename,
             type: PackageFileType.IMAGE,
-            link: await storage.get(this.logo.filename),
+            link: await storage.getUrl(this.logo.filename),
           },
         }
       : null;

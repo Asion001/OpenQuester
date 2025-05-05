@@ -25,7 +25,7 @@ export class FileRestApiController {
   private getFile = async (req: Request, res: Response) => {
     const validatedData = await this._validateParamsFilename(req);
 
-    const url = await this.storage.get(validatedData.filename);
+    const url = await this.storage.getUrl(validatedData.filename);
     res.send({ url });
   };
 
