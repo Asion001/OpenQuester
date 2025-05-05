@@ -51,7 +51,12 @@ class GameLobbyPlayer extends StatelessWidget {
         color: context.theme.colorScheme.surface,
       ),
       padding: 4.all,
-      constraints: BoxConstraints.loose(const Size(100, 80)),
+      constraints: BoxConstraints.loose(
+        Size(
+          GameLobbyStyles.playersMobile.width,
+          GameLobbyStyles.players.height,
+        ),
+      ),
       child: Stack(
         alignment: Alignment.center,
         fit: StackFit.expand,
@@ -76,34 +81,59 @@ class GameLobbyPlayer extends StatelessWidget {
                 children: [
                   Text(
                     player.meta.username,
-                    style: context.textTheme.titleSmall
-                        ?.copyWith(color: Colors.white),
+                    style: GameLobbyStyles.playerTextStyle(context),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    NumberFormat.compact().format(player.score),
-                    style: context.textTheme.labelSmall
-                        ?.copyWith(color: Colors.white),
-                  ).withTooltip(msg: '${player.score}'),
+                  if (player.role != PlayerRole.showman)
+                    _PlayerScoreText(score: player.score),
                 ],
               ),
             ],
           ),
           if (player.role == PlayerRole.showman)
             Positioned(
-              top: 4,
-              right: 4,
+              top: 2,
+              right: 2,
               child: Assets.icons.crown
                   .svg(
                     width: 16,
                     height: 16,
-                    colorFilter:
-                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    ),
                   )
                   .withTooltip(msg: LocaleKeys.showman.tr()),
             ),
         ],
       ).center(),
+    );
+  }
+}
+
+class _PlayerScoreText extends StatelessWidget {
+  const _PlayerScoreText({
+    required this.score,
+  });
+
+  final int score;
+
+  @override
+  Widget build(BuildContext context) {
+    final compactFormat = score >= 1_000_000;
+    final decimalFormater = NumberFormat.decimalPattern();
+    final formater = compactFormat ? NumberFormat.compact() : decimalFormater;
+
+    final text = Text(
+      formater.format(score),
+      style: GameLobbyStyles.playerTextStyle(context),
+    );
+
+    if (!compactFormat) return text;
+
+    return Tooltip(
+      message: decimalFormater.format(score),
+      child: text,
     );
   }
 }

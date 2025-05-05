@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:openquester/common_imports.dart';
 
 class AppTheme {
   static ThemeData change(ThemeData theme) {
@@ -10,9 +11,24 @@ class AppTheme {
         selectedItemColor: theme.colorScheme.onPrimary,
         unselectedItemColor: theme.colorScheme.primary,
       ),
-      appBarTheme: AppBarTheme(systemOverlayStyle: systemOverlay(theme)),
+      appBarTheme: appBarTheme(theme),
       pageTransitionsTheme: pageTransitionsTheme,
       inputDecorationTheme: inputDecorationTheme,
+      tooltipTheme: tooltipTheme,
+    );
+  }
+
+  static AppBarTheme appBarTheme(ThemeData theme) {
+    return AppBarTheme(
+      systemOverlayStyle: systemOverlay(theme),
+      centerTitle: true,
+      actionsPadding: 8.right,
+    );
+  }
+
+  static TooltipThemeData get tooltipTheme {
+    return const TooltipThemeData(
+      waitDuration: Duration(seconds: 1),
     );
   }
 

@@ -41,24 +41,27 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
       },
     );
 
-    return LayoutBuilder(
-      builder: (context, constrains) {
-        final wideModeOn = UiModeUtils.wideModeOn(
-          context,
-          UiModeUtils.wideModeWidth + 150,
-        );
-        final showDesktopChat = wideModeOn && showChat;
+    final chatWideModeOn = UiModeUtils.wideModeOn(context, UiModeUtils.large);
+    final showDesktopChat = chatWideModeOn && showChat;
 
-        return Scaffold(
+    return ColoredBox(
+      color: context.theme.colorScheme.surface,
+      child: MaxSizeContainer(
+        maxWidth: UiModeUtils.extraLarge,
+        child: Scaffold(
           extendBody: true,
           appBar: AppBar(
             title: Text(gameData?.title ?? widget.gameId),
             leading: IconButton(
-              onPressed: Navigator.of(context).pop,
+              onPressed: () async {
+                final exit = await ConfirmDialog(
+                  title: LocaleKeys.leave_game_confirmation.tr(),
+                ).show(context);
+                if (exit && context.mounted) Navigator.pop(context);
+              },
               icon: const Icon(Icons.exit_to_app),
             ),
             actions: [_ChatButton(show: showChat)],
-            actionsPadding: 8.right,
             elevation: 0,
             scrolledUnderElevation: 0,
             notificationPredicate: (_) => false,
@@ -71,23 +74,24 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _BodyBuilder(playerOnLeft: wideModeOn).expand(),
+                    _BodyBuilder(playerOnLeft: chatWideModeOn).expand(),
                     AppAnimatedSwitcher(
                       visible: showDesktopChat,
-                      child: const _Chat().withWidth(250),
+                      child: const _Chat()
+                          .withWidth(GameLobbyStyles.desktopChatWidth),
                     ),
                   ],
                 ),
                 AppAnimatedSwitcher(
-                  visible: !wideModeOn && showChat,
+                  visible: !chatWideModeOn && showChat,
                   disableSizeTransition: true,
                   child: const _Chat().paddingAll(16),
                 ),
               ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
@@ -104,8 +108,9 @@ class _BodyBuilder extends StatelessWidget {
         spacing: 8,
         children: [
           const GameLobbyPlayers(axis: Axis.vertical)
-              .withWidth(150)
-              .paddingAll(8)
+              .withWidth(GameLobbyStyles.players.width)
+              .paddingSymmetric(horizontal: 8)
+              .paddingTop(16)
               .paddingLeft(16),
           const GameLobbyThemes().expand(),
         ],
@@ -113,7 +118,8 @@ class _BodyBuilder extends StatelessWidget {
     } else {
       child = Column(
         children: [
-          const GameLobbyPlayers(axis: Axis.horizontal).withHeight(80),
+          const GameLobbyPlayers(axis: Axis.horizontal)
+              .withHeight(GameLobbyStyles.playersMobile.height),
           const Divider(height: 0, thickness: .4).paddingTop(8),
           const GameLobbyThemes().expand(),
         ],
