@@ -82,7 +82,7 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _BodyBuilder(playerOnLeft: chatWideModeOn).expand(),
+                      const _BodyBuilder().expand(),
                       AppAnimatedSwitcher(
                         visible: showDesktopChat,
                         child: const _Chat()
@@ -106,13 +106,15 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
 }
 
 class _BodyBuilder extends StatelessWidget {
-  const _BodyBuilder({required this.playerOnLeft});
-  final bool playerOnLeft;
+  const _BodyBuilder();
+
   @override
   Widget build(BuildContext context) {
+    final playersOnLeft = GameLobbyStyles.playersOnLeft(context);
+
     Widget child;
 
-    if (playerOnLeft) {
+    if (playersOnLeft) {
       child = Row(
         spacing: 8,
         children: [
