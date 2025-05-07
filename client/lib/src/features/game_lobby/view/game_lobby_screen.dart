@@ -26,6 +26,13 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
     super.deactivate();
   }
 
+  Future<void> _onExit() async {
+    final exit = await ConfirmDialog(
+      title: LocaleKeys.leave_game_confirmation.tr(),
+    ).show(context);
+    if (exit && mounted) Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final showChat = watchValue((GameLobbyController e) => e.showChat);
@@ -41,53 +48,55 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
       },
     );
 
-    final chatWideModeOn = UiModeUtils.wideModeOn(context, UiModeUtils.large);
+    final chatWideModeOn = GameLobbyStyles.desktopChat(context);
     final showDesktopChat = chatWideModeOn && showChat;
 
-    return ColoredBox(
-      color: context.theme.colorScheme.surface,
-      child: MaxSizeContainer(
-        maxWidth: UiModeUtils.extraLarge,
-        child: Scaffold(
-          extendBody: true,
-          appBar: AppBar(
-            title: Text(gameData?.title ?? widget.gameId),
-            leading: IconButton(
-              onPressed: () async {
-                final exit = await ConfirmDialog(
-                  title: LocaleKeys.leave_game_confirmation.tr(),
-                ).show(context);
-                if (exit && context.mounted) Navigator.pop(context);
-              },
-              icon: const Icon(Icons.exit_to_app),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, __) async {
+        if (didPop) return;
+        await _onExit();
+      },
+      child: ColoredBox(
+        color: context.theme.colorScheme.surface,
+        child: MaxSizeContainer(
+          maxWidth: UiModeUtils.extraLarge,
+          child: Scaffold(
+            extendBody: true,
+            appBar: AppBar(
+              title: Text(gameData?.title ?? widget.gameId),
+              leading: IconButton(
+                onPressed: _onExit,
+                icon: const Icon(Icons.exit_to_app),
+              ),
+              actions: [_ChatButton(show: showChat)],
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              notificationPredicate: (_) => false,
             ),
-            actions: [_ChatButton(show: showChat)],
-            elevation: 0,
-            scrolledUnderElevation: 0,
-            notificationPredicate: (_) => false,
-          ),
-          body: SafeArea(
-            bottom: false,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _BodyBuilder(playerOnLeft: chatWideModeOn).expand(),
-                    AppAnimatedSwitcher(
-                      visible: showDesktopChat,
-                      child: const _Chat()
-                          .withWidth(GameLobbyStyles.desktopChatWidth),
-                    ),
-                  ],
-                ),
-                AppAnimatedSwitcher(
-                  visible: !chatWideModeOn && showChat,
-                  disableSizeTransition: true,
-                  child: const _Chat().paddingAll(16),
-                ),
-              ],
+            body: SafeArea(
+              bottom: false,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _BodyBuilder().expand(),
+                      AppAnimatedSwitcher(
+                        visible: showDesktopChat,
+                        child: const _Chat()
+                            .withWidth(GameLobbyStyles.desktopChatWidth),
+                      ),
+                    ],
+                  ),
+                  AppAnimatedSwitcher(
+                    visible: !chatWideModeOn && showChat,
+                    disableSizeTransition: true,
+                    child: const _Chat().paddingAll(16),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -97,13 +106,15 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
 }
 
 class _BodyBuilder extends StatelessWidget {
-  const _BodyBuilder({required this.playerOnLeft});
-  final bool playerOnLeft;
+  const _BodyBuilder();
+
   @override
   Widget build(BuildContext context) {
+    final playersOnLeft = GameLobbyStyles.playersOnLeft(context);
+
     Widget child;
 
-    if (playerOnLeft) {
+    if (playersOnLeft) {
       child = Row(
         spacing: 8,
         children: [

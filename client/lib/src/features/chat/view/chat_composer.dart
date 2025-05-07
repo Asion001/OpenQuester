@@ -26,6 +26,13 @@ class _ComposerState extends State<Composer> {
   }
 
   @override
+  void dispose() {
+    textEditingController.dispose();
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return chat.Composer(
       attachmentIcon: null,
@@ -36,7 +43,7 @@ class _ComposerState extends State<Composer> {
   }
 
   KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
-    // Check for Shift+Enter
+    // Check for Enter
     if (event is KeyDownEvent &&
         event.logicalKey == LogicalKeyboardKey.enter &&
         !HardwareKeyboard.instance.isShiftPressed) {

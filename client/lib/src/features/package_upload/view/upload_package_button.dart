@@ -34,14 +34,16 @@ class UploadPackageButton extends WatchingWidget {
       child: const Icon(Icons.upload),
       builder: (context, child, onPressed) {
         return FilledButton.icon(
+          key: const Key('upload_key'),
           onPressed: onPressed,
           label: Text(
             [
               LocaleKeys.upload_package.tr(),
-              if (controller.loading && controller.progress != 0) ...[
-                (100 * controller.progress).ceil(),
-                '%',
-              ],
+              if (controller.loading && controller.progress != 0)
+                [
+                  (100 * controller.progress).ceil(),
+                  '%',
+                ].join(),
             ].join(' '),
           ),
           icon: child,

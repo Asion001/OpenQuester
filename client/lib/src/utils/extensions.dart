@@ -27,9 +27,10 @@ extension DurationX on Duration {
 
 extension IPackageItemAgeRestrictionX on AgeRestriction {
   (String, Color)? format(BuildContext context) {
+    final colors = Theme.of(context).extension<ExtraColors>()!;
     return {
-      AgeRestriction.a12: ('12+', AppTheme.successColor),
-      AgeRestriction.a16: ('16+', AppTheme.warningColor),
+      AgeRestriction.a12: ('12+', colors.success!),
+      AgeRestriction.a16: ('16+', colors.warning!),
       AgeRestriction.a18: ('18+', context.theme.colorScheme.error),
     }[this];
   }
@@ -132,4 +133,9 @@ extension SocketIOChatMessageEventPayloadX on SocketIOChatMessageEventPayload {
       authorId: user.toString(),
     );
   }
+}
+
+extension BrightnessX on Brightness {
+  Brightness get reverse =>
+      this == Brightness.light ? Brightness.dark : Brightness.light;
 }

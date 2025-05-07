@@ -12,7 +12,13 @@ class GameLobbyStyles {
   }
 
   static TextStyle? playerTextStyle(BuildContext context) {
-    final wideMode = UiModeUtils.wideModeOn(context);
+    final wideMode = playersOnLeft(context);
     return wideMode ? context.textTheme.bodyLarge : context.textTheme.bodySmall;
   }
+
+  static bool desktopChat(BuildContext context) =>
+      UiModeUtils.wideModeOn(context, UiModeUtils.large);
+
+  static bool playersOnLeft(BuildContext context) =>
+      MediaQuery.sizeOf(context).aspectRatio > 1;
 }

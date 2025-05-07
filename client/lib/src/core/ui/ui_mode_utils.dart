@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class UiModeUtils {
-  static bool wideModeOn(BuildContext context, [double? customWideModeWidth]) {
+  static bool wideModeOn(
+    BuildContext context, [
+    double width = UiModeUtils.medium,
+  ]) {
     final size = MediaQuery.sizeOf(context);
-    return size.width > (customWideModeWidth ?? medium);
+    return size.width > width;
   }
 
   static const double extraLarge = 1600;
