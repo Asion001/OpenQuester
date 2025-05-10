@@ -24,12 +24,13 @@ class AutoUpdateController {
   }
 
   Future<String> getBinaryUrl(String? version) async {
+    final clearVersion = version?.split('+').firstOrNull;
     final url = Uri.https(
       'github.com',
       [
         '/OpenQuester/OpenQuester/releases/download',
-        'v$version',
-        _getPlatformUpdateFile(version),
+        'v$clearVersion',
+        _getPlatformUpdateFile(clearVersion),
       ].join('/'),
     );
     return url.toString();
