@@ -52,6 +52,12 @@ jobs:
           name: windows-app
           path: windows/
 
+      - name: Download Web binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: web-app
+          path: web/
+
       # ––––– Determine the tag we’re releasing –––––
       - name: Fetch all tags
         run: git fetch --tags
