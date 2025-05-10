@@ -13,9 +13,23 @@ class ProfileScreen extends WatchingWidget {
       appBar: AppBar(
         title: Text(LocaleKeys.profile.tr()),
       ),
-      body: Center(
-        child:
-            user == null ? const _LoginProfile() : const _AuthorizedProfile(),
+      body: SafeArea(
+        child: Column(
+          spacing: 16,
+          children: [
+            Center(
+              child: user == null
+                  ? const _LoginProfile()
+                  : const _AuthorizedProfile(),
+            ).expand(),
+            const UpdateBtn(),
+            Text(
+              getIt<AutoUpdateController>().getCurrentVersion,
+              style: context.textTheme.bodySmall
+                  ?.copyWith(color: context.theme.colorScheme.onSurfaceVariant),
+            ),
+          ],
+        ).paddingBottom(16),
       ),
     );
   }
