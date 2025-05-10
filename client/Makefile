@@ -56,6 +56,9 @@ fix:
 install_index_gen:
 	$(PURO_CMD) dart pub global activate index_generator
 
+windows_bundle:
+	$(PURO_CMD) dart run msix:create
+
 ifeq ($(DART_PACKAGE),true)
 gen_api:
 	@echo "Skipping gen_locale"

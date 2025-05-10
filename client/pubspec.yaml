@@ -71,6 +71,11 @@ dev_dependencies:
   flutter_gen_runner: ^5.10.0
   very_good_analysis: ^7.0.0
   squadron_builder: ^7.1.1
+  msix: ^3.16.9
+
+dependency_overrides:
+  # force all packages (msix included) to use get_it 8.x
+  get_it: ^8.0.3
 
 flutter:
   uses-material-design: true
@@ -82,3 +87,11 @@ flutter_gen:
   output: lib/generated/
   integrations:
     flutter_svg: true
+
+msix_config:
+  display_name: OpenQuester
+  identity_name: com.asion.openquester
+  logo_path: assets/icon/icon_square.png
+  capabilities: internetClient
+  languages: en-us
+  file_extension: .siq

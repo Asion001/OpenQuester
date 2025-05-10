@@ -15,14 +15,15 @@ class AppInit {
 
     AppInit.packageInfo = await PackageInfo.fromPlatform();
 
-    // ignore: prefer_const_constructors
-    setUrlStrategy(PathUrlStrategy());
+    setUrlStrategy(const PathUrlStrategy());
+
+    await configureDependencies();
 
     logger.i(await getInitInfo());
   }
 
   static Future<void> buildInit() async {
-    await configureDependencies();
+    // Your init steps
 
     FlutterNativeSplash.remove();
   }

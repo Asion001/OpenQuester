@@ -11,6 +11,8 @@ on:
         required: true
       ANDROID_KEYSTORE_BASE64:
         required: true
+      WINDOWS_SIGN_CERT:
+        required: true
 
     inputs:
       DEPLOY_PROD:
@@ -60,7 +62,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: '17'
+          java-version: "17"
           cache: gradle
 
       - name: Setup Flutter SDK
@@ -150,13 +152,25 @@ jobs:
       - name: Install dependencies
         run: |
           flutter pub get
-          make pre_run
+          choco install make -y
+          'C:\ProgramData\chocolatey\lib\make\tools\install\bin\make.exe' pre_run
 
-      - name: Build Windows
-        run: flutter build windows --release --build-number $GITHUB_RUN_NUMBER
+      - name: Build and create msix bundle
+        shell: pwsh
+        run: |
+          Write-Host "Decoding WINDOWS_SIGN_CERT into oq_windows_signing.pfx…"
+          $certBytes = [Convert]::FromBase64String($env:WINDOWS_SIGN_CERT)
+          [IO.File]::WriteAllBytes('oq_windows_signing.pfx', $certBytes)
+          Write-Host "Running msix:create…"
+          dart run msix:create `
+            -c oq_windows_signing.pfx `
+            -p '' `
+            --install_certificate false
+        env:
+          WINDOWS_SIGN_CERT: ${{ secrets.WINDOWS_SIGN_CERT }}
 
       - name: Publish Windows Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: windows-app
-          path: ./client/build/windows/runner/Release/*
+          path: ./client/build/windows/x64/runner/Release/openquester.msix

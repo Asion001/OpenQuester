@@ -13,3 +13,9 @@ content.xml
 # Server
 .secret*
 .DS_Store
+
+# Windows signing
+*.crt
+*.csr
+*.key
+*.pfx
