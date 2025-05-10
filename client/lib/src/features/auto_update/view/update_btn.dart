@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
+import 'package:updat/theme/dialogs/default.dart';
 import 'package:updat/updat.dart';
 
 class UpdateBtn extends StatelessWidget {
@@ -14,15 +15,32 @@ class UpdateBtn extends StatelessWidget {
     return UpdatWidget(
       currentVersion: getIt<AutoUpdateController>().getCurrentVersion,
       getLatestVersion: getIt<AutoUpdateController>().getLatestVersion,
-      getBinaryUrl: getIt<AutoUpdateController>().getBinaryUrl,
+      getBinaryUrl: (_) async => '',
       appName: LocaleKeys.openquester.tr(),
-      getDownloadFileLocation:
-          getIt<AutoUpdateController>().getDownloadFileLocationget,
-      openOnDownload: false,
-      callback: (status) {
-        if (status == UpdatStatus.readyToInstall) {
-          getIt<AutoUpdateController>().openInstallFile();
-        }
+      updateDialogBuilder: ({
+        required appVersion,
+        required changelog,
+        required checkForUpdate,
+        required context,
+        required dismissUpdate,
+        required latestVersion,
+        required launchInstaller,
+        required openDialog,
+        required startUpdate,
+        required status,
+      }) {
+        defaultDialog(
+          context: context,
+          latestVersion: latestVersion,
+          appVersion: appVersion,
+          status: status,
+          changelog: changelog,
+          checkForUpdate: checkForUpdate,
+          openDialog: openDialog,
+          startUpdate: getIt<AutoUpdateController>().openInstallFile,
+          launchInstaller: launchInstaller,
+          dismissUpdate: dismissUpdate,
+        );
       },
     );
   }
