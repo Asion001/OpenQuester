@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:file_saver/file_saver.dart';
 import 'package:openquester/src/connection/files/file_service.dart';
 import 'package:path_provider/path_provider.dart';
