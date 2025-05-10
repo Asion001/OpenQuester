@@ -29,42 +29,67 @@ jobs:
       packages: write
 
   publish_release:
-    runs-on: ubuntu-latest
+    name: Publish GitHub Release & Deploy Web
     needs: [build_client, build_docker, tests]
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       deployments: write
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download WEB
+      # ––––– Download artifacts from build_client job –––––
+      - name: Download Web artifact
         uses: actions/download-artifact@v4
         with:
           name: web-app
           path: web/
 
-      - name: Download APK
+      - name: Download Android APKs
         uses: actions/download-artifact@v4
         with:
           name: android-app
+          path: android/
 
-      - name: Set latest tag
+      - name: Download Windows binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-app
+          path: windows/
+
+      # ––––– Determine the tag we’re releasing –––––
+      - name: Fetch all tags
+        run: git fetch --tags
+
+      - name: Set LATEST_TAG env var
+        id: tag
         run: |
-          git fetch --tags
-          LATEST_TAG=$(git describe --tags --abbrev=0 | tail -n1)
-          echo "LATEST_TAG=$LATEST_TAG"
-          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+          echo "LATEST_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
+      # ––––– Generate release notes from CHANGELOG.md –––––
+      - name: Generate changelog for ${{ env.LATEST_TAG }}
+        id: changelog
+        uses: endaft/action-changelog@v0.0.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          exclude_types: other,doc,chore
+
+      # ––––– Create draft GitHub Release –––––
       - name: Create draft release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
           tag_name: ${{ env.LATEST_TAG }}
+          draft: true
+          prerelease: false
+          body: ${{ steps.changelog.outputs.changelog }}
           files: |
-            *.apk
+            web/**
+            android/**/*.apk
+            windows/**
 
-      # Deploy to Cloudflare Pages with production environment when not on main branch.
+      # ––––– Deploy web to Cloudflare Pages –––––
       - name: Publish to Cloudflare Pages (Production)
         uses: cloudflare/wrangler-action@v3
         with:
@@ -78,4 +103,4 @@ jobs:
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/purge_cache" \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            --data "{  \"purge_everything\": true }"
+            --data '{ "purge_everything": true }'
