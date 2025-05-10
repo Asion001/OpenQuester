@@ -7,6 +7,8 @@ class UpdateBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!getIt<AutoUpdateController>().showUpdateBtn) const SizedBox.shrink();
+
     return UpdatWidget(
       currentVersion: getIt<AutoUpdateController>().getCurrentVersion,
       getLatestVersion: getIt<AutoUpdateController>().getLatestVersion,

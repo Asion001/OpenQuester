@@ -157,7 +157,9 @@ jobs:
 
       - name: Build and create msix bundle
         shell: pwsh
-        run: dart run inno_bundle:build --release
+        run: |
+          flutter build windows --release --build-number $GITHUB_RUN_NUMBER
+          dart run inno_bundle:build --release --no-app
 
       - name: Publish Windows Artifacts
         uses: actions/upload-artifact@v4
