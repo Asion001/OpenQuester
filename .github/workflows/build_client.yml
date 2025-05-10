@@ -155,7 +155,7 @@ jobs:
           echo "${{ vars.ENV_FILE_CONTENT }}" > .env
           make pre_run
 
-      - name: Build and create msix bundle
+      - name: Build and create bundle
         shell: pwsh
         run: |
           flutter build windows --release --build-number $GITHUB_RUN_NUMBER

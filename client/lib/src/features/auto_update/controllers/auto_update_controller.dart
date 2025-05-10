@@ -1,5 +1,8 @@
+import 'package:android_package_installer/android_package_installer.dart';
 import 'package:flutter/foundation.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:openquester/common_imports.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:universal_io/io.dart';
 
 @singleton
@@ -47,5 +50,30 @@ class AutoUpdateController {
   bool get showUpdateBtn {
     if (kIsWeb) return false;
     return Platform.isWindows || Platform.isAndroid;
+  }
+
+  late File? _installFile;
+  Future<File> getDownloadFileLocationget(String? latestVersion) async {
+    final tempFolder = await getDownloadsDirectory();
+    var ext = '';
+    if (Platform.isWindows) {
+      ext = 'exe';
+    } else if (Platform.isAndroid) {
+      ext = 'apk';
+    }
+    final path = [
+      tempFolder!.path,
+      'update_${latestVersion ?? ''}.$ext',
+    ].join(Platform.pathSeparator);
+    _installFile = File(path);
+    return _installFile!;
+  }
+
+  Future<void> openInstallFile() async {
+    if (Platform.isAndroid) {
+      await AndroidPackageInstaller.installApk(apkFilePath: _installFile!.path);
+    } else {
+      await OpenFilex.open(_installFile!.path);
+    }
   }
 }

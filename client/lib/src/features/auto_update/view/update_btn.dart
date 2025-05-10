@@ -16,6 +16,14 @@ class UpdateBtn extends StatelessWidget {
       getLatestVersion: getIt<AutoUpdateController>().getLatestVersion,
       getBinaryUrl: getIt<AutoUpdateController>().getBinaryUrl,
       appName: LocaleKeys.openquester.tr(),
+      getDownloadFileLocation:
+          getIt<AutoUpdateController>().getDownloadFileLocationget,
+      openOnDownload: false,
+      callback: (status) {
+        if (status == UpdatStatus.readyToInstall) {
+          getIt<AutoUpdateController>().openInstallFile();
+        }
+      },
     );
   }
 }

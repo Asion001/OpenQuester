@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   desktop_webview_window
   flutter_secure_storage_windows
   nb_utils
+  permission_handler_windows
   screen_retriever
   url_launcher_windows
   window_manager
