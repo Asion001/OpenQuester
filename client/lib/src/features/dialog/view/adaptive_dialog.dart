@@ -43,9 +43,6 @@ class _AdaptiveDialogState extends State<AdaptiveDialog>
                   showDragHandle: true,
                   animationController:
                       BottomSheet.createAnimationController(this),
-                  constraints: const BoxConstraints.tightFor(
-                    height: UiModeUtils.maximumDialogWidth,
-                  ),
                   builder: (_) => child,
                 ),
         ),

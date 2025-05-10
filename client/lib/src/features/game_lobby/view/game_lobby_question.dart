@@ -21,8 +21,8 @@ class GameQuestion extends StatelessWidget {
         ),
         foregroundColor:
             WidgetStatePropertyAll(context.theme.colorScheme.onSurface),
-        minimumSize: const WidgetStatePropertyAll(Size.square(64)),
-        maximumSize: const WidgetStatePropertyAll(Size(100, 64)),
+        minimumSize:
+            WidgetStatePropertyAll(GameLobbyStyles.questionSize(context)),
         textStyle: WidgetStatePropertyAll(context.textTheme.titleLarge),
         padding: WidgetStatePropertyAll(0.all),
       ),

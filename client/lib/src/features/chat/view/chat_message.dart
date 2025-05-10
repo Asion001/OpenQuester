@@ -1,6 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:openquester/common_imports.dart';
 
 class SimpleTextMessage extends StatelessWidget {
@@ -63,6 +64,8 @@ class SimpleTextMessage extends StatelessWidget {
 
     final textContent = SelectableText(
       message.text,
+      selectionHeightStyle: BoxHeightStyle.max,
+      selectionWidthStyle: BoxWidthStyle.max,
       style: _isOnlyEmoji
           ? textStyle?.copyWith(fontSize: onlyEmojiFontSize)
           : textStyle,
@@ -212,16 +215,12 @@ class TimeAndStatus extends StatelessWidget {
           FutureBuilder(
             future: getIt<SocketChatController>().resolveUser(userId),
             builder: (context, snapshot) {
+              final avatar = snapshot.data?.imageSource;
               return Row(
                 mainAxisSize: MainAxisSize.min,
                 spacing: 4,
                 children: [
-                  Avatar(
-                    userId: userId,
-                    size: 20,
-                    backgroundColor:
-                        context.theme.colorScheme.onSecondaryContainer,
-                  ),
+                  ImageWidget(url: avatar, avatarRadius: 10),
                   Text(
                     [
                       snapshot.data?.firstName,

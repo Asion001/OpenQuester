@@ -13,7 +13,7 @@ class GamePreviewPlayButton extends StatelessWidget {
         builder: (context, child, onPressed) => FilledButton(
           onPressed: onPressed,
           child: child,
-        ),
+        ).withTooltip(msg: LocaleKeys.join_game.tr()),
       ),
     );
   }

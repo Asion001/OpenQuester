@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:openquester/common_imports.dart';
 import 'package:socket_io_client/socket_io_client.dart' show Socket;
 
@@ -26,9 +27,10 @@ extension DurationX on Duration {
 
 extension IPackageItemAgeRestrictionX on AgeRestriction {
   (String, Color)? format(BuildContext context) {
+    final colors = Theme.of(context).extension<ExtraColors>()!;
     return {
-      AgeRestriction.a12: ('12+', AppTheme.successColor),
-      AgeRestriction.a16: ('16+', AppTheme.warningColor),
+      AgeRestriction.a12: ('12+', colors.success!),
+      AgeRestriction.a16: ('16+', colors.warning!),
       AgeRestriction.a18: ('18+', context.theme.colorScheme.error),
     }[this];
   }
@@ -120,4 +122,20 @@ extension SocketIOGameJoinEventPayloadX on SocketIOGameJoinEventPayload {
       (e) => e.meta.id == ProfileController.getUser()?.id,
     );
   }
+}
+
+extension SocketIOChatMessageEventPayloadX on SocketIOChatMessageEventPayload {
+  TextMessage toChatMessage() {
+    return TextMessage(
+      id: uuid,
+      text: message,
+      createdAt: timestamp,
+      authorId: user.toString(),
+    );
+  }
+}
+
+extension BrightnessX on Brightness {
+  Brightness get reverse =>
+      this == Brightness.light ? Brightness.dark : Brightness.light;
 }
