@@ -106,3 +106,5 @@ inno_bundle:
   url: https://openquester.app/
   updates_url: https://github.com/OpenQuester/OpenQuester/releases
   admin: false
+  languages:
+    - english

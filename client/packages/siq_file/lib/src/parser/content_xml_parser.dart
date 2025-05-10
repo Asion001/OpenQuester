@@ -252,6 +252,11 @@ class ContentXmlParser {
   Future<String> getFileMD5(List<int> data) async =>
       md5.convert(data).toString();
 
+  String _formatFileName(String filename) {
+    if (filename.startsWith('@')) return filename.replaceFirst('@', '');
+    return filename;
+  }
+
   Future<(ArchiveFile, String)?> getItemMD5hash({
     required PackageFileType? itemType,
     required String? itemFilePath,
@@ -267,7 +272,7 @@ class ContentXmlParser {
       return null;
     }
 
-    final filePath = [folder, itemFilePath.replaceFirst('@', '')].join('/');
+    final filePath = [folder, _formatFileName(itemFilePath)].join('/');
 
     final cachedHash = filesMD5.entries.firstWhereOrNull(
       (e) => e.value.any((e) => e.path == filePath),
