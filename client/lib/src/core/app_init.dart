@@ -15,7 +15,8 @@ class AppInit {
 
     AppInit.packageInfo = await PackageInfo.fromPlatform();
 
-    setUrlStrategy(const PathUrlStrategy());
+    // ignore: prefer_const_constructors because it`s throw error during build
+    setUrlStrategy(PathUrlStrategy());
 
     await configureDependencies();
 
