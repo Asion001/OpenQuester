@@ -14,13 +14,11 @@ class UpdateBtn extends StatelessWidget {
     return UpdatWidget(
       currentVersion: getIt<AutoUpdateController>().getCurrentVersion,
       getLatestVersion: getIt<AutoUpdateController>().getLatestVersion,
-      getBinaryUrl: getIt<AutoUpdateController>().getBinaryUrl,
+      getBinaryUrl: (_) async => '',
       appName: LocaleKeys.openquester.tr(),
-      getDownloadFileLocation:
-          getIt<AutoUpdateController>().getDownloadFileLocationget,
       openOnDownload: false,
       callback: (status) {
-        if (status == UpdatStatus.readyToInstall) {
+        if (status == UpdatStatus.downloading) {
           getIt<AutoUpdateController>().openInstallFile();
         }
       },
