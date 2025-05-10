@@ -11,6 +11,8 @@ on:
         required: true
       ANDROID_KEYSTORE_BASE64:
         required: true
+      WINDOWS_SIGN_CERT:
+        required: true
 
     inputs:
       DEPLOY_PROD:
@@ -29,6 +31,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - id: found_paths
         uses: dorny/paths-filter@v3
         with:
@@ -36,41 +39,46 @@ jobs:
             client:
               - 'client/**'
               - 'openapi/**'
+
       - name: Check if we should force jobs to run
         id: should_force
         run: echo "should_force=${{ github.event_name == 'workflow_dispatch' || github.workflow == 'Release' || github.event_name == 'push' }}" >> "$GITHUB_OUTPUT"
 
   build:
-    name: Build client app
+    name: Build client (Web & Android)
     needs: pre_job
-    # Skip when PR from a fork
-    if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' && needs.pre_job.outputs.should_run == 'true'}}
+    if: ${{ !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' && needs.pre_job.outputs.should_run == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./client
     env:
       DONT_USE_PURO: true
-    environment: "${{ inputs.DEPLOY_PROD && 'openquester (Production)' || 'openquester (Preview)' }}"
+    environment: ${{ inputs.DEPLOY_PROD && 'openquester (Production)' || 'openquester (Preview)' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+
+      - name: Setup Java 17 + Gradle cache
+        uses: actions/setup-java@v4
         with:
-          distribution: "zulu"
+          distribution: zulu
           java-version: "17"
-          cache: "gradle"
+          cache: gradle
+
       - name: Setup Flutter SDK
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version-file: ./client/pubspec.yaml
           cache: true
-      - run: flutter pub get
-      - name: Write env file
-        run: echo "${{ vars.ENV_FILE_CONTENT }}" > .env
-      - run: make pre_run
 
-      - name: Build web
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          echo "${{ vars.ENV_FILE_CONTENT }}" > .env
+          make pre_run
+
+      - name: Build Web
         run: flutter build web --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER --wasm
 
       - name: Publish Web Artifacts
@@ -79,7 +87,6 @@ jobs:
           name: web-app
           path: ./client/build/web/
 
-      # Deploy to Cloudflare Pages with preview environment when pushing to main branch.
       - name: Publish to Cloudflare Pages (Preview)
         if: inputs.DEPLOY_PROD == false
         uses: cloudflare/wrangler-action@v3
@@ -95,26 +102,67 @@ jobs:
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/purge_cache" \
             -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
             -H "Content-Type: application/json" \
-            --data "{  \"purge_everything\": true }"
+            --data '{ "purge_everything": true }'
 
-      - name: Decode and setup keystore
-        env:
-          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      - name: Decode and setup Android keystore
         run: |
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
 
-      - name: Build android
+      - name: Build Android APKs
+        run: |
+          flutter build apk --release --build-number $GITHUB_RUN_NUMBER
+          flutter build apk --release --split-per-abi \
+            --target-platform android-arm,android-arm64,android-x64 --build-number $GITHUB_RUN_NUMBER
         env:
           ANDROID_KEYSTORE_PATH: ${{ vars.ANDROID_KEYSTORE_PATH }}
           ANDROID_KEY_ALIAS_NAME: ${{ vars.ANDROID_KEY_ALIAS_NAME }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: |
-          flutter build apk --release --build-number $GITHUB_RUN_NUMBER
-          flutter build apk --release --split-per-abi --target-platform android-arm,android-arm64,android-x64 --build-number $GITHUB_RUN_NUMBER
 
       - name: Publish Android Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: android-app
           path: ./client/build/app/outputs/flutter-apk/*.apk
+
+  build_windows:
+    name: Build client (Windows)
+    needs: pre_job
+    if: ${{ needs.pre_job.outputs.should_run == 'true' }}
+    environment: ${{ inputs.DEPLOY_PROD && 'openquester (Production)' || 'openquester (Preview)' }}
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./client
+    env:
+      DONT_USE_PURO: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: ./client/pubspec.yaml
+          cache: true
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          choco install make -y
+          echo "${{ vars.ENV_FILE_CONTENT }}" > .env
+          make pre_run
+
+      - name: Build and create msix bundle
+        shell: pwsh
+        run: |
+          flutter build windows --release --build-number $GITHUB_RUN_NUMBER
+          dart run inno_bundle:build --release --no-app
+
+      - name: Publish Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-app
+          path: ./client/build/windows/x64/installer/Release/*-Installer.exe

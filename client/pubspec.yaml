@@ -53,6 +53,8 @@ dependencies:
   crypto: ^3.0.6
   flutter_svg: ^2.1.0
   mocktail: ^1.0.4
+  updat: ^1.3.2
+  throttling: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +73,10 @@ dev_dependencies:
   flutter_gen_runner: ^5.10.0
   very_good_analysis: ^7.0.0
   squadron_builder: ^7.1.1
+  inno_bundle: ^0.9.0
+
+dependency_overrides:
+  archive: ^4.0.7 # Force for updat
 
 flutter:
   uses-material-design: true
@@ -82,3 +88,23 @@ flutter_gen:
   output: lib/generated/
   integrations:
     flutter_svg: true
+
+msix_config:
+  display_name: OpenQuester
+  identity_name: com.asion.openquester
+  logo_path: assets/icon/icon.png
+  capabilities: internetClient
+  languages: en-us
+  file_extension: .siq
+  install_certificate: false
+
+inno_bundle:
+  id: 2c5b1f10-2d9d-11f0-947a-894be89259d5
+  name: OpenQuester
+  publisher: OpenQuester
+  installer_icon: assets/icon/icon.ico
+  url: https://openquester.app/
+  updates_url: https://github.com/OpenQuester/OpenQuester/releases
+  admin: false
+  languages:
+    - english

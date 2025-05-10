@@ -44,7 +44,7 @@ endif
 gen_files:
 	$(PURO_CMD) dart run build_runner build -d
 
-gen_indexes:
+gen_indexes: install_index_gen
 	$(PURO_CMD) flutter pub global run index_generator
 
 format:
@@ -52,6 +52,12 @@ format:
 
 fix:
 	$(PURO_CMD) dart fix --apply
+
+install_index_gen:
+	$(PURO_CMD) dart pub global activate index_generator
+
+windows_bundle:
+	$(PURO_CMD) dart run msix:create
 
 ifeq ($(DART_PACKAGE),true)
 gen_api:

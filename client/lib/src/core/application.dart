@@ -19,6 +19,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    const loader = Material();
+
     return MaterialApp.router(
       title: 'OpenQuester',
       theme: AppTheme.light,
@@ -31,7 +33,6 @@ class _AppState extends State<App> {
       locale: context.locale,
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
-        const loader = Material();
         if (loading) return loader;
         return child ?? loader;
       },

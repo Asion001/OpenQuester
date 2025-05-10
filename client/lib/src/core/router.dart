@@ -8,7 +8,7 @@ import 'package:openquester/common_imports.dart';
   deferredLoading: true,
   replaceInRouteName: 'Dialog|Page|Screen,Route',
 )
-@singleton
+@Singleton(order: 0)
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes {
