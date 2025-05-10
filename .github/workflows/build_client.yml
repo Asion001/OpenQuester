@@ -157,20 +157,10 @@ jobs:
 
       - name: Build and create msix bundle
         shell: pwsh
-        run: |
-          Write-Host "Decoding WINDOWS_SIGN_CERT into oq_windows_signing.pfx…"
-          $certBytes = [Convert]::FromBase64String($env:WINDOWS_SIGN_CERT)
-          [IO.File]::WriteAllBytes('oq_windows_signing.pfx', $certBytes)
-          Write-Host "Running msix:create…"
-          dart run msix:create `
-            -c oq_windows_signing.pfx `
-            -p '' `
-            --install_certificate false
-        env:
-          WINDOWS_SIGN_CERT: ${{ secrets.WINDOWS_SIGN_CERT }}
+        run: dart run inno_bundle:build --release
 
       - name: Publish Windows Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: windows-app
-          path: ./client/build/windows/x64/runner/Release/openquester.msix
+          path: ./client/build/windows/x64/installer/Release/*-Installer.exe

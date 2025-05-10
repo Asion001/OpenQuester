@@ -72,6 +72,7 @@ dev_dependencies:
   very_good_analysis: ^7.0.0
   squadron_builder: ^7.1.1
   msix: ^3.16.9
+  inno_bundle: ^0.9.0
 
 dependency_overrides:
   # force all packages (msix included) to use get_it 8.x
@@ -91,7 +92,17 @@ flutter_gen:
 msix_config:
   display_name: OpenQuester
   identity_name: com.asion.openquester
-  logo_path: assets/icon/icon_square.png
+  logo_path: assets/icon/icon.png
   capabilities: internetClient
   languages: en-us
   file_extension: .siq
+  install_certificate: false
+
+inno_bundle:
+  id: 2c5b1f10-2d9d-11f0-947a-894be89259d5
+  name: OpenQuester
+  publisher: OpenQuester
+  installer_icon: assets/icon/icon.ico
+  url: https://openquester.app/
+  updates_url: https://github.com/OpenQuester/OpenQuester/releases
+  admin: false
