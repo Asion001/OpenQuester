@@ -1332,6 +1332,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  siq_compress:
+    dependency: "direct main"
+    description:
+      path: "packages/siq_compress"
+      relative: true
+    source: path
+    version: "0.0.1"
   siq_file:
     dependency: "direct main"
     description:
