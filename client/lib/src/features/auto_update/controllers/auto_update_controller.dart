@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
 import 'package:universal_io/io.dart';
 
@@ -37,10 +38,14 @@ class AutoUpdateController {
   }
 
   String _getPlatformUpdateFile(String? version) {
+    if (kIsWeb) return '';
     if (Platform.isWindows) return 'OpenQuester-x86_64-$version-Installer.exe';
     if (Platform.isAndroid) return 'app-release.apk';
     return '';
   }
 
-  bool get showUpdateBtn => Platform.isWindows || Platform.isAndroid;
+  bool get showUpdateBtn {
+    if (kIsWeb) return false;
+    return Platform.isWindows || Platform.isAndroid;
+  }
 }
