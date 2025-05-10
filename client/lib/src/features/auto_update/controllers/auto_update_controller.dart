@@ -29,11 +29,17 @@ class AutoUpdateController {
       [
         '/OpenQuester/OpenQuester/releases/download',
         'v$version',
-        'OpenQuester-x86_64-$version-Installer.exe',
+        _getPlatformUpdateFile(version),
       ].join('/'),
     );
     return url.toString();
   }
 
-  bool get showUpdateBtn => Platform.isWindows;
+  String _getPlatformUpdateFile(String? version) {
+    if (Platform.isWindows) return 'OpenQuester-x86_64-$version-Installer.exe';
+    if (Platform.isAndroid) return 'app-release.apk';
+    return '';
+  }
+
+  bool get showUpdateBtn => Platform.isWindows || Platform.isAndroid;
 }
