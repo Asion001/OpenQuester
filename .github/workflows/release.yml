@@ -69,12 +69,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           exclude_types: other,doc,chore
 
-      # ––––– Create draft GitHub Release –––––
-      - name: Create draft release
+      # ––––– Create GitHub Release –––––
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.LATEST_TAG }}
-          draft: true
           prerelease: false
           body: ${{ steps.changelog.outputs.changelog }}
           files: |
