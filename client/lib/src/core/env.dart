@@ -3,7 +3,7 @@ import 'package:envied/envied.dart';
 
 part 'env.g.dart';
 
-@Envied(useConstantCase: true)
+@Envied(useConstantCase: true, path: '.env')
 final class Env {
   @EnviedField()
   static Uri apiUrl = _Env.apiUrl;
