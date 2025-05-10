@@ -17,6 +17,7 @@ dependencies:
   json_annotation: ^4.9.0
   collection: ^1.19.1
   cross_file: ^0.3.4+2
+  archive: ^4.0.7
 
 dev_dependencies:
   lints: ^5.1.1

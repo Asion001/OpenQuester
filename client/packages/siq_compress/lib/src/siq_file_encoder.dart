@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:archive/archive.dart';
+import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:siq_compress/src/common/command_wrapper.dart';
@@ -65,4 +68,19 @@ class SiqFileEncoder {
     if (withAudio != null) return CodecType.audio;
     return null;
   }
+
+  Future<XFile?> encodePackage(File file) async {
+    final inputDir =
+        Directory([file.parent.path, 'input'].join(Platform.pathSeparator));
+    final outputDir =
+        Directory([file.parent.path, 'output'].join(Platform.pathSeparator));
+    await outputDir.create();
+    
+    await extractFileToDisk(file.path, inputDir.path);
+    unawaited(file.delete());
+
+    return null;
+  }
+
+  void dispose() {}
 }
