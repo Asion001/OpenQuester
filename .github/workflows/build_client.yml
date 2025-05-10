@@ -75,10 +75,8 @@ jobs:
       - name: Install dependencies
         run: |
           flutter pub get
+          echo "${{ vars.ENV_FILE_CONTENT }}" > .env
           make pre_run
-
-      - name: Write env file
-        run: echo "${{ vars.ENV_FILE_CONTENT }}" > .env
 
       - name: Build Web
         run: flutter build web --no-web-resources-cdn --build-number $GITHUB_RUN_NUMBER --wasm
@@ -153,7 +151,8 @@ jobs:
         run: |
           flutter pub get
           choco install make -y
-          'C:\ProgramData\chocolatey\lib\make\tools\install\bin\make.exe' pre_run
+          echo "${{ vars.ENV_FILE_CONTENT }}" > .env
+          make pre_run
 
       - name: Build and create msix bundle
         shell: pwsh
