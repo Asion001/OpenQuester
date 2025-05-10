@@ -114,7 +114,7 @@ jobs:
         run: |
           flutter build apk --release --build-number $GITHUB_RUN_NUMBER
           flutter build apk --release --split-per-abi \
-            --target-platform android-arm,android-arm64,android-x64 --build-number $GITHUB_RUN_NUMBER
+            --target-platform android-arm64,android-x64 --build-number $GITHUB_RUN_NUMBER
         env:
           ANDROID_KEYSTORE_PATH: ${{ vars.ANDROID_KEYSTORE_PATH }}
           ANDROID_KEY_ALIAS_NAME: ${{ vars.ANDROID_KEY_ALIAS_NAME }}
