@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
+import 'package:path/path.dart';
 import 'package:siq_compress/src/common/command_wrapper.dart';
 import 'package:siq_compress/src/common/process_utils.dart';
 import 'package:siq_compress/src/models/ffprobe_output.dart';
@@ -151,18 +152,17 @@ class SiqFileEncoder {
   ) async {
     if (!sourceDir.existsSync()) return;
 
+    // Ensure the target root exists
     await targetDir.create(recursive: true);
 
-    await for (final entity in sourceDir.list()) {
-      final newPath = [targetDir.path, entity.uri.pathSegments.last]
-          .join(Platform.pathSeparator);
-
-      if (entity is File) {
-        await entity.rename(newPath);
-      } else if (entity is Directory) {
-        await _moveDirectoryContents(entity, Directory(newPath));
-        await entity.delete(recursive: true);
-      }
+    final itemsList = sourceDir.list();
+    await for (final item in itemsList) {
+      await item.rename(
+        [
+          targetDir.path,
+          item.path.split(Platform.pathSeparator).last,
+        ].join(Platform.pathSeparator),
+      );
     }
   }
 
