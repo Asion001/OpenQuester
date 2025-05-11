@@ -15,14 +15,16 @@ class AppInit {
 
     AppInit.packageInfo = await PackageInfo.fromPlatform();
 
-    // ignore: prefer_const_constructors
+    // ignore: prefer_const_constructors because it`s throw error during build
     setUrlStrategy(PathUrlStrategy());
+
+    await configureDependencies();
 
     logger.i(await getInitInfo());
   }
 
   static Future<void> buildInit() async {
-    await configureDependencies();
+    // Your init steps
 
     FlutterNativeSplash.remove();
   }

@@ -58,4 +58,5 @@ abstract class LocaleKeys {
   static const leave_game_confirmation = 'leave_game_confirmation';
   static const yes = 'yes';
   static const no = 'no';
+  static const openquester = 'openquester';
 }

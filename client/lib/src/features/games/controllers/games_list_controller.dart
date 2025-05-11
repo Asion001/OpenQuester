@@ -1,4 +1,5 @@
 import 'package:openquester/common_imports.dart';
+import 'package:throttling/throttling.dart';
 
 @Singleton(order: 5)
 class GamesListController extends ListControllerBase<GameListItem> {
@@ -19,6 +20,7 @@ class GamesListController extends ListControllerBase<GameListItem> {
   Future<void> dispose() async {
     await super.dispose();
     getIt<SocketController>().general.off(SocketIOEvents.games.name);
+    _throttling.close();
   }
 
   Future<void> _onSocketEvent(dynamic data) async {
@@ -56,6 +58,9 @@ class GamesListController extends ListControllerBase<GameListItem> {
   /// If [text] is isEmptyOrNull search filter resets
   void search(String? text) {
     queryFilter = text.isEmptyOrNull ? null : text;
-    pagingController.refresh();
+    _throttling.throttle(pagingController.refresh);
   }
+
+  final _throttling =
+      Throttling<void>(duration: const Duration(milliseconds: 500));
 }
