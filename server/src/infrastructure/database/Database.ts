@@ -19,7 +19,7 @@ export class Database {
       throw new ServerError(ServerResponse.INVALID_DATA_SOURCE);
     }
     if (!this._dataSource.isInitialized) {
-      this._dataSource.initialize();
+      void this._dataSource.initialize();
     }
   }
 

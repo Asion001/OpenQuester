@@ -1,7 +1,7 @@
 import { SocketIOEvents } from "domain/enums/SocketIOEvents";
 import { ErrorController } from "domain/errors/ErrorController";
 import { ErrorEventPayload } from "domain/types/socket/events/ErrorEventPayload";
-import { SocketIOEventEmitter } from "presentation/controllers/io/SocketIOEventEmitter";
+import { SocketIOEventEmitter } from "presentation/emitters/SocketIOEventEmitter";
 
 type SyncCallback<T> = (data: T) => void;
 type AsyncCallback<T> = (data: T) => Promise<void>;

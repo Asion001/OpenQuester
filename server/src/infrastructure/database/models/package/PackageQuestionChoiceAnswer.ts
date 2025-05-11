@@ -55,7 +55,7 @@ export class PackageQuestionChoiceAnswer {
       ? {
           md5: this.file.filename,
           type: this.type!,
-          link: await storage.get(this.file.filename),
+          link: await storage.getUrl(this.file.filename),
         }
       : null;
 

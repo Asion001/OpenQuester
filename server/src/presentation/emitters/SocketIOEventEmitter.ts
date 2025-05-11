@@ -46,4 +46,18 @@ export class SocketIOEventEmitter {
       emitter.emit(event, data);
     }
   }
+
+  /**
+   * Emits to socket using io (not socket) emitter
+   * @param event Socket io event to emit
+   * @param data Data of generic type `T` which will be emitted
+   * @param socketId socket id to which we emit
+   */
+  public emitToSocket<T>(event: IOEVent, data: T, socketId: string) {
+    if (!this._io || !this._socket) {
+      throw new ServerError("SocketIOEventEmitter not initialized");
+    }
+    const emitter = this._io;
+    emitter.to(socketId).emit(event, data);
+  }
 }

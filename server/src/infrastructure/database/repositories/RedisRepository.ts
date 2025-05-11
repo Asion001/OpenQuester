@@ -45,11 +45,11 @@ export class RedisRepository {
 
   /**
    * @param key storing key. Example of key with namespace: "cache:users:1"
-   * @param expire expire time in seconds
+   * @param expire expire time in milliseconds
    */
   public async set(key: string, value: string, expire?: number): Promise<void> {
     if (expire) {
-      await this._client.set(key, value, "EX", expire);
+      await this._client.set(key, value, "PX", expire);
     } else {
       await this._client.set(key, value);
     }

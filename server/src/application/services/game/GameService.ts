@@ -1,6 +1,8 @@
 import { type Request } from "express";
 import { type Server as IOServer } from "socket.io";
 
+import { UserService } from "application/services/user/UserService";
+import { Game } from "domain/entities/game/Game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { SocketIOEvents } from "domain/enums/SocketIOEvents";
@@ -8,9 +10,9 @@ import { ClientError } from "domain/errors/ClientError";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { GameEvent, GameEventDTO } from "domain/types/dto/game/GameEventDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
+import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { GamePaginationOpts } from "domain/types/pagination/game/GamePaginationOpts";
 import { GameRepository } from "infrastructure/database/repositories/GameRepository";
-import { UserService } from "../user/UserService";
 
 export class GameService {
   constructor(
@@ -26,6 +28,13 @@ export class GameService {
     updatedTtl?: number
   ): Promise<GameListItemDTO> {
     return this.gameRepository.getGame(gameId, updatedTtl);
+  }
+
+  public async getGameEntity(
+    gameId: string,
+    updatedTtl?: number
+  ): Promise<Game> {
+    return this.gameRepository.getGameEntity(gameId, updatedTtl);
   }
 
   public async list(paginationOpts: GamePaginationOpts) {
@@ -84,8 +93,34 @@ export class GameService {
     return this.gameRepository.cleanupAllGames();
   }
 
+  public async updateGame(game: Game) {
+    return this.gameRepository.updateGame(game);
+  }
+
   public async cleanOrphanedGames() {
     return this.gameRepository.cleanOrphanedGames();
+  }
+
+  /**
+   * @param timerAdditional means additional body between timer and gameId,
+   *  e.g. timer:showing:ABCD, it this case timerAdditional is 'showing'
+   */
+  public async getTimer(gameId: string, timerAdditional?: string) {
+    return this.gameRepository.getTimer(gameId, timerAdditional);
+  }
+
+  /**
+   * @param timerAdditional means additional body between timer and gameId,
+   *  e.g. timer:showing:ABCD, it this case timerAdditional is 'showing'
+   * @param ttl in milliseconds
+   */
+  public async saveTimer(
+    timer: GameStateTimerDTO,
+    gameId: string,
+    timerAdditional?: string,
+    ttl?: number
+  ) {
+    return this.gameRepository.saveTimer(timer, gameId, timerAdditional, ttl);
   }
 
   private _emitSocketGameCreated(gameData: GameListItemDTO) {

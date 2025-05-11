@@ -6,6 +6,7 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { type Request } from "express";
+import { createHash } from "node:crypto";
 import https from "node:https";
 
 import { FileService } from "application/services/file/FileService";
@@ -91,7 +92,7 @@ export class S3StorageService {
     return getSignedUrl(this._client, command, opts);
   }
 
-  public async get(filename: string) {
+  public async getUrl(filename: string) {
     const filePath = StorageUtils.parseFilePath(filename);
 
     const baseUrl = this.s3Context.host.endsWith("/")
@@ -115,29 +116,32 @@ export class S3StorageService {
       https
         .get(cdnLink, (res) => {
           if (res.statusCode !== 200) {
-            // Ignore errors, user should add avatar manually in this case
             resolve(true);
             return;
           }
 
-          const contentLength = res.headers["content-length"]
-            ? parseInt(res.headers["content-length"], 10)
-            : undefined;
+          const chunks: Buffer[] = [];
 
-          const command = new PutObjectCommand({
-            Bucket: this.s3Context.bucket,
-            Key: StorageUtils.parseFilePath(filename),
-            Body: res,
+          res.on("data", (chunk) => {
+            chunks.push(chunk);
           });
 
-          if (contentLength) {
-            command.input.ContentLength = contentLength;
-          }
+          res.on("end", async () => {
+            const fileBuffer = Buffer.concat(chunks);
 
-          this._client
-            .send(command)
-            .then((data) => resolve(data))
-            .catch((err) => {
+            const md5Hash = createHash("md5").update(fileBuffer).digest("hex");
+
+            const command = new PutObjectCommand({
+              Bucket: this.s3Context.bucket,
+              Key: StorageUtils.parseFilePath(md5Hash),
+              Body: fileBuffer,
+              ContentLength: fileBuffer.length,
+            });
+
+            try {
+              await this._client.send(command);
+              resolve(md5Hash);
+            } catch (err) {
               Logger.error(
                 TemplateUtils.text(ServerResponse.BUCKET_UPLOAD_FAILED, {
                   filename,
@@ -145,7 +149,8 @@ export class S3StorageService {
                 })
               );
               resolve(true);
-            });
+            }
+          });
         })
         .on("error", (err) => {
           Logger.error(
@@ -214,7 +219,7 @@ export class S3StorageService {
     );
 
     if (user || pack) {
-      this._writeUsage(file, user, pack);
+      await this._writeUsage(file, user, pack);
     }
     return link;
   }
@@ -274,13 +279,13 @@ export class S3StorageService {
     }
 
     const filePath = StorageUtils.parseFilePath(filename);
-    this.fileService.removeFile(filename);
+    await this.fileService.removeFile(filename);
 
     const command = new DeleteObjectCommand({
       Bucket: this.s3Context.bucket,
       Key: filePath,
     });
-    this._client.send(command);
+    await this._client.send(command);
   }
 
   private async _handleAvatarRemove(

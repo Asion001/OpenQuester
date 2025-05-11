@@ -17,6 +17,7 @@ export class GameStateMapper {
       isPaused: false,
       currentQuestion: null,
       questionState: null,
+      readyPlayers: null,
       timer: null,
     };
   }
@@ -32,6 +33,7 @@ export class GameStateMapper {
     }
 
     return {
+      id: round.id!,
       name: round.name,
       description: round.description ?? null,
       order: round.order,
@@ -42,6 +44,7 @@ export class GameStateMapper {
   public static getRoundThemes(round: PackageRoundDTO): GameStateThemeDTO[] {
     return round.themes.map((theme): GameStateThemeDTO => {
       return {
+        id: theme.id!,
         name: theme.name,
         description: theme.description ?? null,
         order: theme.order,
@@ -55,9 +58,11 @@ export class GameStateMapper {
   ): GameStateQuestionDTO[] {
     return theme.questions.map((question): GameStateQuestionDTO => {
       return {
+        id: question.id!,
         order: question.order,
         price: question.isHidden ? null : question.price,
         questionComment: question.questionComment ?? null,
+        isPlayed: false,
       };
     });
   }

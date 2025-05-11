@@ -96,6 +96,7 @@ export class SocketIOGameService {
       answeredPlayers: null,
       answeringPlayer: null,
       currentQuestion: null,
+      readyPlayers: null,
       timer: null,
     };
 
@@ -111,7 +112,7 @@ export class SocketIOGameService {
     const gameId = userData.gameId;
 
     if (!gameId) {
-      throw new ClientError(ClientResponse.GAME_NOT_FOUND);
+      throw new ClientError(ClientResponse.NOT_IN_GAME);
     }
 
     const game = await this.gameRepository.getGameEntity(gameId, GAME_TTL);
