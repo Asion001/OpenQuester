@@ -31,13 +31,13 @@ export class SocketUserDataService {
   }
 
   public async remove(socketId: string) {
-    this.socketUserDataRepository.remove(socketId);
+    return this.socketUserDataRepository.remove(socketId);
   }
 
   /**
    * Cleans up all socket auth sessions since on server restart connections recreated
    */
   public async cleanupAllSession(): Promise<void> {
-    this.socketUserDataRepository.cleanupAllSession();
+    return this.socketUserDataRepository.cleanupAllSession();
   }
 }

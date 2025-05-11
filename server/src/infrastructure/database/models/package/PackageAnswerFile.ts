@@ -54,7 +54,7 @@ export class PackageAnswerFile {
     const fileDTO: PackageFileDTO = {
       md5: this.file.filename,
       type: this.type,
-      link: await storage.get(this.file.filename),
+      link: await storage.getUrl(this.file.filename),
     };
 
     if (opts.fetchIds) {

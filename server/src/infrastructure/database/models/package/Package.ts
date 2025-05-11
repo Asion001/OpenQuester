@@ -70,7 +70,7 @@ export class Package {
 
   questionCount?: number;
 
-  public async import(data: PackageImport) {
+  public import(data: PackageImport) {
     this.title = data.title;
     this.created_at = data.createdAt;
     this.language = data.language;
@@ -92,7 +92,7 @@ export class Package {
             id: this.logo.id,
             md5: this.logo.filename,
             type: PackageFileType.IMAGE,
-            link: await storage.get(this.logo.filename),
+            link: await storage.getUrl(this.logo.filename),
           },
         }
       : null;

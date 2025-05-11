@@ -17,6 +17,32 @@ import { LogLevel } from "domain/types/log/log";
  * Logger class used for writing logs and for prettier console output
  */
 export class Logger {
+  private static logPath = path.resolve(process.cwd(), "logs/logs.log");
+  private static stream = fs.createWriteStream(Logger.logPath, { flags: "a" });
+  private static initialized = false;
+  private static logPathExists = false;
+
+  private static ensureStream() {
+    if (this.initialized) return;
+    this.initialized = true;
+    this.stream.on("error", (err) => {
+      console.error("[LOGGER STREAM ERROR]", err);
+    });
+  }
+
+  // Ignore rule since this is called only once at server start/first migration
+  /* eslint-disable node/no-sync */
+  private static ensureFilePath() {
+    if (this.logPathExists) return;
+
+    if (!fs.existsSync(this.logPath)) {
+      fs.mkdirSync("logs/", { recursive: true });
+      fs.writeFileSync(this.logPath, "");
+    }
+    this.logPathExists = true;
+  }
+  /* eslint-enable node/no-sync */
+
   public static checkAccess(logLevel: LogLevel, requiredLogLevel: LogLevel) {
     const levels = ["info", "debug", "verbose"];
     const logIndex = levels.indexOf(logLevel);
@@ -95,27 +121,20 @@ export class Logger {
     this._writeFile(log);
   }
 
-  private static async _log(color: any, text: string) {
+  private static _log(color: any, text: string) {
+    this.ensureStream();
+    this.ensureFilePath();
+
     const log = `[${new Date().toISOString()}] ${text}`;
     console.log(color(log));
     this._writeFile(log);
   }
 
-  private static async _writeFile(text: unknown) {
-    const logPath = path.resolve(process.cwd(), `logs/logs.log`);
-
-    if (!fs.existsSync(logPath)) {
-      fs.mkdirSync("logs/", { recursive: true });
-      fs.writeFileSync(logPath, "");
+  private static _writeFile(text: unknown) {
+    if (!Logger.stream.write(text + "\n")) {
+      Logger.stream.once("drain", () => {
+        /* nothing else to do */
+      });
     }
-
-    fs.appendFile(logPath, text + "\n", (err) => {
-      if (err) {
-        const prefix = "[ERROR]: ";
-        const log = prefix + String(err?.message);
-
-        console.error(bold(red(log)));
-      }
-    });
   }
 }

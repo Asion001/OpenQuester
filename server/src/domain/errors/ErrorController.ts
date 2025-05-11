@@ -22,7 +22,7 @@ export class ErrorController {
     message: string;
     code: number;
   }> {
-    error = this._formatError(error, ts.parseHeaders(headers));
+    error = await this._formatError(error, ts.parseHeaders(headers));
 
     if (error instanceof SyntaxError) {
       return {
@@ -63,15 +63,17 @@ export class ErrorController {
     };
   }
 
-  private static _formatError<T>(error: T, lang?: Language): T {
+  private static async _formatError<T>(error: T, lang?: Language): Promise<T> {
     if (!(error instanceof BaseError)) {
       return error;
     }
     const args = error.textArgs;
 
     let message: string;
-    if (ts.translationKeys.includes(error.message)) {
-      message = ts.translate(error.message, lang);
+
+    const tsKeys = await ts.translationKeys();
+    if (tsKeys.includes(error.message)) {
+      message = await ts.translate(error.message, lang);
     } else {
       message = error.message;
     }

@@ -1,3 +1,4 @@
+import { ServerError } from "domain/errors/ServerError";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class StorageUtils {
@@ -14,7 +15,7 @@ export class StorageUtils {
     filename = ValueUtils.getRawFilename(filename.toLowerCase());
     const md5Regex = /^[a-f0-9]+$/;
     if (!md5Regex.test(filename)) {
-      return `other/${filename}`;
+      throw new ServerError(`${filename} is not a md5 hashed value`);
     }
     // Use first two characters from valid md5 string
     return `${filename[0]}/${filename[0] + filename[1]}/${filename}`;

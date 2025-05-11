@@ -130,7 +130,7 @@ export class UserService {
       throw new ClientError(ClientResponse.USER_NOT_FOUND);
     }
 
-    this.userRepository.delete(user);
+    return this.userRepository.delete(user);
   }
 
   /**

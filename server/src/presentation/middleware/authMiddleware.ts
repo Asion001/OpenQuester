@@ -101,7 +101,7 @@ function validateSession(session: Session) {
   ).validate();
 }
 
-function handleSessionValidationError(
+async function handleSessionValidationError(
   err: unknown,
   req: Request,
   res: Response
@@ -118,8 +118,8 @@ function handleSessionValidationError(
     .status(HttpStatus.INTERNAL);
 }
 
-function unauthorizedError(req: Request, res: Response) {
+async function unauthorizedError(req: Request, res: Response) {
   return res.status(HttpStatus.UNAUTHORIZED).json({
-    error: ts.localize(ClientResponse.ACCESS_DENIED, req.headers),
+    error: await ts.localize(ClientResponse.ACCESS_DENIED, req.headers),
   });
 }

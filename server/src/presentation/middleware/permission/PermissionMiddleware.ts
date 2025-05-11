@@ -34,7 +34,7 @@ export function checkPermission(permission: Permissions) {
       }
 
       return res.status(HttpStatus.FORBIDDEN).send({
-        error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
+        error: await ts.localize(ClientResponse.NO_PERMISSION, req.headers),
       });
     } catch (err: unknown) {
       const { message, code } = await ErrorController.resolveError(
@@ -77,7 +77,7 @@ export function checkPermissionWithId(permission: Permissions) {
         }
 
         return res.status(HttpStatus.FORBIDDEN).send({
-          error: ts.localize(ClientResponse.NO_PERMISSION, req.headers),
+          error: await ts.localize(ClientResponse.NO_PERMISSION, req.headers),
         });
       } catch (err: unknown) {
         const { message, code } = await ErrorController.resolveError(

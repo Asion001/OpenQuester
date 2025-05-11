@@ -82,7 +82,7 @@ export class User implements UserModel {
     );
 
     const avatarLink = this.avatar
-      ? await storage.get(this.avatar.filename)
+      ? await storage.getUrl(this.avatar.filename)
       : null;
 
     return {

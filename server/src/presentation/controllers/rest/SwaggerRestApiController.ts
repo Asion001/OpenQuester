@@ -34,6 +34,8 @@ export class SwaggerRestApiController {
   }
 
   private _getSpecification() {
+    // Don't care about readFileSync since it's triggered only once on first load
+    // eslint-disable-next-line
     const oas = fs.readFileSync(this._jsonPath, "utf-8");
     try {
       Logger.gray("Specification reading initiated", SWAGGER_PREFIX);
@@ -43,7 +45,7 @@ export class SwaggerRestApiController {
     }
   }
 
-  private _getRaw = async (req: Request, res: Response) => {
+  private _getRaw = async (_req: Request, res: Response) => {
     res.download(this._jsonPath);
   };
 }

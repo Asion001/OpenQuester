@@ -2,7 +2,7 @@ import { Validator } from "@seriousme/openapi-schema-validator";
 import fs from "fs";
 
 const openapiSchema = JSON.parse(
-  fs.readFileSync("../openapi/schema.json", "utf-8")
+  await fs.promises.readFile("../openapi/schema.json", "utf-8")
 );
 
 const validator = new Validator();

@@ -74,4 +74,5 @@ export const CONTAINER_TYPES = {
   PackageTagService: Symbol("PackageTagService"),
   SocketIOChatService: Symbol("SocketIOChatService"),
   RedisPubSubService: Symbol("RedisPubSubService"),
+  SocketIOQuestionService: Symbol("SocketIOQuestionService"),
 };
