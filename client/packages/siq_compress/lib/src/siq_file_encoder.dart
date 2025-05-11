@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 import 'package:siq_compress/src/common/command_wrapper.dart';
+import 'package:siq_compress/src/common/process_utils.dart';
 import 'package:siq_compress/src/models/ffprobe_output.dart';
 
 class SiqFileEncoder {
@@ -55,12 +56,22 @@ class SiqFileEncoder {
         .firstWhereOrNull((e) => e.codecType == CodecType.video);
     final withAudio = metadata.streams
         .firstWhereOrNull((e) => e.codecType == CodecType.audio);
-    if (withVideo != null && withAudio?.codecName != 'mjpeg') {
-      if (metadata.streams.length == 1) return CodecType.image;
-      return CodecType.video;
+    if (withVideo != null) {
+      final frames = int.tryParse(withVideo.nbFrames ?? '') ?? -1;
+      if (frames > 1) return CodecType.video;
+      if (withAudio != null) return CodecType.audio;
+      return CodecType.image;
     }
     if (withAudio != null) return CodecType.audio;
     return null;
+  }
+
+  Future<void> _setDirPermissions({
+    required Directory dir,
+    String permissions = '0775',
+  }) async {
+    if (![Platform.isLinux, Platform.isMacOS].contains(true)) return;
+    await runProcess('chmod', ['-R', permissions, dir.path]);
   }
 
   Future<File?> encodePackage(File file) async {
@@ -72,28 +83,32 @@ class SiqFileEncoder {
 
     await extractFileToDisk(file.path, inputDir.path);
 
+    // Fixes permissions after files extraction
+    await _setDirPermissions(dir: inputDir);
+    await _setDirPermissions(dir: outputDir);
+
     const folders = {'Images', 'Video', 'Audio'};
     final fileEncoder = SiqFileEncoder();
 
     for (final folderName in folders) {
-      final inputFolder = Directory(
+      final mediaInDir = Directory(
         [inputDir.path, folderName].join(Platform.pathSeparator),
       );
-      final outputFolder = Directory(
+      final mediaOutDir = Directory(
         [outputDir.path, folderName].join(Platform.pathSeparator),
       );
 
-      if (!inputFolder.existsSync()) continue;
+      if (!mediaInDir.existsSync()) continue;
 
-      outputFolder.createSync();
+      mediaOutDir.createSync();
 
-      final files = inputFolder.listSync();
+      final files = mediaInDir.listSync();
       for (final file in files) {
         if (file is! File) continue;
 
         final outputFile = File(
           [
-            outputFolder.path,
+            mediaOutDir.path,
             file.path.split(Platform.pathSeparator).last,
           ].join(Platform.pathSeparator),
         );
@@ -108,9 +123,12 @@ class SiqFileEncoder {
           outputFile: outputFile,
           codecType: codecType,
         );
+
+        // Delay to fix "Cannot allocate memory" (?)
+        await Future<void>.delayed(const Duration(milliseconds: 100));
       }
 
-      await inputFolder.delete(recursive: true);
+      await mediaInDir.delete(recursive: true);
     }
 
     await _moveDirectoryContents(inputDir, outputDir);

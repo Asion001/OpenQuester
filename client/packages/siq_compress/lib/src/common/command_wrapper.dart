@@ -1,52 +1,57 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:siq_compress/src/models/ffprobe_output.dart';
+import 'package:siq_compress/siq_compress.dart';
+import 'package:siq_compress/src/common/process_utils.dart';
 import 'package:universal_io/io.dart';
 
+/// Wraps ffmpeg/ffprobe commands for metadata inspection and media encoding.
 class CommandWrapper {
+  /// Probe the input file for format and stream info.
   Future<FfprobeOutput?> metadata(File file) async {
-    const arguments = [
-      '-v',
-      'quiet',
-      '-print_format',
-      'json',
-      '-show_format',
-      '-show_streams',
+    const ffprobeArgs = [
+      '-v', 'quiet', // suppress console output
+      '-print_format', 'json', // output as JSON
+      '-show_format', // include format container info
+      '-show_streams', // include stream details (video, audio, etc.)
     ];
-    const executable = 'ffprobe';
 
-    final result = await _run(executable, [...arguments, file.path]);
-
-    return FfprobeOutput.fromJson(
-      jsonDecode(result!) as Map<String, dynamic>,
-    );
+    final result = await runProcess('ffprobe', [...ffprobeArgs, file.path]);
+    return result == null
+        ? null
+        : FfprobeOutput.fromJson(jsonDecode(result) as Map<String, dynamic>);
   }
 
-  /// Encode any format such as Audio, Video, Photo
-  /// to efficent codec with lenght and size limits
+  /// Encode any media (audio, video, or image) with FFmpeg using
+  /// sensible defaults for size, quality, and length limits.
   Future<File> encode({
     required File inputFile,
     required File outputFile,
     required CodecType codecType,
   }) async {
-    // Map only first chanels
-    const mapArgs = [
-      '-map',
-      '0:v:0',
-      '-map',
-      '0:a:0',
+    // --------------------------------------------------------
+    // CPU / threading setup (used for video & image AV1 speedups)
+    // --------------------------------------------------------
+    final cpuCount = min(6, Platform.numberOfProcessors);
+    final av1MultiCpuArgs = [
+      '-threads', '$cpuCount',
+      '-cpu-used', '$cpuCount', // speed vs. quality tradeoff
     ];
-    const videoArgs = [
-      '-crf',
-      '40',
-      '-fpsmax',
-      '20',
-      '-preset',
-      '8',
+
+    // --------------------------------------------------------
+    // Shared metadata / progress flags
+    // --------------------------------------------------------
+    const globalMisc = [
+      '-progress', '-', // report progress to stdout
+      '-map_metadata', '-1', // strip input metadata
+      '-y', // overwrite output without asking
     ];
-    const videoFormatArgs = ['-pix_fmt', 'yuv420p', '-color_range', 'mpeg'];
-    const audioArgs = [
+
+    // --------------------------------------------------------
+    // Codec‐type–specific argument groups
+    // --------------------------------------------------------
+    // 1) Audio only (libopus, 64 kbps, VBR, 48 kHz, 16-bit)
+    const audioOnlyArgs = [
       '-c:a',
       'libopus',
       '-b:a',
@@ -57,80 +62,87 @@ class CommandWrapper {
       '48000',
       '-sample_fmt',
       's16',
-    ];
-    const videoFilters = [
-      '-vf', // Filter size to max 1280x720
-      "scale='if(gt(a,1280/720),1280,-2)':'if(gt(a,1280/720),-2,720)'",
-      '-t', // Cut first 10 seconds
-      '10',
-    ];
-    const otherArgs = [
-      '-progress', // Formats output for later parsing
-      '-',
-      '-map_metadata', // Remove all metadata like geo data from video
-      '-1',
-      '-y', // Force overwrite
-    ];
-    const general = [
-      ...audioArgs,
-      ...videoFilters,
-      ...videoArgs,
-      ...otherArgs,
-    ];
-
-    const mediaTypeArgs = [
-      ...videoFormatArgs,
-      '-f', // Set webm format for media
+      '-f',
       'webm',
-      '-c:v',
-      'libsvtav1',
-    ];
-    const imageTypeArgs = [
-      '-f', // Set webm format for image
-      'avif',
-      '-c:v',
-      'libaom-av1',
-      '-pix_fmt',
-      'yuv420p10le',
+      ...globalMisc,
     ];
 
-    final cpuCount = min(8, Platform.numberOfProcessors);
-    final av1MultiCpuArgs = [
-      '-row-mt',
-      '1',
-      '-cpu-used',
-      '$cpuCount',
-      '-tiles',
-      '2x2',
+    // 2) Video + audio (SVT-AV1 video + libopus audio)
+    final svtArgs = [
+      'film-grain=10',
+      'tune=2',
+      'preset=6',
+      'crf=40',
+      'min-qp=0',
+      'scm=0',
+      'enable-qm=1',
+      'qm-min=0',
+      'qm-max=40',
+    ].join(':');
+
+    final videoArgs = [
+      // video codec & container
+      '-c:v', 'libsvtav1',
+      '-f', 'webm',
+      // visual quality & speed tuning
+      '-fpsmax', '20',
+      '-svtav1-params',
+      '"$svtArgs"',
+      // pixel format & color range
+      '-pix_fmt', 'yuv420p',
+      '-color_range', 'mpeg',
+    ];
+    const imageFilters = [
+      // downscale to max 1280×720
+      '-vf',
+      "scale='if(gt(a,1280/720),1280,-2)':'if(gt(a,1280/720),-2,720)'",
+      // limit duration to 10 seconds
+      '-t', '10',
+    ];
+    const videoAudioArgs = [
+      // reuse the same audio settings as audio‐only branch
+      '-c:a', 'libopus',
+      '-b:a', '64k',
+      '-vbr', 'on',
+      '-ar', '48000',
+      '-sample_fmt', 's16',
     ];
 
-    final notConstantArguments = [
-      '-i', // Input file
-      inputFile.path,
-      '-threads',
-      '$cpuCount',
+    // 3) Image AVIF
+    final imageArgs = [
+      // speedups & parallelism will be injected via _av1MultiCpuArgs
+      // container and codec
+      '-f', 'avif',
+      '-c:v', 'libsvtav1',
+      // 4:4:4 chroma, 10 bit depth
+      '-pix_fmt', 'yuv444p10le',
+      '-svtav1-params',
+      '"$svtArgs"',
+      ...globalMisc,
+    ];
+
+    // --------------------------------------------------------
+    // Build and run the final argument list
+    // --------------------------------------------------------
+    final args = <String>[
+      '-i', inputFile.path, // input file
+      // inject AV1 multi-CPU only for video & image
       if (codecType != CodecType.audio) ...av1MultiCpuArgs,
-      if (codecType != CodecType.image) ...mediaTypeArgs else ...imageTypeArgs,
-      if (![CodecType.audio, CodecType.image].contains(codecType)) ...mapArgs,
-      ...general,
-      outputFile.path, // Output file
+      // branch by codec type
+      if (codecType == CodecType.audio)
+        ...audioOnlyArgs
+      else if (codecType == CodecType.video) ...[
+        ...videoArgs,
+        ...videoAudioArgs,
+        ...globalMisc,
+      ] else if (codecType == CodecType.image)
+        ...imageArgs,
+      if ({CodecType.image, CodecType.video}.contains(codecType))
+        ...imageFilters,
+      outputFile.path, // output file
     ];
 
-    const executable = 'ffmpeg';
-
-    await _run(executable, notConstantArguments);
+    await runProcess('ffmpeg', args);
     return outputFile;
-  }
-
-  Future<String?> _run(
-    String executable,
-    List<String> arguments,
-  ) async {
-    final result = await Process.run(executable, arguments)
-        .timeout(const Duration(minutes: 5));
-    if (result.exitCode != 0) {
-      throw Exception(result.stderr.toString());
-    }
-    return result.stdout.toString();
   }
 }

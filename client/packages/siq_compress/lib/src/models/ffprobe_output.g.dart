@@ -6,22 +6,21 @@ part of 'ffprobe_output.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$FfprobeOutputImpl _$$FfprobeOutputImplFromJson(Map<String, dynamic> json) =>
-    _$FfprobeOutputImpl(
+_FfprobeOutput _$FfprobeOutputFromJson(Map<String, dynamic> json) =>
+    _FfprobeOutput(
       streams: (json['streams'] as List<dynamic>)
           .map((e) => StreamData.fromJson(e as Map<String, dynamic>))
           .toList(),
       format: FormatData.fromJson(json['format'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$FfprobeOutputImplToJson(_$FfprobeOutputImpl instance) =>
+Map<String, dynamic> _$FfprobeOutputToJson(_FfprobeOutput instance) =>
     <String, dynamic>{
       'streams': instance.streams.map((e) => e.toJson()).toList(),
       'format': instance.format.toJson(),
     };
 
-_$StreamDataImpl _$$StreamDataImplFromJson(Map<String, dynamic> json) =>
-    _$StreamDataImpl(
+_StreamData _$StreamDataFromJson(Map<String, dynamic> json) => _StreamData(
       index: (json['index'] as num).toInt(),
       codecName: json['codec_name'] as String?,
       codecLongName: json['codec_long_name'] as String?,
@@ -39,9 +38,10 @@ _$StreamDataImpl _$$StreamDataImplFromJson(Map<String, dynamic> json) =>
       sampleRate: json['sample_rate'] as String?,
       channels: (json['channels'] as num?)?.toInt(),
       channelLayout: json['channel_layout'] as String?,
+      nbFrames: json['nb_frames'] as String?,
     );
 
-Map<String, dynamic> _$$StreamDataImplToJson(_$StreamDataImpl instance) =>
+Map<String, dynamic> _$StreamDataToJson(_StreamData instance) =>
     <String, dynamic>{
       'index': instance.index,
       if (instance.codecName case final value?) 'codec_name': value,
@@ -62,6 +62,7 @@ Map<String, dynamic> _$$StreamDataImplToJson(_$StreamDataImpl instance) =>
       if (instance.sampleRate case final value?) 'sample_rate': value,
       if (instance.channels case final value?) 'channels': value,
       if (instance.channelLayout case final value?) 'channel_layout': value,
+      if (instance.nbFrames case final value?) 'nb_frames': value,
     };
 
 const _$CodecTypeEnumMap = {
@@ -70,8 +71,7 @@ const _$CodecTypeEnumMap = {
   CodecType.image: 'image',
 };
 
-_$FormatDataImpl _$$FormatDataImplFromJson(Map<String, dynamic> json) =>
-    _$FormatDataImpl(
+_FormatData _$FormatDataFromJson(Map<String, dynamic> json) => _FormatData(
       filename: json['filename'] as String,
       formatName: json['format_name'] as String,
       formatLongName: json['format_long_name'] as String,
@@ -81,7 +81,7 @@ _$FormatDataImpl _$$FormatDataImplFromJson(Map<String, dynamic> json) =>
       startTime: json['start_time'] as String?,
     );
 
-Map<String, dynamic> _$$FormatDataImplToJson(_$FormatDataImpl instance) =>
+Map<String, dynamic> _$FormatDataToJson(_FormatData instance) =>
     <String, dynamic>{
       'filename': instance.filename,
       'format_name': instance.formatName,
