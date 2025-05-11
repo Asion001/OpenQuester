@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
-import 'package:path/path.dart';
 import 'package:siq_compress/src/common/command_wrapper.dart';
 import 'package:siq_compress/src/common/process_utils.dart';
 import 'package:siq_compress/src/models/ffprobe_output.dart';
