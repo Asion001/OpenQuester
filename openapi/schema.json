@@ -1559,7 +1559,143 @@
         "default": "simple",
         "description": "Type of question within a package"
       },
-      "PackageQuestionTransferType": {
+      "QuestionSubType": {
+        "type": "string",
+        "enum": ["simple", "customPrice", "empty", "forEveryone"],
+        "description": "Possible subType of given question"
+      },
+      "QuestionShowDelay": {
+        "type": "integer",
+        "description": "Delay before showing options in milliseconds",
+        "examples": [3000]
+      },
+      "QuestionPriceMultiplier": {
+        "type": "string",
+        "description": "Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct",
+        "default": "1.5",
+        "examples": ["0.5", "1.25", "1.5", "2"]
+      },
+      "QuestionMaxPrice": {
+        "type": ["integer", "null"],
+        "description": "Maximum price for the stake question, most useful when type is forEveryone - Does not allow top players to go all-in and win. Typically maxPrice can be 2x or 3x of nominal price",
+        "examples": [1000]
+      },
+      "QuestionAllowedPrices": {
+        "type": ["array", "null"],
+        "items": { "type": "integer" },
+        "minItems": 2,
+        "maxItems": 5,
+        "examples": [
+          [200, 1000],
+          [100, 500, 1000]
+        ],
+        "description": "Allowed price options for customPrice subtype. Maximum 5 prices to choose"
+      },
+      "QuestionChoiceAnswers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": ["integer", "null"],
+              "examples": [99]
+            },
+            "order": {
+              "$ref": "#/components/schemas/PackageEntitiesOrder"
+            },
+            "text": {
+              "type": ["string", "null"],
+              "description": "Text of the answer option"
+            },
+            "file": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/FileItem" },
+                { "type": "null" }
+              ],
+              "description": "File associated with the answer option"
+            }
+          }
+        },
+        "minItems": 2,
+        "maxItems": 8,
+        "description": "Multiple choice options; minimum 2, maximum 8 answers",
+        "examples": [
+          [
+            {
+              "text": "Option 1",
+              "file": null
+            },
+            {
+              "text": "Option 2",
+              "file": null
+            },
+            {
+              "text": "Option 3 with image",
+              "file": {
+                "id": 227,
+                "md5": "f99d8c12300b204as800998ecf90777",
+                "type": "image",
+                "link": "https://example.com/file123"
+              }
+            },
+            {
+              "text": "Option 4",
+              "file": null
+            }
+          ]
+        ]
+      },
+      "QuestionAnswerFiles": {
+        "type": ["array", "null"],
+        "items": {
+          "$ref": "#/components/schemas/PackageAnswerFile"
+        },
+        "description": "Media files for the answer",
+        "examples": [
+          {
+            "id": 1001,
+            "file": {
+              "md5": "b12d8c12300b204as800998ecf84266",
+              "type": "image"
+            },
+            "link": "https://example.com/file1001",
+            "displayTime": 5000
+          }
+        ]
+      },
+      "QuestionAnswerText": {
+        "type": ["string", "null"],
+        "description": "Correct answer text",
+        "examples": ["In Ukraine"]
+      },
+      "QuestionFiles": {
+        "type": ["array", "null"],
+        "items": {
+          "$ref": "#/components/schemas/PackageQuestionFile"
+        },
+        "description": "Media files for the question",
+        "examples": [
+          {
+            "id": 727,
+            "file": {
+              "md5": "b11d8c12300b204as800998ecf84266",
+              "type": "image"
+            },
+            "link": "https://example.com/file123",
+            "displayTime": 3000
+          },
+          {
+            "id": 999,
+            "file": {
+              "md5": "c90d8c12300b204as182904ecf84266",
+              "type": "image"
+            },
+            "link": "https://example.com/file546",
+            "displayTime": 3000
+          }
+        ]
+      },
+      "QuestionTransferType": {
         "type": "string",
         "enum": ["any", "exceptCurrent"],
         "default": "any",
@@ -1686,12 +1822,12 @@
             "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
           "price": {
-            "type": "integer",
-            "description": "Point value of the question",
-            "examples": [200, 400, 500]
+            "type": ["integer", "null"],
+            "description": "Price is null only if price is hidden",
+            "examples": [200, null]
           },
           "isHidden": {
-            "type": ["boolean", "null"],
+            "type": "boolean",
             "default": false,
             "description": "Whether the question is hidden",
             "examples": [false]
@@ -1707,9 +1843,10 @@
             "examples": ["It's in Europe"]
           },
           "answerText": {
-            "type": ["string", "null"],
-            "description": "Correct answer text",
-            "examples": ["In Ukraine"]
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionAnswerText" },
+              { "type": "null" }
+            ]
           },
           "answerDelay": {
             "type": ["integer", "null"],
@@ -1723,48 +1860,15 @@
             "examples": ["You have to say full country name"]
           },
           "questionFiles": {
-            "type": ["array", "null"],
-            "items": {
-              "$ref": "#/components/schemas/PackageQuestionFile"
-            },
-            "description": "Media files for the question",
-            "examples": [
-              {
-                "id": 727,
-                "file": {
-                  "md5": "b11d8c12300b204as800998ecf84266",
-                  "type": "image"
-                },
-                "link": "https://example.com/file123",
-                "displayTime": 3000
-              },
-              {
-                "id": 999,
-                "file": {
-                  "md5": "c90d8c12300b204as182904ecf84266",
-                  "type": "image"
-                },
-                "link": "https://example.com/file546",
-                "displayTime": 3000
-              }
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionFiles" },
+              { "type": "null" }
             ]
           },
           "answerFiles": {
-            "type": ["array", "null"],
-            "items": {
-              "$ref": "#/components/schemas/PackageAnswerFile"
-            },
-            "description": "Media files for the answer",
-            "examples": [
-              {
-                "id": 1001,
-                "file": {
-                  "md5": "b12d8c12300b204as800998ecf84266",
-                  "type": "image"
-                },
-                "link": "https://example.com/file1001",
-                "displayTime": 5000
-              }
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionAnswerFiles" },
+              { "type": "null" }
             ]
           }
         },
@@ -1780,63 +1884,10 @@
               "type": { "type": "string", "enum": ["choice"] },
               "subType": { "const": "simple" },
               "showDelay": {
-                "type": "integer",
-                "description": "Delay before showing options in milliseconds",
-                "examples": [3000]
+                "$ref": "#/components/schemas/QuestionShowDelay"
               },
               "answers": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": ["integer", "null"],
-                      "examples": [99]
-                    },
-                    "order": {
-                      "$ref": "#/components/schemas/PackageEntitiesOrder"
-                    },
-                    "text": {
-                      "type": ["string", "null"],
-                      "description": "Text of the answer option"
-                    },
-                    "file": {
-                      "oneOf": [
-                        { "$ref": "#/components/schemas/FileItem" },
-                        { "type": "null" }
-                      ],
-                      "description": "File associated with the answer option"
-                    }
-                  }
-                },
-                "minItems": 2,
-                "maxItems": 8,
-                "description": "Multiple choice options; minimum 2, maximum 8 answers",
-                "examples": [
-                  [
-                    {
-                      "text": "Option 1",
-                      "file": null
-                    },
-                    {
-                      "text": "Option 2",
-                      "file": null
-                    },
-                    {
-                      "text": "Option 3 with image",
-                      "file": {
-                        "id": 227,
-                        "md5": "f99d8c12300b204as800998ecf90777",
-                        "type": "image",
-                        "link": "https://example.com/file123"
-                      }
-                    },
-                    {
-                      "text": "Option 4",
-                      "file": null
-                    }
-                  ]
-                ]
+                "$ref": "#/components/schemas/QuestionChoiceAnswers"
               }
             },
             "required": ["showDelay", "answers"],
@@ -1858,18 +1909,10 @@
                 "examples": ["customPrice"]
               },
               "allowedPrices": {
-                "type": ["array", "null"],
-                "items": { "type": "integer" },
-                "minItems": 2,
-                "maxItems": 5,
-                "examples": [
-                  [200, 1000],
-                  [100, 500, 1000]
-                ],
-                "description": "Allowed price options for customPrice subtype. Maximum 5 prices to choose"
+                "$ref": "#/components/schemas/QuestionAllowedPrices"
               },
               "transferType": {
-                "$ref": "#/components/schemas/PackageQuestionTransferType"
+                "$ref": "#/components/schemas/QuestionTransferType"
               }
             },
             "required": ["subType", "transferType"],
@@ -1897,10 +1940,7 @@
                 "examples": ["forEveryone"]
               },
               "priceMultiplier": {
-                "type": "string",
-                "description": "Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct",
-                "default": "1.5",
-                "examples": ["0.5", "1.25", "1.5", "2"]
+                "$ref": "#/components/schemas/QuestionPriceMultiplier"
               }
             },
             "required": ["subType", "priceMultiplier"],
@@ -1935,9 +1975,7 @@
                 "examples": ["simple"]
               },
               "maxPrice": {
-                "type": ["integer", "null"],
-                "description": "Maximum price for the stake question, most useful when type is forEveryone - Does not allow top players to go all-in and win. Typically maxPrice can be 2x or 3x of nominal price",
-                "examples": [1000]
+                "$ref": "#/components/schemas/QuestionMaxPrice"
               }
             },
             "required": ["subType", "maxPrice"]
@@ -2331,6 +2369,10 @@
           "result": {
             "type": "integer",
             "examples": [-1000, 500, 0, -250]
+          },
+          "score": {
+            "type": "integer",
+            "examples": [-1150, 220, 0, -230]
           }
         }
       },
@@ -2415,7 +2457,18 @@
       },
       "SocketIOGameEvents": {
         "type": "string",
-        "enum": ["join", "user-leave", "game-data", "start"],
+        "enum": [
+          "join",
+          "user-leave",
+          "game-data",
+          "start",
+          "question-pick",
+          "question-answer",
+          "question-data",
+          "question-finish",
+          "answer-submitted",
+          "answer-result"
+        ],
         "examples": ["join"]
       },
       "SocketIOChatMessageContent": {
@@ -2425,6 +2478,303 @@
             "type": "string",
             "examples": ["Hello guys!"],
             "maxLength": 255
+          }
+        }
+      },
+      "SocketIOQuestionPickEventInput": {
+        "type": "object",
+        "description": "Send this data to pick a question",
+        "properties": {
+          "questionId": {
+            "type": "integer",
+            "description": "ID of the picked question",
+            "examples": [25]
+          }
+        }
+      },
+      "SocketIOQuestionDataEventPayload": {
+        "type": "object",
+        "description": "Data sent to players when a question is picked, containing question details and timer",
+        "properties": {
+          "data": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageQuestionFullData" },
+              { "$ref": "#/components/schemas/SimplePackageQuestionData" }
+            ],
+            "description": "Full question data for showman, simplified (without answer) for others"
+          },
+          "timer": {
+            "$ref": "#/components/schemas/GameStateTimer"
+          }
+        }
+      },
+      "SocketIOQuestionAnswerEventPayload": {
+        "type": "object",
+        "description": "Data sent to all players when a player starts answering a question",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "description": "ID of the user who is answering",
+            "examples": [727]
+          },
+          "timer": {
+            "$ref": "#/components/schemas/GameStateTimer"
+          }
+        }
+      },
+      "SocketIOAnswerSubmittedEventData": {
+        "type": "object",
+        "description": "Data sent to all players when a player submits an answer. Same data should be sent by answering player to the server",
+        "properties": {
+          "answerText": {
+            "type": ["string", "null"],
+            "description": "Player's answer text",
+            "examples": ["I don't know"]
+          }
+        }
+      },
+      "SocketIOAnswerResultEventPayload": {
+        "type": "object",
+        "description": "Data sent to all players when the showman evaluates an answer",
+        "oneOf": [
+          { "$ref": "#/components/schemas/AnswerResultWrongData" },
+          { "$ref": "#/components/schemas/SocketIOQuestionFinishEventPayload" }
+        ]
+      },
+      "SocketIOAnswerResultInput": {
+        "type": "object",
+        "description": "Data sent by the showman to evaluate a player's answer",
+        "properties": {
+          "scoreResult": {
+            "type": "integer",
+            "description": "Score result of the answer; positive for correct, negative for incorrect, zero for skip",
+            "examples": [500, -500, 0]
+          }
+        }
+      },
+      "SocketIOQuestionFinishEventPayload": {
+        "type": "object",
+        "description": "Data sent to all players when a question is finished with a correct answer or by answering timeout",
+        "properties": {
+          "answerFiles": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/QuestionAnswerFiles" }
+              },
+              { "type": "null" }
+            ]
+          },
+          "answerText": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionAnswerText" },
+              { "type": "null" }
+            ]
+          }
+        }
+      },
+      "AnswerResultWrongData": {
+        "type": "object",
+        "description": "Data sent to all players when the showman evaluates an answer",
+        "properties": {
+          "playerAnswerResult": {
+            "$ref": "#/components/schemas/GameStateAnsweredPlayer"
+          },
+          "timer": {
+            "$ref": "#/components/schemas/GameStateTimer"
+          }
+        }
+      },
+      "PackageQuestionFullData": {
+        "type": "object",
+        "description": "Full question data for showman",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [187]
+          },
+          "type": {
+            "$ref": "#/components/schemas/QuestionType"
+          },
+          "order": {
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
+          },
+          "price": {
+            "type": ["integer", "null"],
+            "description": "Price is null only if price is hidden",
+            "examples": [200, null]
+          },
+          "isHidden": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the question is hidden",
+            "examples": [false]
+          },
+          "text": {
+            "type": ["string", "null"],
+            "description": "Question text",
+            "examples": ["Where is Kyiv located?"]
+          },
+          "answerHint": {
+            "type": ["string", "null"],
+            "description": "Hint for the answer",
+            "examples": ["It's in Europe"]
+          },
+          "answerText": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionAnswerText" },
+              { "type": "null" }
+            ]
+          },
+          "answerDelay": {
+            "type": ["integer", "null"],
+            "description": "Delay in milliseconds before being able to answer, if applicable",
+            "default": 4000,
+            "examples": [7000]
+          },
+          "questionComment": {
+            "type": ["string", "null"],
+            "description": "Comment or note about the question",
+            "examples": ["You have to say full country name"]
+          },
+          "questionFiles": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionFiles" },
+              { "type": "null" }
+            ]
+          },
+          "answerFiles": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionAnswerFiles" },
+              { "type": "null" }
+            ]
+          },
+          "subType": {
+            "$ref": "#/components/schemas/QuestionSubType"
+          },
+          "maxPrice": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionMaxPrice" },
+              { "type": "null" }
+            ]
+          },
+          "allowedPrices": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionAllowedPrices" },
+              { "type": "null" }
+            ]
+          },
+          "transferType": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionTransferType" },
+              { "type": "null" }
+            ]
+          },
+          "priceMultiplier": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionPriceMultiplier" },
+              { "type": "null" }
+            ]
+          },
+          "showDelay": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionShowDelay" },
+              { "type": "null" }
+            ]
+          },
+          "answers": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionChoiceAnswers" },
+              { "type": "null" }
+            ]
+          }
+        }
+      },
+      "SimplePackageQuestionData": {
+        "description": "Simplified question data for players and spectators, same as full question data but without answers",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [187]
+          },
+          "type": {
+            "$ref": "#/components/schemas/QuestionType"
+          },
+          "order": {
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
+          },
+          "price": {
+            "type": ["integer", "null"],
+            "description": "Price is null only if price is hidden",
+            "examples": [200, null]
+          },
+          "isHidden": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the question is hidden",
+            "examples": [false]
+          },
+          "text": {
+            "type": ["string", "null"],
+            "description": "Question text",
+            "examples": ["Where is Kyiv located?"]
+          },
+          "answerDelay": {
+            "type": ["integer", "null"],
+            "description": "Delay in milliseconds before being able to answer, if applicable",
+            "default": 4000,
+            "examples": [7000]
+          },
+          "questionComment": {
+            "type": ["string", "null"],
+            "description": "Comment or note about the question",
+            "examples": ["You have to say full country name"]
+          },
+          "questionFiles": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionFiles" },
+              { "type": "null" }
+            ]
+          },
+          "subType": {
+            "$ref": "#/components/schemas/QuestionSubType"
+          },
+          "maxPrice": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionMaxPrice" },
+              { "type": "null" }
+            ]
+          },
+          "allowedPrices": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionAllowedPrices" },
+              { "type": "null" }
+            ]
+          },
+          "transferType": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionTransferType" },
+              { "type": "null" }
+            ]
+          },
+          "priceMultiplier": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionPriceMultiplier" },
+              { "type": "null" }
+            ]
+          },
+          "showDelay": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionShowDelay" },
+              { "type": "null" }
+            ]
+          },
+          "answers": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/QuestionChoiceAnswers" },
+              { "type": "null" }
+            ]
           }
         }
       }

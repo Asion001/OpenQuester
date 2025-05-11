@@ -7,6 +7,8 @@ import { SocketIOGameEvents } from "domain/enums/SocketIOEvents";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { GameQuestionDataEventPayload } from "domain/types/socket/events/game/GameQuestionDataEventPayload";
+import { QuestionAnswerEventPayload } from "domain/types/socket/events/game/QuestionAnswerEventPayload";
+import { QuestionFinishEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { SocketIOEventEmitter } from "presentation/emitters/SocketIOEventEmitter";
@@ -26,6 +28,14 @@ export class SocketIOGameQuestionController {
       SocketIOGameEvents.QUESTION_ANSWER,
       SocketWrapper.catchErrors(this.eventEmitter, this.handleQuestionAnswer)
     );
+    this.socket.on(
+      SocketIOGameEvents.ANSWER_SUBMITTED,
+      SocketWrapper.catchErrors(this.eventEmitter, this.handleAnswerSubmitted)
+    );
+    this.socket.on(
+      SocketIOGameEvents.ANSWER_RESULT,
+      SocketWrapper.catchErrors(this.eventEmitter, this.handleAnswerResult)
+    );
   }
 
   private handleQuestionPick = async (data: any) => {
@@ -44,13 +54,65 @@ export class SocketIOGameQuestionController {
     const { userId, gameId, timer } =
       await this.socketIOQuestionService.handleQuestionAnswer(this.socket.id);
 
-    this.eventEmitter.emit(
+    this.eventEmitter.emit<QuestionAnswerEventPayload>(
       SocketIOGameEvents.QUESTION_ANSWER,
       {
-        userId,
+        userId: userId!,
         timer: timer.value(),
       },
       { emitter: SocketEventEmitter.IO, gameId }
+    );
+  };
+
+  private handleAnswerSubmitted = async (data: any) => {
+    const dto = await GameValidator.validateAnswerSubmitted(data);
+
+    const game = await this.socketIOQuestionService.handleAnswerSubmitted(
+      this.socket.id
+    );
+
+    this.eventEmitter.emit(SocketIOGameEvents.ANSWER_SUBMITTED, dto, {
+      emitter: SocketEventEmitter.IO,
+      gameId: game.id,
+    });
+  };
+
+  private handleAnswerResult = async (data: any) => {
+    const dto = await GameValidator.validateAnswerResult(data);
+
+    const { playerAnswerResult, game, question, timer } =
+      await this.socketIOQuestionService.handleAnswerResult(
+        this.socket.id,
+        dto
+      );
+
+    // On correct just show correct answer
+    if (playerAnswerResult.result > 0) {
+      this.eventEmitter.emit<QuestionFinishEventPayload>(
+        SocketIOGameEvents.QUESTION_FINISH,
+        {
+          answerFiles: question!.answerFiles ?? null,
+          answerText: question!.answerText ?? null,
+        },
+        {
+          emitter: SocketEventEmitter.IO,
+          gameId: game.id,
+        }
+      );
+      return;
+    }
+
+    // On wrong or skip send event to inform everyone about decision
+    this.eventEmitter.emit(
+      SocketIOGameEvents.ANSWER_RESULT,
+      {
+        playerAnswerResult,
+        timer,
+      },
+      {
+        emitter: SocketEventEmitter.IO,
+        gameId: game.id,
+      }
     );
   };
 

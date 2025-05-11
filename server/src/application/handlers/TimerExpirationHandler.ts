@@ -12,7 +12,6 @@ import {
   SocketIOGameEvents,
 } from "domain/enums/SocketIOEvents";
 import { ErrorController } from "domain/errors/ErrorController";
-import { AnswerOptions } from "domain/types/dto/game/AnswerOptions";
 import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
@@ -47,7 +46,9 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
 
     try {
       const game = await this.gameService.getGameEntity(gameId, GAME_TTL);
-      const question = await this.socketIOQuestionService.getQuestion(game);
+      const question = await this.socketIOQuestionService.getCurrentQuestion(
+        game
+      );
 
       if (game.gameState.questionState === QuestionState.SHOWING) {
         game.resetToChoosingState();
@@ -56,10 +57,8 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
         this._gameNamespace
           .to(gameId)
           .emit(SocketIOGameEvents.QUESTION_FINISH, {
-            data: {
-              answerFiles: question.answerFiles,
-              answerText: question.answerText,
-            },
+            answerFiles: question.answerFiles ?? null,
+            answerText: question.answerText ?? null,
           });
         return;
       }
@@ -91,52 +90,28 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
     question: PackageQuestionDTO
   ) {
     // On time expiration we always accept answer as wrong with x1 score value
-    const isCorrect = false;
+    const nextState = QuestionState.SHOWING;
 
-    const nextState = this._getNextQuestionState(
-      game.gameState.questionState!,
-      {
-        isCorrect,
-      }
+    const playerAnswerResult = game.handleQuestionAnswer(
+      -question.price,
+      nextState
     );
 
-    const answerResult = game.handleQuestionAnswer(question, nextState, {
-      isCorrect,
-    });
+    const timerRedisValue = await this.gameService.getTimer(
+      game.id,
+      QuestionState.SHOWING
+    );
 
     let timer: GameStateTimerDTO | null = null;
 
-    if (nextState === QuestionState.SHOWING) {
-      timer = (await this.gameService.getTimer(
-        game.id,
-        QuestionState.SHOWING
-      )) as GameStateTimerDTO | null;
+    if (timerRedisValue) {
+      timer = JSON.parse(timerRedisValue);
     }
 
     game.setTimer(timer);
     await this.gameService.updateGame(game);
 
-    return { answerResult, timer };
-  }
-
-  /**
-   * Next question state for time expiration event
-   */
-  private _getNextQuestionState(
-    currentState: QuestionState,
-    opts?: AnswerOptions
-  ): QuestionState {
-    switch (currentState) {
-      case QuestionState.SHOWING:
-        return QuestionState.CHOOSING;
-      case QuestionState.ANSWERING:
-        if (!opts) {
-          return QuestionState.SHOWING;
-        }
-        return opts.isCorrect ? QuestionState.CHOOSING : QuestionState.SHOWING;
-      default:
-        return QuestionState.SHOWING;
-    }
+    return { answerResult: playerAnswerResult, timer };
   }
 
   private get _gameNamespace() {

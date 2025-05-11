@@ -25,10 +25,11 @@ export interface PackageQuestionDTO {
   questionFiles?: PackageQuestionFileDTO[] | null;
   answerFiles?: PackageAnswerFileDTO[] | null;
   subType: PackageQuestionSubType;
-  maxPrice?: number | null;
-  allowedPrices?: number[] | null;
-  transferType?: PackageQuestionTransferType | null;
-  priceMultiplier?: number | null;
-  showDelay?: number | null;
-  answers?: PackageAnswerDTO[] | null;
+  // -- Properties of different question types -- //
+  maxPrice?: number | null; // Stake question
+  allowedPrices?: number[] | null; // Secret question
+  transferType?: PackageQuestionTransferType | null; // Secret question
+  priceMultiplier?: number | null; // NoRisk question
+  showDelay?: number | null; // Choice question
+  answers?: PackageAnswerDTO[] | null; // Choice question
 }

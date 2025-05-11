@@ -42,7 +42,6 @@ export class GameQuestionMapper {
       subType: question.subType,
       type: question.type,
       allowedPrices: question.allowedPrices,
-      answerHint: question.answerHint,
       answers: question.answers,
       maxPrice: question.maxPrice,
       priceMultiplier: question.priceMultiplier,

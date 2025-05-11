@@ -175,7 +175,9 @@ export class GameIndexManager {
     },
     pagination: PaginationOptsBase<T>
   ): Promise<{ ids: string[]; total: number }> {
-    const tempKey = `${this.INDEX_PREFIX}:temp:${Date.now()}`;
+    const tempKey = `${
+      this.INDEX_PREFIX
+    }:temp:${Date.now()}:${ValueUtils.generateUUID()}`;
 
     try {
       await this._buildCompositeIndex(tempKey, {

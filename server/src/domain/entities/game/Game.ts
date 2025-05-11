@@ -2,7 +2,6 @@ import { Player } from "domain/entities/game/Player";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { ClientError } from "domain/errors/ClientError";
-import { AnswerOptions } from "domain/types/dto/game/AnswerOptions";
 import { GameImportDTO } from "domain/types/dto/game/GameImportDTO";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
 import {
@@ -12,7 +11,6 @@ import {
 import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
-import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { GetPlayerOptions } from "domain/types/game/GetPlayerOptions";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
@@ -204,6 +202,10 @@ export class Game {
     );
   }
 
+  public get showman() {
+    return this._players.find((p) => p.role === PlayerRole.SHOWMAN);
+  }
+
   public set readyPlayers(players: number[]) {
     this.gameState.readyPlayers = players;
   }
@@ -224,18 +226,12 @@ export class Game {
   }
 
   /**
-   * Updates answered players array, answering player and question state
-   * based on whether answer was correct or not
    * @param question on which question player answered
    * @param nextState next question state to set
    * @param options answering options
    * @returns answer result DTO that can be emitted to clients
    */
-  public handleQuestionAnswer(
-    question: PackageQuestionDTO,
-    nextState: QuestionState,
-    options: AnswerOptions
-  ) {
+  public handleQuestionAnswer(scoreResult: number, nextState: QuestionState) {
     const player = this.getPlayer(this.gameState.answeringPlayer!, {
       fetchDisconnected: false,
     });
@@ -244,30 +240,30 @@ export class Game {
       throw new ClientError(ClientResponse.PLAYER_NOT_FOUND);
     }
 
-    const isCorrect = options.isCorrect;
+    const score = player.getScore() + scoreResult;
 
-    const answerResult: GameStateAnsweredPlayerData = {
+    const playerAnswerResult: GameStateAnsweredPlayerData = {
       player: this.gameState.answeringPlayer!,
-      result: isCorrect ? question.price : -question.price,
-      score: isCorrect
-        ? player.getScore() + question.price
-        : player.getScore() - question.price,
+      result: scoreResult,
+      score,
     };
 
-    // Update answered players array
     const answeredPlayers = this.gameState.answeredPlayers || [];
-    if (isCorrect) {
-      this.gameState.answeredPlayers = [...answeredPlayers, answerResult];
+    const isCorrect = scoreResult > 0;
+
+    if (!isCorrect) {
+      this.gameState.answeredPlayers = [...answeredPlayers, playerAnswerResult];
     } else {
       // When question is correct we reset answered players array
       this.gameState.answeredPlayers = null;
+      this.gameState.currentQuestion = null;
     }
 
     // Always reset answering player
     this.gameState.answeringPlayer = null;
     this.updateQuestionState(nextState);
 
-    return answerResult;
+    return playerAnswerResult;
   }
 
   /**

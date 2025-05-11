@@ -10,10 +10,12 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
 import { GameQuestionMapper } from "domain/mappers/GameQuestionMapper";
+import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { SimplePackageQuestionDTO } from "domain/types/dto/package/SimplePackageQuestionDTO";
 import { PlayerRole } from "domain/types/game/PlayerRole";
+import { AnswerResultData } from "domain/types/socket/game/AnswerResultData";
 import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
@@ -68,6 +70,55 @@ export class SocketIOQuestionService {
     await this.gameService.saveTimer(timer.value(), game.id);
 
     return { userId: player?.meta.id, gameId: game.id, timer };
+  }
+
+  public async handleAnswerSubmitted(socketId: string) {
+    const { player, game } = await this._fetchPlayerAndGame(socketId);
+    this._validateGamePause(game);
+
+    if (game.gameState.answeringPlayer !== player?.meta.id) {
+      throw new ClientError(ClientResponse.CANNOT_SUBMIT_ANSWER);
+    }
+
+    return game;
+  }
+
+  public async handleAnswerResult(socketId: string, data: AnswerResultData) {
+    const { player, game } = await this._fetchPlayerAndGame(socketId);
+    this._validateGamePause(game);
+
+    if (player?.role !== PlayerRole.SHOWMAN) {
+      throw new ClientError(ClientResponse.ONLY_SHOWMAN_SEND_ANSWER_RESULT);
+    }
+
+    // Keep showing question on Wrong answer or on answer skip
+    const nextState =
+      data.scoreResult > 0 ? QuestionState.CHOOSING : QuestionState.SHOWING;
+
+    const playerAnswerResult = game.handleQuestionAnswer(
+      data.scoreResult,
+      nextState
+    );
+
+    let question = null;
+
+    if (playerAnswerResult.score > 0) {
+      question = await this.getCurrentQuestion(game);
+    }
+
+    let timer: GameStateTimerDTO | null = null;
+
+    if (nextState === QuestionState.SHOWING) {
+      timer = (await this.gameService.getTimer(
+        game.id,
+        QuestionState.SHOWING
+      )) as GameStateTimerDTO | null;
+    }
+
+    game.setTimer(timer);
+    await this.gameService.updateGame(game);
+
+    return { playerAnswerResult, game, question, timer };
   }
 
   public async handleQuestionPick(socketId: string, questionId: number) {
@@ -125,7 +176,7 @@ export class SocketIOQuestionService {
     return { question, game, timer };
   }
 
-  public async getQuestion(game: Game) {
+  public async getCurrentQuestion(game: Game) {
     const gameState = game.gameState;
 
     if (!gameState.currentRound) {

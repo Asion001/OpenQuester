@@ -3,8 +3,10 @@ import Joi from "joi";
 import { GAME_ID_CHARACTERS_LENGTH } from "domain/constants/game";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { ChatMessageInputData } from "domain/types/socket/chat/ChatMessageInputData";
+import { AnswerResultData } from "domain/types/socket/game/AnswerResultData";
+import { AnswerSubmittedData } from "domain/types/socket/game/AnswerSubmittedData";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
-import { GameQuestionPickData } from "domain/types/socket/game/question/GameQuesitonPickData";
+import { GameQuestionPickData } from "domain/types/socket/game/question/GameQuestionPickData";
 import { RequestDataValidator } from "presentation/schemes/RequestDataValidator";
 
 export class GameValidator {
@@ -31,6 +33,22 @@ export class GameValidator {
     });
 
     return this._validate<GameQuestionPickData>(data, schema);
+  }
+
+  public static async validateAnswerSubmitted(data: AnswerSubmittedData) {
+    const schema = Joi.object<AnswerSubmittedData>({
+      answerText: Joi.string().max(255).allow(null),
+    });
+
+    return this._validate<AnswerSubmittedData>(data, schema);
+  }
+
+  public static async validateAnswerResult(data: AnswerResultData) {
+    const schema = Joi.object<AnswerResultData>({
+      scoreResult: Joi.number().required(),
+    });
+
+    return this._validate<AnswerResultData>(data, schema);
   }
 
   private static async _validate<T>(data: T, schema: Joi.ObjectSchema<T>) {
