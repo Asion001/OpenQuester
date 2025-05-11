@@ -18,8 +18,8 @@ mixin _$NoRiskQuestion {
   int? get id;
   PackageEntitiesOrder get order;
 
-  /// Point value of the question
-  int get price;
+  /// Price is null only if price is hidden
+  int? get price;
 
   /// Question text
   String? get text;
@@ -27,30 +27,22 @@ mixin _$NoRiskQuestion {
   /// Hint for the answer
   String? get answerHint;
 
-  /// Correct answer text
-  String? get answerText;
-
   /// Comment or note about the question
   String? get questionComment;
-
-  /// Media files for the question
-  List<PackageQuestionFile>? get questionFiles;
-
-  /// Media files for the answer
-  List<PackageAnswerFile>? get answerFiles;
   NoRiskQuestionType get type;
 
   /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
   NoRiskQuestionSubType get subType;
+  QuestionPriceMultiplier get priceMultiplier;
+  QuestionAnswerText? get answerText;
+  List<PackageQuestionFile?>? get questionFiles;
+  List<PackageAnswerFile?>? get answerFiles;
 
   /// Whether the question is hidden
   bool get isHidden;
 
   /// Delay in milliseconds before being able to answer, if applicable
   int get answerDelay;
-
-  /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  String get priceMultiplier;
 
   /// Create a copy of NoRiskQuestion
   /// with the given fields replaced by the non-null parameter values.
@@ -74,22 +66,22 @@ mixin _$NoRiskQuestion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.subType, subType) || other.subType == subType) &&
+            (identical(other.priceMultiplier, priceMultiplier) ||
+                other.priceMultiplier == priceMultiplier) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other.questionFiles, questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other.answerFiles, answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.subType, subType) || other.subType == subType) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
-                other.answerDelay == answerDelay) &&
-            (identical(other.priceMultiplier, priceMultiplier) ||
-                other.priceMultiplier == priceMultiplier));
+                other.answerDelay == answerDelay));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -101,19 +93,19 @@ mixin _$NoRiskQuestion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
-      const DeepCollectionEquality().hash(questionFiles),
-      const DeepCollectionEquality().hash(answerFiles),
       type,
       subType,
+      priceMultiplier,
+      answerText,
+      const DeepCollectionEquality().hash(questionFiles),
+      const DeepCollectionEquality().hash(answerFiles),
       isHidden,
-      answerDelay,
-      priceMultiplier);
+      answerDelay);
 
   @override
   String toString() {
-    return 'NoRiskQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
+    return 'NoRiskQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, subType: $subType, priceMultiplier: $priceMultiplier, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -126,18 +118,18 @@ abstract mixin class $NoRiskQuestionCopyWith<$Res> {
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       NoRiskQuestionType type,
       NoRiskQuestionSubType subType,
+      QuestionPriceMultiplier priceMultiplier,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageAnswerFile?>? answerFiles,
       bool isHidden,
-      int answerDelay,
-      String priceMultiplier});
+      int answerDelay});
 }
 
 /// @nodoc
@@ -155,18 +147,18 @@ class _$NoRiskQuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
     Object? type = null,
     Object? subType = null,
+    Object? priceMultiplier = null,
+    Object? answerText = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
     Object? isHidden = null,
     Object? answerDelay = null,
-    Object? priceMultiplier = null,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -177,10 +169,10 @@ class _$NoRiskQuestionCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -189,22 +181,10 @@ class _$NoRiskQuestionCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self.questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self.answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -213,6 +193,22 @@ class _$NoRiskQuestionCopyWithImpl<$Res>
           ? _self.subType
           : subType // ignore: cast_nullable_to_non_nullable
               as NoRiskQuestionSubType,
+      priceMultiplier: null == priceMultiplier
+          ? _self.priceMultiplier
+          : priceMultiplier // ignore: cast_nullable_to_non_nullable
+              as QuestionPriceMultiplier,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self.questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self.answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageAnswerFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -221,10 +217,6 @@ class _$NoRiskQuestionCopyWithImpl<$Res>
           ? _self.answerDelay
           : answerDelay // ignore: cast_nullable_to_non_nullable
               as int,
-      priceMultiplier: null == priceMultiplier
-          ? _self.priceMultiplier
-          : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -238,15 +230,15 @@ class _NoRiskQuestion implements NoRiskQuestion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
       required this.type,
       required this.subType,
+      required this.priceMultiplier,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageAnswerFile?>? answerFiles,
       this.isHidden = false,
-      this.answerDelay = 4000,
-      this.priceMultiplier = '1.5'})
+      this.answerDelay = 4000})
       : _questionFiles = questionFiles,
         _answerFiles = answerFiles;
   factory _NoRiskQuestion.fromJson(Map<String, dynamic> json) =>
@@ -257,9 +249,9 @@ class _NoRiskQuestion implements NoRiskQuestion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -269,20 +261,22 @@ class _NoRiskQuestion implements NoRiskQuestion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
   @override
-  List<PackageQuestionFile>? get questionFiles {
+  final NoRiskQuestionType type;
+
+  /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
+  @override
+  final NoRiskQuestionSubType subType;
+  @override
+  final QuestionPriceMultiplier priceMultiplier;
+  @override
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
     final value = _questionFiles;
     if (value == null) return null;
     if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
@@ -290,25 +284,15 @@ class _NoRiskQuestion implements NoRiskQuestion {
     return EqualUnmodifiableListView(value);
   }
 
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
+  final List<PackageAnswerFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile>? get answerFiles {
+  List<PackageAnswerFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
-
-  @override
-  final NoRiskQuestionType type;
-
-  /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
-  @override
-  final NoRiskQuestionSubType subType;
 
   /// Whether the question is hidden
   @override
@@ -319,11 +303,6 @@ class _NoRiskQuestion implements NoRiskQuestion {
   @override
   @JsonKey()
   final int answerDelay;
-
-  /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  @override
-  @JsonKey()
-  final String priceMultiplier;
 
   /// Create a copy of NoRiskQuestion
   /// with the given fields replaced by the non-null parameter values.
@@ -351,22 +330,22 @@ class _NoRiskQuestion implements NoRiskQuestion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.subType, subType) || other.subType == subType) &&
+            (identical(other.priceMultiplier, priceMultiplier) ||
+                other.priceMultiplier == priceMultiplier) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other._questionFiles, _questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other._answerFiles, _answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.subType, subType) || other.subType == subType) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
-                other.answerDelay == answerDelay) &&
-            (identical(other.priceMultiplier, priceMultiplier) ||
-                other.priceMultiplier == priceMultiplier));
+                other.answerDelay == answerDelay));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -378,19 +357,19 @@ class _NoRiskQuestion implements NoRiskQuestion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
-      const DeepCollectionEquality().hash(_questionFiles),
-      const DeepCollectionEquality().hash(_answerFiles),
       type,
       subType,
+      priceMultiplier,
+      answerText,
+      const DeepCollectionEquality().hash(_questionFiles),
+      const DeepCollectionEquality().hash(_answerFiles),
       isHidden,
-      answerDelay,
-      priceMultiplier);
+      answerDelay);
 
   @override
   String toString() {
-    return 'NoRiskQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
+    return 'NoRiskQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, subType: $subType, priceMultiplier: $priceMultiplier, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -405,18 +384,18 @@ abstract mixin class _$NoRiskQuestionCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       NoRiskQuestionType type,
       NoRiskQuestionSubType subType,
+      QuestionPriceMultiplier priceMultiplier,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageAnswerFile?>? answerFiles,
       bool isHidden,
-      int answerDelay,
-      String priceMultiplier});
+      int answerDelay});
 }
 
 /// @nodoc
@@ -434,18 +413,18 @@ class __$NoRiskQuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
     Object? type = null,
     Object? subType = null,
+    Object? priceMultiplier = null,
+    Object? answerText = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
     Object? isHidden = null,
     Object? answerDelay = null,
-    Object? priceMultiplier = null,
   }) {
     return _then(_NoRiskQuestion(
       id: freezed == id
@@ -456,10 +435,10 @@ class __$NoRiskQuestionCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -468,22 +447,10 @@ class __$NoRiskQuestionCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self._questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self._answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -492,6 +459,22 @@ class __$NoRiskQuestionCopyWithImpl<$Res>
           ? _self.subType
           : subType // ignore: cast_nullable_to_non_nullable
               as NoRiskQuestionSubType,
+      priceMultiplier: null == priceMultiplier
+          ? _self.priceMultiplier
+          : priceMultiplier // ignore: cast_nullable_to_non_nullable
+              as QuestionPriceMultiplier,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageAnswerFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -500,10 +483,6 @@ class __$NoRiskQuestionCopyWithImpl<$Res>
           ? _self.answerDelay
           : answerDelay // ignore: cast_nullable_to_non_nullable
               as int,
-      priceMultiplier: null == priceMultiplier
-          ? _self.priceMultiplier
-          : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }

@@ -11,18 +11,22 @@ PackageQuestionUnionSimple _$PackageQuestionUnionSimpleFromJson(
     PackageQuestionUnionSimple(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
-      price: (json['price'] as num).toInt(),
+      price: (json['price'] as num?)?.toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
-      answerText: json['answerText'] as String?,
       questionComment: json['questionComment'] as String?,
+      type: SimpleQuestionType.fromJson(json['type'] as String),
+      answerText: json['answerText'] as String?,
       questionFiles: (json['questionFiles'] as List<dynamic>?)
-          ?.map((e) => PackageQuestionFile.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e == null
+              ? null
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
           .toList(),
       answerFiles: (json['answerFiles'] as List<dynamic>?)
-          ?.map((e) => PackageAnswerFile.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e == null
+              ? null
+              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
           .toList(),
-      type: SimpleQuestionType.fromJson(json['type'] as String),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
@@ -35,11 +39,11 @@ Map<String, dynamic> _$PackageQuestionUnionSimpleToJson(
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
-      'answerText': instance.answerText,
       'questionComment': instance.questionComment,
+      'type': instance.type,
+      'answerText': instance.answerText,
       'questionFiles': instance.questionFiles,
       'answerFiles': instance.answerFiles,
-      'type': instance.type,
       'isHidden': instance.isHidden,
       'answerDelay': instance.answerDelay,
     };
@@ -49,19 +53,23 @@ PackageQuestionUnionStake _$PackageQuestionUnionStakeFromJson(
     PackageQuestionUnionStake(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
-      price: (json['price'] as num).toInt(),
+      price: (json['price'] as num?)?.toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
-      answerText: json['answerText'] as String?,
       questionComment: json['questionComment'] as String?,
-      questionFiles: (json['questionFiles'] as List<dynamic>?)
-          ?.map((e) => PackageQuestionFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      answerFiles: (json['answerFiles'] as List<dynamic>?)
-          ?.map((e) => PackageAnswerFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
       type: StakeQuestionType.fromJson(json['type'] as String),
       maxPrice: (json['maxPrice'] as num?)?.toInt(),
+      answerText: json['answerText'] as String?,
+      questionFiles: (json['questionFiles'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      answerFiles: (json['answerFiles'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
+          .toList(),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
       subType: json['subType'] == null
@@ -77,12 +85,12 @@ Map<String, dynamic> _$PackageQuestionUnionStakeToJson(
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
-      'answerText': instance.answerText,
       'questionComment': instance.questionComment,
-      'questionFiles': instance.questionFiles,
-      'answerFiles': instance.answerFiles,
       'type': instance.type,
       'maxPrice': instance.maxPrice,
+      'answerText': instance.answerText,
+      'questionFiles': instance.questionFiles,
+      'answerFiles': instance.answerFiles,
       'isHidden': instance.isHidden,
       'answerDelay': instance.answerDelay,
       'subType': instance.subType,
@@ -93,24 +101,28 @@ PackageQuestionUnionSecret _$PackageQuestionUnionSecretFromJson(
     PackageQuestionUnionSecret(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
-      price: (json['price'] as num).toInt(),
+      price: (json['price'] as num?)?.toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
-      answerText: json['answerText'] as String?,
       questionComment: json['questionComment'] as String?,
-      questionFiles: (json['questionFiles'] as List<dynamic>?)
-          ?.map((e) => PackageQuestionFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      answerFiles: (json['answerFiles'] as List<dynamic>?)
-          ?.map((e) => PackageAnswerFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
       type: SecretQuestionType.fromJson(json['type'] as String),
       subType: SecretQuestionSubType.fromJson(json['subType'] as String),
       allowedPrices: (json['allowedPrices'] as List<dynamic>?)
           ?.map((e) => (e as num).toInt())
           .toList(),
       transferType:
-          PackageQuestionTransferType.fromJson(json['transferType'] as String),
+          QuestionTransferType.fromJson(json['transferType'] as String),
+      answerText: json['answerText'] as String?,
+      questionFiles: (json['questionFiles'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      answerFiles: (json['answerFiles'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
+          .toList(),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
@@ -123,14 +135,14 @@ Map<String, dynamic> _$PackageQuestionUnionSecretToJson(
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
-      'answerText': instance.answerText,
       'questionComment': instance.questionComment,
-      'questionFiles': instance.questionFiles,
-      'answerFiles': instance.answerFiles,
       'type': instance.type,
       'subType': instance.subType,
       'allowedPrices': instance.allowedPrices,
       'transferType': instance.transferType,
+      'answerText': instance.answerText,
+      'questionFiles': instance.questionFiles,
+      'answerFiles': instance.answerFiles,
       'isHidden': instance.isHidden,
       'answerDelay': instance.answerDelay,
     };
@@ -140,22 +152,26 @@ PackageQuestionUnionNoRisk _$PackageQuestionUnionNoRiskFromJson(
     PackageQuestionUnionNoRisk(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
-      price: (json['price'] as num).toInt(),
+      price: (json['price'] as num?)?.toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
-      answerText: json['answerText'] as String?,
       questionComment: json['questionComment'] as String?,
-      questionFiles: (json['questionFiles'] as List<dynamic>?)
-          ?.map((e) => PackageQuestionFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      answerFiles: (json['answerFiles'] as List<dynamic>?)
-          ?.map((e) => PackageAnswerFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
       type: NoRiskQuestionType.fromJson(json['type'] as String),
       subType: NoRiskQuestionSubType.fromJson(json['subType'] as String),
+      priceMultiplier: json['priceMultiplier'] as String,
+      answerText: json['answerText'] as String?,
+      questionFiles: (json['questionFiles'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      answerFiles: (json['answerFiles'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
+          .toList(),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
-      priceMultiplier: json['priceMultiplier'] as String? ?? '1.5',
     );
 
 Map<String, dynamic> _$PackageQuestionUnionNoRiskToJson(
@@ -166,15 +182,15 @@ Map<String, dynamic> _$PackageQuestionUnionNoRiskToJson(
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
-      'answerText': instance.answerText,
       'questionComment': instance.questionComment,
-      'questionFiles': instance.questionFiles,
-      'answerFiles': instance.answerFiles,
       'type': instance.type,
       'subType': instance.subType,
+      'priceMultiplier': instance.priceMultiplier,
+      'answerText': instance.answerText,
+      'questionFiles': instance.questionFiles,
+      'answerFiles': instance.answerFiles,
       'isHidden': instance.isHidden,
       'answerDelay': instance.answerDelay,
-      'priceMultiplier': instance.priceMultiplier,
     };
 
 PackageQuestionUnionChoice _$PackageQuestionUnionChoiceFromJson(
@@ -182,22 +198,26 @@ PackageQuestionUnionChoice _$PackageQuestionUnionChoiceFromJson(
     PackageQuestionUnionChoice(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
-      price: (json['price'] as num).toInt(),
+      price: (json['price'] as num?)?.toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
-      answerText: json['answerText'] as String?,
       questionComment: json['questionComment'] as String?,
-      questionFiles: (json['questionFiles'] as List<dynamic>?)
-          ?.map((e) => PackageQuestionFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      answerFiles: (json['answerFiles'] as List<dynamic>?)
-          ?.map((e) => PackageAnswerFile.fromJson(e as Map<String, dynamic>))
-          .toList(),
       type: ChoiceQuestionType.fromJson(json['type'] as String),
       subType: json['subType'],
       showDelay: (json['showDelay'] as num).toInt(),
       answers: (json['answers'] as List<dynamic>)
-          .map((e) => Answers.fromJson(e as Map<String, dynamic>))
+          .map((e) => QuestionChoiceAnswers.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      answerText: json['answerText'] as String?,
+      questionFiles: (json['questionFiles'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      answerFiles: (json['answerFiles'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
           .toList(),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
@@ -211,14 +231,14 @@ Map<String, dynamic> _$PackageQuestionUnionChoiceToJson(
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
-      'answerText': instance.answerText,
       'questionComment': instance.questionComment,
-      'questionFiles': instance.questionFiles,
-      'answerFiles': instance.answerFiles,
       'type': instance.type,
       'subType': instance.subType,
       'showDelay': instance.showDelay,
       'answers': instance.answers,
+      'answerText': instance.answerText,
+      'questionFiles': instance.questionFiles,
+      'answerFiles': instance.answerFiles,
       'isHidden': instance.isHidden,
       'answerDelay': instance.answerDelay,
     };
@@ -228,18 +248,22 @@ PackageQuestionUnionHidden _$PackageQuestionUnionHiddenFromJson(
     PackageQuestionUnionHidden(
       id: (json['id'] as num?)?.toInt(),
       order: (json['order'] as num).toInt(),
-      price: (json['price'] as num).toInt(),
+      price: (json['price'] as num?)?.toInt(),
       text: json['text'] as String?,
       answerHint: json['answerHint'] as String?,
-      answerText: json['answerText'] as String?,
       questionComment: json['questionComment'] as String?,
+      type: HiddenQuestionType.fromJson(json['type'] as String),
+      answerText: json['answerText'] as String?,
       questionFiles: (json['questionFiles'] as List<dynamic>?)
-          ?.map((e) => PackageQuestionFile.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e == null
+              ? null
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
           .toList(),
       answerFiles: (json['answerFiles'] as List<dynamic>?)
-          ?.map((e) => PackageAnswerFile.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e == null
+              ? null
+              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
           .toList(),
-      type: HiddenQuestionType.fromJson(json['type'] as String),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,
     );
@@ -252,11 +276,11 @@ Map<String, dynamic> _$PackageQuestionUnionHiddenToJson(
       'price': instance.price,
       'text': instance.text,
       'answerHint': instance.answerHint,
-      'answerText': instance.answerText,
       'questionComment': instance.questionComment,
+      'type': instance.type,
+      'answerText': instance.answerText,
       'questionFiles': instance.questionFiles,
       'answerFiles': instance.answerFiles,
-      'type': instance.type,
       'isHidden': instance.isHidden,
       'answerDelay': instance.answerDelay,
     };

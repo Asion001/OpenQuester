@@ -7,8 +7,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package_answer_file.dart';
 import 'package_entities_order.dart';
 import 'package_question_file.dart';
-import 'package_question_transfer_type.dart';
 import 'package_question_union.dart';
+import 'question_allowed_prices.dart';
+import 'question_answer_text.dart';
+import 'question_transfer_type.dart';
 import 'secret_question_sub_type.dart';
 import 'secret_question_type.dart';
 
@@ -21,8 +23,8 @@ abstract class SecretQuestion with _$SecretQuestion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -30,25 +32,17 @@ abstract class SecretQuestion with _$SecretQuestion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required SecretQuestionType type,
 
     /// Subtype of the secret question. customPrice means player can choose cost of question
     required SecretQuestionSubType subType,
-
-    /// Allowed price options for customPrice subtype. Maximum 5 prices to choose
-    required List<int>? allowedPrices,
-    required PackageQuestionTransferType transferType,
+    required QuestionAllowedPrices allowedPrices,
+    required QuestionTransferType transferType,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageAnswerFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)

@@ -1592,74 +1592,49 @@
         "description": "Allowed price options for customPrice subtype. Maximum 5 prices to choose"
       },
       "QuestionChoiceAnswers": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": ["integer", "null"],
-              "examples": [99]
-            },
-            "order": {
-              "$ref": "#/components/schemas/PackageEntitiesOrder"
-            },
-            "text": {
-              "type": ["string", "null"],
-              "description": "Text of the answer option"
-            },
-            "file": {
-              "oneOf": [
-                { "$ref": "#/components/schemas/FileItem" },
-                { "type": "null" }
-              ],
-              "description": "File associated with the answer option"
-            }
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": ["integer", "null"],
+            "examples": [99]
+          },
+          "order": {
+            "$ref": "#/components/schemas/PackageEntitiesOrder"
+          },
+          "text": {
+            "type": ["string", "null"],
+            "description": "Text of the answer option"
+          },
+          "file": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/FileItem" },
+              { "type": "null" }
+            ],
+            "description": "File associated with the answer option"
           }
         },
-        "minItems": 2,
-        "maxItems": 8,
         "description": "Multiple choice options; minimum 2, maximum 8 answers",
         "examples": [
-          [
-            {
-              "text": "Option 1",
-              "file": null
-            },
-            {
-              "text": "Option 2",
-              "file": null
-            },
-            {
-              "text": "Option 3 with image",
-              "file": {
-                "id": 227,
-                "md5": "f99d8c12300b204as800998ecf90777",
-                "type": "image",
-                "link": "https://example.com/file123"
-              }
-            },
-            {
-              "text": "Option 4",
-              "file": null
-            }
-          ]
-        ]
-      },
-      "QuestionAnswerFiles": {
-        "type": ["array", "null"],
-        "items": {
-          "$ref": "#/components/schemas/PackageAnswerFile"
-        },
-        "description": "Media files for the answer",
-        "examples": [
           {
-            "id": 1001,
+            "text": "Option 1",
+            "file": null
+          },
+          {
+            "text": "Option 2",
+            "file": null
+          },
+          {
+            "text": "Option 3 with image",
             "file": {
-              "md5": "b12d8c12300b204as800998ecf84266",
-              "type": "image"
-            },
-            "link": "https://example.com/file1001",
-            "displayTime": 5000
+              "id": 227,
+              "md5": "f99d8c12300b204as800998ecf90777",
+              "type": "image",
+              "link": "https://example.com/file123"
+            }
+          },
+          {
+            "text": "Option 4",
+            "file": null
           }
         ]
       },
@@ -1667,33 +1642,6 @@
         "type": ["string", "null"],
         "description": "Correct answer text",
         "examples": ["In Ukraine"]
-      },
-      "QuestionFiles": {
-        "type": ["array", "null"],
-        "items": {
-          "$ref": "#/components/schemas/PackageQuestionFile"
-        },
-        "description": "Media files for the question",
-        "examples": [
-          {
-            "id": 727,
-            "file": {
-              "md5": "b11d8c12300b204as800998ecf84266",
-              "type": "image"
-            },
-            "link": "https://example.com/file123",
-            "displayTime": 3000
-          },
-          {
-            "id": 999,
-            "file": {
-              "md5": "c90d8c12300b204as182904ecf84266",
-              "type": "image"
-            },
-            "link": "https://example.com/file546",
-            "displayTime": 3000
-          }
-        ]
       },
       "QuestionTransferType": {
         "type": "string",
@@ -1861,13 +1809,23 @@
           },
           "questionFiles": {
             "oneOf": [
-              { "$ref": "#/components/schemas/QuestionFiles" },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PackageQuestionFile"
+                }
+              },
               { "type": "null" }
             ]
           },
           "answerFiles": {
             "oneOf": [
-              { "$ref": "#/components/schemas/QuestionAnswerFiles" },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PackageAnswerFile"
+                }
+              },
               { "type": "null" }
             ]
           }
@@ -1887,7 +1845,10 @@
                 "$ref": "#/components/schemas/QuestionShowDelay"
               },
               "answers": {
-                "$ref": "#/components/schemas/QuestionChoiceAnswers"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/QuestionChoiceAnswers"
+                }
               }
             },
             "required": ["showDelay", "answers"],
@@ -2560,7 +2521,12 @@
             "oneOf": [
               {
                 "type": "array",
-                "items": { "$ref": "#/components/schemas/QuestionAnswerFiles" }
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PackageAnswerFile"
+                  }
+                }
               },
               { "type": "null" }
             ]
@@ -2639,13 +2605,23 @@
           },
           "questionFiles": {
             "oneOf": [
-              { "$ref": "#/components/schemas/QuestionFiles" },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PackageQuestionFile"
+                }
+              },
               { "type": "null" }
             ]
           },
           "answerFiles": {
             "oneOf": [
-              { "$ref": "#/components/schemas/QuestionAnswerFiles" },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PackageAnswerFile"
+                }
+              },
               { "type": "null" }
             ]
           },
@@ -2684,7 +2660,12 @@
           },
           "answers": {
             "oneOf": [
-              { "$ref": "#/components/schemas/QuestionChoiceAnswers" },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/QuestionChoiceAnswers"
+                }
+              },
               { "type": "null" }
             ]
           }
@@ -2733,7 +2714,12 @@
           },
           "questionFiles": {
             "oneOf": [
-              { "$ref": "#/components/schemas/QuestionFiles" },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PackageQuestionFile"
+                }
+              },
               { "type": "null" }
             ]
           },
@@ -2772,7 +2758,12 @@
           },
           "answers": {
             "oneOf": [
-              { "$ref": "#/components/schemas/QuestionChoiceAnswers" },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/QuestionChoiceAnswers"
+                }
+              },
               { "type": "null" }
             ]
           }
