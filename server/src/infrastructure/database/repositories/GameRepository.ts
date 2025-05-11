@@ -97,7 +97,7 @@ export class GameRepository {
   public async getAllGames(
     paginationOpts: GamePaginationOpts
   ): Promise<PaginatedResult<GameListItemDTO[]>> {
-    const { ids, total } = await this.gameIndexManager.findGamesByIndex(
+    const { ids, total } = await this.gameIndexManager.findGamesByIndex<Game>(
       {
         createdAtMax: paginationOpts.createdAtMax,
         createdAtMin: paginationOpts.createdAtMin,

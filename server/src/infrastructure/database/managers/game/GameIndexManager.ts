@@ -188,7 +188,7 @@ export class GameIndexManager {
         isPrivate: filters.isPrivate,
         titlePrefix: filters.titlePrefix,
       });
-      return this._paginateResults(tempKey, pagination);
+      return this._paginateResults<T>(tempKey, pagination);
     } finally {
       await this.redisService.expire(tempKey, this.TEMP_KEY_TTL);
     }
