@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
 import 'package:universal_io/io.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 @singleton
 class AutoUpdateController {
@@ -23,7 +25,7 @@ class AutoUpdateController {
     return _formatVersion(version, buildNumber);
   }
 
-  Future<String> getBinaryUrl(String? version) async {
+  Future<Uri> getBinaryUrl(String? version) async {
     final clearVersion = version?.split('+').firstOrNull;
     final url = Uri.https(
       'github.com',
@@ -33,14 +35,23 @@ class AutoUpdateController {
         _getPlatformUpdateFile(clearVersion),
       ].join('/'),
     );
-    return url.toString();
+    return url;
   }
 
   String _getPlatformUpdateFile(String? version) {
+    if (kIsWeb) return '';
     if (Platform.isWindows) return 'OpenQuester-x86_64-$version-Installer.exe';
     if (Platform.isAndroid) return 'app-release.apk';
     return '';
   }
 
-  bool get showUpdateBtn => Platform.isWindows || Platform.isAndroid;
+  bool get showUpdateBtn {
+    if (kIsWeb) return false;
+    return Platform.isWindows || Platform.isAndroid;
+  }
+
+  Future<void> openInstallFile() async {
+    final uri = await getBinaryUrl(await getLatestVersion());
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
 }
