@@ -44,10 +44,10 @@ export class PackageRound {
     this.order = data.order;
   }
 
-  public async toDTO(
+  public toDTO(
     storage: S3StorageService,
     opts: PackageDTOOptions
-  ): Promise<PackageRoundDTO> {
+  ): PackageRoundDTO {
     if (this.themes.length < 1) {
       throw new ClientError(ClientResponse.PACKAGE_CORRUPTED, undefined, {
         id: this.id,
@@ -55,9 +55,7 @@ export class PackageRound {
       });
     }
 
-    const themesDTO = await Promise.all(
-      this.themes.map((theme) => theme.toDTO(storage, opts))
-    );
+    const themesDTO = this.themes.map((theme) => theme.toDTO(storage, opts));
 
     let dto: PackageRoundDTO = {
       name: this.name,

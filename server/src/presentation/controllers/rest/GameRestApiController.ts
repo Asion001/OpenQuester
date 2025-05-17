@@ -30,7 +30,7 @@ export class GameRestApiController {
   }
 
   private deleteGame = async (req: Request, res: Response) => {
-    const validatedData = await new RequestDataValidator<{ gameId: string }>(
+    const validatedData = new RequestDataValidator<{ gameId: string }>(
       { gameId: req.params.gameId },
       gameIdScheme()
     ).validate();
@@ -41,7 +41,7 @@ export class GameRestApiController {
   };
 
   private getGame = async (req: Request, res: Response) => {
-    const validatedData = await new RequestDataValidator<{ gameId: string }>(
+    const validatedData = new RequestDataValidator<{ gameId: string }>(
       { gameId: req.params.gameId },
       gameIdScheme()
     ).validate();
@@ -52,7 +52,7 @@ export class GameRestApiController {
   };
 
   private listGames = async (req: Request, res: Response) => {
-    const paginationOpts = await new RequestDataValidator<GamePaginationOpts>(
+    const paginationOpts = new RequestDataValidator<GamePaginationOpts>(
       req.query as unknown as GamePaginationOpts,
       gamePaginationScheme()
     ).validate();
@@ -62,7 +62,7 @@ export class GameRestApiController {
   };
 
   private createGame = async (req: Request, res: Response) => {
-    const gameCreateDTO = await new RequestDataValidator<GameCreateDTO>(
+    const gameCreateDTO = new RequestDataValidator<GameCreateDTO>(
       req.body,
       createGameScheme()
     ).validate();

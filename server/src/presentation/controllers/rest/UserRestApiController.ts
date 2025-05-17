@@ -75,9 +75,9 @@ export class UserRestApiController {
   }
 
   private getUser = async (req: Request, res: Response) => {
-    const id: number = await this._getUserId(req);
+    const id: number = this._getUserId(req);
 
-    const validatedData = await new RequestDataValidator<UserInputDTO>(
+    const validatedData = new RequestDataValidator<UserInputDTO>(
       { userId: id },
       userIdScheme()
     ).validate();
@@ -85,7 +85,7 @@ export class UserRestApiController {
     let user: UserDTO;
 
     if (req.user && validatedData.userId === req.user.id) {
-      user = await req.user.toDTO();
+      user = req.user.toDTO();
     } else {
       user = await this.userService.get(validatedData.userId);
     }
@@ -100,9 +100,9 @@ export class UserRestApiController {
   };
 
   private updateUser = async (req: Request, res: Response) => {
-    const id: number = await this._getUserId(req);
+    const id: number = this._getUserId(req);
 
-    const userInputDTO = await new RequestDataValidator<UpdateUserInputDTO>(
+    const userInputDTO = new RequestDataValidator<UpdateUserInputDTO>(
       { ...req.body },
       userUpdateScheme()
     ).validate();
@@ -152,9 +152,9 @@ export class UserRestApiController {
   };
 
   private deleteUser = async (req: Request, res: Response) => {
-    const id: number = await this._getUserId(req);
+    const id: number = this._getUserId(req);
 
-    const validatedData = await new RequestDataValidator<UserInputDTO>(
+    const validatedData = new RequestDataValidator<UserInputDTO>(
       { userId: id },
       userIdScheme()
     ).validate();
@@ -193,7 +193,7 @@ export class UserRestApiController {
     });
   };
 
-  private async _getUserId(req: Request) {
+  private _getUserId(req: Request) {
     if (req.params && req.params.id) {
       return Number(req.params.id);
     } else {

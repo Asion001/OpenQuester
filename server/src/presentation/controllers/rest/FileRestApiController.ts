@@ -23,21 +23,21 @@ export class FileRestApiController {
   }
 
   private getFile = async (req: Request, res: Response) => {
-    const validatedData = await this._validateParamsFilename(req);
+    const validatedData = this._validateParamsFilename(req);
 
-    const url = await this.storage.getUrl(validatedData.filename);
+    const url = this.storage.getUrl(validatedData.filename);
     res.send({ url });
   };
 
   private uploadFile = async (req: Request, res: Response) => {
-    const validatedData = await this._validateParamsFilename(req);
+    const validatedData = this._validateParamsFilename(req);
 
     const url = await this.storage.upload(validatedData.filename);
     res.send({ url });
   };
 
   private deleteFile = async (req: Request, res: Response) => {
-    const validatedData = await this._validateParamsFilename(req);
+    const validatedData = this._validateParamsFilename(req);
 
     await this.storage.delete(validatedData.filename, req);
 
@@ -49,7 +49,7 @@ export class FileRestApiController {
     });
   };
 
-  private async _validateParamsFilename(req: Request) {
+  private _validateParamsFilename(req: Request) {
     return new RequestDataValidator<{ filename: string }>(
       { filename: req.params.filename },
       filenameScheme()

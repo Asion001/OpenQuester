@@ -64,7 +64,10 @@ export class User implements UserModel {
   })
   permissions!: Permission[];
 
-  public async import(data: UserModel) {
+  public import(data: UserModel) {
+    if (data.id) {
+      this.id = data.id;
+    }
     this.username = data.username;
     this.email = data.email;
     this.discord_id = data.discord_id ?? null;
@@ -76,13 +79,13 @@ export class User implements UserModel {
     this.permissions = data.permissions ?? this.permissions ?? [];
   }
 
-  public async toDTO(): Promise<UserDTO> {
+  public toDTO(): UserDTO {
     const storage = Container.get<S3StorageService>(
       CONTAINER_TYPES.S3StorageService
     );
 
     const avatarLink = this.avatar
-      ? await storage.getUrl(this.avatar.filename)
+      ? storage.getUrl(this.avatar.filename)
       : null;
 
     return {
