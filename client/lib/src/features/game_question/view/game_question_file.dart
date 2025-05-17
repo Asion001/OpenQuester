@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
+import 'package:video_player/video_player.dart';
 
-class GameQuestionFile extends StatelessWidget {
+class GameQuestionFile extends WatchingWidget {
   const GameQuestionFile({
     required this.file,
     super.key,
@@ -10,12 +11,21 @@ class GameQuestionFile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final url = file.file.link;
+    final mediaController =
+        watchValue((GameQuestionController e) => e.mediaController);
 
-    Widget child = const SizedBox.shrink();
+    onDispose(getIt<GameQuestionController>().clearVideoControllers);
+
+    final url = file.file.link;
+    var child = const CircularProgressIndicator().center();
 
     if (file.file.type == PackageFileType.image) {
       child = ImageWidget(url: url);
+    } else if (mediaController != null) {
+      child = AspectRatio(
+        aspectRatio: mediaController.value.aspectRatio,
+        child: VideoPlayer(mediaController),
+      ).center();
     }
 
     return Container(

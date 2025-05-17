@@ -259,6 +259,13 @@ class GameLobbyController {
       timer: questionData.timer,
     );
 
+    gameData.value = gameData.value!.copyWith.gameState(
+      currentRound: gameData.value!.gameState.currentRound?.changeQuestion(
+        id: questionData.data.id,
+        onChange: (question) => question.copyWith(isPlayed: true),
+      ),
+    );
+
     // Pass the question to controller to handle the rest
     getIt<GameQuestionController>().question.value = questionData.data;
   }
@@ -281,18 +288,12 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    final questionId = getIt<GameQuestionController>().question.value?.id;
-
     gameData.value = gameData.value?.copyWith.gameState(
       answeringPlayer: null,
       answeredPlayers: [
         ...?gameData.value?.gameState.answeredPlayers,
         questionData.answerResult,
       ],
-      currentRound: gameData.value?.gameState.currentRound?.changeQuestion(
-        id: questionId,
-        onChange: (question) => question.copyWith(isPlayed: true),
-      ),
     );
 
     // Question answered, hide question screen and show answer
@@ -305,6 +306,7 @@ class GameLobbyController {
 
   void _showAnswer() {
     getIt<GameQuestionController>().clear();
+
     // TODO: Show correct answer
   }
 }
