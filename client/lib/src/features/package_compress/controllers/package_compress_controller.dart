@@ -1,4 +1,3 @@
-import 'package:file_saver/file_saver.dart';
 import 'package:openquester/src/connection/files/file_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:siq_compress/siq_compress.dart';
@@ -34,23 +33,13 @@ class PackageCompressController {
       }
 
       final bytes = outputArchive.readAsBytesSync();
-      final filePath = await FileSaver.instance.saveAs(
-        name: file.name.split('.').first,
+      await FilePicker.platform.saveFile(
+        fileName: file.name.split('.').first,
         bytes: bytes,
-        ext: '.siq',
-        mimeType: MimeType.zip,
+        allowedExtensions: ['siq'],
+        lockParentWindow: true,
+        type: FileType.custom,
       );
-      if (filePath == null) {
-        // cancelled prompt
-        return;
-      }
-      // TODO FileSaver.instance.saveAs() as of 0.2.13 on Windows
-      // only prompts the user for the desired file location, but does not write
-      // the file passed in.
-      if (Platform.isWindows) {
-        final file = File(filePath);
-        await file.writeAsBytes(bytes);
-      }
     } finally {
       encoder.dispose();
       await workDir.delete(recursive: true);

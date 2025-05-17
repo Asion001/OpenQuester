@@ -50,7 +50,6 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.factory<_i936.S3UploadController>(() => _i936.S3UploadController());
-    gh.singleton<_i419.Oauth2Controller>(() => _i419.Oauth2Controller());
     await gh.singletonAsync<_i895.DioController>(
       () {
         final i = _i895.DioController();
@@ -59,6 +58,7 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i741.Storage>(() => _i741.Storage());
+    gh.singleton<_i419.Oauth2Controller>(() => _i419.Oauth2Controller());
     gh.singleton<_i676.LoadController>(() => _i676.LoadController());
     await gh.singletonAsync<_i460.PackageInfoController>(
       () {
