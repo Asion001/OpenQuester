@@ -30,7 +30,7 @@ import 'package:openquester/src/features/test/test_screen.dart' deferred as _i7;
 /// [_i1.ClickerPage]
 class ClickerRoute extends _i8.PageRouteInfo<void> {
   const ClickerRoute({List<_i8.PageRouteInfo>? children})
-      : super(ClickerRoute.name, initialChildren: children);
+    : super(ClickerRoute.name, initialChildren: children);
 
   static const String name = 'ClickerRoute';
 
@@ -46,7 +46,7 @@ class ClickerRoute extends _i8.PageRouteInfo<void> {
 /// [_i2.CreateGameDialog]
 class CreateGameRoute extends _i8.PageRouteInfo<void> {
   const CreateGameRoute({List<_i8.PageRouteInfo>? children})
-      : super(CreateGameRoute.name, initialChildren: children);
+    : super(CreateGameRoute.name, initialChildren: children);
 
   static const String name = 'CreateGameRoute';
 
@@ -66,11 +66,11 @@ class GameLobbyRoute extends _i8.PageRouteInfo<GameLobbyRouteArgs> {
     _i9.Key? key,
     List<_i8.PageRouteInfo>? children,
   }) : super(
-          GameLobbyRoute.name,
-          args: GameLobbyRouteArgs(gameId: gameId, key: key),
-          rawPathParams: {'gameId': gameId},
-          initialChildren: children,
-        );
+         GameLobbyRoute.name,
+         args: GameLobbyRouteArgs(gameId: gameId, key: key),
+         rawPathParams: {'gameId': gameId},
+         initialChildren: children,
+       );
 
   static const String name = 'GameLobbyRoute';
 
@@ -79,8 +79,8 @@ class GameLobbyRoute extends _i8.PageRouteInfo<GameLobbyRouteArgs> {
     builder: (data) {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<GameLobbyRouteArgs>(
-        orElse: () =>
-            GameLobbyRouteArgs(gameId: pathParams.getString('gameId')),
+        orElse:
+            () => GameLobbyRouteArgs(gameId: pathParams.getString('gameId')),
       );
       return _i8.DeferredWidget(
         _i3.loadLibrary,
@@ -112,11 +112,11 @@ class GamePreviewRoute extends _i8.PageRouteInfo<GamePreviewRouteArgs> {
     _i9.Key? key,
     List<_i8.PageRouteInfo>? children,
   }) : super(
-          GamePreviewRoute.name,
-          args: GamePreviewRouteArgs(gameId: gameId, item: item, key: key),
-          rawPathParams: {'gameId': gameId},
-          initialChildren: children,
-        );
+         GamePreviewRoute.name,
+         args: GamePreviewRouteArgs(gameId: gameId, item: item, key: key),
+         rawPathParams: {'gameId': gameId},
+         initialChildren: children,
+       );
 
   static const String name = 'GamePreviewRoute';
 
@@ -125,8 +125,8 @@ class GamePreviewRoute extends _i8.PageRouteInfo<GamePreviewRouteArgs> {
     builder: (data) {
       final pathParams = data.inheritedPathParams;
       final args = data.argsAs<GamePreviewRouteArgs>(
-        orElse: () =>
-            GamePreviewRouteArgs(gameId: pathParams.getString('gameId')),
+        orElse:
+            () => GamePreviewRouteArgs(gameId: pathParams.getString('gameId')),
       );
       return _i4.GamePreviewScreen(
         gameId: args.gameId,
@@ -156,7 +156,7 @@ class GamePreviewRouteArgs {
 /// [_i5.HomeTabsScreen]
 class HomeTabsRoute extends _i8.PageRouteInfo<void> {
   const HomeTabsRoute({List<_i8.PageRouteInfo>? children})
-      : super(HomeTabsRoute.name, initialChildren: children);
+    : super(HomeTabsRoute.name, initialChildren: children);
 
   static const String name = 'HomeTabsRoute';
 
@@ -172,7 +172,7 @@ class HomeTabsRoute extends _i8.PageRouteInfo<void> {
 /// [_i6.ProfileScreen]
 class ProfileRoute extends _i8.PageRouteInfo<void> {
   const ProfileRoute({List<_i8.PageRouteInfo>? children})
-      : super(ProfileRoute.name, initialChildren: children);
+    : super(ProfileRoute.name, initialChildren: children);
 
   static const String name = 'ProfileRoute';
 
@@ -188,7 +188,7 @@ class ProfileRoute extends _i8.PageRouteInfo<void> {
 /// [_i7.TestScreen]
 class TestScreenRoute extends _i8.PageRouteInfo<void> {
   const TestScreenRoute({List<_i8.PageRouteInfo>? children})
-      : super(TestScreenRoute.name, initialChildren: children);
+    : super(TestScreenRoute.name, initialChildren: children);
 
   static const String name = 'TestScreenRoute';
 

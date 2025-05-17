@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -11,33 +12,47 @@ part of 'ffprobe_output.dart';
 
 T _$identity<T>(T value) => value;
 
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-FfprobeOutput _$FfprobeOutputFromJson(Map<String, dynamic> json) {
-  return _FfprobeOutput.fromJson(json);
-}
-
 /// @nodoc
 mixin _$FfprobeOutput {
-  List<StreamData> get streams => throw _privateConstructorUsedError;
-  FormatData get format => throw _privateConstructorUsedError;
-
-  /// Serializes this FfprobeOutput to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  List<StreamData> get streams;
+  FormatData get format;
 
   /// Create a copy of FfprobeOutput
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $FfprobeOutputCopyWith<FfprobeOutput> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$FfprobeOutputCopyWithImpl<FfprobeOutput>(
+          this as FfprobeOutput, _$identity);
+
+  /// Serializes this FfprobeOutput to a JSON map.
+  Map<String, dynamic> toJson();
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FfprobeOutput &&
+            const DeepCollectionEquality().equals(other.streams, streams) &&
+            (identical(other.format, format) || other.format == format));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(streams), format);
+
+  @override
+  String toString() {
+    return 'FfprobeOutput(streams: $streams, format: $format)';
+  }
 }
 
 /// @nodoc
-abstract class $FfprobeOutputCopyWith<$Res> {
+abstract mixin class $FfprobeOutputCopyWith<$Res> {
   factory $FfprobeOutputCopyWith(
-          FfprobeOutput value, $Res Function(FfprobeOutput) then) =
-      _$FfprobeOutputCopyWithImpl<$Res, FfprobeOutput>;
+          FfprobeOutput value, $Res Function(FfprobeOutput) _then) =
+      _$FfprobeOutputCopyWithImpl;
   @useResult
   $Res call({List<StreamData> streams, FormatData format});
 
@@ -45,14 +60,12 @@ abstract class $FfprobeOutputCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$FfprobeOutputCopyWithImpl<$Res, $Val extends FfprobeOutput>
+class _$FfprobeOutputCopyWithImpl<$Res>
     implements $FfprobeOutputCopyWith<$Res> {
-  _$FfprobeOutputCopyWithImpl(this._value, this._then);
+  _$FfprobeOutputCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final FfprobeOutput _self;
+  final $Res Function(FfprobeOutput) _then;
 
   /// Create a copy of FfprobeOutput
   /// with the given fields replaced by the non-null parameter values.
@@ -62,16 +75,16 @@ class _$FfprobeOutputCopyWithImpl<$Res, $Val extends FfprobeOutput>
     Object? streams = null,
     Object? format = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       streams: null == streams
-          ? _value.streams
+          ? _self.streams
           : streams // ignore: cast_nullable_to_non_nullable
               as List<StreamData>,
       format: null == format
-          ? _value.format
+          ? _self.format
           : format // ignore: cast_nullable_to_non_nullable
               as FormatData,
-    ) as $Val);
+    ));
   }
 
   /// Create a copy of FfprobeOutput
@@ -79,65 +92,21 @@ class _$FfprobeOutputCopyWithImpl<$Res, $Val extends FfprobeOutput>
   @override
   @pragma('vm:prefer-inline')
   $FormatDataCopyWith<$Res> get format {
-    return $FormatDataCopyWith<$Res>(_value.format, (value) {
-      return _then(_value.copyWith(format: value) as $Val);
+    return $FormatDataCopyWith<$Res>(_self.format, (value) {
+      return _then(_self.copyWith(format: value));
     });
-  }
-}
-
-/// @nodoc
-abstract class _$$FfprobeOutputImplCopyWith<$Res>
-    implements $FfprobeOutputCopyWith<$Res> {
-  factory _$$FfprobeOutputImplCopyWith(
-          _$FfprobeOutputImpl value, $Res Function(_$FfprobeOutputImpl) then) =
-      __$$FfprobeOutputImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({List<StreamData> streams, FormatData format});
-
-  @override
-  $FormatDataCopyWith<$Res> get format;
-}
-
-/// @nodoc
-class __$$FfprobeOutputImplCopyWithImpl<$Res>
-    extends _$FfprobeOutputCopyWithImpl<$Res, _$FfprobeOutputImpl>
-    implements _$$FfprobeOutputImplCopyWith<$Res> {
-  __$$FfprobeOutputImplCopyWithImpl(
-      _$FfprobeOutputImpl _value, $Res Function(_$FfprobeOutputImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of FfprobeOutput
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? streams = null,
-    Object? format = null,
-  }) {
-    return _then(_$FfprobeOutputImpl(
-      streams: null == streams
-          ? _value._streams
-          : streams // ignore: cast_nullable_to_non_nullable
-              as List<StreamData>,
-      format: null == format
-          ? _value.format
-          : format // ignore: cast_nullable_to_non_nullable
-              as FormatData,
-    ));
   }
 }
 
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$FfprobeOutputImpl implements _FfprobeOutput {
-  const _$FfprobeOutputImpl(
+class _FfprobeOutput implements FfprobeOutput {
+  const _FfprobeOutput(
       {required final List<StreamData> streams, required this.format})
       : _streams = streams;
-
-  factory _$FfprobeOutputImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FfprobeOutputImplFromJson(json);
+  factory _FfprobeOutput.fromJson(Map<String, dynamic> json) =>
+      _$FfprobeOutputFromJson(json);
 
   final List<StreamData> _streams;
   @override
@@ -150,16 +119,26 @@ class _$FfprobeOutputImpl implements _FfprobeOutput {
   @override
   final FormatData format;
 
+  /// Create a copy of FfprobeOutput
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'FfprobeOutput(streams: $streams, format: $format)';
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$FfprobeOutputCopyWith<_FfprobeOutput> get copyWith =>
+      __$FfprobeOutputCopyWithImpl<_FfprobeOutput>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$FfprobeOutputToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FfprobeOutputImpl &&
+            other is _FfprobeOutput &&
             const DeepCollectionEquality().equals(other._streams, _streams) &&
             (identical(other.format, format) || other.format == format));
   }
@@ -169,213 +148,165 @@ class _$FfprobeOutputImpl implements _FfprobeOutput {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_streams), format);
 
-  /// Create a copy of FfprobeOutput
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$FfprobeOutputImplCopyWith<_$FfprobeOutputImpl> get copyWith =>
-      __$$FfprobeOutputImplCopyWithImpl<_$FfprobeOutputImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$FfprobeOutputImplToJson(
-      this,
-    );
+  String toString() {
+    return 'FfprobeOutput(streams: $streams, format: $format)';
   }
 }
 
-abstract class _FfprobeOutput implements FfprobeOutput {
-  const factory _FfprobeOutput(
-      {required final List<StreamData> streams,
-      required final FormatData format}) = _$FfprobeOutputImpl;
-
-  factory _FfprobeOutput.fromJson(Map<String, dynamic> json) =
-      _$FfprobeOutputImpl.fromJson;
+/// @nodoc
+abstract mixin class _$FfprobeOutputCopyWith<$Res>
+    implements $FfprobeOutputCopyWith<$Res> {
+  factory _$FfprobeOutputCopyWith(
+          _FfprobeOutput value, $Res Function(_FfprobeOutput) _then) =
+      __$FfprobeOutputCopyWithImpl;
+  @override
+  @useResult
+  $Res call({List<StreamData> streams, FormatData format});
 
   @override
-  List<StreamData> get streams;
-  @override
-  FormatData get format;
+  $FormatDataCopyWith<$Res> get format;
+}
+
+/// @nodoc
+class __$FfprobeOutputCopyWithImpl<$Res>
+    implements _$FfprobeOutputCopyWith<$Res> {
+  __$FfprobeOutputCopyWithImpl(this._self, this._then);
+
+  final _FfprobeOutput _self;
+  final $Res Function(_FfprobeOutput) _then;
 
   /// Create a copy of FfprobeOutput
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FfprobeOutputImplCopyWith<_$FfprobeOutputImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? streams = null,
+    Object? format = null,
+  }) {
+    return _then(_FfprobeOutput(
+      streams: null == streams
+          ? _self._streams
+          : streams // ignore: cast_nullable_to_non_nullable
+              as List<StreamData>,
+      format: null == format
+          ? _self.format
+          : format // ignore: cast_nullable_to_non_nullable
+              as FormatData,
+    ));
+  }
 
-StreamData _$StreamDataFromJson(Map<String, dynamic> json) {
-  return _StreamData.fromJson(json);
+  /// Create a copy of FfprobeOutput
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FormatDataCopyWith<$Res> get format {
+    return $FormatDataCopyWith<$Res>(_self.format, (value) {
+      return _then(_self.copyWith(format: value));
+    });
+  }
 }
 
 /// @nodoc
 mixin _$StreamData {
-  int get index => throw _privateConstructorUsedError;
-  String? get codecName => throw _privateConstructorUsedError;
-  String? get codecLongName => throw _privateConstructorUsedError;
+  int get index;
+  String? get codecName;
+  String? get codecLongName;
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
-  CodecType? get codecType => throw _privateConstructorUsedError;
-  String? get profile => throw _privateConstructorUsedError;
-  int? get width => throw _privateConstructorUsedError;
-  int? get height => throw _privateConstructorUsedError;
-  int? get codedWidth => throw _privateConstructorUsedError;
-  int? get codedHeight => throw _privateConstructorUsedError;
-  String? get displayAspectRatio => throw _privateConstructorUsedError;
-  String? get pixFmt => throw _privateConstructorUsedError;
-  int? get level => throw _privateConstructorUsedError;
+  CodecType? get codecType;
+  String? get profile;
+  int? get width;
+  int? get height;
+  int? get codedWidth;
+  int? get codedHeight;
+  String? get displayAspectRatio;
+  String? get pixFmt;
+  int? get level;
   @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
-  SampleFormat? get sampleFmt => throw _privateConstructorUsedError;
-  String? get sampleRate => throw _privateConstructorUsedError;
-  int? get channels => throw _privateConstructorUsedError;
-  String? get channelLayout => throw _privateConstructorUsedError;
-
-  /// Serializes this StreamData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  SampleFormat? get sampleFmt;
+  String? get sampleRate;
+  int? get channels;
+  String? get channelLayout;
+  String? get nbFrames;
 
   /// Create a copy of StreamData
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $StreamDataCopyWith<StreamData> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $StreamDataCopyWith<$Res> {
-  factory $StreamDataCopyWith(
-          StreamData value, $Res Function(StreamData) then) =
-      _$StreamDataCopyWithImpl<$Res, StreamData>;
-  @useResult
-  $Res call(
-      {int index,
-      String? codecName,
-      String? codecLongName,
-      @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
-      CodecType? codecType,
-      String? profile,
-      int? width,
-      int? height,
-      int? codedWidth,
-      int? codedHeight,
-      String? displayAspectRatio,
-      String? pixFmt,
-      int? level,
-      @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
-      SampleFormat? sampleFmt,
-      String? sampleRate,
-      int? channels,
-      String? channelLayout});
-}
-
-/// @nodoc
-class _$StreamDataCopyWithImpl<$Res, $Val extends StreamData>
-    implements $StreamDataCopyWith<$Res> {
-  _$StreamDataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of StreamData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $StreamDataCopyWith<StreamData> get copyWith =>
+      _$StreamDataCopyWithImpl<StreamData>(this as StreamData, _$identity);
+
+  /// Serializes this StreamData to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
-  $Res call({
-    Object? index = null,
-    Object? codecName = freezed,
-    Object? codecLongName = freezed,
-    Object? codecType = freezed,
-    Object? profile = freezed,
-    Object? width = freezed,
-    Object? height = freezed,
-    Object? codedWidth = freezed,
-    Object? codedHeight = freezed,
-    Object? displayAspectRatio = freezed,
-    Object? pixFmt = freezed,
-    Object? level = freezed,
-    Object? sampleFmt = freezed,
-    Object? sampleRate = freezed,
-    Object? channels = freezed,
-    Object? channelLayout = freezed,
-  }) {
-    return _then(_value.copyWith(
-      index: null == index
-          ? _value.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
-      codecName: freezed == codecName
-          ? _value.codecName
-          : codecName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      codecLongName: freezed == codecLongName
-          ? _value.codecLongName
-          : codecLongName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      codecType: freezed == codecType
-          ? _value.codecType
-          : codecType // ignore: cast_nullable_to_non_nullable
-              as CodecType?,
-      profile: freezed == profile
-          ? _value.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as String?,
-      width: freezed == width
-          ? _value.width
-          : width // ignore: cast_nullable_to_non_nullable
-              as int?,
-      height: freezed == height
-          ? _value.height
-          : height // ignore: cast_nullable_to_non_nullable
-              as int?,
-      codedWidth: freezed == codedWidth
-          ? _value.codedWidth
-          : codedWidth // ignore: cast_nullable_to_non_nullable
-              as int?,
-      codedHeight: freezed == codedHeight
-          ? _value.codedHeight
-          : codedHeight // ignore: cast_nullable_to_non_nullable
-              as int?,
-      displayAspectRatio: freezed == displayAspectRatio
-          ? _value.displayAspectRatio
-          : displayAspectRatio // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pixFmt: freezed == pixFmt
-          ? _value.pixFmt
-          : pixFmt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      level: freezed == level
-          ? _value.level
-          : level // ignore: cast_nullable_to_non_nullable
-              as int?,
-      sampleFmt: freezed == sampleFmt
-          ? _value.sampleFmt
-          : sampleFmt // ignore: cast_nullable_to_non_nullable
-              as SampleFormat?,
-      sampleRate: freezed == sampleRate
-          ? _value.sampleRate
-          : sampleRate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      channels: freezed == channels
-          ? _value.channels
-          : channels // ignore: cast_nullable_to_non_nullable
-              as int?,
-      channelLayout: freezed == channelLayout
-          ? _value.channelLayout
-          : channelLayout // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is StreamData &&
+            (identical(other.index, index) || other.index == index) &&
+            (identical(other.codecName, codecName) ||
+                other.codecName == codecName) &&
+            (identical(other.codecLongName, codecLongName) ||
+                other.codecLongName == codecLongName) &&
+            (identical(other.codecType, codecType) ||
+                other.codecType == codecType) &&
+            (identical(other.profile, profile) || other.profile == profile) &&
+            (identical(other.width, width) || other.width == width) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.codedWidth, codedWidth) ||
+                other.codedWidth == codedWidth) &&
+            (identical(other.codedHeight, codedHeight) ||
+                other.codedHeight == codedHeight) &&
+            (identical(other.displayAspectRatio, displayAspectRatio) ||
+                other.displayAspectRatio == displayAspectRatio) &&
+            (identical(other.pixFmt, pixFmt) || other.pixFmt == pixFmt) &&
+            (identical(other.level, level) || other.level == level) &&
+            (identical(other.sampleFmt, sampleFmt) ||
+                other.sampleFmt == sampleFmt) &&
+            (identical(other.sampleRate, sampleRate) ||
+                other.sampleRate == sampleRate) &&
+            (identical(other.channels, channels) ||
+                other.channels == channels) &&
+            (identical(other.channelLayout, channelLayout) ||
+                other.channelLayout == channelLayout) &&
+            (identical(other.nbFrames, nbFrames) ||
+                other.nbFrames == nbFrames));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      index,
+      codecName,
+      codecLongName,
+      codecType,
+      profile,
+      width,
+      height,
+      codedWidth,
+      codedHeight,
+      displayAspectRatio,
+      pixFmt,
+      level,
+      sampleFmt,
+      sampleRate,
+      channels,
+      channelLayout,
+      nbFrames);
+
+  @override
+  String toString() {
+    return 'StreamData(index: $index, codecName: $codecName, codecLongName: $codecLongName, codecType: $codecType, profile: $profile, width: $width, height: $height, codedWidth: $codedWidth, codedHeight: $codedHeight, displayAspectRatio: $displayAspectRatio, pixFmt: $pixFmt, level: $level, sampleFmt: $sampleFmt, sampleRate: $sampleRate, channels: $channels, channelLayout: $channelLayout, nbFrames: $nbFrames)';
   }
 }
 
 /// @nodoc
-abstract class _$$StreamDataImplCopyWith<$Res>
-    implements $StreamDataCopyWith<$Res> {
-  factory _$$StreamDataImplCopyWith(
-          _$StreamDataImpl value, $Res Function(_$StreamDataImpl) then) =
-      __$$StreamDataImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $StreamDataCopyWith<$Res> {
+  factory $StreamDataCopyWith(
+          StreamData value, $Res Function(StreamData) _then) =
+      _$StreamDataCopyWithImpl;
   @useResult
   $Res call(
       {int index,
@@ -395,16 +326,16 @@ abstract class _$$StreamDataImplCopyWith<$Res>
       SampleFormat? sampleFmt,
       String? sampleRate,
       int? channels,
-      String? channelLayout});
+      String? channelLayout,
+      String? nbFrames});
 }
 
 /// @nodoc
-class __$$StreamDataImplCopyWithImpl<$Res>
-    extends _$StreamDataCopyWithImpl<$Res, _$StreamDataImpl>
-    implements _$$StreamDataImplCopyWith<$Res> {
-  __$$StreamDataImplCopyWithImpl(
-      _$StreamDataImpl _value, $Res Function(_$StreamDataImpl) _then)
-      : super(_value, _then);
+class _$StreamDataCopyWithImpl<$Res> implements $StreamDataCopyWith<$Res> {
+  _$StreamDataCopyWithImpl(this._self, this._then);
+
+  final StreamData _self;
+  final $Res Function(StreamData) _then;
 
   /// Create a copy of StreamData
   /// with the given fields replaced by the non-null parameter values.
@@ -427,71 +358,76 @@ class __$$StreamDataImplCopyWithImpl<$Res>
     Object? sampleRate = freezed,
     Object? channels = freezed,
     Object? channelLayout = freezed,
+    Object? nbFrames = freezed,
   }) {
-    return _then(_$StreamDataImpl(
+    return _then(_self.copyWith(
       index: null == index
-          ? _value.index
+          ? _self.index
           : index // ignore: cast_nullable_to_non_nullable
               as int,
       codecName: freezed == codecName
-          ? _value.codecName
+          ? _self.codecName
           : codecName // ignore: cast_nullable_to_non_nullable
               as String?,
       codecLongName: freezed == codecLongName
-          ? _value.codecLongName
+          ? _self.codecLongName
           : codecLongName // ignore: cast_nullable_to_non_nullable
               as String?,
       codecType: freezed == codecType
-          ? _value.codecType
+          ? _self.codecType
           : codecType // ignore: cast_nullable_to_non_nullable
               as CodecType?,
       profile: freezed == profile
-          ? _value.profile
+          ? _self.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as String?,
       width: freezed == width
-          ? _value.width
+          ? _self.width
           : width // ignore: cast_nullable_to_non_nullable
               as int?,
       height: freezed == height
-          ? _value.height
+          ? _self.height
           : height // ignore: cast_nullable_to_non_nullable
               as int?,
       codedWidth: freezed == codedWidth
-          ? _value.codedWidth
+          ? _self.codedWidth
           : codedWidth // ignore: cast_nullable_to_non_nullable
               as int?,
       codedHeight: freezed == codedHeight
-          ? _value.codedHeight
+          ? _self.codedHeight
           : codedHeight // ignore: cast_nullable_to_non_nullable
               as int?,
       displayAspectRatio: freezed == displayAspectRatio
-          ? _value.displayAspectRatio
+          ? _self.displayAspectRatio
           : displayAspectRatio // ignore: cast_nullable_to_non_nullable
               as String?,
       pixFmt: freezed == pixFmt
-          ? _value.pixFmt
+          ? _self.pixFmt
           : pixFmt // ignore: cast_nullable_to_non_nullable
               as String?,
       level: freezed == level
-          ? _value.level
+          ? _self.level
           : level // ignore: cast_nullable_to_non_nullable
               as int?,
       sampleFmt: freezed == sampleFmt
-          ? _value.sampleFmt
+          ? _self.sampleFmt
           : sampleFmt // ignore: cast_nullable_to_non_nullable
               as SampleFormat?,
       sampleRate: freezed == sampleRate
-          ? _value.sampleRate
+          ? _self.sampleRate
           : sampleRate // ignore: cast_nullable_to_non_nullable
               as String?,
       channels: freezed == channels
-          ? _value.channels
+          ? _self.channels
           : channels // ignore: cast_nullable_to_non_nullable
               as int?,
       channelLayout: freezed == channelLayout
-          ? _value.channelLayout
+          ? _self.channelLayout
           : channelLayout // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nbFrames: freezed == nbFrames
+          ? _self.nbFrames
+          : nbFrames // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -500,8 +436,8 @@ class __$$StreamDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$StreamDataImpl implements _StreamData {
-  const _$StreamDataImpl(
+class _StreamData implements StreamData {
+  const _StreamData(
       {required this.index,
       this.codecName,
       this.codecLongName,
@@ -519,10 +455,10 @@ class _$StreamDataImpl implements _StreamData {
       this.sampleFmt,
       this.sampleRate,
       this.channels,
-      this.channelLayout});
-
-  factory _$StreamDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$StreamDataImplFromJson(json);
+      this.channelLayout,
+      this.nbFrames});
+  factory _StreamData.fromJson(Map<String, dynamic> json) =>
+      _$StreamDataFromJson(json);
 
   @override
   final int index;
@@ -558,17 +494,29 @@ class _$StreamDataImpl implements _StreamData {
   final int? channels;
   @override
   final String? channelLayout;
+  @override
+  final String? nbFrames;
+
+  /// Create a copy of StreamData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$StreamDataCopyWith<_StreamData> get copyWith =>
+      __$StreamDataCopyWithImpl<_StreamData>(this, _$identity);
 
   @override
-  String toString() {
-    return 'StreamData(index: $index, codecName: $codecName, codecLongName: $codecLongName, codecType: $codecType, profile: $profile, width: $width, height: $height, codedWidth: $codedWidth, codedHeight: $codedHeight, displayAspectRatio: $displayAspectRatio, pixFmt: $pixFmt, level: $level, sampleFmt: $sampleFmt, sampleRate: $sampleRate, channels: $channels, channelLayout: $channelLayout)';
+  Map<String, dynamic> toJson() {
+    return _$StreamDataToJson(
+      this,
+    );
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$StreamDataImpl &&
+            other is _StreamData &&
             (identical(other.index, index) || other.index == index) &&
             (identical(other.codecName, codecName) ||
                 other.codecName == codecName) &&
@@ -594,7 +542,9 @@ class _$StreamDataImpl implements _StreamData {
             (identical(other.channels, channels) ||
                 other.channels == channels) &&
             (identical(other.channelLayout, channelLayout) ||
-                other.channelLayout == channelLayout));
+                other.channelLayout == channelLayout) &&
+            (identical(other.nbFrames, nbFrames) ||
+                other.nbFrames == nbFrames));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -616,300 +566,173 @@ class _$StreamDataImpl implements _StreamData {
       sampleFmt,
       sampleRate,
       channels,
-      channelLayout);
-
-  /// Create a copy of StreamData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$StreamDataImplCopyWith<_$StreamDataImpl> get copyWith =>
-      __$$StreamDataImplCopyWithImpl<_$StreamDataImpl>(this, _$identity);
+      channelLayout,
+      nbFrames);
 
   @override
-  Map<String, dynamic> toJson() {
-    return _$$StreamDataImplToJson(
-      this,
-    );
+  String toString() {
+    return 'StreamData(index: $index, codecName: $codecName, codecLongName: $codecLongName, codecType: $codecType, profile: $profile, width: $width, height: $height, codedWidth: $codedWidth, codedHeight: $codedHeight, displayAspectRatio: $displayAspectRatio, pixFmt: $pixFmt, level: $level, sampleFmt: $sampleFmt, sampleRate: $sampleRate, channels: $channels, channelLayout: $channelLayout, nbFrames: $nbFrames)';
   }
 }
 
-abstract class _StreamData implements StreamData {
-  const factory _StreamData(
-      {required final int index,
-      final String? codecName,
-      final String? codecLongName,
+/// @nodoc
+abstract mixin class _$StreamDataCopyWith<$Res>
+    implements $StreamDataCopyWith<$Res> {
+  factory _$StreamDataCopyWith(
+          _StreamData value, $Res Function(_StreamData) _then) =
+      __$StreamDataCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {int index,
+      String? codecName,
+      String? codecLongName,
       @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
-      final CodecType? codecType,
-      final String? profile,
-      final int? width,
-      final int? height,
-      final int? codedWidth,
-      final int? codedHeight,
-      final String? displayAspectRatio,
-      final String? pixFmt,
-      final int? level,
+      CodecType? codecType,
+      String? profile,
+      int? width,
+      int? height,
+      int? codedWidth,
+      int? codedHeight,
+      String? displayAspectRatio,
+      String? pixFmt,
+      int? level,
       @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
-      final SampleFormat? sampleFmt,
-      final String? sampleRate,
-      final int? channels,
-      final String? channelLayout}) = _$StreamDataImpl;
+      SampleFormat? sampleFmt,
+      String? sampleRate,
+      int? channels,
+      String? channelLayout,
+      String? nbFrames});
+}
 
-  factory _StreamData.fromJson(Map<String, dynamic> json) =
-      _$StreamDataImpl.fromJson;
+/// @nodoc
+class __$StreamDataCopyWithImpl<$Res> implements _$StreamDataCopyWith<$Res> {
+  __$StreamDataCopyWithImpl(this._self, this._then);
 
-  @override
-  int get index;
-  @override
-  String? get codecName;
-  @override
-  String? get codecLongName;
-  @override
-  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
-  CodecType? get codecType;
-  @override
-  String? get profile;
-  @override
-  int? get width;
-  @override
-  int? get height;
-  @override
-  int? get codedWidth;
-  @override
-  int? get codedHeight;
-  @override
-  String? get displayAspectRatio;
-  @override
-  String? get pixFmt;
-  @override
-  int? get level;
-  @override
-  @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
-  SampleFormat? get sampleFmt;
-  @override
-  String? get sampleRate;
-  @override
-  int? get channels;
-  @override
-  String? get channelLayout;
+  final _StreamData _self;
+  final $Res Function(_StreamData) _then;
 
   /// Create a copy of StreamData
   /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$StreamDataImplCopyWith<_$StreamDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-FormatData _$FormatDataFromJson(Map<String, dynamic> json) {
-  return _FormatData.fromJson(json);
-}
-
-/// @nodoc
-mixin _$FormatData {
-  String get filename => throw _privateConstructorUsedError;
-  String get formatName => throw _privateConstructorUsedError;
-  String get formatLongName => throw _privateConstructorUsedError;
-  String get size => throw _privateConstructorUsedError;
-  String? get bitRate => throw _privateConstructorUsedError;
-  String? get duration => throw _privateConstructorUsedError;
-  String? get startTime => throw _privateConstructorUsedError;
-
-  /// Serializes this FormatData to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of FormatData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $FormatDataCopyWith<FormatData> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $FormatDataCopyWith<$Res> {
-  factory $FormatDataCopyWith(
-          FormatData value, $Res Function(FormatData) then) =
-      _$FormatDataCopyWithImpl<$Res, FormatData>;
-  @useResult
-  $Res call(
-      {String filename,
-      String formatName,
-      String formatLongName,
-      String size,
-      String? bitRate,
-      String? duration,
-      String? startTime});
-}
-
-/// @nodoc
-class _$FormatDataCopyWithImpl<$Res, $Val extends FormatData>
-    implements $FormatDataCopyWith<$Res> {
-  _$FormatDataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of FormatData
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
-    Object? filename = null,
-    Object? formatName = null,
-    Object? formatLongName = null,
-    Object? size = null,
-    Object? bitRate = freezed,
-    Object? duration = freezed,
-    Object? startTime = freezed,
+    Object? index = null,
+    Object? codecName = freezed,
+    Object? codecLongName = freezed,
+    Object? codecType = freezed,
+    Object? profile = freezed,
+    Object? width = freezed,
+    Object? height = freezed,
+    Object? codedWidth = freezed,
+    Object? codedHeight = freezed,
+    Object? displayAspectRatio = freezed,
+    Object? pixFmt = freezed,
+    Object? level = freezed,
+    Object? sampleFmt = freezed,
+    Object? sampleRate = freezed,
+    Object? channels = freezed,
+    Object? channelLayout = freezed,
+    Object? nbFrames = freezed,
   }) {
-    return _then(_value.copyWith(
-      filename: null == filename
-          ? _value.filename
-          : filename // ignore: cast_nullable_to_non_nullable
-              as String,
-      formatName: null == formatName
-          ? _value.formatName
-          : formatName // ignore: cast_nullable_to_non_nullable
-              as String,
-      formatLongName: null == formatLongName
-          ? _value.formatLongName
-          : formatLongName // ignore: cast_nullable_to_non_nullable
-              as String,
-      size: null == size
-          ? _value.size
-          : size // ignore: cast_nullable_to_non_nullable
-              as String,
-      bitRate: freezed == bitRate
-          ? _value.bitRate
-          : bitRate // ignore: cast_nullable_to_non_nullable
+    return _then(_StreamData(
+      index: null == index
+          ? _self.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
+      codecName: freezed == codecName
+          ? _self.codecName
+          : codecName // ignore: cast_nullable_to_non_nullable
               as String?,
-      duration: freezed == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
+      codecLongName: freezed == codecLongName
+          ? _self.codecLongName
+          : codecLongName // ignore: cast_nullable_to_non_nullable
               as String?,
-      startTime: freezed == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
+      codecType: freezed == codecType
+          ? _self.codecType
+          : codecType // ignore: cast_nullable_to_non_nullable
+              as CodecType?,
+      profile: freezed == profile
+          ? _self.profile
+          : profile // ignore: cast_nullable_to_non_nullable
               as String?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$FormatDataImplCopyWith<$Res>
-    implements $FormatDataCopyWith<$Res> {
-  factory _$$FormatDataImplCopyWith(
-          _$FormatDataImpl value, $Res Function(_$FormatDataImpl) then) =
-      __$$FormatDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String filename,
-      String formatName,
-      String formatLongName,
-      String size,
-      String? bitRate,
-      String? duration,
-      String? startTime});
-}
-
-/// @nodoc
-class __$$FormatDataImplCopyWithImpl<$Res>
-    extends _$FormatDataCopyWithImpl<$Res, _$FormatDataImpl>
-    implements _$$FormatDataImplCopyWith<$Res> {
-  __$$FormatDataImplCopyWithImpl(
-      _$FormatDataImpl _value, $Res Function(_$FormatDataImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of FormatData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? filename = null,
-    Object? formatName = null,
-    Object? formatLongName = null,
-    Object? size = null,
-    Object? bitRate = freezed,
-    Object? duration = freezed,
-    Object? startTime = freezed,
-  }) {
-    return _then(_$FormatDataImpl(
-      filename: null == filename
-          ? _value.filename
-          : filename // ignore: cast_nullable_to_non_nullable
-              as String,
-      formatName: null == formatName
-          ? _value.formatName
-          : formatName // ignore: cast_nullable_to_non_nullable
-              as String,
-      formatLongName: null == formatLongName
-          ? _value.formatLongName
-          : formatLongName // ignore: cast_nullable_to_non_nullable
-              as String,
-      size: null == size
-          ? _value.size
-          : size // ignore: cast_nullable_to_non_nullable
-              as String,
-      bitRate: freezed == bitRate
-          ? _value.bitRate
-          : bitRate // ignore: cast_nullable_to_non_nullable
+      width: freezed == width
+          ? _self.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as int?,
+      height: freezed == height
+          ? _self.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as int?,
+      codedWidth: freezed == codedWidth
+          ? _self.codedWidth
+          : codedWidth // ignore: cast_nullable_to_non_nullable
+              as int?,
+      codedHeight: freezed == codedHeight
+          ? _self.codedHeight
+          : codedHeight // ignore: cast_nullable_to_non_nullable
+              as int?,
+      displayAspectRatio: freezed == displayAspectRatio
+          ? _self.displayAspectRatio
+          : displayAspectRatio // ignore: cast_nullable_to_non_nullable
               as String?,
-      duration: freezed == duration
-          ? _value.duration
-          : duration // ignore: cast_nullable_to_non_nullable
+      pixFmt: freezed == pixFmt
+          ? _self.pixFmt
+          : pixFmt // ignore: cast_nullable_to_non_nullable
               as String?,
-      startTime: freezed == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
+      level: freezed == level
+          ? _self.level
+          : level // ignore: cast_nullable_to_non_nullable
+              as int?,
+      sampleFmt: freezed == sampleFmt
+          ? _self.sampleFmt
+          : sampleFmt // ignore: cast_nullable_to_non_nullable
+              as SampleFormat?,
+      sampleRate: freezed == sampleRate
+          ? _self.sampleRate
+          : sampleRate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      channels: freezed == channels
+          ? _self.channels
+          : channels // ignore: cast_nullable_to_non_nullable
+              as int?,
+      channelLayout: freezed == channelLayout
+          ? _self.channelLayout
+          : channelLayout // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nbFrames: freezed == nbFrames
+          ? _self.nbFrames
+          : nbFrames // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
 }
 
 /// @nodoc
+mixin _$FormatData {
+  String get filename;
+  String get formatName;
+  String get formatLongName;
+  String get size;
+  String? get bitRate;
+  String? get duration;
+  String? get startTime;
 
-@JsonSerializable(fieldRename: FieldRename.snake)
-class _$FormatDataImpl implements _FormatData {
-  const _$FormatDataImpl(
-      {required this.filename,
-      required this.formatName,
-      required this.formatLongName,
-      required this.size,
-      this.bitRate,
-      this.duration,
-      this.startTime});
+  /// Create a copy of FormatData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $FormatDataCopyWith<FormatData> get copyWith =>
+      _$FormatDataCopyWithImpl<FormatData>(this as FormatData, _$identity);
 
-  factory _$FormatDataImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FormatDataImplFromJson(json);
-
-  @override
-  final String filename;
-  @override
-  final String formatName;
-  @override
-  final String formatLongName;
-  @override
-  final String size;
-  @override
-  final String? bitRate;
-  @override
-  final String? duration;
-  @override
-  final String? startTime;
-
-  @override
-  String toString() {
-    return 'FormatData(filename: $filename, formatName: $formatName, formatLongName: $formatLongName, size: $size, bitRate: $bitRate, duration: $duration, startTime: $startTime)';
-  }
+  /// Serializes this FormatData to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FormatDataImpl &&
+            other is FormatData &&
             (identical(other.filename, filename) ||
                 other.filename == filename) &&
             (identical(other.formatName, formatName) ||
@@ -929,54 +752,223 @@ class _$FormatDataImpl implements _FormatData {
   int get hashCode => Object.hash(runtimeType, filename, formatName,
       formatLongName, size, bitRate, duration, startTime);
 
-  /// Create a copy of FormatData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  @pragma('vm:prefer-inline')
-  _$$FormatDataImplCopyWith<_$FormatDataImpl> get copyWith =>
-      __$$FormatDataImplCopyWithImpl<_$FormatDataImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$FormatDataImplToJson(
-      this,
-    );
+  String toString() {
+    return 'FormatData(filename: $filename, formatName: $formatName, formatLongName: $formatLongName, size: $size, bitRate: $bitRate, duration: $duration, startTime: $startTime)';
   }
 }
 
-abstract class _FormatData implements FormatData {
-  const factory _FormatData(
-      {required final String filename,
-      required final String formatName,
-      required final String formatLongName,
-      required final String size,
-      final String? bitRate,
-      final String? duration,
-      final String? startTime}) = _$FormatDataImpl;
+/// @nodoc
+abstract mixin class $FormatDataCopyWith<$Res> {
+  factory $FormatDataCopyWith(
+          FormatData value, $Res Function(FormatData) _then) =
+      _$FormatDataCopyWithImpl;
+  @useResult
+  $Res call(
+      {String filename,
+      String formatName,
+      String formatLongName,
+      String size,
+      String? bitRate,
+      String? duration,
+      String? startTime});
+}
 
-  factory _FormatData.fromJson(Map<String, dynamic> json) =
-      _$FormatDataImpl.fromJson;
+/// @nodoc
+class _$FormatDataCopyWithImpl<$Res> implements $FormatDataCopyWith<$Res> {
+  _$FormatDataCopyWithImpl(this._self, this._then);
+
+  final FormatData _self;
+  final $Res Function(FormatData) _then;
+
+  /// Create a copy of FormatData
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? filename = null,
+    Object? formatName = null,
+    Object? formatLongName = null,
+    Object? size = null,
+    Object? bitRate = freezed,
+    Object? duration = freezed,
+    Object? startTime = freezed,
+  }) {
+    return _then(_self.copyWith(
+      filename: null == filename
+          ? _self.filename
+          : filename // ignore: cast_nullable_to_non_nullable
+              as String,
+      formatName: null == formatName
+          ? _self.formatName
+          : formatName // ignore: cast_nullable_to_non_nullable
+              as String,
+      formatLongName: null == formatLongName
+          ? _self.formatLongName
+          : formatLongName // ignore: cast_nullable_to_non_nullable
+              as String,
+      size: null == size
+          ? _self.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as String,
+      bitRate: freezed == bitRate
+          ? _self.bitRate
+          : bitRate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      duration: freezed == duration
+          ? _self.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startTime: freezed == startTime
+          ? _self.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class _FormatData implements FormatData {
+  const _FormatData(
+      {required this.filename,
+      required this.formatName,
+      required this.formatLongName,
+      required this.size,
+      this.bitRate,
+      this.duration,
+      this.startTime});
+  factory _FormatData.fromJson(Map<String, dynamic> json) =>
+      _$FormatDataFromJson(json);
 
   @override
-  String get filename;
+  final String filename;
   @override
-  String get formatName;
+  final String formatName;
   @override
-  String get formatLongName;
+  final String formatLongName;
   @override
-  String get size;
+  final String size;
   @override
-  String? get bitRate;
+  final String? bitRate;
   @override
-  String? get duration;
+  final String? duration;
   @override
-  String? get startTime;
+  final String? startTime;
 
   /// Create a copy of FormatData
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$FormatDataImplCopyWith<_$FormatDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  @pragma('vm:prefer-inline')
+  _$FormatDataCopyWith<_FormatData> get copyWith =>
+      __$FormatDataCopyWithImpl<_FormatData>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$FormatDataToJson(
+      this,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _FormatData &&
+            (identical(other.filename, filename) ||
+                other.filename == filename) &&
+            (identical(other.formatName, formatName) ||
+                other.formatName == formatName) &&
+            (identical(other.formatLongName, formatLongName) ||
+                other.formatLongName == formatLongName) &&
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.bitRate, bitRate) || other.bitRate == bitRate) &&
+            (identical(other.duration, duration) ||
+                other.duration == duration) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, filename, formatName,
+      formatLongName, size, bitRate, duration, startTime);
+
+  @override
+  String toString() {
+    return 'FormatData(filename: $filename, formatName: $formatName, formatLongName: $formatLongName, size: $size, bitRate: $bitRate, duration: $duration, startTime: $startTime)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$FormatDataCopyWith<$Res>
+    implements $FormatDataCopyWith<$Res> {
+  factory _$FormatDataCopyWith(
+          _FormatData value, $Res Function(_FormatData) _then) =
+      __$FormatDataCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String filename,
+      String formatName,
+      String formatLongName,
+      String size,
+      String? bitRate,
+      String? duration,
+      String? startTime});
+}
+
+/// @nodoc
+class __$FormatDataCopyWithImpl<$Res> implements _$FormatDataCopyWith<$Res> {
+  __$FormatDataCopyWithImpl(this._self, this._then);
+
+  final _FormatData _self;
+  final $Res Function(_FormatData) _then;
+
+  /// Create a copy of FormatData
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? filename = null,
+    Object? formatName = null,
+    Object? formatLongName = null,
+    Object? size = null,
+    Object? bitRate = freezed,
+    Object? duration = freezed,
+    Object? startTime = freezed,
+  }) {
+    return _then(_FormatData(
+      filename: null == filename
+          ? _self.filename
+          : filename // ignore: cast_nullable_to_non_nullable
+              as String,
+      formatName: null == formatName
+          ? _self.formatName
+          : formatName // ignore: cast_nullable_to_non_nullable
+              as String,
+      formatLongName: null == formatLongName
+          ? _self.formatLongName
+          : formatLongName // ignore: cast_nullable_to_non_nullable
+              as String,
+      size: null == size
+          ? _self.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as String,
+      bitRate: freezed == bitRate
+          ? _self.bitRate
+          : bitRate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      duration: freezed == duration
+          ? _self.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startTime: freezed == startTime
+          ? _self.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }

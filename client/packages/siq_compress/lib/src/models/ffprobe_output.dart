@@ -50,6 +50,7 @@ abstract class StreamData with _$StreamData {
     String? sampleRate,
     int? channels,
     String? channelLayout,
+    String? nbFrames,
   }) = _StreamData;
 
   factory StreamData.fromJson(Map<String, dynamic> json) =>
