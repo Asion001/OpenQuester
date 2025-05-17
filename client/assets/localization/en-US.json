@@ -61,5 +61,9 @@
   "leave_game_confirmation": "Leave Game?",
   "yes": "Yes",
   "no": "No",
-  "openquester": "OpenQuester"
+  "openquester": "OpenQuester",
+  "question": {
+    "pressToAnswer": "Press to Answer",
+    "holdToSkip": "Hold to Skip"
+  }
 }

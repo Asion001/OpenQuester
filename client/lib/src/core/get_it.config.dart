@@ -24,6 +24,8 @@ import '../features/chat/controllers/chat_controller.dart' as _i899;
 import '../features/game_lobby/controllers/game_lobby_controller.dart' as _i674;
 import '../features/game_preview/controllers/game_preview_controller.dart'
     as _i546;
+import '../features/game_question/controllers/game_question_controller.dart'
+    as _i99;
 import '../features/games/controllers/games_list_controller.dart' as _i747;
 import '../features/package_upload/controllers/package_upload_controller.dart'
     as _i905;
@@ -81,6 +83,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i650.AutoUpdateController());
     gh.singleton<_i905.PackageUploadController>(
         () => _i905.PackageUploadController());
+    gh.singleton<_i99.GameQuestionController>(
+        () => _i99.GameQuestionController());
     gh.singleton<_i149.Api>(() => _i149.Api());
     await gh.singletonAsync<_i785.AuthController>(
       () {

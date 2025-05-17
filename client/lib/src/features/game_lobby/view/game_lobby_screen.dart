@@ -37,19 +37,17 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
   Widget build(BuildContext context) {
     final showChat = watchValue((GameLobbyController e) => e.showChat);
     final gameData = watchValue((GameLobbyController e) => e.gameListData);
+    final chatWideModeOn = GameLobbyStyles.desktopChat(context);
+    final showDesktopChat = chatWideModeOn && showChat;
 
     callOnce(
       (context) {
         // Set init value for showing chat to [false] for mobile
-        final wideMode = UiModeUtils.wideModeOn(context);
-        if (wideMode) {
+        if (chatWideModeOn) {
           getIt<GameLobbyController>().showChat.value = true;
         }
       },
     );
-
-    final chatWideModeOn = GameLobbyStyles.desktopChat(context);
-    final showDesktopChat = chatWideModeOn && showChat;
 
     return PopScope(
       canPop: false,
@@ -82,7 +80,7 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const _BodyBuilder().expand(),
+                      const _BodyLayoutBuilder().expand(),
                       AppAnimatedSwitcher(
                         visible: showDesktopChat,
                         child: const _Chat()
@@ -105,14 +103,35 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
   }
 }
 
-class _BodyBuilder extends StatelessWidget {
+class _BodyBuilder extends WatchingWidget {
   const _BodyBuilder();
+
+  @override
+  Widget build(BuildContext context) {
+    final currentQuestion =
+        watchValue((GameQuestionController e) => e.question);
+
+    Widget body;
+
+    if (currentQuestion != null) {
+      body = const GameQuestionScreen();
+    } else {
+      body = const GameLobbyThemes();
+    }
+
+    return body;
+  }
+}
+
+class _BodyLayoutBuilder extends WatchingWidget {
+  const _BodyLayoutBuilder();
 
   @override
   Widget build(BuildContext context) {
     final playersOnLeft = GameLobbyStyles.playersOnLeft(context);
 
     Widget child;
+    final body = const _BodyBuilder().expand();
 
     if (playersOnLeft) {
       child = Row(
@@ -123,7 +142,7 @@ class _BodyBuilder extends StatelessWidget {
               .paddingSymmetric(horizontal: 8)
               .paddingTop(16)
               .paddingLeft(16),
-          const GameLobbyThemes().expand(),
+          body,
         ],
       );
     } else {
@@ -132,7 +151,7 @@ class _BodyBuilder extends StatelessWidget {
           const GameLobbyPlayers(axis: Axis.horizontal)
               .withHeight(GameLobbyStyles.playersMobile.height),
           const Divider(height: 0, thickness: .4).paddingTop(8),
-          const GameLobbyThemes().expand(),
+          body,
         ],
       );
     }

@@ -10,7 +10,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 @singleton
 class GameLobbyController {
   Socket? socket;
-  String? gameId;
+  String? _gameId;
 
   final gameData = ValueNotifier<SocketIOGameJoinEventPayload?>(null);
   final gameListData = ValueNotifier<GameListItem?>(null);
@@ -20,12 +20,12 @@ class GameLobbyController {
 
   Future<void> join({required String gameId}) async {
     // Check if already joined
-    if (this.gameId == gameId) return;
+    if (_gameId == gameId) return;
 
     clear();
 
     try {
-      this.gameId = gameId;
+      _gameId = gameId;
 
       // Get list game data
       unawaited(
@@ -38,11 +38,13 @@ class GameLobbyController {
       socket!
         ..onConnect((_) => _onConnect())
         ..onDisconnect((_) => clear())
-        ..on(SocketIOGameEvents.gameData.json!, _onGameData)
-        ..on(SocketIOGameEvents.start.json!, _onGameStart)
         ..on(SocketIOEvents.error.json!, _onError)
-        ..on(SocketIOGameEvents.userLeave.json!, _onUserLeave)
-        ..on(SocketIOGameEvents.join.json!, _onUserJoin)
+        ..on(SocketIOGameReceiveEvents.gameData.json!, _onGameData)
+        ..on(SocketIOGameReceiveEvents.start.json!, _onGameStart)
+        ..on(SocketIOGameReceiveEvents.userLeave.json!, _onUserLeave)
+        ..on(SocketIOGameReceiveEvents.join.json!, _onUserJoin)
+        ..on(SocketIOGameReceiveEvents.questionData.json!, _onQuestionPick)
+        ..on(SocketIOGameReceiveEvents.questionAnswer.json!, _onQuestionAnswer)
         ..connect();
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -63,14 +65,14 @@ class GameLobbyController {
           gameListData.value!.createdBy.id == ProfileController.getUser()?.id;
 
       final ioGameJoinInput = SocketIOGameJoinInput(
-        gameId: gameId!,
+        gameId: _gameId!,
         role: iAmHost
             ? SocketIOGameJoinInputRole.showman
             : SocketIOGameJoinInputRole.player,
       );
 
       socket?.emit(
-        SocketIOGameEvents.join.json!,
+        SocketIOGameSendEvents.join.json!,
         ioGameJoinInput.toJson(),
       );
     } catch (e, s) {
@@ -113,7 +115,7 @@ class GameLobbyController {
   /// Clear all fields for new game to use
   void clear() {
     try {
-      gameId = null;
+      _gameId = null;
       socket?.dispose();
       socket = null;
       gameData.value = null;
@@ -122,11 +124,12 @@ class GameLobbyController {
       _chatMessagesSub = null;
       showChat.value = false;
       getIt<SocketChatController>().clear();
+      getIt<GameQuestionController>().clear();
     } catch (_) {}
   }
 
   Future<void> leave() async {
-    socket?.emit(SocketIOGameEvents.userLeave.json!);
+    socket?.emit(SocketIOGameSendEvents.userLeave.json!);
   }
 
   void toggleDesktopChat() {
@@ -176,7 +179,7 @@ class GameLobbyController {
   }
 
   void startGame() {
-    socket?.emit(SocketIOGameEvents.start.json!);
+    socket?.emit(SocketIOGameSendEvents.start.json!);
   }
 
   void _onError(dynamic data) {
@@ -185,7 +188,7 @@ class GameLobbyController {
       errorText = data['message']?.toString() ?? errorText;
     }
 
-    getIt<ToastController>().show(data);
+    getIt<ToastController>().show(errorText);
   }
 
   void _onUserLeave(dynamic data) {
@@ -236,5 +239,37 @@ class GameLobbyController {
     getIt<ToastController>().show(
       LocaleKeys.user_joined_the_game.tr(args: [user.meta.username]),
     );
+  }
+
+  void onQuestionPick(int questionId) {
+    socket?.emit(
+      SocketIOGameSendEvents.questionPick.json!,
+      SocketIOQuestionPickEventInput(questionId: questionId).toJson(),
+    );
+  }
+
+  void _onQuestionPick(dynamic data) {
+    if (data is! Map) return;
+
+    final questionData =
+        SocketIOQuestionDataEventPayload.fromJson(data as Map<String, dynamic>);
+    gameData.value = gameData.value?.copyWith.gameState(
+      questionState: GameStateQuestionState.showing,
+      timer: questionData.timer,
+    );
+
+    // Pass the question to controller to handle the rest
+    getIt<GameQuestionController>().question.value = questionData.data;
+  }
+
+  void _onQuestionAnswer(dynamic data) {
+    if (data is! Map) return;
+
+    final questionData = SocketIOQuestionAnswerEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+
+    gameData.value = gameData.value?.copyWith
+        .gameState(answeringPlayer: questionData.userId);
   }
 }

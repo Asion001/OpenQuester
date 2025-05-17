@@ -15,8 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$SocketIOQuestionDataEventPayload {
-  /// Full question data for showman, simplified (without answer) for others
-  dynamic get data;
+  PackageQuestionData get data;
   GameStateTimer get timer;
 
   /// Create a copy of SocketIOQuestionDataEventPayload
@@ -36,14 +35,13 @@ mixin _$SocketIOQuestionDataEventPayload {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is SocketIOQuestionDataEventPayload &&
-            const DeepCollectionEquality().equals(other.data, data) &&
+            (identical(other.data, data) || other.data == data) &&
             (identical(other.timer, timer) || other.timer == timer));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(data), timer);
+  int get hashCode => Object.hash(runtimeType, data, timer);
 
   @override
   String toString() {
@@ -58,8 +56,9 @@ abstract mixin class $SocketIOQuestionDataEventPayloadCopyWith<$Res> {
           $Res Function(SocketIOQuestionDataEventPayload) _then) =
       _$SocketIOQuestionDataEventPayloadCopyWithImpl;
   @useResult
-  $Res call({dynamic data, GameStateTimer timer});
+  $Res call({PackageQuestionData data, GameStateTimer timer});
 
+  $PackageQuestionDataCopyWith<$Res> get data;
   $GameStateTimerCopyWith<$Res> get timer;
 }
 
@@ -76,19 +75,29 @@ class _$SocketIOQuestionDataEventPayloadCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = freezed,
+    Object? data = null,
     Object? timer = null,
   }) {
     return _then(_self.copyWith(
-      data: freezed == data
+      data: null == data
           ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as PackageQuestionData,
       timer: null == timer
           ? _self.timer
           : timer // ignore: cast_nullable_to_non_nullable
               as GameStateTimer,
     ));
+  }
+
+  /// Create a copy of SocketIOQuestionDataEventPayload
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PackageQuestionDataCopyWith<$Res> get data {
+    return $PackageQuestionDataCopyWith<$Res>(_self.data, (value) {
+      return _then(_self.copyWith(data: value));
+    });
   }
 
   /// Create a copy of SocketIOQuestionDataEventPayload
@@ -112,9 +121,8 @@ class _SocketIOQuestionDataEventPayload
           Map<String, dynamic> json) =>
       _$SocketIOQuestionDataEventPayloadFromJson(json);
 
-  /// Full question data for showman, simplified (without answer) for others
   @override
-  final dynamic data;
+  final PackageQuestionData data;
   @override
   final GameStateTimer timer;
 
@@ -139,14 +147,13 @@ class _SocketIOQuestionDataEventPayload
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SocketIOQuestionDataEventPayload &&
-            const DeepCollectionEquality().equals(other.data, data) &&
+            (identical(other.data, data) || other.data == data) &&
             (identical(other.timer, timer) || other.timer == timer));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(data), timer);
+  int get hashCode => Object.hash(runtimeType, data, timer);
 
   @override
   String toString() {
@@ -163,8 +170,10 @@ abstract mixin class _$SocketIOQuestionDataEventPayloadCopyWith<$Res>
       __$SocketIOQuestionDataEventPayloadCopyWithImpl;
   @override
   @useResult
-  $Res call({dynamic data, GameStateTimer timer});
+  $Res call({PackageQuestionData data, GameStateTimer timer});
 
+  @override
+  $PackageQuestionDataCopyWith<$Res> get data;
   @override
   $GameStateTimerCopyWith<$Res> get timer;
 }
@@ -182,19 +191,29 @@ class __$SocketIOQuestionDataEventPayloadCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? data = freezed,
+    Object? data = null,
     Object? timer = null,
   }) {
     return _then(_SocketIOQuestionDataEventPayload(
-      data: freezed == data
+      data: null == data
           ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as PackageQuestionData,
       timer: null == timer
           ? _self.timer
           : timer // ignore: cast_nullable_to_non_nullable
               as GameStateTimer,
     ));
+  }
+
+  /// Create a copy of SocketIOQuestionDataEventPayload
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PackageQuestionDataCopyWith<$Res> get data {
+    return $PackageQuestionDataCopyWith<$Res>(_self.data, (value) {
+      return _then(_self.copyWith(data: value));
+    });
   }
 
   /// Create a copy of SocketIOQuestionDataEventPayload

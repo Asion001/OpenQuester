@@ -9,7 +9,7 @@ part of 'socket_io_question_data_event_payload.dart';
 _SocketIOQuestionDataEventPayload _$SocketIOQuestionDataEventPayloadFromJson(
         Map<String, dynamic> json) =>
     _SocketIOQuestionDataEventPayload(
-      data: json['data'],
+      data: PackageQuestionData.fromJson(json['data'] as Map<String, dynamic>),
       timer: GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),
     );
 

@@ -13,6 +13,7 @@ part 'socket_io_game_state_question_data.g.dart';
 @Freezed()
 abstract class SocketIOGameStateQuestionData with _$SocketIOGameStateQuestionData {
   const factory SocketIOGameStateQuestionData({
+    required int id,
     required PackageEntitiesOrder order,
 
     /// Price is null only if price is hidden
@@ -20,6 +21,9 @@ abstract class SocketIOGameStateQuestionData with _$SocketIOGameStateQuestionDat
 
     /// Comment that clarify what have to be answered on this question
     required String? questionComment,
+
+    /// Marks if question was played before to disable picking action
+    required bool isPlayed,
   }) = _SocketIOGameStateQuestionData;
   
   factory SocketIOGameStateQuestionData.fromJson(Map<String, Object?> json) => _$SocketIOGameStateQuestionDataFromJson(json);

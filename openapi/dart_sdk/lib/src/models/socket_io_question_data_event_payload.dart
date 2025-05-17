@@ -5,6 +5,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'game_state_timer.dart';
+import 'package_question_data.dart';
 
 part 'socket_io_question_data_event_payload.freezed.dart';
 part 'socket_io_question_data_event_payload.g.dart';
@@ -13,8 +14,7 @@ part 'socket_io_question_data_event_payload.g.dart';
 @Freezed()
 abstract class SocketIOQuestionDataEventPayload with _$SocketIOQuestionDataEventPayload {
   const factory SocketIOQuestionDataEventPayload({
-    /// Full question data for showman, simplified (without answer) for others
-    required dynamic data,
+    required PackageQuestionData data,
     required GameStateTimer timer,
   }) = _SocketIOQuestionDataEventPayload;
   

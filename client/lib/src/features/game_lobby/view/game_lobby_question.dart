@@ -10,20 +10,43 @@ class GameQuestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderRadius = 12.circular;
     return FilledButton(
-      onPressed: () {},
+      onPressed: question.isPlayed
+          ? null
+          : () => getIt<GameLobbyController>().onQuestionPick(question.id),
       style: ButtonStyle(
-        shape: WidgetStatePropertyAll(
-          RoundedRectangleBorder(borderRadius: 12.circular),
+        shape: WidgetStateProperty.fromMap(
+          {
+            WidgetState.disabled: RoundedRectangleBorder(
+              borderRadius: borderRadius,
+              side: BorderSide(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            WidgetState.any: RoundedRectangleBorder(borderRadius: borderRadius),
+          },
         ),
-        backgroundColor: WidgetStatePropertyAll(
-          context.theme.colorScheme.surfaceContainerHighest,
+        backgroundColor: WidgetStateProperty.fromMap(
+          {
+            WidgetState.disabled: Colors.transparent,
+            WidgetState.any: context.theme.colorScheme.surfaceContainerHighest,
+          },
         ),
-        foregroundColor:
-            WidgetStatePropertyAll(context.theme.colorScheme.onSurface),
+        foregroundColor: WidgetStateProperty.fromMap(
+          {
+            WidgetState.disabled: context.theme.colorScheme.onSurfaceVariant,
+            WidgetState.any: context.theme.colorScheme.onSurface,
+          },
+        ),
         minimumSize:
             WidgetStatePropertyAll(GameLobbyStyles.questionSize(context)),
-        textStyle: WidgetStatePropertyAll(context.textTheme.titleLarge),
+        textStyle: WidgetStateProperty.fromMap(
+          {
+            WidgetState.disabled: context.textTheme.labelLarge,
+            WidgetState.any: context.textTheme.titleLarge,
+          },
+        ),
         padding: WidgetStatePropertyAll(0.all),
       ),
       child: Text('${question.price}'),

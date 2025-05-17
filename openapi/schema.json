@@ -2396,6 +2396,9 @@
         "type": "object",
         "description": "Info about question of the theme",
         "properties": {
+          "id": {
+            "type": "integer"
+          },
           "order": {
             "$ref": "#/components/schemas/PackageEntitiesOrder"
           },
@@ -2408,6 +2411,10 @@
             "type": ["string", "null"],
             "description": "Comment that clarify what have to be answered on this question",
             "examples": ["Answer full name of character", null]
+          },
+          "isPlayed": {
+            "type": "boolean",
+            "description": "Marks if question was played before to disable picking action"
           }
         }
       },
@@ -2416,7 +2423,7 @@
         "enum": ["error", "disconnect", "connection", "games", "chat-message"],
         "examples": ["error"]
       },
-      "SocketIOGameEvents": {
+      "SocketIOGameSendEvents": {
         "type": "string",
         "enum": [
           "join",
@@ -2424,6 +2431,20 @@
           "game-data",
           "start",
           "question-pick",
+          "question-answer",
+          "question-finish",
+          "answer-submitted",
+          "answer-result"
+        ],
+        "examples": ["join"]
+      },
+      "SocketIOGameReceiveEvents": {
+        "type": "string",
+        "enum": [
+          "join",
+          "start",
+          "user-leave",
+          "game-data",
           "question-answer",
           "question-data",
           "question-finish",
@@ -2458,11 +2479,7 @@
         "description": "Data sent to players when a question is picked, containing question details and timer",
         "properties": {
           "data": {
-            "oneOf": [
-              { "$ref": "#/components/schemas/PackageQuestionFullData" },
-              { "$ref": "#/components/schemas/SimplePackageQuestionData" }
-            ],
-            "description": "Full question data for showman, simplified (without answer) for others"
+            "$ref": "#/components/schemas/PackageQuestionData"
           },
           "timer": {
             "$ref": "#/components/schemas/GameStateTimer"
@@ -2551,9 +2568,8 @@
           }
         }
       },
-      "PackageQuestionFullData": {
+      "PackageQuestionData": {
         "type": "object",
-        "description": "Full question data for showman",
         "properties": {
           "id": {
             "type": ["integer", "null"],
@@ -2620,104 +2636,6 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/PackageAnswerFile"
-                }
-              },
-              { "type": "null" }
-            ]
-          },
-          "subType": {
-            "$ref": "#/components/schemas/QuestionSubType"
-          },
-          "maxPrice": {
-            "oneOf": [
-              { "$ref": "#/components/schemas/QuestionMaxPrice" },
-              { "type": "null" }
-            ]
-          },
-          "allowedPrices": {
-            "oneOf": [
-              { "$ref": "#/components/schemas/QuestionAllowedPrices" },
-              { "type": "null" }
-            ]
-          },
-          "transferType": {
-            "oneOf": [
-              { "$ref": "#/components/schemas/QuestionTransferType" },
-              { "type": "null" }
-            ]
-          },
-          "priceMultiplier": {
-            "oneOf": [
-              { "$ref": "#/components/schemas/QuestionPriceMultiplier" },
-              { "type": "null" }
-            ]
-          },
-          "showDelay": {
-            "oneOf": [
-              { "$ref": "#/components/schemas/QuestionShowDelay" },
-              { "type": "null" }
-            ]
-          },
-          "answers": {
-            "oneOf": [
-              {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/QuestionChoiceAnswers"
-                }
-              },
-              { "type": "null" }
-            ]
-          }
-        }
-      },
-      "SimplePackageQuestionData": {
-        "description": "Simplified question data for players and spectators, same as full question data but without answers",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": ["integer", "null"],
-            "examples": [187]
-          },
-          "type": {
-            "$ref": "#/components/schemas/QuestionType"
-          },
-          "order": {
-            "$ref": "#/components/schemas/PackageEntitiesOrder"
-          },
-          "price": {
-            "type": ["integer", "null"],
-            "description": "Price is null only if price is hidden",
-            "examples": [200, null]
-          },
-          "isHidden": {
-            "type": "boolean",
-            "default": false,
-            "description": "Whether the question is hidden",
-            "examples": [false]
-          },
-          "text": {
-            "type": ["string", "null"],
-            "description": "Question text",
-            "examples": ["Where is Kyiv located?"]
-          },
-          "answerDelay": {
-            "type": ["integer", "null"],
-            "description": "Delay in milliseconds before being able to answer, if applicable",
-            "default": 4000,
-            "examples": [7000]
-          },
-          "questionComment": {
-            "type": ["string", "null"],
-            "description": "Comment or note about the question",
-            "examples": ["You have to say full country name"]
-          },
-          "questionFiles": {
-            "oneOf": [
-              {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/PackageQuestionFile"
                 }
               },
               { "type": "null" }
