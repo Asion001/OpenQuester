@@ -11,6 +11,7 @@ class GameLobbyPlayers extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
+    final answeringPlayer = gameData?.gameState.answeringPlayer;
     const inGame = PlayerDataStatus.inGame;
     const roleToShow = {PlayerRole.player, PlayerRole.showman};
     final players = gameData?.players
@@ -26,19 +27,24 @@ class GameLobbyPlayers extends WatchingWidget {
       separatorBuilder: (context, index) => const SizedBox.square(dimension: 8),
       itemBuilder: (context, index) {
         final player = players[index];
-        return GameLobbyPlayer(player: player);
+        return GameLobbyPlayer(
+          player: player,
+          answering: answeringPlayer == player.meta.id,
+        );
       },
     );
   }
 }
 
-class GameLobbyPlayer extends StatelessWidget {
+class GameLobbyPlayer extends WatchingWidget {
   const GameLobbyPlayer({
     required this.player,
+    this.answering = false,
     super.key,
   });
 
   final PlayerData player;
+  final bool answering;
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +97,8 @@ class GameLobbyPlayer extends StatelessWidget {
             ],
           ),
           if (player.role == PlayerRole.showman)
-            Positioned(
-              top: 2,
-              right: 2,
+            Align(
+              alignment: Alignment.topRight,
               child: Assets.icons.crown
                   .svg(
                     width: 16,
@@ -103,7 +108,18 @@ class GameLobbyPlayer extends StatelessWidget {
                       BlendMode.srcIn,
                     ),
                   )
-                  .withTooltip(msg: LocaleKeys.showman.tr()),
+                  .withTooltip(msg: LocaleKeys.showman.tr())
+                  .paddingAll(2),
+            ),
+          if (player.status == PlayerDataStatus.disconnected)
+            Align(
+              alignment: Alignment.topRight,
+              child: const Icon(Icons.signal_wifi_off).paddingAll(2),
+            ),
+          if (answering)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: const Icon(Icons.more_horiz).paddingAll(2),
             ),
         ],
       ).center(),

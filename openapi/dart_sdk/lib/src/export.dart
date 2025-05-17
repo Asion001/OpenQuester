@@ -107,8 +107,6 @@ export 'models/socket_io_question_answer_event_payload.dart';
 export 'models/socket_io_answer_submitted_event_data.dart';
 export 'models/socket_io_answer_result_event_payload.dart';
 export 'models/socket_io_answer_result_input.dart';
-export 'models/socket_io_question_finish_event_payload.dart';
-export 'models/answer_result_wrong_data.dart';
 export 'models/package_question_data.dart';
 export 'models/permissions.dart';
 export 'models/game_event_subscription_union.dart';

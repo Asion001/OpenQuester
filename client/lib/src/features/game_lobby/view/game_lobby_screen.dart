@@ -79,6 +79,7 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 16,
                     children: [
                       const _BodyLayoutBuilder().expand(),
                       AppAnimatedSwitcher(

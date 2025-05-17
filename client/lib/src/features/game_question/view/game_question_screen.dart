@@ -10,12 +10,22 @@ class GameQuestionScreen extends WatchingWidget {
     final file = watchValue((GameQuestionController e) => e.questionFile);
 
     return Column(
+      spacing: 16,
       children: [
-        Text(question?.text ?? '-'),
+        Expanded(
+          flex: file != null ? 0 : 1,
+          child: Text(
+            question?.text ?? '-',
+            style: file != null
+                ? context.textTheme.bodyLarge
+                : context.textTheme.headlineLarge,
+            textAlign: TextAlign.center,
+          ).center(),
+        ),
         if (file != null) GameQuestionFile(file: file).flexible(),
         const _QuestionBottom(),
       ],
-    );
+    ).paddingBottom(16);
   }
 }
 
@@ -24,13 +34,13 @@ class _QuestionBottom extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final answeringPlayer = watchValue((GameLobbyController e) => e.gameData)
-        ?.gameState
-        .answeringPlayer;
+    final gameData = watchValue((GameLobbyController e) => e.gameData);
+    final imShowman = gameData?.me.role == PlayerRole.showman;
+    final answeringPlayer = gameData?.gameState.answeringPlayer;
 
     Widget child = const SizedBox();
 
-    if (answeringPlayer == null) {
+    if (!imShowman && answeringPlayer == null) {
       child = const _AnswerButtons();
     } else {
       child = const _AnsweringWidget();
@@ -75,16 +85,14 @@ class _AnswerButtons extends StatelessWidget {
   }
 }
 
-class _AnsweringWidget extends StatelessWidget {
+class _AnsweringWidget extends WatchingWidget {
   const _AnsweringWidget();
 
   @override
   Widget build(BuildContext context) {
-    final answeringPlayerId = watchValue((GameLobbyController e) => e.gameData)
-        ?.gameState
-        .answeringPlayer;
-    final answeringPlayer = watchValue((GameLobbyController e) => e.gameData)
-        ?.players
+    final gameData = watchValue((GameLobbyController e) => e.gameData);
+    final answeringPlayerId = gameData?.gameState.answeringPlayer;
+    final answeringPlayer = gameData?.players
         .firstWhereOrNull((e) => e.meta.id == answeringPlayerId);
 
     return Container(

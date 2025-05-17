@@ -18,16 +18,16 @@ class GameQuestionFile extends StatelessWidget {
       child = ImageWidget(url: url);
     }
 
-    return AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: 8.circular,
-          border: Border.all(color: context.theme.colorScheme.primary),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: 8.circular,
+        border: Border.all(
+          color: context.theme.colorScheme.primary,
+          strokeAlign: BorderSide.strokeAlignOutside,
         ),
-        clipBehavior: Clip.antiAlias,
-        child: child,
       ),
+      clipBehavior: Clip.antiAlias,
+      child: AspectRatio(aspectRatio: 1, child: child),
     );
   }
 }

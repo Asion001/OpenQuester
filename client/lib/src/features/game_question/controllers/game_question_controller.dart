@@ -15,6 +15,8 @@ class GameQuestionController {
 
   void _onQuestionChange() {
     questionFile.value = question.value?.questionFiles?.firstOrNull;
+
+    // TODO: Start slideshow timer
   }
 
   void onAnswer() {

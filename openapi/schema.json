@@ -2514,35 +2514,22 @@
       "SocketIOAnswerResultEventPayload": {
         "type": "object",
         "description": "Data sent to all players when the showman evaluates an answer",
-        "oneOf": [
-          { "$ref": "#/components/schemas/AnswerResultWrongData" },
-          { "$ref": "#/components/schemas/SocketIOQuestionFinishEventPayload" }
-        ]
-      },
-      "SocketIOAnswerResultInput": {
-        "type": "object",
-        "description": "Data sent by the showman to evaluate a player's answer",
         "properties": {
-          "scoreResult": {
-            "type": "integer",
-            "description": "Score result of the answer; positive for correct, negative for incorrect, zero for skip",
-            "examples": [500, -500, 0]
-          }
-        }
-      },
-      "SocketIOQuestionFinishEventPayload": {
-        "type": "object",
-        "description": "Data sent to all players when a question is finished with a correct answer or by answering timeout",
-        "properties": {
+          "answerResult": {
+            "$ref": "#/components/schemas/GameStateAnsweredPlayer"
+          },
+          "timer": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/GameStateTimer" },
+              { "type": "null" }
+            ]
+          },
           "answerFiles": {
             "oneOf": [
               {
                 "type": "array",
                 "items": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PackageAnswerFile"
-                  }
+                  "$ref": "#/components/schemas/PackageAnswerFile"
                 }
               },
               { "type": "null" }
@@ -2556,15 +2543,14 @@
           }
         }
       },
-      "AnswerResultWrongData": {
+      "SocketIOAnswerResultInput": {
         "type": "object",
-        "description": "Data sent to all players when the showman evaluates an answer",
+        "description": "Data sent by the showman to evaluate a player's answer",
         "properties": {
-          "playerAnswerResult": {
-            "$ref": "#/components/schemas/GameStateAnsweredPlayer"
-          },
-          "timer": {
-            "$ref": "#/components/schemas/GameStateTimer"
+          "scoreResult": {
+            "type": "integer",
+            "description": "Score result of the answer; positive for correct, negative for incorrect, zero for skip",
+            "examples": [500, -500, 0]
           }
         }
       },

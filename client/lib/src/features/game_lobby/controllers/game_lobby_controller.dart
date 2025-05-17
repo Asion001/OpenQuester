@@ -45,6 +45,8 @@ class GameLobbyController {
         ..on(SocketIOGameReceiveEvents.join.json!, _onUserJoin)
         ..on(SocketIOGameReceiveEvents.questionData.json!, _onQuestionPick)
         ..on(SocketIOGameReceiveEvents.questionAnswer.json!, _onQuestionAnswer)
+        ..on(SocketIOGameReceiveEvents.answerResult.json!, _onAnswerResult)
+        ..on(SocketIOGameReceiveEvents.questionFinish.json!, _onQuestionFinish)
         ..connect();
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -272,4 +274,28 @@ class GameLobbyController {
     gameData.value = gameData.value?.copyWith
         .gameState(answeringPlayer: questionData.userId);
   }
+
+  void _onAnswerResult(dynamic data) {
+    if (data is! Map) return;
+
+    final questionData = SocketIOAnswerResultEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+
+    gameData.value = gameData.value?.copyWith.gameState(
+      answeringPlayer: null,
+      answeredPlayers: [
+        ...?gameData.value?.gameState.answeredPlayers,
+        questionData.answerResult,
+      ],
+    );
+
+    // Question answered, hide question screen and show answer
+    if (questionData.answerFiles != null || questionData.answerText != null) {
+      getIt<GameQuestionController>().clear();
+      // TODO: Show correct answer
+    }
+  }
+
+  void _onQuestionFinish(dynamic data) {}
 }
