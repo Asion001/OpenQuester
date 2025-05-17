@@ -214,11 +214,11 @@ class GameLobbyController {
     }
 
     // Update player list
-    final players = List<PlayerData>.from(gameData.value?.players ?? []);
-    final playerIndex = players.indexWhere((e) => e.meta.id == user.meta.id);
-    players[playerIndex] =
-        players[playerIndex].copyWith(status: PlayerDataStatus.disconnected);
-    gameData.value = gameData.value?.copyWith(players: players);
+    gameData.value = gameData.value?.changePlayer(
+      id: user.meta.id,
+      onChange: (value) =>
+          value.copyWith(status: PlayerDataStatus.disconnected),
+    );
 
     getIt<ToastController>().show(
       LocaleKeys.user_leave_the_game.tr(args: [user.meta.username]),
@@ -230,12 +230,11 @@ class GameLobbyController {
 
     final user = PlayerData.fromJson(data as Map<String, dynamic>);
 
-    gameData.value = gameData.value?.copyWith(
-      players: [
-        ...?gameData.value?.players.whereNot((p) => p.meta.id == user.meta.id),
-        user,
-      ],
+    gameData.value = gameData.value?.changePlayer(
+      id: user.meta.id,
+      onChange: (value) => value.copyWith(status: PlayerDataStatus.inGame),
     );
+
     _updateChatUsers();
 
     getIt<ToastController>().show(
@@ -255,8 +254,8 @@ class GameLobbyController {
 
     final questionData =
         SocketIOQuestionDataEventPayload.fromJson(data as Map<String, dynamic>);
+
     gameData.value = gameData.value?.copyWith.gameState(
-      questionState: GameStateQuestionState.showing,
       timer: questionData.timer,
     );
 
@@ -282,20 +281,30 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
+    final questionId = getIt<GameQuestionController>().question.value?.id;
+
     gameData.value = gameData.value?.copyWith.gameState(
       answeringPlayer: null,
       answeredPlayers: [
         ...?gameData.value?.gameState.answeredPlayers,
         questionData.answerResult,
       ],
+      currentRound: gameData.value?.gameState.currentRound?.changeQuestion(
+        id: questionId,
+        onChange: (question) => question.copyWith(isPlayed: true),
+      ),
     );
 
     // Question answered, hide question screen and show answer
     if (questionData.answerFiles != null || questionData.answerText != null) {
-      getIt<GameQuestionController>().clear();
-      // TODO: Show correct answer
+      _showAnswer();
     }
   }
 
-  void _onQuestionFinish(dynamic data) {}
+  void _onQuestionFinish(dynamic data) => _showAnswer();
+
+  void _showAnswer() {
+    getIt<GameQuestionController>().clear();
+    // TODO: Show correct answer
+  }
 }
