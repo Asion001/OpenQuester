@@ -317,12 +317,13 @@ export class Game {
   }
 
   /**
-   * Removes current question, timer ans sets question state to 'choosing'
+   * Removes current question, timer and sets question state to 'choosing'
    */
   public resetToChoosingState() {
     this.gameState.currentQuestion = null;
     this.gameState.timer = null;
     this.gameState.answeredPlayers = null;
+    this.gameState.answeringPlayer = null;
     this.updateQuestionState(QuestionState.CHOOSING);
   }
 
