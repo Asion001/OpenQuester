@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -288,9 +289,6 @@ class GameLobbyController {
 
     // Pass the question to controller to show the question
     _showQuestion();
-
-    // Stop media during question answer
-    getIt<GameQuestionController>().mediaController.value?.pause();
   }
 
   void _showQuestion() {
@@ -312,6 +310,9 @@ class GameLobbyController {
 
     gameData.value = gameData.value?.copyWith
         .gameState(answeringPlayer: questionData.userId);
+
+    // Stop media during question answer
+    getIt<GameQuestionController>().mediaController.value?.pause();
   }
 
   void _onAnswerResult(dynamic data) {
@@ -389,19 +390,26 @@ class GameLobbyController {
     final controller = getIt<GameQuestionController>();
     final currentQuestion = gameData.value?.gameState.currentQuestion;
 
-    // Clear question
-    gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
-
     if (currentQuestion != null) {
       controller.questionData.value = GameQuestionData(
         file: currentQuestion.answerFiles?.firstOrNull,
         text: currentQuestion.answerText,
       );
+
       // Wait for user to see answer
-      await Future<void>.delayed(
-        Duration(milliseconds: currentQuestion.answerDelay),
-      );
+      final mediaValue = controller.mediaController.value?.value;
+      if (mediaValue != null) {
+        final playtimeLeft = mediaValue.duration - mediaValue.position;
+        await Future<void>.delayed(
+          Duration(
+            milliseconds: max(5000, playtimeLeft.inMilliseconds),
+          ),
+        );
+      }
     }
+
+    // Clear question
+    gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
 
     // Hide question screen
     await controller.clear();
@@ -415,6 +423,10 @@ class GameLobbyController {
   }
 
   void onAnswer() {
+    final me = gameData.value?.me;
+    if (me == null) return;
+    if (me.role != PlayerRole.player) return;
+
     socket?.emit(SocketIOGameSendEvents.questionAnswer.json!);
   }
 

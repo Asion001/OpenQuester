@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 import 'package:video_player/video_player.dart';
 
-class GameQuestionFile extends WatchingWidget {
-  const GameQuestionFile({
+class GameQuestionMediaWidget extends WatchingWidget {
+  const GameQuestionMediaWidget({
     required this.file,
     super.key,
   });

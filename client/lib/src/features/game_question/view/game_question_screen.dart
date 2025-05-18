@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:openquester/openquester.dart';
 
 class GameQuestionScreen extends WatchingWidget {
@@ -11,37 +14,85 @@ class GameQuestionScreen extends WatchingWidget {
     final text = fileData?.text;
     final questionMediaOnLeft = GameLobbyStyles.questionMediaOnLeft(context);
 
-    return SafeArea(
-      child: Column(
-        spacing: 16,
-        children: [
-          Flex(
-            spacing: 16,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            direction: questionMediaOnLeft ? Axis.horizontal : Axis.vertical,
-            children: [
-              Expanded(
-                flex: file != null && !questionMediaOnLeft ? 0 : 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      text ?? '',
-                      style: file != null
-                          ? context.textTheme.bodyLarge
-                          : context.textTheme.headlineLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                    if (questionMediaOnLeft) const _QuestionBottom(),
-                  ],
-                ),
+    final column = Column(
+      spacing: 16,
+      children: [
+        Flex(
+          spacing: 16,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          direction: questionMediaOnLeft ? Axis.horizontal : Axis.vertical,
+          children: [
+            if (file != null)
+              GameQuestionMediaWidget(file: file).flexible()
+            else
+              const SizedBox(),
+            if (questionMediaOnLeft)
+              _questionTextAndButtons(
+                file,
+                questionMediaOnLeft,
+                text,
+                context,
               ),
-              if (file != null) GameQuestionFile(file: file).flexible(),
-            ],
-          ).expand(),
-          if (!questionMediaOnLeft) const _QuestionBottom(),
-        ],
-      ).paddingAll(16),
+          ],
+        ).expand(),
+        if (!questionMediaOnLeft) const _QuestionBottom(),
+      ],
+    );
+
+    return SafeArea(
+      // Mouse and keyboard shortcuts to press answer
+      child: Shortcuts(
+        shortcuts: shortcuts(),
+        child: Actions(
+          actions: actions(),
+          child: Focus(
+            autofocus: true,
+            child: GestureDetector(
+              onSecondaryTapDown: (_) =>
+                  getIt<GameLobbyController>().onAnswer(),
+              supportedDevices: const {PointerDeviceKind.mouse},
+              child: column.paddingAll(16),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Map<ShortcutActivator, Intent> shortcuts() {
+    return {
+      LogicalKeySet(LogicalKeyboardKey.space): const AnswerIntent(),
+      LogicalKeySet(LogicalKeyboardKey.control): const AnswerIntent(),
+    };
+  }
+
+  Map<Type, Action<Intent>> actions() {
+    return {
+      AnswerIntent: CallbackAction(
+        onInvoke: (_) => getIt<GameLobbyController>().onAnswer(),
+      ),
+    };
+  }
+
+  Widget _questionTextAndButtons(
+    PackageQuestionFile? file,
+    bool questionMediaOnLeft,
+    String? text,
+    BuildContext context,
+  ) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 8,
+      children: [
+        Text(
+          text ?? '',
+          style: file != null
+              ? context.textTheme.bodyLarge
+              : context.textTheme.headlineLarge,
+          textAlign: TextAlign.center,
+        ),
+        if (questionMediaOnLeft) const _QuestionBottom(),
+      ],
     );
   }
 }
@@ -116,6 +167,13 @@ class _AnsweringWidget extends WatchingWidget {
     final answeringPlayerId = gameData?.gameState.answeringPlayer;
     final answeringPlayer = gameData?.players.getById(answeringPlayerId);
 
+    final answer = [
+      if (!answerText.isEmptyOrNull)
+        LocaleKeys.question_correct_answer_is.tr(args: [answerText!]),
+      if (!answerHint.isEmptyOrNull)
+        LocaleKeys.question_hint.tr(args: [answerHint!]),
+    ].join('\n');
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: 16.circular,
@@ -130,6 +188,7 @@ class _AnsweringWidget extends WatchingWidget {
             constraints: const BoxConstraints(maxWidth: 300),
             child: Column(
               spacing: 16,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   LocaleKeys.question_user_is_answering
@@ -137,18 +196,13 @@ class _AnsweringWidget extends WatchingWidget {
                   textAlign: TextAlign.center,
                   style: context.textTheme.bodyLarge,
                 ),
-                Text(
-                  [
-                    if (!answerText.isEmptyOrNull)
-                      LocaleKeys.question_correct_answer_is
-                          .tr(args: [answerText!]),
-                    if (!answerHint.isEmptyOrNull)
-                      LocaleKeys.question_hint.tr(args: [answerHint!]),
-                  ].join('\n'),
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: context.theme.colorScheme.onSurfaceVariant,
+                if (!answer.isEmptyOrNull)
+                  Text(
+                    answer,
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: context.theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -213,4 +267,8 @@ class _ShowmanControlls extends StatelessWidget {
       ],
     );
   }
+}
+
+class AnswerIntent extends Intent {
+  const AnswerIntent();
 }
