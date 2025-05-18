@@ -66,5 +66,7 @@
   "no_showman": "Game has no showman",
   "cannot_submit_answer": "You cannot submit answer on this question",
   "only_showman_send_answer_result": "Only showman can send answer result",
-  "already_answered": "You already answered"
+  "already_answered": "You already answered",
+  "game_finished": "Game already finished",
+  "only_showman_next_round": "Only showman can set next round"
 }

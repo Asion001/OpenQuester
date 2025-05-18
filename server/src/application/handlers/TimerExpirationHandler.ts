@@ -15,6 +15,7 @@ import { ErrorController } from "domain/errors/ErrorController";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { RedisExpirationHandler } from "domain/types/redis/RedisExpirationHandler";
+import { QuestionFinishEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
 import { RedisService } from "infrastructure/services/redis/RedisService";
 
 export class TimerExpirationHandler implements RedisExpirationHandler {
@@ -58,8 +59,32 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
           .emit(SocketIOGameEvents.QUESTION_FINISH, {
             answerFiles: question.answerFiles ?? null,
             answerText: question.answerText ?? null,
-          });
-        return;
+          } satisfies QuestionFinishEventPayload);
+
+        if (!game.isAllQuestionsPlayed()) {
+          return;
+        }
+
+        // Next round if all questions played
+        const { isGameFinished, nextGameState } = game.getFlowState();
+
+        if (isGameFinished || nextGameState) {
+          await this.gameService.updateGame(game);
+        }
+
+        if (isGameFinished) {
+          this._gameNamespace
+            .to(gameId)
+            .emit(SocketIOGameEvents.GAME_FINISHED, true);
+          return;
+        }
+
+        if (nextGameState) {
+          this._gameNamespace
+            .to(gameId)
+            .emit(SocketIOGameEvents.NEXT_ROUND, nextGameState);
+          return;
+        }
       }
 
       if (game.gameState.questionState === QuestionState.ANSWERING) {

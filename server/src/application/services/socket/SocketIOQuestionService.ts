@@ -10,6 +10,7 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
 import { GameQuestionMapper } from "domain/mappers/GameQuestionMapper";
+import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
@@ -30,7 +31,7 @@ export class SocketIOQuestionService {
   public async handleQuestionAnswer(socketId: string) {
     const { game, player } = await this._fetchPlayerAndGame(socketId);
 
-    this._validateGamePause(game);
+    this._validateGameStatus(game);
 
     if (
       player?.role === PlayerRole.SHOWMAN ||
@@ -82,7 +83,7 @@ export class SocketIOQuestionService {
 
   public async handleAnswerSubmitted(socketId: string) {
     const { player, game } = await this._fetchPlayerAndGame(socketId);
-    this._validateGamePause(game);
+    this._validateGameStatus(game);
 
     if (game.gameState.answeringPlayer !== player?.meta.id) {
       throw new ClientError(ClientResponse.CANNOT_SUBMIT_ANSWER);
@@ -93,7 +94,7 @@ export class SocketIOQuestionService {
 
   public async handleAnswerResult(socketId: string, data: AnswerResultData) {
     const { player, game } = await this._fetchPlayerAndGame(socketId);
-    this._validateGamePause(game);
+    this._validateGameStatus(game);
 
     if (player?.role !== PlayerRole.SHOWMAN) {
       throw new ClientError(ClientResponse.ONLY_SHOWMAN_SEND_ANSWER_RESULT);
@@ -129,15 +130,65 @@ export class SocketIOQuestionService {
         game.id,
         timer.durationMs - timer.elapsedMs
       );
+    } else {
+      await this.gameService.clearTimer(game.id);
     }
 
-    return { playerAnswerResult, game, question, timer };
+    return {
+      playerAnswerResult,
+      game,
+      question,
+      timer,
+    };
+  }
+
+  public async handleGameFlow(game: Game) {
+    const { isGameFinished, nextGameState } = game.getFlowState();
+
+    if (isGameFinished || nextGameState) {
+      await this.gameService.updateGame(game);
+    }
+
+    return { isGameFinished, nextGameState };
+  }
+
+  public async handleNextRound(socketId: string) {
+    const { game, player } = await this._fetchPlayerAndGame(socketId);
+
+    this._validateGameStatus(game);
+
+    if (player?.role !== PlayerRole.SHOWMAN) {
+      throw new ClientError(ClientResponse.ONLY_SHOWMAN_NEXT_ROUND);
+    }
+
+    const currentRound = game.gameState.currentRound;
+
+    if (!currentRound) {
+      throw new ClientError(ClientResponse.GAME_NOT_STARTED);
+    }
+
+    const nextRound = GameStateMapper.getGameRound(
+      game.package,
+      game.gameState.currentRound!.order + 1
+    );
+
+    let nextGameState = null;
+    let isGameFinished = false;
+
+    if (!nextRound) {
+      game.finish();
+      isGameFinished = true;
+    } else {
+      nextGameState = GameStateMapper.getClearGameState(nextRound);
+    }
+
+    return { game, isGameFinished, nextGameState };
   }
 
   public async handleQuestionPick(socketId: string, questionId: number) {
     const { game, player } = await this._fetchPlayerAndGame(socketId);
 
-    this._validateGamePause(game);
+    this._validateGameStatus(game);
 
     if (
       player?.role !== PlayerRole.PLAYER &&
@@ -300,9 +351,13 @@ export class SocketIOQuestionService {
     return { game, player };
   }
 
-  private _validateGamePause(game: Game) {
+  private _validateGameStatus(game: Game) {
     if (game.gameState.isPaused) {
       throw new ClientError(ClientResponse.GAME_IS_PAUSED);
+    }
+
+    if (game.finishedAt !== null) {
+      throw new ClientError(ClientResponse.GAME_FINISHED);
     }
   }
 }

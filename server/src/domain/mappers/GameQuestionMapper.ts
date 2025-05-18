@@ -1,4 +1,5 @@
 import { Game } from "domain/entities/game/Game";
+import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { SimplePackageQuestionDTO } from "domain/types/dto/package/SimplePackageQuestionDTO";
 import { PackageDTO } from "../types/dto/package/PackageDTO";
@@ -83,6 +84,22 @@ export class GameQuestionMapper {
     );
 
     return question ? question.isPlayed : undefined;
+  }
+
+  public static playedQuestions(gameState: GameStateDTO) {
+    const played = [];
+
+    if (!gameState.currentRound) {
+      return [];
+    }
+
+    for (const theme of gameState.currentRound.themes) {
+      for (const question of theme.questions) {
+        if (question.isPlayed) played.push(question);
+      }
+    }
+
+    return played;
   }
 
   private static _getQuestionFromCurrentRound(

@@ -123,6 +123,10 @@ export class GameService {
     return this.gameRepository.saveTimer(timer, gameId, timerAdditional, ttl);
   }
 
+  public async clearTimer(gameId: string, timerAdditional?: string) {
+    return this.gameRepository.clearTimer(gameId, timerAdditional);
+  }
+
   private _emitSocketGameCreated(gameData: GameListItemDTO) {
     const eventDataDTO: GameEventDTO = {
       event: GameEvent.CREATED,

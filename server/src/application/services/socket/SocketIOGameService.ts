@@ -32,6 +32,10 @@ export class SocketIOGameService {
     const user = await this._fetchUser(socketId);
     const game = await this.gameRepository.getGameEntity(data.gameId, GAME_TTL);
 
+    if (game.finishedAt !== null) {
+      throw new ClientError(ClientResponse.GAME_FINISHED);
+    }
+
     if (data.role === PlayerRole.PLAYER && !game.checkFreeSlot()) {
       throw new ClientError(ClientResponse.GAME_IS_FULL);
     }

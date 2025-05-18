@@ -17,4 +17,6 @@ export enum SocketIOGameEvents {
   QUESTION_FINISH = "question-finish",
   ANSWER_SUBMITTED = "answer-submitted",
   ANSWER_RESULT = "answer-result",
+  NEXT_ROUND = "next-round",
+  GAME_FINISHED = "game-finished",
 }
