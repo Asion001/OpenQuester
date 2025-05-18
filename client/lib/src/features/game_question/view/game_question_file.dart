@@ -13,6 +13,7 @@ class GameQuestionFile extends WatchingWidget {
   Widget build(BuildContext context) {
     final mediaController =
         watchValue((GameQuestionController e) => e.mediaController);
+    final error = watchValue((GameQuestionController e) => e.error);
 
     onDispose(getIt<GameQuestionController>().clearVideoControllers);
 
@@ -21,7 +22,9 @@ class GameQuestionFile extends WatchingWidget {
 
     final fileType = file.file.type;
 
-    if (fileType == PackageFileType.image) {
+    if (error != null) {
+      child = Text(error);
+    } else if (fileType == PackageFileType.image) {
       child = ImageWidget(url: url);
     } else if (mediaController != null) {
       if (fileType == PackageFileType.audio) {

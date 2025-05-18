@@ -11,47 +11,54 @@ class GameQuestionController {
   late final questionData = ValueNotifier<GameQuestionData?>(null)
     ..addListener(_onQuestionChange);
   final mediaController = ValueNotifier<VideoPlayerController?>(null);
+  final error = ValueNotifier<String?>(null);
 
   File? _tmpFile;
 
   Future<void> clear() async {
     questionData.value = null;
+    error.value = null;
     _tmpFile?.deleteSync();
     _tmpFile = null;
   }
 
   Future<void> _onQuestionChange() async {
-    await clearVideoControllers();
-    
-    final file = questionData.value?.file?.file;
+    try {
+      await clearVideoControllers();
 
-    if (file == null) return;
+      final file = questionData.value?.file?.file;
 
-    if (file.type != PackageFileType.image) {
-      VideoPlayerController controller;
-      final uri = Uri.parse(file.link!);
+      if (file == null) return;
 
-      // Fixes loading media without file extension
-      if (Platform.isMacOS || Platform.isWindows) {
-        await _setTmpFile(file);
-        await getIt<DioController>().client.downloadUri(uri, _tmpFile!.path);
-        controller = VideoPlayerController.file(_tmpFile!);
-      } else {
-        controller = VideoPlayerController.networkUrl(uri);
+      if (file.type != PackageFileType.image) {
+        VideoPlayerController controller;
+        final uri = Uri.parse(file.link!);
+
+        // Fixes loading media without file extension
+        if (Platform.isMacOS || Platform.isWindows) {
+          await _setTmpFile(file);
+          await getIt<DioController>().client.downloadUri(uri, _tmpFile!.path);
+          controller = VideoPlayerController.file(_tmpFile!);
+        } else {
+          controller = VideoPlayerController.networkUrl(uri);
+        }
+
+        await controller.initialize();
+        mediaController.value = controller;
+
+        await controller.play();
+
+        Future<void>.delayed(
+          Duration(milliseconds: questionData.value!.file!.displayTime),
+          () => mediaController.value?.pause(),
+        );
       }
-
-      await controller.initialize();
-      mediaController.value = controller;
-
-      await controller.play();
-
-      Future<void>.delayed(
-        Duration(milliseconds: questionData.value!.file!.displayTime),
-        () => mediaController.value?.pause(),
-      );
+    } catch (e) {
+      error.value = getIt<GameLobbyController>().onError(e);
     }
     // TODO: Start slideshow timer
   }
+  
 
   Future<void> _setTmpFile(FileItem file) async {
     final tmpDir = await getTemporaryDirectory();

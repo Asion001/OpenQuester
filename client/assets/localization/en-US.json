@@ -65,7 +65,8 @@
   "question": {
     "press_to_answer": "Press to Answer",
     "hold_to_skip": "Hold to Skip",
-    "user_is_answering": "{} is answering"
+    "user_is_answering": "{} is answering",
+    "error_during_loading": "There was error during loading: {}"
   },
   "delete_game": "Delete game",
   "delete_game_confirmation": "Sure wanna delete the game?"

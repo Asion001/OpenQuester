@@ -38,7 +38,7 @@ class GameLobbyController {
       socket!
         ..onConnect((_) => _onConnect())
         ..onDisconnect((_) => clear())
-        ..on(SocketIOEvents.error.json!, _onError)
+        ..on(SocketIOEvents.error.json!, onError)
         ..on(SocketIOGameReceiveEvents.gameData.json!, _onGameData)
         ..on(SocketIOGameReceiveEvents.start.json!, _onGameStart)
         ..on(SocketIOGameReceiveEvents.userLeave.json!, _onUserLeave)
@@ -185,13 +185,14 @@ class GameLobbyController {
     socket?.emit(SocketIOGameSendEvents.start.json!);
   }
 
-  void _onError(dynamic data) {
+  String? onError(dynamic data) {
     String? errorText = data.toString();
     if (data is Map) {
       errorText = data['message']?.toString() ?? errorText;
     }
 
     getIt<ToastController>().show(errorText);
+    return errorText;
   }
 
   void _onUserLeave(dynamic data) {
