@@ -58,7 +58,6 @@ class GameQuestionController {
     }
     // TODO: Start slideshow timer
   }
-  
 
   Future<void> _setTmpFile(FileItem file) async {
     final tmpDir = await getTemporaryDirectory();
