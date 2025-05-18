@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:siq_compress/siq_compress.dart';
-import 'package:siq_compress/src/common/process_utils.dart';
 import 'package:universal_io/io.dart';
 
 /// Wraps ffmpeg/ffprobe commands for metadata inspection and media encoding.

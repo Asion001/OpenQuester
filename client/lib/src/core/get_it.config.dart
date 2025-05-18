@@ -52,16 +52,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.factory<_i936.S3UploadController>(() => _i936.S3UploadController());
-    await gh.singletonAsync<_i895.DioController>(
-      () {
-        final i = _i895.DioController();
-        return i.init().then((_) => i);
-      },
-      preResolve: true,
-    );
-    gh.singleton<_i741.Storage>(() => _i741.Storage());
-    gh.singleton<_i419.Oauth2Controller>(() => _i419.Oauth2Controller());
-    gh.singleton<_i676.LoadController>(() => _i676.LoadController());
+    gh.singleton<_i216.AppRouter>(() => _i216.AppRouter());
     await gh.singletonAsync<_i460.PackageInfoController>(
       () {
         final i = _i460.PackageInfoController();
