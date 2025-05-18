@@ -38,8 +38,8 @@ mixin _$PackageQuestionUnion {
   int? get id;
   PackageEntitiesOrder get order;
 
-  /// Point value of the question
-  int get price;
+  /// Price is null only if price is hidden
+  int? get price;
 
   /// Question text
   String? get text;
@@ -47,18 +47,12 @@ mixin _$PackageQuestionUnion {
   /// Hint for the answer
   String? get answerHint;
 
-  /// Correct answer text
-  String? get answerText;
-
   /// Comment or note about the question
   String? get questionComment;
-
-  /// Media files for the question
-  List<PackageQuestionFile>? get questionFiles;
-
-  /// Media files for the answer
-  List<PackageAnswerFile>? get answerFiles;
   Enum get type;
+  QuestionAnswerText? get answerText;
+  List<PackageQuestionFile?>? get questionFiles;
+  List<PackageQuestionFile?>? get answerFiles;
 
   /// Whether the question is hidden
   bool get isHidden;
@@ -88,15 +82,15 @@ mixin _$PackageQuestionUnion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other.questionFiles, questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other.answerFiles, answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
@@ -112,17 +106,17 @@ mixin _$PackageQuestionUnion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
+      type,
+      answerText,
       const DeepCollectionEquality().hash(questionFiles),
       const DeepCollectionEquality().hash(answerFiles),
-      type,
       isHidden,
       answerDelay);
 
   @override
   String toString() {
-    return 'PackageQuestionUnion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -135,13 +129,13 @@ abstract mixin class $PackageQuestionUnionCopyWith<$Res> {
   $Res call(
       {int? id,
       int order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
+      String? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -161,11 +155,11 @@ class _$PackageQuestionUnionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
+    Object? answerText = freezed,
     Object? questionFiles = freezed,
     Object? answerFiles = freezed,
     Object? isHidden = null,
@@ -180,10 +174,10 @@ class _$PackageQuestionUnionCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as int,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -192,22 +186,22 @@ class _$PackageQuestionUnionCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as String?,
       questionFiles: freezed == questionFiles
           ? _self.questionFiles
           : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
+              as List<PackageQuestionFile?>?,
       answerFiles: freezed == answerFiles
           ? _self.answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -229,11 +223,11 @@ class PackageQuestionUnionSimple implements PackageQuestionUnion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
       required this.type,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _questionFiles = questionFiles,
@@ -246,9 +240,9 @@ class PackageQuestionUnionSimple implements PackageQuestionUnion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -258,20 +252,16 @@ class PackageQuestionUnionSimple implements PackageQuestionUnion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
   @override
-  List<PackageQuestionFile>? get questionFiles {
+  final SimpleQuestionType type;
+  @override
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
     final value = _questionFiles;
     if (value == null) return null;
     if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
@@ -279,21 +269,15 @@ class PackageQuestionUnionSimple implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
-
-  @override
-  final SimpleQuestionType type;
 
   /// Whether the question is hidden
   @override
@@ -333,15 +317,15 @@ class PackageQuestionUnionSimple implements PackageQuestionUnion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other._questionFiles, _questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other._answerFiles, _answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
@@ -357,17 +341,17 @@ class PackageQuestionUnionSimple implements PackageQuestionUnion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
+      type,
+      answerText,
       const DeepCollectionEquality().hash(_questionFiles),
       const DeepCollectionEquality().hash(_answerFiles),
-      type,
       isHidden,
       answerDelay);
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.simple(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion.simple(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -382,14 +366,14 @@ abstract mixin class $PackageQuestionUnionSimpleCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       SimpleQuestionType type,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -409,14 +393,14 @@ class _$PackageQuestionUnionSimpleCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
+    Object? type = null,
+    Object? answerText = freezed,
     Object? questionFiles = freezed,
     Object? answerFiles = freezed,
-    Object? type = null,
     Object? isHidden = null,
     Object? answerDelay = null,
   }) {
@@ -429,10 +413,10 @@ class _$PackageQuestionUnionSimpleCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -441,26 +425,26 @@ class _$PackageQuestionUnionSimpleCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self._questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self._answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as SimpleQuestionType,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -482,12 +466,12 @@ class PackageQuestionUnionStake implements PackageQuestionUnion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
       required this.type,
       required this.maxPrice,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000,
       this.subType = StakeQuestionSubType.simple})
@@ -501,9 +485,9 @@ class PackageQuestionUnionStake implements PackageQuestionUnion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -513,20 +497,17 @@ class PackageQuestionUnionStake implements PackageQuestionUnion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
   @override
-  List<PackageQuestionFile>? get questionFiles {
+  final StakeQuestionType type;
+  final QuestionMaxPrice maxPrice;
+  @override
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
     final value = _questionFiles;
     if (value == null) return null;
     if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
@@ -534,24 +515,15 @@ class PackageQuestionUnionStake implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
-
-  @override
-  final StakeQuestionType type;
-
-  /// Maximum price for the stake question, most useful when type is forEveryone - Does not allow top players to go all-in and win. Typically maxPrice can be 2x or 3x of nominal price
-  final int? maxPrice;
 
   /// Whether the question is hidden
   @override
@@ -594,17 +566,17 @@ class PackageQuestionUnionStake implements PackageQuestionUnion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.maxPrice, maxPrice) ||
+                other.maxPrice == maxPrice) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other._questionFiles, _questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other._answerFiles, _answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.maxPrice, maxPrice) ||
-                other.maxPrice == maxPrice) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
@@ -621,19 +593,19 @@ class PackageQuestionUnionStake implements PackageQuestionUnion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
-      const DeepCollectionEquality().hash(_questionFiles),
-      const DeepCollectionEquality().hash(_answerFiles),
       type,
       maxPrice,
+      answerText,
+      const DeepCollectionEquality().hash(_questionFiles),
+      const DeepCollectionEquality().hash(_answerFiles),
       isHidden,
       answerDelay,
       subType);
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.stake(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, maxPrice: $maxPrice, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
+    return 'PackageQuestionUnion.stake(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, maxPrice: $maxPrice, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
   }
 }
 
@@ -648,15 +620,15 @@ abstract mixin class $PackageQuestionUnionStakeCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       StakeQuestionType type,
-      int? maxPrice,
+      QuestionMaxPrice maxPrice,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay,
       StakeQuestionSubType subType});
@@ -677,15 +649,15 @@ class _$PackageQuestionUnionStakeCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
     Object? type = null,
     Object? maxPrice = freezed,
+    Object? answerText = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
     Object? isHidden = null,
     Object? answerDelay = null,
     Object? subType = null,
@@ -699,10 +671,10 @@ class _$PackageQuestionUnionStakeCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -711,22 +683,10 @@ class _$PackageQuestionUnionStakeCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self._questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self._answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -734,7 +694,19 @@ class _$PackageQuestionUnionStakeCopyWithImpl<$Res>
       maxPrice: freezed == maxPrice
           ? _self.maxPrice
           : maxPrice // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as QuestionMaxPrice,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -760,19 +732,19 @@ class PackageQuestionUnionSecret implements PackageQuestionUnion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
       required this.type,
       required this.subType,
-      required final List<int>? allowedPrices,
+      required final QuestionAllowedPrices allowedPrices,
       required this.transferType,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
-      : _questionFiles = questionFiles,
-        _answerFiles = answerFiles,
-        _allowedPrices = allowedPrices;
+      : _allowedPrices = allowedPrices,
+        _questionFiles = questionFiles,
+        _answerFiles = answerFiles;
   factory PackageQuestionUnionSecret.fromJson(Map<String, dynamic> json) =>
       _$PackageQuestionUnionSecretFromJson(json);
 
@@ -781,9 +753,9 @@ class PackageQuestionUnionSecret implements PackageQuestionUnion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -793,51 +765,16 @@ class PackageQuestionUnionSecret implements PackageQuestionUnion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
-  @override
-  List<PackageQuestionFile>? get questionFiles {
-    final value = _questionFiles;
-    if (value == null) return null;
-    if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
-  @override
-  List<PackageAnswerFile>? get answerFiles {
-    final value = _answerFiles;
-    if (value == null) return null;
-    if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
   @override
   final SecretQuestionType type;
 
   /// Subtype of the secret question. customPrice means player can choose cost of question
   final SecretQuestionSubType subType;
-
-  /// Allowed price options for customPrice subtype. Maximum 5 prices to choose
-  final List<int>? _allowedPrices;
-
-  /// Allowed price options for customPrice subtype. Maximum 5 prices to choose
-  List<int>? get allowedPrices {
+  final QuestionAllowedPrices _allowedPrices;
+  QuestionAllowedPrices get allowedPrices {
     final value = _allowedPrices;
     if (value == null) return null;
     if (_allowedPrices is EqualUnmodifiableListView) return _allowedPrices;
@@ -845,7 +782,28 @@ class PackageQuestionUnionSecret implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  final PackageQuestionTransferType transferType;
+  final QuestionTransferType transferType;
+  @override
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
+    final value = _questionFiles;
+    if (value == null) return null;
+    if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<PackageQuestionFile?>? _answerFiles;
+  @override
+  List<PackageQuestionFile?>? get answerFiles {
+    final value = _answerFiles;
+    if (value == null) return null;
+    if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   /// Whether the question is hidden
   @override
@@ -885,20 +843,20 @@ class PackageQuestionUnionSecret implements PackageQuestionUnion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
-            const DeepCollectionEquality()
-                .equals(other._questionFiles, _questionFiles) &&
-            const DeepCollectionEquality()
-                .equals(other._answerFiles, _answerFiles) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.subType, subType) || other.subType == subType) &&
             const DeepCollectionEquality()
                 .equals(other._allowedPrices, _allowedPrices) &&
             (identical(other.transferType, transferType) ||
                 other.transferType == transferType) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
+            const DeepCollectionEquality()
+                .equals(other._questionFiles, _questionFiles) &&
+            const DeepCollectionEquality()
+                .equals(other._answerFiles, _answerFiles) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
@@ -914,20 +872,20 @@ class PackageQuestionUnionSecret implements PackageQuestionUnion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
-      const DeepCollectionEquality().hash(_questionFiles),
-      const DeepCollectionEquality().hash(_answerFiles),
       type,
       subType,
       const DeepCollectionEquality().hash(_allowedPrices),
       transferType,
+      answerText,
+      const DeepCollectionEquality().hash(_questionFiles),
+      const DeepCollectionEquality().hash(_answerFiles),
       isHidden,
       answerDelay);
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.secret(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, allowedPrices: $allowedPrices, transferType: $transferType, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion.secret(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, subType: $subType, allowedPrices: $allowedPrices, transferType: $transferType, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -942,17 +900,17 @@ abstract mixin class $PackageQuestionUnionSecretCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       SecretQuestionType type,
       SecretQuestionSubType subType,
-      List<int>? allowedPrices,
-      PackageQuestionTransferType transferType,
+      QuestionAllowedPrices allowedPrices,
+      QuestionTransferType transferType,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -972,17 +930,17 @@ class _$PackageQuestionUnionSecretCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
     Object? type = null,
     Object? subType = null,
     Object? allowedPrices = freezed,
     Object? transferType = null,
+    Object? answerText = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
     Object? isHidden = null,
     Object? answerDelay = null,
   }) {
@@ -995,10 +953,10 @@ class _$PackageQuestionUnionSecretCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -1007,22 +965,10 @@ class _$PackageQuestionUnionSecretCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self._questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self._answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -1034,11 +980,23 @@ class _$PackageQuestionUnionSecretCopyWithImpl<$Res>
       allowedPrices: freezed == allowedPrices
           ? _self._allowedPrices
           : allowedPrices // ignore: cast_nullable_to_non_nullable
-              as List<int>?,
+              as QuestionAllowedPrices,
       transferType: null == transferType
           ? _self.transferType
           : transferType // ignore: cast_nullable_to_non_nullable
-              as PackageQuestionTransferType,
+              as QuestionTransferType,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -1060,15 +1018,15 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
       required this.type,
       required this.subType,
+      required this.priceMultiplier,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
-      this.answerDelay = 4000,
-      this.priceMultiplier = '1.5'})
+      this.answerDelay = 4000})
       : _questionFiles = questionFiles,
         _answerFiles = answerFiles;
   factory PackageQuestionUnionNoRisk.fromJson(Map<String, dynamic> json) =>
@@ -1079,9 +1037,9 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -1091,20 +1049,20 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
   @override
-  List<PackageQuestionFile>? get questionFiles {
+  final NoRiskQuestionType type;
+
+  /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
+  final NoRiskQuestionSubType subType;
+  final QuestionPriceMultiplier priceMultiplier;
+  @override
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
     final value = _questionFiles;
     if (value == null) return null;
     if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
@@ -1112,24 +1070,15 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
-
-  @override
-  final NoRiskQuestionType type;
-
-  /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
-  final NoRiskQuestionSubType subType;
 
   /// Whether the question is hidden
   @override
@@ -1140,10 +1089,6 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
   @override
   @JsonKey()
   final int answerDelay;
-
-  /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-  @JsonKey()
-  final String priceMultiplier;
 
   /// Create a copy of PackageQuestionUnion
   /// with the given fields replaced by the non-null parameter values.
@@ -1173,22 +1118,22 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.subType, subType) || other.subType == subType) &&
+            (identical(other.priceMultiplier, priceMultiplier) ||
+                other.priceMultiplier == priceMultiplier) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other._questionFiles, _questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other._answerFiles, _answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.subType, subType) || other.subType == subType) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
-                other.answerDelay == answerDelay) &&
-            (identical(other.priceMultiplier, priceMultiplier) ||
-                other.priceMultiplier == priceMultiplier));
+                other.answerDelay == answerDelay));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1200,19 +1145,19 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
-      const DeepCollectionEquality().hash(_questionFiles),
-      const DeepCollectionEquality().hash(_answerFiles),
       type,
       subType,
+      priceMultiplier,
+      answerText,
+      const DeepCollectionEquality().hash(_questionFiles),
+      const DeepCollectionEquality().hash(_answerFiles),
       isHidden,
-      answerDelay,
-      priceMultiplier);
+      answerDelay);
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.noRisk(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, isHidden: $isHidden, answerDelay: $answerDelay, priceMultiplier: $priceMultiplier)';
+    return 'PackageQuestionUnion.noRisk(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, subType: $subType, priceMultiplier: $priceMultiplier, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -1227,18 +1172,18 @@ abstract mixin class $PackageQuestionUnionNoRiskCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       NoRiskQuestionType type,
       NoRiskQuestionSubType subType,
+      QuestionPriceMultiplier priceMultiplier,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
-      int answerDelay,
-      String priceMultiplier});
+      int answerDelay});
 }
 
 /// @nodoc
@@ -1256,18 +1201,18 @@ class _$PackageQuestionUnionNoRiskCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
     Object? type = null,
     Object? subType = null,
+    Object? priceMultiplier = null,
+    Object? answerText = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
     Object? isHidden = null,
     Object? answerDelay = null,
-    Object? priceMultiplier = null,
   }) {
     return _then(PackageQuestionUnionNoRisk(
       id: freezed == id
@@ -1278,10 +1223,10 @@ class _$PackageQuestionUnionNoRiskCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -1290,22 +1235,10 @@ class _$PackageQuestionUnionNoRiskCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self._questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self._answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -1314,6 +1247,22 @@ class _$PackageQuestionUnionNoRiskCopyWithImpl<$Res>
           ? _self.subType
           : subType // ignore: cast_nullable_to_non_nullable
               as NoRiskQuestionSubType,
+      priceMultiplier: null == priceMultiplier
+          ? _self.priceMultiplier
+          : priceMultiplier // ignore: cast_nullable_to_non_nullable
+              as QuestionPriceMultiplier,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -1322,10 +1271,6 @@ class _$PackageQuestionUnionNoRiskCopyWithImpl<$Res>
           ? _self.answerDelay
           : answerDelay // ignore: cast_nullable_to_non_nullable
               as int,
-      priceMultiplier: null == priceMultiplier
-          ? _self.priceMultiplier
-          : priceMultiplier // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -1339,19 +1284,19 @@ class PackageQuestionUnionChoice implements PackageQuestionUnion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
       required this.type,
       required this.subType,
       required this.showDelay,
-      required final List<Answers> answers,
+      required final List<QuestionChoiceAnswers> answers,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
-      : _questionFiles = questionFiles,
-        _answerFiles = answerFiles,
-        _answers = answers;
+      : _answers = answers,
+        _questionFiles = questionFiles,
+        _answerFiles = answerFiles;
   factory PackageQuestionUnionChoice.fromJson(Map<String, dynamic> json) =>
       _$PackageQuestionUnionChoiceFromJson(json);
 
@@ -1360,9 +1305,9 @@ class PackageQuestionUnionChoice implements PackageQuestionUnion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -1372,20 +1317,25 @@ class PackageQuestionUnionChoice implements PackageQuestionUnion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
   @override
-  List<PackageQuestionFile>? get questionFiles {
+  final ChoiceQuestionType type;
+  final dynamic subType;
+  final QuestionShowDelay showDelay;
+  final List<QuestionChoiceAnswers> _answers;
+  List<QuestionChoiceAnswers> get answers {
+    if (_answers is EqualUnmodifiableListView) return _answers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_answers);
+  }
+
+  @override
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
     final value = _questionFiles;
     if (value == null) return null;
     if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
@@ -1393,34 +1343,14 @@ class PackageQuestionUnionChoice implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
-  }
-
-  @override
-  final ChoiceQuestionType type;
-  final dynamic subType;
-
-  /// Delay before showing options in milliseconds
-  final int showDelay;
-
-  /// Multiple choice options; minimum 2, maximum 8 answers
-  final List<Answers> _answers;
-
-  /// Multiple choice options; minimum 2, maximum 8 answers
-  List<Answers> get answers {
-    if (_answers is EqualUnmodifiableListView) return _answers;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_answers);
   }
 
   /// Whether the question is hidden
@@ -1461,19 +1391,19 @@ class PackageQuestionUnionChoice implements PackageQuestionUnion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
-            const DeepCollectionEquality()
-                .equals(other._questionFiles, _questionFiles) &&
-            const DeepCollectionEquality()
-                .equals(other._answerFiles, _answerFiles) &&
             (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality().equals(other.subType, subType) &&
             (identical(other.showDelay, showDelay) ||
                 other.showDelay == showDelay) &&
             const DeepCollectionEquality().equals(other._answers, _answers) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
+            const DeepCollectionEquality()
+                .equals(other._questionFiles, _questionFiles) &&
+            const DeepCollectionEquality()
+                .equals(other._answerFiles, _answerFiles) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
@@ -1489,20 +1419,20 @@ class PackageQuestionUnionChoice implements PackageQuestionUnion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
-      const DeepCollectionEquality().hash(_questionFiles),
-      const DeepCollectionEquality().hash(_answerFiles),
       type,
       const DeepCollectionEquality().hash(subType),
       showDelay,
       const DeepCollectionEquality().hash(_answers),
+      answerText,
+      const DeepCollectionEquality().hash(_questionFiles),
+      const DeepCollectionEquality().hash(_answerFiles),
       isHidden,
       answerDelay);
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.choice(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, subType: $subType, showDelay: $showDelay, answers: $answers, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion.choice(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, subType: $subType, showDelay: $showDelay, answers: $answers, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -1517,17 +1447,17 @@ abstract mixin class $PackageQuestionUnionChoiceCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       ChoiceQuestionType type,
       dynamic subType,
-      int showDelay,
-      List<Answers> answers,
+      QuestionShowDelay showDelay,
+      List<QuestionChoiceAnswers> answers,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -1547,17 +1477,17 @@ class _$PackageQuestionUnionChoiceCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
     Object? type = null,
     Object? subType = freezed,
     Object? showDelay = null,
     Object? answers = null,
+    Object? answerText = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
     Object? isHidden = null,
     Object? answerDelay = null,
   }) {
@@ -1570,10 +1500,10 @@ class _$PackageQuestionUnionChoiceCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -1582,22 +1512,10 @@ class _$PackageQuestionUnionChoiceCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self._questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self._answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -1609,11 +1527,23 @@ class _$PackageQuestionUnionChoiceCopyWithImpl<$Res>
       showDelay: null == showDelay
           ? _self.showDelay
           : showDelay // ignore: cast_nullable_to_non_nullable
-              as int,
+              as QuestionShowDelay,
       answers: null == answers
           ? _self._answers
           : answers // ignore: cast_nullable_to_non_nullable
-              as List<Answers>,
+              as List<QuestionChoiceAnswers>,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -1635,11 +1565,11 @@ class PackageQuestionUnionHidden implements PackageQuestionUnion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
       required this.type,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _questionFiles = questionFiles,
@@ -1652,9 +1582,9 @@ class PackageQuestionUnionHidden implements PackageQuestionUnion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -1664,20 +1594,16 @@ class PackageQuestionUnionHidden implements PackageQuestionUnion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
   @override
-  List<PackageQuestionFile>? get questionFiles {
+  final HiddenQuestionType type;
+  @override
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
     final value = _questionFiles;
     if (value == null) return null;
     if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
@@ -1685,21 +1611,15 @@ class PackageQuestionUnionHidden implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
-
-  @override
-  final HiddenQuestionType type;
 
   /// Whether the question is hidden
   @override
@@ -1739,15 +1659,15 @@ class PackageQuestionUnionHidden implements PackageQuestionUnion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other._questionFiles, _questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other._answerFiles, _answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
@@ -1763,17 +1683,17 @@ class PackageQuestionUnionHidden implements PackageQuestionUnion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
+      type,
+      answerText,
       const DeepCollectionEquality().hash(_questionFiles),
       const DeepCollectionEquality().hash(_answerFiles),
-      type,
       isHidden,
       answerDelay);
 
   @override
   String toString() {
-    return 'PackageQuestionUnion.hidden(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestionUnion.hidden(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -1788,14 +1708,14 @@ abstract mixin class $PackageQuestionUnionHiddenCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       HiddenQuestionType type,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -1815,14 +1735,14 @@ class _$PackageQuestionUnionHiddenCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
+    Object? type = null,
+    Object? answerText = freezed,
     Object? questionFiles = freezed,
     Object? answerFiles = freezed,
-    Object? type = null,
     Object? isHidden = null,
     Object? answerDelay = null,
   }) {
@@ -1835,10 +1755,10 @@ class _$PackageQuestionUnionHiddenCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -1847,26 +1767,26 @@ class _$PackageQuestionUnionHiddenCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self._questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self._answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
               as HiddenQuestionType,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable

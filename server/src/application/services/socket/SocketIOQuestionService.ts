@@ -47,6 +47,14 @@ export class SocketIOQuestionService {
       throw new ClientError(ClientResponse.SOMEONE_ALREADY_ANSWERING);
     }
 
+    const isAnswered = !!game.gameState.answeredPlayers?.find(
+      (answerResult) => answerResult.player === player?.meta.id
+    );
+
+    if (isAnswered) {
+      throw new ClientError(ClientResponse.ALREADY_ANSWERED);
+    }
+
     const elapsedTimer = game.gameState.timer!;
 
     elapsedTimer.elapsedMs =
@@ -55,9 +63,9 @@ export class SocketIOQuestionService {
     await this.gameService.saveTimer(
       elapsedTimer,
       game.id,
-      QuestionState.SHOWING,
       // Apply some additional expire time for key safety (in case of high latency)
-      Math.ceil(GAME_QUESTION_ANSWER_SUBMIT_TIME * 1.5)
+      Math.ceil(GAME_QUESTION_ANSWER_SUBMIT_TIME * 1.5),
+      QuestionState.SHOWING
     );
 
     const timer = new GameStateTimer(GAME_QUESTION_ANSWER_SUBMIT_TIME);
@@ -104,19 +112,24 @@ export class SocketIOQuestionService {
 
     if (playerAnswerResult.score > 0) {
       question = await this.getCurrentQuestion(game);
+      game.gameState.currentQuestion = null;
     }
 
     let timer: GameStateTimerDTO | null = null;
 
     if (nextState === QuestionState.SHOWING) {
-      timer = (await this.gameService.getTimer(
-        game.id,
-        QuestionState.SHOWING
-      )) as GameStateTimerDTO | null;
+      timer = await this.gameService.getTimer(game.id, QuestionState.SHOWING);
     }
 
     game.setTimer(timer);
     await this.gameService.updateGame(game);
+    if (timer) {
+      await this.gameService.saveTimer(
+        timer,
+        game.id,
+        timer.durationMs - timer.elapsedMs
+      );
+    }
 
     return { playerAnswerResult, game, question, timer };
   }
@@ -166,7 +179,9 @@ export class SocketIOQuestionService {
       withSave: false,
     });
 
-    game.gameState.currentQuestion = questionId;
+    game.gameState.currentQuestion = GameQuestionMapper.mapToSimpleQuestion(
+      questionData.question
+    );
     game.gameState.timer = timer.value();
     GameQuestionMapper.setQuestionPlayed(game, question.id!, theme.id!);
 
@@ -190,7 +205,7 @@ export class SocketIOQuestionService {
     const questionData = GameQuestionMapper.getQuestionAndTheme(
       game.package,
       gameState.currentRound.id,
-      gameState.currentQuestion
+      gameState.currentQuestion.id!
     );
 
     if (!questionData) {

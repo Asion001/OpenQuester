@@ -16,7 +16,7 @@ _GameListItem _$GameListItemFromJson(Map<String, dynamic> json) =>
       ageRestriction: AgeRestriction.fromJson(json['ageRestriction'] as String),
       isPrivate: json['isPrivate'] as bool,
       currentRound: (json['currentRound'] as num?)?.toInt(),
-      currentQuestion: (json['currentQuestion'] as num?)?.toInt(),
+      playedQuestions: (json['playedQuestions'] as num?)?.toInt(),
       players: (json['players'] as num).toInt(),
       maxPlayers: (json['maxPlayers'] as num).toInt(),
       startedAt: json['startedAt'] == null
@@ -37,7 +37,7 @@ Map<String, dynamic> _$GameListItemToJson(_GameListItem instance) =>
       'ageRestriction': instance.ageRestriction,
       'isPrivate': instance.isPrivate,
       'currentRound': instance.currentRound,
-      'currentQuestion': instance.currentQuestion,
+      'playedQuestions': instance.playedQuestions,
       'players': instance.players,
       'maxPlayers': instance.maxPlayers,
       'startedAt': instance.startedAt?.toIso8601String(),

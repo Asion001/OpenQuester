@@ -29,7 +29,7 @@ export class PackageRestApiController {
 
   private uploadPackage = async (req: Request, res: Response) => {
     // Validate and get data that can be safely saved in DB
-    const validatedData = await new RequestDataValidator<{
+    const validatedData = new RequestDataValidator<{
       content: PackageDTO;
     }>(req.body, uploadPackageScheme()).validate();
 
@@ -41,7 +41,7 @@ export class PackageRestApiController {
   };
 
   private getPackage = async (req: Request, res: Response) => {
-    const validatedData = await new RequestDataValidator<PackageInputDTO>(
+    const validatedData = new RequestDataValidator<PackageInputDTO>(
       { packageId: Number(req.params.id) },
       packIdScheme()
     ).validate();
@@ -51,11 +51,10 @@ export class PackageRestApiController {
   };
 
   private listPackages = async (req: Request, res: Response) => {
-    const paginationOpts =
-      await new RequestDataValidator<PackagePaginationOpts>(
-        req.query as unknown as PackagePaginationOpts,
-        packagePaginationScheme()
-      ).validate();
+    const paginationOpts = new RequestDataValidator<PackagePaginationOpts>(
+      req.query as unknown as PackagePaginationOpts,
+      packagePaginationScheme()
+    ).validate();
 
     const data = await this.packageService.listPackages(paginationOpts);
 

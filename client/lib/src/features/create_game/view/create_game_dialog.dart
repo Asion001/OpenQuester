@@ -210,7 +210,7 @@ class _SelectedPackagePreview extends StatelessWidget {
     required this.package,
   });
 
-  final PackageResponse? package;
+  final PackageListItem? package;
 
   @override
   Widget build(BuildContext context) {

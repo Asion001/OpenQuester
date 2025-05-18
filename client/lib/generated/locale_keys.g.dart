@@ -59,4 +59,16 @@ abstract class LocaleKeys {
   static const yes = 'yes';
   static const no = 'no';
   static const openquester = 'openquester';
+  static const question_press_to_answer = 'question.press_to_answer';
+  static const question_hold_to_skip = 'question.hold_to_skip';
+  static const question_user_is_answering = 'question.user_is_answering';
+  static const question_error_during_loading = 'question.error_during_loading';
+  static const question_answer_is_correct = 'question.answer_is_correct';
+  static const question_answer_is_wrong = 'question.answer_is_wrong';
+  static const question_correct_answer_is = 'question.correct_answer_is';
+  static const question_hint = 'question.hint';
+  static const question = 'question';
+  static const delete_game = 'delete_game';
+  static const delete_game_confirmation = 'delete_game_confirmation';
+  static const volume = 'volume';
 }

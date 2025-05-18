@@ -84,7 +84,7 @@ export class Package {
     }
   }
 
-  public async logoDTO(storage: S3StorageService, opts?: PackageDTOOptions) {
+  public logoDTO(storage: S3StorageService, opts?: PackageDTOOptions) {
     const options = opts ?? { fetchIds: false };
     const dto = this.logo
       ? {
@@ -92,7 +92,7 @@ export class Package {
             id: this.logo.id,
             md5: this.logo.filename,
             type: PackageFileType.IMAGE,
-            link: await storage.getUrl(this.logo.filename),
+            link: storage.getUrl(this.logo.filename),
           },
         }
       : null;
@@ -104,13 +104,30 @@ export class Package {
     return dto;
   }
 
-  public async toDTO(
+  public toSimpleDTO(storage: S3StorageService): Omit<PackageDTO, "rounds"> {
+    return {
+      id: this.id,
+      title: this.title,
+      ageRestriction: this.age_restriction,
+      author: {
+        id: this.author.id,
+        username: this.author.username,
+      },
+      createdAt: this.created_at,
+      description: this.description,
+      language: this.language,
+      logo: this.logoDTO(storage),
+      tags: this.tags.map((tag) => tag.toDTO()),
+    };
+  }
+
+  public toDTO(
     storage: S3StorageService,
     opts?: PackageDTOOptions
-  ): Promise<PackageDTO> {
+  ): PackageDTO {
     const options = opts ?? { fetchIds: false };
 
-    const logoDTO = await this.logoDTO(storage);
+    const logoDTO = this.logoDTO(storage);
 
     if (this.rounds.length < 1) {
       throw new ClientError(ClientResponse.PACKAGE_CORRUPTED, undefined, {
@@ -119,9 +136,8 @@ export class Package {
       });
     }
 
-    const roundsDTO = await Promise.all(
-      this.rounds.map((round) => round.toDTO(storage, options))
-    );
+    const roundsDTO = this.rounds.map((round) => round.toDTO(storage, options));
+
     const tagsDTO = this.tags.map((tag) => tag.toDTO());
 
     let dto: PackageDTO = {

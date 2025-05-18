@@ -240,7 +240,13 @@ export class Game {
       throw new ClientError(ClientResponse.PLAYER_NOT_FOUND);
     }
 
-    const score = player.getScore() + scoreResult;
+    const score = player.score + scoreResult;
+
+    // Update the player's score in the _players array
+    const idx = this._players.findIndex((p) => p.meta.id === player.meta.id);
+    if (idx !== -1) {
+      this._players[idx].score = score;
+    }
 
     const playerAnswerResult: GameStateAnsweredPlayerData = {
       player: this.gameState.answeringPlayer!,
@@ -256,7 +262,6 @@ export class Game {
     } else {
       // When question is correct we reset answered players array
       this.gameState.answeredPlayers = null;
-      this.gameState.currentQuestion = null;
     }
 
     // Always reset answering player
@@ -272,6 +277,7 @@ export class Game {
   public resetToChoosingState() {
     this.gameState.currentQuestion = null;
     this.gameState.timer = null;
+    this.gameState.answeredPlayers = null;
     this.updateQuestionState(QuestionState.CHOOSING);
   }
 
@@ -285,6 +291,10 @@ export class Game {
 
   public setTimer(timer: GameStateTimerDTO | null) {
     this.gameState.timer = timer;
+  }
+
+  public get timer() {
+    return this.gameState.timer;
   }
 
   private _getFirstFreeSlotIndex(): number {

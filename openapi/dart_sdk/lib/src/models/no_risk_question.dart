@@ -6,10 +6,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'no_risk_question_sub_type.dart';
 import 'no_risk_question_type.dart';
-import 'package_answer_file.dart';
 import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
+import 'question_answer_text.dart';
+import 'question_price_multiplier.dart';
 
 part 'no_risk_question.freezed.dart';
 part 'no_risk_question.g.dart';
@@ -20,8 +21,8 @@ abstract class NoRiskQuestion with _$NoRiskQuestion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -29,21 +30,16 @@ abstract class NoRiskQuestion with _$NoRiskQuestion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required NoRiskQuestionType type,
 
     /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
     required NoRiskQuestionSubType subType,
+    required QuestionPriceMultiplier priceMultiplier,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -52,10 +48,6 @@ abstract class NoRiskQuestion with _$NoRiskQuestion {
     /// Delay in milliseconds before being able to answer, if applicable
     @Default(4000)
     int answerDelay,
-
-    /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-    @Default('1.5')
-    String priceMultiplier,
   }) = _NoRiskQuestion;
   
   factory NoRiskQuestion.fromJson(Map<String, Object?> json) => _$NoRiskQuestionFromJson(json);

@@ -72,12 +72,12 @@ export class Player {
   }
 
   // Score
-  public getScore(): number {
+  public get score(): number {
     return this._score;
   }
 
-  public updateScore(amount: number): void {
-    this._score += amount;
+  public set score(amount: number) {
+    this._score = amount;
   }
 
   // Restrictions

@@ -17,6 +17,7 @@
   "validation_error": "%error",
   "fields_required": "%fields fields is required",
   "bad_user_id": "Bad user id provided",
+  "bad_id_provided": "Bad id provided",
   "no_avatar": "Avatar with this filename is not found",
   "no_content_rounds": "Content does not contain 'rounds'!",
   "wrong_content": "Wrong 'content' argument type, it should be a valid JSON object!",
@@ -64,5 +65,6 @@
   "player_not_found": "Player not found",
   "no_showman": "Game has no showman",
   "cannot_submit_answer": "You cannot submit answer on this question",
-  "only_showman_send_answer_result": "Only showman can send answer result"
+  "only_showman_send_answer_result": "Only showman can send answer result",
+  "already_answered": "You already answered"
 }

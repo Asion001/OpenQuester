@@ -92,8 +92,8 @@ class ContentXmlParser {
         .firstWhereOrNull((e) => e.getAttribute('name') == 'selectionMode')
         ?.innerText;
     final transferType = selectionModeString == 'exceptCurrent'
-        ? PackageQuestionTransferType.exceptCurrent
-        : PackageQuestionTransferType.any;
+        ? QuestionTransferType.exceptCurrent
+        : QuestionTransferType.any;
     final answerParam = params?.children.firstWhereOrNull(
       (p0) => p0.getAttribute('name') == 'answer',
     );
@@ -118,11 +118,7 @@ class ContentXmlParser {
         .toList();
     final packageAnswerFiles = answerFiles
         .mapIndexed(
-          (index, e) => PackageAnswerFile(
-            id: null,
-            file: e,
-            order: index,
-          ),
+          (index, e) => PackageQuestionFile(id: null, file: e, order: index),
         )
         .toList();
 
@@ -179,6 +175,7 @@ class ContentXmlParser {
           id: null,
           subType: NoRiskQuestionSubType.simple,
           order: index,
+          priceMultiplier: '2',
         ),
       QuestionType.hidden => PackageQuestionUnion.hidden(
           price: price,
@@ -205,7 +202,7 @@ class ContentXmlParser {
           showDelay: 3000,
           answers: rightAnswers
               .mapIndexed(
-                (index, e) => Answers(
+                (index, e) => QuestionChoiceAnswers(
                   id: null,
                   text: e,
                   order: index,

@@ -4,10 +4,10 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package_answer_file.dart';
 import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
+import 'question_answer_text.dart';
 import 'simple_question_type.dart';
 
 part 'simple_question.freezed.dart';
@@ -19,8 +19,8 @@ abstract class SimpleQuestion with _$SimpleQuestion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -28,18 +28,12 @@ abstract class SimpleQuestion with _$SimpleQuestion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required SimpleQuestionType type,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)

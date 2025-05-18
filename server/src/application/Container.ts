@@ -10,7 +10,7 @@ export class Container {
   static register<T>(
     key: symbol,
     instance: T,
-    type: "service" | "repository"
+    type: "service" | "repository" | "infrastructure" | "useCase"
   ): void {
     this.instances.set(key, instance);
     if (type === "service") this.services.set(key, instance);
@@ -46,6 +46,7 @@ export const CONTAINER_TYPES = {
   Database: Symbol("Database"),
   Redis: Symbol("Redis"),
   IO: Symbol("IO"),
+  RedisCache: Symbol("RedisCache"),
 
   // Repositories
   UserRepository: Symbol("UserRepository"),
@@ -75,4 +76,7 @@ export const CONTAINER_TYPES = {
   SocketIOChatService: Symbol("SocketIOChatService"),
   RedisPubSubService: Symbol("RedisPubSubService"),
   SocketIOQuestionService: Symbol("SocketIOQuestionService"),
+
+  // Use cases
+  UserCacheUseCase: Symbol("UserCacheUseCase"),
 };

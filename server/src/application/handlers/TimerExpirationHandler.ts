@@ -12,7 +12,6 @@ import {
   SocketIOGameEvents,
 } from "domain/enums/SocketIOEvents";
 import { ErrorController } from "domain/errors/ErrorController";
-import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { RedisExpirationHandler } from "domain/types/redis/RedisExpirationHandler";
@@ -69,12 +68,10 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
           question
         );
 
-        this._gameNamespace
-          .to(gameId)
-          .emit(SocketIOGameEvents.ANSWER_SUBMITTED, {
-            answer: answerResult,
-            timer,
-          });
+        this._gameNamespace.to(gameId).emit(SocketIOGameEvents.ANSWER_RESULT, {
+          answerResult,
+          timer,
+        });
         return;
       }
     } catch (err: unknown) {
@@ -97,19 +94,20 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
       nextState
     );
 
-    const timerRedisValue = await this.gameService.getTimer(
+    const timer = await this.gameService.getTimer(
       game.id,
       QuestionState.SHOWING
     );
 
-    let timer: GameStateTimerDTO | null = null;
-
-    if (timerRedisValue) {
-      timer = JSON.parse(timerRedisValue);
-    }
-
     game.setTimer(timer);
     await this.gameService.updateGame(game);
+    if (timer) {
+      await this.gameService.saveTimer(
+        timer,
+        game.id,
+        timer.durationMs - timer.elapsedMs
+      );
+    }
 
     return { answerResult: playerAnswerResult, timer };
   }

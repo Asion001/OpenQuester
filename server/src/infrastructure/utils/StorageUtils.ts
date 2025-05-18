@@ -8,8 +8,6 @@ export class StorageUtils {
    * - "abcd.jpg" returns: "a/ab/abcd"
    *
    * - "abcd" returns: "a/ab/abcd"
-   *
-   * If filename is not md5 encoded value, it will be put in "other/" folder
    */
   public static parseFilePath(filename: string): string {
     filename = ValueUtils.getRawFilename(filename.toLowerCase());

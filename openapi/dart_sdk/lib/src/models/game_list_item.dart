@@ -21,7 +21,7 @@ abstract class GameListItem with _$GameListItem {
     required AgeRestriction ageRestriction,
     required bool isPrivate,
     required int? currentRound,
-    required int? currentQuestion,
+    required int? playedQuestions,
     required int players,
     required int maxPlayers,
     required DateTime? startedAt,

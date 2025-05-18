@@ -25,6 +25,7 @@ export enum ClientResponse {
   // Validation
   VALIDATION_ERROR = "validation_error",
   BAD_USER_ID = "bad_user_id",
+  BAD_ID_PROVIDED = "bad_id_provided",
   NO_AVATAR = "no_avatar",
   CANNOT_PARSE_USER_DATA = "cannot_parse_user_data",
 
@@ -70,6 +71,8 @@ export enum ClientResponse {
   QUESTION_ALREADY_PLAYED = "question_already_played",
   QUESTION_NOT_PICKED = "question_not_picked",
   SOMEONE_ALREADY_ANSWERING = "someone_already_answering",
+  ALREADY_ANSWERED = "already_answered",
+
   GAME_IS_PAUSED = "game_is_paused",
   PLAYER_NOT_FOUND = "player_not_found",
   CANNOT_SUBMIT_ANSWER = "cannot_submit_answer",

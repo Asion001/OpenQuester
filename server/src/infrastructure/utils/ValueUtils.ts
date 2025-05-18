@@ -15,7 +15,7 @@ export class ValueUtils {
     id = Number(id);
 
     if (id < 1 || Number.isNaN(id)) {
-      throw new ClientError(ClientResponse.BAD_USER_ID);
+      throw new ClientError(ClientResponse.BAD_ID_PROVIDED);
     }
 
     return id;

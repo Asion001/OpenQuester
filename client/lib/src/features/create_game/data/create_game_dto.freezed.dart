@@ -67,7 +67,7 @@ abstract mixin class $CreateGameDtoCopyWith<$Res> {
       bool private,
       int maxPlayers});
 
-  $PackageResponseCopyWith<$Res>? get package;
+  $PackageListItemCopyWith<$Res>? get package;
 }
 
 /// @nodoc
@@ -117,12 +117,12 @@ class _$CreateGameDtoCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PackageResponseCopyWith<$Res>? get package {
+  $PackageListItemCopyWith<$Res>? get package {
     if (_self.package == null) {
       return null;
     }
 
-    return $PackageResponseCopyWith<$Res>(_self.package!, (value) {
+    return $PackageListItemCopyWith<$Res>(_self.package!, (value) {
       return _then(_self.copyWith(package: value));
     });
   }
@@ -201,7 +201,7 @@ abstract mixin class _$CreateGameDtoCopyWith<$Res>
       int maxPlayers});
 
   @override
-  $PackageResponseCopyWith<$Res>? get package;
+  $PackageListItemCopyWith<$Res>? get package;
 }
 
 /// @nodoc
@@ -251,12 +251,12 @@ class __$CreateGameDtoCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PackageResponseCopyWith<$Res>? get package {
+  $PackageListItemCopyWith<$Res>? get package {
     if (_self.package == null) {
       return null;
     }
 
-    return $PackageResponseCopyWith<$Res>(_self.package!, (value) {
+    return $PackageListItemCopyWith<$Res>(_self.package!, (value) {
       return _then(_self.copyWith(package: value));
     });
   }

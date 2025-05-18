@@ -15,7 +15,9 @@ import { SocketIOGameService } from "application/services/socket/SocketIOGameSer
 import { SocketIOQuestionService } from "application/services/socket/SocketIOQuestionService";
 import { TranslateService } from "application/services/text/TranslateService";
 import { UserService } from "application/services/user/UserService";
+import { UserCacheUseCase } from "application/usecases/user/UserCacheUseCase";
 import { RedisExpirationHandler } from "domain/types/redis/RedisExpirationHandler";
+import { RedisCache } from "infrastructure/cache/RedisCache";
 import { Database } from "infrastructure/database/Database";
 import { GameIndexManager } from "infrastructure/database/managers/game/GameIndexManager";
 import { File } from "infrastructure/database/models/File";
@@ -50,9 +52,13 @@ export class DIConfig {
   }
 
   public async initialize() {
-    Container.register(CONTAINER_TYPES.Database, this.db, "repository");
-    Container.register(CONTAINER_TYPES.Redis, this.redisClient, "repository");
-    Container.register(CONTAINER_TYPES.IO, this.io, "repository");
+    Container.register(CONTAINER_TYPES.Database, this.db, "infrastructure");
+    Container.register(
+      CONTAINER_TYPES.Redis,
+      this.redisClient,
+      "infrastructure"
+    );
+    Container.register(CONTAINER_TYPES.IO, this.io, "infrastructure");
 
     const db = Container.get<Database>(CONTAINER_TYPES.Database);
 
@@ -68,15 +74,6 @@ export class DIConfig {
         Container.get<FileUsageRepository>(CONTAINER_TYPES.FileUsageRepository)
       ),
       "service"
-    );
-
-    Container.register(
-      CONTAINER_TYPES.UserRepository,
-      new UserRepository(
-        db.getRepository(User),
-        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
-      ),
-      "repository"
     );
 
     Container.register(
@@ -110,42 +107,10 @@ export class DIConfig {
     );
 
     Container.register(
-      CONTAINER_TYPES.PackageRepository,
-      new PackageRepository(
-        db,
-        db.getRepository(Package),
-        Container.get<PackageTagService>(CONTAINER_TYPES.PackageTagService),
-        Container.get<FileService>(CONTAINER_TYPES.FileService)
-      ),
-      "repository"
-    );
-
-    Container.register(
       CONTAINER_TYPES.DependencyService,
       new DependencyService(
         Container.get<FileService>(CONTAINER_TYPES.FileService),
         Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
-      ),
-      "service"
-    );
-
-    Container.register(
-      CONTAINER_TYPES.UserService,
-      new UserService(
-        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
-        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
-      ),
-      "service"
-    );
-
-    Container.register(
-      CONTAINER_TYPES.S3StorageService,
-      new S3StorageService(
-        StorageContextBuilder.buildS3Context(),
-        Container.get<FileService>(CONTAINER_TYPES.FileService),
-        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService),
-        Container.get<UserService>(CONTAINER_TYPES.UserService),
-        Container.get<DependencyService>(CONTAINER_TYPES.DependencyService)
       ),
       "service"
     );
@@ -172,6 +137,62 @@ export class DIConfig {
       CONTAINER_TYPES.RedisService,
       new RedisService(
         Container.get<RedisRepository>(CONTAINER_TYPES.RedisRepository)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.RedisCache,
+      new RedisCache(Container.get<RedisService>(CONTAINER_TYPES.RedisService)),
+      "infrastructure"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.UserCacheUseCase,
+      new UserCacheUseCase(
+        Container.get<RedisCache>(CONTAINER_TYPES.RedisCache)
+      ),
+      "useCase"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.PackageRepository,
+      new PackageRepository(
+        db,
+        db.getRepository(Package),
+        Container.get<PackageTagService>(CONTAINER_TYPES.PackageTagService),
+        Container.get<FileService>(CONTAINER_TYPES.FileService)
+      ),
+      "repository"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.UserRepository,
+      new UserRepository(
+        db.getRepository(User),
+        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService),
+        Container.get<UserCacheUseCase>(CONTAINER_TYPES.UserCacheUseCase)
+      ),
+      "repository"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.UserService,
+      new UserService(
+        Container.get<UserRepository>(CONTAINER_TYPES.UserRepository),
+        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService)
+      ),
+      "service"
+    );
+
+    Container.register(
+      CONTAINER_TYPES.S3StorageService,
+      new S3StorageService(
+        StorageContextBuilder.buildS3Context(),
+        Container.get<FileService>(CONTAINER_TYPES.FileService),
+        Container.get<FileUsageService>(CONTAINER_TYPES.FileUsageService),
+        Container.get<UserService>(CONTAINER_TYPES.UserService),
+        Container.get<DependencyService>(CONTAINER_TYPES.DependencyService)
       ),
       "service"
     );

@@ -1,6 +1,7 @@
 import { FindOptionsWhere, In, type Repository } from "typeorm";
 
 import { FileUsageService } from "application/services/file/FileUsageService";
+import { UserCacheUseCase } from "application/usecases/user/UserCacheUseCase";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
 import {
@@ -16,18 +17,38 @@ import { QueryBuilder } from "infrastructure/database/QueryBuilder";
 export class UserRepository {
   constructor(
     private readonly repository: Repository<User>,
-    private readonly fileUsageService: FileUsageService
+    private readonly fileUsageService: FileUsageService,
+    private readonly cache: UserCacheUseCase
   ) {
     //
   }
 
-  public async get(id: number, selectOptions: SelectOptions<User>) {
+  public async get(
+    id: number,
+    selectOptions: SelectOptions<User>
+  ): Promise<User | null> {
+    // TODO: Fix user cache - cache by select options
+    // const cached = await this.cache.get(id);
+
+    // if (cached) {
+    //   const user = new User();
+    //   user.import(cached);
+    //   return user;
+    // }
+
     const qb = await QueryBuilder.buildFindQuery<User>(
       this.repository,
       { id, is_deleted: false },
       selectOptions
     );
-    return qb.getOne();
+
+    const user = await qb.getOne();
+
+    // if (user) {
+    //   await this.cache.set(user);
+    // }
+
+    return user;
   }
 
   public async find(
@@ -114,7 +135,7 @@ export class UserRepository {
 
     // Set all data to new user instance
     let user = new User();
-    await user.import({
+    user.import({
       username: data.username,
       email: data.email,
       discord_id: data.discord_id,
@@ -133,16 +154,20 @@ export class UserRepository {
       await this.fileUsageService.writeUsage(data.avatar, user);
     }
 
+    await this.cache.set(user);
+
     return user;
   }
 
   public async delete(user: User) {
     user.is_deleted = true;
     user.updated_at = new Date();
+    await this.cache.delete(user.id);
     return this.update(user);
   }
 
   public async update(user: User) {
+    await this.cache.delete(user.id);
     return this.repository.update(
       { id: user.id },
       {

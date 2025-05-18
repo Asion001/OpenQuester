@@ -5,10 +5,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'hidden_question_type.dart';
-import 'package_answer_file.dart';
 import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
+import 'question_answer_text.dart';
 
 part 'hidden_question.freezed.dart';
 part 'hidden_question.g.dart';
@@ -19,8 +19,8 @@ abstract class HiddenQuestion with _$HiddenQuestion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -28,18 +28,12 @@ abstract class HiddenQuestion with _$HiddenQuestion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required HiddenQuestionType type,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)

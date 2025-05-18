@@ -47,15 +47,15 @@ export class PackageQuestionChoiceAnswer {
     this.question = data.question;
   }
 
-  public async toDTO(
+  public toDTO(
     storage: S3StorageService,
     opts: PackageDTOOptions
-  ): Promise<PackageAnswerDTO> {
+  ): PackageAnswerDTO {
     const fileDTO: PackageFileDTO | null = this.file
       ? {
           md5: this.file.filename,
           type: this.type!,
-          link: await storage.getUrl(this.file.filename),
+          link: storage.getUrl(this.file.filename),
         }
       : null;
 

@@ -49,10 +49,10 @@ export class PackageTheme {
     this.order = data.order;
   }
 
-  public async toDTO(
+  public toDTO(
     storage: S3StorageService,
     opts: PackageDTOOptions
-  ): Promise<PackageThemeDTO> {
+  ): PackageThemeDTO {
     if (this.questions.length < 1) {
       throw new ClientError(ClientResponse.PACKAGE_CORRUPTED, undefined, {
         id: this.id,
@@ -60,8 +60,8 @@ export class PackageTheme {
       });
     }
 
-    const questionsDTO = await Promise.all(
-      this.questions.map((question) => question.toDTO(storage, opts))
+    const questionsDTO = this.questions.map((question) =>
+      question.toDTO(storage, opts)
     );
 
     let dto: PackageThemeDTO = {

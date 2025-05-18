@@ -22,7 +22,7 @@ mixin _$GameListItem {
   AgeRestriction get ageRestriction;
   bool get isPrivate;
   int? get currentRound;
-  int? get currentQuestion;
+  int? get playedQuestions;
   int get players;
   int get maxPlayers;
   DateTime? get startedAt;
@@ -57,8 +57,8 @@ mixin _$GameListItem {
                 other.isPrivate == isPrivate) &&
             (identical(other.currentRound, currentRound) ||
                 other.currentRound == currentRound) &&
-            (identical(other.currentQuestion, currentQuestion) ||
-                other.currentQuestion == currentQuestion) &&
+            (identical(other.playedQuestions, playedQuestions) ||
+                other.playedQuestions == playedQuestions) &&
             (identical(other.players, players) || other.players == players) &&
             (identical(other.maxPlayers, maxPlayers) ||
                 other.maxPlayers == maxPlayers) &&
@@ -80,7 +80,7 @@ mixin _$GameListItem {
       ageRestriction,
       isPrivate,
       currentRound,
-      currentQuestion,
+      playedQuestions,
       players,
       maxPlayers,
       startedAt,
@@ -89,7 +89,7 @@ mixin _$GameListItem {
 
   @override
   String toString() {
-    return 'GameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, isPrivate: $isPrivate, currentRound: $currentRound, currentQuestion: $currentQuestion, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, finishedAt: $finishedAt, package: $package)';
+    return 'GameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, isPrivate: $isPrivate, currentRound: $currentRound, playedQuestions: $playedQuestions, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, finishedAt: $finishedAt, package: $package)';
   }
 }
 
@@ -107,7 +107,7 @@ abstract mixin class $GameListItemCopyWith<$Res> {
       AgeRestriction ageRestriction,
       bool isPrivate,
       int? currentRound,
-      int? currentQuestion,
+      int? playedQuestions,
       int players,
       int maxPlayers,
       DateTime? startedAt,
@@ -137,7 +137,7 @@ class _$GameListItemCopyWithImpl<$Res> implements $GameListItemCopyWith<$Res> {
     Object? ageRestriction = null,
     Object? isPrivate = null,
     Object? currentRound = freezed,
-    Object? currentQuestion = freezed,
+    Object? playedQuestions = freezed,
     Object? players = null,
     Object? maxPlayers = null,
     Object? startedAt = freezed,
@@ -173,9 +173,9 @@ class _$GameListItemCopyWithImpl<$Res> implements $GameListItemCopyWith<$Res> {
           ? _self.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
               as int?,
-      currentQuestion: freezed == currentQuestion
-          ? _self.currentQuestion
-          : currentQuestion // ignore: cast_nullable_to_non_nullable
+      playedQuestions: freezed == playedQuestions
+          ? _self.playedQuestions
+          : playedQuestions // ignore: cast_nullable_to_non_nullable
               as int?,
       players: null == players
           ? _self.players
@@ -232,7 +232,7 @@ class _GameListItem implements GameListItem {
       required this.ageRestriction,
       required this.isPrivate,
       required this.currentRound,
-      required this.currentQuestion,
+      required this.playedQuestions,
       required this.players,
       required this.maxPlayers,
       required this.startedAt,
@@ -256,7 +256,7 @@ class _GameListItem implements GameListItem {
   @override
   final int? currentRound;
   @override
-  final int? currentQuestion;
+  final int? playedQuestions;
   @override
   final int players;
   @override
@@ -300,8 +300,8 @@ class _GameListItem implements GameListItem {
                 other.isPrivate == isPrivate) &&
             (identical(other.currentRound, currentRound) ||
                 other.currentRound == currentRound) &&
-            (identical(other.currentQuestion, currentQuestion) ||
-                other.currentQuestion == currentQuestion) &&
+            (identical(other.playedQuestions, playedQuestions) ||
+                other.playedQuestions == playedQuestions) &&
             (identical(other.players, players) || other.players == players) &&
             (identical(other.maxPlayers, maxPlayers) ||
                 other.maxPlayers == maxPlayers) &&
@@ -323,7 +323,7 @@ class _GameListItem implements GameListItem {
       ageRestriction,
       isPrivate,
       currentRound,
-      currentQuestion,
+      playedQuestions,
       players,
       maxPlayers,
       startedAt,
@@ -332,7 +332,7 @@ class _GameListItem implements GameListItem {
 
   @override
   String toString() {
-    return 'GameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, isPrivate: $isPrivate, currentRound: $currentRound, currentQuestion: $currentQuestion, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, finishedAt: $finishedAt, package: $package)';
+    return 'GameListItem(id: $id, createdBy: $createdBy, title: $title, createdAt: $createdAt, ageRestriction: $ageRestriction, isPrivate: $isPrivate, currentRound: $currentRound, playedQuestions: $playedQuestions, players: $players, maxPlayers: $maxPlayers, startedAt: $startedAt, finishedAt: $finishedAt, package: $package)';
   }
 }
 
@@ -352,7 +352,7 @@ abstract mixin class _$GameListItemCopyWith<$Res>
       AgeRestriction ageRestriction,
       bool isPrivate,
       int? currentRound,
-      int? currentQuestion,
+      int? playedQuestions,
       int players,
       int maxPlayers,
       DateTime? startedAt,
@@ -385,7 +385,7 @@ class __$GameListItemCopyWithImpl<$Res>
     Object? ageRestriction = null,
     Object? isPrivate = null,
     Object? currentRound = freezed,
-    Object? currentQuestion = freezed,
+    Object? playedQuestions = freezed,
     Object? players = null,
     Object? maxPlayers = null,
     Object? startedAt = freezed,
@@ -421,9 +421,9 @@ class __$GameListItemCopyWithImpl<$Res>
           ? _self.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
               as int?,
-      currentQuestion: freezed == currentQuestion
-          ? _self.currentQuestion
-          : currentQuestion // ignore: cast_nullable_to_non_nullable
+      playedQuestions: freezed == playedQuestions
+          ? _self.playedQuestions
+          : playedQuestions // ignore: cast_nullable_to_non_nullable
               as int?,
       players: null == players
           ? _self.players

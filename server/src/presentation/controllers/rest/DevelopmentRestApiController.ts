@@ -8,6 +8,7 @@ import {
 } from "domain/constants/game";
 import { USER_RELATIONS, USER_SELECT_FIELDS } from "domain/constants/user";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
+import { ErrorController } from "domain/errors/ErrorController";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { type Express } from "express";
 
@@ -106,7 +107,8 @@ export class DevelopmentRestApiController {
 
         res.json({ success: true, games });
       } catch (err: any) {
-        Logger.error(`DEV: Generate games error: ${err.message}`);
+        const error = await ErrorController.resolveError(err);
+        Logger.error(`DEV: Generate games error: ${error.message}`);
         res.status(500).json({ error: `Failed to generate games` });
       }
     });

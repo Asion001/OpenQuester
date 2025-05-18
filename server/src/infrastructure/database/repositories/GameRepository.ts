@@ -211,7 +211,7 @@ export class GameRepository {
       maxPlayers: gameData.maxPlayers,
       startedAt: null,
       finishedAt: null,
-      package: await packageData.toDTO(this.storage, { fetchIds: true }),
+      package: packageData.toDTO(this.storage, { fetchIds: true }),
       roundsCount: counts.roundsCount,
       questionsCount: counts.questionsCount,
       players: [],
@@ -362,7 +362,16 @@ export class GameRepository {
   public async getTimer(gameId: string, timerAdditional?: string) {
     const key = this._getTimerKey(gameId, timerAdditional);
 
-    return this.redisService.get(key);
+    try {
+      const timer = await this.redisService.get(key);
+      if (ValueUtils.isBad(timer) || ValueUtils.isEmpty(timer)) {
+        return null;
+      }
+
+      return JSON.parse(timer) as GameStateTimerDTO;
+    } catch {
+      return null;
+    }
   }
 
   /**
@@ -416,7 +425,7 @@ export class GameRepository {
       finishedAt: game.finishedAt,
       createdAt: game.createdAt,
       currentRound,
-      currentQuestion,
+      currentQuestion: currentQuestion?.id ?? null,
       package: {
         id: packData.id,
         title: packData.title,
@@ -425,7 +434,7 @@ export class GameRepository {
         author: { id: packData.author.id, username: packData.author.username },
         createdAt: packData.created_at,
         language: packData.language,
-        logo: await packData.logoDTO(this.storage),
+        logo: packData.logoDTO(this.storage),
         roundsCount: game.roundsCount ?? 0,
         questionsCount: game.questionsCount ?? 0,
         tags: packData.tags?.map((tag: PackageTag) => tag.tag) ?? [],
