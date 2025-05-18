@@ -25,6 +25,7 @@ export enum ClientResponse {
   // Validation
   VALIDATION_ERROR = "validation_error",
   BAD_USER_ID = "bad_user_id",
+  BAD_ID_PROVIDED = "bad_id_provided",
   NO_AVATAR = "no_avatar",
   CANNOT_PARSE_USER_DATA = "cannot_parse_user_data",
 

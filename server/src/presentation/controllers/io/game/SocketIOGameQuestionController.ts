@@ -39,7 +39,7 @@ export class SocketIOGameQuestionController {
   }
 
   private handleQuestionPick = async (data: any) => {
-    const dto = await GameValidator.validatePickQuestion(data);
+    const dto = GameValidator.validatePickQuestion(data);
 
     const { question, game, timer } =
       await this.socketIOQuestionService.handleQuestionPick(
@@ -65,7 +65,7 @@ export class SocketIOGameQuestionController {
   };
 
   private handleAnswerSubmitted = async (data: any) => {
-    const dto = await GameValidator.validateAnswerSubmitted(data);
+    const dto = GameValidator.validateAnswerSubmitted(data);
 
     const game = await this.socketIOQuestionService.handleAnswerSubmitted(
       this.socket.id
@@ -78,7 +78,7 @@ export class SocketIOGameQuestionController {
   };
 
   private handleAnswerResult = async (data: any) => {
-    const dto = await GameValidator.validateAnswerResult(data);
+    const dto = GameValidator.validateAnswerResult(data);
 
     const { playerAnswerResult, game, question, timer } =
       await this.socketIOQuestionService.handleAnswerResult(
@@ -91,6 +91,7 @@ export class SocketIOGameQuestionController {
       this.eventEmitter.emit<QuestionFinishEventPayload>(
         SocketIOGameEvents.QUESTION_FINISH,
         {
+          answerResult: playerAnswerResult,
           answerFiles: question!.answerFiles ?? null,
           answerText: question!.answerText ?? null,
         },

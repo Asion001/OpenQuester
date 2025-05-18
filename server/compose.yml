@@ -44,7 +44,7 @@ services:
   oq-redis:
     container_name: oq-redis
     restart: unless-stopped
-    image: bitnami/redis
+    image: bitnami/redis:8.0
     ports:
       - "127.0.0.1:6380:6379"
     environment:

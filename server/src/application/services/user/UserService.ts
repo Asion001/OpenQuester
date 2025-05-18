@@ -38,8 +38,8 @@ export class UserService {
       },
     });
 
-    const usersData: UserDTO[] = await Promise.all(
-      usersListPaginated.data.map((user) => user.toDTO())
+    const usersData: UserDTO[] = usersListPaginated.data.map((user) =>
+      user.toDTO()
     );
 
     return { data: usersData, pageInfo: usersListPaginated.pageInfo };

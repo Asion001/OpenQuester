@@ -58,7 +58,7 @@ export const verifySession = async (
 
   let session: SessionDTO;
   try {
-    session = await validateSession(req.session);
+    session = validateSession(req.session);
   } catch (err: unknown) {
     return handleSessionValidationError(err, req, res);
   }
