@@ -68,12 +68,10 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
           question
         );
 
-        this._gameNamespace
-          .to(gameId)
-          .emit(SocketIOGameEvents.ANSWER_SUBMITTED, {
-            answer: answerResult,
-            timer,
-          });
+        this._gameNamespace.to(gameId).emit(SocketIOGameEvents.ANSWER_RESULT, {
+          answerResult,
+          timer,
+        });
         return;
       }
     } catch (err: unknown) {
@@ -103,6 +101,13 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
 
     game.setTimer(timer);
     await this.gameService.updateGame(game);
+    if (timer) {
+      await this.gameService.saveTimer(
+        timer,
+        game.id,
+        timer.durationMs - timer.elapsedMs
+      );
+    }
 
     return { answerResult: playerAnswerResult, timer };
   }

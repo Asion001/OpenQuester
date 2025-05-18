@@ -107,7 +107,7 @@ export class SocketIOGameQuestionController {
     this.eventEmitter.emit(
       SocketIOGameEvents.ANSWER_RESULT,
       {
-        playerAnswerResult,
+        answerResult: playerAnswerResult,
         timer,
       },
       {

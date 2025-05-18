@@ -256,7 +256,6 @@ export class Game {
     } else {
       // When question is correct we reset answered players array
       this.gameState.answeredPlayers = null;
-      this.gameState.currentQuestion = null;
     }
 
     // Always reset answering player
@@ -272,6 +271,7 @@ export class Game {
   public resetToChoosingState() {
     this.gameState.currentQuestion = null;
     this.gameState.timer = null;
+    this.gameState.answeredPlayers = null;
     this.updateQuestionState(QuestionState.CHOOSING);
   }
 
@@ -285,6 +285,10 @@ export class Game {
 
   public setTimer(timer: GameStateTimerDTO | null) {
     this.gameState.timer = timer;
+  }
+
+  public get timer() {
+    return this.gameState.timer;
   }
 
   private _getFirstFreeSlotIndex(): number {
