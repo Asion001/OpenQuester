@@ -180,3 +180,19 @@ extension PlayersX on List<PlayerData> {
     return firstWhereOrNull((e) => e.meta.id == id);
   }
 }
+
+extension PackageResponseX on PackageResponse {
+  PackageListItem toListItem() {
+    return PackageListItem(
+      id: id,
+      title: title,
+      description: description,
+      createdAt: createdAt,
+      author: author,
+      ageRestriction: ageRestriction,
+      language: language,
+      tags: tags,
+      logo: logo,
+    );
+  }
+}

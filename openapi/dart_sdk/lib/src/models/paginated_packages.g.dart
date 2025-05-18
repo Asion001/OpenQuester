@@ -9,7 +9,7 @@ part of 'paginated_packages.dart';
 _PaginatedPackages _$PaginatedPackagesFromJson(Map<String, dynamic> json) =>
     _PaginatedPackages(
       data: (json['data'] as List<dynamic>)
-          .map((e) => PackageResponse.fromJson(e as Map<String, dynamic>))
+          .map((e) => PackageListItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       pageInfo: PageInfo.fromJson(json['pageInfo'] as Map<String, dynamic>),
     );

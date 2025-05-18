@@ -24,7 +24,7 @@ class UploadPackageButton extends WatchingWidget {
           }
           if (afterUpload != null && result != null) {
             final package = await getIt<PackageController>().getPackage(result);
-            afterUpload!(package);
+            afterUpload!(package.toListItem());
           }
         } catch (e) {
           if (!context.mounted) return;

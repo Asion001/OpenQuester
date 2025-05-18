@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$PaginatedPackages {
-  List<PackageResponse> get data;
+  List<PackageListItem> get data;
   PageInfo get pageInfo;
 
   /// Create a copy of PaginatedPackages
@@ -56,7 +56,7 @@ abstract mixin class $PaginatedPackagesCopyWith<$Res> {
           PaginatedPackages value, $Res Function(PaginatedPackages) _then) =
       _$PaginatedPackagesCopyWithImpl;
   @useResult
-  $Res call({List<PackageResponse> data, PageInfo pageInfo});
+  $Res call({List<PackageListItem> data, PageInfo pageInfo});
 
   $PageInfoCopyWith<$Res> get pageInfo;
 }
@@ -81,7 +81,7 @@ class _$PaginatedPackagesCopyWithImpl<$Res>
       data: null == data
           ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<PackageResponse>,
+              as List<PackageListItem>,
       pageInfo: null == pageInfo
           ? _self.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable
@@ -104,14 +104,14 @@ class _$PaginatedPackagesCopyWithImpl<$Res>
 @JsonSerializable()
 class _PaginatedPackages implements PaginatedPackages {
   const _PaginatedPackages(
-      {required final List<PackageResponse> data, required this.pageInfo})
+      {required final List<PackageListItem> data, required this.pageInfo})
       : _data = data;
   factory _PaginatedPackages.fromJson(Map<String, dynamic> json) =>
       _$PaginatedPackagesFromJson(json);
 
-  final List<PackageResponse> _data;
+  final List<PackageListItem> _data;
   @override
-  List<PackageResponse> get data {
+  List<PackageListItem> get data {
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_data);
@@ -164,7 +164,7 @@ abstract mixin class _$PaginatedPackagesCopyWith<$Res>
       __$PaginatedPackagesCopyWithImpl;
   @override
   @useResult
-  $Res call({List<PackageResponse> data, PageInfo pageInfo});
+  $Res call({List<PackageListItem> data, PageInfo pageInfo});
 
   @override
   $PageInfoCopyWith<$Res> get pageInfo;
@@ -190,7 +190,7 @@ class __$PaginatedPackagesCopyWithImpl<$Res>
       data: null == data
           ? _self._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<PackageResponse>,
+              as List<PackageListItem>,
       pageInfo: null == pageInfo
           ? _self.pageInfo
           : pageInfo // ignore: cast_nullable_to_non_nullable

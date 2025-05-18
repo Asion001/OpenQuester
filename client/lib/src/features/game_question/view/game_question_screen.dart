@@ -37,14 +37,18 @@ class _QuestionBottom extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
-    final imShowman = gameData?.me.role == PlayerRole.showman;
+    final me = gameData?.me;
+    final imShowman = me?.role == PlayerRole.showman;
     final answeringPlayer = gameData?.gameState.answeringPlayer;
+    final iAlreadyAnswered = gameData?.gameState.answeredPlayers
+            ?.any((e) => e.player == me?.meta.id) ??
+        false;
 
     Widget child = const SizedBox();
 
     if (!imShowman && answeringPlayer == null) {
       child = const _AnswerButtons();
-    } else if (answeringPlayer != null) {
+    } else if (answeringPlayer != null && !iAlreadyAnswered) {
       child = const _AnsweringWidget();
     }
 

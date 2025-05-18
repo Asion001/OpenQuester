@@ -20,6 +20,7 @@ export 'models/game_create_data.dart';
 export 'models/short_user_info.dart';
 export 'models/package_tag.dart';
 export 'models/paginated_packages.dart';
+export 'models/package_list_item.dart';
 export 'models/package_response.dart';
 export 'models/package_item.dart';
 export 'models/paginated_users.dart';
