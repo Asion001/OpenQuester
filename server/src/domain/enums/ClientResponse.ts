@@ -71,6 +71,8 @@ export enum ClientResponse {
   QUESTION_ALREADY_PLAYED = "question_already_played",
   QUESTION_NOT_PICKED = "question_not_picked",
   SOMEONE_ALREADY_ANSWERING = "someone_already_answering",
+  ALREADY_ANSWERING = "already_answering",
+
   GAME_IS_PAUSED = "game_is_paused",
   PLAYER_NOT_FOUND = "player_not_found",
   CANNOT_SUBMIT_ANSWER = "cannot_submit_answer",

@@ -65,5 +65,6 @@
   "player_not_found": "Player not found",
   "no_showman": "Game has no showman",
   "cannot_submit_answer": "You cannot submit answer on this question",
-  "only_showman_send_answer_result": "Only showman can send answer result"
+  "only_showman_send_answer_result": "Only showman can send answer result",
+  "already_answering": "You already answered"
 }

@@ -287,6 +287,10 @@ export class Game {
     this.gameState.timer = timer;
   }
 
+  public get timer() {
+    return this.gameState.timer;
+  }
+
   private _getFirstFreeSlotIndex(): number {
     const occupiedSlots = this._players
       .filter(

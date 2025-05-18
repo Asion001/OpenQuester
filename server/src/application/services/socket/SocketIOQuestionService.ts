@@ -47,6 +47,14 @@ export class SocketIOQuestionService {
       throw new ClientError(ClientResponse.SOMEONE_ALREADY_ANSWERING);
     }
 
+    const isAnswered = !!game.gameState.answeredPlayers?.find(
+      (answerResult) => answerResult.player === player?.meta.id
+    );
+
+    if (isAnswered) {
+      throw new ClientError(ClientResponse.ALREADY_ANSWERING);
+    }
+
     const elapsedTimer = game.gameState.timer!;
 
     elapsedTimer.elapsedMs =
@@ -55,9 +63,9 @@ export class SocketIOQuestionService {
     await this.gameService.saveTimer(
       elapsedTimer,
       game.id,
-      QuestionState.SHOWING,
       // Apply some additional expire time for key safety (in case of high latency)
-      Math.ceil(GAME_QUESTION_ANSWER_SUBMIT_TIME * 1.5)
+      Math.ceil(GAME_QUESTION_ANSWER_SUBMIT_TIME * 1.5),
+      QuestionState.SHOWING
     );
 
     const timer = new GameStateTimer(GAME_QUESTION_ANSWER_SUBMIT_TIME);
@@ -114,6 +122,13 @@ export class SocketIOQuestionService {
 
     game.setTimer(timer);
     await this.gameService.updateGame(game);
+    if (timer) {
+      await this.gameService.saveTimer(
+        timer,
+        game.id,
+        timer.durationMs - timer.elapsedMs
+      );
+    }
 
     return { playerAnswerResult, game, question, timer };
   }
