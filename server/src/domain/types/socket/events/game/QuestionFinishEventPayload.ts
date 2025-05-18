@@ -2,7 +2,11 @@ import { GameStateAnsweredPlayerData } from "domain/types/dto/game/state/GameSta
 import { PackageAnswerFileDTO } from "domain/types/dto/package/PackageAnswerFileDTO";
 
 export interface QuestionFinishEventPayload {
-  answerResult: GameStateAnsweredPlayerData;
   answerFiles: PackageAnswerFileDTO[] | null;
   answerText: string | null;
+}
+
+export interface QuestionFinishWithAnswerEventPayload
+  extends Pick<QuestionFinishEventPayload, "answerFiles" | "answerText"> {
+  answerResult: GameStateAnsweredPlayerData;
 }

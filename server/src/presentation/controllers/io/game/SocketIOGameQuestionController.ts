@@ -6,9 +6,10 @@ import { GameStateTimer } from "domain/entities/game/GameStateTimer";
 import { SocketIOGameEvents } from "domain/enums/SocketIOEvents";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
+import { GameNextRoundEventPayload } from "domain/types/socket/events/game/GameNextRoundEventPayload";
 import { GameQuestionDataEventPayload } from "domain/types/socket/events/game/GameQuestionDataEventPayload";
 import { QuestionAnswerEventPayload } from "domain/types/socket/events/game/QuestionAnswerEventPayload";
-import { QuestionFinishEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
+import { QuestionFinishWithAnswerEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { SocketIOEventEmitter } from "presentation/emitters/SocketIOEventEmitter";
@@ -36,7 +37,36 @@ export class SocketIOGameQuestionController {
       SocketIOGameEvents.ANSWER_RESULT,
       SocketWrapper.catchErrors(this.eventEmitter, this.handleAnswerResult)
     );
+    this.socket.on(
+      SocketIOGameEvents.NEXT_ROUND,
+      SocketWrapper.catchErrors(this.eventEmitter, this.handleNextRound)
+    );
   }
+
+  private handleNextRound = async () => {
+    const { game, isGameFinished, nextGameState } =
+      await this.socketIOQuestionService.handleNextRound(this.socket.id);
+
+    if (isGameFinished) {
+      this.eventEmitter.emit(SocketIOGameEvents.GAME_FINISHED, true, {
+        emitter: SocketEventEmitter.IO,
+        gameId: game.id,
+      });
+      return;
+    }
+
+    if (nextGameState) {
+      // Next round if all questions played
+      this.eventEmitter.emit<GameNextRoundEventPayload>(
+        SocketIOGameEvents.NEXT_ROUND,
+        { gameState: nextGameState },
+        {
+          emitter: SocketEventEmitter.IO,
+          gameId: game.id,
+        }
+      );
+    }
+  };
 
   private handleQuestionPick = async (data: any) => {
     const dto = GameValidator.validatePickQuestion(data);
@@ -86,15 +116,41 @@ export class SocketIOGameQuestionController {
         dto
       );
 
+    const { isGameFinished, nextGameState } =
+      await this.socketIOQuestionService.handleGameFlow(game);
+
     // On correct just show correct answer
     if (playerAnswerResult.result > 0) {
-      this.eventEmitter.emit<QuestionFinishEventPayload>(
+      this.eventEmitter.emit<QuestionFinishWithAnswerEventPayload>(
         SocketIOGameEvents.QUESTION_FINISH,
         {
           answerResult: playerAnswerResult,
           answerFiles: question!.answerFiles ?? null,
           answerText: question!.answerText ?? null,
         },
+        {
+          emitter: SocketEventEmitter.IO,
+          gameId: game.id,
+        }
+      );
+
+      // Handle game finish after last question (when no final round)
+      if (isGameFinished) {
+        this.eventEmitter.emit(SocketIOGameEvents.GAME_FINISHED, true, {
+          emitter: SocketEventEmitter.IO,
+          gameId: game.id,
+        });
+        return;
+      }
+
+      if (!nextGameState) {
+        return;
+      }
+
+      // Next round if all questions played
+      this.eventEmitter.emit<GameNextRoundEventPayload>(
+        SocketIOGameEvents.NEXT_ROUND,
+        { gameState: nextGameState },
         {
           emitter: SocketEventEmitter.IO,
           gameId: game.id,

@@ -1,9 +1,8 @@
-import { ClientResponse } from "domain/enums/ClientResponse";
-import { ClientError } from "domain/errors/ClientError";
 import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
 import { GameStateQuestionDTO } from "domain/types/dto/game/state/GameStateQuestionDTO";
 import { GameStateRoundDTO } from "domain/types/dto/game/state/GameStateRoundDTO";
 import { GameStateThemeDTO } from "domain/types/dto/game/state/GameStateThemeDTO";
+import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PackageRoundDTO } from "domain/types/dto/package/PackageRoundDTO";
 import { PackageThemeDTO } from "domain/types/dto/package/PackageThemeDTO";
@@ -22,14 +21,27 @@ export class GameStateMapper {
     };
   }
 
+  public static getClearGameState(round: GameStateRoundDTO): GameStateDTO {
+    return {
+      questionState: QuestionState.CHOOSING,
+      currentRound: round,
+      isPaused: false,
+      answeredPlayers: null,
+      answeringPlayer: null,
+      currentQuestion: null,
+      readyPlayers: null,
+      timer: null,
+    };
+  }
+
   public static getGameRound(
     pack: PackageDTO,
     order: number
-  ): GameStateRoundDTO {
+  ): GameStateRoundDTO | null {
     const round = pack.rounds.find((round) => round.order === order);
 
     if (!round) {
-      throw new ClientError(ClientResponse.BAD_ROUND_RETRIEVAL);
+      return null;
     }
 
     return {
