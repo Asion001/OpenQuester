@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
-import 'package:openquester/src/core/ui/components/diagonal_lines_background.dart';
 
 class GameQuestion extends StatelessWidget {
   const GameQuestion({
