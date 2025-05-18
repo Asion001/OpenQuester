@@ -52,6 +52,8 @@ class GameLobbyController {
         ..on(SocketIOGameReceiveEvents.answerSubmitted.json!, _onAnswerResult)
         ..on(SocketIOGameReceiveEvents.nextRound.json!, _onNextRound)
         ..on(SocketIOGameReceiveEvents.gameFinished.json!, _onGameFinish)
+        ..on(SocketIOGameReceiveEvents.gamePause.json!, _onGamePause)
+        ..on(SocketIOGameReceiveEvents.gameUnpause.json!, _onGameUnPause)
         ..connect();
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -403,6 +405,10 @@ class GameLobbyController {
   Future<void> _showAnswer() async {
     final controller = getIt<GameQuestionController>();
     final currentQuestion = gameData.value?.gameState.currentQuestion;
+
+    // Clear question
+    gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
+
     try {
       if (currentQuestion != null) {
         controller.questionData.value = GameQuestionData(
@@ -424,9 +430,6 @@ class GameLobbyController {
     } catch (e) {
       onError(e);
     }
-
-    // Clear question
-    gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
 
     // Hide question screen
     await controller.clear();
@@ -483,5 +486,26 @@ class GameLobbyController {
     if (me == null) return;
     if (me.role != PlayerRole.showman) return;
     socket?.emit(SocketIOGameSendEvents.nextRound.json!);
+  }
+
+  void _onGamePause(dynamic data) => _setGamePause(pauseState: true);
+
+  void _onGameUnPause(dynamic data) => _setGamePause(pauseState: false);
+
+  void _setGamePause({required bool pauseState}) {
+    gameData.value = gameData.value?.copyWith.gameState(isPaused: pauseState);
+  }
+
+  void setPause({required bool pauseState}) {
+    _setGamePause(pauseState: pauseState);
+    socket?.emit(
+      pauseState
+          ? SocketIOGameSendEvents.gamePause.json!
+          : SocketIOGameSendEvents.gameUnpause.json!,
+    );
+  }
+
+  void skipQuestion() {
+    socket?.emit(SocketIOGameSendEvents.skipQuestionForce.json!);
   }
 }

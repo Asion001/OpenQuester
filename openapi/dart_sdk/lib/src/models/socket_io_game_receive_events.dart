@@ -28,6 +28,10 @@ enum SocketIOGameReceiveEvents {
   nextRound('next-round'),
   @JsonValue('game-finished')
   gameFinished('game-finished'),
+  @JsonValue('game-pause')
+  gamePause('game-pause'),
+  @JsonValue('game-unpause')
+  gameUnpause('game-unpause'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 

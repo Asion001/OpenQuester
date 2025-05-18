@@ -101,6 +101,8 @@ export 'models/socket_io_game_state_question_data.dart';
 export 'models/socket_io_events.dart';
 export 'models/socket_io_game_send_events.dart';
 export 'models/socket_io_game_receive_events.dart';
+export 'models/socket_io_game_pause_event_payload.dart';
+export 'models/socket_io_game_unpause_event_payload.dart';
 export 'models/socket_io_chat_message_content.dart';
 export 'models/socket_io_question_pick_event_input.dart';
 export 'models/socket_io_question_data_event_payload.dart';

@@ -68,7 +68,7 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 icon: const Icon(Icons.exit_to_app),
               ),
               actions: [
-                const _GameMenu(),
+                const GameLobbyMenu(),
                 _ChatButton(show: showChat),
               ],
               elevation: 0,
@@ -112,12 +112,17 @@ class _BodyBuilder extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gameData = watchValue((GameLobbyController e) => e.gameData);
     final currentQuestion =
         watchValue((GameQuestionController e) => e.questionData);
     final gameFinished = watchValue((GameLobbyController e) => e.gameFinished);
+    final isPaused = gameData?.gameState.isPaused ?? false;
 
     Widget body;
-    if (gameFinished) {
+
+    if (isPaused) {
+      body = const _GamePausedScreen();
+    } else if (gameFinished) {
       body = const _GameFinishedScreen();
     } else if (currentQuestion != null) {
       body = const GameQuestionScreen();
@@ -126,6 +131,19 @@ class _BodyBuilder extends WatchingWidget {
     }
 
     return body;
+  }
+}
+
+class _GamePausedScreen extends StatelessWidget {
+  const _GamePausedScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      LocaleKeys.game_is_paused.tr(),
+      style: context.textTheme.displaySmall,
+      textAlign: TextAlign.center,
+    ).paddingAll(16).center();
   }
 }
 
@@ -202,86 +220,6 @@ class _Chat extends StatelessWidget {
         color: context.theme.colorScheme.surfaceContainer,
         child: const ChatScreen(),
       ),
-    );
-  }
-}
-
-class _GameMenu extends WatchingWidget {
-  const _GameMenu();
-
-  @override
-  Widget build(BuildContext context) {
-    final me = watchValue((GameLobbyController e) => e.gameData)?.me;
-
-    final imShowman = me?.role == PlayerRole.showman;
-
-    return PopupMenuButton(
-      itemBuilder: (BuildContext context) => [
-        const PopupMenuItem<void>(child: _VolumeSlider()),
-        if (imShowman) ...[
-          PopupMenuItem<void>(
-            child: Text(LocaleKeys.question_skip_round.tr()),
-            onTap: () async {
-              final result = await ConfirmDialog(
-                title: LocaleKeys.question_sure_skip_round.tr(),
-              ).show(context);
-              if (!result) return;
-              getIt<GameLobbyController>().skipRound();
-            },
-          ),
-          PopupMenuItem<void>(
-            child: Text(LocaleKeys.delete_game.tr()),
-            onTap: () async {
-              final result = await ConfirmDialog(
-                title: LocaleKeys.delete_game_confirmation.tr(),
-              ).show(context);
-              if (!result) return;
-              await getIt<GamesListController>().deleteGame(
-                getIt<GameLobbyController>().gameListData.value!.id,
-              );
-            },
-          ),
-        ],
-      ],
-      icon: const Icon(Icons.more_vert),
-    );
-  }
-}
-
-class _VolumeSlider extends StatefulWidget {
-  const _VolumeSlider();
-
-  @override
-  State<_VolumeSlider> createState() => _VolumeSliderState();
-}
-
-class _VolumeSliderState extends State<_VolumeSlider> {
-  late double volume;
-
-  @override
-  void initState() {
-    volume = getIt<GameQuestionController>().volume.value;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(LocaleKeys.volume.tr()),
-        Slider(
-          value: volume,
-          onChanged: (value) {
-            final volume =
-                double.parse(value.clamp(0, 1).toStringAsExponential(2));
-            if (this.volume == volume) return;
-            this.volume = volume;
-            setState(() {});
-            getIt<GameQuestionController>().onChangeVolume(volume);
-          },
-        ),
-      ],
     );
   }
 }

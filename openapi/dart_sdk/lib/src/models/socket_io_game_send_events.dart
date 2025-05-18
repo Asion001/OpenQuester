@@ -26,6 +26,12 @@ enum SocketIOGameSendEvents {
   nextRound('next-round'),
   @JsonValue('answer-result')
   answerResult('answer-result'),
+  @JsonValue('skip-question-force')
+  skipQuestionForce('skip-question-force'),
+  @JsonValue('game-pause')
+  gamePause('game-pause'),
+  @JsonValue('game-unpause')
+  gameUnpause('game-unpause'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 

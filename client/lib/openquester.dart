@@ -54,6 +54,7 @@ export 'src/features/dialog/view/adaptive_dialog.dart';
 export 'src/features/dialog/view/dialog_container.dart';
 export 'src/features/game_lobby/controllers/game_lobby_controller.dart';
 export 'src/features/game_lobby/data/player_answer_state.dart';
+export 'src/features/game_lobby/view/game_lobby_menu.dart';
 export 'src/features/game_lobby/view/game_lobby_players.dart';
 export 'src/features/game_lobby/view/game_lobby_question.dart';
 export 'src/features/game_lobby/view/game_lobby_screen.dart';

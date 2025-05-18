@@ -105,13 +105,18 @@ class _QuestionBottom extends WatchingWidget {
     final iAlreadyAnswered = gameData?.gameState.answeredPlayers
             ?.any((e) => e.player == me?.meta.id) ??
         false;
+    final showingQuestion = gameData?.gameState.currentQuestion != null;
 
     Widget child = const SizedBox();
 
-    if (!imShowman && answeringPlayer == null && !iAlreadyAnswered) {
-      child = const _AnswerButtons();
-    } else if (answeringPlayer != null) {
-      child = const _AnsweringWidget();
+    if (showingQuestion) {
+      if (!imShowman && answeringPlayer == null && !iAlreadyAnswered) {
+        child = const _AnswerButtons();
+      } else if (answeringPlayer != null) {
+        child = const _AnsweringWidget();
+      } else if (imShowman) {
+        child = const _SkipQustionBtn().center();
+      }
     }
 
     return ConstrainedBox(
@@ -259,6 +264,7 @@ class _ShowmanControlls extends StatelessWidget {
       children: [
         buttons(correctAnswer: false),
         buttons(correctAnswer: true),
+        const _SkipQustionBtn(),
       ],
     );
   }
@@ -266,4 +272,16 @@ class _ShowmanControlls extends StatelessWidget {
 
 class AnswerIntent extends Intent {
   const AnswerIntent();
+}
+
+class _SkipQustionBtn extends StatelessWidget {
+  const _SkipQustionBtn();
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton.tonal(
+      onPressed: getIt<GameLobbyController>().skipQuestion,
+      child: Text(LocaleKeys.skip_question.tr()),
+    );
+  }
 }

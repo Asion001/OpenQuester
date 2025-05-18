@@ -2483,7 +2483,10 @@
           "question-finish",
           "answer-submitted",
           "next-round",
-          "answer-result"
+          "answer-result",
+          "skip-question-force",
+          "game-pause",
+          "game-unpause"
         ],
         "examples": ["join"]
       },
@@ -2500,9 +2503,27 @@
           "answer-submitted",
           "answer-result",
           "next-round",
-          "game-finished"
+          "game-finished",
+          "game-pause",
+          "game-unpause"
         ],
         "examples": ["join"]
+      },
+      "SocketIOGamePauseEventPayload": {
+        "type": "object",
+        "properties": {
+          "timer": {
+            "$ref": "#/components/schemas/GameStateTimer"
+          }
+        }
+      },
+      "SocketIOGameUnpauseEventPayload": {
+        "type": "object",
+        "properties": {
+          "timer": {
+            "$ref": "#/components/schemas/GameStateTimer"
+          }
+        }
       },
       "SocketIOChatMessageContent": {
         "type": "object",
