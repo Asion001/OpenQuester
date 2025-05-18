@@ -272,6 +272,7 @@ export class Game {
   public resetToChoosingState() {
     this.gameState.currentQuestion = null;
     this.gameState.timer = null;
+    this.gameState.answeredPlayers = null;
     this.updateQuestionState(QuestionState.CHOOSING);
   }
 
