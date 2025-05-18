@@ -8,7 +8,7 @@ import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { UserDTO } from "domain/types/dto/user/UserDTO";
-import { GameRoomLeaveData } from "domain/types/game/GameRoomLeaveData";
+import { GameLobbyLeaveData } from "domain/types/game/GameRoomLeaveData";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
 import { GameJoinResult } from "domain/types/socket/game/GameJoinResult";
@@ -107,7 +107,7 @@ export class SocketIOGameService {
     return game;
   }
 
-  public async leaveLobby(socketId: string): Promise<GameRoomLeaveData> {
+  public async leaveLobby(socketId: string): Promise<GameLobbyLeaveData> {
     const userData = await this._fetchUserSocketData(socketId);
     const gameId = userData.gameId;
 

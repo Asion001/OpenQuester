@@ -240,12 +240,12 @@ export class Game {
       throw new ClientError(ClientResponse.PLAYER_NOT_FOUND);
     }
 
-    const score = player.getScore() + scoreResult;
+    const score = player.score + scoreResult;
 
     // Update the player's score in the _players array
     const idx = this._players.findIndex((p) => p.meta.id === player.meta.id);
     if (idx !== -1) {
-      this._players[idx].updateScore(score);
+      this._players[idx].score = score;
     }
 
     const playerAnswerResult: GameStateAnsweredPlayerData = {
