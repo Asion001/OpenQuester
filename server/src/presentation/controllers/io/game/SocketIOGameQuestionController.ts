@@ -41,10 +41,6 @@ export class SocketIOGameQuestionController {
       SocketWrapper.catchErrors(this.eventEmitter, this.handleAnswerResult)
     );
     this.socket.on(
-      SocketIOGameEvents.NEXT_ROUND,
-      SocketWrapper.catchErrors(this.eventEmitter, this.handleNextRound)
-    );
-    this.socket.on(
       SocketIOGameEvents.SKIP_QUESTION_FORCE,
       SocketWrapper.catchErrors(this.eventEmitter, this.handleSkipQuestion)
     );
@@ -65,31 +61,6 @@ export class SocketIOGameQuestionController {
         gameId: game.id,
       }
     );
-  };
-
-  private handleNextRound = async () => {
-    const { game, isGameFinished, nextGameState } =
-      await this.socketIOQuestionService.handleNextRound(this.socket.id);
-
-    if (isGameFinished) {
-      this.eventEmitter.emit(SocketIOGameEvents.GAME_FINISHED, true, {
-        emitter: SocketEventEmitter.IO,
-        gameId: game.id,
-      });
-      return;
-    }
-
-    if (nextGameState) {
-      // Next round if all questions played
-      this.eventEmitter.emit<GameNextRoundEventPayload>(
-        SocketIOGameEvents.NEXT_ROUND,
-        { gameState: nextGameState },
-        {
-          emitter: SocketEventEmitter.IO,
-          gameId: game.id,
-        }
-      );
-    }
   };
 
   private handleQuestionPick = async (data: any) => {

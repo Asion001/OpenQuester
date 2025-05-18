@@ -14,6 +14,7 @@ import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { GameJoinEventPayload } from "domain/types/socket/events/game/GameJoinEventPayload";
 import { GameLeaveEventPayload } from "domain/types/socket/events/game/GameLeaveEventPayload";
+import { GameNextRoundEventPayload } from "domain/types/socket/events/game/GameNextRoundEventPayload";
 import { GameStartEventPayload } from "domain/types/socket/events/game/GameStartEventPayload";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
@@ -49,7 +50,74 @@ export class SocketIOGameController {
         this.handleChatMessage
       )
     );
+    this.socket.on(
+      SocketIOGameEvents.NEXT_ROUND,
+      SocketWrapper.catchErrors(this.eventEmitter, this.handleNextRound)
+    );
+    this.socket.on(
+      SocketIOGameEvents.GAME_PAUSE,
+      SocketWrapper.catchErrors(this.eventEmitter, this.handleGamePause)
+    );
+    this.socket.on(
+      SocketIOGameEvents.GAME_UNPAUSE,
+      SocketWrapper.catchErrors(this.eventEmitter, this.handleGameUnpause)
+    );
   }
+
+  private handleGameUnpause = async () => {
+    const { game, timer } = await this.socketIOGameService.handleGameUnpause(
+      this.socket.id
+    );
+
+    this.eventEmitter.emit(
+      SocketIOGameEvents.GAME_UNPAUSE,
+      { timer },
+      {
+        emitter: SocketEventEmitter.IO,
+        gameId: game.id,
+      }
+    );
+  };
+
+  private handleGamePause = async () => {
+    const { game, timer } = await this.socketIOGameService.handleGamePause(
+      this.socket.id
+    );
+
+    this.eventEmitter.emit(
+      SocketIOGameEvents.GAME_PAUSE,
+      { timer },
+      {
+        emitter: SocketEventEmitter.IO,
+        gameId: game.id,
+      }
+    );
+  };
+
+  private handleNextRound = async () => {
+    const { game, isGameFinished, nextGameState } =
+      await this.socketIOGameService.handleNextRound(this.socket.id);
+
+    if (isGameFinished) {
+      this.eventEmitter.emit(SocketIOGameEvents.GAME_FINISHED, true, {
+        emitter: SocketEventEmitter.IO,
+        gameId: game.id,
+      });
+      return;
+    }
+
+    if (nextGameState) {
+      // Next round if all questions played
+      this.eventEmitter.emit<GameNextRoundEventPayload>(
+        SocketIOGameEvents.NEXT_ROUND,
+        { gameState: nextGameState },
+        {
+          emitter: SocketEventEmitter.IO,
+          gameId: game.id,
+        }
+      );
+    }
+  };
 
   private handleJoinLobby = async (data: any) => {
     const dto = GameValidator.validateJoinInput(data);

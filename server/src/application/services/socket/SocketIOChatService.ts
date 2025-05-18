@@ -1,4 +1,4 @@
-import { GAME_TTL } from "domain/constants/game";
+import { GAME_TTL_IN_SECONDS } from "domain/constants/game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { ClientError } from "domain/errors/ClientError";
 import { ChatMessageDTO } from "domain/types/dto/game/chat/ChatMessageDTO";
@@ -37,12 +37,12 @@ export class SocketIOChatService {
       throw new ClientError(ClientResponse.NOT_IN_GAME);
     }
 
-    const game = await this.gameService.get(gameId, GAME_TTL);
-
-    const isMuted = await this.socketIOGameService.isPlayerMuted(
+    const game = await this.gameService.getGameEntity(
       gameId,
-      userData.id
+      GAME_TTL_IN_SECONDS
     );
+
+    const isMuted = game.isPlayerMuted(userData.id);
 
     if (isMuted) {
       throw new ClientError(ClientResponse.YOU_ARE_MUTED);
