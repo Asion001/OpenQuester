@@ -109,10 +109,7 @@ export class SocketIOQuestionService {
     let timer: GameStateTimerDTO | null = null;
 
     if (nextState === QuestionState.SHOWING) {
-      timer = (await this.gameService.getTimer(
-        game.id,
-        QuestionState.SHOWING
-      )) as GameStateTimerDTO | null;
+      timer = await this.gameService.getTimer(game.id, QuestionState.SHOWING);
     }
 
     game.setTimer(timer);
