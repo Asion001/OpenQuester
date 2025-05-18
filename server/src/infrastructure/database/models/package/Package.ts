@@ -106,6 +106,7 @@ export class Package {
 
   public toSimpleDTO(storage: S3StorageService): Omit<PackageDTO, "rounds"> {
     return {
+      id: this.id,
       title: this.title,
       ageRestriction: this.age_restriction,
       author: {
