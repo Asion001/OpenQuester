@@ -65,7 +65,10 @@ abstract class LocaleKeys {
   static const question_error_during_loading = 'question.error_during_loading';
   static const question_answer_is_correct = 'question.answer_is_correct';
   static const question_answer_is_wrong = 'question.answer_is_wrong';
+  static const question_correct_answer_is = 'question.correct_answer_is';
+  static const question_hint = 'question.hint';
   static const question = 'question';
   static const delete_game = 'delete_game';
   static const delete_game_confirmation = 'delete_game_confirmation';
+  static const volume = 'volume';
 }

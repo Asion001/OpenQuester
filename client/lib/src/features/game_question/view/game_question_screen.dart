@@ -9,25 +9,34 @@ class GameQuestionScreen extends WatchingWidget {
     final fileData = watchValue((GameQuestionController e) => e.questionData);
     final file = fileData?.file;
     final text = fileData?.text;
+    final questionMediaOnLeft = GameLobbyStyles.questionMediaOnLeft(context);
 
-    return Column(
-      spacing: 16,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          flex: file != null ? 0 : 1,
-          child: Text(
-            text ?? '',
-            style: file != null
-                ? context.textTheme.bodyLarge
-                : context.textTheme.headlineLarge,
-            textAlign: TextAlign.center,
-          ).center(),
-        ),
-        if (file != null) GameQuestionFile(file: file).flexible(),
-        const _QuestionBottom(),
-      ],
-    ).paddingBottom(16).paddingSymmetric(horizontal: 16);
+    return SafeArea(
+      child: Column(
+        spacing: 16,
+        children: [
+          Flex(
+            spacing: 16,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            direction: questionMediaOnLeft ? Axis.horizontal : Axis.vertical,
+            children: [
+              Expanded(
+                flex: file != null && !questionMediaOnLeft ? 0 : 1,
+                child: Text(
+                  text ?? '',
+                  style: file != null
+                      ? context.textTheme.bodyLarge
+                      : context.textTheme.headlineLarge,
+                  textAlign: TextAlign.center,
+                ).center(),
+              ),
+              if (file != null) GameQuestionFile(file: file).flexible(),
+            ],
+          ).expand(),
+          const _QuestionBottom(),
+        ],
+      ).paddingAll(16),
+    );
   }
 }
 
@@ -46,9 +55,9 @@ class _QuestionBottom extends WatchingWidget {
 
     Widget child = const SizedBox();
 
-    if (!imShowman && answeringPlayer == null) {
+    if (!imShowman && answeringPlayer == null && !iAlreadyAnswered) {
       child = const _AnswerButtons();
-    } else if (answeringPlayer != null && !iAlreadyAnswered) {
+    } else if (answeringPlayer != null) {
       child = const _AnsweringWidget();
     }
 
@@ -95,6 +104,9 @@ class _AnsweringWidget extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
+    final question = gameData?.gameState.currentQuestion;
+    final answerText = question?.answerText;
+    final answerHint = question?.answerHint;
     final answeringPlayerId = gameData?.gameState.answeringPlayer;
     final answeringPlayer = gameData?.players.getById(answeringPlayerId);
 
@@ -107,11 +119,28 @@ class _AnsweringWidget extends WatchingWidget {
       child: Row(
         spacing: 16,
         children: [
-          Text(
-            LocaleKeys.question_user_is_answering
-                .tr(args: [answeringPlayer?.meta.username ?? '']),
-            textAlign: TextAlign.center,
-            style: context.textTheme.bodyLarge,
+          Column(
+            spacing: 16,
+            children: [
+              Text(
+                LocaleKeys.question_user_is_answering
+                    .tr(args: [answeringPlayer?.meta.username ?? '']),
+                textAlign: TextAlign.center,
+                style: context.textTheme.bodyLarge,
+              ),
+              Text(
+                [
+                  if (!answerText.isEmptyOrNull)
+                    LocaleKeys.question_correct_answer_is
+                        .tr(args: [answerText!]),
+                  if (!answerHint.isEmptyOrNull)
+                    LocaleKeys.question_hint.tr(args: [answerHint!]),
+                ].join('\n'),
+                style: context.textTheme.bodySmall?.copyWith(
+                  color: context.theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
           ).expand(),
           if (gameData?.me.role == PlayerRole.showman)
             const _ShowmanControlls(),
@@ -132,9 +161,11 @@ class _ShowmanControlls extends StatelessWidget {
       return [0.5, 2.0].map(
         (e) {
           return FilledButton.tonal(
-            onPressed: () => getIt<GameLobbyController>()
-                .answerResult(playerAnswerIsRight: false, multiplier: e),
-            child: Text('${e}X'),
+            onPressed: () => getIt<GameLobbyController>().answerResult(
+              playerAnswerIsRight: playerAnswerIsRight,
+              multiplier: e,
+            ),
+            child: Text('${e >= 1 ? e.toInt() : e}X'),
           );
         },
       ).toList();

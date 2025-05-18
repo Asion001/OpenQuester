@@ -47,6 +47,7 @@ class GameLobbyController {
         ..on(SocketIOGameReceiveEvents.questionAnswer.json!, _onQuestionAnswer)
         ..on(SocketIOGameReceiveEvents.answerResult.json!, _onAnswerResult)
         ..on(SocketIOGameReceiveEvents.questionFinish.json!, _onQuestionFinish)
+        ..on(SocketIOGameReceiveEvents.answerSubmitted.json!, _onAnswerResult)
         ..connect();
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -320,16 +321,16 @@ class GameLobbyController {
       answeringPlayer: null,
       answeredPlayers: [
         ...?gameData.value?.gameState.answeredPlayers,
-        questionData.playerAnswerResult,
+        questionData.answerResult,
       ],
     ).changePlayer(
-      id: questionData.playerAnswerResult.player,
+      id: questionData.answerResult.player,
       onChange: (value) =>
-          value.copyWith(score: questionData.playerAnswerResult.score),
+          value.copyWith(score: questionData.answerResult.score),
     );
 
     // Question answered, hide question screen and show answer
-    if (questionData.playerAnswerResult.result > 0) {
+    if (questionData.answerResult.result > 0) {
       _showAnswer();
     }
   }
@@ -341,6 +342,9 @@ class GameLobbyController {
   Future<void> _showAnswer() async {
     final controller = getIt<GameQuestionController>();
     final currentQuestion = gameData.value?.gameState.currentQuestion;
+
+    // Clear question
+    gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
 
     if (currentQuestion != null) {
       controller.questionData.value = GameQuestionData(

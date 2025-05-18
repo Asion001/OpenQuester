@@ -12,6 +12,7 @@ class GameQuestionController {
     ..addListener(_onQuestionChange);
   final mediaController = ValueNotifier<VideoPlayerController?>(null);
   final error = ValueNotifier<String?>(null);
+  final volume = ValueNotifier<double>(.5);
 
   File? _tmpFile;
 
@@ -42,7 +43,7 @@ class GameQuestionController {
         } else {
           controller = VideoPlayerController.networkUrl(uri);
         }
-
+        await controller.setVolume(volume.value);
         await controller.initialize();
         mediaController.value = controller;
 
@@ -78,5 +79,10 @@ class GameQuestionController {
   Future<void> clearVideoControllers() async {
     await mediaController.value?.dispose();
     mediaController.value = null;
+  }
+
+  void onChangeVolume(double volume) {
+    this.volume.value = volume.clamp(0, 1);
+    mediaController.value?.setVolume(this.volume.value);
   }
 }

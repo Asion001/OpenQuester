@@ -20,5 +20,7 @@ class GameLobbyStyles {
       UiModeUtils.wideModeOn(context, UiModeUtils.large);
 
   static bool playersOnLeft(BuildContext context) =>
-      MediaQuery.sizeOf(context).aspectRatio > 1;
+      UiModeUtils.landscapeScreenSize(context);
+
+  static bool questionMediaOnLeft(BuildContext context) => false;
 }

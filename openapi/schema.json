@@ -2555,7 +2555,7 @@
         "type": "object",
         "description": "Data sent to all players when the showman evaluates an answer",
         "properties": {
-          "playerAnswerResult": {
+          "answerResult": {
             "$ref": "#/components/schemas/GameStateAnsweredPlayer"
           },
           "timer": {

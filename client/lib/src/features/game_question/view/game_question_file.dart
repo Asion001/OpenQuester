@@ -23,7 +23,7 @@ class GameQuestionFile extends WatchingWidget {
     final fileType = file.file.type;
 
     if (error != null) {
-      child = Text(error);
+      child = Text(error).paddingAll(24);
     } else if (fileType == PackageFileType.image) {
       child = ImageWidget(url: url);
     } else if (mediaController != null) {

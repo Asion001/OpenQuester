@@ -197,14 +197,13 @@ class _GameMenu extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final me = watchValue((GameLobbyController e) => e.gameData)?.me;
-    final imShowman = me?.role == PlayerRole.showman;
 
-    if (!imShowman) return const SizedBox.shrink();
+    final imShowman = me?.role == PlayerRole.showman;
 
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => [
         PopupMenuItem<void>(
-          child: Text(LocaleKeys.delete_game.tr()),
+          child: const _VolumeSlider(),
           onTap: () async {
             final result = await ConfirmDialog(
               title: LocaleKeys.delete_game_confirmation.tr(),
@@ -215,8 +214,59 @@ class _GameMenu extends WatchingWidget {
             );
           },
         ),
+        if (imShowman)
+          PopupMenuItem<void>(
+            child: Text(LocaleKeys.delete_game.tr()),
+            onTap: () async {
+              final result = await ConfirmDialog(
+                title: LocaleKeys.delete_game_confirmation.tr(),
+              ).show(context);
+              if (!result) return;
+              await getIt<GamesListController>().deleteGame(
+                getIt<GameLobbyController>().gameListData.value!.id,
+              );
+            },
+          ),
       ],
       icon: const Icon(Icons.more_vert),
+    );
+  }
+}
+
+class _VolumeSlider extends StatefulWidget {
+  const _VolumeSlider();
+
+  @override
+  State<_VolumeSlider> createState() => _VolumeSliderState();
+}
+
+class _VolumeSliderState extends State<_VolumeSlider> {
+  late double volume;
+
+  @override
+  void initState() {
+    volume = getIt<GameQuestionController>().volume.value;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(LocaleKeys.volume.tr()),
+        Slider(
+          value: volume,
+          onChanged: (value) {
+            final volume =
+                double.parse(value.clamp(0, 1).toStringAsExponential(2));
+            if (this.volume == volume) return;
+            this.volume = volume;
+            setState(() {});
+            getIt<GameQuestionController>().onChangeVolume(volume);
+          },
+        ),
+      ],
     );
   }
 }
