@@ -27,13 +27,14 @@ export class UserRepository {
     id: number,
     selectOptions: SelectOptions<User>
   ): Promise<User | null> {
-    const cached = await this.cache.get(id);
+    // TODO: Fix user cache - cache by select options
+    // const cached = await this.cache.get(id);
 
-    if (cached) {
-      const user = new User();
-      user.import(cached);
-      return user;
-    }
+    // if (cached) {
+    //   const user = new User();
+    //   user.import(cached);
+    //   return user;
+    // }
 
     const qb = await QueryBuilder.buildFindQuery<User>(
       this.repository,
@@ -43,9 +44,9 @@ export class UserRepository {
 
     const user = await qb.getOne();
 
-    if (user) {
-      await this.cache.set(user);
-    }
+    // if (user) {
+    //   await this.cache.set(user);
+    // }
 
     return user;
   }

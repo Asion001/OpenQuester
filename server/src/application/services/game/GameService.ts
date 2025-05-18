@@ -117,8 +117,8 @@ export class GameService {
   public async saveTimer(
     timer: GameStateTimerDTO,
     gameId: string,
-    timerAdditional?: string,
-    ttl?: number
+    ttl?: number,
+    timerAdditional?: string
   ) {
     return this.gameRepository.saveTimer(timer, gameId, timerAdditional, ttl);
   }
