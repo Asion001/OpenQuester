@@ -362,7 +362,16 @@ export class GameRepository {
   public async getTimer(gameId: string, timerAdditional?: string) {
     const key = this._getTimerKey(gameId, timerAdditional);
 
-    return this.redisService.get(key);
+    try {
+      const timer = await this.redisService.get(key);
+      if (ValueUtils.isBad(timer) || ValueUtils.isEmpty(timer)) {
+        return null;
+      }
+
+      return JSON.parse(timer) as GameStateTimerDTO;
+    } catch {
+      return null;
+    }
   }
 
   /**

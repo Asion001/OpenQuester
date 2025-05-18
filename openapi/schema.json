@@ -1142,10 +1142,72 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PackageResponse"
+              "$ref": "#/components/schemas/PackageListItem"
             }
           },
           "pageInfo": { "$ref": "#/components/schemas/PageInfo" }
+        }
+      },
+      "PackageListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "examples": [1]
+          },
+          "title": {
+            "type": "string",
+            "examples": ["Package Title"]
+          },
+          "description": {
+            "type": ["string", "null"],
+            "examples": [
+              "Package description, should be longer than title, probably"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2024-01-01T00:00:00Z"]
+          },
+          "author": {
+            "$ref": "#/components/schemas/ShortUserInfo"
+          },
+          "ageRestriction": {
+            "$ref": "#/components/schemas/AgeRestriction",
+            "description": "Package age restriction"
+          },
+          "language": {
+            "type": ["string", "null"],
+            "examples": ["en"]
+          },
+          "logo": {
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageLogoFileItem" },
+              { "type": "null" }
+            ],
+            "description": "Logo file for the package"
+          },
+          "tags": {
+            "type": ["array", "null"],
+            "items": {
+              "$ref": "#/components/schemas/PackageTag"
+            },
+            "description": "Tags for the package. Can be null or an array of tag objects",
+            "examples": [
+              [
+                { "id": 18, "tag": "anime" },
+                { "id": 19, "tag": "movie" },
+                { "id": 20, "tag": "general" },
+                { "id": 21, "tag": "games" }
+              ],
+              [
+                { "id": 22, "tag": "trivia" },
+                { "id": 23, "tag": "fun" }
+              ],
+              null
+            ]
+          }
         }
       },
       "PackageResponse": {

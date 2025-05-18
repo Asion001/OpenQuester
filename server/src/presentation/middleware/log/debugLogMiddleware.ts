@@ -36,7 +36,7 @@ function log(req: Request, responseBody: any) {
 
   if (Logger.checkAccess(level, "debug")) {
     Logger.debug(
-      `[${req.session.userId}] [${req.method}]: ${JSON.stringify(
+      `[${req.session.userId ?? "GUEST"}] [${req.method}]: ${JSON.stringify(
         req.originalUrl
       )}`
     );
