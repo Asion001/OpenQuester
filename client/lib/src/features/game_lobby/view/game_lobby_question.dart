@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
+import 'package:openquester/src/core/ui/components/diagonal_lines_background.dart';
 
 class GameQuestion extends StatelessWidget {
   const GameQuestion({
@@ -49,6 +50,12 @@ class GameQuestion extends StatelessWidget {
           },
         ),
         padding: WidgetStatePropertyAll(0.all),
+        backgroundBuilder: (context, states, child) {
+          if (child != null && states.contains(WidgetState.disabled)) {
+            return DiagonalLineBackground(child: child);
+          }
+          return child ?? const SizedBox();
+        },
       ),
       child: Text('${question.price}'),
     );

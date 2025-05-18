@@ -335,6 +335,20 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
+    _updatePlayerScore(questionData);
+
+    // Question answered, hide question screen and show answer
+    final result = questionData.answerResult?.result;
+    if (result != null) {
+      if (result > 0) {
+        _showAnswer();
+      } else {
+        _resumeMediaPlay();
+      }
+    }
+  }
+
+  void _updatePlayerScore(SocketIOAnswerResultEventPayload questionData) {
     gameData.value = gameData.value?.copyWith.gameState(
       answeringPlayer: null,
       answeredPlayers: [
@@ -346,16 +360,6 @@ class GameLobbyController {
       onChange: (value) =>
           value.copyWith(score: questionData.answerResult!.score),
     );
-
-    // Question answered, hide question screen and show answer
-    final result = questionData.answerResult?.result;
-    if (result != null) {
-      if (result > 0) {
-        _showAnswer();
-      } else {
-        _resumeMediaPlay();
-      }
-    }
   }
 
   /// Resume media after wrong answer
@@ -384,17 +388,14 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    gameData.value = gameData.value?.copyWith
-        .gameState(
-          currentQuestion: gameData.value?.gameState.currentQuestion?.copyWith(
-            answerFiles: questionData.answerFiles,
-            answerText: questionData.answerText,
-          ),
-        )
-        .changePlayer(
-          id: questionData.answerResult?.player,
-          onChange: (e) => e.copyWith(score: questionData.answerResult!.score),
-        );
+    _updatePlayerScore(questionData);
+
+    gameData.value = gameData.value?.copyWith.gameState(
+      currentQuestion: gameData.value?.gameState.currentQuestion?.copyWith(
+        answerFiles: questionData.answerFiles,
+        answerText: questionData.answerText,
+      ),
+    );
 
     _showAnswer();
   }
