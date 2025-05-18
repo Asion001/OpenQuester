@@ -77,7 +77,7 @@ export class Player {
   }
 
   public updateScore(amount: number): void {
-    this._score += amount;
+    this._score = amount;
   }
 
   // Restrictions

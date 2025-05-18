@@ -242,6 +242,12 @@ export class Game {
 
     const score = player.getScore() + scoreResult;
 
+    // Update the player's score in the _players array
+    const idx = this._players.findIndex((p) => p.meta.id === player.meta.id);
+    if (idx !== -1) {
+      this._players[idx].updateScore(score);
+    }
+
     const playerAnswerResult: GameStateAnsweredPlayerData = {
       player: this.gameState.answeringPlayer!,
       result: scoreResult,
