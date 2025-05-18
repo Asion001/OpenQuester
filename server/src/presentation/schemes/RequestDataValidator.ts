@@ -15,7 +15,7 @@ export class RequestDataValidator<T> {
     this._data = data;
   }
 
-  public async validate() {
+  public validate() {
     if (!this._schema) {
       throw new ServerError(ServerResponse.NO_SCHEMA);
     }
