@@ -114,16 +114,31 @@ class _BodyBuilder extends WatchingWidget {
   Widget build(BuildContext context) {
     final currentQuestion =
         watchValue((GameQuestionController e) => e.questionData);
+    final gameFinished = watchValue((GameLobbyController e) => e.gameFinished);
 
     Widget body;
-
-    if (currentQuestion != null) {
+    if (gameFinished) {
+      body = const _GameFinishedScreen();
+    } else if (currentQuestion != null) {
       body = const GameQuestionScreen();
     } else {
       body = const GameLobbyThemes();
     }
 
     return body;
+  }
+}
+
+class _GameFinishedScreen extends StatelessWidget {
+  const _GameFinishedScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      LocaleKeys.game_is_finished.tr(),
+      style: context.textTheme.displaySmall,
+      textAlign: TextAlign.center,
+    ).paddingAll(16).center();
   }
 }
 
@@ -203,7 +218,17 @@ class _GameMenu extends WatchingWidget {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => [
         const PopupMenuItem<void>(child: _VolumeSlider()),
-        if (imShowman)
+        if (imShowman) ...[
+          PopupMenuItem<void>(
+            child: Text(LocaleKeys.question_skip_round.tr()),
+            onTap: () async {
+              final result = await ConfirmDialog(
+                title: LocaleKeys.question_sure_skip_round.tr(),
+              ).show(context);
+              if (!result) return;
+              getIt<GameLobbyController>().skipRound();
+            },
+          ),
           PopupMenuItem<void>(
             child: Text(LocaleKeys.delete_game.tr()),
             onTap: () async {
@@ -216,6 +241,7 @@ class _GameMenu extends WatchingWidget {
               );
             },
           ),
+        ],
       ],
       icon: const Icon(Icons.more_vert),
     );

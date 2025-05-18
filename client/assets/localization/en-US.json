@@ -70,9 +70,12 @@
     "answer_is_correct": "Answer is correct",
     "answer_is_wrong": "Answer is wrong",
     "correct_answer_is": "Correct answer is: {}",
-    "hint": "Hint: {}"
+    "hint": "Hint: {}",
+    "skip_round": "Skip this round",
+    "sure_skip_round": "Sure wanna skip this round?"
   },
   "delete_game": "Delete game",
   "delete_game_confirmation": "Sure wanna delete the game?",
-  "volume": "Volume"
+  "volume": "Volume",
+  "game_is_finished": "Game is finished. Thanks for playing :)"
 }

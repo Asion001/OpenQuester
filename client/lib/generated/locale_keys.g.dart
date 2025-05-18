@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
   static const home_tabs_games = 'home_tabs.games';
   static const home_tabs_packages = 'home_tabs.packages';
   static const home_tabs = 'home_tabs';
@@ -16,8 +16,7 @@ abstract class LocaleKeys {
   static const game_tile_tooltips_players = 'game_tile_tooltips.players';
   static const game_tile_tooltips_rounds = 'game_tile_tooltips.rounds';
   static const game_tile_tooltips_questions = 'game_tile_tooltips.questions';
-  static const game_tile_tooltips_packages_title =
-      'game_tile_tooltips.packages_title';
+  static const game_tile_tooltips_packages_title = 'game_tile_tooltips.packages_title';
   static const game_tile_tooltips_game_title = 'game_tile_tooltips.game_title';
   static const game_tile_tooltips = 'game_tile_tooltips';
   static const duration_h = 'duration.h';
@@ -67,8 +66,12 @@ abstract class LocaleKeys {
   static const question_answer_is_wrong = 'question.answer_is_wrong';
   static const question_correct_answer_is = 'question.correct_answer_is';
   static const question_hint = 'question.hint';
+  static const question_skip_round = 'question.skip_round';
+  static const question_sure_skip_round = 'question.sure_skip_round';
   static const question = 'question';
   static const delete_game = 'delete_game';
   static const delete_game_confirmation = 'delete_game_confirmation';
   static const volume = 'volume';
+  static const game_is_finished = 'game_is_finished';
+
 }

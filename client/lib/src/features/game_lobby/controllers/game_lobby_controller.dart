@@ -15,6 +15,7 @@ class GameLobbyController {
 
   final gameData = ValueNotifier<SocketIOGameJoinEventPayload?>(null);
   final gameListData = ValueNotifier<GameListItem?>(null);
+  final gameFinished = ValueNotifier<bool>(false);
 
   final showChat = ValueNotifier<bool>(false);
   StreamSubscription<ChatOperation>? _chatMessagesSub;
@@ -50,6 +51,7 @@ class GameLobbyController {
         ..on(SocketIOGameReceiveEvents.questionFinish.json!, _onQuestionFinish)
         ..on(SocketIOGameReceiveEvents.answerSubmitted.json!, _onAnswerResult)
         ..on(SocketIOGameReceiveEvents.nextRound.json!, _onNextRound)
+        ..on(SocketIOGameReceiveEvents.gameFinished.json!, _onGameFinish)
         ..connect();
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -128,6 +130,7 @@ class GameLobbyController {
       _chatMessagesSub?.cancel();
       _chatMessagesSub = null;
       showChat.value = false;
+      gameFinished.value = false;
       getIt<SocketChatController>().clear();
       getIt<GameQuestionController>().clear();
     } catch (_) {}
@@ -468,5 +471,16 @@ class GameLobbyController {
     );
     gameData.value =
         gameData.value?.copyWith(gameState: nextRoundData.gameState);
+  }
+
+  void _onGameFinish(dynamic data) {
+    gameFinished.value = true;
+  }
+
+  void skipRound() {
+    final me = gameData.value?.me;
+    if (me == null) return;
+    if (me.role != PlayerRole.showman) return;
+    socket?.emit(SocketIOGameSendEvents.nextRound.json!);
   }
 }
