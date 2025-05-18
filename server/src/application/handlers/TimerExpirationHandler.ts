@@ -69,7 +69,7 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
         );
 
         this._gameNamespace.to(gameId).emit(SocketIOGameEvents.ANSWER_RESULT, {
-          answer: answerResult,
+          answerResult,
           timer,
         });
         return;
