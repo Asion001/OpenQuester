@@ -114,13 +114,47 @@ extension SocketIOGameStateRoundDataX on SocketIOGameStateRoundData {
   List<SocketIOGameStateThemeData> sortedThemes() {
     return themes.sortedByCompare((e) => e.order, (a, b) => a.compareTo(b));
   }
+
+  SocketIOGameStateRoundData changeQuestion({
+    required int? id,
+    required SocketIOGameStateQuestionData Function(
+      SocketIOGameStateQuestionData value,
+    ) onChange,
+  }) {
+    if (id == null) return this;
+
+    final themes = List<SocketIOGameStateThemeData>.from(this.themes);
+    for (var i = 0; i < themes.length; i++) {
+      final theme = themes[i];
+      final questions =
+          List<SocketIOGameStateQuestionData>.from(theme.questions);
+      final questionIndex = questions.indexWhere((e) => e.id == id);
+      if (questionIndex < 0) continue;
+      questions[questionIndex] = onChange(questions[questionIndex]);
+      themes[i] = themes[i].copyWith(questions: questions);
+    }
+
+    return copyWith(themes: themes);
+  }
 }
 
 extension SocketIOGameJoinEventPayloadX on SocketIOGameJoinEventPayload {
   PlayerData get me {
-    return players.firstWhere(
-      (e) => e.meta.id == ProfileController.getUser()?.id,
-    );
+    return players.getById(ProfileController.getUser()!.id)!;
+  }
+
+  SocketIOGameJoinEventPayload changePlayer({
+    required int? id,
+    required PlayerData Function(PlayerData value) onChange,
+  }) {
+    if (id == null) return this;
+
+    final players = List<PlayerData>.from(this.players);
+    final playerIndex = players.indexWhere((e) => e.meta.id == id);
+    if (playerIndex < 0) return this;
+    players[playerIndex] = onChange(players[playerIndex]);
+
+    return copyWith(players: players);
   }
 }
 
@@ -138,4 +172,27 @@ extension SocketIOChatMessageEventPayloadX on SocketIOChatMessageEventPayload {
 extension BrightnessX on Brightness {
   Brightness get reverse =>
       this == Brightness.light ? Brightness.dark : Brightness.light;
+}
+
+extension PlayersX on List<PlayerData> {
+  PlayerData? getById(int? id) {
+    if (id == null) return null;
+    return firstWhereOrNull((e) => e.meta.id == id);
+  }
+}
+
+extension PackageResponseX on PackageResponse {
+  PackageListItem toListItem() {
+    return PackageListItem(
+      id: id,
+      title: title,
+      description: description,
+      createdAt: createdAt,
+      author: author,
+      ageRestriction: ageRestriction,
+      language: language,
+      tags: tags,
+      logo: logo,
+    );
+  }
 }

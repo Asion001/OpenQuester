@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'game_state_answered_player.dart';
 import 'game_state_question_state.dart';
 import 'game_state_timer.dart';
+import 'package_question_data.dart';
 import 'socket_io_game_state_round_data.dart';
 
 part 'game_state.freezed.dart';
@@ -18,13 +19,11 @@ abstract class GameState with _$GameState {
     required GameStateQuestionState? questionState,
     required bool isPaused,
 
-    /// Last chosen / current question number out of all
-    required int? currentQuestion,
-
     /// Id of player who is currently answering
     required int? answeringPlayer,
     required List<GameStateAnsweredPlayer>? answeredPlayers,
     SocketIOGameStateRoundData? currentRound,
+    PackageQuestionData? currentQuestion,
     GameStateTimer? timer,
   }) = _GameState;
   

@@ -18,8 +18,8 @@ mixin _$PackageQuestion {
   int? get id;
   PackageEntitiesOrder get order;
 
-  /// Point value of the question
-  int get price;
+  /// Price is null only if price is hidden
+  int? get price;
 
   /// Question text
   String? get text;
@@ -27,17 +27,11 @@ mixin _$PackageQuestion {
   /// Hint for the answer
   String? get answerHint;
 
-  /// Correct answer text
-  String? get answerText;
-
   /// Comment or note about the question
   String? get questionComment;
-
-  /// Media files for the question
-  List<PackageQuestionFile>? get questionFiles;
-
-  /// Media files for the answer
-  List<PackageAnswerFile>? get answerFiles;
+  QuestionAnswerText? get answerText;
+  List<PackageQuestionFile?>? get questionFiles;
+  List<PackageQuestionFile?>? get answerFiles;
 
   /// Whether the question is hidden
   bool get isHidden;
@@ -67,10 +61,10 @@ mixin _$PackageQuestion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other.questionFiles, questionFiles) &&
             const DeepCollectionEquality()
@@ -90,8 +84,8 @@ mixin _$PackageQuestion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
+      answerText,
       const DeepCollectionEquality().hash(questionFiles),
       const DeepCollectionEquality().hash(answerFiles),
       isHidden,
@@ -99,7 +93,7 @@ mixin _$PackageQuestion {
 
   @override
   String toString() {
-    return 'PackageQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -112,13 +106,13 @@ abstract mixin class $PackageQuestionCopyWith<$Res> {
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -138,11 +132,11 @@ class _$PackageQuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
+    Object? answerText = freezed,
     Object? questionFiles = freezed,
     Object? answerFiles = freezed,
     Object? isHidden = null,
@@ -157,10 +151,10 @@ class _$PackageQuestionCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -169,22 +163,22 @@ class _$PackageQuestionCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
       questionFiles: freezed == questionFiles
           ? _self.questionFiles
           : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
+              as List<PackageQuestionFile?>?,
       answerFiles: freezed == answerFiles
           ? _self.answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -206,10 +200,10 @@ class _PackageQuestion implements PackageQuestion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _questionFiles = questionFiles,
@@ -222,9 +216,9 @@ class _PackageQuestion implements PackageQuestion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -234,20 +228,14 @@ class _PackageQuestion implements PackageQuestion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
   @override
-  List<PackageQuestionFile>? get questionFiles {
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
     final value = _questionFiles;
     if (value == null) return null;
     if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
@@ -255,12 +243,9 @@ class _PackageQuestion implements PackageQuestion {
     return EqualUnmodifiableListView(value);
   }
 
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -304,10 +289,10 @@ class _PackageQuestion implements PackageQuestion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other._questionFiles, _questionFiles) &&
             const DeepCollectionEquality()
@@ -327,8 +312,8 @@ class _PackageQuestion implements PackageQuestion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
+      answerText,
       const DeepCollectionEquality().hash(_questionFiles),
       const DeepCollectionEquality().hash(_answerFiles),
       isHidden,
@@ -336,7 +321,7 @@ class _PackageQuestion implements PackageQuestion {
 
   @override
   String toString() {
-    return 'PackageQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
+    return 'PackageQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay)';
   }
 }
 
@@ -351,13 +336,13 @@ abstract mixin class _$PackageQuestionCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -377,11 +362,11 @@ class __$PackageQuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
+    Object? answerText = freezed,
     Object? questionFiles = freezed,
     Object? answerFiles = freezed,
     Object? isHidden = null,
@@ -396,10 +381,10 @@ class __$PackageQuestionCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -408,22 +393,22 @@ class __$PackageQuestionCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
       questionFiles: freezed == questionFiles
           ? _self._questionFiles
           : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
+              as List<PackageQuestionFile?>?,
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable

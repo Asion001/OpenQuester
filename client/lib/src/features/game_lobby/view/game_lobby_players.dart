@@ -11,10 +11,11 @@ class GameLobbyPlayers extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
-    const inGame = PlayerDataStatus.inGame;
+    final answeringPlayer = gameData?.gameState.answeringPlayer;
     const roleToShow = {PlayerRole.player, PlayerRole.showman};
+    const inGame = PlayerDataStatus.inGame;
     final players = gameData?.players
-            .where((p) => p.status == inGame && roleToShow.contains(p.role))
+            .where((p) => roleToShow.contains(p.role) && p.status == inGame)
             .sorted((a, b) => a.role == PlayerRole.showman ? 0 : 1)
             .toList() ??
         [];
@@ -26,19 +27,24 @@ class GameLobbyPlayers extends WatchingWidget {
       separatorBuilder: (context, index) => const SizedBox.square(dimension: 8),
       itemBuilder: (context, index) {
         final player = players[index];
-        return GameLobbyPlayer(player: player);
+        return GameLobbyPlayer(
+          player: player,
+          answering: answeringPlayer == player.meta.id,
+        );
       },
     );
   }
 }
 
-class GameLobbyPlayer extends StatelessWidget {
+class GameLobbyPlayer extends WatchingWidget {
   const GameLobbyPlayer({
     required this.player,
+    this.answering = false,
     super.key,
   });
 
   final PlayerData player;
+  final bool answering;
 
   @override
   Widget build(BuildContext context) {
@@ -57,56 +63,69 @@ class GameLobbyPlayer extends StatelessWidget {
           GameLobbyStyles.players.height,
         ),
       ),
-      child: Stack(
-        alignment: Alignment.center,
-        fit: StackFit.expand,
-        children: [
-          Positioned.fill(
-            child: Container(
-              foregroundDecoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: .4),
-                borderRadius: 8.circular,
+      child: IconTheme(
+        data: const IconThemeData(size: 16, color: Colors.white),
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            Positioned.fill(
+              child: Container(
+                foregroundDecoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: .4),
+                  borderRadius: 8.circular,
+                ),
+                decoration: BoxDecoration(borderRadius: 8.circular),
+                clipBehavior: Clip.antiAlias,
+                child: ImageWidget(url: player.meta.avatar),
               ),
-              decoration: BoxDecoration(borderRadius: 8.circular),
-              clipBehavior: Clip.antiAlias,
-              child: ImageWidget(url: player.meta.avatar),
             ),
-          ),
-          Stack(
-            alignment: Alignment.topRight,
-            fit: StackFit.expand,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    player.meta.username,
-                    style: GameLobbyStyles.playerTextStyle(context),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (player.role != PlayerRole.showman)
-                    _PlayerScoreText(score: player.score),
-                ],
-              ),
-            ],
-          ),
-          if (player.role == PlayerRole.showman)
-            Positioned(
-              top: 2,
-              right: 2,
-              child: Assets.icons.crown
-                  .svg(
-                    width: 16,
-                    height: 16,
-                    colorFilter: const ColorFilter.mode(
-                      Colors.white,
-                      BlendMode.srcIn,
+            Stack(
+              alignment: Alignment.topRight,
+              fit: StackFit.expand,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      player.meta.username,
+                      style: GameLobbyStyles.playerTextStyle(context),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  )
-                  .withTooltip(msg: LocaleKeys.showman.tr()),
+                    if (player.role != PlayerRole.showman)
+                      _PlayerScoreText(score: player.score),
+                  ],
+                ),
+              ],
             ),
-        ],
-      ).center(),
+            if (player.role == PlayerRole.showman)
+              Align(
+                alignment: Alignment.topRight,
+                child: Assets.icons.crown
+                    .svg(
+                      width: 16,
+                      height: 16,
+                      colorFilter: const ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
+                    )
+                    .withTooltip(msg: LocaleKeys.showman.tr())
+                    .paddingAll(2),
+              ),
+            if (player.status == PlayerDataStatus.disconnected)
+              Align(
+                alignment: Alignment.topLeft,
+                child: const Icon(Icons.signal_wifi_off).paddingAll(2),
+              ),
+            if (answering)
+              Align(
+                alignment: Alignment.bottomRight,
+                child: const Icon(Icons.more_horiz).paddingAll(2),
+              ),
+          ],
+        ).center(),
+      ),
     );
   }
 }

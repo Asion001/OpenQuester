@@ -4,19 +4,23 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-/// Transfer type for secret questions
+/// Possible subType of given question
 @JsonEnum()
-enum PackageQuestionTransferType {
-  @JsonValue('any')
-  any('any'),
-  @JsonValue('exceptCurrent')
-  exceptCurrent('exceptCurrent'),
+enum QuestionSubType {
+  @JsonValue('simple')
+  simple('simple'),
+  @JsonValue('customPrice')
+  customPrice('customPrice'),
+  @JsonValue('empty')
+  empty('empty'),
+  @JsonValue('forEveryone')
+  forEveryone('forEveryone'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 
-  const PackageQuestionTransferType(this.json);
+  const QuestionSubType(this.json);
 
-  factory PackageQuestionTransferType.fromJson(String json) => values.firstWhere(
+  factory QuestionSubType.fromJson(String json) => values.firstWhere(
         (e) => e.json == json,
         orElse: () => $unknown,
       );

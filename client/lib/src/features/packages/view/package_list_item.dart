@@ -38,7 +38,7 @@ class PackageListItemWidget extends StatelessWidget {
         DateFormat.yMd().format(item.createdAt),
         if (item.tags?.isNotEmpty ?? false)
           item.tags!.sublist(0, min(5, item.tags!.length)).join(', '),
-        LocaleKeys.rounds.plural(item.rounds.length),
+        // LocaleKeys.rounds.plural(item.rounds.length),
         LocaleKeys.created_by.tr(args: [item.author.username]),
       ].nonNulls.join(' • '),
     ].join('\n');
