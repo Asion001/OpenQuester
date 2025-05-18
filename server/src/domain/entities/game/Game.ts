@@ -209,9 +209,11 @@ export class Game {
       return;
     }
 
-    const played = GameQuestionMapper.playedQuestions(this.gameState);
+    const { played, all } = GameQuestionMapper.getPlayedAndAllQuestions(
+      this.gameState
+    );
 
-    return played.length === this.questionsCount;
+    return all.length > 0 && played.length === all.length;
   }
 
   /**

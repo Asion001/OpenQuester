@@ -86,20 +86,22 @@ export class GameQuestionMapper {
     return question ? question.isPlayed : undefined;
   }
 
-  public static playedQuestions(gameState: GameStateDTO) {
+  public static getPlayedAndAllQuestions(gameState: GameStateDTO) {
     const played = [];
+    const all = [];
 
     if (!gameState.currentRound) {
-      return [];
+      return { played: [], all: [] };
     }
 
     for (const theme of gameState.currentRound.themes) {
       for (const question of theme.questions) {
+        all.push(question);
         if (question.isPlayed) played.push(question);
       }
     }
 
-    return played;
+    return { played, all };
   }
 
   private static _getQuestionFromCurrentRound(
