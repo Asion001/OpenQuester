@@ -52,7 +52,7 @@ export class SocketIOQuestionService {
     );
 
     if (isAnswered) {
-      throw new ClientError(ClientResponse.ALREADY_ANSWERING);
+      throw new ClientError(ClientResponse.ALREADY_ANSWERED);
     }
 
     const elapsedTimer = game.gameState.timer!;
