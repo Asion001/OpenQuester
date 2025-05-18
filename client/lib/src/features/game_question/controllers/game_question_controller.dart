@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:openquester/common_imports.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_io/io.dart';
@@ -35,7 +35,7 @@ class GameQuestionController {
         final uri = Uri.parse(file.link!);
 
         // Fixes loading media without file extension
-        if (Platform.isMacOS || Platform.isWindows) {
+        if (!kIsWeb && (Platform.isMacOS || Platform.isWindows)) {
           await _setTmpFile(file);
           await getIt<DioController>().client.downloadUri(uri, _tmpFile!.path);
           controller = VideoPlayerController.file(_tmpFile!);
