@@ -122,7 +122,8 @@ class _ShowmanControlls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      spacing: 8,
       children: [
         FilledButton.icon(
           onPressed: () => getIt<GameLobbyController>()

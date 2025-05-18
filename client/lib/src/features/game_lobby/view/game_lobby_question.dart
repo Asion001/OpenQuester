@@ -22,6 +22,7 @@ class GameQuestion extends StatelessWidget {
               borderRadius: borderRadius,
               side: BorderSide(
                 color: context.theme.colorScheme.onSurfaceVariant,
+                width: .15,
               ),
             ),
             WidgetState.any: RoundedRectangleBorder(borderRadius: borderRadius),
