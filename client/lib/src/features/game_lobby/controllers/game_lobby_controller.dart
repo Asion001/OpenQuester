@@ -275,6 +275,8 @@ class GameLobbyController {
     gameData.value = gameData.value?.copyWith.gameState(
       timer: questionData.timer,
       currentQuestion: questionData.data,
+      answeredPlayers: null,
+      answeringPlayer: null,
     );
 
     gameData.value = gameData.value!.copyWith.gameState(
@@ -282,11 +284,13 @@ class GameLobbyController {
         id: questionData.data.id,
         onChange: (question) => question.copyWith(isPlayed: true),
       ),
-      answeringPlayer: null,
     );
 
     // Pass the question to controller to show the question
     _showQuestion();
+
+    // Stop media during question answer
+    getIt<GameQuestionController>().mediaController.value?.pause();
   }
 
   void _showQuestion() {
@@ -332,7 +336,28 @@ class GameLobbyController {
     // Question answered, hide question screen and show answer
     if (questionData.answerResult.result > 0) {
       _showAnswer();
+    } else {
+      _resumeMediaPlay();
     }
+  }
+
+  /// Resume media after wrong answer
+  void _resumeMediaPlay() {
+    final controller = getIt<GameQuestionController>().mediaController.value;
+    if (controller == null) return;
+
+    final question = getIt<GameQuestionController>().questionData.value;
+    if (question == null) return;
+
+    final displayTime = Duration(milliseconds: question.file?.displayTime ?? 0);
+
+    // Add 200ms offset
+    final currentPlayPosition =
+        controller.value.position - const Duration(milliseconds: 500);
+
+    if (currentPlayPosition >= displayTime) return;
+
+    controller.play();
   }
 
   void _onQuestionFinish(dynamic data) {

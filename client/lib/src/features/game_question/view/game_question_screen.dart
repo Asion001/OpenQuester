@@ -116,32 +116,36 @@ class _AnsweringWidget extends WatchingWidget {
         color: context.theme.colorScheme.surfaceContainer,
       ),
       padding: 24.all,
-      child: Row(
+      child: OverflowBar(
         spacing: 16,
+        overflowSpacing: 16,
         children: [
-          Column(
-            spacing: 16,
-            children: [
-              Text(
-                LocaleKeys.question_user_is_answering
-                    .tr(args: [answeringPlayer?.meta.username ?? '']),
-                textAlign: TextAlign.center,
-                style: context.textTheme.bodyLarge,
-              ),
-              Text(
-                [
-                  if (!answerText.isEmptyOrNull)
-                    LocaleKeys.question_correct_answer_is
-                        .tr(args: [answerText!]),
-                  if (!answerHint.isEmptyOrNull)
-                    LocaleKeys.question_hint.tr(args: [answerHint!]),
-                ].join('\n'),
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: context.theme.colorScheme.onSurfaceVariant,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 300),
+            child: Column(
+              spacing: 16,
+              children: [
+                Text(
+                  LocaleKeys.question_user_is_answering
+                      .tr(args: [answeringPlayer?.meta.username ?? '']),
+                  textAlign: TextAlign.center,
+                  style: context.textTheme.bodyLarge,
                 ),
-              ),
-            ],
-          ).expand(),
+                Text(
+                  [
+                    if (!answerText.isEmptyOrNull)
+                      LocaleKeys.question_correct_answer_is
+                          .tr(args: [answerText!]),
+                    if (!answerHint.isEmptyOrNull)
+                      LocaleKeys.question_hint.tr(args: [answerHint!]),
+                  ].join('\n'),
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ).shrink(),
+          ),
           if (gameData?.me.role == PlayerRole.showman)
             const _ShowmanControlls(),
         ],
@@ -176,6 +180,7 @@ class _ShowmanControlls extends StatelessWidget {
       children: [
         Row(
           spacing: 8,
+          mainAxisSize: MainAxisSize.min,
           children: [
             FilledButton.icon(
               onPressed: () => getIt<GameLobbyController>()
@@ -188,6 +193,7 @@ class _ShowmanControlls extends StatelessWidget {
         ),
         Row(
           spacing: 8,
+          mainAxisSize: MainAxisSize.min,
           children: [
             FilledButton.icon(
               onPressed: () => getIt<GameLobbyController>()

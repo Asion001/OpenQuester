@@ -15,12 +15,10 @@ class GameQuestionFile extends WatchingWidget {
         watchValue((GameQuestionController e) => e.mediaController);
     final error = watchValue((GameQuestionController e) => e.error);
 
-    onDispose(getIt<GameQuestionController>().clearVideoControllers);
-
     final url = file.file.link;
-    Widget child = const CircularProgressIndicator();
-
     final fileType = file.file.type;
+
+    Widget child = const CircularProgressIndicator();
 
     if (error != null) {
       child = Text(error).paddingAll(24);
