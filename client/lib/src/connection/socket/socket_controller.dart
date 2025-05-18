@@ -18,7 +18,18 @@ class SocketController {
 
   Future<void> _connectGeneral() async {
     general = await createConnection();
-    general.connect();
+    general
+      ..connect()
+      ..onConnect(
+        (data) async {
+          onConnect(data);
+          await _refreshOnReconnect();
+        },
+      );
+  }
+
+  Future<void> _refreshOnReconnect() async {
+    getIt<GamesListController>().pagingController.refresh();
   }
 
   Future<Socket> createConnection({String? path}) async {

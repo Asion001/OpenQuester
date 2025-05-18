@@ -22,6 +22,8 @@ enum SocketIOGameSendEvents {
   questionFinish('question-finish'),
   @JsonValue('answer-submitted')
   answerSubmitted('answer-submitted'),
+  @JsonValue('next-round')
+  nextRound('next-round'),
   @JsonValue('answer-result')
   answerResult('answer-result'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.

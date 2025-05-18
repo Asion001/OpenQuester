@@ -14,25 +14,24 @@ class GameQuestionScreen extends WatchingWidget {
     final text = fileData?.text;
     final questionMediaOnLeft = GameLobbyStyles.questionMediaOnLeft(context);
 
+    final questionTextWidget = _questionTextAndButtons(
+      file: file,
+      text: text,
+      context: context,
+    );
+
     final column = Column(
       spacing: 16,
       children: [
         Flex(
           spacing: 16,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
           direction: questionMediaOnLeft ? Axis.horizontal : Axis.vertical,
           children: [
-            if (file != null)
-              GameQuestionMediaWidget(file: file).flexible()
-            else
-              const SizedBox(),
-            if (questionMediaOnLeft)
-              _questionTextAndButtons(
-                file,
-                questionMediaOnLeft,
-                text,
-                context,
-              ),
+            if (!questionMediaOnLeft) questionTextWidget,
+            if (file != null) GameQuestionMediaWidget(file: file).flexible(),
+            if (questionMediaOnLeft) questionTextWidget.expand(),
+            if (questionMediaOnLeft) const _QuestionBottom().withWidth(250),
           ],
         ).expand(),
         if (!questionMediaOnLeft) const _QuestionBottom(),
@@ -74,25 +73,22 @@ class GameQuestionScreen extends WatchingWidget {
     };
   }
 
-  Widget _questionTextAndButtons(
-    PackageQuestionFile? file,
-    bool questionMediaOnLeft,
-    String? text,
-    BuildContext context,
-  ) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      spacing: 8,
-      children: [
-        Text(
-          text ?? '',
-          style: file != null
-              ? context.textTheme.bodyLarge
-              : context.textTheme.headlineLarge,
-          textAlign: TextAlign.center,
-        ),
-        if (questionMediaOnLeft) const _QuestionBottom(),
-      ],
+  Widget _questionTextAndButtons({
+    required BuildContext context,
+    required PackageQuestionFile? file,
+    required String? text,
+  }) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: file == null ? double.infinity : 150,
+      ),
+      child: Text(
+        text ?? '',
+        style: file != null
+            ? context.textTheme.bodyLarge
+            : context.textTheme.headlineLarge,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }
@@ -235,35 +231,34 @@ class _ShowmanControlls extends StatelessWidget {
       ).toList();
     }
 
+    Widget buttons({required bool correctAnswer}) {
+      return Card(
+        child: Wrap(
+          spacing: 8,
+          runSpacing: 16,
+          alignment: WrapAlignment.center,
+          children: [
+            FilledButton.icon(
+              onPressed: () => getIt<GameLobbyController>()
+                  .answerResult(playerAnswerIsRight: correctAnswer),
+              icon: Icon(correctAnswer ? Icons.check : Icons.close),
+              label: Text(
+                correctAnswer
+                    ? LocaleKeys.question_answer_is_correct.tr()
+                    : LocaleKeys.question_answer_is_wrong.tr(),
+              ),
+            ),
+            ...multiplierBtns(playerAnswerIsRight: correctAnswer),
+          ],
+        ).paddingAll(16),
+      );
+    }
+
     return Column(
       spacing: 8,
       children: [
-        Row(
-          spacing: 8,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FilledButton.icon(
-              onPressed: () => getIt<GameLobbyController>()
-                  .answerResult(playerAnswerIsRight: false),
-              icon: const Icon(Icons.close),
-              label: Text(LocaleKeys.question_answer_is_wrong.tr()),
-            ),
-            ...multiplierBtns(playerAnswerIsRight: false),
-          ],
-        ),
-        Row(
-          spacing: 8,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FilledButton.icon(
-              onPressed: () => getIt<GameLobbyController>()
-                  .answerResult(playerAnswerIsRight: true),
-              icon: const Icon(Icons.check),
-              label: Text(LocaleKeys.question_answer_is_correct.tr()),
-            ),
-            ...multiplierBtns(playerAnswerIsRight: true),
-          ],
-        ),
+        buttons(correctAnswer: false),
+        buttons(correctAnswer: true),
       ],
     );
   }

@@ -49,6 +49,7 @@ class GameLobbyController {
         ..on(SocketIOGameReceiveEvents.answerResult.json!, _onAnswerResult)
         ..on(SocketIOGameReceiveEvents.questionFinish.json!, _onQuestionFinish)
         ..on(SocketIOGameReceiveEvents.answerSubmitted.json!, _onAnswerResult)
+        ..on(SocketIOGameReceiveEvents.nextRound.json!, _onNextRound)
         ..connect();
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -134,7 +135,16 @@ class GameLobbyController {
 
   Future<void> leave({bool force = false}) async {
     socket?.emit(SocketIOGameSendEvents.userLeave.json!);
-    if (force) _leave();
+    if (force) {
+      _leave();
+    } else {
+      Future<void>.delayed(
+        const Duration(seconds: 1),
+        () {
+          if (socket != null) clear();
+        },
+      );
+    }
   }
 
   void toggleDesktopChat() {
@@ -389,23 +399,26 @@ class GameLobbyController {
   Future<void> _showAnswer() async {
     final controller = getIt<GameQuestionController>();
     final currentQuestion = gameData.value?.gameState.currentQuestion;
-
-    if (currentQuestion != null) {
-      controller.questionData.value = GameQuestionData(
-        file: currentQuestion.answerFiles?.firstOrNull,
-        text: currentQuestion.answerText,
-      );
-
-      // Wait for user to see answer
-      final mediaValue = controller.mediaController.value?.value;
-      if (mediaValue != null) {
-        final playtimeLeft = mediaValue.duration - mediaValue.position;
-        await Future<void>.delayed(
-          Duration(
-            milliseconds: max(5000, playtimeLeft.inMilliseconds),
-          ),
+    try {
+      if (currentQuestion != null) {
+        controller.questionData.value = GameQuestionData(
+          file: currentQuestion.answerFiles?.firstOrNull,
+          text: currentQuestion.answerText,
         );
+
+        // Wait for user to see answer
+        final mediaValue = controller.mediaController.value?.value;
+        if (mediaValue != null) {
+          final playtimeLeft = mediaValue.duration - mediaValue.position;
+          await Future<void>.delayed(
+            Duration(
+              milliseconds: max(5000, playtimeLeft.inMilliseconds),
+            ),
+          );
+        }
       }
+    } catch (e) {
+      onError(e);
     }
 
     // Clear question
@@ -426,6 +439,7 @@ class GameLobbyController {
     final me = gameData.value?.me;
     if (me == null) return;
     if (me.role != PlayerRole.player) return;
+    if (gameData.value?.gameState.answeringPlayer != null) return;
 
     socket?.emit(SocketIOGameSendEvents.questionAnswer.json!);
   }
@@ -444,5 +458,15 @@ class GameLobbyController {
         scoreResult: playerAnswerIsRight ? score : -score,
       ).toJson(),
     );
+  }
+
+  void _onNextRound(dynamic data) {
+    if (data is! Map) return;
+
+    final nextRoundData = SocketIONextRoundEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+    gameData.value =
+        gameData.value?.copyWith(gameState: nextRoundData.gameState);
   }
 }
