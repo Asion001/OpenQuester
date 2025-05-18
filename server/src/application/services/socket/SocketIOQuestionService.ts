@@ -112,6 +112,7 @@ export class SocketIOQuestionService {
 
     if (playerAnswerResult.score > 0) {
       question = await this.getCurrentQuestion(game);
+      game.gameState.currentQuestion = null;
     }
 
     let timer: GameStateTimerDTO | null = null;

@@ -256,7 +256,6 @@ export class Game {
     } else {
       // When question is correct we reset answered players array
       this.gameState.answeredPlayers = null;
-      this.gameState.currentQuestion = null;
     }
 
     // Always reset answering player
