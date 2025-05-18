@@ -179,7 +179,9 @@ export class SocketIOQuestionService {
       withSave: false,
     });
 
-    game.gameState.currentQuestion = questionData.question;
+    game.gameState.currentQuestion = GameQuestionMapper.mapToSimpleQuestion(
+      questionData.question
+    );
     game.gameState.timer = timer.value();
     GameQuestionMapper.setQuestionPlayed(game, question.id!, theme.id!);
 
