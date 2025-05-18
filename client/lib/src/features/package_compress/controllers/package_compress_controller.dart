@@ -28,7 +28,7 @@ class PackageCompressController {
       final outputArchive = await encoder.encodePackage(archiveFile);
 
       if (outputArchive == null) return;
-      
+
       if (!outputArchive.existsSync()) {
         throw Exception('outputArchive dont exist!');
       }

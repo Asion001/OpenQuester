@@ -18,6 +18,7 @@ dependencies:
   collection: ^1.19.1
   cross_file: ^0.3.4+2
   archive: ^4.0.7
+  path_provider: ^2.1.5
 
 dev_dependencies:
   lints: ^5.1.1
