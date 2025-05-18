@@ -166,7 +166,7 @@ export class SocketIOQuestionService {
       withSave: false,
     });
 
-    game.gameState.currentQuestion = questionId;
+    game.gameState.currentQuestion = questionData.question;
     game.gameState.timer = timer.value();
     GameQuestionMapper.setQuestionPlayed(game, question.id!, theme.id!);
 
@@ -190,7 +190,7 @@ export class SocketIOQuestionService {
     const questionData = GameQuestionMapper.getQuestionAndTheme(
       game.package,
       gameState.currentRound.id,
-      gameState.currentQuestion
+      gameState.currentQuestion.id!
     );
 
     if (!questionData) {
