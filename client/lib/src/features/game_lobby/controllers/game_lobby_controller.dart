@@ -145,6 +145,8 @@ class GameLobbyController {
         SocketIOGameJoinEventPayload.fromJson(data as Map<String, dynamic>);
 
     await _initChat();
+
+    _showQuestion();
   }
 
   Future<void> _initChat() async {
@@ -283,9 +285,16 @@ class GameLobbyController {
     );
 
     // Pass the question to controller to show the question
+    _showQuestion();
+  }
+
+  void _showQuestion() {
+    final question = gameData.value?.gameState.currentQuestion;
+    if (question == null) return;
+
     getIt<GameQuestionController>().questionData.value = GameQuestionData(
-      file: questionData.data.questionFiles?.firstOrNull,
-      text: questionData.data.text,
+      file: question.questionFiles?.firstOrNull,
+      text: question.text,
     );
   }
 

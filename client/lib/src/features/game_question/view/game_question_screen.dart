@@ -122,20 +122,46 @@ class _ShowmanControlls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> multiplierBtns({
+      required bool playerAnswerIsRight,
+    }) {
+      return [0.5, 2.0].map(
+        (e) {
+          return FilledButton.tonal(
+            onPressed: () => getIt<GameLobbyController>()
+                .answerResult(playerAnswerIsRight: false, multiplier: e),
+            child: Text('${e}X'),
+          );
+        },
+      ).toList();
+    }
+
     return Column(
       spacing: 8,
       children: [
-        FilledButton.icon(
-          onPressed: () => getIt<GameLobbyController>()
-              .answerResult(playerAnswerIsRight: false),
-          icon: const Icon(Icons.close),
-          label: Text(LocaleKeys.question_answer_is_wrong.tr()),
+        Row(
+          spacing: 8,
+          children: [
+            FilledButton.icon(
+              onPressed: () => getIt<GameLobbyController>()
+                  .answerResult(playerAnswerIsRight: false),
+              icon: const Icon(Icons.close),
+              label: Text(LocaleKeys.question_answer_is_wrong.tr()),
+            ),
+            ...multiplierBtns(playerAnswerIsRight: false),
+          ],
         ),
-        FilledButton.icon(
-          onPressed: () => getIt<GameLobbyController>()
-              .answerResult(playerAnswerIsRight: true),
-          icon: const Icon(Icons.check),
-          label: Text(LocaleKeys.question_answer_is_correct.tr()),
+        Row(
+          spacing: 8,
+          children: [
+            FilledButton.icon(
+              onPressed: () => getIt<GameLobbyController>()
+                  .answerResult(playerAnswerIsRight: true),
+              icon: const Icon(Icons.check),
+              label: Text(LocaleKeys.question_answer_is_correct.tr()),
+            ),
+            ...multiplierBtns(playerAnswerIsRight: true),
+          ],
         ),
       ],
     );
