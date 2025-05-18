@@ -202,18 +202,7 @@ class _GameMenu extends WatchingWidget {
 
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => [
-        PopupMenuItem<void>(
-          child: const _VolumeSlider(),
-          onTap: () async {
-            final result = await ConfirmDialog(
-              title: LocaleKeys.delete_game_confirmation.tr(),
-            ).show(context);
-            if (!result) return;
-            await getIt<GamesListController>().deleteGame(
-              getIt<GameLobbyController>().gameListData.value!.id,
-            );
-          },
-        ),
+        const PopupMenuItem<void>(child: _VolumeSlider()),
         if (imShowman)
           PopupMenuItem<void>(
             child: Text(LocaleKeys.delete_game.tr()),

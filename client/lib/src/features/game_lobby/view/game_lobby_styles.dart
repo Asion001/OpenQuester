@@ -22,5 +22,7 @@ class GameLobbyStyles {
   static bool playersOnLeft(BuildContext context) =>
       UiModeUtils.landscapeScreenSize(context);
 
-  static bool questionMediaOnLeft(BuildContext context) => false;
+  static bool questionMediaOnLeft(BuildContext context) =>
+      UiModeUtils.landscapeScreenSize(context) &&
+      MediaQuery.sizeOf(context).height < 600;
 }

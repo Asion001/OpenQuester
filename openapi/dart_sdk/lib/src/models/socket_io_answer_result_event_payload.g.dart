@@ -9,8 +9,10 @@ part of 'socket_io_answer_result_event_payload.dart';
 _SocketIOAnswerResultEventPayload _$SocketIOAnswerResultEventPayloadFromJson(
         Map<String, dynamic> json) =>
     _SocketIOAnswerResultEventPayload(
-      answerResult: GameStateAnsweredPlayer.fromJson(
-          json['answerResult'] as Map<String, dynamic>),
+      answerResult: json['answerResult'] == null
+          ? null
+          : GameStateAnsweredPlayer.fromJson(
+              json['answerResult'] as Map<String, dynamic>),
       timer: json['timer'] == null
           ? null
           : GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),

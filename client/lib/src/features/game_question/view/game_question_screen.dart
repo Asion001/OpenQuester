@@ -22,18 +22,24 @@ class GameQuestionScreen extends WatchingWidget {
             children: [
               Expanded(
                 flex: file != null && !questionMediaOnLeft ? 0 : 1,
-                child: Text(
-                  text ?? '',
-                  style: file != null
-                      ? context.textTheme.bodyLarge
-                      : context.textTheme.headlineLarge,
-                  textAlign: TextAlign.center,
-                ).center(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      text ?? '',
+                      style: file != null
+                          ? context.textTheme.bodyLarge
+                          : context.textTheme.headlineLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    if (questionMediaOnLeft) const _QuestionBottom(),
+                  ],
+                ),
               ),
               if (file != null) GameQuestionFile(file: file).flexible(),
             ],
           ).expand(),
-          const _QuestionBottom(),
+          if (!questionMediaOnLeft) const _QuestionBottom(),
         ],
       ).paddingAll(16),
     );
@@ -144,7 +150,7 @@ class _AnsweringWidget extends WatchingWidget {
                   ),
                 ),
               ],
-            ).shrink(),
+            ),
           ),
           if (gameData?.me.role == PlayerRole.showman)
             const _ShowmanControlls(),

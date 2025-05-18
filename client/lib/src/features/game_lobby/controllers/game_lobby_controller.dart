@@ -325,19 +325,22 @@ class GameLobbyController {
       answeringPlayer: null,
       answeredPlayers: [
         ...?gameData.value?.gameState.answeredPlayers,
-        questionData.answerResult,
+        if (questionData.answerResult != null) questionData.answerResult!,
       ],
     ).changePlayer(
-      id: questionData.answerResult.player,
+      id: questionData.answerResult?.player,
       onChange: (value) =>
-          value.copyWith(score: questionData.answerResult.score),
+          value.copyWith(score: questionData.answerResult!.score),
     );
 
     // Question answered, hide question screen and show answer
-    if (questionData.answerResult.result > 0) {
-      _showAnswer();
-    } else {
-      _resumeMediaPlay();
+    final result = questionData.answerResult?.result;
+    if (result != null) {
+      if (result > 0) {
+        _showAnswer();
+      } else {
+        _resumeMediaPlay();
+      }
     }
   }
 
@@ -361,6 +364,24 @@ class GameLobbyController {
   }
 
   void _onQuestionFinish(dynamic data) {
+    if (data is! Map) return;
+
+    final questionData = SocketIOAnswerResultEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+
+    gameData.value = gameData.value?.copyWith
+        .gameState(
+          currentQuestion: gameData.value?.gameState.currentQuestion?.copyWith(
+            answerFiles: questionData.answerFiles,
+            answerText: questionData.answerText,
+          ),
+        )
+        .changePlayer(
+          id: questionData.answerResult?.player,
+          onChange: (e) => e.copyWith(score: questionData.answerResult!.score),
+        );
+
     _showAnswer();
   }
 

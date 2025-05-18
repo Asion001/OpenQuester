@@ -2556,7 +2556,10 @@
         "description": "Data sent to all players when the showman evaluates an answer",
         "properties": {
           "answerResult": {
-            "$ref": "#/components/schemas/GameStateAnsweredPlayer"
+            "oneOf": [
+              { "$ref": "#/components/schemas/GameStateAnsweredPlayer" },
+              { "type": "null" }
+            ]
           },
           "timer": {
             "oneOf": [

@@ -13,8 +13,9 @@ class GameLobbyPlayers extends WatchingWidget {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
     final answeringPlayer = gameData?.gameState.answeringPlayer;
     const roleToShow = {PlayerRole.player, PlayerRole.showman};
+    const inGame = PlayerDataStatus.inGame;
     final players = gameData?.players
-            .where((p) => roleToShow.contains(p.role))
+            .where((p) => roleToShow.contains(p.role) && p.status == inGame)
             .sorted((a, b) => a.role == PlayerRole.showman ? 0 : 1)
             .toList() ??
         [];

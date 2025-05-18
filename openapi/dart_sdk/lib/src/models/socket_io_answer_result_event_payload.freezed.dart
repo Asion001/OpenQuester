@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$SocketIOAnswerResultEventPayload {
-  GameStateAnsweredPlayer get answerResult;
+  GameStateAnsweredPlayer? get answerResult;
   GameStateTimer? get timer;
   List<PackageQuestionFile?>? get answerFiles;
   QuestionAnswerText? get answerText;
@@ -65,12 +65,12 @@ abstract mixin class $SocketIOAnswerResultEventPayloadCopyWith<$Res> {
       _$SocketIOAnswerResultEventPayloadCopyWithImpl;
   @useResult
   $Res call(
-      {GameStateAnsweredPlayer answerResult,
+      {GameStateAnsweredPlayer? answerResult,
       GameStateTimer? timer,
       List<PackageQuestionFile?>? answerFiles,
       QuestionAnswerText? answerText});
 
-  $GameStateAnsweredPlayerCopyWith<$Res> get answerResult;
+  $GameStateAnsweredPlayerCopyWith<$Res>? get answerResult;
   $GameStateTimerCopyWith<$Res>? get timer;
 }
 
@@ -87,16 +87,16 @@ class _$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? answerResult = null,
+    Object? answerResult = freezed,
     Object? timer = freezed,
     Object? answerFiles = freezed,
     Object? answerText = freezed,
   }) {
     return _then(_self.copyWith(
-      answerResult: null == answerResult
+      answerResult: freezed == answerResult
           ? _self.answerResult
           : answerResult // ignore: cast_nullable_to_non_nullable
-              as GameStateAnsweredPlayer,
+              as GameStateAnsweredPlayer?,
       timer: freezed == timer
           ? _self.timer
           : timer // ignore: cast_nullable_to_non_nullable
@@ -116,8 +116,12 @@ class _$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $GameStateAnsweredPlayerCopyWith<$Res> get answerResult {
-    return $GameStateAnsweredPlayerCopyWith<$Res>(_self.answerResult, (value) {
+  $GameStateAnsweredPlayerCopyWith<$Res>? get answerResult {
+    if (_self.answerResult == null) {
+      return null;
+    }
+
+    return $GameStateAnsweredPlayerCopyWith<$Res>(_self.answerResult!, (value) {
       return _then(_self.copyWith(answerResult: value));
     });
   }
@@ -142,7 +146,7 @@ class _$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
 class _SocketIOAnswerResultEventPayload
     implements SocketIOAnswerResultEventPayload {
   const _SocketIOAnswerResultEventPayload(
-      {required this.answerResult,
+      {this.answerResult,
       this.timer,
       final List<PackageQuestionFile?>? answerFiles,
       this.answerText})
@@ -152,7 +156,7 @@ class _SocketIOAnswerResultEventPayload
       _$SocketIOAnswerResultEventPayloadFromJson(json);
 
   @override
-  final GameStateAnsweredPlayer answerResult;
+  final GameStateAnsweredPlayer? answerResult;
   @override
   final GameStateTimer? timer;
   final List<PackageQuestionFile?>? _answerFiles;
@@ -219,13 +223,13 @@ abstract mixin class _$SocketIOAnswerResultEventPayloadCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {GameStateAnsweredPlayer answerResult,
+      {GameStateAnsweredPlayer? answerResult,
       GameStateTimer? timer,
       List<PackageQuestionFile?>? answerFiles,
       QuestionAnswerText? answerText});
 
   @override
-  $GameStateAnsweredPlayerCopyWith<$Res> get answerResult;
+  $GameStateAnsweredPlayerCopyWith<$Res>? get answerResult;
   @override
   $GameStateTimerCopyWith<$Res>? get timer;
 }
@@ -243,16 +247,16 @@ class __$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? answerResult = null,
+    Object? answerResult = freezed,
     Object? timer = freezed,
     Object? answerFiles = freezed,
     Object? answerText = freezed,
   }) {
     return _then(_SocketIOAnswerResultEventPayload(
-      answerResult: null == answerResult
+      answerResult: freezed == answerResult
           ? _self.answerResult
           : answerResult // ignore: cast_nullable_to_non_nullable
-              as GameStateAnsweredPlayer,
+              as GameStateAnsweredPlayer?,
       timer: freezed == timer
           ? _self.timer
           : timer // ignore: cast_nullable_to_non_nullable
@@ -272,8 +276,12 @@ class __$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $GameStateAnsweredPlayerCopyWith<$Res> get answerResult {
-    return $GameStateAnsweredPlayerCopyWith<$Res>(_self.answerResult, (value) {
+  $GameStateAnsweredPlayerCopyWith<$Res>? get answerResult {
+    if (_self.answerResult == null) {
+      return null;
+    }
+
+    return $GameStateAnsweredPlayerCopyWith<$Res>(_self.answerResult!, (value) {
       return _then(_self.copyWith(answerResult: value));
     });
   }
