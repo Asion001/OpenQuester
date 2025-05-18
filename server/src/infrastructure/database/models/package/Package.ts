@@ -104,6 +104,22 @@ export class Package {
     return dto;
   }
 
+  public toSimpleDTO(storage: S3StorageService): Omit<PackageDTO, "rounds"> {
+    return {
+      title: this.title,
+      ageRestriction: this.age_restriction,
+      author: {
+        id: this.author.id,
+        username: this.author.username,
+      },
+      createdAt: this.created_at,
+      description: this.description,
+      language: this.language,
+      logo: this.logoDTO(storage),
+      tags: this.tags.map((tag) => tag.toDTO()),
+    };
+  }
+
   public toDTO(
     storage: S3StorageService,
     opts?: PackageDTOOptions
