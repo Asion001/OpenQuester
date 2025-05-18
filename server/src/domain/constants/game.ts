@@ -1,5 +1,5 @@
 import { CHAT_NSP } from "domain/constants/chat";
-import { SECOND_MS } from "domain/constants/time";
+import { MINUTE_MS, SECOND_MS } from "domain/constants/time";
 
 export const GAME_NAMESPACE = "game";
 export const GAME_ID_CHARACTERS_LENGTH = 4;
@@ -12,4 +12,4 @@ export const GAME_CHAT_NSP = `${CHAT_NSP}:game`;
 export const GAME_CHAT_TTL = 60 * 60 * 24 * 21;
 export const GAME_CHAT_HISTORY_RETRIEVAL_LIMIT = 100;
 export const GAME_QUESTION_ANSWER_TIME = SECOND_MS * 20.5;
-export const GAME_QUESTION_ANSWER_SUBMIT_TIME = SECOND_MS * 60;
+export const GAME_QUESTION_ANSWER_SUBMIT_TIME = MINUTE_MS * 1;

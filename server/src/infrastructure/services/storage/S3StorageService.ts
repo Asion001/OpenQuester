@@ -92,7 +92,7 @@ export class S3StorageService {
     return getSignedUrl(this._client, command, opts);
   }
 
-  public async getUrl(filename: string) {
+  public getUrl(filename: string) {
     const filePath = StorageUtils.parseFilePath(filename);
 
     const baseUrl = this.s3Context.host.endsWith("/")

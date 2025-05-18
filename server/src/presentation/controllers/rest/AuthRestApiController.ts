@@ -50,7 +50,7 @@ export class AuthRestApiController {
   }
 
   private socketAuth = async (req: Request, res: Response) => {
-    const authDTO = await new RequestDataValidator<SocketAuthDTO>(
+    const authDTO = new RequestDataValidator<SocketAuthDTO>(
       req.body,
       socketAuthScheme
     ).validate();
@@ -72,7 +72,7 @@ export class AuthRestApiController {
   };
 
   private handleOauthLogin = async (req: Request, res: Response) => {
-    const authDTO = await new RequestDataValidator<Oauth2LoginDTO>(
+    const authDTO = new RequestDataValidator<Oauth2LoginDTO>(
       req.body,
       Joi.object({
         oauthProvider: Joi.valid(...Object.values(EOauthProvider)).required(),
@@ -160,7 +160,7 @@ export class AuthRestApiController {
       throw new ClientError(ClientResponse.CANNOT_PARSE_USER_DATA);
     }
 
-    const profile = await new RequestDataValidator<DiscordProfileDTO>(
+    const profile = new RequestDataValidator<DiscordProfileDTO>(
       profileData,
       Joi.object({
         id: Joi.string().required(),

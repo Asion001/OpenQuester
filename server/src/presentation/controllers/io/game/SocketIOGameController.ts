@@ -52,7 +52,7 @@ export class SocketIOGameController {
   }
 
   private handleJoinLobby = async (data: any) => {
-    const dto = await GameValidator.validateJoinInput(data);
+    const dto = GameValidator.validateJoinInput(data);
 
     if (this.socket.rooms.has(dto.gameId)) {
       throw new ClientError(ClientResponse.ALREADY_IN_GAME);
@@ -125,7 +125,7 @@ export class SocketIOGameController {
   };
 
   private handleChatMessage = async (data: any) => {
-    const dto = await GameValidator.validateChatMessage(data);
+    const dto = GameValidator.validateChatMessage(data);
 
     const result = await this.socketIOChatService.processChatMessage(
       this.socket.id,

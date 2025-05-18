@@ -117,29 +117,23 @@ export class PackageQuestion {
     this.showDelay = data.showDelay;
   }
 
-  public async toDTO(
+  public toDTO(
     storage: S3StorageService,
     opts: PackageDTOOptions
-  ): Promise<PackageQuestionDTO> {
+  ): PackageQuestionDTO {
     const questionFilesDTO =
       this.questionFiles && this.questionFiles.length > 0
-        ? await Promise.all(
-            this.questionFiles.map((file) => file.toDTO(storage, opts))
-          )
+        ? this.questionFiles.map((file) => file.toDTO(storage, opts))
         : null;
 
     const answerFilesDTO =
       this.answerFiles && this.answerFiles.length > 0
-        ? await Promise.all(
-            this.answerFiles.map((file) => file.toDTO(storage, opts))
-          )
+        ? this.answerFiles.map((file) => file.toDTO(storage, opts))
         : null;
 
     const answersDTO =
       this.answers && this.answers.length > 0
-        ? await Promise.all(
-            this.answers.map((answer) => answer.toDTO(storage, opts))
-          )
+        ? this.answers.map((answer) => answer.toDTO(storage, opts))
         : null;
 
     let dto: PackageQuestionDTO = {
