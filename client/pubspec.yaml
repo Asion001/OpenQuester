@@ -57,6 +57,7 @@ dependencies:
   throttling: ^2.0.1
   url_launcher: ^6.3.1
   video_player: ^2.9.5
+  video_player_win: ^3.1.1
 
 dev_dependencies:
   flutter_test:
