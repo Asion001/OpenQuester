@@ -63,7 +63,10 @@
   "no": "No",
   "openquester": "OpenQuester",
   "question": {
-    "pressToAnswer": "Press to Answer",
-    "holdToSkip": "Hold to Skip"
-  }
+    "press_to_answer": "Press to Answer",
+    "hold_to_skip": "Hold to Skip",
+    "user_is_answering": "{} is answering"
+  },
+  "delete_game": "Delete game",
+  "delete_game_confirmation": "Sure wanna delete the game?"
 }

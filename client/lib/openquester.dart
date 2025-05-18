@@ -63,6 +63,7 @@ export 'src/features/game_preview/view/game_preview.dart';
 export 'src/features/game_preview/view/game_preview_bottom.dart';
 export 'src/features/game_preview/view/game_preview_play_btn.dart';
 export 'src/features/game_question/controllers/game_question_controller.dart';
+export 'src/features/game_question/data/game_question_data.dart';
 export 'src/features/game_question/view/game_question_file.dart';
 export 'src/features/game_question/view/game_question_screen.dart';
 export 'src/features/games/controllers/games_list_controller.dart';

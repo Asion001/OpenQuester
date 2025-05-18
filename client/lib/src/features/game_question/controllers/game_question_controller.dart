@@ -8,49 +8,32 @@ import 'package:video_player/video_player.dart';
 
 @singleton
 class GameQuestionController {
-  final questionFile = ValueNotifier<PackageQuestionFile?>(null);
-  final mediaController = ValueNotifier<VideoPlayerController?>(null);
-  late final question = ValueNotifier<PackageQuestionData?>(null)
+  late final questionData = ValueNotifier<GameQuestionData?>(null)
     ..addListener(_onQuestionChange);
+  final mediaController = ValueNotifier<VideoPlayerController?>(null);
 
   File? _tmpFile;
 
   Future<void> clear() async {
-    question.value = null;
-    questionFile.value = null;
+    questionData.value = null;
     _tmpFile?.deleteSync();
     _tmpFile = null;
   }
 
   Future<void> _onQuestionChange() async {
     await clearVideoControllers();
-
-    final files = question.value?.questionFiles;
-
-    questionFile.value = files?.firstOrNull;
-    final file = questionFile.value?.file;
+    
+    final file = questionData.value?.file?.file;
 
     if (file == null) return;
 
     if (file.type != PackageFileType.image) {
       VideoPlayerController controller;
       final uri = Uri.parse(file.link!);
-      if (Platform.isMacOS) {
-        final tmpDir = await getTemporaryDirectory();
-        _tmpFile = File(
-          [
-            tmpDir.path,
-            [
-              file.md5,
-              switch (file.type) {
-                PackageFileType.video => 'mp4',
-                PackageFileType.audio => 'mp3',
-                PackageFileType.image => 'webp',
-                _ => '',
-              },
-            ].join('.'),
-          ].join(Platform.pathSeparator),
-        );
+
+      // Fixes loading media without file extension
+      if (Platform.isMacOS || Platform.isWindows) {
+        await _setTmpFile(file);
         await getIt<DioController>().client.downloadUri(uri, _tmpFile!.path);
         controller = VideoPlayerController.file(_tmpFile!);
       } else {
@@ -63,17 +46,27 @@ class GameQuestionController {
       await controller.play();
 
       Future<void>.delayed(
-        Duration(milliseconds: questionFile.value!.displayTime),
+        Duration(milliseconds: questionData.value!.file!.displayTime),
         () => mediaController.value?.pause(),
       );
     }
     // TODO: Start slideshow timer
   }
 
-  void onAnswer() {
-    getIt<GameLobbyController>()
-        .socket
-        ?.emit(SocketIOGameSendEvents.questionAnswer.json!);
+  Future<void> _setTmpFile(FileItem file) async {
+    final tmpDir = await getTemporaryDirectory();
+    final extension = switch (file.type) {
+      PackageFileType.video => 'mp4',
+      PackageFileType.audio => 'mp3',
+      PackageFileType.image => 'webp',
+      _ => throw UnimplementedError(),
+    };
+    _tmpFile = File(
+      [
+        tmpDir.path,
+        [file.md5, extension].join('.'),
+      ].join(Platform.pathSeparator),
+    );
   }
 
   Future<void> clearVideoControllers() async {

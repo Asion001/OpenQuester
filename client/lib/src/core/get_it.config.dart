@@ -76,6 +76,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i899.SocketChatController(),
       dispose: (i) => i.dispose(),
     );
+    gh.singleton<_i99.GameQuestionController>(
+        () => _i99.GameQuestionController());
     gh.singleton<_i674.GameLobbyController>(() => _i674.GameLobbyController());
     gh.singleton<_i546.GamePreviewController>(
         () => _i546.GamePreviewController());
@@ -83,8 +85,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i650.AutoUpdateController());
     gh.singleton<_i905.PackageUploadController>(
         () => _i905.PackageUploadController());
-    gh.singleton<_i99.GameQuestionController>(
-        () => _i99.GameQuestionController());
     gh.singleton<_i149.Api>(() => _i149.Api());
     await gh.singletonAsync<_i785.AuthController>(
       () {

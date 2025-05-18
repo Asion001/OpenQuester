@@ -67,7 +67,10 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 onPressed: _onExit,
                 icon: const Icon(Icons.exit_to_app),
               ),
-              actions: [_ChatButton(show: showChat)],
+              actions: [
+                const _GameMenu(),
+                _ChatButton(show: showChat),
+              ],
               elevation: 0,
               scrolledUnderElevation: 0,
               notificationPredicate: (_) => false,
@@ -79,7 +82,6 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 16,
                     children: [
                       const _BodyLayoutBuilder().expand(),
                       AppAnimatedSwitcher(
@@ -110,7 +112,7 @@ class _BodyBuilder extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final currentQuestion =
-        watchValue((GameQuestionController e) => e.question);
+        watchValue((GameQuestionController e) => e.questionData);
 
     Widget body;
 
@@ -184,6 +186,36 @@ class _Chat extends StatelessWidget {
         color: context.theme.colorScheme.surfaceContainer,
         child: const ChatScreen(),
       ),
+    );
+  }
+}
+
+class _GameMenu extends WatchingWidget {
+  const _GameMenu();
+
+  @override
+  Widget build(BuildContext context) {
+    final me = watchValue((GameLobbyController e) => e.gameData)?.me;
+    final imShowman = me?.role == PlayerRole.showman;
+
+    if (!imShowman) return const SizedBox.shrink();
+
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => [
+        PopupMenuItem<void>(
+          child: Text(LocaleKeys.delete_game.tr()),
+          onTap: () async {
+            final result = await ConfirmDialog(
+              title: LocaleKeys.delete_game_confirmation.tr(),
+            ).show(context);
+            if (!result) return;
+            await getIt<GamesListController>().deleteGame(
+              getIt<GameLobbyController>().gameListData.value!.id,
+            );
+          },
+        ),
+      ],
+      icon: const Icon(Icons.more_vert),
     );
   }
 }

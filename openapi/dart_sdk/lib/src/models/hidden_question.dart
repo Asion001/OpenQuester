@@ -5,7 +5,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'hidden_question_type.dart';
-import 'package_answer_file.dart';
 import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
@@ -34,7 +33,7 @@ abstract class HiddenQuestion with _$HiddenQuestion {
     required HiddenQuestionType type,
     QuestionAnswerText? answerText,
     List<PackageQuestionFile?>? questionFiles,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)

@@ -17,7 +17,7 @@ T _$identity<T>(T value) => value;
 mixin _$SocketIOAnswerResultEventPayload {
   GameStateAnsweredPlayer get answerResult;
   GameStateTimer? get timer;
-  List<PackageAnswerFile?>? get answerFiles;
+  List<PackageQuestionFile?>? get answerFiles;
   QuestionAnswerText? get answerText;
 
   /// Create a copy of SocketIOAnswerResultEventPayload
@@ -67,7 +67,7 @@ abstract mixin class $SocketIOAnswerResultEventPayloadCopyWith<$Res> {
   $Res call(
       {GameStateAnsweredPlayer answerResult,
       GameStateTimer? timer,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       QuestionAnswerText? answerText});
 
   $GameStateAnsweredPlayerCopyWith<$Res> get answerResult;
@@ -104,7 +104,7 @@ class _$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self.answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       answerText: freezed == answerText
           ? _self.answerText
           : answerText // ignore: cast_nullable_to_non_nullable
@@ -144,7 +144,7 @@ class _SocketIOAnswerResultEventPayload
   const _SocketIOAnswerResultEventPayload(
       {required this.answerResult,
       this.timer,
-      final List<PackageAnswerFile?>? answerFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.answerText})
       : _answerFiles = answerFiles;
   factory _SocketIOAnswerResultEventPayload.fromJson(
@@ -155,9 +155,9 @@ class _SocketIOAnswerResultEventPayload
   final GameStateAnsweredPlayer answerResult;
   @override
   final GameStateTimer? timer;
-  final List<PackageAnswerFile?>? _answerFiles;
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile?>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -221,7 +221,7 @@ abstract mixin class _$SocketIOAnswerResultEventPayloadCopyWith<$Res>
   $Res call(
       {GameStateAnsweredPlayer answerResult,
       GameStateTimer? timer,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       QuestionAnswerText? answerText});
 
   @override
@@ -260,7 +260,7 @@ class __$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       answerText: freezed == answerText
           ? _self.answerText
           : answerText // ignore: cast_nullable_to_non_nullable

@@ -6,7 +6,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'no_risk_question_sub_type.dart';
 import 'no_risk_question_type.dart';
-import 'package_answer_file.dart';
 import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'package_question_union.dart';
@@ -40,7 +39,7 @@ abstract class NoRiskQuestion with _$NoRiskQuestion {
     required QuestionPriceMultiplier priceMultiplier,
     QuestionAnswerText? answerText,
     List<PackageQuestionFile?>? questionFiles,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)

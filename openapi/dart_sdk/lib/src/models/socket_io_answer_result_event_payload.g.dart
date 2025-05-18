@@ -17,7 +17,7 @@ _SocketIOAnswerResultEventPayload _$SocketIOAnswerResultEventPayloadFromJson(
       answerFiles: (json['answerFiles'] as List<dynamic>?)
           ?.map((e) => e == null
               ? null
-              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
           .toList(),
       answerText: json['answerText'] as String?,
     );

@@ -6,16 +6,18 @@ class GameQuestionScreen extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
-    final question = watchValue((GameQuestionController e) => e.question);
-    final file = watchValue((GameQuestionController e) => e.questionFile);
+    final fileData = watchValue((GameQuestionController e) => e.questionData);
+    final file = fileData?.file;
+    final text = fileData?.text;
 
     return Column(
       spacing: 16,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
           flex: file != null ? 0 : 1,
           child: Text(
-            question?.text ?? '-',
+            text ?? '',
             style: file != null
                 ? context.textTheme.bodyLarge
                 : context.textTheme.headlineLarge,
@@ -25,7 +27,7 @@ class GameQuestionScreen extends WatchingWidget {
         if (file != null) GameQuestionFile(file: file).flexible(),
         const _QuestionBottom(),
       ],
-    ).paddingBottom(16);
+    ).paddingBottom(16).paddingSymmetric(horizontal: 16);
   }
 }
 
@@ -42,15 +44,12 @@ class _QuestionBottom extends WatchingWidget {
 
     if (!imShowman && answeringPlayer == null) {
       child = const _AnswerButtons();
-    } else {
+    } else if (answeringPlayer != null) {
       child = const _AnsweringWidget();
     }
 
     return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minHeight: 150,
-        minWidth: double.infinity,
-      ),
+      constraints: const BoxConstraints(minHeight: 150),
       child: child,
     );
   }
@@ -65,7 +64,7 @@ class _AnswerButtons extends StatelessWidget {
     final foregroundColor = context.theme.colorScheme.onSurfaceVariant;
 
     return InkWell(
-      onTap: getIt<GameQuestionController>().onAnswer,
+      onTap: getIt<GameLobbyController>().onAnswer,
       borderRadius: borderRadius,
       child: Container(
         decoration: BoxDecoration(
@@ -74,8 +73,9 @@ class _AnswerButtons extends StatelessWidget {
         ),
         child: Text(
           [
-            LocaleKeys.question_pressToAnswer.tr(),
-            LocaleKeys.question_holdToSkip.tr(),
+            LocaleKeys.question_press_to_answer.tr(),
+            // TODO: Add hold to skip
+            // LocaleKeys.question_hold_to_skip.tr(),
           ].join('\n'),
           textAlign: TextAlign.center,
           style: context.textTheme.bodyLarge?.copyWith(color: foregroundColor),
@@ -92,8 +92,7 @@ class _AnsweringWidget extends WatchingWidget {
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
     final answeringPlayerId = gameData?.gameState.answeringPlayer;
-    final answeringPlayer = gameData?.players
-        .firstWhereOrNull((e) => e.meta.id == answeringPlayerId);
+    final answeringPlayer = gameData?.players.getById(answeringPlayerId);
 
     return Container(
       decoration: BoxDecoration(
@@ -104,8 +103,12 @@ class _AnsweringWidget extends WatchingWidget {
       child: Row(
         spacing: 16,
         children: [
-          if (answeringPlayer != null) GameLobbyPlayer(player: answeringPlayer),
-          const Text('...').expand(),
+          Text(
+            LocaleKeys.question_user_is_answering
+                .tr(args: [answeringPlayer?.meta.username ?? '']),
+            textAlign: TextAlign.center,
+            style: context.textTheme.bodyLarge,
+          ).expand(),
         ],
       ),
     );

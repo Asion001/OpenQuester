@@ -17,27 +17,36 @@ class GameQuestionFile extends WatchingWidget {
     onDispose(getIt<GameQuestionController>().clearVideoControllers);
 
     final url = file.file.link;
-    var child = const CircularProgressIndicator().center();
+    Widget child = const CircularProgressIndicator();
 
-    if (file.file.type == PackageFileType.image) {
+    final fileType = file.file.type;
+
+    if (fileType == PackageFileType.image) {
       child = ImageWidget(url: url);
     } else if (mediaController != null) {
-      child = AspectRatio(
-        aspectRatio: mediaController.value.aspectRatio,
-        child: VideoPlayer(mediaController),
-      ).center();
+      if (fileType == PackageFileType.audio) {
+        child = const Icon(Icons.music_note, size: 60);
+      } else {
+        child = AspectRatio(
+          aspectRatio: mediaController.value.aspectRatio,
+          child: VideoPlayer(mediaController),
+        );
+      }
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: 8.circular,
-        border: Border.all(
-          color: context.theme.colorScheme.primary,
-          strokeAlign: BorderSide.strokeAlignOutside,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: 8.circular,
+          border: Border.all(
+            color: context.theme.colorScheme.primary,
+            strokeAlign: BorderSide.strokeAlignOutside,
+          ),
         ),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: AspectRatio(aspectRatio: 1, child: child),
+        clipBehavior: Clip.antiAlias,
+        child: child.center(),
+      ).center(),
     );
   }
 }

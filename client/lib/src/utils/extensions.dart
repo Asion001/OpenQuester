@@ -140,9 +140,7 @@ extension SocketIOGameStateRoundDataX on SocketIOGameStateRoundData {
 
 extension SocketIOGameJoinEventPayloadX on SocketIOGameJoinEventPayload {
   PlayerData get me {
-    return players.firstWhere(
-      (e) => e.meta.id == ProfileController.getUser()?.id,
-    );
+    return players.getById(ProfileController.getUser()!.id)!;
   }
 
   SocketIOGameJoinEventPayload changePlayer({
@@ -174,4 +172,11 @@ extension SocketIOChatMessageEventPayloadX on SocketIOChatMessageEventPayload {
 extension BrightnessX on Brightness {
   Brightness get reverse =>
       this == Brightness.light ? Brightness.dark : Brightness.light;
+}
+
+extension PlayersX on List<PlayerData> {
+  PlayerData? getById(int? id) {
+    if (id == null) return null;
+    return firstWhereOrNull((e) => e.meta.id == id);
+  }
 }

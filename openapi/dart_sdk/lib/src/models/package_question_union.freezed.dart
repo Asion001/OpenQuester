@@ -52,7 +52,7 @@ mixin _$PackageQuestionUnion {
   Enum get type;
   QuestionAnswerText? get answerText;
   List<PackageQuestionFile?>? get questionFiles;
-  List<PackageAnswerFile?>? get answerFiles;
+  List<PackageQuestionFile?>? get answerFiles;
 
   /// Whether the question is hidden
   bool get isHidden;
@@ -135,7 +135,7 @@ abstract mixin class $PackageQuestionUnionCopyWith<$Res> {
       String? questionComment,
       String? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -201,7 +201,7 @@ class _$PackageQuestionUnionCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self.answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -227,7 +227,7 @@ class PackageQuestionUnionSimple implements PackageQuestionUnion {
       required this.type,
       this.answerText,
       final List<PackageQuestionFile?>? questionFiles,
-      final List<PackageAnswerFile?>? answerFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _questionFiles = questionFiles,
@@ -269,9 +269,9 @@ class PackageQuestionUnionSimple implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<PackageAnswerFile?>? _answerFiles;
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile?>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -373,7 +373,7 @@ abstract mixin class $PackageQuestionUnionSimpleCopyWith<$Res>
       SimpleQuestionType type,
       QuestionAnswerText? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -444,7 +444,7 @@ class _$PackageQuestionUnionSimpleCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -471,7 +471,7 @@ class PackageQuestionUnionStake implements PackageQuestionUnion {
       required this.maxPrice,
       this.answerText,
       final List<PackageQuestionFile?>? questionFiles,
-      final List<PackageAnswerFile?>? answerFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000,
       this.subType = StakeQuestionSubType.simple})
@@ -515,9 +515,9 @@ class PackageQuestionUnionStake implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<PackageAnswerFile?>? _answerFiles;
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile?>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -628,7 +628,7 @@ abstract mixin class $PackageQuestionUnionStakeCopyWith<$Res>
       QuestionMaxPrice maxPrice,
       QuestionAnswerText? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay,
       StakeQuestionSubType subType});
@@ -706,7 +706,7 @@ class _$PackageQuestionUnionStakeCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -739,7 +739,7 @@ class PackageQuestionUnionSecret implements PackageQuestionUnion {
       required this.transferType,
       this.answerText,
       final List<PackageQuestionFile?>? questionFiles,
-      final List<PackageAnswerFile?>? answerFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _allowedPrices = allowedPrices,
@@ -795,9 +795,9 @@ class PackageQuestionUnionSecret implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<PackageAnswerFile?>? _answerFiles;
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile?>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -910,7 +910,7 @@ abstract mixin class $PackageQuestionUnionSecretCopyWith<$Res>
       QuestionTransferType transferType,
       QuestionAnswerText? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -996,7 +996,7 @@ class _$PackageQuestionUnionSecretCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -1024,7 +1024,7 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
       required this.priceMultiplier,
       this.answerText,
       final List<PackageQuestionFile?>? questionFiles,
-      final List<PackageAnswerFile?>? answerFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _questionFiles = questionFiles,
@@ -1070,9 +1070,9 @@ class PackageQuestionUnionNoRisk implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<PackageAnswerFile?>? _answerFiles;
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile?>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -1181,7 +1181,7 @@ abstract mixin class $PackageQuestionUnionNoRiskCopyWith<$Res>
       QuestionPriceMultiplier priceMultiplier,
       QuestionAnswerText? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -1262,7 +1262,7 @@ class _$PackageQuestionUnionNoRiskCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -1291,7 +1291,7 @@ class PackageQuestionUnionChoice implements PackageQuestionUnion {
       required final List<QuestionChoiceAnswers> answers,
       this.answerText,
       final List<PackageQuestionFile?>? questionFiles,
-      final List<PackageAnswerFile?>? answerFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _answers = answers,
@@ -1343,9 +1343,9 @@ class PackageQuestionUnionChoice implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<PackageAnswerFile?>? _answerFiles;
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile?>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -1457,7 +1457,7 @@ abstract mixin class $PackageQuestionUnionChoiceCopyWith<$Res>
       List<QuestionChoiceAnswers> answers,
       QuestionAnswerText? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -1543,7 +1543,7 @@ class _$PackageQuestionUnionChoiceCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -1569,7 +1569,7 @@ class PackageQuestionUnionHidden implements PackageQuestionUnion {
       required this.type,
       this.answerText,
       final List<PackageQuestionFile?>? questionFiles,
-      final List<PackageAnswerFile?>? answerFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _questionFiles = questionFiles,
@@ -1611,9 +1611,9 @@ class PackageQuestionUnionHidden implements PackageQuestionUnion {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<PackageAnswerFile?>? _answerFiles;
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile?>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -1715,7 +1715,7 @@ abstract mixin class $PackageQuestionUnionHiddenCopyWith<$Res>
       HiddenQuestionType type,
       QuestionAnswerText? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -1786,7 +1786,7 @@ class _$PackageQuestionUnionHiddenCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable

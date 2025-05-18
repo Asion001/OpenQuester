@@ -25,7 +25,7 @@ _PackageQuestionData _$PackageQuestionDataFromJson(Map<String, dynamic> json) =>
       answerFiles: (json['answerFiles'] as List<dynamic>?)
           ?.map((e) => e == null
               ? null
-              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
           .toList(),
       maxPrice: (json['maxPrice'] as num?)?.toInt(),
       allowedPrices: (json['allowedPrices'] as List<dynamic>?)

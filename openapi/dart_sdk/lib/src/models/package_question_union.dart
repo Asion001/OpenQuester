@@ -11,7 +11,6 @@ import 'hidden_question_type.dart';
 import 'no_risk_question.dart';
 import 'no_risk_question_sub_type.dart';
 import 'no_risk_question_type.dart';
-import 'package_answer_file.dart';
 import 'package_entities_order.dart';
 import 'package_question_file.dart';
 import 'question_allowed_prices.dart';
@@ -55,7 +54,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required SimpleQuestionType type,
     QuestionAnswerText? answerText,
     List<PackageQuestionFile?>? questionFiles,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -86,7 +85,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required QuestionMaxPrice maxPrice,
     QuestionAnswerText? answerText,
     List<PackageQuestionFile?>? questionFiles,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -125,7 +124,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required QuestionTransferType transferType,
     QuestionAnswerText? answerText,
     List<PackageQuestionFile?>? questionFiles,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -159,7 +158,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required QuestionPriceMultiplier priceMultiplier,
     QuestionAnswerText? answerText,
     List<PackageQuestionFile?>? questionFiles,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -192,7 +191,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required List<QuestionChoiceAnswers> answers,
     QuestionAnswerText? answerText,
     List<PackageQuestionFile?>? questionFiles,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -222,7 +221,7 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required HiddenQuestionType type,
     QuestionAnswerText? answerText,
     List<PackageQuestionFile?>? questionFiles,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)

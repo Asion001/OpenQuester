@@ -23,7 +23,7 @@ _PackageQuestion _$PackageQuestionFromJson(Map<String, dynamic> json) =>
       answerFiles: (json['answerFiles'] as List<dynamic>?)
           ?.map((e) => e == null
               ? null
-              : PackageAnswerFile.fromJson(e as Map<String, dynamic>))
+              : PackageQuestionFile.fromJson(e as Map<String, dynamic>))
           .toList(),
       isHidden: json['isHidden'] as bool? ?? false,
       answerDelay: (json['answerDelay'] as num?)?.toInt() ?? 4000,

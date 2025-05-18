@@ -36,7 +36,7 @@ mixin _$NoRiskQuestion {
   QuestionPriceMultiplier get priceMultiplier;
   QuestionAnswerText? get answerText;
   List<PackageQuestionFile?>? get questionFiles;
-  List<PackageAnswerFile?>? get answerFiles;
+  List<PackageQuestionFile?>? get answerFiles;
 
   /// Whether the question is hidden
   bool get isHidden;
@@ -127,7 +127,7 @@ abstract mixin class $NoRiskQuestionCopyWith<$Res> {
       QuestionPriceMultiplier priceMultiplier,
       QuestionAnswerText? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -208,7 +208,7 @@ class _$NoRiskQuestionCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self.answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -236,7 +236,7 @@ class _NoRiskQuestion implements NoRiskQuestion {
       required this.priceMultiplier,
       this.answerText,
       final List<PackageQuestionFile?>? questionFiles,
-      final List<PackageAnswerFile?>? answerFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000})
       : _questionFiles = questionFiles,
@@ -284,9 +284,9 @@ class _NoRiskQuestion implements NoRiskQuestion {
     return EqualUnmodifiableListView(value);
   }
 
-  final List<PackageAnswerFile?>? _answerFiles;
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile?>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
@@ -393,7 +393,7 @@ abstract mixin class _$NoRiskQuestionCopyWith<$Res>
       QuestionPriceMultiplier priceMultiplier,
       QuestionAnswerText? answerText,
       List<PackageQuestionFile?>? questionFiles,
-      List<PackageAnswerFile?>? answerFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay});
 }
@@ -474,7 +474,7 @@ class __$NoRiskQuestionCopyWithImpl<$Res>
       answerFiles: freezed == answerFiles
           ? _self._answerFiles
           : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile?>?,
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable

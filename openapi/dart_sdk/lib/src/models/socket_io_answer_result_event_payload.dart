@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'game_state_answered_player.dart';
 import 'game_state_timer.dart';
-import 'package_answer_file.dart';
+import 'package_question_file.dart';
 import 'question_answer_text.dart';
 
 part 'socket_io_answer_result_event_payload.freezed.dart';
@@ -18,7 +18,7 @@ abstract class SocketIOAnswerResultEventPayload with _$SocketIOAnswerResultEvent
   const factory SocketIOAnswerResultEventPayload({
     required GameStateAnsweredPlayer answerResult,
     GameStateTimer? timer,
-    List<PackageAnswerFile?>? answerFiles,
+    List<PackageQuestionFile?>? answerFiles,
     QuestionAnswerText? answerText,
   }) = _SocketIOAnswerResultEventPayload;
   

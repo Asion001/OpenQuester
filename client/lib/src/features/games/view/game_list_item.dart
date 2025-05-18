@@ -166,7 +166,7 @@ class _GameListItemBadges extends StatelessWidget {
               icon: Icons.question_mark,
               tooltip: LocaleKeys.game_tile_tooltips_questions.tr(),
               dividerColor: dividerColor,
-              label: [item.currentQuestion ?? 0, item.package.questionsCount]
+              label: [item.playedQuestions ?? 0, item.package.questionsCount]
                   .join('/'),
             ),
           ].map((e) => e.expand()).toList(),

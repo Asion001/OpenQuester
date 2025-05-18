@@ -68,7 +68,6 @@ export 'models/package_logo_file_input.dart';
 export 'models/package_logo_file_item.dart';
 export 'models/package_entities_order.dart';
 export 'models/package_question_file.dart';
-export 'models/package_answer_file.dart';
 export 'models/package_question.dart';
 export 'models/choice_question.dart';
 export 'models/secret_question.dart';

@@ -106,8 +106,8 @@ class GameLobbyController {
     };
     if (text.isEmptyOrNull) return;
 
-    final author = gameData.value?.players.firstWhereOrNull(
-      (e) => e.meta.id.toString() == message?.authorId,
+    final author = gameData.value?.players.getById(
+      int.tryParse(message?.authorId ?? ''),
     );
     await getIt<ToastController>().show(
       [author?.meta.username, text?.trim()].nonNulls.join(': '),
@@ -130,8 +130,9 @@ class GameLobbyController {
     } catch (_) {}
   }
 
-  Future<void> leave() async {
+  Future<void> leave({bool force = false}) async {
     socket?.emit(SocketIOGameSendEvents.userLeave.json!);
+    if (force) _leave();
   }
 
   void toggleDesktopChat() {
@@ -196,20 +197,12 @@ class GameLobbyController {
   void _onUserLeave(dynamic data) {
     if (data is! Map) return;
     final userId = int.tryParse(data['user']?.toString() ?? '');
-    final user = gameData.value?.players.firstWhereOrNull(
-      (e) => e.meta.id == userId,
-    );
+    final user = gameData.value?.players.getById(userId);
     if (user == null) return;
 
     // If i am leaving - close game
     if (user.meta.id == gameData.value?.me.meta.id) {
-      socket?.dispose();
-
-      // Close only game page
-      if (AppRouter.I.current.name == GameLobbyRoute.page.name) {
-        AppRouter.I.maybePop();
-      }
-      clear();
+      _leave();
       return;
     }
 
@@ -225,15 +218,35 @@ class GameLobbyController {
     );
   }
 
+  void _leave() {
+    socket?.dispose();
+
+    // Close only game page
+    if (AppRouter.I.current.name == GameLobbyRoute.page.name) {
+      AppRouter.I.replace(const HomeTabsRoute());
+    }
+    clear();
+  }
+
   void _onUserJoin(dynamic data) {
     if (data is! Map) return;
 
     final user = PlayerData.fromJson(data as Map<String, dynamic>);
 
-    gameData.value = gameData.value?.changePlayer(
-      id: user.meta.id,
-      onChange: (value) => value.copyWith(status: PlayerDataStatus.inGame),
-    );
+    // If player is new - change his status
+    if (gameData.value!.players.any((e) => e.meta.id == user.meta.id)) {
+      gameData.value = gameData.value?.changePlayer(
+        id: user.meta.id,
+        onChange: (value) => value.copyWith(status: PlayerDataStatus.inGame),
+      );
+    } else {
+      gameData.value = gameData.value?.copyWith(
+        players: [
+          ...?gameData.value?.players,
+          user,
+        ],
+      );
+    }
 
     _updateChatUsers();
 
@@ -257,6 +270,7 @@ class GameLobbyController {
 
     gameData.value = gameData.value?.copyWith.gameState(
       timer: questionData.timer,
+      currentQuestion: questionData.data,
     );
 
     gameData.value = gameData.value!.copyWith.gameState(
@@ -266,8 +280,11 @@ class GameLobbyController {
       ),
     );
 
-    // Pass the question to controller to handle the rest
-    getIt<GameQuestionController>().question.value = questionData.data;
+    // Pass the question to controller to show the question
+    getIt<GameQuestionController>().questionData.value = GameQuestionData(
+      file: questionData.data.questionFiles?.firstOrNull,
+      text: questionData.data.text,
+    );
   }
 
   void _onQuestionAnswer(dynamic data) {
@@ -297,16 +314,42 @@ class GameLobbyController {
     );
 
     // Question answered, hide question screen and show answer
-    if (questionData.answerFiles != null || questionData.answerText != null) {
+    if (questionData.answerResult.result > 0) {
       _showAnswer();
     }
   }
 
-  void _onQuestionFinish(dynamic data) => _showAnswer();
+  void _onQuestionFinish(dynamic data) {
+    _showAnswer();
+  }
 
-  void _showAnswer() {
-    getIt<GameQuestionController>().clear();
+  Future<void> _showAnswer() async {
+    final controller = getIt<GameQuestionController>();
+    final currentQuestion = gameData.value?.gameState.currentQuestion;
 
-    // TODO: Show correct answer
+    if (currentQuestion != null) {
+      controller.questionData.value = GameQuestionData(
+        file: currentQuestion.answerFiles?.firstOrNull,
+        text: currentQuestion.answerText,
+      );
+      // Wait for user to see answer
+      await Future<void>.delayed(
+        Duration(milliseconds: currentQuestion.answerDelay),
+      );
+    }
+
+    // Hide question screen
+    await controller.clear();
+  }
+
+  Future<void> answerQuestion({String? answerText}) async {
+    await socket?.emitWithAckAsync(
+      SocketIOGameSendEvents.answerSubmitted.json!,
+      SocketIOAnswerSubmittedEventData(answerText: answerText ?? '').toJson(),
+    );
+  }
+
+  void onAnswer() {
+    socket?.emit(SocketIOGameSendEvents.questionAnswer.json!);
   }
 }

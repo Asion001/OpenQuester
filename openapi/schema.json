@@ -1053,7 +1053,7 @@
             "type": ["integer", "null"],
             "examples": [0]
           },
-          "currentQuestion": {
+          "playedQuestions": {
             "type": ["integer", "null"],
             "examples": [0]
           },
@@ -1736,29 +1736,6 @@
         "required": ["file", "displayTime"],
         "description": "Question media file structure for package creation"
       },
-      "PackageAnswerFile": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": ["integer", "null"],
-            "examples": [1337]
-          },
-          "order": {
-            "$ref": "#/components/schemas/PackageEntitiesOrder"
-          },
-          "file": {
-            "$ref": "#/components/schemas/FileItem"
-          },
-          "displayTime": {
-            "type": "integer",
-            "description": "Display duration in milliseconds",
-            "default": 5000,
-            "examples": [5000]
-          }
-        },
-        "required": ["file", "displayTime"],
-        "description": "Answer media file structure for package creation"
-      },
       "PackageQuestion": {
         "type": "object",
         "properties": {
@@ -1823,7 +1800,7 @@
               {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/PackageAnswerFile"
+                  "$ref": "#/components/schemas/PackageQuestionFile"
                 }
               },
               { "type": "null" }
@@ -2275,9 +2252,10 @@
             ]
           },
           "currentQuestion": {
-            "type": ["integer", "null"],
-            "description": "Last chosen / current question number out of all",
-            "examples": [25, 31]
+            "oneOf": [
+              { "$ref": "#/components/schemas/PackageQuestionData" },
+              { "type": "null" }
+            ]
           },
           "answeringPlayer": {
             "type": ["integer", "null"],
@@ -2529,7 +2507,7 @@
               {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/PackageAnswerFile"
+                  "$ref": "#/components/schemas/PackageQuestionFile"
                 }
               },
               { "type": "null" }
@@ -2621,7 +2599,7 @@
               {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/PackageAnswerFile"
+                  "$ref": "#/components/schemas/PackageQuestionFile"
                 }
               },
               { "type": "null" }
