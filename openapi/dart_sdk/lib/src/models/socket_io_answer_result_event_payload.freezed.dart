@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$SocketIOAnswerResultEventPayload {
-  GameStateAnsweredPlayer get answerResult;
+  GameStateAnsweredPlayer get playerAnswerResult;
   GameStateTimer? get timer;
   List<PackageQuestionFile?>? get answerFiles;
   QuestionAnswerText? get answerText;
@@ -37,8 +37,8 @@ mixin _$SocketIOAnswerResultEventPayload {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is SocketIOAnswerResultEventPayload &&
-            (identical(other.answerResult, answerResult) ||
-                other.answerResult == answerResult) &&
+            (identical(other.playerAnswerResult, playerAnswerResult) ||
+                other.playerAnswerResult == playerAnswerResult) &&
             (identical(other.timer, timer) || other.timer == timer) &&
             const DeepCollectionEquality()
                 .equals(other.answerFiles, answerFiles) &&
@@ -48,12 +48,12 @@ mixin _$SocketIOAnswerResultEventPayload {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, answerResult, timer,
+  int get hashCode => Object.hash(runtimeType, playerAnswerResult, timer,
       const DeepCollectionEquality().hash(answerFiles), answerText);
 
   @override
   String toString() {
-    return 'SocketIOAnswerResultEventPayload(answerResult: $answerResult, timer: $timer, answerFiles: $answerFiles, answerText: $answerText)';
+    return 'SocketIOAnswerResultEventPayload(playerAnswerResult: $playerAnswerResult, timer: $timer, answerFiles: $answerFiles, answerText: $answerText)';
   }
 }
 
@@ -65,12 +65,12 @@ abstract mixin class $SocketIOAnswerResultEventPayloadCopyWith<$Res> {
       _$SocketIOAnswerResultEventPayloadCopyWithImpl;
   @useResult
   $Res call(
-      {GameStateAnsweredPlayer answerResult,
+      {GameStateAnsweredPlayer playerAnswerResult,
       GameStateTimer? timer,
       List<PackageQuestionFile?>? answerFiles,
       QuestionAnswerText? answerText});
 
-  $GameStateAnsweredPlayerCopyWith<$Res> get answerResult;
+  $GameStateAnsweredPlayerCopyWith<$Res> get playerAnswerResult;
   $GameStateTimerCopyWith<$Res>? get timer;
 }
 
@@ -87,15 +87,15 @@ class _$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? answerResult = null,
+    Object? playerAnswerResult = null,
     Object? timer = freezed,
     Object? answerFiles = freezed,
     Object? answerText = freezed,
   }) {
     return _then(_self.copyWith(
-      answerResult: null == answerResult
-          ? _self.answerResult
-          : answerResult // ignore: cast_nullable_to_non_nullable
+      playerAnswerResult: null == playerAnswerResult
+          ? _self.playerAnswerResult
+          : playerAnswerResult // ignore: cast_nullable_to_non_nullable
               as GameStateAnsweredPlayer,
       timer: freezed == timer
           ? _self.timer
@@ -116,9 +116,10 @@ class _$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $GameStateAnsweredPlayerCopyWith<$Res> get answerResult {
-    return $GameStateAnsweredPlayerCopyWith<$Res>(_self.answerResult, (value) {
-      return _then(_self.copyWith(answerResult: value));
+  $GameStateAnsweredPlayerCopyWith<$Res> get playerAnswerResult {
+    return $GameStateAnsweredPlayerCopyWith<$Res>(_self.playerAnswerResult,
+        (value) {
+      return _then(_self.copyWith(playerAnswerResult: value));
     });
   }
 
@@ -142,7 +143,7 @@ class _$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
 class _SocketIOAnswerResultEventPayload
     implements SocketIOAnswerResultEventPayload {
   const _SocketIOAnswerResultEventPayload(
-      {required this.answerResult,
+      {required this.playerAnswerResult,
       this.timer,
       final List<PackageQuestionFile?>? answerFiles,
       this.answerText})
@@ -152,7 +153,7 @@ class _SocketIOAnswerResultEventPayload
       _$SocketIOAnswerResultEventPayloadFromJson(json);
 
   @override
-  final GameStateAnsweredPlayer answerResult;
+  final GameStateAnsweredPlayer playerAnswerResult;
   @override
   final GameStateTimer? timer;
   final List<PackageQuestionFile?>? _answerFiles;
@@ -189,8 +190,8 @@ class _SocketIOAnswerResultEventPayload
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _SocketIOAnswerResultEventPayload &&
-            (identical(other.answerResult, answerResult) ||
-                other.answerResult == answerResult) &&
+            (identical(other.playerAnswerResult, playerAnswerResult) ||
+                other.playerAnswerResult == playerAnswerResult) &&
             (identical(other.timer, timer) || other.timer == timer) &&
             const DeepCollectionEquality()
                 .equals(other._answerFiles, _answerFiles) &&
@@ -200,12 +201,12 @@ class _SocketIOAnswerResultEventPayload
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, answerResult, timer,
+  int get hashCode => Object.hash(runtimeType, playerAnswerResult, timer,
       const DeepCollectionEquality().hash(_answerFiles), answerText);
 
   @override
   String toString() {
-    return 'SocketIOAnswerResultEventPayload(answerResult: $answerResult, timer: $timer, answerFiles: $answerFiles, answerText: $answerText)';
+    return 'SocketIOAnswerResultEventPayload(playerAnswerResult: $playerAnswerResult, timer: $timer, answerFiles: $answerFiles, answerText: $answerText)';
   }
 }
 
@@ -219,13 +220,13 @@ abstract mixin class _$SocketIOAnswerResultEventPayloadCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {GameStateAnsweredPlayer answerResult,
+      {GameStateAnsweredPlayer playerAnswerResult,
       GameStateTimer? timer,
       List<PackageQuestionFile?>? answerFiles,
       QuestionAnswerText? answerText});
 
   @override
-  $GameStateAnsweredPlayerCopyWith<$Res> get answerResult;
+  $GameStateAnsweredPlayerCopyWith<$Res> get playerAnswerResult;
   @override
   $GameStateTimerCopyWith<$Res>? get timer;
 }
@@ -243,15 +244,15 @@ class __$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? answerResult = null,
+    Object? playerAnswerResult = null,
     Object? timer = freezed,
     Object? answerFiles = freezed,
     Object? answerText = freezed,
   }) {
     return _then(_SocketIOAnswerResultEventPayload(
-      answerResult: null == answerResult
-          ? _self.answerResult
-          : answerResult // ignore: cast_nullable_to_non_nullable
+      playerAnswerResult: null == playerAnswerResult
+          ? _self.playerAnswerResult
+          : playerAnswerResult // ignore: cast_nullable_to_non_nullable
               as GameStateAnsweredPlayer,
       timer: freezed == timer
           ? _self.timer
@@ -272,9 +273,10 @@ class __$SocketIOAnswerResultEventPayloadCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $GameStateAnsweredPlayerCopyWith<$Res> get answerResult {
-    return $GameStateAnsweredPlayerCopyWith<$Res>(_self.answerResult, (value) {
-      return _then(_self.copyWith(answerResult: value));
+  $GameStateAnsweredPlayerCopyWith<$Res> get playerAnswerResult {
+    return $GameStateAnsweredPlayerCopyWith<$Res>(_self.playerAnswerResult,
+        (value) {
+      return _then(_self.copyWith(playerAnswerResult: value));
     });
   }
 

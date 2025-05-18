@@ -12,10 +12,9 @@ class GameLobbyPlayers extends WatchingWidget {
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
     final answeringPlayer = gameData?.gameState.answeringPlayer;
-    const inGame = PlayerDataStatus.inGame;
     const roleToShow = {PlayerRole.player, PlayerRole.showman};
     final players = gameData?.players
-            .where((p) => p.status == inGame && roleToShow.contains(p.role))
+            .where((p) => roleToShow.contains(p.role))
             .sorted((a, b) => a.role == PlayerRole.showman ? 0 : 1)
             .toList() ??
         [];

@@ -37,7 +37,7 @@ class GameLobbyController {
       socket = await getIt<SocketController>().createConnection(path: '/games');
       socket!
         ..onConnect((_) => _onConnect())
-        ..onDisconnect((_) => clear())
+        // TODO: Add on disconnect pause state
         ..on(SocketIOEvents.error.json!, onError)
         ..on(SocketIOGameReceiveEvents.gameData.json!, _onGameData)
         ..on(SocketIOGameReceiveEvents.start.json!, _onGameStart)
@@ -279,6 +279,7 @@ class GameLobbyController {
         id: questionData.data.id,
         onChange: (question) => question.copyWith(isPlayed: true),
       ),
+      answeringPlayer: null,
     );
 
     // Pass the question to controller to show the question
@@ -310,12 +311,16 @@ class GameLobbyController {
       answeringPlayer: null,
       answeredPlayers: [
         ...?gameData.value?.gameState.answeredPlayers,
-        questionData.answerResult,
+        questionData.playerAnswerResult,
       ],
+    ).changePlayer(
+      id: questionData.playerAnswerResult.player,
+      onChange: (value) =>
+          value.copyWith(score: questionData.playerAnswerResult.score),
     );
 
     // Question answered, hide question screen and show answer
-    if (questionData.answerResult.result > 0) {
+    if (questionData.playerAnswerResult.result > 0) {
       _showAnswer();
     }
   }

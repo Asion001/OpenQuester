@@ -16,7 +16,7 @@ part 'socket_io_answer_result_event_payload.g.dart';
 @Freezed()
 abstract class SocketIOAnswerResultEventPayload with _$SocketIOAnswerResultEventPayload {
   const factory SocketIOAnswerResultEventPayload({
-    required GameStateAnsweredPlayer answerResult,
+    required GameStateAnsweredPlayer playerAnswerResult,
     GameStateTimer? timer,
     List<PackageQuestionFile?>? answerFiles,
     QuestionAnswerText? answerText,

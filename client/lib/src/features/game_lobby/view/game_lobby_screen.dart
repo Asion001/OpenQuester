@@ -87,7 +87,8 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                       AppAnimatedSwitcher(
                         visible: showDesktopChat,
                         child: const _Chat()
-                            .withWidth(GameLobbyStyles.desktopChatWidth),
+                            .withWidth(GameLobbyStyles.desktopChatWidth)
+                            .paddingBottom(16),
                       ),
                     ],
                   ),
