@@ -37,19 +37,17 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
   Widget build(BuildContext context) {
     final showChat = watchValue((GameLobbyController e) => e.showChat);
     final gameData = watchValue((GameLobbyController e) => e.gameListData);
+    final chatWideModeOn = GameLobbyStyles.desktopChat(context);
+    final showDesktopChat = chatWideModeOn && showChat;
 
     callOnce(
       (context) {
         // Set init value for showing chat to [false] for mobile
-        final wideMode = UiModeUtils.wideModeOn(context);
-        if (wideMode) {
+        if (chatWideModeOn) {
           getIt<GameLobbyController>().showChat.value = true;
         }
       },
     );
-
-    final chatWideModeOn = GameLobbyStyles.desktopChat(context);
-    final showDesktopChat = chatWideModeOn && showChat;
 
     return PopScope(
       canPop: false,
@@ -69,7 +67,10 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 onPressed: _onExit,
                 icon: const Icon(Icons.exit_to_app),
               ),
-              actions: [_ChatButton(show: showChat)],
+              actions: [
+                const _GameMenu(),
+                _ChatButton(show: showChat),
+              ],
               elevation: 0,
               scrolledUnderElevation: 0,
               notificationPredicate: (_) => false,
@@ -82,11 +83,12 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const _BodyBuilder().expand(),
+                      const _BodyLayoutBuilder().expand(),
                       AppAnimatedSwitcher(
                         visible: showDesktopChat,
                         child: const _Chat()
-                            .withWidth(GameLobbyStyles.desktopChatWidth),
+                            .withWidth(GameLobbyStyles.desktopChatWidth)
+                            .paddingBottom(16),
                       ),
                     ],
                   ),
@@ -105,14 +107,35 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
   }
 }
 
-class _BodyBuilder extends StatelessWidget {
+class _BodyBuilder extends WatchingWidget {
   const _BodyBuilder();
+
+  @override
+  Widget build(BuildContext context) {
+    final currentQuestion =
+        watchValue((GameQuestionController e) => e.questionData);
+
+    Widget body;
+
+    if (currentQuestion != null) {
+      body = const GameQuestionScreen();
+    } else {
+      body = const GameLobbyThemes();
+    }
+
+    return body;
+  }
+}
+
+class _BodyLayoutBuilder extends WatchingWidget {
+  const _BodyLayoutBuilder();
 
   @override
   Widget build(BuildContext context) {
     final playersOnLeft = GameLobbyStyles.playersOnLeft(context);
 
     Widget child;
+    final body = const _BodyBuilder().expand();
 
     if (playersOnLeft) {
       child = Row(
@@ -123,7 +146,7 @@ class _BodyBuilder extends StatelessWidget {
               .paddingSymmetric(horizontal: 8)
               .paddingTop(16)
               .paddingLeft(16),
-          const GameLobbyThemes().expand(),
+          body,
         ],
       );
     } else {
@@ -132,7 +155,7 @@ class _BodyBuilder extends StatelessWidget {
           const GameLobbyPlayers(axis: Axis.horizontal)
               .withHeight(GameLobbyStyles.playersMobile.height),
           const Divider(height: 0, thickness: .4).paddingTop(8),
-          const GameLobbyThemes().expand(),
+          body,
         ],
       );
     }
@@ -164,6 +187,75 @@ class _Chat extends StatelessWidget {
         color: context.theme.colorScheme.surfaceContainer,
         child: const ChatScreen(),
       ),
+    );
+  }
+}
+
+class _GameMenu extends WatchingWidget {
+  const _GameMenu();
+
+  @override
+  Widget build(BuildContext context) {
+    final me = watchValue((GameLobbyController e) => e.gameData)?.me;
+
+    final imShowman = me?.role == PlayerRole.showman;
+
+    return PopupMenuButton(
+      itemBuilder: (BuildContext context) => [
+        const PopupMenuItem<void>(child: _VolumeSlider()),
+        if (imShowman)
+          PopupMenuItem<void>(
+            child: Text(LocaleKeys.delete_game.tr()),
+            onTap: () async {
+              final result = await ConfirmDialog(
+                title: LocaleKeys.delete_game_confirmation.tr(),
+              ).show(context);
+              if (!result) return;
+              await getIt<GamesListController>().deleteGame(
+                getIt<GameLobbyController>().gameListData.value!.id,
+              );
+            },
+          ),
+      ],
+      icon: const Icon(Icons.more_vert),
+    );
+  }
+}
+
+class _VolumeSlider extends StatefulWidget {
+  const _VolumeSlider();
+
+  @override
+  State<_VolumeSlider> createState() => _VolumeSliderState();
+}
+
+class _VolumeSliderState extends State<_VolumeSlider> {
+  late double volume;
+
+  @override
+  void initState() {
+    volume = getIt<GameQuestionController>().volume.value;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(LocaleKeys.volume.tr()),
+        Slider(
+          value: volume,
+          onChanged: (value) {
+            final volume =
+                double.parse(value.clamp(0, 1).toStringAsExponential(2));
+            if (this.volume == volume) return;
+            this.volume = volume;
+            setState(() {});
+            getIt<GameQuestionController>().onChangeVolume(volume);
+          },
+        ),
+      ],
     );
   }
 }

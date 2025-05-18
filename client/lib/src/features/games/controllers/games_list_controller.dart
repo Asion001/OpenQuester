@@ -36,7 +36,15 @@ class GamesListController extends ListControllerBase<GameListItem> {
         await updateItem(result.data);
       case GameEventSubscriptionUnionDeleted():
         await deleteItem(result.data.id);
+        _leaveCurrentGameOnDelete(result.data.id);
     }
+  }
+
+  void _leaveCurrentGameOnDelete(String gameId) {
+    final controller = getIt<GameLobbyController>();
+    final currentGameId = controller.gameListData.value?.id;
+    if (currentGameId != gameId) return;
+    controller.leave(force: true);
   }
 
   @override
@@ -63,4 +71,8 @@ class GamesListController extends ListControllerBase<GameListItem> {
 
   final _throttling =
       Throttling<void>(duration: const Duration(milliseconds: 500));
+
+  Future<void> deleteGame(String gameId) async {
+    await Api.I.api.games.deleteV1GamesGameId(gameId: gameId);
+  }
 }

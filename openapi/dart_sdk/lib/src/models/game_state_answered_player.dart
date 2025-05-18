@@ -13,6 +13,7 @@ abstract class GameStateAnsweredPlayer with _$GameStateAnsweredPlayer {
     /// Id of answered player
     required int player,
     required int result,
+    required int score,
   }) = _GameStateAnsweredPlayer;
   
   factory GameStateAnsweredPlayer.fromJson(Map<String, Object?> json) => _$GameStateAnsweredPlayerFromJson(json);

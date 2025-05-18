@@ -4,7 +4,6 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'answers.dart';
 import 'choice_question.dart';
 import 'choice_question_type.dart';
 import 'hidden_question.dart';
@@ -12,10 +11,15 @@ import 'hidden_question_type.dart';
 import 'no_risk_question.dart';
 import 'no_risk_question_sub_type.dart';
 import 'no_risk_question_type.dart';
-import 'package_answer_file.dart';
 import 'package_entities_order.dart';
 import 'package_question_file.dart';
-import 'package_question_transfer_type.dart';
+import 'question_allowed_prices.dart';
+import 'question_answer_text.dart';
+import 'question_choice_answers.dart';
+import 'question_max_price.dart';
+import 'question_price_multiplier.dart';
+import 'question_show_delay.dart';
+import 'question_transfer_type.dart';
 import 'secret_question.dart';
 import 'secret_question_sub_type.dart';
 import 'secret_question_type.dart';
@@ -36,8 +40,8 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -45,18 +49,12 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required SimpleQuestionType type,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -72,8 +70,8 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -81,21 +79,13 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required StakeQuestionType type,
-
-    /// Maximum price for the stake question, most useful when type is forEveryone - Does not allow top players to go all-in and win. Typically maxPrice can be 2x or 3x of nominal price
-    required int? maxPrice,
+    required QuestionMaxPrice maxPrice,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -115,8 +105,8 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -124,25 +114,17 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required SecretQuestionType type,
 
     /// Subtype of the secret question. customPrice means player can choose cost of question
     required SecretQuestionSubType subType,
-
-    /// Allowed price options for customPrice subtype. Maximum 5 prices to choose
-    required List<int>? allowedPrices,
-    required PackageQuestionTransferType transferType,
+    required QuestionAllowedPrices allowedPrices,
+    required QuestionTransferType transferType,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -158,8 +140,8 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -167,21 +149,16 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required NoRiskQuestionType type,
 
     /// Subtype of the no-risk question. forEveryone means everyone answers it, basically giving chances for everyone, instead of one player
     required NoRiskQuestionSubType subType,
+    required QuestionPriceMultiplier priceMultiplier,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -190,10 +167,6 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     /// Delay in milliseconds before being able to answer, if applicable
     @Default(4000)
     int answerDelay,
-
-    /// Multiplier for question price nominal, so if price 200 with 2x multiplier it will give +400 and -0, depends if answer correct
-    @Default('1.5')
-    String priceMultiplier,
   }) = PackageQuestionUnionNoRisk;
 
   @FreezedUnionValue('choice')
@@ -201,8 +174,8 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -210,25 +183,15 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required ChoiceQuestionType type,
     required dynamic subType,
-
-    /// Delay before showing options in milliseconds
-    required int showDelay,
-
-    /// Multiple choice options; minimum 2, maximum 8 answers
-    required List<Answers> answers,
+    required QuestionShowDelay showDelay,
+    required List<QuestionChoiceAnswers> answers,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)
@@ -244,8 +207,8 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     required int? id,
     required PackageEntitiesOrder order,
 
-    /// Point value of the question
-    required int price,
+    /// Price is null only if price is hidden
+    required int? price,
 
     /// Question text
     required String? text,
@@ -253,18 +216,12 @@ sealed class PackageQuestionUnion with _$PackageQuestionUnion {
     /// Hint for the answer
     required String? answerHint,
 
-    /// Correct answer text
-    required String? answerText,
-
     /// Comment or note about the question
     required String? questionComment,
-
-    /// Media files for the question
-    required List<PackageQuestionFile>? questionFiles,
-
-    /// Media files for the answer
-    required List<PackageAnswerFile>? answerFiles,
     required HiddenQuestionType type,
+    QuestionAnswerText? answerText,
+    List<PackageQuestionFile?>? questionFiles,
+    List<PackageQuestionFile?>? answerFiles,
 
     /// Whether the question is hidden
     @Default(false)

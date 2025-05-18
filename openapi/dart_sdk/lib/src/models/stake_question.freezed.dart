@@ -18,8 +18,8 @@ mixin _$StakeQuestion {
   int? get id;
   PackageEntitiesOrder get order;
 
-  /// Point value of the question
-  int get price;
+  /// Price is null only if price is hidden
+  int? get price;
 
   /// Question text
   String? get text;
@@ -27,21 +27,13 @@ mixin _$StakeQuestion {
   /// Hint for the answer
   String? get answerHint;
 
-  /// Correct answer text
-  String? get answerText;
-
   /// Comment or note about the question
   String? get questionComment;
-
-  /// Media files for the question
-  List<PackageQuestionFile>? get questionFiles;
-
-  /// Media files for the answer
-  List<PackageAnswerFile>? get answerFiles;
   StakeQuestionType get type;
-
-  /// Maximum price for the stake question, most useful when type is forEveryone - Does not allow top players to go all-in and win. Typically maxPrice can be 2x or 3x of nominal price
-  int? get maxPrice;
+  QuestionMaxPrice get maxPrice;
+  QuestionAnswerText? get answerText;
+  List<PackageQuestionFile?>? get questionFiles;
+  List<PackageQuestionFile?>? get answerFiles;
 
   /// Whether the question is hidden
   bool get isHidden;
@@ -74,17 +66,17 @@ mixin _$StakeQuestion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.maxPrice, maxPrice) ||
+                other.maxPrice == maxPrice) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other.questionFiles, questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other.answerFiles, answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.maxPrice, maxPrice) ||
-                other.maxPrice == maxPrice) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
@@ -101,19 +93,19 @@ mixin _$StakeQuestion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
-      const DeepCollectionEquality().hash(questionFiles),
-      const DeepCollectionEquality().hash(answerFiles),
       type,
       maxPrice,
+      answerText,
+      const DeepCollectionEquality().hash(questionFiles),
+      const DeepCollectionEquality().hash(answerFiles),
       isHidden,
       answerDelay,
       subType);
 
   @override
   String toString() {
-    return 'StakeQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, maxPrice: $maxPrice, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
+    return 'StakeQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, maxPrice: $maxPrice, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
   }
 }
 
@@ -126,15 +118,15 @@ abstract mixin class $StakeQuestionCopyWith<$Res> {
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       StakeQuestionType type,
-      int? maxPrice,
+      QuestionMaxPrice maxPrice,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay,
       StakeQuestionSubType subType});
@@ -155,15 +147,15 @@ class _$StakeQuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
     Object? type = null,
     Object? maxPrice = freezed,
+    Object? answerText = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
     Object? isHidden = null,
     Object? answerDelay = null,
     Object? subType = null,
@@ -177,10 +169,10 @@ class _$StakeQuestionCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -189,22 +181,10 @@ class _$StakeQuestionCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self.questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self.answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -212,7 +192,19 @@ class _$StakeQuestionCopyWithImpl<$Res>
       maxPrice: freezed == maxPrice
           ? _self.maxPrice
           : maxPrice // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as QuestionMaxPrice,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self.questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self.answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable
@@ -238,12 +230,12 @@ class _StakeQuestion implements StakeQuestion {
       required this.price,
       required this.text,
       required this.answerHint,
-      required this.answerText,
       required this.questionComment,
-      required final List<PackageQuestionFile>? questionFiles,
-      required final List<PackageAnswerFile>? answerFiles,
       required this.type,
       required this.maxPrice,
+      this.answerText,
+      final List<PackageQuestionFile?>? questionFiles,
+      final List<PackageQuestionFile?>? answerFiles,
       this.isHidden = false,
       this.answerDelay = 4000,
       this.subType = StakeQuestionSubType.simple})
@@ -257,9 +249,9 @@ class _StakeQuestion implements StakeQuestion {
   @override
   final PackageEntitiesOrder order;
 
-  /// Point value of the question
+  /// Price is null only if price is hidden
   @override
-  final int price;
+  final int? price;
 
   /// Question text
   @override
@@ -269,20 +261,18 @@ class _StakeQuestion implements StakeQuestion {
   @override
   final String? answerHint;
 
-  /// Correct answer text
-  @override
-  final String? answerText;
-
   /// Comment or note about the question
   @override
   final String? questionComment;
-
-  /// Media files for the question
-  final List<PackageQuestionFile>? _questionFiles;
-
-  /// Media files for the question
   @override
-  List<PackageQuestionFile>? get questionFiles {
+  final StakeQuestionType type;
+  @override
+  final QuestionMaxPrice maxPrice;
+  @override
+  final QuestionAnswerText? answerText;
+  final List<PackageQuestionFile?>? _questionFiles;
+  @override
+  List<PackageQuestionFile?>? get questionFiles {
     final value = _questionFiles;
     if (value == null) return null;
     if (_questionFiles is EqualUnmodifiableListView) return _questionFiles;
@@ -290,25 +280,15 @@ class _StakeQuestion implements StakeQuestion {
     return EqualUnmodifiableListView(value);
   }
 
-  /// Media files for the answer
-  final List<PackageAnswerFile>? _answerFiles;
-
-  /// Media files for the answer
+  final List<PackageQuestionFile?>? _answerFiles;
   @override
-  List<PackageAnswerFile>? get answerFiles {
+  List<PackageQuestionFile?>? get answerFiles {
     final value = _answerFiles;
     if (value == null) return null;
     if (_answerFiles is EqualUnmodifiableListView) return _answerFiles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
-
-  @override
-  final StakeQuestionType type;
-
-  /// Maximum price for the stake question, most useful when type is forEveryone - Does not allow top players to go all-in and win. Typically maxPrice can be 2x or 3x of nominal price
-  @override
-  final int? maxPrice;
 
   /// Whether the question is hidden
   @override
@@ -351,17 +331,17 @@ class _StakeQuestion implements StakeQuestion {
             (identical(other.text, text) || other.text == text) &&
             (identical(other.answerHint, answerHint) ||
                 other.answerHint == answerHint) &&
-            (identical(other.answerText, answerText) ||
-                other.answerText == answerText) &&
             (identical(other.questionComment, questionComment) ||
                 other.questionComment == questionComment) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.maxPrice, maxPrice) ||
+                other.maxPrice == maxPrice) &&
+            (identical(other.answerText, answerText) ||
+                other.answerText == answerText) &&
             const DeepCollectionEquality()
                 .equals(other._questionFiles, _questionFiles) &&
             const DeepCollectionEquality()
                 .equals(other._answerFiles, _answerFiles) &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.maxPrice, maxPrice) ||
-                other.maxPrice == maxPrice) &&
             (identical(other.isHidden, isHidden) ||
                 other.isHidden == isHidden) &&
             (identical(other.answerDelay, answerDelay) ||
@@ -378,19 +358,19 @@ class _StakeQuestion implements StakeQuestion {
       price,
       text,
       answerHint,
-      answerText,
       questionComment,
-      const DeepCollectionEquality().hash(_questionFiles),
-      const DeepCollectionEquality().hash(_answerFiles),
       type,
       maxPrice,
+      answerText,
+      const DeepCollectionEquality().hash(_questionFiles),
+      const DeepCollectionEquality().hash(_answerFiles),
       isHidden,
       answerDelay,
       subType);
 
   @override
   String toString() {
-    return 'StakeQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, answerText: $answerText, questionComment: $questionComment, questionFiles: $questionFiles, answerFiles: $answerFiles, type: $type, maxPrice: $maxPrice, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
+    return 'StakeQuestion(id: $id, order: $order, price: $price, text: $text, answerHint: $answerHint, questionComment: $questionComment, type: $type, maxPrice: $maxPrice, answerText: $answerText, questionFiles: $questionFiles, answerFiles: $answerFiles, isHidden: $isHidden, answerDelay: $answerDelay, subType: $subType)';
   }
 }
 
@@ -405,15 +385,15 @@ abstract mixin class _$StakeQuestionCopyWith<$Res>
   $Res call(
       {int? id,
       PackageEntitiesOrder order,
-      int price,
+      int? price,
       String? text,
       String? answerHint,
-      String? answerText,
       String? questionComment,
-      List<PackageQuestionFile>? questionFiles,
-      List<PackageAnswerFile>? answerFiles,
       StakeQuestionType type,
-      int? maxPrice,
+      QuestionMaxPrice maxPrice,
+      QuestionAnswerText? answerText,
+      List<PackageQuestionFile?>? questionFiles,
+      List<PackageQuestionFile?>? answerFiles,
       bool isHidden,
       int answerDelay,
       StakeQuestionSubType subType});
@@ -434,15 +414,15 @@ class __$StakeQuestionCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? order = null,
-    Object? price = null,
+    Object? price = freezed,
     Object? text = freezed,
     Object? answerHint = freezed,
-    Object? answerText = freezed,
     Object? questionComment = freezed,
-    Object? questionFiles = freezed,
-    Object? answerFiles = freezed,
     Object? type = null,
     Object? maxPrice = freezed,
+    Object? answerText = freezed,
+    Object? questionFiles = freezed,
+    Object? answerFiles = freezed,
     Object? isHidden = null,
     Object? answerDelay = null,
     Object? subType = null,
@@ -456,10 +436,10 @@ class __$StakeQuestionCopyWithImpl<$Res>
           ? _self.order
           : order // ignore: cast_nullable_to_non_nullable
               as PackageEntitiesOrder,
-      price: null == price
+      price: freezed == price
           ? _self.price
           : price // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       text: freezed == text
           ? _self.text
           : text // ignore: cast_nullable_to_non_nullable
@@ -468,22 +448,10 @@ class __$StakeQuestionCopyWithImpl<$Res>
           ? _self.answerHint
           : answerHint // ignore: cast_nullable_to_non_nullable
               as String?,
-      answerText: freezed == answerText
-          ? _self.answerText
-          : answerText // ignore: cast_nullable_to_non_nullable
-              as String?,
       questionComment: freezed == questionComment
           ? _self.questionComment
           : questionComment // ignore: cast_nullable_to_non_nullable
               as String?,
-      questionFiles: freezed == questionFiles
-          ? _self._questionFiles
-          : questionFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageQuestionFile>?,
-      answerFiles: freezed == answerFiles
-          ? _self._answerFiles
-          : answerFiles // ignore: cast_nullable_to_non_nullable
-              as List<PackageAnswerFile>?,
       type: null == type
           ? _self.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -491,7 +459,19 @@ class __$StakeQuestionCopyWithImpl<$Res>
       maxPrice: freezed == maxPrice
           ? _self.maxPrice
           : maxPrice // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as QuestionMaxPrice,
+      answerText: freezed == answerText
+          ? _self.answerText
+          : answerText // ignore: cast_nullable_to_non_nullable
+              as QuestionAnswerText?,
+      questionFiles: freezed == questionFiles
+          ? _self._questionFiles
+          : questionFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
+      answerFiles: freezed == answerFiles
+          ? _self._answerFiles
+          : answerFiles // ignore: cast_nullable_to_non_nullable
+              as List<PackageQuestionFile?>?,
       isHidden: null == isHidden
           ? _self.isHidden
           : isHidden // ignore: cast_nullable_to_non_nullable

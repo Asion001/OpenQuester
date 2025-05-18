@@ -14,6 +14,18 @@ enum SocketIOGameEvents {
   gameData('game-data'),
   @JsonValue('start')
   start('start'),
+  @JsonValue('question-pick')
+  questionPick('question-pick'),
+  @JsonValue('question-answer')
+  questionAnswer('question-answer'),
+  @JsonValue('question-data')
+  questionData('question-data'),
+  @JsonValue('question-finish')
+  questionFinish('question-finish'),
+  @JsonValue('answer-submitted')
+  answerSubmitted('answer-submitted'),
+  @JsonValue('answer-result')
+  answerResult('answer-result'),
   /// Default value for all unparsed values, allows backward compatibility when adding new values on the backend.
   $unknown(null);
 

@@ -18,6 +18,7 @@ mixin _$GameStateAnsweredPlayer {
   /// Id of answered player
   int get player;
   int get result;
+  int get score;
 
   /// Create a copy of GameStateAnsweredPlayer
   /// with the given fields replaced by the non-null parameter values.
@@ -36,16 +37,17 @@ mixin _$GameStateAnsweredPlayer {
         (other.runtimeType == runtimeType &&
             other is GameStateAnsweredPlayer &&
             (identical(other.player, player) || other.player == player) &&
-            (identical(other.result, result) || other.result == result));
+            (identical(other.result, result) || other.result == result) &&
+            (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, player, result);
+  int get hashCode => Object.hash(runtimeType, player, result, score);
 
   @override
   String toString() {
-    return 'GameStateAnsweredPlayer(player: $player, result: $result)';
+    return 'GameStateAnsweredPlayer(player: $player, result: $result, score: $score)';
   }
 }
 
@@ -55,7 +57,7 @@ abstract mixin class $GameStateAnsweredPlayerCopyWith<$Res> {
           $Res Function(GameStateAnsweredPlayer) _then) =
       _$GameStateAnsweredPlayerCopyWithImpl;
   @useResult
-  $Res call({int player, int result});
+  $Res call({int player, int result, int score});
 }
 
 /// @nodoc
@@ -73,6 +75,7 @@ class _$GameStateAnsweredPlayerCopyWithImpl<$Res>
   $Res call({
     Object? player = null,
     Object? result = null,
+    Object? score = null,
   }) {
     return _then(_self.copyWith(
       player: null == player
@@ -83,6 +86,10 @@ class _$GameStateAnsweredPlayerCopyWithImpl<$Res>
           ? _self.result
           : result // ignore: cast_nullable_to_non_nullable
               as int,
+      score: null == score
+          ? _self.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -90,7 +97,8 @@ class _$GameStateAnsweredPlayerCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _GameStateAnsweredPlayer implements GameStateAnsweredPlayer {
-  const _GameStateAnsweredPlayer({required this.player, required this.result});
+  const _GameStateAnsweredPlayer(
+      {required this.player, required this.result, required this.score});
   factory _GameStateAnsweredPlayer.fromJson(Map<String, dynamic> json) =>
       _$GameStateAnsweredPlayerFromJson(json);
 
@@ -99,6 +107,8 @@ class _GameStateAnsweredPlayer implements GameStateAnsweredPlayer {
   final int player;
   @override
   final int result;
+  @override
+  final int score;
 
   /// Create a copy of GameStateAnsweredPlayer
   /// with the given fields replaced by the non-null parameter values.
@@ -122,16 +132,17 @@ class _GameStateAnsweredPlayer implements GameStateAnsweredPlayer {
         (other.runtimeType == runtimeType &&
             other is _GameStateAnsweredPlayer &&
             (identical(other.player, player) || other.player == player) &&
-            (identical(other.result, result) || other.result == result));
+            (identical(other.result, result) || other.result == result) &&
+            (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, player, result);
+  int get hashCode => Object.hash(runtimeType, player, result, score);
 
   @override
   String toString() {
-    return 'GameStateAnsweredPlayer(player: $player, result: $result)';
+    return 'GameStateAnsweredPlayer(player: $player, result: $result, score: $score)';
   }
 }
 
@@ -143,7 +154,7 @@ abstract mixin class _$GameStateAnsweredPlayerCopyWith<$Res>
       __$GameStateAnsweredPlayerCopyWithImpl;
   @override
   @useResult
-  $Res call({int player, int result});
+  $Res call({int player, int result, int score});
 }
 
 /// @nodoc
@@ -161,6 +172,7 @@ class __$GameStateAnsweredPlayerCopyWithImpl<$Res>
   $Res call({
     Object? player = null,
     Object? result = null,
+    Object? score = null,
   }) {
     return _then(_GameStateAnsweredPlayer(
       player: null == player
@@ -170,6 +182,10 @@ class __$GameStateAnsweredPlayerCopyWithImpl<$Res>
       result: null == result
           ? _self.result
           : result // ignore: cast_nullable_to_non_nullable
+              as int,
+      score: null == score
+          ? _self.score
+          : score // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }

@@ -18,13 +18,11 @@ mixin _$GameState {
   GameStateQuestionState? get questionState;
   bool get isPaused;
 
-  /// Last chosen / current question number out of all
-  int? get currentQuestion;
-
   /// Id of player who is currently answering
   int? get answeringPlayer;
   List<GameStateAnsweredPlayer>? get answeredPlayers;
   SocketIOGameStateRoundData? get currentRound;
+  PackageQuestionData? get currentQuestion;
   GameStateTimer? get timer;
 
   /// Create a copy of GameState
@@ -46,14 +44,14 @@ mixin _$GameState {
                 other.questionState == questionState) &&
             (identical(other.isPaused, isPaused) ||
                 other.isPaused == isPaused) &&
-            (identical(other.currentQuestion, currentQuestion) ||
-                other.currentQuestion == currentQuestion) &&
             (identical(other.answeringPlayer, answeringPlayer) ||
                 other.answeringPlayer == answeringPlayer) &&
             const DeepCollectionEquality()
                 .equals(other.answeredPlayers, answeredPlayers) &&
             (identical(other.currentRound, currentRound) ||
                 other.currentRound == currentRound) &&
+            (identical(other.currentQuestion, currentQuestion) ||
+                other.currentQuestion == currentQuestion) &&
             (identical(other.timer, timer) || other.timer == timer));
   }
 
@@ -63,15 +61,15 @@ mixin _$GameState {
       runtimeType,
       questionState,
       isPaused,
-      currentQuestion,
       answeringPlayer,
       const DeepCollectionEquality().hash(answeredPlayers),
       currentRound,
+      currentQuestion,
       timer);
 
   @override
   String toString() {
-    return 'GameState(questionState: $questionState, isPaused: $isPaused, currentQuestion: $currentQuestion, answeringPlayer: $answeringPlayer, answeredPlayers: $answeredPlayers, currentRound: $currentRound, timer: $timer)';
+    return 'GameState(questionState: $questionState, isPaused: $isPaused, answeringPlayer: $answeringPlayer, answeredPlayers: $answeredPlayers, currentRound: $currentRound, currentQuestion: $currentQuestion, timer: $timer)';
   }
 }
 
@@ -83,13 +81,14 @@ abstract mixin class $GameStateCopyWith<$Res> {
   $Res call(
       {GameStateQuestionState? questionState,
       bool isPaused,
-      int? currentQuestion,
       int? answeringPlayer,
       List<GameStateAnsweredPlayer>? answeredPlayers,
       SocketIOGameStateRoundData? currentRound,
+      PackageQuestionData? currentQuestion,
       GameStateTimer? timer});
 
   $SocketIOGameStateRoundDataCopyWith<$Res>? get currentRound;
+  $PackageQuestionDataCopyWith<$Res>? get currentQuestion;
   $GameStateTimerCopyWith<$Res>? get timer;
 }
 
@@ -107,10 +106,10 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
   $Res call({
     Object? questionState = freezed,
     Object? isPaused = null,
-    Object? currentQuestion = freezed,
     Object? answeringPlayer = freezed,
     Object? answeredPlayers = freezed,
     Object? currentRound = freezed,
+    Object? currentQuestion = freezed,
     Object? timer = freezed,
   }) {
     return _then(_self.copyWith(
@@ -122,10 +121,6 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
           ? _self.isPaused
           : isPaused // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentQuestion: freezed == currentQuestion
-          ? _self.currentQuestion
-          : currentQuestion // ignore: cast_nullable_to_non_nullable
-              as int?,
       answeringPlayer: freezed == answeringPlayer
           ? _self.answeringPlayer
           : answeringPlayer // ignore: cast_nullable_to_non_nullable
@@ -138,6 +133,10 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
           ? _self.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
               as SocketIOGameStateRoundData?,
+      currentQuestion: freezed == currentQuestion
+          ? _self.currentQuestion
+          : currentQuestion // ignore: cast_nullable_to_non_nullable
+              as PackageQuestionData?,
       timer: freezed == timer
           ? _self.timer
           : timer // ignore: cast_nullable_to_non_nullable
@@ -164,6 +163,20 @@ class _$GameStateCopyWithImpl<$Res> implements $GameStateCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
+  $PackageQuestionDataCopyWith<$Res>? get currentQuestion {
+    if (_self.currentQuestion == null) {
+      return null;
+    }
+
+    return $PackageQuestionDataCopyWith<$Res>(_self.currentQuestion!, (value) {
+      return _then(_self.copyWith(currentQuestion: value));
+    });
+  }
+
+  /// Create a copy of GameState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
   $GameStateTimerCopyWith<$Res>? get timer {
     if (_self.timer == null) {
       return null;
@@ -181,10 +194,10 @@ class _GameState implements GameState {
   const _GameState(
       {required this.questionState,
       required this.isPaused,
-      required this.currentQuestion,
       required this.answeringPlayer,
       required final List<GameStateAnsweredPlayer>? answeredPlayers,
       this.currentRound,
+      this.currentQuestion,
       this.timer})
       : _answeredPlayers = answeredPlayers;
   factory _GameState.fromJson(Map<String, dynamic> json) =>
@@ -194,10 +207,6 @@ class _GameState implements GameState {
   final GameStateQuestionState? questionState;
   @override
   final bool isPaused;
-
-  /// Last chosen / current question number out of all
-  @override
-  final int? currentQuestion;
 
   /// Id of player who is currently answering
   @override
@@ -214,6 +223,8 @@ class _GameState implements GameState {
 
   @override
   final SocketIOGameStateRoundData? currentRound;
+  @override
+  final PackageQuestionData? currentQuestion;
   @override
   final GameStateTimer? timer;
 
@@ -241,14 +252,14 @@ class _GameState implements GameState {
                 other.questionState == questionState) &&
             (identical(other.isPaused, isPaused) ||
                 other.isPaused == isPaused) &&
-            (identical(other.currentQuestion, currentQuestion) ||
-                other.currentQuestion == currentQuestion) &&
             (identical(other.answeringPlayer, answeringPlayer) ||
                 other.answeringPlayer == answeringPlayer) &&
             const DeepCollectionEquality()
                 .equals(other._answeredPlayers, _answeredPlayers) &&
             (identical(other.currentRound, currentRound) ||
                 other.currentRound == currentRound) &&
+            (identical(other.currentQuestion, currentQuestion) ||
+                other.currentQuestion == currentQuestion) &&
             (identical(other.timer, timer) || other.timer == timer));
   }
 
@@ -258,15 +269,15 @@ class _GameState implements GameState {
       runtimeType,
       questionState,
       isPaused,
-      currentQuestion,
       answeringPlayer,
       const DeepCollectionEquality().hash(_answeredPlayers),
       currentRound,
+      currentQuestion,
       timer);
 
   @override
   String toString() {
-    return 'GameState(questionState: $questionState, isPaused: $isPaused, currentQuestion: $currentQuestion, answeringPlayer: $answeringPlayer, answeredPlayers: $answeredPlayers, currentRound: $currentRound, timer: $timer)';
+    return 'GameState(questionState: $questionState, isPaused: $isPaused, answeringPlayer: $answeringPlayer, answeredPlayers: $answeredPlayers, currentRound: $currentRound, currentQuestion: $currentQuestion, timer: $timer)';
   }
 }
 
@@ -281,14 +292,16 @@ abstract mixin class _$GameStateCopyWith<$Res>
   $Res call(
       {GameStateQuestionState? questionState,
       bool isPaused,
-      int? currentQuestion,
       int? answeringPlayer,
       List<GameStateAnsweredPlayer>? answeredPlayers,
       SocketIOGameStateRoundData? currentRound,
+      PackageQuestionData? currentQuestion,
       GameStateTimer? timer});
 
   @override
   $SocketIOGameStateRoundDataCopyWith<$Res>? get currentRound;
+  @override
+  $PackageQuestionDataCopyWith<$Res>? get currentQuestion;
   @override
   $GameStateTimerCopyWith<$Res>? get timer;
 }
@@ -307,10 +320,10 @@ class __$GameStateCopyWithImpl<$Res> implements _$GameStateCopyWith<$Res> {
   $Res call({
     Object? questionState = freezed,
     Object? isPaused = null,
-    Object? currentQuestion = freezed,
     Object? answeringPlayer = freezed,
     Object? answeredPlayers = freezed,
     Object? currentRound = freezed,
+    Object? currentQuestion = freezed,
     Object? timer = freezed,
   }) {
     return _then(_GameState(
@@ -322,10 +335,6 @@ class __$GameStateCopyWithImpl<$Res> implements _$GameStateCopyWith<$Res> {
           ? _self.isPaused
           : isPaused // ignore: cast_nullable_to_non_nullable
               as bool,
-      currentQuestion: freezed == currentQuestion
-          ? _self.currentQuestion
-          : currentQuestion // ignore: cast_nullable_to_non_nullable
-              as int?,
       answeringPlayer: freezed == answeringPlayer
           ? _self.answeringPlayer
           : answeringPlayer // ignore: cast_nullable_to_non_nullable
@@ -338,6 +347,10 @@ class __$GameStateCopyWithImpl<$Res> implements _$GameStateCopyWith<$Res> {
           ? _self.currentRound
           : currentRound // ignore: cast_nullable_to_non_nullable
               as SocketIOGameStateRoundData?,
+      currentQuestion: freezed == currentQuestion
+          ? _self.currentQuestion
+          : currentQuestion // ignore: cast_nullable_to_non_nullable
+              as PackageQuestionData?,
       timer: freezed == timer
           ? _self.timer
           : timer // ignore: cast_nullable_to_non_nullable
@@ -357,6 +370,20 @@ class __$GameStateCopyWithImpl<$Res> implements _$GameStateCopyWith<$Res> {
     return $SocketIOGameStateRoundDataCopyWith<$Res>(_self.currentRound!,
         (value) {
       return _then(_self.copyWith(currentRound: value));
+    });
+  }
+
+  /// Create a copy of GameState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PackageQuestionDataCopyWith<$Res>? get currentQuestion {
+    if (_self.currentQuestion == null) {
+      return null;
+    }
+
+    return $PackageQuestionDataCopyWith<$Res>(_self.currentQuestion!, (value) {
+      return _then(_self.copyWith(currentQuestion: value));
     });
   }
 

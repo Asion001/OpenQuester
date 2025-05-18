@@ -11,6 +11,7 @@ _GameStateAnsweredPlayer _$GameStateAnsweredPlayerFromJson(
     _GameStateAnsweredPlayer(
       player: (json['player'] as num).toInt(),
       result: (json['result'] as num).toInt(),
+      score: (json['score'] as num).toInt(),
     );
 
 Map<String, dynamic> _$GameStateAnsweredPlayerToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$GameStateAnsweredPlayerToJson(
     <String, dynamic>{
       'player': instance.player,
       'result': instance.result,
+      'score': instance.score,
     };
