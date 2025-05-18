@@ -353,4 +353,20 @@ class GameLobbyController {
   void onAnswer() {
     socket?.emit(SocketIOGameSendEvents.questionAnswer.json!);
   }
+
+  Future<void> answerResult({
+    required bool playerAnswerIsRight,
+    double? multiplier,
+  }) async {
+    final question = gameData.value?.gameState.currentQuestion;
+    if (question == null) return;
+    final score = ((question.price ?? 0) * (multiplier ?? 1)).toInt();
+
+    await socket?.emitWithAckAsync(
+      SocketIOGameSendEvents.answerResult.json!,
+      SocketIOAnswerResultInput(
+        scoreResult: playerAnswerIsRight ? score : -score,
+      ).toJson(),
+    );
+  }
 }

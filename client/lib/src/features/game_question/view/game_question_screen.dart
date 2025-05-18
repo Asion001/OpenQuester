@@ -109,8 +109,34 @@ class _AnsweringWidget extends WatchingWidget {
             textAlign: TextAlign.center,
             style: context.textTheme.bodyLarge,
           ).expand(),
+          if (gameData?.me.role == PlayerRole.showman)
+            const _ShowmanControlls(),
         ],
       ),
+    );
+  }
+}
+
+class _ShowmanControlls extends StatelessWidget {
+  const _ShowmanControlls();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        FilledButton.icon(
+          onPressed: () => getIt<GameLobbyController>()
+              .answerResult(playerAnswerIsRight: false),
+          icon: const Icon(Icons.close),
+          label: Text(LocaleKeys.question_answer_is_wrong.tr()),
+        ),
+        FilledButton.icon(
+          onPressed: () => getIt<GameLobbyController>()
+              .answerResult(playerAnswerIsRight: true),
+          icon: const Icon(Icons.check),
+          label: Text(LocaleKeys.question_answer_is_correct.tr()),
+        ),
+      ],
     );
   }
 }
