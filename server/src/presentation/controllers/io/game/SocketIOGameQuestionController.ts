@@ -4,9 +4,9 @@ import { SocketIOQuestionService } from "application/services/socket/SocketIOQue
 import { Game } from "domain/entities/game/Game";
 import { GameStateTimer } from "domain/entities/game/GameStateTimer";
 import { SocketIOGameEvents } from "domain/enums/SocketIOEvents";
-import { GameStateDTO } from "domain/types/dto/game/state/GameStateDTO";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
+import { GameNextRoundEventPayload } from "domain/types/socket/events/game/GameNextRoundEventPayload";
 import { GameQuestionDataEventPayload } from "domain/types/socket/events/game/GameQuestionDataEventPayload";
 import { QuestionAnswerEventPayload } from "domain/types/socket/events/game/QuestionAnswerEventPayload";
 import { QuestionFinishWithAnswerEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
@@ -57,9 +57,9 @@ export class SocketIOGameQuestionController {
 
     if (nextGameState) {
       // Next round if all questions played
-      this.eventEmitter.emit<GameStateDTO>(
+      this.eventEmitter.emit<GameNextRoundEventPayload>(
         SocketIOGameEvents.NEXT_ROUND,
-        nextGameState,
+        { gameState: nextGameState },
         {
           emitter: SocketEventEmitter.IO,
           gameId: game.id,
@@ -148,9 +148,9 @@ export class SocketIOGameQuestionController {
       }
 
       // Next round if all questions played
-      this.eventEmitter.emit<GameStateDTO>(
+      this.eventEmitter.emit<GameNextRoundEventPayload>(
         SocketIOGameEvents.NEXT_ROUND,
-        nextGameState,
+        { gameState: nextGameState },
         {
           emitter: SocketEventEmitter.IO,
           gameId: game.id,

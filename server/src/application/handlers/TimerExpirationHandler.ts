@@ -15,6 +15,7 @@ import { ErrorController } from "domain/errors/ErrorController";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { RedisExpirationHandler } from "domain/types/redis/RedisExpirationHandler";
+import { GameNextRoundEventPayload } from "domain/types/socket/events/game/GameNextRoundEventPayload";
 import { QuestionFinishEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
 import { RedisService } from "infrastructure/services/redis/RedisService";
 
@@ -80,9 +81,9 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
         }
 
         if (nextGameState) {
-          this._gameNamespace
-            .to(gameId)
-            .emit(SocketIOGameEvents.NEXT_ROUND, nextGameState);
+          this._gameNamespace.to(gameId).emit(SocketIOGameEvents.NEXT_ROUND, {
+            gameState: nextGameState,
+          } satisfies GameNextRoundEventPayload);
           return;
         }
       }

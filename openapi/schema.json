@@ -2259,6 +2259,14 @@
           }
         ]
       },
+      "SocketIONextRoundEventPayload": {
+        "type": "object",
+        "properties": {
+          "gameState": {
+            "$ref": "#/components/schemas/GameState"
+          }
+        }
+      },
       "SocketIOGameJoinEventPayload": {
         "type": "object",
         "description": "This data sent to player when he joins game",
@@ -2474,6 +2482,7 @@
           "question-answer",
           "question-finish",
           "answer-submitted",
+          "next-round",
           "answer-result"
         ],
         "examples": ["join"]
@@ -2489,7 +2498,9 @@
           "question-data",
           "question-finish",
           "answer-submitted",
-          "answer-result"
+          "answer-result",
+          "next-round",
+          "game-finished"
         ],
         "examples": ["join"]
       },
