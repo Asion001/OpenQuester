@@ -601,7 +601,7 @@ packages:
       path: flutter_secure_storage_linux
       ref: patch-2
       resolved-ref: f076cbb65b075afd6e3b648122987a67306dc298
-      url: "git@github.com:m-berto/flutter_secure_storage.git"
+      url: "https://github.com/m-berto/flutter_secure_storage.git"
     source: git
     version: "2.0.1"
   flutter_secure_storage_platform_interface:
