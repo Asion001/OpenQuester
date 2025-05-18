@@ -394,6 +394,10 @@ export class GameRepository {
     );
   }
 
+  public async clearTimer(gameId: string, timerAdditional?: string) {
+    await this.redisService.del(this._getTimerKey(gameId, timerAdditional));
+  }
+
   private _getTimerKey(gameId: string, timerAdditional?: string) {
     return timerAdditional
       ? `${TIMER_NSP}:${timerAdditional}:${gameId}`

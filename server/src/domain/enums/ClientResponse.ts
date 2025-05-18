@@ -53,6 +53,7 @@ export enum ClientResponse {
   ALREADY_IN_GAME = "already_in_game",
   NOT_IN_GAME = "not_in_game",
   GAME_IS_FULL = "game_is_full",
+  GAME_FINISHED = "game_finished",
   SHOWMAN_IS_TAKEN = "showman_is_taken",
   NO_SHOWMAN = "no_showman",
   GAME_DOES_NOT_EXISTS = "game_does_not_exists",
@@ -72,11 +73,11 @@ export enum ClientResponse {
   QUESTION_NOT_PICKED = "question_not_picked",
   SOMEONE_ALREADY_ANSWERING = "someone_already_answering",
   ALREADY_ANSWERED = "already_answered",
-
   GAME_IS_PAUSED = "game_is_paused",
   PLAYER_NOT_FOUND = "player_not_found",
   CANNOT_SUBMIT_ANSWER = "cannot_submit_answer",
   ONLY_SHOWMAN_SEND_ANSWER_RESULT = "only_showman_send_answer_result",
+  ONLY_SHOWMAN_NEXT_ROUND = "only_showman_next_round",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

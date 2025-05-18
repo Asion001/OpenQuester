@@ -62,10 +62,8 @@ export class TranslateService {
       this._translationsMap.set(language, translation);
       Logger.gray(`Translation loading for '${language}' is completed`);
       return translation;
-    } catch (error) {
-      Logger.error(
-        `Error loading translation for language: ${language}: ${error}`
-      );
+    } catch {
+      // Ignore if we don't have translation for provided language, will use eng
     }
 
     return null;

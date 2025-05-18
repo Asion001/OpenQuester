@@ -2,6 +2,8 @@ import { Player } from "domain/entities/game/Player";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { AgeRestriction } from "domain/enums/game/AgeRestriction";
 import { ClientError } from "domain/errors/ClientError";
+import { GameQuestionMapper } from "domain/mappers/GameQuestionMapper";
+import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameImportDTO } from "domain/types/dto/game/GameImportDTO";
 import { GameIndexesInputDTO } from "domain/types/dto/game/GameIndexesInputDTO";
 import {
@@ -200,6 +202,51 @@ export class Game {
         p.role === PlayerRole.SHOWMAN &&
         p.gameStatus === PlayerGameStatus.IN_GAME
     );
+  }
+
+  public isAllQuestionsPlayed() {
+    if (!this.gameState || !this.gameState.currentRound) {
+      return;
+    }
+
+    const { played, all } = GameQuestionMapper.getPlayedAndAllQuestions(
+      this.gameState
+    );
+
+    return all.length > 0 && played.length === all.length;
+  }
+
+  /**
+   * @returns Current state. If all question played - returns next game state
+   * (with next round). If all question played and no next round - game finished
+   */
+  public getFlowState() {
+    let nextGameState: GameStateDTO | null = null;
+    let isGameFinished = false;
+
+    if (!this.isAllQuestionsPlayed()) {
+      return { isGameFinished: false, nextGameState: null };
+    }
+
+    const nextRound = GameStateMapper.getGameRound(
+      this.package,
+      this.gameState.currentRound!.order + 1
+    );
+
+    if (nextRound) {
+      nextGameState = GameStateMapper.getClearGameState(nextRound);
+
+      this.gameState = nextGameState;
+    } else {
+      isGameFinished = true;
+      this.finish();
+    }
+
+    return { isGameFinished, nextGameState };
+  }
+
+  public finish() {
+    this._finishedAt = new Date();
   }
 
   public get showman() {
