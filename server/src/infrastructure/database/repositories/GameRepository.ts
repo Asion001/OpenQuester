@@ -416,7 +416,7 @@ export class GameRepository {
       finishedAt: game.finishedAt,
       createdAt: game.createdAt,
       currentRound,
-      currentQuestion,
+      currentQuestion: currentQuestion?.id ?? null,
       package: {
         id: packData.id,
         title: packData.title,

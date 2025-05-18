@@ -91,6 +91,7 @@ export class SocketIOGameQuestionController {
       this.eventEmitter.emit<QuestionFinishEventPayload>(
         SocketIOGameEvents.QUESTION_FINISH,
         {
+          answerResult: playerAnswerResult,
           answerFiles: question!.answerFiles ?? null,
           answerText: question!.answerText ?? null,
         },
