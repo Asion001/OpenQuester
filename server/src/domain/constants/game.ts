@@ -11,5 +11,5 @@ export const GAME_TTL = 60 * 60 * 2; // 2 hours (updates with every action)
 export const GAME_CHAT_NSP = `${CHAT_NSP}:game`;
 export const GAME_CHAT_TTL = 60 * 60 * 24 * 21;
 export const GAME_CHAT_HISTORY_RETRIEVAL_LIMIT = 100;
-export const GAME_QUESTION_ANSWER_TIME = SECOND_MS * 15;
+export const GAME_QUESTION_ANSWER_TIME = SECOND_MS * 20.5;
 export const GAME_QUESTION_ANSWER_SUBMIT_TIME = SECOND_MS * 60;
