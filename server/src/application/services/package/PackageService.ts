@@ -66,14 +66,12 @@ export class PackageService {
 
   public async listPackages(
     paginationOpts: PackagePaginationOpts
-  ): Promise<PaginatedResult<PackageDTO[]>> {
+  ): Promise<PaginatedResult<Omit<PackageDTO, "rounds">[]>> {
     const paginatedList = await this.packageRepository.list(paginationOpts);
 
-    const packageListItems = await Promise.all(
-      paginatedList.data.map(async (pack) => {
-        return await pack.toDTO(this.storage, { fetchIds: true });
-      })
-    );
+    const packageListItems = paginatedList.data.map((pack) => {
+      return pack.toSimpleDTO(this.storage);
+    });
 
     return {
       data: packageListItems,
