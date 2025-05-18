@@ -1188,11 +1188,6 @@
             ],
             "description": "Logo file for the package"
           },
-          "rounds": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/PackageRound" },
-            "description": "Rounds in the package"
-          },
           "tags": {
             "type": ["array", "null"],
             "items": {
