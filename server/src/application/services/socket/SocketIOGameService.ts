@@ -1,5 +1,6 @@
 import { UserService } from "application/services/user/UserService";
-import { GAME_TTL } from "domain/constants/game";
+import { GAME_TTL_IN_SECONDS } from "domain/constants/game";
+import { SECOND_MS } from "domain/constants/time";
 import { Game } from "domain/entities/game/Game";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
@@ -12,14 +13,14 @@ import { GameLobbyLeaveData } from "domain/types/game/GameRoomLeaveData";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { GameJoinData } from "domain/types/socket/game/GameJoinData";
 import { GameJoinResult } from "domain/types/socket/game/GameJoinResult";
-import { GameRepository } from "infrastructure/database/repositories/GameRepository";
 import { SocketUserDataService } from "infrastructure/services/socket/SocketUserDataService";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
+import { GameService } from "../game/GameService";
 
 export class SocketIOGameService {
   constructor(
     private readonly socketUserDataService: SocketUserDataService,
-    private readonly gameRepository: GameRepository,
+    private readonly gameService: GameService,
     private readonly userService: UserService
   ) {
     //
@@ -30,7 +31,10 @@ export class SocketIOGameService {
     socketId: string
   ): Promise<GameJoinResult> {
     const user = await this._fetchUser(socketId);
-    const game = await this.gameRepository.getGameEntity(data.gameId, GAME_TTL);
+    const game = await this.gameService.getGameEntity(
+      data.gameId,
+      GAME_TTL_IN_SECONDS
+    );
 
     if (game.finishedAt !== null) {
       throw new ClientError(ClientResponse.GAME_FINISHED);
@@ -55,13 +59,13 @@ export class SocketIOGameService {
 
     if (player.isRestricted && data.role !== PlayerRole.SPECTATOR) {
       game.removePlayer(player.meta.id);
-      await this.gameRepository.updateGame(game);
+      await this.gameService.updateGame(game);
       throw new ClientError(ClientResponse.YOU_ARE_RESTRICTED);
     }
 
     if (player.isBanned) {
       game.removePlayer(player.meta.id);
-      await this.gameRepository.updateGame(game);
+      await this.gameService.updateGame(game);
       throw new ClientError(ClientResponse.YOU_ARE_BANNED);
     }
 
@@ -69,7 +73,7 @@ export class SocketIOGameService {
       id: JSON.stringify(user.id),
       gameId: data.gameId,
     });
-    await this.gameRepository.updateGame(game);
+    await this.gameService.updateGame(game);
 
     return { game, player };
   }
@@ -82,7 +86,10 @@ export class SocketIOGameService {
       throw new ClientError(ClientResponse.NOT_IN_GAME);
     }
 
-    const game = await this.gameRepository.getGameEntity(gameId, GAME_TTL);
+    const game = await this.gameService.getGameEntity(
+      gameId,
+      GAME_TTL_IN_SECONDS
+    );
     const player = game.getPlayer(userData.id, { fetchDisconnected: false });
 
     if (player?.role !== PlayerRole.SHOWMAN) {
@@ -106,7 +113,7 @@ export class SocketIOGameService {
 
     game.startedAt = new Date();
     game.gameState = gameState;
-    await this.gameRepository.updateGame(game);
+    await this.gameService.updateGame(game);
 
     return game;
   }
@@ -119,7 +126,10 @@ export class SocketIOGameService {
       throw new ClientError(ClientResponse.NOT_IN_GAME);
     }
 
-    const game = await this.gameRepository.getGameEntity(gameId, GAME_TTL);
+    const game = await this.gameService.getGameEntity(
+      gameId,
+      GAME_TTL_IN_SECONDS
+    );
     if (!game.hasPlayer(userData.id)) return { emit: false };
 
     game.removePlayer(userData.id);
@@ -128,17 +138,141 @@ export class SocketIOGameService {
       id: JSON.stringify(userData.id),
       gameId: JSON.stringify(null),
     });
-    await this.gameRepository.updateGame(game);
+    await this.gameService.updateGame(game);
 
     return { emit: true, data: { userId: userData.id, gameId: game.id } };
   }
 
-  public async gameToListItem(game: Game) {
-    return this.gameRepository.gameToListItemDTO(game);
+  public async handleNextRound(socketId: string) {
+    const userData = await this._fetchUserSocketData(socketId);
+    const gameId = userData.gameId;
+
+    if (!gameId) {
+      throw new ClientError(ClientResponse.NOT_IN_GAME);
+    }
+
+    const game = await this.gameService.getGameEntity(
+      gameId,
+      GAME_TTL_IN_SECONDS
+    );
+    this._validateGameStatus(game);
+
+    const player = game.getPlayer(userData.id, { fetchDisconnected: false });
+
+    if (player?.role !== PlayerRole.SHOWMAN) {
+      throw new ClientError(ClientResponse.ONLY_SHOWMAN_NEXT_ROUND);
+    }
+
+    const currentRound = game.gameState.currentRound;
+
+    if (!currentRound) {
+      throw new ClientError(ClientResponse.GAME_NOT_STARTED);
+    }
+
+    const nextRound = GameStateMapper.getGameRound(
+      game.package,
+      game.gameState.currentRound!.order + 1
+    );
+
+    let nextGameState = null;
+    let isGameFinished = false;
+
+    if (!nextRound) {
+      game.finish();
+      isGameFinished = true;
+    } else {
+      nextGameState = GameStateMapper.getClearGameState(nextRound);
+    }
+
+    return { game, isGameFinished, nextGameState };
   }
 
-  public async isPlayerMuted(gameId: string, playerId: number) {
-    return this.gameRepository.isPlayerMuted(gameId, playerId);
+  public async handleGameUnpause(socketId: string) {
+    const userData = await this._fetchUserSocketData(socketId);
+    const gameId = userData.gameId;
+
+    if (!gameId) {
+      throw new ClientError(ClientResponse.NOT_IN_GAME);
+    }
+
+    const game = await this.gameService.getGameEntity(
+      gameId,
+      GAME_TTL_IN_SECONDS
+    );
+
+    if (game.finishedAt !== null) {
+      throw new ClientError(ClientResponse.GAME_FINISHED);
+    }
+
+    const player = game.getPlayer(userData.id, { fetchDisconnected: false });
+    const gameState = game.gameState;
+
+    if (!gameState) {
+      throw new ClientError(ClientResponse.GAME_NOT_STARTED);
+    }
+
+    if (player?.role !== PlayerRole.SHOWMAN) {
+      throw new ClientError(ClientResponse.ONLY_SHOWMAN_CAN_UNPAUSE);
+    }
+
+    const questionState = gameState.questionState;
+
+    const timer = await this.gameService.getTimer(game.id, questionState!);
+
+    if (timer) {
+      await this.gameService.clearTimer(game.id, questionState!);
+    }
+
+    game.unpause();
+    game.setTimer(timer);
+    await this.gameService.updateGame(game);
+
+    return { game, timer };
+  }
+
+  public async handleGamePause(socketId: string) {
+    const userData = await this._fetchUserSocketData(socketId);
+    const gameId = userData.gameId;
+
+    if (!gameId) {
+      throw new ClientError(ClientResponse.NOT_IN_GAME);
+    }
+
+    const game = await this.gameService.getGameEntity(
+      gameId,
+      GAME_TTL_IN_SECONDS
+    );
+    this._validateGameStatus(game);
+
+    const player = game.getPlayer(userData.id, { fetchDisconnected: false });
+
+    if (player?.role !== PlayerRole.SHOWMAN) {
+      throw new ClientError(ClientResponse.ONLY_SHOWMAN_CAN_PAUSE);
+    }
+
+    const gameState = game.gameState;
+
+    if (!gameState) {
+      throw new ClientError(ClientResponse.GAME_NOT_STARTED);
+    }
+
+    const questionState = gameState.questionState;
+
+    const timer = await this.gameService.getTimer(game.id);
+    if (timer) {
+      timer.elapsedMs = Date.now() - new Date(timer.startedAt).getTime();
+      await this.gameService.saveTimer(
+        timer,
+        game.id,
+        Math.ceil(GAME_TTL_IN_SECONDS * SECOND_MS * 1.25), // Convert to ms
+        questionState!
+      );
+    }
+    game.pause();
+    game.setTimer(timer);
+    await this.gameService.updateGame(game);
+
+    return { game, timer };
   }
 
   public async removePlayerAuth(socketId: string) {
@@ -166,5 +300,15 @@ export class SocketIOGameService {
       );
     }
     return user;
+  }
+
+  private _validateGameStatus(game: Game) {
+    if (game.gameState.isPaused) {
+      throw new ClientError(ClientResponse.GAME_IS_PAUSED);
+    }
+
+    if (game.finishedAt !== null) {
+      throw new ClientError(ClientResponse.GAME_FINISHED);
+    }
   }
 }

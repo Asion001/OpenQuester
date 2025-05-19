@@ -2,7 +2,7 @@ import { Server as IOServer, Namespace } from "socket.io";
 
 import { GameService } from "application/services/game/GameService";
 import { SocketIOQuestionService } from "application/services/socket/SocketIOQuestionService";
-import { GAME_TTL } from "domain/constants/game";
+import { GAME_TTL_IN_SECONDS } from "domain/constants/game";
 import { REDIS_LOCK_EXPIRATION_KEY } from "domain/constants/redis";
 import { SOCKET_GAME_NAMESPACE } from "domain/constants/socket";
 import { TIMER_NSP } from "domain/constants/timer";
@@ -46,7 +46,10 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
     const gameId = key.split(":")[1];
 
     try {
-      const game = await this.gameService.getGameEntity(gameId, GAME_TTL);
+      const game = await this.gameService.getGameEntity(
+        gameId,
+        GAME_TTL_IN_SECONDS
+      );
       const question = await this.socketIOQuestionService.getCurrentQuestion(
         game
       );

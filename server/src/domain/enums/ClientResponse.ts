@@ -78,6 +78,9 @@ export enum ClientResponse {
   CANNOT_SUBMIT_ANSWER = "cannot_submit_answer",
   ONLY_SHOWMAN_SEND_ANSWER_RESULT = "only_showman_send_answer_result",
   ONLY_SHOWMAN_NEXT_ROUND = "only_showman_next_round",
+  ONLY_SHOWMAN_SKIP_QUESTION_FORCE = "only_showman_skip_question_force",
+  ONLY_SHOWMAN_CAN_PAUSE = "only_showman_can_pause",
+  ONLY_SHOWMAN_CAN_UNPAUSE = "only_showman_can_unpause",
 
   // Other
   DELETE_REQUEST_SENT = "delete_request_sent",

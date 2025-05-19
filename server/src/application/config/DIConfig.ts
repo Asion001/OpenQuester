@@ -292,7 +292,7 @@ export class DIConfig {
         Container.get<SocketUserDataService>(
           CONTAINER_TYPES.SocketUserDataService
         ),
-        Container.get<GameRepository>(CONTAINER_TYPES.GameRepository),
+        Container.get<GameService>(CONTAINER_TYPES.GameService),
         Container.get<UserService>(CONTAINER_TYPES.UserService)
       ),
       "service"
