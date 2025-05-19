@@ -15,9 +15,12 @@ class GameLobbyController {
 
   final gameData = ValueNotifier<SocketIOGameJoinEventPayload?>(null);
   final gameListData = ValueNotifier<GameListItem?>(null);
+  final gameFinished = ValueNotifier<bool>(false);
 
   final showChat = ValueNotifier<bool>(false);
   StreamSubscription<ChatOperation>? _chatMessagesSub;
+
+  String? get gameId => _gameId;
 
   Future<void> join({required String gameId}) async {
     // Check if already joined
@@ -49,6 +52,10 @@ class GameLobbyController {
         ..on(SocketIOGameReceiveEvents.answerResult.json!, _onAnswerResult)
         ..on(SocketIOGameReceiveEvents.questionFinish.json!, _onQuestionFinish)
         ..on(SocketIOGameReceiveEvents.answerSubmitted.json!, _onAnswerResult)
+        ..on(SocketIOGameReceiveEvents.nextRound.json!, _onNextRound)
+        ..on(SocketIOGameReceiveEvents.gameFinished.json!, _onGameFinish)
+        ..on(SocketIOGameReceiveEvents.gamePause.json!, _onGamePause)
+        ..on(SocketIOGameReceiveEvents.gameUnpause.json!, _onGameUnPause)
         ..connect();
     } catch (e, s) {
       logger.e(e, stackTrace: s);
@@ -127,6 +134,7 @@ class GameLobbyController {
       _chatMessagesSub?.cancel();
       _chatMessagesSub = null;
       showChat.value = false;
+      gameFinished.value = false;
       getIt<SocketChatController>().clear();
       getIt<GameQuestionController>().clear();
     } catch (_) {}
@@ -134,7 +142,16 @@ class GameLobbyController {
 
   Future<void> leave({bool force = false}) async {
     socket?.emit(SocketIOGameSendEvents.userLeave.json!);
-    if (force) _leave();
+    if (force) {
+      _leave();
+    } else {
+      Future<void>.delayed(
+        const Duration(seconds: 1),
+        () {
+          if (socket != null) clear();
+        },
+      );
+    }
   }
 
   void toggleDesktopChat() {
@@ -311,8 +328,8 @@ class GameLobbyController {
     gameData.value = gameData.value?.copyWith
         .gameState(answeringPlayer: questionData.userId);
 
-    // Stop media during question answer
-    getIt<GameQuestionController>().mediaController.value?.pause();
+    // Pause media during question answer
+    _pauseMediaPlay();
   }
 
   void _onAnswerResult(dynamic data) {
@@ -322,6 +339,20 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
+    _updatePlayerScore(questionData);
+
+    // Question answered, hide question screen and show answer
+    final result = questionData.answerResult?.result;
+    if (result != null) {
+      if (result > 0) {
+        _showAnswer();
+      } else {
+        _resumeMediaPlay();
+      }
+    }
+  }
+
+  void _updatePlayerScore(SocketIOAnswerResultEventPayload questionData) {
     gameData.value = gameData.value?.copyWith.gameState(
       answeringPlayer: null,
       answeredPlayers: [
@@ -333,16 +364,10 @@ class GameLobbyController {
       onChange: (value) =>
           value.copyWith(score: questionData.answerResult!.score),
     );
+  }
 
-    // Question answered, hide question screen and show answer
-    final result = questionData.answerResult?.result;
-    if (result != null) {
-      if (result > 0) {
-        _showAnswer();
-      } else {
-        _resumeMediaPlay();
-      }
-    }
+  void _pauseMediaPlay() {
+    getIt<GameQuestionController>().mediaController.value?.pause();
   }
 
   /// Resume media after wrong answer
@@ -371,17 +396,14 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    gameData.value = gameData.value?.copyWith
-        .gameState(
-          currentQuestion: gameData.value?.gameState.currentQuestion?.copyWith(
-            answerFiles: questionData.answerFiles,
-            answerText: questionData.answerText,
-          ),
-        )
-        .changePlayer(
-          id: questionData.answerResult?.player,
-          onChange: (e) => e.copyWith(score: questionData.answerResult!.score),
-        );
+    _updatePlayerScore(questionData);
+
+    gameData.value = gameData.value?.copyWith.gameState(
+      currentQuestion: gameData.value?.gameState.currentQuestion?.copyWith(
+        answerFiles: questionData.answerFiles,
+        answerText: questionData.answerText,
+      ),
+    );
 
     _showAnswer();
   }
@@ -390,26 +412,32 @@ class GameLobbyController {
     final controller = getIt<GameQuestionController>();
     final currentQuestion = gameData.value?.gameState.currentQuestion;
 
-    if (currentQuestion != null) {
-      controller.questionData.value = GameQuestionData(
-        file: currentQuestion.answerFiles?.firstOrNull,
-        text: currentQuestion.answerText,
-      );
-
-      // Wait for user to see answer
-      final mediaValue = controller.mediaController.value?.value;
-      if (mediaValue != null) {
-        final playtimeLeft = mediaValue.duration - mediaValue.position;
-        await Future<void>.delayed(
-          Duration(
-            milliseconds: max(5000, playtimeLeft.inMilliseconds),
-          ),
-        );
-      }
-    }
-
     // Clear question
     gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
+
+    try {
+      var mediaPlaytimeMs = 0;
+      if (currentQuestion != null) {
+        controller.questionData.value = GameQuestionData(
+          file: currentQuestion.answerFiles?.firstOrNull,
+          text: currentQuestion.answerText,
+        );
+
+        // Wait for user to see answer
+        final mediaValue = controller.mediaController.value?.value;
+        if (mediaValue != null) {
+          final playtimeLeft = mediaValue.duration - mediaValue.position;
+          mediaPlaytimeMs = playtimeLeft.inMilliseconds;
+        }
+      }
+
+      // Wait to show answer
+      await Future<void>.delayed(
+        Duration(milliseconds: max(5000, mediaPlaytimeMs + 2000)),
+      );
+    } catch (e) {
+      onError(e);
+    }
 
     // Hide question screen
     await controller.clear();
@@ -426,6 +454,8 @@ class GameLobbyController {
     final me = gameData.value?.me;
     if (me == null) return;
     if (me.role != PlayerRole.player) return;
+    if (gameData.value?.gameState.answeringPlayer != null) return;
+    if (gameData.value?.gameState.isPaused ?? true) return;
 
     socket?.emit(SocketIOGameSendEvents.questionAnswer.json!);
   }
@@ -444,5 +474,51 @@ class GameLobbyController {
         scoreResult: playerAnswerIsRight ? score : -score,
       ).toJson(),
     );
+  }
+
+  void _onNextRound(dynamic data) {
+    if (data is! Map) return;
+
+    final nextRoundData = SocketIONextRoundEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+    gameData.value =
+        gameData.value?.copyWith(gameState: nextRoundData.gameState);
+  }
+
+  void _onGameFinish(dynamic data) {
+    gameFinished.value = true;
+  }
+
+  void skipRound() {
+    final me = gameData.value?.me;
+    if (me == null) return;
+    if (me.role != PlayerRole.showman) return;
+    socket?.emit(SocketIOGameSendEvents.nextRound.json!);
+  }
+
+  void _onGamePause(dynamic data) => _setGamePause(isPaused: true);
+
+  void _onGameUnPause(dynamic data) => _setGamePause(isPaused: false);
+
+  void _setGamePause({required bool isPaused}) {
+    gameData.value = gameData.value?.copyWith.gameState(isPaused: isPaused);
+    if (isPaused) {
+      _pauseMediaPlay();
+    } else {
+      _resumeMediaPlay();
+    }
+  }
+
+  void setPause({required bool pauseState}) {
+    socket?.emit(
+      pauseState
+          ? SocketIOGameSendEvents.gamePause.json!
+          : SocketIOGameSendEvents.gameUnpause.json!,
+    );
+  }
+
+  void skipQuestion() {
+    socket?.emit(SocketIOGameSendEvents.skipQuestionForce.json!);
   }
 }

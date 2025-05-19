@@ -11,6 +11,7 @@ class GameLobbyPlayers extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
+    final answeredPlayers = gameData?.gameState.answeredPlayers;
     final answeringPlayer = gameData?.gameState.answeringPlayer;
     const roleToShow = {PlayerRole.player, PlayerRole.showman};
     const inGame = PlayerDataStatus.inGame;
@@ -27,31 +28,54 @@ class GameLobbyPlayers extends WatchingWidget {
       separatorBuilder: (context, index) => const SizedBox.square(dimension: 8),
       itemBuilder: (context, index) {
         final player = players[index];
+        final answeredPlayer = answeredPlayers
+            ?.firstWhereOrNull((e) => e.player == player.meta.id);
+        final result = answeredPlayer?.result;
+        final showUserAnsweredCorrect = _getPlayerAnswerState(result);
+
         return GameLobbyPlayer(
           player: player,
           answering: answeringPlayer == player.meta.id,
+          playerAnswerState: showUserAnsweredCorrect,
         );
       },
     );
+  }
+
+  PlayerAnswerState _getPlayerAnswerState(int? result) {
+    if (result == null) return PlayerAnswerState.none;
+    if (result > 0) return PlayerAnswerState.correct;
+    if (result == 0) return PlayerAnswerState.skip;
+    return PlayerAnswerState.wrong;
   }
 }
 
 class GameLobbyPlayer extends WatchingWidget {
   const GameLobbyPlayer({
     required this.player,
+    required this.playerAnswerState,
     this.answering = false,
     super.key,
   });
 
   final PlayerData player;
   final bool answering;
+  final PlayerAnswerState playerAnswerState;
 
   @override
   Widget build(BuildContext context) {
+    final extraColors = Theme.of(context).extension<ExtraColors>()!;
+    final foregroundColor = Colors.black.withValues(alpha: .4);
+    final borderColor = playerAnswerState == PlayerAnswerState.wrong
+        ? Colors.red
+        : playerAnswerState == PlayerAnswerState.correct
+            ? extraColors.success
+            : null;
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: context.theme.colorScheme.surfaceContainerHigh,
+          color: borderColor ?? context.theme.colorScheme.surfaceContainerHigh,
         ),
         borderRadius: 12.circular,
         color: context.theme.colorScheme.surface,
@@ -72,7 +96,7 @@ class GameLobbyPlayer extends WatchingWidget {
             Positioned.fill(
               child: Container(
                 foregroundDecoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: .4),
+                  color: foregroundColor,
                   borderRadius: 8.circular,
                 ),
                 decoration: BoxDecoration(borderRadius: 8.circular),
@@ -122,6 +146,16 @@ class GameLobbyPlayer extends WatchingWidget {
               Align(
                 alignment: Alignment.bottomRight,
                 child: const Icon(Icons.more_horiz).paddingAll(2),
+              ),
+            if (!{PlayerAnswerState.skip, PlayerAnswerState.none}
+                .contains(playerAnswerState))
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Icon(
+                  playerAnswerState == PlayerAnswerState.correct
+                      ? Icons.check
+                      : Icons.close,
+                ).paddingAll(2),
               ),
           ],
         ).center(),

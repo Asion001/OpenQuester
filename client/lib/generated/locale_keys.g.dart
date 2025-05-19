@@ -67,8 +67,16 @@ abstract class LocaleKeys {
   static const question_answer_is_wrong = 'question.answer_is_wrong';
   static const question_correct_answer_is = 'question.correct_answer_is';
   static const question_hint = 'question.hint';
+  static const question_skip_round = 'question.skip_round';
+  static const question_sure_skip_round = 'question.sure_skip_round';
   static const question = 'question';
   static const delete_game = 'delete_game';
   static const delete_game_confirmation = 'delete_game_confirmation';
   static const volume = 'volume';
+  static const game_is_finished = 'game_is_finished';
+  static const game_is_paused = 'game_is_paused';
+  static const pause = 'pause';
+  static const resume_game = 'resume_game';
+  static const skip_question = 'skip_question';
+  static const share_game_tooltip = 'share_game_tooltip';
 }

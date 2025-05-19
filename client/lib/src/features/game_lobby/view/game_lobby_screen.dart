@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:openquester/common_imports.dart';
 
 @RoutePage()
@@ -68,7 +69,8 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 icon: const Icon(Icons.exit_to_app),
               ),
               actions: [
-                const _GameMenu(),
+                const _ShareButton(),
+                const GameLobbyMenu(),
                 _ChatButton(show: showChat),
               ],
               elevation: 0,
@@ -112,18 +114,51 @@ class _BodyBuilder extends WatchingWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gameData = watchValue((GameLobbyController e) => e.gameData);
     final currentQuestion =
         watchValue((GameQuestionController e) => e.questionData);
+    final gameFinished = watchValue((GameLobbyController e) => e.gameFinished);
+    final isPaused = gameData?.gameState.isPaused ?? false;
 
     Widget body;
 
-    if (currentQuestion != null) {
+    if (isPaused) {
+      body = const _GamePausedScreen();
+    } else if (gameFinished) {
+      body = const _GameFinishedScreen();
+    } else if (currentQuestion != null) {
       body = const GameQuestionScreen();
     } else {
       body = const GameLobbyThemes();
     }
 
     return body;
+  }
+}
+
+class _GamePausedScreen extends StatelessWidget {
+  const _GamePausedScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      LocaleKeys.game_is_paused.tr(),
+      style: context.textTheme.displaySmall,
+      textAlign: TextAlign.center,
+    ).paddingAll(16).center();
+  }
+}
+
+class _GameFinishedScreen extends StatelessWidget {
+  const _GameFinishedScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      LocaleKeys.game_is_finished.tr(),
+      style: context.textTheme.displaySmall,
+      textAlign: TextAlign.center,
+    ).paddingAll(16).center();
   }
 }
 
@@ -191,71 +226,20 @@ class _Chat extends StatelessWidget {
   }
 }
 
-class _GameMenu extends WatchingWidget {
-  const _GameMenu();
+class _ShareButton extends StatelessWidget {
+  const _ShareButton();
 
   @override
   Widget build(BuildContext context) {
-    final me = watchValue((GameLobbyController e) => e.gameData)?.me;
-
-    final imShowman = me?.role == PlayerRole.showman;
-
-    return PopupMenuButton(
-      itemBuilder: (BuildContext context) => [
-        const PopupMenuItem<void>(child: _VolumeSlider()),
-        if (imShowman)
-          PopupMenuItem<void>(
-            child: Text(LocaleKeys.delete_game.tr()),
-            onTap: () async {
-              final result = await ConfirmDialog(
-                title: LocaleKeys.delete_game_confirmation.tr(),
-              ).show(context);
-              if (!result) return;
-              await getIt<GamesListController>().deleteGame(
-                getIt<GameLobbyController>().gameListData.value!.id,
-              );
-            },
-          ),
-      ],
-      icon: const Icon(Icons.more_vert),
-    );
-  }
-}
-
-class _VolumeSlider extends StatefulWidget {
-  const _VolumeSlider();
-
-  @override
-  State<_VolumeSlider> createState() => _VolumeSliderState();
-}
-
-class _VolumeSliderState extends State<_VolumeSlider> {
-  late double volume;
-
-  @override
-  void initState() {
-    volume = getIt<GameQuestionController>().volume.value;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(LocaleKeys.volume.tr()),
-        Slider(
-          value: volume,
-          onChanged: (value) {
-            final volume =
-                double.parse(value.clamp(0, 1).toStringAsExponential(2));
-            if (this.volume == volume) return;
-            this.volume = volume;
-            setState(() {});
-            getIt<GameQuestionController>().onChangeVolume(volume);
-          },
-        ),
-      ],
+    return IconButton(
+      onPressed: () {
+        final gameId = getIt<GameLobbyController>().gameId;
+        if (gameId == null) return;
+        final link = Env.clientAppUrl.replace(path: '/games/$gameId');
+        Clipboard.setData(ClipboardData(text: link.toString()));
+      },
+      icon: const Icon(Icons.copy),
+      tooltip: LocaleKeys.share_game_tooltip.tr(),
     );
   }
 }

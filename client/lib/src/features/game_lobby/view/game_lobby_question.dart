@@ -49,6 +49,12 @@ class GameQuestion extends StatelessWidget {
           },
         ),
         padding: WidgetStatePropertyAll(0.all),
+        backgroundBuilder: (context, states, child) {
+          if (child != null && states.contains(WidgetState.disabled)) {
+            return DiagonalLineBackground(child: child);
+          }
+          return child ?? const SizedBox();
+        },
       ),
       child: Text('${question.price}'),
     );
