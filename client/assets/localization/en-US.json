@@ -81,5 +81,6 @@
   "game_is_paused": "Game is paused",
   "pause": "Pause",
   "resume_game": "Resume game",
-  "skip_question": "Skip question"
+  "skip_question": "Skip question",
+  "share_game_tooltip": "Copies game link"
 }

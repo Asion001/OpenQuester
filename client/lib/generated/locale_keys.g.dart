@@ -77,5 +77,6 @@ abstract class  LocaleKeys {
   static const pause = 'pause';
   static const resume_game = 'resume_game';
   static const skip_question = 'skip_question';
+  static const share_game_tooltip = 'share_game_tooltip';
 
 }

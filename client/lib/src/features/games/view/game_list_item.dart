@@ -39,15 +39,14 @@ class GameListItemWidget extends WatchingWidget {
               ),
               style: context.textTheme.bodyMedium
                   ?.copyWith(color: context.theme.colorScheme.onSurfaceVariant),
-              maxLines: 2,
               overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             )
                 .constrained(const BoxConstraints(minHeight: 42))
                 .withTooltip(
                   msg: LocaleKeys.game_tile_tooltips_packages_title.tr(),
                 )
-                .paddingTop(4)
-                .shrink(),
+                .paddingTop(4),
             titleAlignment: ListTileTitleAlignment.top,
             contentPadding: 4.left + 16.right,
             mouseCursor: MouseCursor.defer,
@@ -85,7 +84,7 @@ class GameListItemWidget extends WatchingWidget {
                 Row(
                   spacing: 4,
                   children: children,
-                ).paddingSymmetric(horizontal: 2).withHeight(110),
+                ).paddingSymmetric(horizontal: 2).withHeight(120),
                 if (bottom != null) bottom!.flexible(),
               ],
             ),
@@ -114,7 +113,7 @@ class GameListItemWidget extends WatchingWidget {
             style: TextStyle(color: ageRestriction.$2),
           ),
       ],
-    ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr()).shrink();
+    ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr());
   }
 
   String _gameInfo(TimeController timeController) {

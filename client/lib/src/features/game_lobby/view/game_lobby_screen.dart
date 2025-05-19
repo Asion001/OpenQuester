@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:openquester/common_imports.dart';
 
 @RoutePage()
@@ -68,6 +69,7 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 icon: const Icon(Icons.exit_to_app),
               ),
               actions: [
+                const _ShareButton(),
                 const GameLobbyMenu(),
                 _ChatButton(show: showChat),
               ],
@@ -220,6 +222,24 @@ class _Chat extends StatelessWidget {
         color: context.theme.colorScheme.surfaceContainer,
         child: const ChatScreen(),
       ),
+    );
+  }
+}
+
+class _ShareButton extends StatelessWidget {
+  const _ShareButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        final gameId = getIt<GameLobbyController>().gameId;
+        if (gameId == null) return;
+        final link = Env.clientAppUrl.replace(path: '/games/$gameId');
+        Clipboard.setData(ClipboardData(text: link.toString()));
+      },
+      icon: const Icon(Icons.copy),
+      tooltip: LocaleKeys.share_game_tooltip.tr(),
     );
   }
 }

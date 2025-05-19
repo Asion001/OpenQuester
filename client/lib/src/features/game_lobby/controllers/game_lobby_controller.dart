@@ -20,6 +20,8 @@ class GameLobbyController {
   final showChat = ValueNotifier<bool>(false);
   StreamSubscription<ChatOperation>? _chatMessagesSub;
 
+  String? get gameId => _gameId;
+
   Future<void> join({required String gameId}) async {
     // Check if already joined
     if (_gameId == gameId) return;
@@ -410,6 +412,7 @@ class GameLobbyController {
     gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
 
     try {
+      var mediaPlaytimeMs = 0;
       if (currentQuestion != null) {
         controller.questionData.value = GameQuestionData(
           file: currentQuestion.answerFiles?.firstOrNull,
@@ -420,13 +423,14 @@ class GameLobbyController {
         final mediaValue = controller.mediaController.value?.value;
         if (mediaValue != null) {
           final playtimeLeft = mediaValue.duration - mediaValue.position;
-          await Future<void>.delayed(
-            Duration(
-              milliseconds: max(5000, playtimeLeft.inMilliseconds),
-            ),
-          );
+          mediaPlaytimeMs = playtimeLeft.inMilliseconds;
         }
       }
+
+      // Wait to show answer
+      await Future<void>.delayed(
+        Duration(milliseconds: max(5000, mediaPlaytimeMs + 2000)),
+      );
     } catch (e) {
       onError(e);
     }

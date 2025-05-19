@@ -259,11 +259,20 @@ class _ShowmanControlls extends StatelessWidget {
       );
     }
 
+    Widget zeroSkipButton() {
+      return FilledButton.tonal(
+        onPressed: () => getIt<GameLobbyController>()
+            .answerResult(playerAnswerIsRight: true, multiplier: 0),
+        child: const Text('0X'),
+      );
+    }
+
     return Column(
       spacing: 8,
       children: [
         buttons(correctAnswer: false),
         buttons(correctAnswer: true),
+        zeroSkipButton(),
         const _SkipQustionBtn(),
       ],
     );
