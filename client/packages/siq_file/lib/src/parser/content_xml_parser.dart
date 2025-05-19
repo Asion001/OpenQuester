@@ -131,9 +131,6 @@ class ContentXmlParser {
         'Question have no files or text to ask users $question',
       );
     }
-    if (questionText?.startsWith('@') ?? false) {
-      print('object');
-    }
 
     return switch (questionType) {
       QuestionType.simple => PackageQuestionUnion.simple(
