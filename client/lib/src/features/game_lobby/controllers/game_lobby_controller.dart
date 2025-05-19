@@ -328,8 +328,8 @@ class GameLobbyController {
     gameData.value = gameData.value?.copyWith
         .gameState(answeringPlayer: questionData.userId);
 
-    // Stop media during question answer
-    getIt<GameQuestionController>().mediaController.value?.pause();
+    // Pause media during question answer
+    _pauseMediaPlay();
   }
 
   void _onAnswerResult(dynamic data) {
@@ -364,6 +364,10 @@ class GameLobbyController {
       onChange: (value) =>
           value.copyWith(score: questionData.answerResult!.score),
     );
+  }
+
+  void _pauseMediaPlay() {
+    getIt<GameQuestionController>().mediaController.value?.pause();
   }
 
   /// Resume media after wrong answer
@@ -451,6 +455,7 @@ class GameLobbyController {
     if (me == null) return;
     if (me.role != PlayerRole.player) return;
     if (gameData.value?.gameState.answeringPlayer != null) return;
+    if (gameData.value?.gameState.isPaused ?? true) return;
 
     socket?.emit(SocketIOGameSendEvents.questionAnswer.json!);
   }
@@ -492,16 +497,20 @@ class GameLobbyController {
     socket?.emit(SocketIOGameSendEvents.nextRound.json!);
   }
 
-  void _onGamePause(dynamic data) => _setGamePause(pauseState: true);
+  void _onGamePause(dynamic data) => _setGamePause(isPaused: true);
 
-  void _onGameUnPause(dynamic data) => _setGamePause(pauseState: false);
+  void _onGameUnPause(dynamic data) => _setGamePause(isPaused: false);
 
-  void _setGamePause({required bool pauseState}) {
-    gameData.value = gameData.value?.copyWith.gameState(isPaused: pauseState);
+  void _setGamePause({required bool isPaused}) {
+    gameData.value = gameData.value?.copyWith.gameState(isPaused: isPaused);
+    if (isPaused) {
+      _pauseMediaPlay();
+    } else {
+      _resumeMediaPlay();
+    }
   }
 
   void setPause({required bool pauseState}) {
-    _setGamePause(pauseState: pauseState);
     socket?.emit(
       pauseState
           ? SocketIOGameSendEvents.gamePause.json!
