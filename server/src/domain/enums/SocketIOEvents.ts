@@ -19,4 +19,7 @@ export enum SocketIOGameEvents {
   ANSWER_RESULT = "answer-result",
   NEXT_ROUND = "next-round",
   GAME_FINISHED = "game-finished",
+  SKIP_QUESTION_FORCE = "skip-question-force",
+  GAME_PAUSE = "game-pause",
+  GAME_UNPAUSE = "game-unpause",
 }

@@ -249,6 +249,24 @@ export class Game {
     this._finishedAt = new Date();
   }
 
+  public pause() {
+    this._gameState.isPaused = true;
+  }
+
+  public unpause() {
+    this._gameState.isPaused = false;
+  }
+
+  public isPlayerMuted(playerId: number) {
+    const player = this.getPlayer(playerId, { fetchDisconnected: true });
+
+    if (!player) {
+      return false;
+    }
+
+    return player.isMuted;
+  }
+
   public get showman() {
     return this._players.find((p) => p.role === PlayerRole.SHOWMAN);
   }
@@ -319,12 +337,13 @@ export class Game {
   }
 
   /**
-   * Removes current question, timer ans sets question state to 'choosing'
+   * Removes current question, timer and sets question state to 'choosing'
    */
   public resetToChoosingState() {
     this.gameState.currentQuestion = null;
     this.gameState.timer = null;
     this.gameState.answeredPlayers = null;
+    this.gameState.answeringPlayer = null;
     this.updateQuestionState(QuestionState.CHOOSING);
   }
 

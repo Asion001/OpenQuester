@@ -2,7 +2,7 @@ import { GameService } from "application/services/game/GameService";
 import {
   GAME_QUESTION_ANSWER_SUBMIT_TIME,
   GAME_QUESTION_ANSWER_TIME,
-  GAME_TTL,
+  GAME_TTL_IN_SECONDS,
 } from "domain/constants/game";
 import { Game } from "domain/entities/game/Game";
 import { GameStateTimer } from "domain/entities/game/GameStateTimer";
@@ -152,6 +152,41 @@ export class SocketIOQuestionService {
     return { isGameFinished, nextGameState };
   }
 
+  public async handleQuestionSkip(socketId: string) {
+    const { game, player } = await this._fetchPlayerAndGame(socketId);
+    this._validateGameStatus(game);
+
+    if (player?.role !== PlayerRole.SHOWMAN) {
+      throw new ClientError(ClientResponse.ONLY_SHOWMAN_SKIP_QUESTION_FORCE);
+    }
+
+    const gameState = game.gameState;
+
+    if (!gameState.currentRound) {
+      throw new ClientError(ClientResponse.GAME_NOT_STARTED);
+    }
+
+    if (!gameState.currentQuestion) {
+      throw new ClientError(ClientResponse.QUESTION_NOT_PICKED);
+    }
+
+    const questionData = GameQuestionMapper.getQuestionAndTheme(
+      game.package,
+      gameState.currentRound.id,
+      gameState.currentQuestion.id!
+    );
+
+    if (!questionData?.question) {
+      throw new ClientError(ClientResponse.QUESTION_NOT_FOUND);
+    }
+
+    game.resetToChoosingState();
+    await this.gameService.updateGame(game);
+    await this.gameService.clearTimer(game.id);
+
+    return { game, question: questionData.question };
+  }
+
   public async handleNextRound(socketId: string) {
     const { game, player } = await this._fetchPlayerAndGame(socketId);
 
@@ -197,14 +232,14 @@ export class SocketIOQuestionService {
       throw new ClientError(ClientResponse.YOU_CANNOT_PICK_QUESTION);
     }
 
-    if (game.gameState.currentQuestion) {
-      throw new ClientError(ClientResponse.QUESTION_ALREADY_PICKED);
-    }
-
     const currentRound = game.gameState.currentRound;
 
     if (!currentRound) {
       throw new ClientError(ClientResponse.GAME_NOT_STARTED);
+    }
+
+    if (game.gameState.currentQuestion) {
+      throw new ClientError(ClientResponse.QUESTION_ALREADY_PICKED);
     }
 
     const questionData = GameQuestionMapper.getQuestionAndTheme(
@@ -345,7 +380,10 @@ export class SocketIOQuestionService {
       );
     }
 
-    const game = await this.gameService.getGameEntity(user.gameId, GAME_TTL);
+    const game = await this.gameService.getGameEntity(
+      user.gameId,
+      GAME_TTL_IN_SECONDS
+    );
     const player = game.getPlayer(user.id, { fetchDisconnected: false });
 
     return { game, player };

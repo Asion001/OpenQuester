@@ -4,13 +4,12 @@ import {
   GAME_ID_CHARACTERS,
   GAME_ID_CHARACTERS_LENGTH,
   GAME_NAMESPACE,
-  GAME_TTL,
+  GAME_TTL_IN_SECONDS,
 } from "domain/constants/game";
 import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
 import { REDIS_LOCK_GAMES_CLEANUP } from "domain/constants/redis";
 import { TIMER_NSP } from "domain/constants/timer";
 import { Game } from "domain/entities/game/Game";
-import { Player } from "domain/entities/game/Player";
 import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
@@ -18,7 +17,6 @@ import { GameMapper } from "domain/mappers/GameMapper";
 import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
-import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
 import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { GamePaginationOpts } from "domain/types/pagination/game/GamePaginationOpts";
@@ -71,7 +69,7 @@ export class GameRepository {
     await this.redisService.hset(
       key,
       GameMapper.serializeGameToHash(game),
-      GAME_TTL
+      GAME_TTL_IN_SECONDS
     );
   }
 
@@ -224,7 +222,7 @@ export class GameRepository {
       pipeline,
       game.toIndexData()
     );
-    pipeline.expire(key, GAME_TTL);
+    pipeline.expire(key, GAME_TTL_IN_SECONDS);
     await pipeline.exec();
 
     return this._parseGameToListItemDTO(game, createdBy, packageData);
@@ -279,22 +277,6 @@ export class GameRepository {
     }
 
     return this._parseGameToListItemDTO(game, createdBy, packData);
-  }
-
-  public async isPlayerMuted(gameId: string, playerId: number) {
-    const players = await this.redisService.hget(
-      this.getGameKey(gameId),
-      "players"
-    );
-
-    if (!players) {
-      return true;
-    }
-
-    const playersArr = JSON.parse(players) as PlayerDTO[];
-    const player = playersArr.find((p) => new Player(p).meta.id === playerId);
-
-    return player!.restrictionData.muted ?? true;
   }
 
   /**

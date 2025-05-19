@@ -9,7 +9,10 @@ import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { GameNextRoundEventPayload } from "domain/types/socket/events/game/GameNextRoundEventPayload";
 import { GameQuestionDataEventPayload } from "domain/types/socket/events/game/GameQuestionDataEventPayload";
 import { QuestionAnswerEventPayload } from "domain/types/socket/events/game/QuestionAnswerEventPayload";
-import { QuestionFinishWithAnswerEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
+import {
+  QuestionFinishEventPayload,
+  QuestionFinishWithAnswerEventPayload,
+} from "domain/types/socket/events/game/QuestionFinishEventPayload";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { SocketIOEventEmitter } from "presentation/emitters/SocketIOEventEmitter";
@@ -38,34 +41,26 @@ export class SocketIOGameQuestionController {
       SocketWrapper.catchErrors(this.eventEmitter, this.handleAnswerResult)
     );
     this.socket.on(
-      SocketIOGameEvents.NEXT_ROUND,
-      SocketWrapper.catchErrors(this.eventEmitter, this.handleNextRound)
+      SocketIOGameEvents.SKIP_QUESTION_FORCE,
+      SocketWrapper.catchErrors(this.eventEmitter, this.handleSkipQuestion)
     );
   }
 
-  private handleNextRound = async () => {
-    const { game, isGameFinished, nextGameState } =
-      await this.socketIOQuestionService.handleNextRound(this.socket.id);
+  private handleSkipQuestion = async () => {
+    const { game, question } =
+      await this.socketIOQuestionService.handleQuestionSkip(this.socket.id);
 
-    if (isGameFinished) {
-      this.eventEmitter.emit(SocketIOGameEvents.GAME_FINISHED, true, {
+    this.eventEmitter.emit<QuestionFinishEventPayload>(
+      SocketIOGameEvents.QUESTION_FINISH,
+      {
+        answerFiles: question.answerFiles ?? null,
+        answerText: question.answerText ?? null,
+      },
+      {
         emitter: SocketEventEmitter.IO,
         gameId: game.id,
-      });
-      return;
-    }
-
-    if (nextGameState) {
-      // Next round if all questions played
-      this.eventEmitter.emit<GameNextRoundEventPayload>(
-        SocketIOGameEvents.NEXT_ROUND,
-        { gameState: nextGameState },
-        {
-          emitter: SocketEventEmitter.IO,
-          gameId: game.id,
-        }
-      );
-    }
+      }
+    );
   };
 
   private handleQuestionPick = async (data: any) => {
