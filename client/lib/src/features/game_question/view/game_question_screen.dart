@@ -23,6 +23,7 @@ class GameQuestionScreen extends WatchingWidget {
     final column = Column(
       spacing: 16,
       children: [
+        const GameQuestionTimer(),
         Flex(
           spacing: 16,
           mainAxisAlignment: MainAxisAlignment.center,

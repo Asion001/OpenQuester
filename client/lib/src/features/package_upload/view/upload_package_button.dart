@@ -19,8 +19,10 @@ class UploadPackageButton extends WatchingWidget {
           final result = await getIt<PackageUploadController>().pickAndUpload();
 
           if (result != null) {
-            await getIt<ToastController>()
-                .show(LocaleKeys.package_uploaded.tr());
+            await getIt<ToastController>().show(
+              LocaleKeys.package_uploaded.tr(),
+              type: ToastType.success,
+            );
           }
           if (afterUpload != null && result != null) {
             final package = await getIt<PackageController>().getPackage(result);

@@ -119,7 +119,9 @@ class GameLobbyController {
       int.tryParse(message?.authorId ?? ''),
     );
     await getIt<ToastController>().show(
-      [author?.meta.username, text?.trim()].nonNulls.join(': '),
+      text?.trim(),
+      title: author?.meta.username,
+      type: ToastType.chat,
     );
   }
 
@@ -237,6 +239,7 @@ class GameLobbyController {
 
     getIt<ToastController>().show(
       LocaleKeys.user_leave_the_game.tr(args: [user.meta.username]),
+      type: ToastType.info,
     );
   }
 
@@ -274,6 +277,7 @@ class GameLobbyController {
 
     getIt<ToastController>().show(
       LocaleKeys.user_joined_the_game.tr(args: [user.meta.username]),
+      type: ToastType.info,
     );
   }
 
@@ -339,7 +343,7 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    _updatePlayerScore(questionData);
+    _updateGameStateFromAnswerResult(questionData);
 
     // Question answered, hide question screen and show answer
     final result = questionData.answerResult?.result;
@@ -352,18 +356,23 @@ class GameLobbyController {
     }
   }
 
-  void _updatePlayerScore(SocketIOAnswerResultEventPayload questionData) {
-    gameData.value = gameData.value?.copyWith.gameState(
-      answeringPlayer: null,
-      answeredPlayers: [
-        ...?gameData.value?.gameState.answeredPlayers,
-        if (questionData.answerResult != null) questionData.answerResult!,
-      ],
-    ).changePlayer(
-      id: questionData.answerResult?.player,
-      onChange: (value) =>
-          value.copyWith(score: questionData.answerResult!.score),
-    );
+  void _updateGameStateFromAnswerResult(
+    SocketIOAnswerResultEventPayload questionData,
+  ) {
+    gameData.value = gameData.value?.copyWith
+        .gameState(
+          answeringPlayer: null,
+          answeredPlayers: [
+            ...?gameData.value?.gameState.answeredPlayers,
+            if (questionData.answerResult != null) questionData.answerResult!,
+          ],
+          timer: questionData.timer,
+        )
+        .changePlayer(
+          id: questionData.answerResult?.player,
+          onChange: (value) =>
+              value.copyWith(score: questionData.answerResult!.score),
+        );
   }
 
   void _pauseMediaPlay() {
@@ -396,7 +405,7 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    _updatePlayerScore(questionData);
+    _updateGameStateFromAnswerResult(questionData);
 
     gameData.value = gameData.value?.copyWith.gameState(
       currentQuestion: gameData.value?.gameState.currentQuestion?.copyWith(

@@ -79,4 +79,7 @@ abstract class LocaleKeys {
   static const resume_game = 'resume_game';
   static const skip_question = 'skip_question';
   static const share_game_tooltip = 'share_game_tooltip';
+  static const copy_game_link = 'copy_game_link';
+  static const link_copied = 'link_copied';
+  static const chat_message = 'chat_message';
 }

@@ -82,5 +82,8 @@
   "pause": "Pause",
   "resume_game": "Resume game",
   "skip_question": "Skip question",
-  "share_game_tooltip": "Copies game link"
+  "share_game_tooltip": "Copies game link",
+  "copy_game_link": "Copy game link",
+  "link_copied": "Link copied to clipboard",
+  "chat_message": "Chat message"
 }
