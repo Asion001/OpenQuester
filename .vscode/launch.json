@@ -60,6 +60,16 @@
       "program": "lib/main.dart",
     },
     {
+      "name": "siq_encoder app",
+      "cwd": "client",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/src/features/package_compress/view/package_compress_main.dart",
+      "toolArgs": [
+        "--no-enable-impeller"
+      ]
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Server",
