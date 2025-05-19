@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart'
     show ChatOperation, ChatOperationType, SystemMessage, TextMessage;
 import 'package:openquester/openquester.dart';
@@ -19,6 +19,7 @@ class GameLobbyController {
 
   final showChat = ValueNotifier<bool>(false);
   StreamSubscription<ChatOperation>? _chatMessagesSub;
+  double? themeScrollPosition;
 
   String? get gameId => _gameId;
 
@@ -137,6 +138,7 @@ class GameLobbyController {
       _chatMessagesSub = null;
       showChat.value = false;
       gameFinished.value = false;
+      themeScrollPosition = null;
       getIt<SocketChatController>().clear();
       getIt<GameQuestionController>().clear();
     } catch (_) {}
@@ -381,10 +383,11 @@ class GameLobbyController {
 
   /// Resume media after wrong answer
   void _resumeMediaPlay() {
-    final controller = getIt<GameQuestionController>().mediaController.value;
+    final questionController = getIt<GameQuestionController>();
+    final controller = questionController.mediaController.value;
     if (controller == null) return;
 
-    final question = getIt<GameQuestionController>().questionData.value;
+    final question = questionController.questionData.value;
     if (question == null) return;
 
     final displayTime = Duration(milliseconds: question.file?.displayTime ?? 0);
@@ -427,14 +430,15 @@ class GameLobbyController {
     try {
       var mediaPlaytimeMs = 0;
       if (currentQuestion != null) {
+        final file = currentQuestion.answerFiles?.firstOrNull;
         controller.questionData.value = GameQuestionData(
-          file: currentQuestion.answerFiles?.firstOrNull,
+          file: file,
           text: currentQuestion.answerText,
         );
 
         // Wait for user to see answer
         final mediaValue = controller.mediaController.value?.value;
-        if (mediaValue != null) {
+        if (mediaValue != null && file != null) {
           final playtimeLeft = mediaValue.duration - mediaValue.position;
           mediaPlaytimeMs = playtimeLeft.inMilliseconds;
         }

@@ -26,6 +26,7 @@ class _AppState extends State<App> {
       config: getIt<ToastController>().config,
       child: MaterialApp.router(
         title: 'OpenQuester',
+        restorationScopeId: 'app',
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
         routerConfig: getIt<AppRouter>().config(
