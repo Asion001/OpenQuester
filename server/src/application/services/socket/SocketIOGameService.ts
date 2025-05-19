@@ -199,7 +199,10 @@ export class SocketIOGameService {
       gameId,
       GAME_TTL_IN_SECONDS
     );
-    this._validateGameStatus(game);
+
+    if (game.finishedAt !== null) {
+      throw new ClientError(ClientResponse.GAME_FINISHED);
+    }
 
     const player = game.getPlayer(userData.id, { fetchDisconnected: false });
     const gameState = game.gameState;

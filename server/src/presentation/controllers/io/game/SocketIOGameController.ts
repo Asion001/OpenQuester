@@ -11,6 +11,7 @@ import {
 import { ClientError } from "domain/errors/ClientError";
 import { ChatMessageGamePayloadDTO } from "domain/types/dto/game/chat/ChatMessageEventPayloadDTO";
 import { PlayerDTO } from "domain/types/dto/game/player/PlayerDTO";
+import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { GameJoinEventPayload } from "domain/types/socket/events/game/GameJoinEventPayload";
 import { GameLeaveEventPayload } from "domain/types/socket/events/game/GameLeaveEventPayload";
@@ -69,7 +70,7 @@ export class SocketIOGameController {
       this.socket.id
     );
 
-    this.eventEmitter.emit(
+    this.eventEmitter.emit<{ timer: GameStateTimerDTO | null }>(
       SocketIOGameEvents.GAME_UNPAUSE,
       { timer },
       {
@@ -84,7 +85,7 @@ export class SocketIOGameController {
       this.socket.id
     );
 
-    this.eventEmitter.emit(
+    this.eventEmitter.emit<{ timer: GameStateTimerDTO | null }>(
       SocketIOGameEvents.GAME_PAUSE,
       { timer },
       {
