@@ -1,11 +1,11 @@
 import 'package:mason_logger/mason_logger.dart';
-import 'package:siq_compress/src/common/file_command.dart';
+import 'package:siq_compress/src/commands/file_command.dart';
 
-class MetadataCommand extends FileCommand {
-  MetadataCommand({required super.logger});
+class EncodeCommand extends FileCommand {
+  EncodeCommand({required super.logger});
 
   @override
-  String get description => 'Command for getting media file metadata.';
+  String get description => 'Command for encoding media files';
 
   @override
   String get name => 'encode';
