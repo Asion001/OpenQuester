@@ -68,8 +68,8 @@ class ContentXmlParser {
     XmlNode question,
   ) async {
     final price = int.tryParse(question.getAttribute('price') ?? '') ?? -1;
-    final params =
-        question.getElement('params') ?? question.getElement('scenario');
+    final scenario = question.getElement('scenario');
+    final params = question.getElement('params') ?? scenario;
 
     final questionType = QuestionType.values.firstWhereOrNull(
           (e) => e.name == question.getAttribute('type'),
@@ -79,7 +79,7 @@ class ContentXmlParser {
     final paramsChildren = params?.childElements ?? [];
     final questionParam = paramsChildren
             .firstWhereOrNull((e) => e.getAttribute('name') == 'question') ??
-        paramsChildren.firstOrNull;
+        params;
     final questionItems = _getFileItems(questionParam);
     final questionFiles =
         (await Future.wait(questionItems.map(parseFile))).nonNulls;
@@ -87,7 +87,11 @@ class ContentXmlParser {
         .firstWhereOrNull((e) => e.getAttribute('type') == 'say')
         ?.value;
 
-    final questionText = questionParam?.getElement('item')?.innerText;
+    var questionText = questionParam?.getElement('item')?.innerText;
+    if (questionParam?.getElement('atom')?.getAttribute('type') == null) {
+      questionText = questionParam?.innerText;
+    }
+
     final selectionModeString = paramsChildren
         .firstWhereOrNull((e) => e.getAttribute('name') == 'selectionMode')
         ?.innerText;
@@ -121,6 +125,15 @@ class ContentXmlParser {
           (index, e) => PackageQuestionFile(id: null, file: e, order: index),
         )
         .toList();
+
+    if (questionFiles.isEmpty && questionText.isEmptyOrNull) {
+      throw Exception(
+        'Question have no files or text to ask users $question',
+      );
+    }
+    if (questionText?.startsWith('@') ?? false) {
+      print('object');
+    }
 
     return switch (questionType) {
       QuestionType.simple => PackageQuestionUnion.simple(
