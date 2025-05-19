@@ -19,6 +19,7 @@ class SiqCompressCommandRunner extends CompletionCommandRunner<int> {
 
     addCommand(MetadataCommand(logger: _logger));
     addCommand(EncodeCommand(logger: _logger));
+    addCommand(EncodePackageCommand(logger: _logger));
   }
 
   final Logger _logger;
