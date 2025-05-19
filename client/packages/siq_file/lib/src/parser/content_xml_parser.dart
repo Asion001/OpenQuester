@@ -88,8 +88,15 @@ class ContentXmlParser {
         ?.value;
 
     var questionText = questionParam?.getElement('item')?.innerText;
-    if (questionParam?.getElement('atom')?.getAttribute('type') == null) {
-      questionText = questionParam?.innerText;
+    final questionAtomType =
+        questionParam?.getElement('atom')?.getAttribute('type');
+    if (questionAtomType == null) {
+      questionText ??= questionParam?.innerText;
+    } else if (questionAtomType == 'say') {
+      questionText ??= questionParam?.children
+          .where((e) => {null, 'say'}.contains(e.getAttribute('type')))
+          .map((e) => e.innerText)
+          .join(' ');
     }
 
     final selectionModeString = paramsChildren
