@@ -29,6 +29,8 @@ COPY server/package*.json .
 RUN mkdir /app/openapi/
 COPY openapi/schema.json /app/openapi/
 
+COPY server/storage /app/
+
 RUN npm ci --omit=dev
 
 # Copy builded files
