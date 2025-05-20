@@ -164,11 +164,7 @@ class _WideHomeLeftBar extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints.tightFor(width: 220),
       padding: 35.top,
-      child: const Column(
-        children: [
-          _StartGameButton(),
-        ],
-      ),
+      child: const Column(children: [_StartGameButton()]),
     );
   }
 }

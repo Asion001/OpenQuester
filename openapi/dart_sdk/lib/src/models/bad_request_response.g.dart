@@ -7,11 +7,7 @@ part of 'bad_request_response.dart';
 // **************************************************************************
 
 _BadRequestResponse _$BadRequestResponseFromJson(Map<String, dynamic> json) =>
-    _BadRequestResponse(
-      error: json['error'] as String,
-    );
+    _BadRequestResponse(error: json['error'] as String);
 
 Map<String, dynamic> _$BadRequestResponseToJson(_BadRequestResponse instance) =>
-    <String, dynamic>{
-      'error': instance.error,
-    };
+    <String, dynamic>{'error': instance.error};

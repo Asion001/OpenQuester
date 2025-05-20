@@ -7,15 +7,12 @@ part of 'socket_io_question_answer_event_payload.dart';
 // **************************************************************************
 
 _SocketIOQuestionAnswerEventPayload
-    _$SocketIOQuestionAnswerEventPayloadFromJson(Map<String, dynamic> json) =>
-        _SocketIOQuestionAnswerEventPayload(
-          userId: (json['userId'] as num).toInt(),
-          timer: GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),
-        );
+_$SocketIOQuestionAnswerEventPayloadFromJson(Map<String, dynamic> json) =>
+    _SocketIOQuestionAnswerEventPayload(
+      userId: (json['userId'] as num).toInt(),
+      timer: GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$SocketIOQuestionAnswerEventPayloadToJson(
-        _SocketIOQuestionAnswerEventPayload instance) =>
-    <String, dynamic>{
-      'userId': instance.userId,
-      'timer': instance.timer,
-    };
+  _SocketIOQuestionAnswerEventPayload instance,
+) => <String, dynamic>{'userId': instance.userId, 'timer': instance.timer};

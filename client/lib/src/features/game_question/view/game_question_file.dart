@@ -3,16 +3,14 @@ import 'package:openquester/openquester.dart';
 import 'package:video_player/video_player.dart';
 
 class GameQuestionMediaWidget extends WatchingWidget {
-  const GameQuestionMediaWidget({
-    required this.file,
-    super.key,
-  });
+  const GameQuestionMediaWidget({required this.file, super.key});
   final PackageQuestionFile file;
 
   @override
   Widget build(BuildContext context) {
-    final mediaController =
-        watchValue((GameQuestionController e) => e.mediaController);
+    final mediaController = watchValue(
+      (GameQuestionController e) => e.mediaController,
+    );
     final error = watchValue((GameQuestionController e) => e.error);
 
     final url = file.file.link;

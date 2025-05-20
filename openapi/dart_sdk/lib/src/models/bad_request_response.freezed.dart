@@ -15,46 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$BadRequestResponse {
-  String get error;
 
-  /// Create a copy of BadRequestResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $BadRequestResponseCopyWith<BadRequestResponse> get copyWith =>
-      _$BadRequestResponseCopyWithImpl<BadRequestResponse>(
-          this as BadRequestResponse, _$identity);
+ String get error;
+/// Create a copy of BadRequestResponse
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$BadRequestResponseCopyWith<BadRequestResponse> get copyWith => _$BadRequestResponseCopyWithImpl<BadRequestResponse>(this as BadRequestResponse, _$identity);
 
   /// Serializes this BadRequestResponse to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is BadRequestResponse &&
-            (identical(other.error, error) || other.error == error));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, error);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BadRequestResponse&&(identical(other.error, error) || other.error == error));
+}
 
-  @override
-  String toString() {
-    return 'BadRequestResponse(error: $error)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,error);
+
+@override
+String toString() {
+  return 'BadRequestResponse(error: $error)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $BadRequestResponseCopyWith<$Res> {
-  factory $BadRequestResponseCopyWith(
-          BadRequestResponse value, $Res Function(BadRequestResponse) _then) =
-      _$BadRequestResponseCopyWithImpl;
-  @useResult
-  $Res call({String error});
-}
+abstract mixin class $BadRequestResponseCopyWith<$Res>  {
+  factory $BadRequestResponseCopyWith(BadRequestResponse value, $Res Function(BadRequestResponse) _then) = _$BadRequestResponseCopyWithImpl;
+@useResult
+$Res call({
+ String error
+});
 
+
+
+
+}
 /// @nodoc
 class _$BadRequestResponseCopyWithImpl<$Res>
     implements $BadRequestResponseCopyWith<$Res> {
@@ -63,76 +64,67 @@ class _$BadRequestResponseCopyWithImpl<$Res>
   final BadRequestResponse _self;
   final $Res Function(BadRequestResponse) _then;
 
-  /// Create a copy of BadRequestResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_self.copyWith(
-      error: null == error
-          ? _self.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of BadRequestResponse
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? error = null,}) {
+  return _then(_self.copyWith(
+error: null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
+
+}
+
 
 /// @nodoc
 @JsonSerializable()
+
 class _BadRequestResponse implements BadRequestResponse {
   const _BadRequestResponse({required this.error});
-  factory _BadRequestResponse.fromJson(Map<String, dynamic> json) =>
-      _$BadRequestResponseFromJson(json);
+  factory _BadRequestResponse.fromJson(Map<String, dynamic> json) => _$BadRequestResponseFromJson(json);
 
-  @override
-  final String error;
+@override final  String error;
 
-  /// Create a copy of BadRequestResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$BadRequestResponseCopyWith<_BadRequestResponse> get copyWith =>
-      __$BadRequestResponseCopyWithImpl<_BadRequestResponse>(this, _$identity);
+/// Create a copy of BadRequestResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$BadRequestResponseCopyWith<_BadRequestResponse> get copyWith => __$BadRequestResponseCopyWithImpl<_BadRequestResponse>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$BadRequestResponseToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$BadRequestResponseToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _BadRequestResponse &&
-            (identical(other.error, error) || other.error == error));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BadRequestResponse&&(identical(other.error, error) || other.error == error));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, error);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,error);
 
-  @override
-  String toString() {
-    return 'BadRequestResponse(error: $error)';
-  }
+@override
+String toString() {
+  return 'BadRequestResponse(error: $error)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$BadRequestResponseCopyWith<$Res>
-    implements $BadRequestResponseCopyWith<$Res> {
-  factory _$BadRequestResponseCopyWith(
-          _BadRequestResponse value, $Res Function(_BadRequestResponse) _then) =
-      __$BadRequestResponseCopyWithImpl;
-  @override
-  @useResult
-  $Res call({String error});
-}
+abstract mixin class _$BadRequestResponseCopyWith<$Res> implements $BadRequestResponseCopyWith<$Res> {
+  factory _$BadRequestResponseCopyWith(_BadRequestResponse value, $Res Function(_BadRequestResponse) _then) = __$BadRequestResponseCopyWithImpl;
+@override @useResult
+$Res call({
+ String error
+});
 
+
+
+
+}
 /// @nodoc
 class __$BadRequestResponseCopyWithImpl<$Res>
     implements _$BadRequestResponseCopyWith<$Res> {
@@ -141,20 +133,16 @@ class __$BadRequestResponseCopyWithImpl<$Res>
   final _BadRequestResponse _self;
   final $Res Function(_BadRequestResponse) _then;
 
-  /// Create a copy of BadRequestResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_BadRequestResponse(
-      error: null == error
-          ? _self.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of BadRequestResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
+  return _then(_BadRequestResponse(
+error: null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 // dart format on

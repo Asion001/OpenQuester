@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
 class DialogContainer extends StatelessWidget {
-  const DialogContainer({
-    required this.child,
-    super.key,
-  });
+  const DialogContainer({required this.child, super.key});
   final Widget child;
 
   @override

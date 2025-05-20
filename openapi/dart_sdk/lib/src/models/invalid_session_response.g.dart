@@ -7,13 +7,9 @@ part of 'invalid_session_response.dart';
 // **************************************************************************
 
 _InvalidSessionResponse _$InvalidSessionResponseFromJson(
-        Map<String, dynamic> json) =>
-    _InvalidSessionResponse(
-      error: json['error'] as String,
-    );
+  Map<String, dynamic> json,
+) => _InvalidSessionResponse(error: json['error'] as String);
 
 Map<String, dynamic> _$InvalidSessionResponseToJson(
-        _InvalidSessionResponse instance) =>
-    <String, dynamic>{
-      'error': instance.error,
-    };
+  _InvalidSessionResponse instance,
+) => <String, dynamic>{'error': instance.error};

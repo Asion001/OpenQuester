@@ -10,9 +10,7 @@ class ProfileScreen extends WatchingWidget {
     final user = watchValue((ProfileController m) => m.user);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(LocaleKeys.profile.tr()),
-      ),
+      appBar: AppBar(title: Text(LocaleKeys.profile.tr())),
       body: SafeArea(
         child: Column(
           spacing: 16,
@@ -25,8 +23,9 @@ class ProfileScreen extends WatchingWidget {
             const UpdateBtn(),
             Text(
               getIt<AutoUpdateController>().getCurrentVersion,
-              style: context.textTheme.bodySmall
-                  ?.copyWith(color: context.theme.colorScheme.onSurfaceVariant),
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ).paddingBottom(16),
@@ -64,10 +63,7 @@ class _LoginProfile extends WatchingWidget {
             },
             child: const Icon(Icons.discord),
             builder: (context, child, onPressed) {
-              return IconButton(
-                onPressed: onPressed,
-                icon: child,
-              );
+              return IconButton(onPressed: onPressed, icon: child);
             },
           ),
         ],
@@ -116,10 +112,8 @@ class _ChangeAvatarBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LoadingButtonBuilder(
-      builder: (context, child, onPressed) => IconButton.filled(
-        onPressed: onPressed,
-        icon: child,
-      ),
+      builder: (context, child, onPressed) =>
+          IconButton.filled(onPressed: onPressed, icon: child),
       onPressed: getIt<ProfileController>().changeAvatar,
       child: const Icon(Icons.edit),
     );

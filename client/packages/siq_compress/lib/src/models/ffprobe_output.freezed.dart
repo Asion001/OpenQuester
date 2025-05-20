@@ -23,7 +23,9 @@ mixin _$FfprobeOutput {
   @pragma('vm:prefer-inline')
   $FfprobeOutputCopyWith<FfprobeOutput> get copyWith =>
       _$FfprobeOutputCopyWithImpl<FfprobeOutput>(
-          this as FfprobeOutput, _$identity);
+        this as FfprobeOutput,
+        _$identity,
+      );
 
   /// Serializes this FfprobeOutput to a JSON map.
   Map<String, dynamic> toJson();
@@ -40,7 +42,10 @@ mixin _$FfprobeOutput {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(streams), format);
+    runtimeType,
+    const DeepCollectionEquality().hash(streams),
+    format,
+  );
 
   @override
   String toString() {
@@ -51,8 +56,9 @@ mixin _$FfprobeOutput {
 /// @nodoc
 abstract mixin class $FfprobeOutputCopyWith<$Res> {
   factory $FfprobeOutputCopyWith(
-          FfprobeOutput value, $Res Function(FfprobeOutput) _then) =
-      _$FfprobeOutputCopyWithImpl;
+    FfprobeOutput value,
+    $Res Function(FfprobeOutput) _then,
+  ) = _$FfprobeOutputCopyWithImpl;
   @useResult
   $Res call({List<StreamData> streams, FormatData format});
 
@@ -71,20 +77,19 @@ class _$FfprobeOutputCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? streams = null,
-    Object? format = null,
-  }) {
-    return _then(_self.copyWith(
-      streams: null == streams
-          ? _self.streams
-          : streams // ignore: cast_nullable_to_non_nullable
-              as List<StreamData>,
-      format: null == format
-          ? _self.format
-          : format // ignore: cast_nullable_to_non_nullable
-              as FormatData,
-    ));
+  $Res call({Object? streams = null, Object? format = null}) {
+    return _then(
+      _self.copyWith(
+        streams: null == streams
+            ? _self.streams
+            : streams // ignore: cast_nullable_to_non_nullable
+                  as List<StreamData>,
+        format: null == format
+            ? _self.format
+            : format // ignore: cast_nullable_to_non_nullable
+                  as FormatData,
+      ),
+    );
   }
 
   /// Create a copy of FfprobeOutput
@@ -102,9 +107,10 @@ class _$FfprobeOutputCopyWithImpl<$Res>
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _FfprobeOutput implements FfprobeOutput {
-  const _FfprobeOutput(
-      {required final List<StreamData> streams, required this.format})
-      : _streams = streams;
+  const _FfprobeOutput({
+    required final List<StreamData> streams,
+    required this.format,
+  }) : _streams = streams;
   factory _FfprobeOutput.fromJson(Map<String, dynamic> json) =>
       _$FfprobeOutputFromJson(json);
 
@@ -129,9 +135,7 @@ class _FfprobeOutput implements FfprobeOutput {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$FfprobeOutputToJson(
-      this,
-    );
+    return _$FfprobeOutputToJson(this);
   }
 
   @override
@@ -146,7 +150,10 @@ class _FfprobeOutput implements FfprobeOutput {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_streams), format);
+    runtimeType,
+    const DeepCollectionEquality().hash(_streams),
+    format,
+  );
 
   @override
   String toString() {
@@ -158,8 +165,9 @@ class _FfprobeOutput implements FfprobeOutput {
 abstract mixin class _$FfprobeOutputCopyWith<$Res>
     implements $FfprobeOutputCopyWith<$Res> {
   factory _$FfprobeOutputCopyWith(
-          _FfprobeOutput value, $Res Function(_FfprobeOutput) _then) =
-      __$FfprobeOutputCopyWithImpl;
+    _FfprobeOutput value,
+    $Res Function(_FfprobeOutput) _then,
+  ) = __$FfprobeOutputCopyWithImpl;
   @override
   @useResult
   $Res call({List<StreamData> streams, FormatData format});
@@ -180,20 +188,19 @@ class __$FfprobeOutputCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $Res call({
-    Object? streams = null,
-    Object? format = null,
-  }) {
-    return _then(_FfprobeOutput(
-      streams: null == streams
-          ? _self._streams
-          : streams // ignore: cast_nullable_to_non_nullable
-              as List<StreamData>,
-      format: null == format
-          ? _self.format
-          : format // ignore: cast_nullable_to_non_nullable
-              as FormatData,
-    ));
+  $Res call({Object? streams = null, Object? format = null}) {
+    return _then(
+      _FfprobeOutput(
+        streams: null == streams
+            ? _self._streams
+            : streams // ignore: cast_nullable_to_non_nullable
+                  as List<StreamData>,
+        format: null == format
+            ? _self.format
+            : format // ignore: cast_nullable_to_non_nullable
+                  as FormatData,
+      ),
+    );
   }
 
   /// Create a copy of FfprobeOutput
@@ -277,24 +284,25 @@ mixin _$StreamData {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      index,
-      codecName,
-      codecLongName,
-      codecType,
-      profile,
-      width,
-      height,
-      codedWidth,
-      codedHeight,
-      displayAspectRatio,
-      pixFmt,
-      level,
-      sampleFmt,
-      sampleRate,
-      channels,
-      channelLayout,
-      nbFrames);
+    runtimeType,
+    index,
+    codecName,
+    codecLongName,
+    codecType,
+    profile,
+    width,
+    height,
+    codedWidth,
+    codedHeight,
+    displayAspectRatio,
+    pixFmt,
+    level,
+    sampleFmt,
+    sampleRate,
+    channels,
+    channelLayout,
+    nbFrames,
+  );
 
   @override
   String toString() {
@@ -305,29 +313,31 @@ mixin _$StreamData {
 /// @nodoc
 abstract mixin class $StreamDataCopyWith<$Res> {
   factory $StreamDataCopyWith(
-          StreamData value, $Res Function(StreamData) _then) =
-      _$StreamDataCopyWithImpl;
+    StreamData value,
+    $Res Function(StreamData) _then,
+  ) = _$StreamDataCopyWithImpl;
   @useResult
-  $Res call(
-      {int index,
-      String? codecName,
-      String? codecLongName,
-      @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
-      CodecType? codecType,
-      String? profile,
-      int? width,
-      int? height,
-      int? codedWidth,
-      int? codedHeight,
-      String? displayAspectRatio,
-      String? pixFmt,
-      int? level,
-      @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
-      SampleFormat? sampleFmt,
-      String? sampleRate,
-      int? channels,
-      String? channelLayout,
-      String? nbFrames});
+  $Res call({
+    int index,
+    String? codecName,
+    String? codecLongName,
+    @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+    CodecType? codecType,
+    String? profile,
+    int? width,
+    int? height,
+    int? codedWidth,
+    int? codedHeight,
+    String? displayAspectRatio,
+    String? pixFmt,
+    int? level,
+    @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
+    SampleFormat? sampleFmt,
+    String? sampleRate,
+    int? channels,
+    String? channelLayout,
+    String? nbFrames,
+  });
 }
 
 /// @nodoc
@@ -360,76 +370,78 @@ class _$StreamDataCopyWithImpl<$Res> implements $StreamDataCopyWith<$Res> {
     Object? channelLayout = freezed,
     Object? nbFrames = freezed,
   }) {
-    return _then(_self.copyWith(
-      index: null == index
-          ? _self.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
-      codecName: freezed == codecName
-          ? _self.codecName
-          : codecName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      codecLongName: freezed == codecLongName
-          ? _self.codecLongName
-          : codecLongName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      codecType: freezed == codecType
-          ? _self.codecType
-          : codecType // ignore: cast_nullable_to_non_nullable
-              as CodecType?,
-      profile: freezed == profile
-          ? _self.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as String?,
-      width: freezed == width
-          ? _self.width
-          : width // ignore: cast_nullable_to_non_nullable
-              as int?,
-      height: freezed == height
-          ? _self.height
-          : height // ignore: cast_nullable_to_non_nullable
-              as int?,
-      codedWidth: freezed == codedWidth
-          ? _self.codedWidth
-          : codedWidth // ignore: cast_nullable_to_non_nullable
-              as int?,
-      codedHeight: freezed == codedHeight
-          ? _self.codedHeight
-          : codedHeight // ignore: cast_nullable_to_non_nullable
-              as int?,
-      displayAspectRatio: freezed == displayAspectRatio
-          ? _self.displayAspectRatio
-          : displayAspectRatio // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pixFmt: freezed == pixFmt
-          ? _self.pixFmt
-          : pixFmt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      level: freezed == level
-          ? _self.level
-          : level // ignore: cast_nullable_to_non_nullable
-              as int?,
-      sampleFmt: freezed == sampleFmt
-          ? _self.sampleFmt
-          : sampleFmt // ignore: cast_nullable_to_non_nullable
-              as SampleFormat?,
-      sampleRate: freezed == sampleRate
-          ? _self.sampleRate
-          : sampleRate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      channels: freezed == channels
-          ? _self.channels
-          : channels // ignore: cast_nullable_to_non_nullable
-              as int?,
-      channelLayout: freezed == channelLayout
-          ? _self.channelLayout
-          : channelLayout // ignore: cast_nullable_to_non_nullable
-              as String?,
-      nbFrames: freezed == nbFrames
-          ? _self.nbFrames
-          : nbFrames // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _self.copyWith(
+        index: null == index
+            ? _self.index
+            : index // ignore: cast_nullable_to_non_nullable
+                  as int,
+        codecName: freezed == codecName
+            ? _self.codecName
+            : codecName // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        codecLongName: freezed == codecLongName
+            ? _self.codecLongName
+            : codecLongName // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        codecType: freezed == codecType
+            ? _self.codecType
+            : codecType // ignore: cast_nullable_to_non_nullable
+                  as CodecType?,
+        profile: freezed == profile
+            ? _self.profile
+            : profile // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        width: freezed == width
+            ? _self.width
+            : width // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        height: freezed == height
+            ? _self.height
+            : height // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        codedWidth: freezed == codedWidth
+            ? _self.codedWidth
+            : codedWidth // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        codedHeight: freezed == codedHeight
+            ? _self.codedHeight
+            : codedHeight // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        displayAspectRatio: freezed == displayAspectRatio
+            ? _self.displayAspectRatio
+            : displayAspectRatio // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        pixFmt: freezed == pixFmt
+            ? _self.pixFmt
+            : pixFmt // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        level: freezed == level
+            ? _self.level
+            : level // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        sampleFmt: freezed == sampleFmt
+            ? _self.sampleFmt
+            : sampleFmt // ignore: cast_nullable_to_non_nullable
+                  as SampleFormat?,
+        sampleRate: freezed == sampleRate
+            ? _self.sampleRate
+            : sampleRate // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        channels: freezed == channels
+            ? _self.channels
+            : channels // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        channelLayout: freezed == channelLayout
+            ? _self.channelLayout
+            : channelLayout // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        nbFrames: freezed == nbFrames
+            ? _self.nbFrames
+            : nbFrames // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
   }
 }
 
@@ -437,26 +449,27 @@ class _$StreamDataCopyWithImpl<$Res> implements $StreamDataCopyWith<$Res> {
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _StreamData implements StreamData {
-  const _StreamData(
-      {required this.index,
-      this.codecName,
-      this.codecLongName,
-      @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
-      this.codecType,
-      this.profile,
-      this.width,
-      this.height,
-      this.codedWidth,
-      this.codedHeight,
-      this.displayAspectRatio,
-      this.pixFmt,
-      this.level,
-      @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
-      this.sampleFmt,
-      this.sampleRate,
-      this.channels,
-      this.channelLayout,
-      this.nbFrames});
+  const _StreamData({
+    required this.index,
+    this.codecName,
+    this.codecLongName,
+    @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+    this.codecType,
+    this.profile,
+    this.width,
+    this.height,
+    this.codedWidth,
+    this.codedHeight,
+    this.displayAspectRatio,
+    this.pixFmt,
+    this.level,
+    @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
+    this.sampleFmt,
+    this.sampleRate,
+    this.channels,
+    this.channelLayout,
+    this.nbFrames,
+  });
   factory _StreamData.fromJson(Map<String, dynamic> json) =>
       _$StreamDataFromJson(json);
 
@@ -507,9 +520,7 @@ class _StreamData implements StreamData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$StreamDataToJson(
-      this,
-    );
+    return _$StreamDataToJson(this);
   }
 
   @override
@@ -550,24 +561,25 @@ class _StreamData implements StreamData {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      index,
-      codecName,
-      codecLongName,
-      codecType,
-      profile,
-      width,
-      height,
-      codedWidth,
-      codedHeight,
-      displayAspectRatio,
-      pixFmt,
-      level,
-      sampleFmt,
-      sampleRate,
-      channels,
-      channelLayout,
-      nbFrames);
+    runtimeType,
+    index,
+    codecName,
+    codecLongName,
+    codecType,
+    profile,
+    width,
+    height,
+    codedWidth,
+    codedHeight,
+    displayAspectRatio,
+    pixFmt,
+    level,
+    sampleFmt,
+    sampleRate,
+    channels,
+    channelLayout,
+    nbFrames,
+  );
 
   @override
   String toString() {
@@ -579,30 +591,32 @@ class _StreamData implements StreamData {
 abstract mixin class _$StreamDataCopyWith<$Res>
     implements $StreamDataCopyWith<$Res> {
   factory _$StreamDataCopyWith(
-          _StreamData value, $Res Function(_StreamData) _then) =
-      __$StreamDataCopyWithImpl;
+    _StreamData value,
+    $Res Function(_StreamData) _then,
+  ) = __$StreamDataCopyWithImpl;
   @override
   @useResult
-  $Res call(
-      {int index,
-      String? codecName,
-      String? codecLongName,
-      @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
-      CodecType? codecType,
-      String? profile,
-      int? width,
-      int? height,
-      int? codedWidth,
-      int? codedHeight,
-      String? displayAspectRatio,
-      String? pixFmt,
-      int? level,
-      @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
-      SampleFormat? sampleFmt,
-      String? sampleRate,
-      int? channels,
-      String? channelLayout,
-      String? nbFrames});
+  $Res call({
+    int index,
+    String? codecName,
+    String? codecLongName,
+    @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+    CodecType? codecType,
+    String? profile,
+    int? width,
+    int? height,
+    int? codedWidth,
+    int? codedHeight,
+    String? displayAspectRatio,
+    String? pixFmt,
+    int? level,
+    @JsonKey(fromJson: _sampleFormatFromString, toJson: _sampleFormatToString)
+    SampleFormat? sampleFmt,
+    String? sampleRate,
+    int? channels,
+    String? channelLayout,
+    String? nbFrames,
+  });
 }
 
 /// @nodoc
@@ -635,76 +649,78 @@ class __$StreamDataCopyWithImpl<$Res> implements _$StreamDataCopyWith<$Res> {
     Object? channelLayout = freezed,
     Object? nbFrames = freezed,
   }) {
-    return _then(_StreamData(
-      index: null == index
-          ? _self.index
-          : index // ignore: cast_nullable_to_non_nullable
-              as int,
-      codecName: freezed == codecName
-          ? _self.codecName
-          : codecName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      codecLongName: freezed == codecLongName
-          ? _self.codecLongName
-          : codecLongName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      codecType: freezed == codecType
-          ? _self.codecType
-          : codecType // ignore: cast_nullable_to_non_nullable
-              as CodecType?,
-      profile: freezed == profile
-          ? _self.profile
-          : profile // ignore: cast_nullable_to_non_nullable
-              as String?,
-      width: freezed == width
-          ? _self.width
-          : width // ignore: cast_nullable_to_non_nullable
-              as int?,
-      height: freezed == height
-          ? _self.height
-          : height // ignore: cast_nullable_to_non_nullable
-              as int?,
-      codedWidth: freezed == codedWidth
-          ? _self.codedWidth
-          : codedWidth // ignore: cast_nullable_to_non_nullable
-              as int?,
-      codedHeight: freezed == codedHeight
-          ? _self.codedHeight
-          : codedHeight // ignore: cast_nullable_to_non_nullable
-              as int?,
-      displayAspectRatio: freezed == displayAspectRatio
-          ? _self.displayAspectRatio
-          : displayAspectRatio // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pixFmt: freezed == pixFmt
-          ? _self.pixFmt
-          : pixFmt // ignore: cast_nullable_to_non_nullable
-              as String?,
-      level: freezed == level
-          ? _self.level
-          : level // ignore: cast_nullable_to_non_nullable
-              as int?,
-      sampleFmt: freezed == sampleFmt
-          ? _self.sampleFmt
-          : sampleFmt // ignore: cast_nullable_to_non_nullable
-              as SampleFormat?,
-      sampleRate: freezed == sampleRate
-          ? _self.sampleRate
-          : sampleRate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      channels: freezed == channels
-          ? _self.channels
-          : channels // ignore: cast_nullable_to_non_nullable
-              as int?,
-      channelLayout: freezed == channelLayout
-          ? _self.channelLayout
-          : channelLayout // ignore: cast_nullable_to_non_nullable
-              as String?,
-      nbFrames: freezed == nbFrames
-          ? _self.nbFrames
-          : nbFrames // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _StreamData(
+        index: null == index
+            ? _self.index
+            : index // ignore: cast_nullable_to_non_nullable
+                  as int,
+        codecName: freezed == codecName
+            ? _self.codecName
+            : codecName // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        codecLongName: freezed == codecLongName
+            ? _self.codecLongName
+            : codecLongName // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        codecType: freezed == codecType
+            ? _self.codecType
+            : codecType // ignore: cast_nullable_to_non_nullable
+                  as CodecType?,
+        profile: freezed == profile
+            ? _self.profile
+            : profile // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        width: freezed == width
+            ? _self.width
+            : width // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        height: freezed == height
+            ? _self.height
+            : height // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        codedWidth: freezed == codedWidth
+            ? _self.codedWidth
+            : codedWidth // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        codedHeight: freezed == codedHeight
+            ? _self.codedHeight
+            : codedHeight // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        displayAspectRatio: freezed == displayAspectRatio
+            ? _self.displayAspectRatio
+            : displayAspectRatio // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        pixFmt: freezed == pixFmt
+            ? _self.pixFmt
+            : pixFmt // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        level: freezed == level
+            ? _self.level
+            : level // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        sampleFmt: freezed == sampleFmt
+            ? _self.sampleFmt
+            : sampleFmt // ignore: cast_nullable_to_non_nullable
+                  as SampleFormat?,
+        sampleRate: freezed == sampleRate
+            ? _self.sampleRate
+            : sampleRate // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        channels: freezed == channels
+            ? _self.channels
+            : channels // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        channelLayout: freezed == channelLayout
+            ? _self.channelLayout
+            : channelLayout // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        nbFrames: freezed == nbFrames
+            ? _self.nbFrames
+            : nbFrames // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
   }
 }
 
@@ -749,8 +765,16 @@ mixin _$FormatData {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, filename, formatName,
-      formatLongName, size, bitRate, duration, startTime);
+  int get hashCode => Object.hash(
+    runtimeType,
+    filename,
+    formatName,
+    formatLongName,
+    size,
+    bitRate,
+    duration,
+    startTime,
+  );
 
   @override
   String toString() {
@@ -761,17 +785,19 @@ mixin _$FormatData {
 /// @nodoc
 abstract mixin class $FormatDataCopyWith<$Res> {
   factory $FormatDataCopyWith(
-          FormatData value, $Res Function(FormatData) _then) =
-      _$FormatDataCopyWithImpl;
+    FormatData value,
+    $Res Function(FormatData) _then,
+  ) = _$FormatDataCopyWithImpl;
   @useResult
-  $Res call(
-      {String filename,
-      String formatName,
-      String formatLongName,
-      String size,
-      String? bitRate,
-      String? duration,
-      String? startTime});
+  $Res call({
+    String filename,
+    String formatName,
+    String formatLongName,
+    String size,
+    String? bitRate,
+    String? duration,
+    String? startTime,
+  });
 }
 
 /// @nodoc
@@ -794,36 +820,38 @@ class _$FormatDataCopyWithImpl<$Res> implements $FormatDataCopyWith<$Res> {
     Object? duration = freezed,
     Object? startTime = freezed,
   }) {
-    return _then(_self.copyWith(
-      filename: null == filename
-          ? _self.filename
-          : filename // ignore: cast_nullable_to_non_nullable
-              as String,
-      formatName: null == formatName
-          ? _self.formatName
-          : formatName // ignore: cast_nullable_to_non_nullable
-              as String,
-      formatLongName: null == formatLongName
-          ? _self.formatLongName
-          : formatLongName // ignore: cast_nullable_to_non_nullable
-              as String,
-      size: null == size
-          ? _self.size
-          : size // ignore: cast_nullable_to_non_nullable
-              as String,
-      bitRate: freezed == bitRate
-          ? _self.bitRate
-          : bitRate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      duration: freezed == duration
-          ? _self.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as String?,
-      startTime: freezed == startTime
-          ? _self.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _self.copyWith(
+        filename: null == filename
+            ? _self.filename
+            : filename // ignore: cast_nullable_to_non_nullable
+                  as String,
+        formatName: null == formatName
+            ? _self.formatName
+            : formatName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        formatLongName: null == formatLongName
+            ? _self.formatLongName
+            : formatLongName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        size: null == size
+            ? _self.size
+            : size // ignore: cast_nullable_to_non_nullable
+                  as String,
+        bitRate: freezed == bitRate
+            ? _self.bitRate
+            : bitRate // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        duration: freezed == duration
+            ? _self.duration
+            : duration // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        startTime: freezed == startTime
+            ? _self.startTime
+            : startTime // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
   }
 }
 
@@ -831,14 +859,15 @@ class _$FormatDataCopyWithImpl<$Res> implements $FormatDataCopyWith<$Res> {
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _FormatData implements FormatData {
-  const _FormatData(
-      {required this.filename,
-      required this.formatName,
-      required this.formatLongName,
-      required this.size,
-      this.bitRate,
-      this.duration,
-      this.startTime});
+  const _FormatData({
+    required this.filename,
+    required this.formatName,
+    required this.formatLongName,
+    required this.size,
+    this.bitRate,
+    this.duration,
+    this.startTime,
+  });
   factory _FormatData.fromJson(Map<String, dynamic> json) =>
       _$FormatDataFromJson(json);
 
@@ -867,9 +896,7 @@ class _FormatData implements FormatData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$FormatDataToJson(
-      this,
-    );
+    return _$FormatDataToJson(this);
   }
 
   @override
@@ -893,8 +920,16 @@ class _FormatData implements FormatData {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, filename, formatName,
-      formatLongName, size, bitRate, duration, startTime);
+  int get hashCode => Object.hash(
+    runtimeType,
+    filename,
+    formatName,
+    formatLongName,
+    size,
+    bitRate,
+    duration,
+    startTime,
+  );
 
   @override
   String toString() {
@@ -906,18 +941,20 @@ class _FormatData implements FormatData {
 abstract mixin class _$FormatDataCopyWith<$Res>
     implements $FormatDataCopyWith<$Res> {
   factory _$FormatDataCopyWith(
-          _FormatData value, $Res Function(_FormatData) _then) =
-      __$FormatDataCopyWithImpl;
+    _FormatData value,
+    $Res Function(_FormatData) _then,
+  ) = __$FormatDataCopyWithImpl;
   @override
   @useResult
-  $Res call(
-      {String filename,
-      String formatName,
-      String formatLongName,
-      String size,
-      String? bitRate,
-      String? duration,
-      String? startTime});
+  $Res call({
+    String filename,
+    String formatName,
+    String formatLongName,
+    String size,
+    String? bitRate,
+    String? duration,
+    String? startTime,
+  });
 }
 
 /// @nodoc
@@ -940,35 +977,37 @@ class __$FormatDataCopyWithImpl<$Res> implements _$FormatDataCopyWith<$Res> {
     Object? duration = freezed,
     Object? startTime = freezed,
   }) {
-    return _then(_FormatData(
-      filename: null == filename
-          ? _self.filename
-          : filename // ignore: cast_nullable_to_non_nullable
-              as String,
-      formatName: null == formatName
-          ? _self.formatName
-          : formatName // ignore: cast_nullable_to_non_nullable
-              as String,
-      formatLongName: null == formatLongName
-          ? _self.formatLongName
-          : formatLongName // ignore: cast_nullable_to_non_nullable
-              as String,
-      size: null == size
-          ? _self.size
-          : size // ignore: cast_nullable_to_non_nullable
-              as String,
-      bitRate: freezed == bitRate
-          ? _self.bitRate
-          : bitRate // ignore: cast_nullable_to_non_nullable
-              as String?,
-      duration: freezed == duration
-          ? _self.duration
-          : duration // ignore: cast_nullable_to_non_nullable
-              as String?,
-      startTime: freezed == startTime
-          ? _self.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _FormatData(
+        filename: null == filename
+            ? _self.filename
+            : filename // ignore: cast_nullable_to_non_nullable
+                  as String,
+        formatName: null == formatName
+            ? _self.formatName
+            : formatName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        formatLongName: null == formatLongName
+            ? _self.formatLongName
+            : formatLongName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        size: null == size
+            ? _self.size
+            : size // ignore: cast_nullable_to_non_nullable
+                  as String,
+        bitRate: freezed == bitRate
+            ? _self.bitRate
+            : bitRate // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        duration: freezed == duration
+            ? _self.duration
+            : duration // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        startTime: freezed == startTime
+            ? _self.startTime
+            : startTime // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
   }
 }

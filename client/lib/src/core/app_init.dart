@@ -37,8 +37,9 @@ class AppInit {
       if (kIsWasm || kIsWeb) 'WASM': kIsWasm,
     };
 
-    final result =
-        parameters.entries.map((e) => '${e.key}: ${e.value}').join('\n');
+    final result = parameters.entries
+        .map((e) => '${e.key}: ${e.value}')
+        .join('\n');
     return result;
   }
 

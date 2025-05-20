@@ -48,8 +48,8 @@ class AppAnimatedSwitcher extends StatelessWidget {
           ? child
           // switch between your real child and an empty placeholder
           : visible!
-              ? KeyedSubtree(key: const ValueKey('content'), child: child)
-              : const SizedBox.shrink(key: ValueKey('empty')),
+          ? KeyedSubtree(key: const ValueKey('content'), child: child)
+          : const SizedBox.shrink(key: ValueKey('empty')),
     );
   }
 }

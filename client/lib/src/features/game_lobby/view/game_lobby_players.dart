@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
 class GameLobbyPlayers extends WatchingWidget {
-  const GameLobbyPlayers({
-    required this.axis,
-    super.key,
-  });
+  const GameLobbyPlayers({required this.axis, super.key});
   final Axis axis;
 
   @override
@@ -15,7 +12,8 @@ class GameLobbyPlayers extends WatchingWidget {
     final answeringPlayer = gameData?.gameState.answeringPlayer;
     const roleToShow = {PlayerRole.player, PlayerRole.showman};
     const inGame = PlayerDataStatus.inGame;
-    final players = gameData?.players
+    final players =
+        gameData?.players
             .where((p) => roleToShow.contains(p.role) && p.status == inGame)
             .sorted((a, b) => a.role == PlayerRole.showman ? 0 : 1)
             .toList() ??
@@ -28,8 +26,9 @@ class GameLobbyPlayers extends WatchingWidget {
       separatorBuilder: (context, index) => const SizedBox.square(dimension: 8),
       itemBuilder: (context, index) {
         final player = players[index];
-        final answeredPlayer = answeredPlayers
-            ?.firstWhereOrNull((e) => e.player == player.meta.id);
+        final answeredPlayer = answeredPlayers?.firstWhereOrNull(
+          (e) => e.player == player.meta.id,
+        );
         final result = answeredPlayer?.result;
         final showUserAnsweredCorrect = _getPlayerAnswerState(result);
 
@@ -69,8 +68,8 @@ class GameLobbyPlayer extends WatchingWidget {
     final borderColor = playerAnswerState == PlayerAnswerState.wrong
         ? Colors.red
         : playerAnswerState == PlayerAnswerState.correct
-            ? extraColors.success
-            : null;
+        ? extraColors.success
+        : null;
 
     return Container(
       decoration: BoxDecoration(
@@ -147,8 +146,10 @@ class GameLobbyPlayer extends WatchingWidget {
                 alignment: Alignment.bottomRight,
                 child: const Icon(Icons.more_horiz).paddingAll(2),
               ),
-            if (!{PlayerAnswerState.skip, PlayerAnswerState.none}
-                .contains(playerAnswerState))
+            if (!{
+              PlayerAnswerState.skip,
+              PlayerAnswerState.none,
+            }.contains(playerAnswerState))
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Icon(
@@ -165,9 +166,7 @@ class GameLobbyPlayer extends WatchingWidget {
 }
 
 class _PlayerScoreText extends StatelessWidget {
-  const _PlayerScoreText({
-    required this.score,
-  });
+  const _PlayerScoreText({required this.score});
 
   final int score;
 
@@ -184,9 +183,6 @@ class _PlayerScoreText extends StatelessWidget {
 
     if (!compactFormat) return text;
 
-    return Tooltip(
-      message: decimalFormater.format(score),
-      child: text,
-    );
+    return Tooltip(message: decimalFormater.format(score), child: text);
   }
 }

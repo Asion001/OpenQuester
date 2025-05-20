@@ -7,11 +7,7 @@ part of 'file_link_response.dart';
 // **************************************************************************
 
 _FileLinkResponse _$FileLinkResponseFromJson(Map<String, dynamic> json) =>
-    _FileLinkResponse(
-      url: json['url'] as String,
-    );
+    _FileLinkResponse(url: json['url'] as String);
 
 Map<String, dynamic> _$FileLinkResponseToJson(_FileLinkResponse instance) =>
-    <String, dynamic>{
-      'url': instance.url,
-    };
+    <String, dynamic>{'url': instance.url};

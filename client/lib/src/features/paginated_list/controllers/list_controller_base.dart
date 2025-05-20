@@ -52,9 +52,7 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
     }
 
     // Emit a new state with updated pages
-    pagingController.value = state.copyWith(
-      pages: newPages,
-    );
+    pagingController.value = state.copyWith(pages: newPages);
   }
 
   @protected
@@ -69,9 +67,7 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
     // Rebuild pages array with the new first page
     final newPages = [firstPage, ...pages.sublist(1)];
 
-    pagingController.value = state.copyWith(
-      pages: newPages,
-    );
+    pagingController.value = state.copyWith(pages: newPages);
   }
 
   @protected
@@ -92,9 +88,7 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
       }
     }
 
-    pagingController.value = state.copyWith(
-      pages: newPages,
-    );
+    pagingController.value = state.copyWith(pages: newPages);
   }
 
   @override
@@ -117,11 +111,7 @@ abstract class ListControllerBase<I extends dynamic> extends ChangeNotifier {
 }
 
 class ListRequest {
-  const ListRequest({
-    required this.offset,
-    this.limit = 20,
-    this.query,
-  });
+  const ListRequest({required this.offset, this.limit = 20, this.query});
   final int limit;
   final int offset;
   final String? query;

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:openquester/common_imports.dart';
 
-class PaginatedListWidget<_Controller extends ListControllerBase<ListItem>,
-    ListItem> extends StatelessWidget {
+class PaginatedListWidget<
+  _Controller extends ListControllerBase<ListItem>,
+  ListItem
+>
+    extends StatelessWidget {
   const PaginatedListWidget({required this.itemBuilder, super.key});
 
   final Widget Function(BuildContext, ListItem, int) itemBuilder;
@@ -17,14 +20,14 @@ class PaginatedListWidget<_Controller extends ListControllerBase<ListItem>,
           controller: getIt<_Controller>().pagingController,
           builder: (context, state, fetchNextPage) =>
               PagedListView<int, ListItem>(
-            state: state,
-            fetchNextPage: fetchNextPage,
-            padding: const EdgeInsets.only(bottom: 8),
-            builderDelegate: PagedChildBuilderDelegate<ListItem>(
-              animateTransitions: true,
-              itemBuilder: itemBuilder,
-            ),
-          ),
+                state: state,
+                fetchNextPage: fetchNextPage,
+                padding: const EdgeInsets.only(bottom: 8),
+                builderDelegate: PagedChildBuilderDelegate<ListItem>(
+                  animateTransitions: true,
+                  itemBuilder: itemBuilder,
+                ),
+              ),
         ),
       ),
     );

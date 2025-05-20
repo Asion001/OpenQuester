@@ -1,6 +1,1 @@
-enum PlayerAnswerState {
-  none,
-  correct,
-  wrong,
-  skip,
-}
+enum PlayerAnswerState { none, correct, wrong, skip }

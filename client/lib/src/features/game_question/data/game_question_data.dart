@@ -6,10 +6,8 @@ part 'game_question_data.g.dart';
 
 @freezed
 abstract class GameQuestionData with _$GameQuestionData {
-  const factory GameQuestionData({
-    String? text,
-    PackageQuestionFile? file,
-  }) = _GameQuestionData;
+  const factory GameQuestionData({String? text, PackageQuestionFile? file}) =
+      _GameQuestionData;
 
   factory GameQuestionData.fromJson(Map<String, dynamic> json) =>
       _$GameQuestionDataFromJson(json);

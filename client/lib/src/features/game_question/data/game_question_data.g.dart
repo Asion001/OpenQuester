@@ -15,7 +15,4 @@ _GameQuestionData _$GameQuestionDataFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$GameQuestionDataToJson(_GameQuestionData instance) =>
-    <String, dynamic>{
-      'text': instance.text,
-      'file': instance.file,
-    };
+    <String, dynamic>{'text': instance.text, 'file': instance.file};

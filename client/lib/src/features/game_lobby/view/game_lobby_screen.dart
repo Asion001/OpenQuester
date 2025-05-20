@@ -3,10 +3,7 @@ import 'package:openquester/common_imports.dart';
 
 @RoutePage()
 class GameLobbyScreen extends WatchingStatefulWidget {
-  const GameLobbyScreen({
-    @PathParam() required this.gameId,
-    super.key,
-  });
+  const GameLobbyScreen({@PathParam() required this.gameId, super.key});
   final String gameId;
 
   @override
@@ -40,14 +37,12 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
     final chatWideModeOn = GameLobbyStyles.desktopChat(context);
     final showDesktopChat = chatWideModeOn && showChat;
 
-    callOnce(
-      (context) {
-        // Set init value for showing chat to [false] for mobile
-        if (chatWideModeOn) {
-          getIt<GameLobbyController>().showChat.value = true;
-        }
-      },
-    );
+    callOnce((context) {
+      // Set init value for showing chat to [false] for mobile
+      if (chatWideModeOn) {
+        getIt<GameLobbyController>().showChat.value = true;
+      }
+    });
 
     return PopScope(
       canPop: false,
@@ -113,8 +108,9 @@ class _BodyBuilder extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
-    final currentQuestion =
-        watchValue((GameQuestionController e) => e.questionData);
+    final currentQuestion = watchValue(
+      (GameQuestionController e) => e.questionData,
+    );
     final gameFinished = watchValue((GameLobbyController e) => e.gameFinished);
     final isPaused = gameData?.gameState.isPaused ?? false;
 
@@ -185,8 +181,9 @@ class _BodyLayoutBuilder extends WatchingWidget {
     } else {
       child = Column(
         children: [
-          const GameLobbyPlayers(axis: Axis.horizontal)
-              .withHeight(GameLobbyStyles.playersMobile.height),
+          const GameLobbyPlayers(
+            axis: Axis.horizontal,
+          ).withHeight(GameLobbyStyles.playersMobile.height),
           const Divider(height: 0, thickness: .4).paddingTop(8),
           body,
         ],

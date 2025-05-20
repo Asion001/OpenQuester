@@ -15,7 +15,4 @@ _PaginatedUsers _$PaginatedUsersFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$PaginatedUsersToJson(_PaginatedUsers instance) =>
-    <String, dynamic>{
-      'data': instance.data,
-      'pageInfo': instance.pageInfo,
-    };
+    <String, dynamic>{'data': instance.data, 'pageInfo': instance.pageInfo};

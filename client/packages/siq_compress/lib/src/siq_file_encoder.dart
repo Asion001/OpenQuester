@@ -52,10 +52,12 @@ class SiqFileEncoder {
   }
 
   CodecType? getFileType(FfprobeOutput metadata) {
-    final withVideo = metadata.streams
-        .firstWhereOrNull((e) => e.codecType == CodecType.video);
-    final withAudio = metadata.streams
-        .firstWhereOrNull((e) => e.codecType == CodecType.audio);
+    final withVideo = metadata.streams.firstWhereOrNull(
+      (e) => e.codecType == CodecType.video,
+    );
+    final withAudio = metadata.streams.firstWhereOrNull(
+      (e) => e.codecType == CodecType.audio,
+    );
     if (withVideo != null) {
       final frames = int.tryParse(withVideo.nbFrames ?? '') ?? -1;
       if (frames > 1) return CodecType.video;
@@ -75,10 +77,12 @@ class SiqFileEncoder {
   }
 
   Future<File?> encodePackage(File file) async {
-    final inputDir =
-        Directory([file.parent.path, 'input'].join(Platform.pathSeparator));
-    final outputDir =
-        Directory([file.parent.path, 'output'].join(Platform.pathSeparator));
+    final inputDir = Directory(
+      [file.parent.path, 'input'].join(Platform.pathSeparator),
+    );
+    final outputDir = Directory(
+      [file.parent.path, 'output'].join(Platform.pathSeparator),
+    );
     await outputDir.create();
 
     await extractFileToDisk(file.path, inputDir.path);
@@ -137,10 +141,7 @@ class SiqFileEncoder {
     final encoder = ZipFileEncoder();
     await file.delete();
     final outputArchiveFile = File(file.path);
-    await encoder.zipDirectory(
-      outputDir,
-      filename: outputArchiveFile.path,
-    );
+    await encoder.zipDirectory(outputDir, filename: outputArchiveFile.path);
 
     return outputArchiveFile;
   }

@@ -103,8 +103,10 @@ class _QuestionBottom extends WatchingWidget {
     final me = gameData?.me;
     final imShowman = me?.role == PlayerRole.showman;
     final answeringPlayer = gameData?.gameState.answeringPlayer;
-    final iAlreadyAnswered = gameData?.gameState.answeredPlayers
-            ?.any((e) => e.player == me?.meta.id) ??
+    final iAlreadyAnswered =
+        gameData?.gameState.answeredPlayers?.any(
+          (e) => e.player == me?.meta.id,
+        ) ??
         false;
     final showingQuestion = gameData?.gameState.currentQuestion != null;
 
@@ -193,8 +195,9 @@ class _AnsweringWidget extends WatchingWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  LocaleKeys.question_user_is_answering
-                      .tr(args: [answeringPlayer?.meta.username ?? '']),
+                  LocaleKeys.question_user_is_answering.tr(
+                    args: [answeringPlayer?.meta.username ?? ''],
+                  ),
                   textAlign: TextAlign.center,
                   style: context.textTheme.bodyLarge,
                 ),
@@ -221,20 +224,16 @@ class _ShowmanControlls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> multiplierBtns({
-      required bool playerAnswerIsRight,
-    }) {
-      return [0.5, 2.0].map(
-        (e) {
-          return FilledButton.tonal(
-            onPressed: () => getIt<GameLobbyController>().answerResult(
-              playerAnswerIsRight: playerAnswerIsRight,
-              multiplier: e,
-            ),
-            child: Text('${e >= 1 ? e.toInt() : e}X'),
-          );
-        },
-      ).toList();
+    List<Widget> multiplierBtns({required bool playerAnswerIsRight}) {
+      return [0.5, 2.0].map((e) {
+        return FilledButton.tonal(
+          onPressed: () => getIt<GameLobbyController>().answerResult(
+            playerAnswerIsRight: playerAnswerIsRight,
+            multiplier: e,
+          ),
+          child: Text('${e >= 1 ? e.toInt() : e}X'),
+        );
+      }).toList();
     }
 
     Widget buttons({required bool correctAnswer}) {
@@ -245,8 +244,9 @@ class _ShowmanControlls extends StatelessWidget {
           alignment: WrapAlignment.center,
           children: [
             FilledButton.icon(
-              onPressed: () => getIt<GameLobbyController>()
-                  .answerResult(playerAnswerIsRight: correctAnswer),
+              onPressed: () => getIt<GameLobbyController>().answerResult(
+                playerAnswerIsRight: correctAnswer,
+              ),
               icon: Icon(correctAnswer ? Icons.check : Icons.close),
               label: Text(
                 correctAnswer
@@ -262,8 +262,10 @@ class _ShowmanControlls extends StatelessWidget {
 
     Widget zeroSkipButton() {
       return FilledButton.tonal(
-        onPressed: () => getIt<GameLobbyController>()
-            .answerResult(playerAnswerIsRight: true, multiplier: 0),
+        onPressed: () => getIt<GameLobbyController>().answerResult(
+          playerAnswerIsRight: true,
+          multiplier: 0,
+        ),
         child: const Text('0X'),
       );
     }

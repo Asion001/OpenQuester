@@ -15,7 +15,4 @@ _PaginatedPackages _$PaginatedPackagesFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$PaginatedPackagesToJson(_PaginatedPackages instance) =>
-    <String, dynamic>{
-      'data': instance.data,
-      'pageInfo': instance.pageInfo,
-    };
+    <String, dynamic>{'data': instance.data, 'pageInfo': instance.pageInfo};

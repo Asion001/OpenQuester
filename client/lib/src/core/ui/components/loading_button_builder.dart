@@ -16,7 +16,8 @@ class LoadingButtonBuilder extends StatefulWidget {
     BuildContext context,
     Widget child,
     Future<void> Function() onPressed,
-  ) builder;
+  )
+  builder;
 
   @override
   State<LoadingButtonBuilder> createState() => _LoadingButtonBuilderState();

@@ -68,10 +68,9 @@ class GameLobbyController {
 
   Future<void> _onConnect() async {
     try {
-      await getIt<Api>()
-          .api
-          .auth
-          .postV1AuthSocket(body: InputSocketIOAuth(socketId: socket!.id!));
+      await getIt<Api>().api.auth.postV1AuthSocket(
+        body: InputSocketIOAuth(socketId: socket!.id!),
+      );
 
       final iAmHost =
           gameListData.value!.createdBy.id == ProfileController.getUser()?.id;
@@ -83,10 +82,7 @@ class GameLobbyController {
             : SocketIOGameJoinInputRole.player,
       );
 
-      socket?.emit(
-        SocketIOGameSendEvents.join.json!,
-        ioGameJoinInput.toJson(),
-      );
+      socket?.emit(SocketIOGameSendEvents.join.json!, ioGameJoinInput.toJson());
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -112,7 +108,7 @@ class GameLobbyController {
     final text = switch (message) {
       TextMessage() => message.text,
       SystemMessage() => message.text,
-      _ => null
+      _ => null,
     };
     if (text.isEmptyOrNull) return;
 
@@ -149,12 +145,9 @@ class GameLobbyController {
     if (force) {
       _leave();
     } else {
-      Future<void>.delayed(
-        const Duration(seconds: 1),
-        () {
-          if (socket != null) clear();
-        },
-      );
+      Future<void>.delayed(const Duration(seconds: 1), () {
+        if (socket != null) clear();
+      });
     }
   }
 
@@ -164,8 +157,9 @@ class GameLobbyController {
 
   Future<void> _onGameData(dynamic data) async {
     // Set global game data
-    gameData.value =
-        SocketIOGameJoinEventPayload.fromJson(data as Map<String, dynamic>);
+    gameData.value = SocketIOGameJoinEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
 
     await _initChat();
 
@@ -181,8 +175,10 @@ class GameLobbyController {
         .toList();
 
     // Init chat controller
-    await getIt<SocketChatController>()
-        .init(socket: socket!, messages: messages);
+    await getIt<SocketChatController>().init(
+      socket: socket!,
+      messages: messages,
+    );
 
     _updateChatUsers();
 
@@ -200,10 +196,12 @@ class GameLobbyController {
   }
 
   Future<void> _onGameStart(dynamic data) async {
-    final startData =
-        SocketIOGameStartEventPayload.fromJson(data as Map<String, dynamic>);
-    gameData.value = gameData.value?.copyWith
-        .gameState(currentRound: startData.currentRound);
+    final startData = SocketIOGameStartEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+    gameData.value = gameData.value?.copyWith.gameState(
+      currentRound: startData.currentRound,
+    );
   }
 
   void startGame() {
@@ -268,10 +266,7 @@ class GameLobbyController {
       );
     } else {
       gameData.value = gameData.value?.copyWith(
-        players: [
-          ...?gameData.value?.players,
-          user,
-        ],
+        players: [...?gameData.value?.players, user],
       );
     }
 
@@ -293,8 +288,9 @@ class GameLobbyController {
   void _onQuestionPick(dynamic data) {
     if (data is! Map) return;
 
-    final questionData =
-        SocketIOQuestionDataEventPayload.fromJson(data as Map<String, dynamic>);
+    final questionData = SocketIOQuestionDataEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
 
     gameData.value = gameData.value?.copyWith.gameState(
       timer: questionData.timer,
@@ -331,8 +327,9 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    gameData.value = gameData.value?.copyWith
-        .gameState(answeringPlayer: questionData.userId);
+    gameData.value = gameData.value?.copyWith.gameState(
+      answeringPlayer: questionData.userId,
+    );
 
     // Pause media during question answer
     _pauseMediaPlay();
@@ -495,8 +492,9 @@ class GameLobbyController {
     final nextRoundData = SocketIONextRoundEventPayload.fromJson(
       data as Map<String, dynamic>,
     );
-    gameData.value =
-        gameData.value?.copyWith(gameState: nextRoundData.gameState);
+    gameData.value = gameData.value?.copyWith(
+      gameState: nextRoundData.gameState,
+    );
   }
 
   void _onGameFinish(dynamic data) {

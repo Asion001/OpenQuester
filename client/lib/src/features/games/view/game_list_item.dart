@@ -27,26 +27,30 @@ class GameListItemWidget extends WatchingWidget {
         children: [
           ListTile(
             title: _title(context),
-            subtitle: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: '${LocaleKeys.package.tr()}: ',
-                    style: TextStyle(color: context.theme.colorScheme.outline),
-                  ),
-                  TextSpan(text: item.package.title),
-                ],
-              ),
-              style: context.textTheme.bodyMedium
-                  ?.copyWith(color: context.theme.colorScheme.onSurfaceVariant),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-            )
-                .constrained(const BoxConstraints(minHeight: 42))
-                .withTooltip(
-                  msg: LocaleKeys.game_tile_tooltips_packages_title.tr(),
-                )
-                .paddingTop(4),
+            subtitle:
+                Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${LocaleKeys.package.tr()}: ',
+                            style: TextStyle(
+                              color: context.theme.colorScheme.outline,
+                            ),
+                          ),
+                          TextSpan(text: item.package.title),
+                        ],
+                      ),
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        color: context.theme.colorScheme.onSurfaceVariant,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    )
+                    .constrained(const BoxConstraints(minHeight: 42))
+                    .withTooltip(
+                      msg: LocaleKeys.game_tile_tooltips_packages_title.tr(),
+                    )
+                    .paddingTop(4),
             titleAlignment: ListTileTitleAlignment.top,
             contentPadding: 4.left + 16.right,
             mouseCursor: MouseCursor.defer,
@@ -55,8 +59,9 @@ class GameListItemWidget extends WatchingWidget {
           Text(
             _gameInfo(timeController),
             overflow: TextOverflow.ellipsis,
-            style: context.textTheme.bodySmall
-                ?.copyWith(color: context.theme.colorScheme.outline),
+            style: context.textTheme.bodySmall?.copyWith(
+              color: context.theme.colorScheme.outline,
+            ),
           ).paddingSymmetric(vertical: 8, horizontal: 4),
         ],
       ).expand(),
@@ -108,10 +113,7 @@ class GameListItemWidget extends WatchingWidget {
         ).flexible(),
         if (item.isPrivate) const Icon(Icons.lock, size: 16),
         if (ageRestriction != null)
-          Text(
-            ageRestriction.$1,
-            style: TextStyle(color: ageRestriction.$2),
-          ),
+          Text(ageRestriction.$1, style: TextStyle(color: ageRestriction.$2)),
       ],
     ).withTooltip(msg: LocaleKeys.game_tile_tooltips_game_title.tr());
   }
@@ -134,8 +136,9 @@ class _GameListItemBadges extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dividerColor =
-        context.theme.colorScheme.outline.withValues(alpha: .15);
+    final dividerColor = context.theme.colorScheme.outline.withValues(
+      alpha: .15,
+    );
 
     return Container(
       decoration: BoxDecoration(
@@ -158,15 +161,19 @@ class _GameListItemBadges extends StatelessWidget {
               icon: Icons.check,
               tooltip: LocaleKeys.game_tile_tooltips_rounds.tr(),
               dividerColor: dividerColor,
-              label:
-                  [item.currentRound ?? 0, item.package.roundsCount].join('/'),
+              label: [
+                item.currentRound ?? 0,
+                item.package.roundsCount,
+              ].join('/'),
             ),
             _Badge(
               icon: Icons.question_mark,
               tooltip: LocaleKeys.game_tile_tooltips_questions.tr(),
               dividerColor: dividerColor,
-              label: [item.playedQuestions ?? 0, item.package.questionsCount]
-                  .join('/'),
+              label: [
+                item.playedQuestions ?? 0,
+                item.package.questionsCount,
+              ].join('/'),
             ),
           ].map((e) => e.expand()).toList(),
         ),

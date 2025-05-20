@@ -23,7 +23,9 @@ class _AdaptiveDialogState extends State<AdaptiveDialog>
 
     final child = GestureDetector(
       child: widget.builder(context),
-      onTap: () {/* do nothing—this swallows the tap */},
+      onTap: () {
+        /* do nothing—this swallows the tap */
+      },
     );
 
     return Material(
@@ -41,8 +43,9 @@ class _AdaptiveDialogState extends State<AdaptiveDialog>
                   elevation: 0,
                   onClosing: () {},
                   showDragHandle: true,
-                  animationController:
-                      BottomSheet.createAnimationController(this),
+                  animationController: BottomSheet.createAnimationController(
+                    this,
+                  ),
                   builder: (_) => child,
                 ),
         ),

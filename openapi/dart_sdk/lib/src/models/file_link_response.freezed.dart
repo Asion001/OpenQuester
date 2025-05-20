@@ -15,46 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$FileLinkResponse {
-  String get url;
 
-  /// Create a copy of FileLinkResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $FileLinkResponseCopyWith<FileLinkResponse> get copyWith =>
-      _$FileLinkResponseCopyWithImpl<FileLinkResponse>(
-          this as FileLinkResponse, _$identity);
+ String get url;
+/// Create a copy of FileLinkResponse
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FileLinkResponseCopyWith<FileLinkResponse> get copyWith => _$FileLinkResponseCopyWithImpl<FileLinkResponse>(this as FileLinkResponse, _$identity);
 
   /// Serializes this FileLinkResponse to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is FileLinkResponse &&
-            (identical(other.url, url) || other.url == url));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, url);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FileLinkResponse&&(identical(other.url, url) || other.url == url));
+}
 
-  @override
-  String toString() {
-    return 'FileLinkResponse(url: $url)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,url);
+
+@override
+String toString() {
+  return 'FileLinkResponse(url: $url)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $FileLinkResponseCopyWith<$Res> {
-  factory $FileLinkResponseCopyWith(
-          FileLinkResponse value, $Res Function(FileLinkResponse) _then) =
-      _$FileLinkResponseCopyWithImpl;
-  @useResult
-  $Res call({String url});
-}
+abstract mixin class $FileLinkResponseCopyWith<$Res>  {
+  factory $FileLinkResponseCopyWith(FileLinkResponse value, $Res Function(FileLinkResponse) _then) = _$FileLinkResponseCopyWithImpl;
+@useResult
+$Res call({
+ String url
+});
 
+
+
+
+}
 /// @nodoc
 class _$FileLinkResponseCopyWithImpl<$Res>
     implements $FileLinkResponseCopyWith<$Res> {
@@ -63,76 +64,67 @@ class _$FileLinkResponseCopyWithImpl<$Res>
   final FileLinkResponse _self;
   final $Res Function(FileLinkResponse) _then;
 
-  /// Create a copy of FileLinkResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? url = null,
-  }) {
-    return _then(_self.copyWith(
-      url: null == url
-          ? _self.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of FileLinkResponse
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? url = null,}) {
+  return _then(_self.copyWith(
+url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
+
+}
+
 
 /// @nodoc
 @JsonSerializable()
+
 class _FileLinkResponse implements FileLinkResponse {
   const _FileLinkResponse({required this.url});
-  factory _FileLinkResponse.fromJson(Map<String, dynamic> json) =>
-      _$FileLinkResponseFromJson(json);
+  factory _FileLinkResponse.fromJson(Map<String, dynamic> json) => _$FileLinkResponseFromJson(json);
 
-  @override
-  final String url;
+@override final  String url;
 
-  /// Create a copy of FileLinkResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$FileLinkResponseCopyWith<_FileLinkResponse> get copyWith =>
-      __$FileLinkResponseCopyWithImpl<_FileLinkResponse>(this, _$identity);
+/// Create a copy of FileLinkResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$FileLinkResponseCopyWith<_FileLinkResponse> get copyWith => __$FileLinkResponseCopyWithImpl<_FileLinkResponse>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$FileLinkResponseToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$FileLinkResponseToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _FileLinkResponse &&
-            (identical(other.url, url) || other.url == url));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FileLinkResponse&&(identical(other.url, url) || other.url == url));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, url);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,url);
 
-  @override
-  String toString() {
-    return 'FileLinkResponse(url: $url)';
-  }
+@override
+String toString() {
+  return 'FileLinkResponse(url: $url)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$FileLinkResponseCopyWith<$Res>
-    implements $FileLinkResponseCopyWith<$Res> {
-  factory _$FileLinkResponseCopyWith(
-          _FileLinkResponse value, $Res Function(_FileLinkResponse) _then) =
-      __$FileLinkResponseCopyWithImpl;
-  @override
-  @useResult
-  $Res call({String url});
-}
+abstract mixin class _$FileLinkResponseCopyWith<$Res> implements $FileLinkResponseCopyWith<$Res> {
+  factory _$FileLinkResponseCopyWith(_FileLinkResponse value, $Res Function(_FileLinkResponse) _then) = __$FileLinkResponseCopyWithImpl;
+@override @useResult
+$Res call({
+ String url
+});
 
+
+
+
+}
 /// @nodoc
 class __$FileLinkResponseCopyWithImpl<$Res>
     implements _$FileLinkResponseCopyWith<$Res> {
@@ -141,20 +133,16 @@ class __$FileLinkResponseCopyWithImpl<$Res>
   final _FileLinkResponse _self;
   final $Res Function(_FileLinkResponse) _then;
 
-  /// Create a copy of FileLinkResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? url = null,
-  }) {
-    return _then(_FileLinkResponse(
-      url: null == url
-          ? _self.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of FileLinkResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? url = null,}) {
+  return _then(_FileLinkResponse(
+url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 // dart format on

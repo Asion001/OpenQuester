@@ -14,10 +14,7 @@ class DiagonalLineBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: borderRadius,
-      child: CustomPaint(
-        painter: DiagonalLinesPainter(),
-        child: child,
-      ),
+      child: CustomPaint(painter: DiagonalLinesPainter(), child: child),
     ).paddingAll(2);
   }
 }
@@ -26,7 +23,8 @@ class DiagonalLinesPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.grey.withValues(alpha: .2) // subtle gray
+      ..color = Colors.grey
+          .withValues(alpha: .2) // subtle gray
       ..strokeWidth = 1;
 
     const spacing = 15.0; // space between lines

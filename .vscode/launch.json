@@ -22,21 +22,22 @@
       "flutterMode": "debug",
       "program": "lib/main.dart",
       "toolArgs": [
-        "--wasm",
         "-d",
         "chrome",
         "--web-port",
-        "10000"
+        "10000",
+        "--web-experimental-hot-reload"
       ]
     },
     {
-      "name": "client (web - no wasm)",
+      "name": "client (web wasm)",
       "cwd": "client",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
       "program": "lib/main.dart",
       "toolArgs": [
+        "--wasm",
         "-d",
         "chrome",
         "--web-port",

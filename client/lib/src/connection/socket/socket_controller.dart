@@ -20,12 +20,10 @@ class SocketController {
     general = await createConnection();
     general
       ..connect()
-      ..onConnect(
-        (data) async {
-          onConnect(data);
-          await _refreshOnReconnect();
-        },
-      );
+      ..onConnect((data) async {
+        onConnect(data);
+        await _refreshOnReconnect();
+      });
   }
 
   Future<void> _refreshOnReconnect() async {

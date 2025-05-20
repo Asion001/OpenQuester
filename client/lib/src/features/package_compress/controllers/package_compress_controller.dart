@@ -20,8 +20,9 @@ class PackageCompressController {
     await workDir.create();
 
     try {
-      final archiveFile =
-          File([workDir.path, 'input.zip'].join(Platform.pathSeparator));
+      final archiveFile = File(
+        [workDir.path, 'input.zip'].join(Platform.pathSeparator),
+      );
       await archiveFile.create();
       await file.xFile.saveTo(archiveFile.path);
 

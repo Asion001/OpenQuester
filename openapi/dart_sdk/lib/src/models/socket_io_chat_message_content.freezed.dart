@@ -15,47 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$SocketIOChatMessageContent {
-  String get message;
 
-  /// Create a copy of SocketIOChatMessageContent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $SocketIOChatMessageContentCopyWith<SocketIOChatMessageContent>
-      get copyWith =>
-          _$SocketIOChatMessageContentCopyWithImpl<SocketIOChatMessageContent>(
-              this as SocketIOChatMessageContent, _$identity);
+ String get message;
+/// Create a copy of SocketIOChatMessageContent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SocketIOChatMessageContentCopyWith<SocketIOChatMessageContent> get copyWith => _$SocketIOChatMessageContentCopyWithImpl<SocketIOChatMessageContent>(this as SocketIOChatMessageContent, _$identity);
 
   /// Serializes this SocketIOChatMessageContent to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is SocketIOChatMessageContent &&
-            (identical(other.message, message) || other.message == message));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SocketIOChatMessageContent&&(identical(other.message, message) || other.message == message));
+}
 
-  @override
-  String toString() {
-    return 'SocketIOChatMessageContent(message: $message)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'SocketIOChatMessageContent(message: $message)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $SocketIOChatMessageContentCopyWith<$Res> {
-  factory $SocketIOChatMessageContentCopyWith(SocketIOChatMessageContent value,
-          $Res Function(SocketIOChatMessageContent) _then) =
-      _$SocketIOChatMessageContentCopyWithImpl;
-  @useResult
-  $Res call({String message});
-}
+abstract mixin class $SocketIOChatMessageContentCopyWith<$Res>  {
+  factory $SocketIOChatMessageContentCopyWith(SocketIOChatMessageContent value, $Res Function(SocketIOChatMessageContent) _then) = _$SocketIOChatMessageContentCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
 
+
+
+
+}
 /// @nodoc
 class _$SocketIOChatMessageContentCopyWithImpl<$Res>
     implements $SocketIOChatMessageContentCopyWith<$Res> {
@@ -64,78 +64,67 @@ class _$SocketIOChatMessageContentCopyWithImpl<$Res>
   final SocketIOChatMessageContent _self;
   final $Res Function(SocketIOChatMessageContent) _then;
 
-  /// Create a copy of SocketIOChatMessageContent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_self.copyWith(
-      message: null == message
-          ? _self.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of SocketIOChatMessageContent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? message = null,}) {
+  return _then(_self.copyWith(
+message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
+
+}
+
 
 /// @nodoc
 @JsonSerializable()
+
 class _SocketIOChatMessageContent implements SocketIOChatMessageContent {
   const _SocketIOChatMessageContent({required this.message});
-  factory _SocketIOChatMessageContent.fromJson(Map<String, dynamic> json) =>
-      _$SocketIOChatMessageContentFromJson(json);
+  factory _SocketIOChatMessageContent.fromJson(Map<String, dynamic> json) => _$SocketIOChatMessageContentFromJson(json);
 
-  @override
-  final String message;
+@override final  String message;
 
-  /// Create a copy of SocketIOChatMessageContent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$SocketIOChatMessageContentCopyWith<_SocketIOChatMessageContent>
-      get copyWith => __$SocketIOChatMessageContentCopyWithImpl<
-          _SocketIOChatMessageContent>(this, _$identity);
+/// Create a copy of SocketIOChatMessageContent
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SocketIOChatMessageContentCopyWith<_SocketIOChatMessageContent> get copyWith => __$SocketIOChatMessageContentCopyWithImpl<_SocketIOChatMessageContent>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$SocketIOChatMessageContentToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$SocketIOChatMessageContentToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _SocketIOChatMessageContent &&
-            (identical(other.message, message) || other.message == message));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SocketIOChatMessageContent&&(identical(other.message, message) || other.message == message));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,message);
 
-  @override
-  String toString() {
-    return 'SocketIOChatMessageContent(message: $message)';
-  }
+@override
+String toString() {
+  return 'SocketIOChatMessageContent(message: $message)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$SocketIOChatMessageContentCopyWith<$Res>
-    implements $SocketIOChatMessageContentCopyWith<$Res> {
-  factory _$SocketIOChatMessageContentCopyWith(
-          _SocketIOChatMessageContent value,
-          $Res Function(_SocketIOChatMessageContent) _then) =
-      __$SocketIOChatMessageContentCopyWithImpl;
-  @override
-  @useResult
-  $Res call({String message});
-}
+abstract mixin class _$SocketIOChatMessageContentCopyWith<$Res> implements $SocketIOChatMessageContentCopyWith<$Res> {
+  factory _$SocketIOChatMessageContentCopyWith(_SocketIOChatMessageContent value, $Res Function(_SocketIOChatMessageContent) _then) = __$SocketIOChatMessageContentCopyWithImpl;
+@override @useResult
+$Res call({
+ String message
+});
 
+
+
+
+}
 /// @nodoc
 class __$SocketIOChatMessageContentCopyWithImpl<$Res>
     implements _$SocketIOChatMessageContentCopyWith<$Res> {
@@ -144,20 +133,16 @@ class __$SocketIOChatMessageContentCopyWithImpl<$Res>
   final _SocketIOChatMessageContent _self;
   final $Res Function(_SocketIOChatMessageContent) _then;
 
-  /// Create a copy of SocketIOChatMessageContent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_SocketIOChatMessageContent(
-      message: null == message
-          ? _self.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of SocketIOChatMessageContent
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(_SocketIOChatMessageContent(
+message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 // dart format on

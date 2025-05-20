@@ -7,22 +7,23 @@ part of 'socket_io_game_state_round_data.dart';
 // **************************************************************************
 
 _SocketIOGameStateRoundData _$SocketIOGameStateRoundDataFromJson(
-        Map<String, dynamic> json) =>
-    _SocketIOGameStateRoundData(
-      order: (json['order'] as num).toInt(),
-      name: json['name'] as String,
-      description: json['description'] as String?,
-      themes: (json['themes'] as List<dynamic>)
-          .map((e) =>
-              SocketIOGameStateThemeData.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+  Map<String, dynamic> json,
+) => _SocketIOGameStateRoundData(
+  order: (json['order'] as num).toInt(),
+  name: json['name'] as String,
+  description: json['description'] as String?,
+  themes: (json['themes'] as List<dynamic>)
+      .map(
+        (e) => SocketIOGameStateThemeData.fromJson(e as Map<String, dynamic>),
+      )
+      .toList(),
+);
 
 Map<String, dynamic> _$SocketIOGameStateRoundDataToJson(
-        _SocketIOGameStateRoundData instance) =>
-    <String, dynamic>{
-      'order': instance.order,
-      'name': instance.name,
-      'description': instance.description,
-      'themes': instance.themes,
-    };
+  _SocketIOGameStateRoundData instance,
+) => <String, dynamic>{
+  'order': instance.order,
+  'name': instance.name,
+  'description': instance.description,
+  'themes': instance.themes,
+};

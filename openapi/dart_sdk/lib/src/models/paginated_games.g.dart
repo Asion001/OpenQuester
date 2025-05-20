@@ -15,7 +15,4 @@ _PaginatedGames _$PaginatedGamesFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$PaginatedGamesToJson(_PaginatedGames instance) =>
-    <String, dynamic>{
-      'data': instance.data,
-      'pageInfo': instance.pageInfo,
-    };
+    <String, dynamic>{'data': instance.data, 'pageInfo': instance.pageInfo};

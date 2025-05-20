@@ -48,18 +48,12 @@ extension WidgetX on Widget {
       spacing: 4,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: crossAxisAlignment,
-      children: [
-        Text(title),
-        this,
-      ],
+      children: [Text(title), this],
     );
   }
 
   Widget constrained(BoxConstraints constraints) {
-    return ConstrainedBox(
-      constraints: constraints,
-      child: this,
-    );
+    return ConstrainedBox(constraints: constraints, child: this);
   }
 }
 
@@ -119,15 +113,17 @@ extension SocketIOGameStateRoundDataX on SocketIOGameStateRoundData {
     required int? id,
     required SocketIOGameStateQuestionData Function(
       SocketIOGameStateQuestionData value,
-    ) onChange,
+    )
+    onChange,
   }) {
     if (id == null) return this;
 
     final themes = List<SocketIOGameStateThemeData>.from(this.themes);
     for (var i = 0; i < themes.length; i++) {
       final theme = themes[i];
-      final questions =
-          List<SocketIOGameStateQuestionData>.from(theme.questions);
+      final questions = List<SocketIOGameStateQuestionData>.from(
+        theme.questions,
+      );
       final questionIndex = questions.indexWhere((e) => e.id == id);
       if (questionIndex < 0) continue;
       questions[questionIndex] = onChange(questions[questionIndex]);

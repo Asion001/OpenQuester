@@ -64,8 +64,9 @@ class S3UploadController {
 
   Future<String> getLinkAndUpload(Uint8List file) async {
     final md5Hash = md5.convert(file).toString();
-    final getLinkResult =
-        await Api.I.api.files.postV1FilesFilename(filename: md5Hash);
+    final getLinkResult = await Api.I.api.files.postV1FilesFilename(
+      filename: md5Hash,
+    );
     final uploadLink = Uri.parse(getLinkResult.url);
 
     await uploadFile(uploadLink: uploadLink, md5Hash: md5Hash, file: file);

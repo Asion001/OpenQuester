@@ -13,7 +13,4 @@ _ShortUserInfo _$ShortUserInfoFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$ShortUserInfoToJson(_ShortUserInfo instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'username': instance.username,
-    };
+    <String, dynamic>{'id': instance.id, 'username': instance.username};

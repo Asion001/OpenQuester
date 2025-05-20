@@ -7,8 +7,8 @@ import 'package:siq_compress/src/version.dart';
 
 class SiqCompressCommandRunner extends CompletionCommandRunner<int> {
   SiqCompressCommandRunner({Logger? logger})
-      : _logger = logger ?? Logger(),
-        super('siq_compress', '🦄 A openquester media file compresser') {
+    : _logger = logger ?? Logger(),
+      super('siq_compress', '🦄 A openquester media file compresser') {
     argParser
       ..addFlag('version', help: 'Print the current version.', abbr: 'v')
       ..addFlag(

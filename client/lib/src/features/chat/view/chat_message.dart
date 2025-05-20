@@ -40,7 +40,7 @@ class SimpleTextMessage extends StatelessWidget {
   final bool showStatus;
   final TimeAndStatusPosition timeAndStatusPosition;
 
-  bool get _isOnlyEmoji => message.isOnlyEmoji ?? false;
+  bool get _isOnlyEmoji => message.metadata?['isOnlyEmoji'] == true;
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +50,11 @@ class SimpleTextMessage extends StatelessWidget {
     final backgroundColor = _resolveBackgroundColor(isSentByMe, theme);
     final textStyle = _resolveTextStyle(isSentByMe, theme);
     final timeStyle = _resolveTimeStyle(isSentByMe, theme);
+    final messageCreatedAt = message.createdAt;
 
-    final timeAndStatus = showTime || showStatus
+    final timeAndStatus = (showTime || showStatus) && messageCreatedAt != null
         ? TimeAndStatus(
-            createdAt: message.createdAt,
+            createdAt: messageCreatedAt,
             status: message.status,
             showTime: showTime,
             showStatus: showStatus,
@@ -73,9 +74,7 @@ class SimpleTextMessage extends StatelessWidget {
 
     return Container(
       padding: _isOnlyEmoji
-          ? EdgeInsets.symmetric(
-              horizontal: (padding?.horizontal ?? 0) / 2,
-            )
+          ? EdgeInsets.symmetric(horizontal: (padding?.horizontal ?? 0) / 2)
           : padding,
       decoration: _isOnlyEmoji
           ? null
@@ -221,13 +220,7 @@ class TimeAndStatus extends StatelessWidget {
                 spacing: 4,
                 children: [
                   ImageWidget(url: avatar, avatarRadius: 10),
-                  Text(
-                    [
-                      snapshot.data?.firstName,
-                      snapshot.data?.lastName,
-                    ].nonNulls.join(' '),
-                    style: textStyle,
-                  ),
+                  Text(snapshot.data?.name ?? '-', style: textStyle),
                 ],
               );
             },
