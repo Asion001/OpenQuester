@@ -29,7 +29,7 @@ COPY server/package*.json .
 RUN mkdir /app/openapi/
 COPY openapi/schema.json /app/openapi/
 
-COPY server/storage /app/
+COPY server/storage/ /app/storage/
 
 RUN npm ci --omit=dev
 
@@ -42,4 +42,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Start the app
-CMD ["npm", "run", "start:prod"]
+CMD ["sleep","10000"]
