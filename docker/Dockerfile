@@ -21,15 +21,14 @@ RUN npm run build
 # Production stage
 FROM node:24-alpine AS production
 
-WORKDIR /app
+WORKDIR /app/server
 
 COPY server/package*.json .
 
 # Copy openapi schema
-RUN mkdir /app/openapi/
 COPY openapi/schema.json /app/openapi/
 
-COPY server/storage/ /app/storage/
+COPY server/storage/ /app/server/storage/
 
 RUN npm ci --omit=dev
 
