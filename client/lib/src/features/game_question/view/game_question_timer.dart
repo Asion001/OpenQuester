@@ -17,13 +17,8 @@ class GameQuestionTimer extends WatchingWidget {
       DateTime.now().difference(timer.startedAt).inMilliseconds,
       0,
     );
-    final timeLeft = Duration(
-      milliseconds: timer.durationMs - elapsedFromNow,
-    );
-    final beginPoint = (1 / (timer.durationMs / elapsedFromNow)).clamp(
-      0,
-      1,
-    );
+    final timeLeft = Duration(milliseconds: timer.durationMs - elapsedFromNow);
+    final beginPoint = (1 / (timer.durationMs / elapsedFromNow)).clamp(0, 1);
 
     return ConstrainedBox(
       key: ValueKey(timer),
