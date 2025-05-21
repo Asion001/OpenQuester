@@ -13,20 +13,26 @@ class GameQuestionTimer extends WatchingWidget {
 
     if (timer == null) return const SizedBox.shrink();
 
-    final elapsedFromNow =
-        max(DateTime.now().difference(timer.startedAt).inMilliseconds, 0);
-    final timerTimeLeft =
-        Duration(milliseconds: timer.durationMs - elapsedFromNow);
-    final timerBeginPoint =
-        (1 / (timer.durationMs / elapsedFromNow)).clamp(0, 1);
+    final elapsedFromNow = max(
+      DateTime.now().difference(timer.startedAt).inMilliseconds,
+      0,
+    );
+    final timeLeft = Duration(
+      milliseconds: timer.durationMs - elapsedFromNow,
+    );
+    final beginPoint = (1 / (timer.durationMs / elapsedFromNow)).clamp(
+      0,
+      1,
+    );
 
     return ConstrainedBox(
+      key: ValueKey(timer),
       constraints: const BoxConstraints(
         maxWidth: GameLobbyStyles.maxTimerWidth,
       ),
       child: TweenAnimationBuilder(
-        tween: Tween(begin: timerBeginPoint, end: 1),
-        duration: timerTimeLeft,
+        tween: Tween(begin: beginPoint, end: 1),
+        duration: timeLeft,
         builder: (BuildContext context, num value, Widget? child) {
           return LinearProgressIndicator(
             value: value.toDouble(),

@@ -329,6 +329,7 @@ class GameLobbyController {
 
     gameData.value = gameData.value?.copyWith.gameState(
       answeringPlayer: questionData.userId,
+      timer: questionData.timer,
     );
 
     // Pause media during question answer
@@ -422,7 +423,10 @@ class GameLobbyController {
     final currentQuestion = gameData.value?.gameState.currentQuestion;
 
     // Clear question
-    gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
+    gameData.value = gameData.value?.copyWith.gameState(
+      currentQuestion: null,
+      timer: null,
+    );
 
     try {
       var mediaPlaytimeMs = 0;
@@ -518,8 +522,9 @@ class GameLobbyController {
     final unpauseData = SocketIOGameUnpauseEventPayload.fromJson(
       data as Map<String, dynamic>,
     );
-    gameData.value =
-        gameData.value?.copyWith.gameState(timer: unpauseData.timer);
+    gameData.value = gameData.value?.copyWith.gameState(
+      timer: unpauseData.timer,
+    );
   }
 
   void _setGamePause({required bool isPaused}) {

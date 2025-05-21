@@ -83,12 +83,14 @@ class GameQuestionScreen extends WatchingWidget {
       constraints: BoxConstraints(
         maxWidth: file == null ? double.infinity : 150,
       ),
-      child: Text(
-        text ?? '',
-        style: file != null
-            ? context.textTheme.bodyLarge
-            : context.textTheme.headlineLarge,
-        textAlign: TextAlign.center,
+      child: SingleChildScrollView(
+        child: Text(
+          text ?? '',
+          style: file != null
+              ? context.textTheme.bodyLarge
+              : context.textTheme.headlineLarge,
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
@@ -224,39 +226,47 @@ class _ShowmanControlls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final extraColors = Theme.of(context).extension<ExtraColors>();
+
+    ButtonStyle buttonStyle({required bool correctAnswer}) => ButtonStyle(
+      backgroundColor: WidgetStatePropertyAll(
+        correctAnswer ? extraColors?.success : context.theme.colorScheme.error,
+      ),
+    );
+
     List<Widget> multiplierBtns({required bool playerAnswerIsRight}) {
       return [0.5, 2.0].map((e) {
-        return FilledButton.tonal(
+        return FilledButton(
           onPressed: () => getIt<GameLobbyController>().answerResult(
             playerAnswerIsRight: playerAnswerIsRight,
             multiplier: e,
           ),
+          style: buttonStyle(correctAnswer: playerAnswerIsRight),
           child: Text('${e >= 1 ? e.toInt() : e}X'),
         );
       }).toList();
     }
 
-    Widget buttons({required bool correctAnswer}) {
-      return Card(
-        child: Wrap(
-          spacing: 8,
-          runSpacing: 16,
-          alignment: WrapAlignment.center,
-          children: [
-            FilledButton.icon(
-              onPressed: () => getIt<GameLobbyController>().answerResult(
-                playerAnswerIsRight: correctAnswer,
-              ),
-              icon: Icon(correctAnswer ? Icons.check : Icons.close),
-              label: Text(
-                correctAnswer
-                    ? LocaleKeys.question_answer_is_correct.tr()
-                    : LocaleKeys.question_answer_is_wrong.tr(),
-              ),
+    Widget buttons({required bool playerAnswerIsRight}) {
+      return Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        alignment: WrapAlignment.center,
+        children: [
+          FilledButton.icon(
+            onPressed: () => getIt<GameLobbyController>().answerResult(
+              playerAnswerIsRight: playerAnswerIsRight,
             ),
-            ...multiplierBtns(playerAnswerIsRight: correctAnswer),
-          ],
-        ).paddingAll(16),
+            style: buttonStyle(correctAnswer: playerAnswerIsRight),
+            icon: Icon(playerAnswerIsRight ? Icons.check : Icons.close),
+            label: Text(
+              playerAnswerIsRight
+                  ? LocaleKeys.question_answer_is_correct.tr()
+                  : LocaleKeys.question_answer_is_wrong.tr(),
+            ),
+          ),
+          ...multiplierBtns(playerAnswerIsRight: playerAnswerIsRight),
+        ],
       );
     }
 
@@ -270,13 +280,20 @@ class _ShowmanControlls extends StatelessWidget {
       );
     }
 
-    return Column(
+    return OverflowBar(
+      overflowAlignment: OverflowBarAlignment.center,
       spacing: 8,
+      overflowSpacing: 8,
       children: [
-        buttons(correctAnswer: false),
-        buttons(correctAnswer: true),
+        Column(
+          spacing: 16,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buttons(playerAnswerIsRight: true),
+            buttons(playerAnswerIsRight: false),
+          ],
+        ),
         zeroSkipButton(),
-        const _SkipQustionBtn(),
       ],
     );
   }
