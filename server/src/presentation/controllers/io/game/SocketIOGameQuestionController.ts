@@ -112,7 +112,7 @@ export class SocketIOGameQuestionController {
       );
 
     const { isGameFinished, nextGameState } =
-      await this.socketIOQuestionService.handleGameFlow(game);
+      await this.socketIOQuestionService.handleGameRoundProgression(game);
 
     // On correct just show correct answer
     if (playerAnswerResult.result > 0) {

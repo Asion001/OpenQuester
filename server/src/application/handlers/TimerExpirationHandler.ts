@@ -70,7 +70,8 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
         }
 
         // Next round if all questions played
-        const { isGameFinished, nextGameState } = game.getFlowState();
+        const { isGameFinished, nextGameState } =
+          game.handleGameRoundProgression();
 
         if (isGameFinished || nextGameState) {
           await this.gameService.updateGame(game);
