@@ -1,7 +1,7 @@
-FROM node:20.12-slim
+# Build stage
+FROM node:24-alpine AS build
 
-# Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY server/package*.json ./
@@ -17,9 +17,25 @@ ENV NODE_ENV=production
 # Build the TypeScript files
 RUN npm run build
 
+
+# Production stage
+FROM node:24-alpine AS production
+
+WORKDIR /app/server
+
+COPY server/package*.json .
+
 # Copy openapi schema
-RUN mkdir /usr/src/openapi/
-COPY openapi/schema.json /usr/src/openapi/
+COPY openapi/schema.json /app/openapi/
+
+COPY server/storage/ /app/server/storage/
+
+RUN npm ci --omit=dev
+
+# Copy builded files
+COPY --from=build /app/dist ./dist
+
+ENV NODE_ENV=production
 
 # Expose port server port
 EXPOSE 3000
