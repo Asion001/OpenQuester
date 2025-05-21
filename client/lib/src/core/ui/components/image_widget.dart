@@ -8,14 +8,14 @@ class ImageWidget extends StatefulWidget {
     this.fit = BoxFit.cover,
     super.key,
   }) : _provider = url == null
-            ? null
-            : NetworkImageProvider(
-                url,
-                cacheKey: url,
-                maxHeight: 1000,
-                maxWidth: 1000,
-                errorListener: logger.w,
-              );
+           ? null
+           : NetworkImageProvider(
+               url,
+               cacheKey: url,
+               maxHeight: 1000,
+               maxWidth: 1000,
+               errorListener: logger.w,
+             );
 
   final ImageProvider? _provider;
   final double? avatarRadius;
@@ -56,16 +56,18 @@ class _ImageWidgetState extends State<ImageWidget> {
             errorBuilder: (_, __, ___) => placeholder(),
           );
 
-    final size =
-        widget.avatarRadius != null ? (widget.avatarRadius! * 2) : null;
+    final size = widget.avatarRadius != null
+        ? (widget.avatarRadius! * 2)
+        : null;
 
     return AnimatedContainer(
       duration: Durations.medium1,
       width: size,
       height: size,
       decoration: BoxDecoration(
-        shape:
-            widget.avatarRadius != null ? BoxShape.circle : BoxShape.rectangle,
+        shape: widget.avatarRadius != null
+            ? BoxShape.circle
+            : BoxShape.rectangle,
       ),
       clipBehavior: Clip.antiAlias,
       child: child,
@@ -73,9 +75,6 @@ class _ImageWidgetState extends State<ImageWidget> {
   }
 
   Widget placeholder() {
-    return Container(
-      color: context.theme.primaryColor,
-      padding: 16.all,
-    );
+    return Container(color: context.theme.primaryColor, padding: 16.all);
   }
 }

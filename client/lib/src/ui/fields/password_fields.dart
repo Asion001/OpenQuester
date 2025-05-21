@@ -7,7 +7,8 @@ class VisibilityBuilder extends StatefulWidget {
     // ignore: avoid_positional_boolean_parameters
     bool showPassword,
     Widget hideButton,
-  ) builder;
+  )
+  builder;
 
   @override
   State<VisibilityBuilder> createState() => _VisibilityBuilderState();

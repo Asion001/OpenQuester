@@ -55,8 +55,9 @@ class CreateGamePackageSearch extends SearchDelegate<PackageListItem?> {
   ListRequest get _listRequest =>
       ListRequest(offset: 0, limit: 5, query: query.isEmpty ? null : query);
 
-  late Future<ListResponse<PackageListItem>>? future =
-      _controller.getPage(_listRequest);
+  late Future<ListResponse<PackageListItem>>? future = _controller.getPage(
+    _listRequest,
+  );
 
   void _search() {
     future = _controller.getPage(_listRequest);

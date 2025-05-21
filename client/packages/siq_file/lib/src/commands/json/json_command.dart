@@ -6,10 +6,7 @@ import 'package:siq_file/src/commands/common/file_command.dart';
 
 class JsonCommand extends FileCommand {
   JsonCommand({Logger? logger}) : _logger = logger ?? Logger() {
-    argParser.addOption(
-      'xml-file',
-      help: 'Unziped content.xml file path',
-    );
+    argParser.addOption('xml-file', help: 'Unziped content.xml file path');
   }
 
   @override

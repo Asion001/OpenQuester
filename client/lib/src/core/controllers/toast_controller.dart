@@ -16,8 +16,11 @@ enum ToastType {
       ToastType.success => ToastificationType.success,
       ToastType.warning => ToastificationType.warning,
       ToastType.error => ToastificationType.error,
-      ToastType.chat =>
-        ToastificationType.custom(name, Colors.cyan, Icons.message),
+      ToastType.chat => ToastificationType.custom(
+        name,
+        Colors.cyan,
+        Icons.message,
+      ),
     };
   }
 }
@@ -30,8 +33,9 @@ class ToastController {
     ToastType type = ToastType.error,
     String? title,
   }) async {
-    final messageText =
-        type == ToastType.error ? parseObject(message) : message.toString();
+    final messageText = type == ToastType.error
+        ? parseObject(message)
+        : message.toString();
 
     final context = _context;
     final colorScheme = context?.theme.colorScheme;
@@ -84,8 +88,6 @@ class ToastController {
   BuildContext? get _context => getIt<AppRouter>().navigatorKey.currentContext;
 
   ToastificationConfig get config {
-    return const ToastificationConfig(
-      maxToastLimit: 3,
-    );
+    return const ToastificationConfig(maxToastLimit: 3);
   }
 }

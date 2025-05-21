@@ -7,13 +7,9 @@ part of 'permission_denied_response.dart';
 // **************************************************************************
 
 _PermissionDeniedResponse _$PermissionDeniedResponseFromJson(
-        Map<String, dynamic> json) =>
-    _PermissionDeniedResponse(
-      error: json['error'] as String,
-    );
+  Map<String, dynamic> json,
+) => _PermissionDeniedResponse(error: json['error'] as String);
 
 Map<String, dynamic> _$PermissionDeniedResponseToJson(
-        _PermissionDeniedResponse instance) =>
-    <String, dynamic>{
-      'error': instance.error,
-    };
+  _PermissionDeniedResponse instance,
+) => <String, dynamic>{'error': instance.error};

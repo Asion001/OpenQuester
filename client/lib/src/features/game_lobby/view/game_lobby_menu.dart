@@ -86,8 +86,9 @@ class _VolumeSliderState extends State<_VolumeSlider> {
         Slider(
           value: volume,
           onChanged: (value) {
-            final volume =
-                double.parse(value.clamp(0, 1).toStringAsExponential(2));
+            final volume = double.parse(
+              value.clamp(0, 1).toStringAsExponential(2),
+            );
             if (this.volume == volume) return;
             this.volume = volume;
             setState(() {});

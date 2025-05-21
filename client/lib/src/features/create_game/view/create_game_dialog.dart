@@ -28,8 +28,10 @@ class CreateGameDialog extends WatchingWidget {
                 _UploadPackageButtons(controller: controller, state: state),
                 _SelectedPackagePreview(package: state.package),
                 _GameName(state: state, controller: controller),
-                _AgeRestrictionSelect(state: state, controller: controller)
-                    .withTitle(LocaleKeys.age_restriction.tr()),
+                _AgeRestrictionSelect(
+                  state: state,
+                  controller: controller,
+                ).withTitle(LocaleKeys.age_restriction.tr()),
                 _PrivateGameSelect(state: state, controller: controller),
                 _MaxPlayersSelect(state: state, controller: controller),
                 _StartGameButton(
@@ -46,10 +48,7 @@ class CreateGameDialog extends WatchingWidget {
 }
 
 class _StartGameButton extends StatelessWidget {
-  const _StartGameButton({
-    required this.controller,
-    required this.stateValid,
-  });
+  const _StartGameButton({required this.controller, required this.stateValid});
 
   final CreateGameController controller;
   final bool stateValid;
@@ -72,10 +71,7 @@ class _StartGameButton extends StatelessWidget {
 }
 
 class _MaxPlayersSelect extends StatelessWidget {
-  const _MaxPlayersSelect({
-    required this.state,
-    required this.controller,
-  });
+  const _MaxPlayersSelect({required this.state, required this.controller});
 
   final CreateGameDto state;
   final CreateGameController controller;
@@ -92,16 +88,14 @@ class _MaxPlayersSelect extends StatelessWidget {
               LocaleKeys.max_players.tr(),
               style: context.textTheme.bodyLarge,
             ),
-            Text(
-              '${state.maxPlayers}',
-              style: context.textTheme.bodyLarge,
-            ),
+            Text('${state.maxPlayers}', style: context.textTheme.bodyLarge),
           ],
         ),
         Slider(
           value: state.maxPlayers.toDouble(),
           padding: 16.horizontal,
-          divisions: GameValidationConst.maxMaxPlayers -
+          divisions:
+              GameValidationConst.maxMaxPlayers -
               GameValidationConst.minMaxPlayers,
           onChanged: (maxPlayers) => controller.state.value = state.copyWith(
             maxPlayers: maxPlayers.toInt(),
@@ -115,10 +109,7 @@ class _MaxPlayersSelect extends StatelessWidget {
 }
 
 class _PrivateGameSelect extends StatelessWidget {
-  const _PrivateGameSelect({
-    required this.state,
-    required this.controller,
-  });
+  const _PrivateGameSelect({required this.state, required this.controller});
 
   final CreateGameDto state;
   final CreateGameController controller;
@@ -139,10 +130,7 @@ class _PrivateGameSelect extends StatelessWidget {
 }
 
 class _AgeRestrictionSelect extends StatelessWidget {
-  const _AgeRestrictionSelect({
-    required this.state,
-    required this.controller,
-  });
+  const _AgeRestrictionSelect({required this.state, required this.controller});
 
   final CreateGameDto state;
   final CreateGameController controller;
@@ -161,8 +149,9 @@ class _AgeRestrictionSelect extends StatelessWidget {
           ChoiceChip(
             label: Text(restriction.f()),
             selected: state.ageRestriction == restriction,
-            onSelected: (_) => controller.state.value =
-                state.copyWith(ageRestriction: restriction),
+            onSelected: (_) => controller.state.value = state.copyWith(
+              ageRestriction: restriction,
+            ),
             showCheckmark: false,
           ),
       ],
@@ -171,10 +160,7 @@ class _AgeRestrictionSelect extends StatelessWidget {
 }
 
 class _GameName extends StatelessWidget {
-  const _GameName({
-    required this.state,
-    required this.controller,
-  });
+  const _GameName({required this.state, required this.controller});
 
   final CreateGameDto state;
   final CreateGameController controller;
@@ -185,9 +171,7 @@ class _GameName extends StatelessWidget {
       initialValue: state.gameName,
       onChanged: (value) =>
           controller.state.value = state.copyWith(gameName: value),
-      decoration: InputDecoration(
-        labelText: LocaleKeys.game_name.tr(),
-      ),
+      decoration: InputDecoration(labelText: LocaleKeys.game_name.tr()),
       validator: (value) {
         final lenght = value?.length ?? 0;
         if (lenght < GameValidationConst.minGameNameLength) {
@@ -206,9 +190,7 @@ class _GameName extends StatelessWidget {
 }
 
 class _SelectedPackagePreview extends StatelessWidget {
-  const _SelectedPackagePreview({
-    required this.package,
-  });
+  const _SelectedPackagePreview({required this.package});
 
   final PackageListItem? package;
 
@@ -228,10 +210,7 @@ class _SelectedPackagePreview extends StatelessWidget {
 }
 
 class _UploadPackageButtons extends StatelessWidget {
-  const _UploadPackageButtons({
-    required this.controller,
-    required this.state,
-  });
+  const _UploadPackageButtons({required this.controller, required this.state});
 
   final CreateGameController controller;
   final CreateGameDto state;
@@ -253,10 +232,7 @@ class _UploadPackageButtons extends StatelessWidget {
 }
 
 class _SearchPackageButton extends StatelessWidget {
-  const _SearchPackageButton({
-    required this.controller,
-    required this.state,
-  });
+  const _SearchPackageButton({required this.controller, required this.state});
 
   final CreateGameController controller;
   final CreateGameDto state;
@@ -272,12 +248,8 @@ class _SearchPackageButton extends StatelessWidget {
         if (package == null) return;
         controller.state.value = state.copyWith(package: package);
       },
-      icon: Icon(
-        state.package == null ? Icons.add : Icons.edit,
-      ),
-      label: Text(
-        LocaleKeys.select_game_package.tr(),
-      ),
+      icon: Icon(state.package == null ? Icons.add : Icons.edit),
+      label: Text(LocaleKeys.select_game_package.tr()),
     );
   }
 }

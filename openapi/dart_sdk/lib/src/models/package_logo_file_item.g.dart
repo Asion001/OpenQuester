@@ -12,7 +12,5 @@ _PackageLogoFileItem _$PackageLogoFileItemFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$PackageLogoFileItemToJson(
-        _PackageLogoFileItem instance) =>
-    <String, dynamic>{
-      'file': instance.file,
-    };
+  _PackageLogoFileItem instance,
+) => <String, dynamic>{'file': instance.file};

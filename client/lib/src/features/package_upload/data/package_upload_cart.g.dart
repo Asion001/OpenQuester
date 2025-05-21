@@ -7,11 +7,7 @@ part of 'package_upload_cart.dart';
 // **************************************************************************
 
 _PackageUploadCart _$PackageUploadCartFromJson(Map<String, dynamic> json) =>
-    _PackageUploadCart(
-      hash: json['hash'] as String,
-    );
+    _PackageUploadCart(hash: json['hash'] as String);
 
 Map<String, dynamic> _$PackageUploadCartToJson(_PackageUploadCart instance) =>
-    <String, dynamic>{
-      'hash': instance.hash,
-    };
+    <String, dynamic>{'hash': instance.hash};

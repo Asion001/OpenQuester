@@ -15,48 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$PackageLogoFileInput {
-  FileInput get file;
 
-  /// Create a copy of PackageLogoFileInput
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $PackageLogoFileInputCopyWith<PackageLogoFileInput> get copyWith =>
-      _$PackageLogoFileInputCopyWithImpl<PackageLogoFileInput>(
-          this as PackageLogoFileInput, _$identity);
+ FileInput get file;
+/// Create a copy of PackageLogoFileInput
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PackageLogoFileInputCopyWith<PackageLogoFileInput> get copyWith => _$PackageLogoFileInputCopyWithImpl<PackageLogoFileInput>(this as PackageLogoFileInput, _$identity);
 
   /// Serializes this PackageLogoFileInput to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is PackageLogoFileInput &&
-            (identical(other.file, file) || other.file == file));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, file);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PackageLogoFileInput&&(identical(other.file, file) || other.file == file));
+}
 
-  @override
-  String toString() {
-    return 'PackageLogoFileInput(file: $file)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,file);
+
+@override
+String toString() {
+  return 'PackageLogoFileInput(file: $file)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $PackageLogoFileInputCopyWith<$Res> {
-  factory $PackageLogoFileInputCopyWith(PackageLogoFileInput value,
-          $Res Function(PackageLogoFileInput) _then) =
-      _$PackageLogoFileInputCopyWithImpl;
-  @useResult
-  $Res call({FileInput file});
+abstract mixin class $PackageLogoFileInputCopyWith<$Res>  {
+  factory $PackageLogoFileInputCopyWith(PackageLogoFileInput value, $Res Function(PackageLogoFileInput) _then) = _$PackageLogoFileInputCopyWithImpl;
+@useResult
+$Res call({
+ FileInput file
+});
 
-  $FileInputCopyWith<$Res> get file;
+
+$FileInputCopyWith<$Res> get file;
+
 }
-
 /// @nodoc
 class _$PackageLogoFileInputCopyWithImpl<$Res>
     implements $PackageLogoFileInputCopyWith<$Res> {
@@ -65,90 +64,76 @@ class _$PackageLogoFileInputCopyWithImpl<$Res>
   final PackageLogoFileInput _self;
   final $Res Function(PackageLogoFileInput) _then;
 
-  /// Create a copy of PackageLogoFileInput
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? file = null,
-  }) {
-    return _then(_self.copyWith(
-      file: null == file
-          ? _self.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as FileInput,
-    ));
-  }
-
-  /// Create a copy of PackageLogoFileInput
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $FileInputCopyWith<$Res> get file {
-    return $FileInputCopyWith<$Res>(_self.file, (value) {
-      return _then(_self.copyWith(file: value));
-    });
-  }
+/// Create a copy of PackageLogoFileInput
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? file = null,}) {
+  return _then(_self.copyWith(
+file: null == file ? _self.file : file // ignore: cast_nullable_to_non_nullable
+as FileInput,
+  ));
 }
+/// Create a copy of PackageLogoFileInput
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$FileInputCopyWith<$Res> get file {
+  
+  return $FileInputCopyWith<$Res>(_self.file, (value) {
+    return _then(_self.copyWith(file: value));
+  });
+}
+}
+
 
 /// @nodoc
 @JsonSerializable()
+
 class _PackageLogoFileInput implements PackageLogoFileInput {
   const _PackageLogoFileInput({required this.file});
-  factory _PackageLogoFileInput.fromJson(Map<String, dynamic> json) =>
-      _$PackageLogoFileInputFromJson(json);
+  factory _PackageLogoFileInput.fromJson(Map<String, dynamic> json) => _$PackageLogoFileInputFromJson(json);
 
-  @override
-  final FileInput file;
+@override final  FileInput file;
 
-  /// Create a copy of PackageLogoFileInput
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$PackageLogoFileInputCopyWith<_PackageLogoFileInput> get copyWith =>
-      __$PackageLogoFileInputCopyWithImpl<_PackageLogoFileInput>(
-          this, _$identity);
+/// Create a copy of PackageLogoFileInput
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PackageLogoFileInputCopyWith<_PackageLogoFileInput> get copyWith => __$PackageLogoFileInputCopyWithImpl<_PackageLogoFileInput>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$PackageLogoFileInputToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$PackageLogoFileInputToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _PackageLogoFileInput &&
-            (identical(other.file, file) || other.file == file));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PackageLogoFileInput&&(identical(other.file, file) || other.file == file));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, file);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,file);
 
-  @override
-  String toString() {
-    return 'PackageLogoFileInput(file: $file)';
-  }
+@override
+String toString() {
+  return 'PackageLogoFileInput(file: $file)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$PackageLogoFileInputCopyWith<$Res>
-    implements $PackageLogoFileInputCopyWith<$Res> {
-  factory _$PackageLogoFileInputCopyWith(_PackageLogoFileInput value,
-          $Res Function(_PackageLogoFileInput) _then) =
-      __$PackageLogoFileInputCopyWithImpl;
-  @override
-  @useResult
-  $Res call({FileInput file});
+abstract mixin class _$PackageLogoFileInputCopyWith<$Res> implements $PackageLogoFileInputCopyWith<$Res> {
+  factory _$PackageLogoFileInputCopyWith(_PackageLogoFileInput value, $Res Function(_PackageLogoFileInput) _then) = __$PackageLogoFileInputCopyWithImpl;
+@override @useResult
+$Res call({
+ FileInput file
+});
 
-  @override
-  $FileInputCopyWith<$Res> get file;
+
+@override $FileInputCopyWith<$Res> get file;
+
 }
-
 /// @nodoc
 class __$PackageLogoFileInputCopyWithImpl<$Res>
     implements _$PackageLogoFileInputCopyWith<$Res> {
@@ -157,30 +142,25 @@ class __$PackageLogoFileInputCopyWithImpl<$Res>
   final _PackageLogoFileInput _self;
   final $Res Function(_PackageLogoFileInput) _then;
 
-  /// Create a copy of PackageLogoFileInput
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? file = null,
-  }) {
-    return _then(_PackageLogoFileInput(
-      file: null == file
-          ? _self.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as FileInput,
-    ));
-  }
+/// Create a copy of PackageLogoFileInput
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? file = null,}) {
+  return _then(_PackageLogoFileInput(
+file: null == file ? _self.file : file // ignore: cast_nullable_to_non_nullable
+as FileInput,
+  ));
+}
 
-  /// Create a copy of PackageLogoFileInput
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $FileInputCopyWith<$Res> get file {
-    return $FileInputCopyWith<$Res>(_self.file, (value) {
-      return _then(_self.copyWith(file: value));
-    });
-  }
+/// Create a copy of PackageLogoFileInput
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$FileInputCopyWith<$Res> get file {
+  
+  return $FileInputCopyWith<$Res>(_self.file, (value) {
+    return _then(_self.copyWith(file: value));
+  });
+}
 }
 
 // dart format on

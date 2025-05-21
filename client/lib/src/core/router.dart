@@ -35,10 +35,7 @@ class AppRouter extends RootStackRouter {
   Future<Uri> deepLinkTransformer(Uri uri) async {
     if (uri.path != '/') {
       // Make home screen behind any page from deep link
-      Future.delayed(
-        Duration.zero,
-        () => pushPath(uri.path),
-      );
+      Future.delayed(Duration.zero, () => pushPath(uri.path));
     }
     return Uri(path: '/');
   }
@@ -65,11 +62,11 @@ class BlurDialogRoute<R> extends CustomRoute<R> {
     super.title,
     super.usesPathAsKey,
   }) : super(
-          transitionsBuilder: blurIn,
-          barrierColor: Colors.black.withValues(alpha: .3),
-          opaque: false,
-          fullscreenDialog: true,
-        );
+         transitionsBuilder: blurIn,
+         barrierColor: Colors.black.withValues(alpha: .3),
+         opaque: false,
+         fullscreenDialog: true,
+       );
 
   static Widget blurIn(
     BuildContext context,

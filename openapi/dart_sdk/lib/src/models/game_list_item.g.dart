@@ -9,8 +9,9 @@ part of 'game_list_item.dart';
 _GameListItem _$GameListItemFromJson(Map<String, dynamic> json) =>
     _GameListItem(
       id: json['id'] as String,
-      createdBy:
-          ShortUserInfo.fromJson(json['createdBy'] as Map<String, dynamic>),
+      createdBy: ShortUserInfo.fromJson(
+        json['createdBy'] as Map<String, dynamic>,
+      ),
       title: json['title'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       ageRestriction: AgeRestriction.fromJson(json['ageRestriction'] as String),

@@ -7,21 +7,18 @@ class GameLobbyThemes extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     // Save scroll position
-    final scrollController = createOnce(
-      () {
-        final controller = ScrollController(
-          initialScrollOffset:
-              getIt<GameLobbyController>().themeScrollPosition ?? 0,
-        );
+    final scrollController = createOnce(() {
+      final controller = ScrollController(
+        initialScrollOffset:
+            getIt<GameLobbyController>().themeScrollPosition ?? 0,
+      );
 
-        controller.addListener(
-          () => getIt<GameLobbyController>().themeScrollPosition =
-              controller.offset,
-        );
-        return controller;
-      },
-      dispose: (c) => c.dispose(),
-    );
+      controller.addListener(
+        () => getIt<GameLobbyController>().themeScrollPosition =
+            controller.offset,
+      );
+      return controller;
+    }, dispose: (c) => c.dispose());
 
     final gameData = watchValue((GameLobbyController e) => e.gameData);
     final round = gameData?.gameState.currentRound;

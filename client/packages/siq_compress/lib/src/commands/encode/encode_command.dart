@@ -14,8 +14,9 @@ class EncodeCommand extends FileCommand {
   Future<int> run() async {
     final inputFile = await getInputFile();
     final outputFile = await getOutputFile();
-    final progress =
-        logger.progress('Processing file: ${inputFile.path.split('/').last}');
+    final progress = logger.progress(
+      'Processing file: ${inputFile.path.split('/').last}',
+    );
 
     final metadata = await fileEncoder.getMetadata(inputFile);
     final codecType = fileEncoder.getFileType(metadata);

@@ -7,13 +7,9 @@ part of 'socket_io_game_join_meta.dart';
 // **************************************************************************
 
 _SocketIOGameJoinMeta _$SocketIOGameJoinMetaFromJson(
-        Map<String, dynamic> json) =>
-    _SocketIOGameJoinMeta(
-      title: json['title'] as String,
-    );
+  Map<String, dynamic> json,
+) => _SocketIOGameJoinMeta(title: json['title'] as String);
 
 Map<String, dynamic> _$SocketIOGameJoinMetaToJson(
-        _SocketIOGameJoinMeta instance) =>
-    <String, dynamic>{
-      'title': instance.title,
-    };
+  _SocketIOGameJoinMeta instance,
+) => <String, dynamic>{'title': instance.title};

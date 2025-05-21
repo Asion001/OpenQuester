@@ -7,14 +7,15 @@ part of 'player_data.dart';
 // **************************************************************************
 
 _PlayerData _$PlayerDataFromJson(Map<String, dynamic> json) => _PlayerData(
-      meta: PlayerMeta.fromJson(json['meta'] as Map<String, dynamic>),
-      role: PlayerRole.fromJson(json['role'] as String),
-      restrictionData: RestrictionsEventData.fromJson(
-          json['restrictionData'] as Map<String, dynamic>),
-      score: (json['score'] as num).toInt(),
-      slot: (json['slot'] as num?)?.toInt(),
-      status: PlayerDataStatus.fromJson(json['status'] as String),
-    );
+  meta: PlayerMeta.fromJson(json['meta'] as Map<String, dynamic>),
+  role: PlayerRole.fromJson(json['role'] as String),
+  restrictionData: RestrictionsEventData.fromJson(
+    json['restrictionData'] as Map<String, dynamic>,
+  ),
+  score: (json['score'] as num).toInt(),
+  slot: (json['slot'] as num?)?.toInt(),
+  status: PlayerDataStatus.fromJson(json['status'] as String),
+);
 
 Map<String, dynamic> _$PlayerDataToJson(_PlayerData instance) =>
     <String, dynamic>{

@@ -15,50 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$GameQuestionData {
-  String? get text;
-  PackageQuestionFile? get file;
 
-  /// Create a copy of GameQuestionData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $GameQuestionDataCopyWith<GameQuestionData> get copyWith =>
-      _$GameQuestionDataCopyWithImpl<GameQuestionData>(
-          this as GameQuestionData, _$identity);
+ String? get text; PackageQuestionFile? get file;
+/// Create a copy of GameQuestionData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GameQuestionDataCopyWith<GameQuestionData> get copyWith => _$GameQuestionDataCopyWithImpl<GameQuestionData>(this as GameQuestionData, _$identity);
 
   /// Serializes this GameQuestionData to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is GameQuestionData &&
-            (identical(other.text, text) || other.text == text) &&
-            (identical(other.file, file) || other.file == file));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, text, file);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameQuestionData&&(identical(other.text, text) || other.text == text)&&(identical(other.file, file) || other.file == file));
+}
 
-  @override
-  String toString() {
-    return 'GameQuestionData(text: $text, file: $file)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,text,file);
+
+@override
+String toString() {
+  return 'GameQuestionData(text: $text, file: $file)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $GameQuestionDataCopyWith<$Res> {
-  factory $GameQuestionDataCopyWith(
-          GameQuestionData value, $Res Function(GameQuestionData) _then) =
-      _$GameQuestionDataCopyWithImpl;
-  @useResult
-  $Res call({String? text, PackageQuestionFile? file});
+abstract mixin class $GameQuestionDataCopyWith<$Res>  {
+  factory $GameQuestionDataCopyWith(GameQuestionData value, $Res Function(GameQuestionData) _then) = _$GameQuestionDataCopyWithImpl;
+@useResult
+$Res call({
+ String? text, PackageQuestionFile? file
+});
 
-  $PackageQuestionFileCopyWith<$Res>? get file;
+
+$PackageQuestionFileCopyWith<$Res>? get file;
+
 }
-
 /// @nodoc
 class _$GameQuestionDataCopyWithImpl<$Res>
     implements $GameQuestionDataCopyWith<$Res> {
@@ -67,101 +64,81 @@ class _$GameQuestionDataCopyWithImpl<$Res>
   final GameQuestionData _self;
   final $Res Function(GameQuestionData) _then;
 
-  /// Create a copy of GameQuestionData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? text = freezed,
-    Object? file = freezed,
-  }) {
-    return _then(_self.copyWith(
-      text: freezed == text
-          ? _self.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      file: freezed == file
-          ? _self.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as PackageQuestionFile?,
-    ));
-  }
-
-  /// Create a copy of GameQuestionData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PackageQuestionFileCopyWith<$Res>? get file {
-    if (_self.file == null) {
-      return null;
-    }
-
-    return $PackageQuestionFileCopyWith<$Res>(_self.file!, (value) {
-      return _then(_self.copyWith(file: value));
-    });
-  }
+/// Create a copy of GameQuestionData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? text = freezed,Object? file = freezed,}) {
+  return _then(_self.copyWith(
+text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String?,file: freezed == file ? _self.file : file // ignore: cast_nullable_to_non_nullable
+as PackageQuestionFile?,
+  ));
 }
+/// Create a copy of GameQuestionData
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PackageQuestionFileCopyWith<$Res>? get file {
+    if (_self.file == null) {
+    return null;
+  }
+
+  return $PackageQuestionFileCopyWith<$Res>(_self.file!, (value) {
+    return _then(_self.copyWith(file: value));
+  });
+}
+}
+
 
 /// @nodoc
 @JsonSerializable()
+
 class _GameQuestionData implements GameQuestionData {
   const _GameQuestionData({this.text, this.file});
-  factory _GameQuestionData.fromJson(Map<String, dynamic> json) =>
-      _$GameQuestionDataFromJson(json);
+  factory _GameQuestionData.fromJson(Map<String, dynamic> json) => _$GameQuestionDataFromJson(json);
 
-  @override
-  final String? text;
-  @override
-  final PackageQuestionFile? file;
+@override final  String? text;
+@override final  PackageQuestionFile? file;
 
-  /// Create a copy of GameQuestionData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$GameQuestionDataCopyWith<_GameQuestionData> get copyWith =>
-      __$GameQuestionDataCopyWithImpl<_GameQuestionData>(this, _$identity);
+/// Create a copy of GameQuestionData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GameQuestionDataCopyWith<_GameQuestionData> get copyWith => __$GameQuestionDataCopyWithImpl<_GameQuestionData>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$GameQuestionDataToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$GameQuestionDataToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _GameQuestionData &&
-            (identical(other.text, text) || other.text == text) &&
-            (identical(other.file, file) || other.file == file));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameQuestionData&&(identical(other.text, text) || other.text == text)&&(identical(other.file, file) || other.file == file));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, text, file);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,text,file);
 
-  @override
-  String toString() {
-    return 'GameQuestionData(text: $text, file: $file)';
-  }
+@override
+String toString() {
+  return 'GameQuestionData(text: $text, file: $file)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$GameQuestionDataCopyWith<$Res>
-    implements $GameQuestionDataCopyWith<$Res> {
-  factory _$GameQuestionDataCopyWith(
-          _GameQuestionData value, $Res Function(_GameQuestionData) _then) =
-      __$GameQuestionDataCopyWithImpl;
-  @override
-  @useResult
-  $Res call({String? text, PackageQuestionFile? file});
+abstract mixin class _$GameQuestionDataCopyWith<$Res> implements $GameQuestionDataCopyWith<$Res> {
+  factory _$GameQuestionDataCopyWith(_GameQuestionData value, $Res Function(_GameQuestionData) _then) = __$GameQuestionDataCopyWithImpl;
+@override @useResult
+$Res call({
+ String? text, PackageQuestionFile? file
+});
 
-  @override
-  $PackageQuestionFileCopyWith<$Res>? get file;
+
+@override $PackageQuestionFileCopyWith<$Res>? get file;
+
 }
-
 /// @nodoc
 class __$GameQuestionDataCopyWithImpl<$Res>
     implements _$GameQuestionDataCopyWith<$Res> {
@@ -170,39 +147,29 @@ class __$GameQuestionDataCopyWithImpl<$Res>
   final _GameQuestionData _self;
   final $Res Function(_GameQuestionData) _then;
 
-  /// Create a copy of GameQuestionData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? text = freezed,
-    Object? file = freezed,
-  }) {
-    return _then(_GameQuestionData(
-      text: freezed == text
-          ? _self.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      file: freezed == file
-          ? _self.file
-          : file // ignore: cast_nullable_to_non_nullable
-              as PackageQuestionFile?,
-    ));
-  }
+/// Create a copy of GameQuestionData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? text = freezed,Object? file = freezed,}) {
+  return _then(_GameQuestionData(
+text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String?,file: freezed == file ? _self.file : file // ignore: cast_nullable_to_non_nullable
+as PackageQuestionFile?,
+  ));
+}
 
-  /// Create a copy of GameQuestionData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PackageQuestionFileCopyWith<$Res>? get file {
+/// Create a copy of GameQuestionData
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PackageQuestionFileCopyWith<$Res>? get file {
     if (_self.file == null) {
-      return null;
-    }
-
-    return $PackageQuestionFileCopyWith<$Res>(_self.file!, (value) {
-      return _then(_self.copyWith(file: value));
-    });
+    return null;
   }
+
+  return $PackageQuestionFileCopyWith<$Res>(_self.file!, (value) {
+    return _then(_self.copyWith(file: value));
+  });
+}
 }
 
 // dart format on

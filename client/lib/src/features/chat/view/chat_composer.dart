@@ -4,9 +4,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat show Composer;
 import 'package:openquester/common_imports.dart';
 
 class Composer extends StatefulWidget {
-  const Composer({
-    super.key,
-  });
+  const Composer({super.key});
 
   @override
   State<Composer> createState() => _ComposerState();

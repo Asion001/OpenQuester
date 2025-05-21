@@ -7,27 +7,28 @@ part of 'game_state.dart';
 // **************************************************************************
 
 _GameState _$GameStateFromJson(Map<String, dynamic> json) => _GameState(
-      questionState: json['questionState'] == null
-          ? null
-          : GameStateQuestionState.fromJson(json['questionState'] as String?),
-      isPaused: json['isPaused'] as bool,
-      answeringPlayer: (json['answeringPlayer'] as num?)?.toInt(),
-      answeredPlayers: (json['answeredPlayers'] as List<dynamic>?)
-          ?.map((e) =>
-              GameStateAnsweredPlayer.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      currentRound: json['currentRound'] == null
-          ? null
-          : SocketIOGameStateRoundData.fromJson(
-              json['currentRound'] as Map<String, dynamic>),
-      currentQuestion: json['currentQuestion'] == null
-          ? null
-          : PackageQuestionData.fromJson(
-              json['currentQuestion'] as Map<String, dynamic>),
-      timer: json['timer'] == null
-          ? null
-          : GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),
-    );
+  questionState: json['questionState'] == null
+      ? null
+      : GameStateQuestionState.fromJson(json['questionState'] as String?),
+  isPaused: json['isPaused'] as bool,
+  answeringPlayer: (json['answeringPlayer'] as num?)?.toInt(),
+  answeredPlayers: (json['answeredPlayers'] as List<dynamic>?)
+      ?.map((e) => GameStateAnsweredPlayer.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  currentRound: json['currentRound'] == null
+      ? null
+      : SocketIOGameStateRoundData.fromJson(
+          json['currentRound'] as Map<String, dynamic>,
+        ),
+  currentQuestion: json['currentQuestion'] == null
+      ? null
+      : PackageQuestionData.fromJson(
+          json['currentQuestion'] as Map<String, dynamic>,
+        ),
+  timer: json['timer'] == null
+      ? null
+      : GameStateTimer.fromJson(json['timer'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$GameStateToJson(_GameState instance) =>
     <String, dynamic>{

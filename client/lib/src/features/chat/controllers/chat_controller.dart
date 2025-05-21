@@ -42,7 +42,7 @@ class SocketChatController extends ChangeNotifier {
     // Set chat user
     user = User(
       id: restUser.id.toString(),
-      firstName: restUser.username,
+      name: restUser.username,
       imageSource: restUser.avatar,
     );
 
@@ -75,7 +75,7 @@ class SocketChatController extends ChangeNotifier {
     );
 
     final textMessage = message.toChatMessage();
-    chatController?.insert(textMessage);
+    chatController?.insertMessage(textMessage);
     notifyListeners();
   }
 

@@ -11,7 +11,8 @@ _InputOauthLogin _$InputOauthLoginFromJson(Map<String, dynamic> json) =>
       token: json['token'] as String,
       tokenSchema: json['tokenSchema'] as String?,
       oauthProvider: InputOauthLoginOauthProvider.fromJson(
-          json['oauthProvider'] as String),
+        json['oauthProvider'] as String,
+      ),
     );
 
 Map<String, dynamic> _$InputOauthLoginToJson(_InputOauthLogin instance) =>

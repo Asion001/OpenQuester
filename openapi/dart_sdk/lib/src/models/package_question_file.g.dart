@@ -15,10 +15,10 @@ _PackageQuestionFile _$PackageQuestionFileFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$PackageQuestionFileToJson(
-        _PackageQuestionFile instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'order': instance.order,
-      'file': instance.file,
-      'displayTime': instance.displayTime,
-    };
+  _PackageQuestionFile instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'order': instance.order,
+  'file': instance.file,
+  'displayTime': instance.displayTime,
+};

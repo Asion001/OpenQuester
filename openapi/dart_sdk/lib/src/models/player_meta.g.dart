@@ -7,10 +7,10 @@ part of 'player_meta.dart';
 // **************************************************************************
 
 _PlayerMeta _$PlayerMetaFromJson(Map<String, dynamic> json) => _PlayerMeta(
-      id: (json['id'] as num).toInt(),
-      username: json['username'] as String,
-      avatar: json['avatar'] as String?,
-    );
+  id: (json['id'] as num).toInt(),
+  username: json['username'] as String,
+  avatar: json['avatar'] as String?,
+);
 
 Map<String, dynamic> _$PlayerMetaToJson(_PlayerMeta instance) =>
     <String, dynamic>{

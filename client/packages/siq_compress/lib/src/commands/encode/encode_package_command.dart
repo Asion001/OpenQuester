@@ -17,8 +17,9 @@ class EncodePackageCommand extends FileCommand {
   Future<int> run() async {
     final inputFile = await getInputFile();
     final outputFile = await getOutputFile();
-    final progress =
-        logger.progress('Processing file: ${inputFile.path.split('/').last}');
+    final progress = logger.progress(
+      'Processing file: ${inputFile.path.split('/').last}',
+    );
 
     final encoder = SiqFileEncoder();
     final tempFolder = await getTemporaryDirectory();

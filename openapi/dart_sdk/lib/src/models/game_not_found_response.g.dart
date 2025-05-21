@@ -7,13 +7,9 @@ part of 'game_not_found_response.dart';
 // **************************************************************************
 
 _GameNotFoundResponse _$GameNotFoundResponseFromJson(
-        Map<String, dynamic> json) =>
-    _GameNotFoundResponse(
-      error: json['error'] as String,
-    );
+  Map<String, dynamic> json,
+) => _GameNotFoundResponse(error: json['error'] as String);
 
 Map<String, dynamic> _$GameNotFoundResponseToJson(
-        _GameNotFoundResponse instance) =>
-    <String, dynamic>{
-      'error': instance.error,
-    };
+  _GameNotFoundResponse instance,
+) => <String, dynamic>{'error': instance.error};

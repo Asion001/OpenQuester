@@ -7,8 +7,8 @@ import 'package:siq_file/src/version.dart';
 
 class SiqFileCommandRunner extends CompletionCommandRunner<int> {
   SiqFileCommandRunner({Logger? logger})
-      : _logger = logger ?? Logger(),
-        super('siq_file', '🦄 A sigame file parser') {
+    : _logger = logger ?? Logger(),
+      super('siq_file', '🦄 A sigame file parser') {
     argParser
       ..addFlag('version', help: 'Print the current version.', abbr: 'v')
       ..addFlag(

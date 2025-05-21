@@ -10,8 +10,8 @@ abstract class FileService {
   }) async {
     final defaultConf =
         kIsWeb || kIsWasm || !(Platform.isAndroid || Platform.isIOS)
-            ? PickerSettings.other()
-            : PickerSettings.mobile();
+        ? PickerSettings.other()
+        : PickerSettings.mobile();
     final conf = filePickConf ?? defaultConf;
 
     final result = await FilePicker.platform.pickFiles(
@@ -35,9 +35,9 @@ class PickerSettings {
 
   factory PickerSettings.mobile() => const PickerSettings(type: FileType.any);
   factory PickerSettings.other() => const PickerSettings(
-        allowedExtensions: siqExtensions,
-        type: FileType.custom,
-      );
+    allowedExtensions: siqExtensions,
+    type: FileType.custom,
+  );
   final List<String>? allowedExtensions;
   final FileType type;
 

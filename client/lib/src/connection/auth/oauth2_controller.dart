@@ -59,8 +59,9 @@ class IoWebAuth implements BaseWebAuth {
     Map<String, dynamic>? opts,
   }) async {
     final preferEphemeral = (opts?['preferEphemeral'] == true);
-    final intentFlags =
-        preferEphemeral ? ephemeralIntentFlags : defaultIntentFlags;
+    final intentFlags = preferEphemeral
+        ? ephemeralIntentFlags
+        : defaultIntentFlags;
 
     return FlutterWebAuth2.authenticate(
       callbackUrlScheme: callbackUrlScheme,

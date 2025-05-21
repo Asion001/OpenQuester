@@ -35,8 +35,8 @@ class _FileOpeningState extends State<FileOpening> {
                   onPressed: siqFile == null
                       ? null
                       : () async => Clipboard.setData(
-                            ClipboardData(text: jsonEncode(siqFile?.toJson())),
-                          ),
+                          ClipboardData(text: jsonEncode(siqFile?.toJson())),
+                        ),
                 ),
                 const IconButton(
                   icon: Icon(Icons.upload_file),
@@ -67,7 +67,8 @@ class _FileOpeningState extends State<FileOpening> {
 
     final parseTime = DateTime.now().difference(now);
 
-    final debugText = '''
+    final debugText =
+        '''
     parseTime: $parseTime;
     pickedTime: $pickedTime;
     rounds: ${siqFile?.rounds.length}''';
