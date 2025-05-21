@@ -10,6 +10,7 @@ import {
   GameStateAnsweredPlayerData,
   GameStateDTO,
 } from "domain/types/dto/game/state/GameStateDTO";
+import { GameStateRoundDTO } from "domain/types/dto/game/state/GameStateRoundDTO";
 import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
@@ -217,10 +218,16 @@ export class Game {
   }
 
   /**
+   * **Important**: This method overrides some game properties and game should be
+   * updated if isGameFinished is true or nextGameState is not null.
+   *
+   * This is method that handles game round progression on each question finish.
+   * It checks if all questions are played and if so, it sets the next round
+   * and returns the next game state.
    * @returns Current state. If all question played - returns next game state
    * (with next round). If all question played and no next round - game finished
    */
-  public getFlowState() {
+  public handleRoundProgression() {
     let nextGameState: GameStateDTO | null = null;
     let isGameFinished = false;
 
@@ -228,18 +235,21 @@ export class Game {
       return { isGameFinished: false, nextGameState: null };
     }
 
-    const nextRound = GameStateMapper.getGameRound(
-      this.package,
-      this.gameState.currentRound!.order + 1
-    );
+    let nextRound: GameStateRoundDTO | null = null;
 
-    if (nextRound) {
-      nextGameState = GameStateMapper.getClearGameState(nextRound);
+    if (this.gameState.currentRound?.order) {
+      nextRound = GameStateMapper.getGameRound(
+        this.package,
+        this.gameState.currentRound.order + 1
+      );
+    }
 
-      this.gameState = nextGameState;
-    } else {
-      isGameFinished = true;
+    if (!nextRound) {
       this.finish();
+      isGameFinished = true;
+    } else {
+      nextGameState = GameStateMapper.getClearGameState(nextRound);
+      this.gameState = nextGameState;
     }
 
     return { isGameFinished, nextGameState };

@@ -6,7 +6,6 @@ import {
   GAME_NAMESPACE,
   GAME_TTL_IN_SECONDS,
 } from "domain/constants/game";
-import { PACKAGE_SELECT_FIELDS } from "domain/constants/package";
 import { REDIS_LOCK_GAMES_CLEANUP } from "domain/constants/redis";
 import { TIMER_NSP } from "domain/constants/timer";
 import { Game } from "domain/entities/game/Game";
@@ -18,13 +17,12 @@ import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameCreateDTO } from "domain/types/dto/game/GameCreateDTO";
 import { GameListItemDTO } from "domain/types/dto/game/GameListItemDTO";
 import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
+import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { GamePaginationOpts } from "domain/types/pagination/game/GamePaginationOpts";
 import { PaginatedResult } from "domain/types/pagination/PaginatedResult";
 import { ShortUserInfo } from "domain/types/user/ShortUserInfo";
 import { GameIndexManager } from "infrastructure/database/managers/game/GameIndexManager";
-import { Package } from "infrastructure/database/models/package/Package";
-import { PackageTag } from "infrastructure/database/models/package/PackageTag";
 import { User } from "infrastructure/database/models/User";
 import { RedisService } from "infrastructure/services/redis/RedisService";
 import { S3StorageService } from "infrastructure/services/storage/S3StorageService";
@@ -110,7 +108,6 @@ export class GameRepository {
       }
     );
 
-    const packageIds = new Set<number>();
     const userIds = new Set<number>();
     const games = await this._fetchGameDetails(ids);
 
@@ -119,29 +116,21 @@ export class GameRepository {
     }
 
     games.forEach((game: Game) => {
-      packageIds.add(game.packageId!);
       userIds.add(game.createdBy);
     });
 
-    const [users, packages] = await Promise.all([
-      this.userService.findByIds(Array.from(userIds), {
-        select: ["id", "username"],
-        relations: [],
-      }) as Promise<ShortUserInfo[]>,
-      this.packageService.findByIds(Array.from(packageIds), {
-        select: PACKAGE_SELECT_FIELDS,
-        relations: ["author", "logo", "tags"],
-      }),
-    ]);
+    const users = await this.userService.findByIds(Array.from(userIds), {
+      select: ["id", "username"],
+      relations: [],
+    });
 
     const userMap = new Map(users.map((u) => [u.id, u]));
-    const packageMap = new Map(packages.map((p) => [p.id, p]));
 
     const gamesItems: GameListItemDTO[] = (
       await Promise.all(
         games.map(async (game: Game) => {
           const createdBy = userMap.get(game.createdBy);
-          const packData = packageMap.get(game.packageId!);
+          const packData = game.package;
 
           if (!packData || !packData.author || !createdBy) {
             return null;
@@ -199,6 +188,10 @@ export class GameRepository {
       gameData.packageId
     );
 
+    const packageDTO = packageData.toDTO(this.storage, {
+      fetchIds: true,
+    });
+
     const game = new Game({
       id: gameId,
       title: gameData.title,
@@ -209,7 +202,7 @@ export class GameRepository {
       maxPlayers: gameData.maxPlayers,
       startedAt: null,
       finishedAt: null,
-      package: packageData.toDTO(this.storage, { fetchIds: true }),
+      package: packageDTO,
       roundsCount: counts.roundsCount,
       questionsCount: counts.questionsCount,
       players: [],
@@ -225,7 +218,7 @@ export class GameRepository {
     pipeline.expire(key, GAME_TTL_IN_SECONDS);
     await pipeline.exec();
 
-    return this._parseGameToListItemDTO(game, createdBy, packageData);
+    return this._parseGameToListItemDTO(game, createdBy, packageDTO);
   }
 
   public async deleteGame(user: number, gameId: string) {
@@ -258,11 +251,7 @@ export class GameRepository {
       relations: [],
     });
 
-    const packData = await this.packageService.getPackageRaw(
-      game.packageId!,
-      PACKAGE_SELECT_FIELDS,
-      ["author", "tags", "logo"]
-    );
+    const packData = game.package;
 
     if (!packData) {
       throw new ClientError(ClientResponse.PACKAGE_NOT_FOUND);
@@ -389,7 +378,7 @@ export class GameRepository {
   private async _parseGameToListItemDTO(
     game: Game,
     createdBy: ShortUserInfo,
-    packData: Package
+    packData: PackageDTO
   ): Promise<GameListItemDTO> {
     const currentRound = game.gameState.currentRound
       ? game.gameState.currentRound.order + 1
@@ -406,24 +395,27 @@ export class GameRepository {
       isPrivate: game.isPrivate,
       maxPlayers: game.maxPlayers,
       players: game.playersCount,
-      createdBy,
+      createdBy: {
+        id: createdBy.id,
+        username: createdBy.username,
+      },
       startedAt: game.startedAt,
       finishedAt: game.finishedAt,
       createdAt: game.createdAt,
       currentRound,
       currentQuestion: currentQuestion?.id ?? null,
       package: {
-        id: packData.id,
+        id: packData.id!,
         title: packData.title,
         description: packData.description,
-        ageRestriction: packData.age_restriction,
+        ageRestriction: packData.ageRestriction,
         author: { id: packData.author.id, username: packData.author.username },
-        createdAt: packData.created_at,
+        createdAt: packData.createdAt,
         language: packData.language,
-        logo: packData.logoDTO(this.storage),
+        logo: packData.logo,
         roundsCount: game.roundsCount ?? 0,
         questionsCount: game.questionsCount ?? 0,
-        tags: packData.tags?.map((tag: PackageTag) => tag.tag) ?? [],
+        tags: packData.tags.map((t) => t.tag),
       },
     };
   }
