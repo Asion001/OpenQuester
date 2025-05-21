@@ -7,13 +7,11 @@ part of 'socket_io_answer_submitted_event_data.dart';
 // **************************************************************************
 
 _SocketIOAnswerSubmittedEventData _$SocketIOAnswerSubmittedEventDataFromJson(
-        Map<String, dynamic> json) =>
-    _SocketIOAnswerSubmittedEventData(
-      answerText: json['answerText'] as String?,
-    );
+  Map<String, dynamic> json,
+) => _SocketIOAnswerSubmittedEventData(
+  answerText: json['answerText'] as String?,
+);
 
 Map<String, dynamic> _$SocketIOAnswerSubmittedEventDataToJson(
-        _SocketIOAnswerSubmittedEventData instance) =>
-    <String, dynamic>{
-      'answerText': instance.answerText,
-    };
+  _SocketIOAnswerSubmittedEventData instance,
+) => <String, dynamic>{'answerText': instance.answerText};

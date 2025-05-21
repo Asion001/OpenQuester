@@ -11,11 +11,7 @@ class PackageListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(
-          item.title,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-        )
+        title: Text(item.title, overflow: TextOverflow.ellipsis, maxLines: 2)
             .withTooltip(msg: LocaleKeys.game_tile_tooltips_packages_title.tr())
             .shrink(),
         subtitle: Text(

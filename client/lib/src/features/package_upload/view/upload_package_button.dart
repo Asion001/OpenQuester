@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/openquester.dart';
 
 class UploadPackageButton extends WatchingWidget {
-  const UploadPackageButton({
-    this.afterUpload,
-    super.key,
-  });
+  const UploadPackageButton({this.afterUpload, super.key});
 
   final void Function(PackageListItem package)? afterUpload;
 
@@ -19,8 +16,10 @@ class UploadPackageButton extends WatchingWidget {
           final result = await getIt<PackageUploadController>().pickAndUpload();
 
           if (result != null) {
-            await getIt<ToastController>()
-                .show(LocaleKeys.package_uploaded.tr());
+            await getIt<ToastController>().show(
+              LocaleKeys.package_uploaded.tr(),
+              type: ToastType.success,
+            );
           }
           if (afterUpload != null && result != null) {
             final package = await getIt<PackageController>().getPackage(result);
@@ -40,10 +39,7 @@ class UploadPackageButton extends WatchingWidget {
             [
               LocaleKeys.upload_package.tr(),
               if (controller.loading && controller.progress != 0)
-                [
-                  (100 * controller.progress).ceil(),
-                  '%',
-                ].join(),
+                [(100 * controller.progress).ceil(), '%'].join(),
             ].join(' '),
           ),
           icon: child,

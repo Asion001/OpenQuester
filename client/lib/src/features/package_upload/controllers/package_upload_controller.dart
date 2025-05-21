@@ -4,7 +4,8 @@ import 'dart:typed_data' show Uint8List;
 import 'package:flutter/foundation.dart' show ChangeNotifier;
 import 'package:openquester/common_imports.dart' hide ParseSiqFileWorker;
 import 'package:openquester/workers/upload_isolate.dart'
-    deferred as upload_isolate show ParseSiqFileWorker;
+    deferred as upload_isolate
+    show ParseSiqFileWorker;
 import 'package:siq_file/siq_file.dart';
 
 typedef PackageId = int;
@@ -74,19 +75,18 @@ class PackageUploadController extends ChangeNotifier {
 
       // Fill filesHash
       (response['files'] as Map<String, dynamic>)
-          // Add new files without duplicates, checking by name
-          .forEach(
-        (key, rawFilePaths) {
-          final paths = List<String>.from(rawFilePaths as List);
-          // Find the ArchiveFile in the archive
-          final archiveFile =
-              parser.archive!.firstWhere((e) => paths.contains(e.name));
-          final existing = parser.filesHash[key] ?? [];
-          if (!existing.any((f) => f.name == archiveFile.name)) {
-            parser.filesHash[key] = [...existing, archiveFile];
-          }
-        },
-      );
+      // Add new files without duplicates, checking by name
+      .forEach((key, rawFilePaths) {
+        final paths = List<String>.from(rawFilePaths as List);
+        // Find the ArchiveFile in the archive
+        final archiveFile = parser.archive!.firstWhere(
+          (e) => paths.contains(e.name),
+        );
+        final existing = parser.filesHash[key] ?? [];
+        if (!existing.any((f) => f.name == archiveFile.name)) {
+          parser.filesHash[key] = [...existing, archiveFile];
+        }
+      });
 
       await _uploadFiles(links, parser);
       return result.id;

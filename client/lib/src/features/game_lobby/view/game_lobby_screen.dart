@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:openquester/common_imports.dart';
 
 @RoutePage()
 class GameLobbyScreen extends WatchingStatefulWidget {
-  const GameLobbyScreen({
-    @PathParam() required this.gameId,
-    super.key,
-  });
+  const GameLobbyScreen({@PathParam() required this.gameId, super.key});
   final String gameId;
 
   @override
@@ -41,14 +37,12 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
     final chatWideModeOn = GameLobbyStyles.desktopChat(context);
     final showDesktopChat = chatWideModeOn && showChat;
 
-    callOnce(
-      (context) {
-        // Set init value for showing chat to [false] for mobile
-        if (chatWideModeOn) {
-          getIt<GameLobbyController>().showChat.value = true;
-        }
-      },
-    );
+    callOnce((context) {
+      // Set init value for showing chat to [false] for mobile
+      if (chatWideModeOn) {
+        getIt<GameLobbyController>().showChat.value = true;
+      }
+    });
 
     return PopScope(
       canPop: false,
@@ -69,7 +63,6 @@ class _GameLobbyScreenState extends State<GameLobbyScreen> {
                 icon: const Icon(Icons.exit_to_app),
               ),
               actions: [
-                const _ShareButton(),
                 const GameLobbyMenu(),
                 _ChatButton(show: showChat),
               ],
@@ -115,8 +108,9 @@ class _BodyBuilder extends WatchingWidget {
   @override
   Widget build(BuildContext context) {
     final gameData = watchValue((GameLobbyController e) => e.gameData);
-    final currentQuestion =
-        watchValue((GameQuestionController e) => e.questionData);
+    final currentQuestion = watchValue(
+      (GameQuestionController e) => e.questionData,
+    );
     final gameFinished = watchValue((GameLobbyController e) => e.gameFinished);
     final isPaused = gameData?.gameState.isPaused ?? false;
 
@@ -187,8 +181,9 @@ class _BodyLayoutBuilder extends WatchingWidget {
     } else {
       child = Column(
         children: [
-          const GameLobbyPlayers(axis: Axis.horizontal)
-              .withHeight(GameLobbyStyles.playersMobile.height),
+          const GameLobbyPlayers(
+            axis: Axis.horizontal,
+          ).withHeight(GameLobbyStyles.playersMobile.height),
           const Divider(height: 0, thickness: .4).paddingTop(8),
           body,
         ],
@@ -222,24 +217,6 @@ class _Chat extends StatelessWidget {
         color: context.theme.colorScheme.surfaceContainer,
         child: const ChatScreen(),
       ),
-    );
-  }
-}
-
-class _ShareButton extends StatelessWidget {
-  const _ShareButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        final gameId = getIt<GameLobbyController>().gameId;
-        if (gameId == null) return;
-        final link = Env.clientAppUrl.replace(path: '/games/$gameId');
-        Clipboard.setData(ClipboardData(text: link.toString()));
-      },
-      icon: const Icon(Icons.copy),
-      tooltip: LocaleKeys.share_game_tooltip.tr(),
     );
   }
 }

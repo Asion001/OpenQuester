@@ -17,8 +17,8 @@ class AutoUpdateController {
 
   Future<String?> getLatestVersion() async {
     final url = Env.clientAppUrl.replace(path: '/version.json');
-    final versionJsonResponse =
-        await getIt<DioController>().client.getUri<Map<String, dynamic>>(url);
+    final versionJsonResponse = await getIt<DioController>().client
+        .getUri<Map<String, dynamic>>(url);
     final versionJson = versionJsonResponse.data;
     final version = versionJson?['version']?.toString();
     final buildNumber = versionJson?['build_number']?.toString();

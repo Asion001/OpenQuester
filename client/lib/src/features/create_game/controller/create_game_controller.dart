@@ -13,10 +13,7 @@ class CreateGameController {
 
   Future<void> createGame(BuildContext context) async {
     if (!getIt<AuthController>().authorized) {
-      await getIt<ToastController>().show(
-        LocaleKeys.user_unauthorized.tr(),
-        context: context,
-      );
+      await getIt<ToastController>().show(LocaleKeys.user_unauthorized.tr());
       return;
     }
 

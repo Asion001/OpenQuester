@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
 class GameLobbyTheme extends StatelessWidget {
-  const GameLobbyTheme({
-    required this.theme,
-    super.key,
-  });
+  const GameLobbyTheme({required this.theme, super.key});
   final SocketIOGameStateThemeData theme;
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:openquester/common_imports.dart';
 
 class GameLobbyMenu extends WatchingWidget {
@@ -14,6 +15,15 @@ class GameLobbyMenu extends WatchingWidget {
     return PopupMenuButton(
       itemBuilder: (BuildContext context) => [
         const PopupMenuItem<void>(child: _VolumeSlider()),
+        PopupMenuItem<void>(
+          child: Text(LocaleKeys.copy_game_link.tr()),
+          onTap: () {
+            final gameId = getIt<GameLobbyController>().gameId;
+            if (gameId == null) return;
+            final link = Env.clientAppUrl.replace(path: '/games/$gameId');
+            Clipboard.setData(ClipboardData(text: link.toString()));
+          },
+        ),
         if (imShowman) ...[
           PopupMenuItem<void>(
             child: Text(
@@ -76,8 +86,9 @@ class _VolumeSliderState extends State<_VolumeSlider> {
         Slider(
           value: volume,
           onChanged: (value) {
-            final volume =
-                double.parse(value.clamp(0, 1).toStringAsExponential(2));
+            final volume = double.parse(
+              value.clamp(0, 1).toStringAsExponential(2),
+            );
             if (this.volume == volume) return;
             this.volume = volume;
             setState(() {});

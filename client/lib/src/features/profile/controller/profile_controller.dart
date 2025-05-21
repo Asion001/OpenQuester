@@ -24,8 +24,9 @@ class ProfileController {
     if (file == null) return;
     // TODO: Add image resize
 
-    final filename = await getIt<S3UploadController>()
-        .getLinkAndUpload(await file.xFile.readAsBytes());
+    final filename = await getIt<S3UploadController>().getLinkAndUpload(
+      await file.xFile.readAsBytes(),
+    );
     await Api.I.api.users.patchV1Me(
       body: InputUpdateUser(
         username: null,

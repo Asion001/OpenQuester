@@ -3,18 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'ffprobe_output.freezed.dart';
 part 'ffprobe_output.g.dart';
 
-enum CodecType {
-  video,
-  audio,
-  image,
-}
+enum CodecType { video, audio, image }
 
-enum SampleFormat {
-  s16,
-  s32,
-  fltp,
-  dlp,
-}
+enum SampleFormat { s16, s32, fltp, dlp }
 
 @freezed
 abstract class FfprobeOutput with _$FfprobeOutput {

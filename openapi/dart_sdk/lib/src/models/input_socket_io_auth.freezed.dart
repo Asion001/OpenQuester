@@ -15,47 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$InputSocketIOAuth {
-  String get socketId;
 
-  /// Create a copy of InputSocketIOAuth
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $InputSocketIOAuthCopyWith<InputSocketIOAuth> get copyWith =>
-      _$InputSocketIOAuthCopyWithImpl<InputSocketIOAuth>(
-          this as InputSocketIOAuth, _$identity);
+ String get socketId;
+/// Create a copy of InputSocketIOAuth
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$InputSocketIOAuthCopyWith<InputSocketIOAuth> get copyWith => _$InputSocketIOAuthCopyWithImpl<InputSocketIOAuth>(this as InputSocketIOAuth, _$identity);
 
   /// Serializes this InputSocketIOAuth to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is InputSocketIOAuth &&
-            (identical(other.socketId, socketId) ||
-                other.socketId == socketId));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, socketId);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is InputSocketIOAuth&&(identical(other.socketId, socketId) || other.socketId == socketId));
+}
 
-  @override
-  String toString() {
-    return 'InputSocketIOAuth(socketId: $socketId)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,socketId);
+
+@override
+String toString() {
+  return 'InputSocketIOAuth(socketId: $socketId)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $InputSocketIOAuthCopyWith<$Res> {
-  factory $InputSocketIOAuthCopyWith(
-          InputSocketIOAuth value, $Res Function(InputSocketIOAuth) _then) =
-      _$InputSocketIOAuthCopyWithImpl;
-  @useResult
-  $Res call({String socketId});
-}
+abstract mixin class $InputSocketIOAuthCopyWith<$Res>  {
+  factory $InputSocketIOAuthCopyWith(InputSocketIOAuth value, $Res Function(InputSocketIOAuth) _then) = _$InputSocketIOAuthCopyWithImpl;
+@useResult
+$Res call({
+ String socketId
+});
 
+
+
+
+}
 /// @nodoc
 class _$InputSocketIOAuthCopyWithImpl<$Res>
     implements $InputSocketIOAuthCopyWith<$Res> {
@@ -64,77 +64,67 @@ class _$InputSocketIOAuthCopyWithImpl<$Res>
   final InputSocketIOAuth _self;
   final $Res Function(InputSocketIOAuth) _then;
 
-  /// Create a copy of InputSocketIOAuth
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? socketId = null,
-  }) {
-    return _then(_self.copyWith(
-      socketId: null == socketId
-          ? _self.socketId
-          : socketId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of InputSocketIOAuth
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? socketId = null,}) {
+  return _then(_self.copyWith(
+socketId: null == socketId ? _self.socketId : socketId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
+
+}
+
 
 /// @nodoc
 @JsonSerializable()
+
 class _InputSocketIOAuth implements InputSocketIOAuth {
   const _InputSocketIOAuth({required this.socketId});
-  factory _InputSocketIOAuth.fromJson(Map<String, dynamic> json) =>
-      _$InputSocketIOAuthFromJson(json);
+  factory _InputSocketIOAuth.fromJson(Map<String, dynamic> json) => _$InputSocketIOAuthFromJson(json);
 
-  @override
-  final String socketId;
+@override final  String socketId;
 
-  /// Create a copy of InputSocketIOAuth
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$InputSocketIOAuthCopyWith<_InputSocketIOAuth> get copyWith =>
-      __$InputSocketIOAuthCopyWithImpl<_InputSocketIOAuth>(this, _$identity);
+/// Create a copy of InputSocketIOAuth
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$InputSocketIOAuthCopyWith<_InputSocketIOAuth> get copyWith => __$InputSocketIOAuthCopyWithImpl<_InputSocketIOAuth>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$InputSocketIOAuthToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$InputSocketIOAuthToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _InputSocketIOAuth &&
-            (identical(other.socketId, socketId) ||
-                other.socketId == socketId));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InputSocketIOAuth&&(identical(other.socketId, socketId) || other.socketId == socketId));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, socketId);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,socketId);
 
-  @override
-  String toString() {
-    return 'InputSocketIOAuth(socketId: $socketId)';
-  }
+@override
+String toString() {
+  return 'InputSocketIOAuth(socketId: $socketId)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$InputSocketIOAuthCopyWith<$Res>
-    implements $InputSocketIOAuthCopyWith<$Res> {
-  factory _$InputSocketIOAuthCopyWith(
-          _InputSocketIOAuth value, $Res Function(_InputSocketIOAuth) _then) =
-      __$InputSocketIOAuthCopyWithImpl;
-  @override
-  @useResult
-  $Res call({String socketId});
-}
+abstract mixin class _$InputSocketIOAuthCopyWith<$Res> implements $InputSocketIOAuthCopyWith<$Res> {
+  factory _$InputSocketIOAuthCopyWith(_InputSocketIOAuth value, $Res Function(_InputSocketIOAuth) _then) = __$InputSocketIOAuthCopyWithImpl;
+@override @useResult
+$Res call({
+ String socketId
+});
 
+
+
+
+}
 /// @nodoc
 class __$InputSocketIOAuthCopyWithImpl<$Res>
     implements _$InputSocketIOAuthCopyWith<$Res> {
@@ -143,20 +133,16 @@ class __$InputSocketIOAuthCopyWithImpl<$Res>
   final _InputSocketIOAuth _self;
   final $Res Function(_InputSocketIOAuth) _then;
 
-  /// Create a copy of InputSocketIOAuth
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? socketId = null,
-  }) {
-    return _then(_InputSocketIOAuth(
-      socketId: null == socketId
-          ? _self.socketId
-          : socketId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of InputSocketIOAuth
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? socketId = null,}) {
+  return _then(_InputSocketIOAuth(
+socketId: null == socketId ? _self.socketId : socketId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 // dart format on

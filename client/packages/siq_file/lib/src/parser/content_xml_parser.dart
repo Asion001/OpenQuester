@@ -41,7 +41,8 @@ class ContentXmlParser {
   Future<PackageTheme> _parseTheme(int index, XmlElement theme) async {
     final name = theme.getAttribute('name') ?? '-';
     final comment = _getComment(theme);
-    final questions = theme
+    final questions =
+        theme
             .getElement('questions')
             ?.children
             .mapIndexed(_parseQuestion)
@@ -58,8 +59,10 @@ class ContentXmlParser {
   }
 
   String? _getComment(XmlElement element) {
-    final comment =
-        element.getElement('info')?.getElement('comments')?.innerText;
+    final comment = element
+        .getElement('info')
+        ?.getElement('comments')
+        ?.innerText;
     return comment;
   }
 
@@ -71,25 +74,30 @@ class ContentXmlParser {
     final scenario = question.getElement('scenario');
     final params = question.getElement('params') ?? scenario;
 
-    final questionType = QuestionType.values.firstWhereOrNull(
+    final questionType =
+        QuestionType.values.firstWhereOrNull(
           (e) => e.name == question.getAttribute('type'),
         ) ??
         QuestionType.simple;
 
     final paramsChildren = params?.childElements ?? [];
-    final questionParam = paramsChildren
-            .firstWhereOrNull((e) => e.getAttribute('name') == 'question') ??
+    final questionParam =
+        paramsChildren.firstWhereOrNull(
+          (e) => e.getAttribute('name') == 'question',
+        ) ??
         params;
     final questionItems = _getFileItems(questionParam);
-    final questionFiles =
-        (await Future.wait(questionItems.map(parseFile))).nonNulls;
+    final questionFiles = (await Future.wait(
+      questionItems.map(parseFile),
+    )).nonNulls;
     final questionComment = questionItems
         .firstWhereOrNull((e) => e.getAttribute('type') == 'say')
         ?.value;
 
     var questionText = questionParam?.getElement('item')?.innerText;
-    final questionAtomType =
-        questionParam?.getElement('atom')?.getAttribute('type');
+    final questionAtomType = questionParam
+        ?.getElement('atom')
+        ?.getAttribute('type');
     if (questionAtomType == null) {
       questionText ??= questionParam?.innerText;
     } else if (questionAtomType == 'say') {
@@ -109,8 +117,9 @@ class ContentXmlParser {
       (p0) => p0.getAttribute('name') == 'answer',
     );
     final answerItems = _getFileItems(answerParam);
-    final answerFiles =
-        (await Future.wait(answerItems.map(parseFile))).nonNulls;
+    final answerFiles = (await Future.wait(
+      answerItems.map(parseFile),
+    )).nonNulls;
 
     Set<String> getAnswers(String key) =>
         question.getElement(key)?.children.map((e) => e.innerText).toSet() ??
@@ -119,8 +128,9 @@ class ContentXmlParser {
     final rightAnswers = getAnswers('right');
     final answerText = rightAnswers.join(' / ').nullOnEmpty;
     final wrongAnswers = getAnswers('wrong').join(' / ').nullOnEmpty;
-    final hostHint =
-        wrongAnswers.isEmptyOrNull ? null : 'Wrong answers: $wrongAnswers';
+    final hostHint = wrongAnswers.isEmptyOrNull
+        ? null
+        : 'Wrong answers: $wrongAnswers';
 
     final packageQuestionFiles = questionFiles
         .mapIndexed(
@@ -134,102 +144,97 @@ class ContentXmlParser {
         .toList();
 
     if (questionFiles.isEmpty && questionText.isEmptyOrNull) {
-      throw Exception(
-        'Question have no files or text to ask users $question',
-      );
+      throw Exception('Question have no files or text to ask users $question');
     }
 
     return switch (questionType) {
       QuestionType.simple => PackageQuestionUnion.simple(
-          price: price,
-          text: questionText,
-          type: SimpleQuestionType.simple,
-          questionComment: questionComment,
-          questionFiles: packageQuestionFiles,
-          answerText: answerText,
-          answerHint: hostHint,
-          answerFiles: packageAnswerFiles,
-          id: null,
-          order: index,
-        ),
+        price: price,
+        text: questionText,
+        type: SimpleQuestionType.simple,
+        questionComment: questionComment,
+        questionFiles: packageQuestionFiles,
+        answerText: answerText,
+        answerHint: hostHint,
+        answerFiles: packageAnswerFiles,
+        id: null,
+        order: index,
+      ),
       QuestionType.stake => PackageQuestionUnion.stake(
-          price: price,
-          text: questionText,
-          type: StakeQuestionType.stake,
-          questionComment: questionComment,
-          questionFiles: packageQuestionFiles,
-          answerText: answerText,
-          answerHint: hostHint,
-          answerFiles: packageAnswerFiles,
-          id: null,
-          maxPrice: null,
-          order: index,
-        ),
+        price: price,
+        text: questionText,
+        type: StakeQuestionType.stake,
+        questionComment: questionComment,
+        questionFiles: packageQuestionFiles,
+        answerText: answerText,
+        answerHint: hostHint,
+        answerFiles: packageAnswerFiles,
+        id: null,
+        maxPrice: null,
+        order: index,
+      ),
       QuestionType.secret => PackageQuestionUnion.secret(
-          price: price,
-          text: questionText,
-          type: SecretQuestionType.secret,
-          questionComment: questionComment,
-          questionFiles: packageQuestionFiles,
-          answerText: answerText,
-          answerHint: hostHint,
-          answerFiles: packageAnswerFiles,
-          id: null,
-          subType: SecretQuestionSubType.simple,
-          allowedPrices: null,
-          transferType: transferType,
-          order: index,
-        ),
+        price: price,
+        text: questionText,
+        type: SecretQuestionType.secret,
+        questionComment: questionComment,
+        questionFiles: packageQuestionFiles,
+        answerText: answerText,
+        answerHint: hostHint,
+        answerFiles: packageAnswerFiles,
+        id: null,
+        subType: SecretQuestionSubType.simple,
+        allowedPrices: null,
+        transferType: transferType,
+        order: index,
+      ),
       QuestionType.noRisk => PackageQuestionUnion.noRisk(
-          price: price,
-          text: questionText,
-          type: NoRiskQuestionType.noRisk,
-          questionComment: questionComment,
-          questionFiles: packageQuestionFiles,
-          answerText: answerText,
-          answerHint: hostHint,
-          answerFiles: packageAnswerFiles,
-          id: null,
-          subType: NoRiskQuestionSubType.simple,
-          order: index,
-          priceMultiplier: '2',
-        ),
+        price: price,
+        text: questionText,
+        type: NoRiskQuestionType.noRisk,
+        questionComment: questionComment,
+        questionFiles: packageQuestionFiles,
+        answerText: answerText,
+        answerHint: hostHint,
+        answerFiles: packageAnswerFiles,
+        id: null,
+        subType: NoRiskQuestionSubType.simple,
+        order: index,
+        priceMultiplier: '2',
+      ),
       QuestionType.hidden => PackageQuestionUnion.hidden(
-          price: price,
-          text: questionText,
-          type: HiddenQuestionType.hidden,
-          questionComment: questionComment,
-          questionFiles: packageQuestionFiles,
-          answerText: answerText,
-          answerHint: hostHint,
-          answerFiles: packageAnswerFiles,
-          isHidden: true,
-          id: null,
-          order: index,
-        ),
+        price: price,
+        text: questionText,
+        type: HiddenQuestionType.hidden,
+        questionComment: questionComment,
+        questionFiles: packageQuestionFiles,
+        answerText: answerText,
+        answerHint: hostHint,
+        answerFiles: packageAnswerFiles,
+        isHidden: true,
+        id: null,
+        order: index,
+      ),
       QuestionType.choice => PackageQuestionUnion.choice(
-          price: price,
-          text: questionText,
-          type: ChoiceQuestionType.choice,
-          questionComment: questionComment,
-          questionFiles: packageQuestionFiles,
-          answerText: answerText,
-          answerHint: hostHint,
-          answerFiles: packageAnswerFiles,
-          showDelay: 3000,
-          answers: rightAnswers
-              .mapIndexed(
-                (index, e) => QuestionChoiceAnswers(
-                  id: null,
-                  text: e,
-                  order: index,
-                ),
-              )
-              .toList(),
-          id: null,
-          subType: null,
-          order: index,
-        ),
+        price: price,
+        text: questionText,
+        type: ChoiceQuestionType.choice,
+        questionComment: questionComment,
+        questionFiles: packageQuestionFiles,
+        answerText: answerText,
+        answerHint: hostHint,
+        answerFiles: packageAnswerFiles,
+        showDelay: 3000,
+        answers: rightAnswers
+            .mapIndexed(
+              (index, e) =>
+                  QuestionChoiceAnswers(id: null, text: e, order: index),
+            )
+            .toList(),
+        id: null,
+        subType: null,
+        order: index,
+      ),
       QuestionType.$unknown => throw Exception('QuestionType.unknown'),
     };
   }
@@ -254,12 +259,7 @@ class ContentXmlParser {
     final md5 = itemHash.$2;
     final file = itemType == null
         ? null
-        : FileItem(
-            id: null,
-            link: null,
-            md5: md5,
-            type: itemType,
-          );
+        : FileItem(id: null, link: null, md5: md5, type: itemType);
 
     return file;
   }
@@ -295,19 +295,22 @@ class ContentXmlParser {
     if (cachedHash != null) {
       return (
         cachedHash.value.firstWhere((e) => e.path == filePath),
-        cachedHash.key
+        cachedHash.key,
       );
     }
 
-    final archiveFile =
-        _archive?.files.firstWhereOrNull((e) => e.path == filePath);
+    final archiveFile = _archive?.files.firstWhereOrNull(
+      (e) => e.path == filePath,
+    );
 
     archiveFile?.decompress();
     final rawFile = archiveFile?.content;
     if (rawFile == null || rawFile.isEmpty) {
       throw Exception(
-        ['$filePath not found in archive!', '(File path: $itemFilePath)']
-            .join(' '),
+        [
+          '$filePath not found in archive!',
+          '(File path: $itemFilePath)',
+        ].join(' '),
       );
     }
 
@@ -339,9 +342,7 @@ class ContentXmlParser {
 
   Future<PackageCreateInputData> _parseMetadata(XmlElement package) async {
     final json = Map<String, dynamic>.fromEntries(
-      package.attributes.map(
-        (e) => MapEntry(e.localName, e.value),
-      ),
+      package.attributes.map((e) => MapEntry(e.localName, e.value)),
     );
     final packageAttributeDescription = json['description']?.toString();
     final comment = _getComment(package);
@@ -367,7 +368,9 @@ class ContentXmlParser {
       tags: [],
       logo: logo == null
           ? null
-          : PackageLogoFileInput(file: FileInput(md5: logo.$2, type: image)),
+          : PackageLogoFileInput(
+              file: FileInput(md5: logo.$2, type: image),
+            ),
     );
 
     return metadata;

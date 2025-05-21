@@ -69,6 +69,7 @@ export 'src/features/game_question/controllers/game_question_controller.dart';
 export 'src/features/game_question/data/game_question_data.dart';
 export 'src/features/game_question/view/game_question_file.dart';
 export 'src/features/game_question/view/game_question_screen.dart';
+export 'src/features/game_question/view/game_question_timer.dart';
 export 'src/features/games/controllers/games_list_controller.dart';
 export 'src/features/games/view/game_list_item.dart';
 export 'src/features/games/view/games_list.dart';

@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:openquester/common_imports.dart';
 
 class GamePreviewBottom extends StatelessWidget {
-  const GamePreviewBottom({
-    required this.packageId,
-    super.key,
-  });
+  const GamePreviewBottom({required this.packageId, super.key});
   final int packageId;
 
   @override

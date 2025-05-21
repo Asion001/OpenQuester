@@ -25,4 +25,6 @@ class GameLobbyStyles {
   static bool questionMediaOnLeft(BuildContext context) =>
       UiModeUtils.landscapeScreenSize(context) &&
       MediaQuery.sizeOf(context).height < 600;
+
+  static const double maxTimerWidth = 400;
 }

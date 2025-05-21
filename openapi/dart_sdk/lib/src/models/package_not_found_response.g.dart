@@ -7,13 +7,9 @@ part of 'package_not_found_response.dart';
 // **************************************************************************
 
 _PackageNotFoundResponse _$PackageNotFoundResponseFromJson(
-        Map<String, dynamic> json) =>
-    _PackageNotFoundResponse(
-      error: json['error'] as String,
-    );
+  Map<String, dynamic> json,
+) => _PackageNotFoundResponse(error: json['error'] as String);
 
 Map<String, dynamic> _$PackageNotFoundResponseToJson(
-        _PackageNotFoundResponse instance) =>
-    <String, dynamic>{
-      'error': instance.error,
-    };
+  _PackageNotFoundResponse instance,
+) => <String, dynamic>{'error': instance.error};

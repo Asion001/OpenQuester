@@ -48,7 +48,7 @@ gen_indexes: install_index_gen
 	$(PURO_CMD) flutter pub global run index_generator
 
 format:
-	$(PURO_CMD) dart format lib
+	$(PURO_CMD) dart format lib packages/*/lib
 
 fix:
 	$(PURO_CMD) dart fix --apply

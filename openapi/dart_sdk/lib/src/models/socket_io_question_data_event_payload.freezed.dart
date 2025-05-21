@@ -15,53 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$SocketIOQuestionDataEventPayload {
-  PackageQuestionData get data;
-  GameStateTimer get timer;
 
-  /// Create a copy of SocketIOQuestionDataEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $SocketIOQuestionDataEventPayloadCopyWith<SocketIOQuestionDataEventPayload>
-      get copyWith => _$SocketIOQuestionDataEventPayloadCopyWithImpl<
-              SocketIOQuestionDataEventPayload>(
-          this as SocketIOQuestionDataEventPayload, _$identity);
+ PackageQuestionData get data; GameStateTimer get timer;
+/// Create a copy of SocketIOQuestionDataEventPayload
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SocketIOQuestionDataEventPayloadCopyWith<SocketIOQuestionDataEventPayload> get copyWith => _$SocketIOQuestionDataEventPayloadCopyWithImpl<SocketIOQuestionDataEventPayload>(this as SocketIOQuestionDataEventPayload, _$identity);
 
   /// Serializes this SocketIOQuestionDataEventPayload to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is SocketIOQuestionDataEventPayload &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.timer, timer) || other.timer == timer));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, data, timer);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SocketIOQuestionDataEventPayload&&(identical(other.data, data) || other.data == data)&&(identical(other.timer, timer) || other.timer == timer));
+}
 
-  @override
-  String toString() {
-    return 'SocketIOQuestionDataEventPayload(data: $data, timer: $timer)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,data,timer);
+
+@override
+String toString() {
+  return 'SocketIOQuestionDataEventPayload(data: $data, timer: $timer)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $SocketIOQuestionDataEventPayloadCopyWith<$Res> {
-  factory $SocketIOQuestionDataEventPayloadCopyWith(
-          SocketIOQuestionDataEventPayload value,
-          $Res Function(SocketIOQuestionDataEventPayload) _then) =
-      _$SocketIOQuestionDataEventPayloadCopyWithImpl;
-  @useResult
-  $Res call({PackageQuestionData data, GameStateTimer timer});
+abstract mixin class $SocketIOQuestionDataEventPayloadCopyWith<$Res>  {
+  factory $SocketIOQuestionDataEventPayloadCopyWith(SocketIOQuestionDataEventPayload value, $Res Function(SocketIOQuestionDataEventPayload) _then) = _$SocketIOQuestionDataEventPayloadCopyWithImpl;
+@useResult
+$Res call({
+ PackageQuestionData data, GameStateTimer timer
+});
 
-  $PackageQuestionDataCopyWith<$Res> get data;
-  $GameStateTimerCopyWith<$Res> get timer;
+
+$PackageQuestionDataCopyWith<$Res> get data;$GameStateTimerCopyWith<$Res> get timer;
+
 }
-
 /// @nodoc
 class _$SocketIOQuestionDataEventPayloadCopyWithImpl<$Res>
     implements $SocketIOQuestionDataEventPayloadCopyWith<$Res> {
@@ -70,114 +64,87 @@ class _$SocketIOQuestionDataEventPayloadCopyWithImpl<$Res>
   final SocketIOQuestionDataEventPayload _self;
   final $Res Function(SocketIOQuestionDataEventPayload) _then;
 
-  /// Create a copy of SocketIOQuestionDataEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-    Object? timer = null,
-  }) {
-    return _then(_self.copyWith(
-      data: null == data
-          ? _self.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as PackageQuestionData,
-      timer: null == timer
-          ? _self.timer
-          : timer // ignore: cast_nullable_to_non_nullable
-              as GameStateTimer,
-    ));
-  }
-
-  /// Create a copy of SocketIOQuestionDataEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PackageQuestionDataCopyWith<$Res> get data {
-    return $PackageQuestionDataCopyWith<$Res>(_self.data, (value) {
-      return _then(_self.copyWith(data: value));
-    });
-  }
-
-  /// Create a copy of SocketIOQuestionDataEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $GameStateTimerCopyWith<$Res> get timer {
-    return $GameStateTimerCopyWith<$Res>(_self.timer, (value) {
-      return _then(_self.copyWith(timer: value));
-    });
-  }
+/// Create a copy of SocketIOQuestionDataEventPayload
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? data = null,Object? timer = null,}) {
+  return _then(_self.copyWith(
+data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as PackageQuestionData,timer: null == timer ? _self.timer : timer // ignore: cast_nullable_to_non_nullable
+as GameStateTimer,
+  ));
 }
+/// Create a copy of SocketIOQuestionDataEventPayload
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PackageQuestionDataCopyWith<$Res> get data {
+  
+  return $PackageQuestionDataCopyWith<$Res>(_self.data, (value) {
+    return _then(_self.copyWith(data: value));
+  });
+}/// Create a copy of SocketIOQuestionDataEventPayload
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$GameStateTimerCopyWith<$Res> get timer {
+  
+  return $GameStateTimerCopyWith<$Res>(_self.timer, (value) {
+    return _then(_self.copyWith(timer: value));
+  });
+}
+}
+
 
 /// @nodoc
 @JsonSerializable()
-class _SocketIOQuestionDataEventPayload
-    implements SocketIOQuestionDataEventPayload {
-  const _SocketIOQuestionDataEventPayload(
-      {required this.data, required this.timer});
-  factory _SocketIOQuestionDataEventPayload.fromJson(
-          Map<String, dynamic> json) =>
-      _$SocketIOQuestionDataEventPayloadFromJson(json);
 
-  @override
-  final PackageQuestionData data;
-  @override
-  final GameStateTimer timer;
+class _SocketIOQuestionDataEventPayload implements SocketIOQuestionDataEventPayload {
+  const _SocketIOQuestionDataEventPayload({required this.data, required this.timer});
+  factory _SocketIOQuestionDataEventPayload.fromJson(Map<String, dynamic> json) => _$SocketIOQuestionDataEventPayloadFromJson(json);
 
-  /// Create a copy of SocketIOQuestionDataEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$SocketIOQuestionDataEventPayloadCopyWith<_SocketIOQuestionDataEventPayload>
-      get copyWith => __$SocketIOQuestionDataEventPayloadCopyWithImpl<
-          _SocketIOQuestionDataEventPayload>(this, _$identity);
+@override final  PackageQuestionData data;
+@override final  GameStateTimer timer;
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$SocketIOQuestionDataEventPayloadToJson(
-      this,
-    );
-  }
+/// Create a copy of SocketIOQuestionDataEventPayload
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SocketIOQuestionDataEventPayloadCopyWith<_SocketIOQuestionDataEventPayload> get copyWith => __$SocketIOQuestionDataEventPayloadCopyWithImpl<_SocketIOQuestionDataEventPayload>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _SocketIOQuestionDataEventPayload &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.timer, timer) || other.timer == timer));
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$SocketIOQuestionDataEventPayloadToJson(this, );
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, data, timer);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SocketIOQuestionDataEventPayload&&(identical(other.data, data) || other.data == data)&&(identical(other.timer, timer) || other.timer == timer));
+}
 
-  @override
-  String toString() {
-    return 'SocketIOQuestionDataEventPayload(data: $data, timer: $timer)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,data,timer);
+
+@override
+String toString() {
+  return 'SocketIOQuestionDataEventPayload(data: $data, timer: $timer)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$SocketIOQuestionDataEventPayloadCopyWith<$Res>
-    implements $SocketIOQuestionDataEventPayloadCopyWith<$Res> {
-  factory _$SocketIOQuestionDataEventPayloadCopyWith(
-          _SocketIOQuestionDataEventPayload value,
-          $Res Function(_SocketIOQuestionDataEventPayload) _then) =
-      __$SocketIOQuestionDataEventPayloadCopyWithImpl;
-  @override
-  @useResult
-  $Res call({PackageQuestionData data, GameStateTimer timer});
+abstract mixin class _$SocketIOQuestionDataEventPayloadCopyWith<$Res> implements $SocketIOQuestionDataEventPayloadCopyWith<$Res> {
+  factory _$SocketIOQuestionDataEventPayloadCopyWith(_SocketIOQuestionDataEventPayload value, $Res Function(_SocketIOQuestionDataEventPayload) _then) = __$SocketIOQuestionDataEventPayloadCopyWithImpl;
+@override @useResult
+$Res call({
+ PackageQuestionData data, GameStateTimer timer
+});
 
-  @override
-  $PackageQuestionDataCopyWith<$Res> get data;
-  @override
-  $GameStateTimerCopyWith<$Res> get timer;
+
+@override $PackageQuestionDataCopyWith<$Res> get data;@override $GameStateTimerCopyWith<$Res> get timer;
+
 }
-
 /// @nodoc
 class __$SocketIOQuestionDataEventPayloadCopyWithImpl<$Res>
     implements _$SocketIOQuestionDataEventPayloadCopyWith<$Res> {
@@ -186,45 +153,35 @@ class __$SocketIOQuestionDataEventPayloadCopyWithImpl<$Res>
   final _SocketIOQuestionDataEventPayload _self;
   final $Res Function(_SocketIOQuestionDataEventPayload) _then;
 
-  /// Create a copy of SocketIOQuestionDataEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? data = null,
-    Object? timer = null,
-  }) {
-    return _then(_SocketIOQuestionDataEventPayload(
-      data: null == data
-          ? _self.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as PackageQuestionData,
-      timer: null == timer
-          ? _self.timer
-          : timer // ignore: cast_nullable_to_non_nullable
-              as GameStateTimer,
-    ));
-  }
+/// Create a copy of SocketIOQuestionDataEventPayload
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? data = null,Object? timer = null,}) {
+  return _then(_SocketIOQuestionDataEventPayload(
+data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
+as PackageQuestionData,timer: null == timer ? _self.timer : timer // ignore: cast_nullable_to_non_nullable
+as GameStateTimer,
+  ));
+}
 
-  /// Create a copy of SocketIOQuestionDataEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $PackageQuestionDataCopyWith<$Res> get data {
-    return $PackageQuestionDataCopyWith<$Res>(_self.data, (value) {
-      return _then(_self.copyWith(data: value));
-    });
-  }
-
-  /// Create a copy of SocketIOQuestionDataEventPayload
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $GameStateTimerCopyWith<$Res> get timer {
-    return $GameStateTimerCopyWith<$Res>(_self.timer, (value) {
-      return _then(_self.copyWith(timer: value));
-    });
-  }
+/// Create a copy of SocketIOQuestionDataEventPayload
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PackageQuestionDataCopyWith<$Res> get data {
+  
+  return $PackageQuestionDataCopyWith<$Res>(_self.data, (value) {
+    return _then(_self.copyWith(data: value));
+  });
+}/// Create a copy of SocketIOQuestionDataEventPayload
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$GameStateTimerCopyWith<$Res> get timer {
+  
+  return $GameStateTimerCopyWith<$Res>(_self.timer, (value) {
+    return _then(_self.copyWith(timer: value));
+  });
+}
 }
 
 // dart format on

@@ -17,31 +17,32 @@ class UpdateBtn extends StatelessWidget {
       getLatestVersion: getIt<AutoUpdateController>().getLatestVersion,
       getBinaryUrl: (_) async => '',
       appName: LocaleKeys.openquester.tr(),
-      updateDialogBuilder: ({
-        required appVersion,
-        required changelog,
-        required checkForUpdate,
-        required context,
-        required dismissUpdate,
-        required latestVersion,
-        required launchInstaller,
-        required openDialog,
-        required startUpdate,
-        required status,
-      }) {
-        defaultDialog(
-          context: context,
-          latestVersion: latestVersion,
-          appVersion: appVersion,
-          status: status,
-          changelog: changelog,
-          checkForUpdate: checkForUpdate,
-          openDialog: openDialog,
-          startUpdate: getIt<AutoUpdateController>().openInstallFile,
-          launchInstaller: launchInstaller,
-          dismissUpdate: dismissUpdate,
-        );
-      },
+      updateDialogBuilder:
+          ({
+            required appVersion,
+            required changelog,
+            required checkForUpdate,
+            required context,
+            required dismissUpdate,
+            required latestVersion,
+            required launchInstaller,
+            required openDialog,
+            required startUpdate,
+            required status,
+          }) {
+            defaultDialog(
+              context: context,
+              latestVersion: latestVersion,
+              appVersion: appVersion,
+              status: status,
+              changelog: changelog,
+              checkForUpdate: checkForUpdate,
+              openDialog: openDialog,
+              startUpdate: getIt<AutoUpdateController>().openInstallFile,
+              launchInstaller: launchInstaller,
+              dismissUpdate: dismissUpdate,
+            );
+          },
     );
   }
 }

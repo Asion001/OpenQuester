@@ -16,10 +16,7 @@ class AppTheme {
       inputDecorationTheme: inputDecorationTheme,
       tooltipTheme: tooltipTheme,
       extensions: const [
-        ExtraColors(
-          success: Color(0xFF7CE883),
-          warning: Color(0xFFFFE078),
-        ),
+        ExtraColors(success: Color(0xFF7CE883), warning: Color(0xFFFFE078)),
       ],
     );
   }
@@ -33,15 +30,11 @@ class AppTheme {
   }
 
   static TooltipThemeData get tooltipTheme {
-    return const TooltipThemeData(
-      waitDuration: Duration(seconds: 1),
-    );
+    return const TooltipThemeData(waitDuration: Duration(seconds: 1));
   }
 
   static InputDecorationTheme get inputDecorationTheme {
-    return const InputDecorationTheme(
-      border: OutlineInputBorder(),
-    );
+    return const InputDecorationTheme(border: OutlineInputBorder());
   }
 
   static PageTransitionsTheme get pageTransitionsTheme {
@@ -67,10 +60,7 @@ class AppTheme {
 }
 
 class ExtraColors extends ThemeExtension<ExtraColors> {
-  const ExtraColors({
-    required this.success,
-    required this.warning,
-  });
+  const ExtraColors({required this.success, required this.warning});
 
   final Color? success;
   final Color? warning;

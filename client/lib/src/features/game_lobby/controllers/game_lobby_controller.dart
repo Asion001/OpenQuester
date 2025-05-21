@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart'
     show ChatOperation, ChatOperationType, SystemMessage, TextMessage;
 import 'package:openquester/openquester.dart';
@@ -19,6 +19,7 @@ class GameLobbyController {
 
   final showChat = ValueNotifier<bool>(false);
   StreamSubscription<ChatOperation>? _chatMessagesSub;
+  double? themeScrollPosition;
 
   String? get gameId => _gameId;
 
@@ -67,10 +68,9 @@ class GameLobbyController {
 
   Future<void> _onConnect() async {
     try {
-      await getIt<Api>()
-          .api
-          .auth
-          .postV1AuthSocket(body: InputSocketIOAuth(socketId: socket!.id!));
+      await getIt<Api>().api.auth.postV1AuthSocket(
+        body: InputSocketIOAuth(socketId: socket!.id!),
+      );
 
       final iAmHost =
           gameListData.value!.createdBy.id == ProfileController.getUser()?.id;
@@ -82,10 +82,7 @@ class GameLobbyController {
             : SocketIOGameJoinInputRole.player,
       );
 
-      socket?.emit(
-        SocketIOGameSendEvents.join.json!,
-        ioGameJoinInput.toJson(),
-      );
+      socket?.emit(SocketIOGameSendEvents.join.json!, ioGameJoinInput.toJson());
     } catch (e, s) {
       logger.e(e, stackTrace: s);
       clear();
@@ -111,7 +108,7 @@ class GameLobbyController {
     final text = switch (message) {
       TextMessage() => message.text,
       SystemMessage() => message.text,
-      _ => null
+      _ => null,
     };
     if (text.isEmptyOrNull) return;
 
@@ -119,7 +116,9 @@ class GameLobbyController {
       int.tryParse(message?.authorId ?? ''),
     );
     await getIt<ToastController>().show(
-      [author?.meta.username, text?.trim()].nonNulls.join(': '),
+      text?.trim(),
+      title: author?.meta.username,
+      type: ToastType.chat,
     );
   }
 
@@ -135,6 +134,7 @@ class GameLobbyController {
       _chatMessagesSub = null;
       showChat.value = false;
       gameFinished.value = false;
+      themeScrollPosition = null;
       getIt<SocketChatController>().clear();
       getIt<GameQuestionController>().clear();
     } catch (_) {}
@@ -145,12 +145,9 @@ class GameLobbyController {
     if (force) {
       _leave();
     } else {
-      Future<void>.delayed(
-        const Duration(seconds: 1),
-        () {
-          if (socket != null) clear();
-        },
-      );
+      Future<void>.delayed(const Duration(seconds: 1), () {
+        if (socket != null) clear();
+      });
     }
   }
 
@@ -160,8 +157,9 @@ class GameLobbyController {
 
   Future<void> _onGameData(dynamic data) async {
     // Set global game data
-    gameData.value =
-        SocketIOGameJoinEventPayload.fromJson(data as Map<String, dynamic>);
+    gameData.value = SocketIOGameJoinEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
 
     await _initChat();
 
@@ -177,8 +175,10 @@ class GameLobbyController {
         .toList();
 
     // Init chat controller
-    await getIt<SocketChatController>()
-        .init(socket: socket!, messages: messages);
+    await getIt<SocketChatController>().init(
+      socket: socket!,
+      messages: messages,
+    );
 
     _updateChatUsers();
 
@@ -196,10 +196,12 @@ class GameLobbyController {
   }
 
   Future<void> _onGameStart(dynamic data) async {
-    final startData =
-        SocketIOGameStartEventPayload.fromJson(data as Map<String, dynamic>);
-    gameData.value = gameData.value?.copyWith
-        .gameState(currentRound: startData.currentRound);
+    final startData = SocketIOGameStartEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+    gameData.value = gameData.value?.copyWith.gameState(
+      currentRound: startData.currentRound,
+    );
   }
 
   void startGame() {
@@ -237,6 +239,7 @@ class GameLobbyController {
 
     getIt<ToastController>().show(
       LocaleKeys.user_leave_the_game.tr(args: [user.meta.username]),
+      type: ToastType.info,
     );
   }
 
@@ -263,10 +266,7 @@ class GameLobbyController {
       );
     } else {
       gameData.value = gameData.value?.copyWith(
-        players: [
-          ...?gameData.value?.players,
-          user,
-        ],
+        players: [...?gameData.value?.players, user],
       );
     }
 
@@ -274,6 +274,7 @@ class GameLobbyController {
 
     getIt<ToastController>().show(
       LocaleKeys.user_joined_the_game.tr(args: [user.meta.username]),
+      type: ToastType.info,
     );
   }
 
@@ -287,8 +288,9 @@ class GameLobbyController {
   void _onQuestionPick(dynamic data) {
     if (data is! Map) return;
 
-    final questionData =
-        SocketIOQuestionDataEventPayload.fromJson(data as Map<String, dynamic>);
+    final questionData = SocketIOQuestionDataEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
 
     gameData.value = gameData.value?.copyWith.gameState(
       timer: questionData.timer,
@@ -325,8 +327,10 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    gameData.value = gameData.value?.copyWith
-        .gameState(answeringPlayer: questionData.userId);
+    gameData.value = gameData.value?.copyWith.gameState(
+      answeringPlayer: questionData.userId,
+      timer: questionData.timer,
+    );
 
     // Pause media during question answer
     _pauseMediaPlay();
@@ -339,7 +343,7 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    _updatePlayerScore(questionData);
+    _updateGameStateFromAnswerResult(questionData);
 
     // Question answered, hide question screen and show answer
     final result = questionData.answerResult?.result;
@@ -352,18 +356,23 @@ class GameLobbyController {
     }
   }
 
-  void _updatePlayerScore(SocketIOAnswerResultEventPayload questionData) {
-    gameData.value = gameData.value?.copyWith.gameState(
-      answeringPlayer: null,
-      answeredPlayers: [
-        ...?gameData.value?.gameState.answeredPlayers,
-        if (questionData.answerResult != null) questionData.answerResult!,
-      ],
-    ).changePlayer(
-      id: questionData.answerResult?.player,
-      onChange: (value) =>
-          value.copyWith(score: questionData.answerResult!.score),
-    );
+  void _updateGameStateFromAnswerResult(
+    SocketIOAnswerResultEventPayload questionData,
+  ) {
+    gameData.value = gameData.value?.copyWith
+        .gameState(
+          answeringPlayer: null,
+          answeredPlayers: [
+            ...?gameData.value?.gameState.answeredPlayers,
+            if (questionData.answerResult != null) questionData.answerResult!,
+          ],
+          timer: questionData.timer,
+        )
+        .changePlayer(
+          id: questionData.answerResult?.player,
+          onChange: (value) =>
+              value.copyWith(score: questionData.answerResult!.score),
+        );
   }
 
   void _pauseMediaPlay() {
@@ -372,10 +381,11 @@ class GameLobbyController {
 
   /// Resume media after wrong answer
   void _resumeMediaPlay() {
-    final controller = getIt<GameQuestionController>().mediaController.value;
+    final questionController = getIt<GameQuestionController>();
+    final controller = questionController.mediaController.value;
     if (controller == null) return;
 
-    final question = getIt<GameQuestionController>().questionData.value;
+    final question = questionController.questionData.value;
     if (question == null) return;
 
     final displayTime = Duration(milliseconds: question.file?.displayTime ?? 0);
@@ -396,7 +406,7 @@ class GameLobbyController {
       data as Map<String, dynamic>,
     );
 
-    _updatePlayerScore(questionData);
+    _updateGameStateFromAnswerResult(questionData);
 
     gameData.value = gameData.value?.copyWith.gameState(
       currentQuestion: gameData.value?.gameState.currentQuestion?.copyWith(
@@ -413,19 +423,23 @@ class GameLobbyController {
     final currentQuestion = gameData.value?.gameState.currentQuestion;
 
     // Clear question
-    gameData.value = gameData.value?.copyWith.gameState(currentQuestion: null);
+    gameData.value = gameData.value?.copyWith.gameState(
+      currentQuestion: null,
+      timer: null,
+    );
 
     try {
       var mediaPlaytimeMs = 0;
       if (currentQuestion != null) {
+        final file = currentQuestion.answerFiles?.firstOrNull;
         controller.questionData.value = GameQuestionData(
-          file: currentQuestion.answerFiles?.firstOrNull,
+          file: file,
           text: currentQuestion.answerText,
         );
 
         // Wait for user to see answer
         final mediaValue = controller.mediaController.value?.value;
-        if (mediaValue != null) {
+        if (mediaValue != null && file != null) {
           final playtimeLeft = mediaValue.duration - mediaValue.position;
           mediaPlaytimeMs = playtimeLeft.inMilliseconds;
         }
@@ -482,8 +496,9 @@ class GameLobbyController {
     final nextRoundData = SocketIONextRoundEventPayload.fromJson(
       data as Map<String, dynamic>,
     );
-    gameData.value =
-        gameData.value?.copyWith(gameState: nextRoundData.gameState);
+    gameData.value = gameData.value?.copyWith(
+      gameState: nextRoundData.gameState,
+    );
   }
 
   void _onGameFinish(dynamic data) {
@@ -499,7 +514,18 @@ class GameLobbyController {
 
   void _onGamePause(dynamic data) => _setGamePause(isPaused: true);
 
-  void _onGameUnPause(dynamic data) => _setGamePause(isPaused: false);
+  void _onGameUnPause(dynamic data) {
+    _setGamePause(isPaused: false);
+
+    // Update timer after pause
+    if (data is! Map) return;
+    final unpauseData = SocketIOGameUnpauseEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+    gameData.value = gameData.value?.copyWith.gameState(
+      timer: unpauseData.timer,
+    );
+  }
 
   void _setGamePause({required bool isPaused}) {
     gameData.value = gameData.value?.copyWith.gameState(isPaused: isPaused);

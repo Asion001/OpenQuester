@@ -13,15 +13,15 @@ const int _$computeId = 1;
 /// WorkerService operations for ParseSiqFile
 extension on ParseSiqFile {
   OperationsMap _$getOperations() => OperationsMap({
-        _$computeId: ($req) async {
-          final String $res;
-          try {
-            final $dsr = _$Deser(contextAware: false);
-            $res = await compute($dsr.$0($req.args[0]));
-          } finally {}
-          return $res;
-        },
-      });
+    _$computeId: ($req) async {
+      final String $res;
+      try {
+        final $dsr = _$Deser(contextAware: false);
+        $res = await compute($dsr.$0($req.args[0]));
+      } finally {}
+      return $res;
+    },
+  });
 }
 
 /// Invoker for ParseSiqFile, implements the public interface to invoke the
@@ -58,25 +58,41 @@ WorkerService $ParseSiqFileInitializer(WorkerRequest $req) =>
 base class ParseSiqFileWorker extends Worker
     with _$ParseSiqFile$Invoker, _$ParseSiqFile$Facade
     implements ParseSiqFile {
-  ParseSiqFileWorker(
-      {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})
-      : super($ParseSiqFileActivator(Squadron.platformType),
-            threadHook: threadHook, exceptionManager: exceptionManager);
+  ParseSiqFileWorker({
+    PlatformThreadHook? threadHook,
+    ExceptionManager? exceptionManager,
+  }) : super(
+         $ParseSiqFileActivator(Squadron.platformType),
+         threadHook: threadHook,
+         exceptionManager: exceptionManager,
+       );
 
-  ParseSiqFileWorker.vm(
-      {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})
-      : super($ParseSiqFileActivator(SquadronPlatformType.vm),
-            threadHook: threadHook, exceptionManager: exceptionManager);
+  ParseSiqFileWorker.vm({
+    PlatformThreadHook? threadHook,
+    ExceptionManager? exceptionManager,
+  }) : super(
+         $ParseSiqFileActivator(SquadronPlatformType.vm),
+         threadHook: threadHook,
+         exceptionManager: exceptionManager,
+       );
 
-  ParseSiqFileWorker.js(
-      {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})
-      : super($ParseSiqFileActivator(SquadronPlatformType.js),
-            threadHook: threadHook, exceptionManager: exceptionManager);
+  ParseSiqFileWorker.js({
+    PlatformThreadHook? threadHook,
+    ExceptionManager? exceptionManager,
+  }) : super(
+         $ParseSiqFileActivator(SquadronPlatformType.js),
+         threadHook: threadHook,
+         exceptionManager: exceptionManager,
+       );
 
-  ParseSiqFileWorker.wasm(
-      {PlatformThreadHook? threadHook, ExceptionManager? exceptionManager})
-      : super($ParseSiqFileActivator(SquadronPlatformType.wasm),
-            threadHook: threadHook, exceptionManager: exceptionManager);
+  ParseSiqFileWorker.wasm({
+    PlatformThreadHook? threadHook,
+    ExceptionManager? exceptionManager,
+  }) : super(
+         $ParseSiqFileActivator(SquadronPlatformType.wasm),
+         threadHook: threadHook,
+         exceptionManager: exceptionManager,
+       );
 
   @override
   List? getStartArgs() => null;
@@ -86,45 +102,57 @@ base class ParseSiqFileWorker extends Worker
 base class ParseSiqFileWorkerPool extends WorkerPool<ParseSiqFileWorker>
     with _$ParseSiqFile$Facade
     implements ParseSiqFile {
-  ParseSiqFileWorkerPool(
-      {PlatformThreadHook? threadHook,
-      ExceptionManager? exceptionManager,
-      ConcurrencySettings? concurrencySettings})
-      : super(
-            (ExceptionManager exceptionManager) => ParseSiqFileWorker(
-                threadHook: threadHook, exceptionManager: exceptionManager),
-            concurrencySettings: concurrencySettings,
-            exceptionManager: exceptionManager);
+  ParseSiqFileWorkerPool({
+    PlatformThreadHook? threadHook,
+    ExceptionManager? exceptionManager,
+    ConcurrencySettings? concurrencySettings,
+  }) : super(
+         (ExceptionManager exceptionManager) => ParseSiqFileWorker(
+           threadHook: threadHook,
+           exceptionManager: exceptionManager,
+         ),
+         concurrencySettings: concurrencySettings,
+         exceptionManager: exceptionManager,
+       );
 
-  ParseSiqFileWorkerPool.vm(
-      {PlatformThreadHook? threadHook,
-      ExceptionManager? exceptionManager,
-      ConcurrencySettings? concurrencySettings})
-      : super(
-            (ExceptionManager exceptionManager) => ParseSiqFileWorker.vm(
-                threadHook: threadHook, exceptionManager: exceptionManager),
-            concurrencySettings: concurrencySettings,
-            exceptionManager: exceptionManager);
+  ParseSiqFileWorkerPool.vm({
+    PlatformThreadHook? threadHook,
+    ExceptionManager? exceptionManager,
+    ConcurrencySettings? concurrencySettings,
+  }) : super(
+         (ExceptionManager exceptionManager) => ParseSiqFileWorker.vm(
+           threadHook: threadHook,
+           exceptionManager: exceptionManager,
+         ),
+         concurrencySettings: concurrencySettings,
+         exceptionManager: exceptionManager,
+       );
 
-  ParseSiqFileWorkerPool.js(
-      {PlatformThreadHook? threadHook,
-      ExceptionManager? exceptionManager,
-      ConcurrencySettings? concurrencySettings})
-      : super(
-            (ExceptionManager exceptionManager) => ParseSiqFileWorker.js(
-                threadHook: threadHook, exceptionManager: exceptionManager),
-            concurrencySettings: concurrencySettings,
-            exceptionManager: exceptionManager);
+  ParseSiqFileWorkerPool.js({
+    PlatformThreadHook? threadHook,
+    ExceptionManager? exceptionManager,
+    ConcurrencySettings? concurrencySettings,
+  }) : super(
+         (ExceptionManager exceptionManager) => ParseSiqFileWorker.js(
+           threadHook: threadHook,
+           exceptionManager: exceptionManager,
+         ),
+         concurrencySettings: concurrencySettings,
+         exceptionManager: exceptionManager,
+       );
 
-  ParseSiqFileWorkerPool.wasm(
-      {PlatformThreadHook? threadHook,
-      ExceptionManager? exceptionManager,
-      ConcurrencySettings? concurrencySettings})
-      : super(
-            (ExceptionManager exceptionManager) => ParseSiqFileWorker.wasm(
-                threadHook: threadHook, exceptionManager: exceptionManager),
-            concurrencySettings: concurrencySettings,
-            exceptionManager: exceptionManager);
+  ParseSiqFileWorkerPool.wasm({
+    PlatformThreadHook? threadHook,
+    ExceptionManager? exceptionManager,
+    ConcurrencySettings? concurrencySettings,
+  }) : super(
+         (ExceptionManager exceptionManager) => ParseSiqFileWorker.wasm(
+           threadHook: threadHook,
+           exceptionManager: exceptionManager,
+         ),
+         concurrencySettings: concurrencySettings,
+         exceptionManager: exceptionManager,
+       );
 
   @override
   Future<String> compute(Uint8List fileData) =>

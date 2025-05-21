@@ -7,13 +7,9 @@ part of 'user_not_found_response.dart';
 // **************************************************************************
 
 _UserNotFoundResponse _$UserNotFoundResponseFromJson(
-        Map<String, dynamic> json) =>
-    _UserNotFoundResponse(
-      error: json['error'] as String,
-    );
+  Map<String, dynamic> json,
+) => _UserNotFoundResponse(error: json['error'] as String);
 
 Map<String, dynamic> _$UserNotFoundResponseToJson(
-        _UserNotFoundResponse instance) =>
-    <String, dynamic>{
-      'error': instance.error,
-    };
+  _UserNotFoundResponse instance,
+) => <String, dynamic>{'error': instance.error};

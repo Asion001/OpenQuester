@@ -10,9 +10,9 @@ class GamesListController extends ListControllerBase<GameListItem> {
   Future<void> init() async {
     await super.init();
     getIt<SocketController>().general.on(
-          SocketIOEvents.games.name,
-          _onSocketEvent,
-        );
+      SocketIOEvents.games.name,
+      _onSocketEvent,
+    );
     queryFilter = null;
   }
 
@@ -24,9 +24,7 @@ class GamesListController extends ListControllerBase<GameListItem> {
   }
 
   Future<void> _onSocketEvent(dynamic data) async {
-    final result = GameEventSubscription.fromJson(
-      data as Map<String, Object?>,
-    );
+    final result = GameEventSubscription.fromJson(data as Map<String, Object?>);
     switch (result) {
       case GameEventSubscriptionUnionCreated():
         await addFirstItem(result.data);
@@ -69,8 +67,9 @@ class GamesListController extends ListControllerBase<GameListItem> {
     _throttling.throttle(pagingController.refresh);
   }
 
-  final _throttling =
-      Throttling<void>(duration: const Duration(milliseconds: 500));
+  final _throttling = Throttling<void>(
+    duration: const Duration(milliseconds: 500),
+  );
 
   Future<void> deleteGame(String gameId) async {
     await Api.I.api.games.deleteV1GamesGameId(gameId: gameId);

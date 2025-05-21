@@ -15,46 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$PackageUploadCart {
-  String get hash;
 
-  /// Create a copy of PackageUploadCart
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $PackageUploadCartCopyWith<PackageUploadCart> get copyWith =>
-      _$PackageUploadCartCopyWithImpl<PackageUploadCart>(
-          this as PackageUploadCart, _$identity);
+ String get hash;
+/// Create a copy of PackageUploadCart
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PackageUploadCartCopyWith<PackageUploadCart> get copyWith => _$PackageUploadCartCopyWithImpl<PackageUploadCart>(this as PackageUploadCart, _$identity);
 
   /// Serializes this PackageUploadCart to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is PackageUploadCart &&
-            (identical(other.hash, hash) || other.hash == hash));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, hash);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PackageUploadCart&&(identical(other.hash, hash) || other.hash == hash));
+}
 
-  @override
-  String toString() {
-    return 'PackageUploadCart(hash: $hash)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,hash);
+
+@override
+String toString() {
+  return 'PackageUploadCart(hash: $hash)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $PackageUploadCartCopyWith<$Res> {
-  factory $PackageUploadCartCopyWith(
-          PackageUploadCart value, $Res Function(PackageUploadCart) _then) =
-      _$PackageUploadCartCopyWithImpl;
-  @useResult
-  $Res call({String hash});
-}
+abstract mixin class $PackageUploadCartCopyWith<$Res>  {
+  factory $PackageUploadCartCopyWith(PackageUploadCart value, $Res Function(PackageUploadCart) _then) = _$PackageUploadCartCopyWithImpl;
+@useResult
+$Res call({
+ String hash
+});
 
+
+
+
+}
 /// @nodoc
 class _$PackageUploadCartCopyWithImpl<$Res>
     implements $PackageUploadCartCopyWith<$Res> {
@@ -63,76 +64,67 @@ class _$PackageUploadCartCopyWithImpl<$Res>
   final PackageUploadCart _self;
   final $Res Function(PackageUploadCart) _then;
 
-  /// Create a copy of PackageUploadCart
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? hash = null,
-  }) {
-    return _then(_self.copyWith(
-      hash: null == hash
-          ? _self.hash
-          : hash // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of PackageUploadCart
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? hash = null,}) {
+  return _then(_self.copyWith(
+hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
+
+}
+
 
 /// @nodoc
 @JsonSerializable()
+
 class _PackageUploadCart implements PackageUploadCart {
   const _PackageUploadCart({required this.hash});
-  factory _PackageUploadCart.fromJson(Map<String, dynamic> json) =>
-      _$PackageUploadCartFromJson(json);
+  factory _PackageUploadCart.fromJson(Map<String, dynamic> json) => _$PackageUploadCartFromJson(json);
 
-  @override
-  final String hash;
+@override final  String hash;
 
-  /// Create a copy of PackageUploadCart
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$PackageUploadCartCopyWith<_PackageUploadCart> get copyWith =>
-      __$PackageUploadCartCopyWithImpl<_PackageUploadCart>(this, _$identity);
+/// Create a copy of PackageUploadCart
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PackageUploadCartCopyWith<_PackageUploadCart> get copyWith => __$PackageUploadCartCopyWithImpl<_PackageUploadCart>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$PackageUploadCartToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$PackageUploadCartToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _PackageUploadCart &&
-            (identical(other.hash, hash) || other.hash == hash));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PackageUploadCart&&(identical(other.hash, hash) || other.hash == hash));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, hash);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,hash);
 
-  @override
-  String toString() {
-    return 'PackageUploadCart(hash: $hash)';
-  }
+@override
+String toString() {
+  return 'PackageUploadCart(hash: $hash)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$PackageUploadCartCopyWith<$Res>
-    implements $PackageUploadCartCopyWith<$Res> {
-  factory _$PackageUploadCartCopyWith(
-          _PackageUploadCart value, $Res Function(_PackageUploadCart) _then) =
-      __$PackageUploadCartCopyWithImpl;
-  @override
-  @useResult
-  $Res call({String hash});
-}
+abstract mixin class _$PackageUploadCartCopyWith<$Res> implements $PackageUploadCartCopyWith<$Res> {
+  factory _$PackageUploadCartCopyWith(_PackageUploadCart value, $Res Function(_PackageUploadCart) _then) = __$PackageUploadCartCopyWithImpl;
+@override @useResult
+$Res call({
+ String hash
+});
 
+
+
+
+}
 /// @nodoc
 class __$PackageUploadCartCopyWithImpl<$Res>
     implements _$PackageUploadCartCopyWith<$Res> {
@@ -141,20 +133,16 @@ class __$PackageUploadCartCopyWithImpl<$Res>
   final _PackageUploadCart _self;
   final $Res Function(_PackageUploadCart) _then;
 
-  /// Create a copy of PackageUploadCart
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? hash = null,
-  }) {
-    return _then(_PackageUploadCart(
-      hash: null == hash
-          ? _self.hash
-          : hash // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of PackageUploadCart
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? hash = null,}) {
+  return _then(_PackageUploadCart(
+hash: null == hash ? _self.hash : hash // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 // dart format on

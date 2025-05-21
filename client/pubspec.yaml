@@ -4,8 +4,8 @@ publish_to: "none"
 version: 0.14.2
 
 environment:
-  sdk: ">=3.6.0 <4.0.0"
-  flutter: 3.29.3
+  sdk: ">=3.8.0 <4.0.0"
+  flutter: 3.32.0
 
 dependencies:
   flutter:
@@ -21,7 +21,7 @@ dependencies:
   logger: ^2.5.0
   flutter_native_splash: ^2.4.6
   dio: ^5.8.0+1
-  file_picker: ^10.1.2
+  file_picker: ^10.1.9
   siq_file:
     path: ./packages/siq_file/
   siq_compress:
@@ -33,12 +33,12 @@ dependencies:
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
   universal_io: ^2.2.2
-  socket_io_client: ^3.1.1
+  socket_io_client: ^3.1.2
   easy_localization: ^3.0.7+1
   infinite_scroll_pagination: ^5.0.0
   nb_utils: ^7.1.2
   dio_cache_interceptor: ^4.0.3
-  oauth2_client: ^4.1.0
+  oauth2_client: ^4.2.0
   dio_cookie_manager: ^3.2.0
   path_provider: ^2.1.5
   cookie_jar: ^4.0.8
@@ -47,8 +47,8 @@ dependencies:
   cross_file: ^0.3.4+2
   squadron: ^7.1.1
   collection: ^1.19.1
-  flutter_chat_core: ^0.0.11
-  flutter_chat_ui: ^2.0.0-dev.10
+  flutter_chat_core: ^2.2.1
+  flutter_chat_ui: ^2.2.3
   cached_network_image: ^3.4.1
   cached_network_image_platform_interface: ^4.1.1
   fetch_client: ^1.1.4
@@ -60,6 +60,7 @@ dependencies:
   url_launcher: ^6.3.1
   video_player: ^2.9.5
   video_player_win: ^3.1.1
+  toastification: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -67,7 +68,7 @@ dev_dependencies:
 
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
-  analyzer: ^7.4.4
+  analyzer: ^7.4.5
   auto_route_generator: ^10.0.1
   flutter_launcher_icons: ^0.14.3
   envied_generator: ^1.1.1
@@ -81,7 +82,7 @@ dev_dependencies:
   inno_bundle: ^0.9.0
 
 dependency_overrides:
-  archive: ^4.0.7 # Force for update
+  archive: ^4.0.7 # Force for 'updat' package
 
   # Fixes linux build
   # Remove after [PR](https://github.com/juliansteenbakker/flutter_secure_storage/pull/923) merged

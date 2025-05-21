@@ -16,7 +16,8 @@ class LoadingButtonBuilder extends StatefulWidget {
     BuildContext context,
     Widget child,
     Future<void> Function() onPressed,
-  ) builder;
+  )
+  builder;
 
   @override
   State<LoadingButtonBuilder> createState() => _LoadingButtonBuilderState();
@@ -50,7 +51,7 @@ class _LoadingButtonBuilderState extends State<LoadingButtonBuilder> {
         await onPressed?.call();
       } catch (e) {
         if (context.mounted) {
-          await getIt<ToastController>().show(e, context: context);
+          await getIt<ToastController>().show(e);
         }
       } finally {
         if (context.mounted) setState(() => loading = false);

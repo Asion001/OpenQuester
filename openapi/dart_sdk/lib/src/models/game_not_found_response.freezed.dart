@@ -15,46 +15,47 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$GameNotFoundResponse {
-  String get error;
 
-  /// Create a copy of GameNotFoundResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $GameNotFoundResponseCopyWith<GameNotFoundResponse> get copyWith =>
-      _$GameNotFoundResponseCopyWithImpl<GameNotFoundResponse>(
-          this as GameNotFoundResponse, _$identity);
+ String get error;
+/// Create a copy of GameNotFoundResponse
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GameNotFoundResponseCopyWith<GameNotFoundResponse> get copyWith => _$GameNotFoundResponseCopyWithImpl<GameNotFoundResponse>(this as GameNotFoundResponse, _$identity);
 
   /// Serializes this GameNotFoundResponse to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is GameNotFoundResponse &&
-            (identical(other.error, error) || other.error == error));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, error);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameNotFoundResponse&&(identical(other.error, error) || other.error == error));
+}
 
-  @override
-  String toString() {
-    return 'GameNotFoundResponse(error: $error)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,error);
+
+@override
+String toString() {
+  return 'GameNotFoundResponse(error: $error)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $GameNotFoundResponseCopyWith<$Res> {
-  factory $GameNotFoundResponseCopyWith(GameNotFoundResponse value,
-          $Res Function(GameNotFoundResponse) _then) =
-      _$GameNotFoundResponseCopyWithImpl;
-  @useResult
-  $Res call({String error});
-}
+abstract mixin class $GameNotFoundResponseCopyWith<$Res>  {
+  factory $GameNotFoundResponseCopyWith(GameNotFoundResponse value, $Res Function(GameNotFoundResponse) _then) = _$GameNotFoundResponseCopyWithImpl;
+@useResult
+$Res call({
+ String error
+});
 
+
+
+
+}
 /// @nodoc
 class _$GameNotFoundResponseCopyWithImpl<$Res>
     implements $GameNotFoundResponseCopyWith<$Res> {
@@ -63,77 +64,67 @@ class _$GameNotFoundResponseCopyWithImpl<$Res>
   final GameNotFoundResponse _self;
   final $Res Function(GameNotFoundResponse) _then;
 
-  /// Create a copy of GameNotFoundResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_self.copyWith(
-      error: null == error
-          ? _self.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of GameNotFoundResponse
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? error = null,}) {
+  return _then(_self.copyWith(
+error: null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
+
+}
+
 
 /// @nodoc
 @JsonSerializable()
+
 class _GameNotFoundResponse implements GameNotFoundResponse {
   const _GameNotFoundResponse({required this.error});
-  factory _GameNotFoundResponse.fromJson(Map<String, dynamic> json) =>
-      _$GameNotFoundResponseFromJson(json);
+  factory _GameNotFoundResponse.fromJson(Map<String, dynamic> json) => _$GameNotFoundResponseFromJson(json);
 
-  @override
-  final String error;
+@override final  String error;
 
-  /// Create a copy of GameNotFoundResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$GameNotFoundResponseCopyWith<_GameNotFoundResponse> get copyWith =>
-      __$GameNotFoundResponseCopyWithImpl<_GameNotFoundResponse>(
-          this, _$identity);
+/// Create a copy of GameNotFoundResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GameNotFoundResponseCopyWith<_GameNotFoundResponse> get copyWith => __$GameNotFoundResponseCopyWithImpl<_GameNotFoundResponse>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$GameNotFoundResponseToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$GameNotFoundResponseToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _GameNotFoundResponse &&
-            (identical(other.error, error) || other.error == error));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameNotFoundResponse&&(identical(other.error, error) || other.error == error));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, error);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,error);
 
-  @override
-  String toString() {
-    return 'GameNotFoundResponse(error: $error)';
-  }
+@override
+String toString() {
+  return 'GameNotFoundResponse(error: $error)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$GameNotFoundResponseCopyWith<$Res>
-    implements $GameNotFoundResponseCopyWith<$Res> {
-  factory _$GameNotFoundResponseCopyWith(_GameNotFoundResponse value,
-          $Res Function(_GameNotFoundResponse) _then) =
-      __$GameNotFoundResponseCopyWithImpl;
-  @override
-  @useResult
-  $Res call({String error});
-}
+abstract mixin class _$GameNotFoundResponseCopyWith<$Res> implements $GameNotFoundResponseCopyWith<$Res> {
+  factory _$GameNotFoundResponseCopyWith(_GameNotFoundResponse value, $Res Function(_GameNotFoundResponse) _then) = __$GameNotFoundResponseCopyWithImpl;
+@override @useResult
+$Res call({
+ String error
+});
 
+
+
+
+}
 /// @nodoc
 class __$GameNotFoundResponseCopyWithImpl<$Res>
     implements _$GameNotFoundResponseCopyWith<$Res> {
@@ -142,20 +133,16 @@ class __$GameNotFoundResponseCopyWithImpl<$Res>
   final _GameNotFoundResponse _self;
   final $Res Function(_GameNotFoundResponse) _then;
 
-  /// Create a copy of GameNotFoundResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_GameNotFoundResponse(
-      error: null == error
-          ? _self.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
+/// Create a copy of GameNotFoundResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
+  return _then(_GameNotFoundResponse(
+error: null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 // dart format on
