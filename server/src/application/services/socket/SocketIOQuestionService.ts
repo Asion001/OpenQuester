@@ -141,8 +141,8 @@ export class SocketIOQuestionService {
     };
   }
 
-  public async handleGameRoundProgression(game: Game) {
-    const { isGameFinished, nextGameState } = game.handleGameRoundProgression();
+  public async handleRoundProgression(game: Game) {
+    const { isGameFinished, nextGameState } = game.handleRoundProgression();
 
     if (isGameFinished || nextGameState) {
       await this.gameService.updateGame(game);

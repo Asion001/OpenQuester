@@ -169,7 +169,7 @@ export class SocketIOGameService {
       throw new ClientError(ClientResponse.GAME_NOT_STARTED);
     }
 
-    const { isGameFinished, nextGameState } = game.handleGameRoundProgression();
+    const { isGameFinished, nextGameState } = game.handleRoundProgression();
 
     if (isGameFinished || nextGameState) {
       await this.gameService.updateGame(game);

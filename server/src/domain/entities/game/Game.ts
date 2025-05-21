@@ -227,7 +227,7 @@ export class Game {
    * @returns Current state. If all question played - returns next game state
    * (with next round). If all question played and no next round - game finished
    */
-  public handleGameRoundProgression() {
+  public handleRoundProgression() {
     let nextGameState: GameStateDTO | null = null;
     let isGameFinished = false;
 
