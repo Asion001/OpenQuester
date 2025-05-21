@@ -512,7 +512,17 @@ class GameLobbyController {
 
   void _onGamePause(dynamic data) => _setGamePause(isPaused: true);
 
-  void _onGameUnPause(dynamic data) => _setGamePause(isPaused: false);
+  void _onGameUnPause(dynamic data) {
+    _setGamePause(isPaused: false);
+
+    // Update timer after pause
+    if (data is! Map) return;
+    final unpauseData = SocketIOGameUnpauseEventPayload.fromJson(
+      data as Map<String, dynamic>,
+    );
+    gameData.value =
+        gameData.value?.copyWith.gameState(timer: unpauseData.timer);
+  }
 
   void _setGamePause({required bool isPaused}) {
     gameData.value = gameData.value?.copyWith.gameState(isPaused: isPaused);
