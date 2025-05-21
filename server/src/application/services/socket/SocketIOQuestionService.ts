@@ -10,7 +10,6 @@ import { ClientResponse } from "domain/enums/ClientResponse";
 import { HttpStatus } from "domain/enums/HttpStatus";
 import { ClientError } from "domain/errors/ClientError";
 import { GameQuestionMapper } from "domain/mappers/GameQuestionMapper";
-import { GameStateMapper } from "domain/mappers/GameStateMapper";
 import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
@@ -142,8 +141,8 @@ export class SocketIOQuestionService {
     };
   }
 
-  public async handleGameFlow(game: Game) {
-    const { isGameFinished, nextGameState } = game.getFlowState();
+  public async handleRoundProgression(game: Game) {
+    const { isGameFinished, nextGameState } = game.handleRoundProgression();
 
     if (isGameFinished || nextGameState) {
       await this.gameService.updateGame(game);
@@ -185,39 +184,6 @@ export class SocketIOQuestionService {
     await this.gameService.clearTimer(game.id);
 
     return { game, question: questionData.question };
-  }
-
-  public async handleNextRound(socketId: string) {
-    const { game, player } = await this._fetchPlayerAndGame(socketId);
-
-    this._validateGameStatus(game);
-
-    if (player?.role !== PlayerRole.SHOWMAN) {
-      throw new ClientError(ClientResponse.ONLY_SHOWMAN_NEXT_ROUND);
-    }
-
-    const currentRound = game.gameState.currentRound;
-
-    if (!currentRound) {
-      throw new ClientError(ClientResponse.GAME_NOT_STARTED);
-    }
-
-    const nextRound = GameStateMapper.getGameRound(
-      game.package,
-      game.gameState.currentRound!.order + 1
-    );
-
-    let nextGameState = null;
-    let isGameFinished = false;
-
-    if (!nextRound) {
-      game.finish();
-      isGameFinished = true;
-    } else {
-      nextGameState = GameStateMapper.getClearGameState(nextRound);
-    }
-
-    return { game, isGameFinished, nextGameState };
   }
 
   public async handleQuestionPick(socketId: string, questionId: number) {
