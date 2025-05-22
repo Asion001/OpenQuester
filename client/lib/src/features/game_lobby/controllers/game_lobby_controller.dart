@@ -486,6 +486,11 @@ class GameLobbyController {
       SocketIOGameSendEvents.answerResult.json!,
       SocketIOAnswerResultInput(
         scoreResult: playerAnswerIsRight ? score : -score,
+        answerType: multiplier == 0
+            ? SocketIOGameAnswerType.skip
+            : playerAnswerIsRight
+            ? SocketIOGameAnswerType.correct
+            : SocketIOGameAnswerType.wrong,
       ).toJson(),
     );
   }

@@ -2384,9 +2384,7 @@
             "examples": [-1150, 220, 0, -230]
           },
           "answerType": {
-            "type": "string",
-            "enum": ["correct", "wrong", "skip"],
-            "examples": ["correct"]
+            "$ref": "#/components/schemas/SocketIOGameAnswerType"
           }
         }
       },
@@ -2633,9 +2631,7 @@
             "examples": [500, -500, 0]
           },
           "answerType": {
-            "type": "string",
-            "enum": ["correct", "wrong", "skip"],
-            "examples": ["correct"]
+            "$ref": "#/components/schemas/SocketIOGameAnswerType"
           }
         }
       },
@@ -2757,6 +2753,11 @@
             ]
           }
         }
+      },
+      "SocketIOGameAnswerType": {
+        "type": "string",
+        "enum": ["correct", "wrong", "skip"],
+        "examples": ["correct"]
       }
     }
   }
