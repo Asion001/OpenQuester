@@ -317,7 +317,11 @@ export class Game {
    * @param options answering options
    * @returns answer result DTO that can be emitted to clients
    */
-  public handleQuestionAnswer(scoreResult: number, nextState: QuestionState) {
+  public handleQuestionAnswer(
+    scoreResult: number,
+    answerType: AnswerResultType,
+    nextState: QuestionState
+  ) {
     const player = this.getPlayer(this.gameState.answeringPlayer!, {
       fetchDisconnected: false,
     });
@@ -334,13 +338,7 @@ export class Game {
       this._players[idx].score = score;
     }
 
-    const isCorrect = scoreResult > 0;
-
-    const answerType = isCorrect
-      ? AnswerResultType.CORRECT
-      : scoreResult === 0
-      ? AnswerResultType.SKIP
-      : AnswerResultType.WRONG;
+    const isCorrect = answerType === AnswerResultType.CORRECT;
 
     const playerAnswerResult: GameStateAnsweredPlayerData = {
       player: this.gameState.answeringPlayer!,

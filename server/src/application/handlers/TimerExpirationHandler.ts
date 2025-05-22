@@ -18,6 +18,7 @@ import { RedisExpirationHandler } from "domain/types/redis/RedisExpirationHandle
 import { GameNextRoundEventPayload } from "domain/types/socket/events/game/GameNextRoundEventPayload";
 import { QuestionAnswerResultEventPayload } from "domain/types/socket/events/game/QuestionAnswerResultEventPayload";
 import { QuestionFinishEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
+import { AnswerResultType } from "domain/types/socket/game/AnswerResultData";
 import { RedisService } from "infrastructure/services/redis/RedisService";
 
 export class TimerExpirationHandler implements RedisExpirationHandler {
@@ -121,6 +122,7 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
 
     const playerAnswerResult = game.handleQuestionAnswer(
       -question.price,
+      AnswerResultType.WRONG,
       nextState
     );
 

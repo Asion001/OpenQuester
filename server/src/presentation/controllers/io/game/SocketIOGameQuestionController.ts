@@ -138,10 +138,7 @@ export class SocketIOGameQuestionController {
       );
 
     // On correct just show correct answer
-    if (
-      playerAnswerResult.answerType === AnswerResultType.CORRECT ||
-      playerAnswerResult.result > 0
-    ) {
+    if (playerAnswerResult.answerType === AnswerResultType.CORRECT) {
       const { isGameFinished, nextGameState } =
         await this.socketIOQuestionService.handleRoundProgression(game);
 
