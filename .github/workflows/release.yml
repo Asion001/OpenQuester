@@ -24,6 +24,8 @@ jobs:
   build_docker:
     needs: [tests]
     uses: ./.github/workflows/docker.yml
+    with:
+      DEPLOY_PROD: true
     permissions:
       contents: read
       packages: write

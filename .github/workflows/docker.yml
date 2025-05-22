@@ -3,6 +3,10 @@ name: Docker
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      DEPLOY_PROD:
+        type: boolean
+        default: false
   push:
     branches:
       - main
@@ -51,7 +55,7 @@ jobs:
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable={{is_tag}}
+            type=raw,value=latest,enable=${{inputs.DEPLOY_PROD == true}}
 
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'
