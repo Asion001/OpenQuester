@@ -9,10 +9,12 @@ import { SocketEventEmitter } from "domain/types/socket/EmitTarget";
 import { GameNextRoundEventPayload } from "domain/types/socket/events/game/GameNextRoundEventPayload";
 import { GameQuestionDataEventPayload } from "domain/types/socket/events/game/GameQuestionDataEventPayload";
 import { QuestionAnswerEventPayload } from "domain/types/socket/events/game/QuestionAnswerEventPayload";
+import { QuestionAnswerResultEventPayload } from "domain/types/socket/events/game/QuestionAnswerResultEventPayload";
 import {
   QuestionFinishEventPayload,
   QuestionFinishWithAnswerEventPayload,
 } from "domain/types/socket/events/game/QuestionFinishEventPayload";
+import { AnswerResultType } from "domain/types/socket/game/AnswerResultData";
 import { GameValidator } from "domain/validators/GameValidator";
 import { SocketWrapper } from "infrastructure/socket/SocketWrapper";
 import { SocketIOEventEmitter } from "presentation/emitters/SocketIOEventEmitter";
@@ -136,7 +138,10 @@ export class SocketIOGameQuestionController {
       );
 
     // On correct just show correct answer
-    if (playerAnswerResult.result > 0) {
+    if (
+      playerAnswerResult.answerType === AnswerResultType.CORRECT ||
+      playerAnswerResult.result > 0
+    ) {
       const { isGameFinished, nextGameState } =
         await this.socketIOQuestionService.handleRoundProgression(game);
 
@@ -179,7 +184,7 @@ export class SocketIOGameQuestionController {
     }
 
     // On wrong or skip send event to inform everyone about decision
-    this.eventEmitter.emit(
+    this.eventEmitter.emit<QuestionAnswerResultEventPayload>(
       SocketIOGameEvents.ANSWER_RESULT,
       {
         answerResult: playerAnswerResult,

@@ -16,6 +16,7 @@ import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageQuestionDTO } from "domain/types/dto/package/PackageQuestionDTO";
 import { RedisExpirationHandler } from "domain/types/redis/RedisExpirationHandler";
 import { GameNextRoundEventPayload } from "domain/types/socket/events/game/GameNextRoundEventPayload";
+import { QuestionAnswerResultEventPayload } from "domain/types/socket/events/game/QuestionAnswerResultEventPayload";
 import { QuestionFinishEventPayload } from "domain/types/socket/events/game/QuestionFinishEventPayload";
 import { RedisService } from "infrastructure/services/redis/RedisService";
 
@@ -100,7 +101,7 @@ export class TimerExpirationHandler implements RedisExpirationHandler {
         this._gameNamespace.to(gameId).emit(SocketIOGameEvents.ANSWER_RESULT, {
           answerResult,
           timer,
-        });
+        } satisfies QuestionAnswerResultEventPayload);
         return;
       }
     } catch (err: unknown) {

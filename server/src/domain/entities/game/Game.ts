@@ -16,6 +16,7 @@ import { PackageDTO } from "domain/types/dto/package/PackageDTO";
 import { GetPlayerOptions } from "domain/types/game/GetPlayerOptions";
 import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
+import { AnswerResultType } from "domain/types/socket/game/AnswerResultData";
 import { PlayerMeta } from "domain/types/socket/game/PlayerMeta";
 import { Logger } from "infrastructure/utils/Logger";
 import { ValueUtils } from "infrastructure/utils/ValueUtils";
@@ -333,14 +334,22 @@ export class Game {
       this._players[idx].score = score;
     }
 
+    const isCorrect = scoreResult > 0;
+
+    const answerType = isCorrect
+      ? AnswerResultType.CORRECT
+      : scoreResult === 0
+      ? AnswerResultType.SKIP
+      : AnswerResultType.WRONG;
+
     const playerAnswerResult: GameStateAnsweredPlayerData = {
       player: this.gameState.answeringPlayer!,
       result: scoreResult,
       score,
+      answerType,
     };
 
     const answeredPlayers = this.gameState.answeredPlayers || [];
-    const isCorrect = scoreResult > 0;
 
     if (!isCorrect) {
       this.gameState.answeredPlayers = [...answeredPlayers, playerAnswerResult];
