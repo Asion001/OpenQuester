@@ -110,7 +110,7 @@ export class SocketIOQuestionService {
 
     let question = null;
 
-    if (playerAnswerResult.score > 0) {
+    if (data.scoreResult > 0) {
       question = await this.getCurrentQuestion(game);
       game.gameState.currentQuestion = null;
     }

@@ -50,6 +50,9 @@ export class SocketIOGameQuestionController {
     const { game, question } =
       await this.socketIOQuestionService.handleQuestionSkip(this.socket.id);
 
+    const { isGameFinished, nextGameState } =
+      await this.socketIOQuestionService.handleRoundProgression(game);
+
     this.eventEmitter.emit<QuestionFinishEventPayload>(
       SocketIOGameEvents.QUESTION_FINISH,
       {
@@ -61,6 +64,27 @@ export class SocketIOGameQuestionController {
         gameId: game.id,
       }
     );
+
+    // Handle round progression on skip as well
+    if (isGameFinished) {
+      this.eventEmitter.emit(SocketIOGameEvents.GAME_FINISHED, true, {
+        emitter: SocketEventEmitter.IO,
+        gameId: game.id,
+      });
+      return;
+    }
+
+    if (nextGameState) {
+      this.eventEmitter.emit<GameNextRoundEventPayload>(
+        SocketIOGameEvents.NEXT_ROUND,
+        { gameState: nextGameState },
+        {
+          emitter: SocketEventEmitter.IO,
+          gameId: game.id,
+        }
+      );
+      return;
+    }
   };
 
   private handleQuestionPick = async (data: any) => {
@@ -111,11 +135,11 @@ export class SocketIOGameQuestionController {
         dto
       );
 
-    const { isGameFinished, nextGameState } =
-      await this.socketIOQuestionService.handleRoundProgression(game);
-
     // On correct just show correct answer
     if (playerAnswerResult.result > 0) {
+      const { isGameFinished, nextGameState } =
+        await this.socketIOQuestionService.handleRoundProgression(game);
+
       this.eventEmitter.emit<QuestionFinishWithAnswerEventPayload>(
         SocketIOGameEvents.QUESTION_FINISH,
         {

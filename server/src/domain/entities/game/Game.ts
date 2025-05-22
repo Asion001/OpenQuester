@@ -10,7 +10,6 @@ import {
   GameStateAnsweredPlayerData,
   GameStateDTO,
 } from "domain/types/dto/game/state/GameStateDTO";
-import { GameStateRoundDTO } from "domain/types/dto/game/state/GameStateRoundDTO";
 import { GameStateTimerDTO } from "domain/types/dto/game/state/GameStateTimerDTO";
 import { QuestionState } from "domain/types/dto/game/state/QuestionState";
 import { PackageDTO } from "domain/types/dto/package/PackageDTO";
@@ -19,6 +18,7 @@ import { PlayerGameStatus } from "domain/types/game/PlayerGameStatus";
 import { PlayerRole } from "domain/types/game/PlayerRole";
 import { PlayerMeta } from "domain/types/socket/game/PlayerMeta";
 import { Logger } from "infrastructure/utils/Logger";
+import { ValueUtils } from "infrastructure/utils/ValueUtils";
 
 export class Game {
   private _id: string;
@@ -228,21 +228,31 @@ export class Game {
    * (with next round). If all question played and no next round - game finished
    */
   public handleRoundProgression() {
-    let nextGameState: GameStateDTO | null = null;
-    let isGameFinished = false;
-
     if (!this.isAllQuestionsPlayed()) {
       return { isGameFinished: false, nextGameState: null };
     }
 
-    let nextRound: GameStateRoundDTO | null = null;
+    return this.getProgressionState();
+  }
 
-    if (this.gameState.currentRound?.order) {
-      nextRound = GameStateMapper.getGameRound(
-        this.package,
-        this.gameState.currentRound.order + 1
-      );
+  public getNextRound() {
+    if (!ValueUtils.isNumber(this.gameState.currentRound?.order)) {
+      return null;
     }
+
+    const nextRound = GameStateMapper.getGameRound(
+      this.package,
+      this.gameState.currentRound.order + 1
+    );
+
+    return nextRound;
+  }
+
+  public getProgressionState() {
+    let nextGameState: GameStateDTO | null = null;
+    let isGameFinished = false;
+
+    const nextRound = this.getNextRound();
 
     if (!nextRound) {
       this.finish();
