@@ -155,7 +155,7 @@ jobs:
 
       - name: Build and create bundle
         run: |
-          flutter build windows --release --build-number $GITHUB_RUN_NUMBER
+          flutter build windows --release --build-number ${{ github.run_number	}}
           dart run inno_bundle:build --release --no-app
 
       - name: Publish Windows Artifacts
