@@ -501,10 +501,15 @@ class GameLobbyController {
     final nextRoundData = SocketIONextRoundEventPayload.fromJson(
       data as Map<String, dynamic>,
     );
+
     gameData.value = gameData.value?.copyWith(
       gameState: nextRoundData.gameState,
     );
+
+    _resetScrollPosition();
   }
+
+  void _resetScrollPosition() => themeScrollPosition = null;
 
   void _onGameFinish(dynamic data) {
     gameFinished.value = true;
